@@ -373,4 +373,5 @@ cd $workdir
 generatestubs $subsys
 shcoder $subsys
 generatetcllib $subsys
+exit 0
 

@@ -15,13 +15,14 @@ proc dodbsim { fid id nid } {
 
 set scriptdir $env(SAL_DIR)
 source $scriptdir/streamutils.tcl
+source $scriptdir/add_system_dictionary.tcl
 catch {unset MSYS}
 set MSYS [lsort [split [exec cat $SAL_DIR/datastreams.names] \n]]]
 foreach id $MSYS {
    set SYS([lindex [split $id _] 0]) 1
 }
 
-set fall [open index-dbsimulate.html w]
+set fall [open html/index-dbsimulate.html w]
 puts $fall "<HTML><HEAD><TITLE>Stream facility database simulation</TITLE></HEAD>
 <BODY BGCOLOR=White>
 <IMG SRC=\"LSST_logo.gif\" ALIGN=CENTER>
@@ -31,12 +32,12 @@ puts $fall "<HTML><HEAD><TITLE>Stream facility database simulation</TITLE></HEAD
 <TR BGCOLOR=Yellow><B><TD>Stream Name</TD></TR>"
 
 
-foreach subsystem [lsort [array names SYS]] {
+foreach subsystem [lsort $SYSDIC(systems)] {
 
 set nid 1
 puts $fall "<TR><TD><A HREF=\"index-dbsimulate-$subsystem.html\">$subsystem</A></TD></TR>"
 
-set fidx [open index-dbsimulate-$subsystem.html w]
+set fidx [open html/index-dbsimulate-$subsystem.html w]
 puts $fidx "<HTML><HEAD><TITLE>Stream facility database simulation</TITLE></HEAD>
 <BODY BGCOLOR=White>
 <IMG SRC=\"LSST_logo.gif\" ALIGN=CENTER>

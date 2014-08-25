@@ -1,0 +1,128 @@
+struct m1m3_ActuatorSample {
+  short actuatorID;
+  long setpoint[100];
+  long position[100];
+  long error[100];
+  long status[100];
+};
+
+
+
+
+struct m1m3_Actuators {
+  long setpoint[120];
+  long position[120];
+  long error[120];
+  long status[120];
+  float cyltemp[120];
+  float envtemp[120];
+  float lvdtcorr[120];
+  float pressure[120];
+};
+
+
+
+
+struct m1m3_Application {
+  float demand[6];
+  float position[6];
+  float error[6];
+  short status[16];
+};
+
+
+
+
+struct m1m3_Electrical {
+  long voltage[16];
+  long error[16];
+  short status[16];
+};
+
+
+
+
+struct m1m3_LUT {
+  string<32> algorithm;
+  float param[32];
+};
+
+
+
+
+struct m1m3_LimitSensors {
+  short liftoff[64];
+  short limit[64];
+};
+
+
+
+
+struct m1m3_Metrology {
+  long distance[16];
+  long error[16];
+  short status[16];
+};
+
+
+
+
+struct m1m3_Support {
+  long Raw[16];
+  float Calibrated[32];
+};
+
+
+
+
+struct m1m3_Supports {
+  long targetpos[6];
+  long stepcnt[6];
+  float force[6];
+};
+
+
+
+
+struct m1m3_Surface {
+  long Raw[1024];
+  float Calibrated[1024];
+};
+
+
+
+
+struct m1m3_TC {
+  float setpoint[16];
+  float temperature[16];
+  float error[16];
+  short status[16];
+};
+
+
+
+
+struct m1m3_command {
+  long cmdID;
+  string<16> device;
+  string<16> operation;
+  string<16> value;
+  string<128> modifiers;
+};
+
+
+
+
+struct m1m3_response {
+  long cmdID;
+  string<16> ack;
+  string<16> error;
+  long timeout;
+  short repeat;
+  short submits;
+  string<64> result;
+};
+
+
+
+

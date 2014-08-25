@@ -1,0 +1,11 @@
+struct camera_QA_measured {
+  string<32> private_revCode;  //private
+  double     private_sndStamp; //private
+  double     private_rcvStamp; //private
+  long       private_seqNum;   //private
+  long       private_origin;   //private
+  float	metric1[132];
+  float	metric2[132];
+  float	metric3[132];
+  float	metric4[132];
+};

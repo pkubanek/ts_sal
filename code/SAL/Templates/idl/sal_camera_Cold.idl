@@ -1,0 +1,61 @@
+module camera
+{
+	struct Cold_flow {
+	  float	Intake_flow[6];	// 100 | lps | Compressor intake  flow
+	};
+	#pragma keylist Cold_flow
+	struct Cold_power {
+	  long	Compressor_load[6];	// 100 | Watts | Compressor electrical load
+	};
+	#pragma keylist Cold_power
+	struct Cold_pressure {
+	  float	Intake_pressure[6];	// 100 | Pa | Compressor intake  pressure
+	  float	Pre_expansion_pressure[6];	// 100 | Pa | Pre-expansion C4 pressure
+	  float	Post_expansion_pressure[6];	// 100 | Pa | Post-evaporator pressure
+	};
+	#pragma keylist Cold_pressure
+	struct Cold_speed {
+	  long	Compressor_speed[6];	// 100 | Hz | Compressor speed
+	  float	Dischaarge_pressure[6];	// 100 | Pa | Compressor discharge  pressure
+	  long	Discharge_temp[6];	// 100 | Celsius | Compressor discharge  temperature
+	};
+	#pragma keylist Cold_speed
+	struct Cold_status {
+	  short	Flow_interlock[6];	// 100 | none | Compressor water flow interlock
+	};
+	#pragma keylist Cold_status
+	struct Cold_temperature {
+	  long	Intake_temp[6];	// 100 | Celsius | Compressor intake temperature
+	  long	Pre_expansion_temp[6];	// 100 | Celsius | Pre-expansion C4 temperature
+	  long	Post_expansion_temp[6];	// 100 | Celsius | Post-evaporator temperature
+	  long	Return_temp[6];	// 100 | Celsius | Return line temperature
+	};
+	#pragma keylist Cold_temperature
+	struct Cold_vacuum {
+	  float	Vacuum_gauge[5];	// 100 | Pa | 3 for cryostat, 2 for heat exchangers
+	};
+	#pragma keylist Cold_vacuum
+	struct Cold_Ion {
+	  short	Valve_status[6];	// 18 | none | Vacuum valve status published on change
+	};
+	#pragma keylist Cold_Ion
+	struct Cold_current {
+	  float	Ion_pump[4];	// 100 | Amp | Ion pump current (3 cryostat, 1 heat exch)
+	  float	Heater_current;	// 100 | Amp | Coldplate heater currents
+	};
+	#pragma keylist Cold_current
+	struct Cold_tstatus {
+	  long	Mech_pump[4];	// 100 | none | Status (2 cryostat, 2 heat exch)
+	  long	RGA[10];	// 100 | ?? | Two RGAs, 5 gasses each
+	};
+	#pragma keylist Cold_tstatus
+	struct Cold_utemperature {
+	  long	UtilityRoom_temperature;	// 100 | Celsius | Temperatures in utility room (8)
+	  unsigned short	REB_ID;	// none | | Raft Electronics Board ID
+	};
+	#pragma keylist Cold_utemperature
+	struct Cold_voltage {
+	  float	Heater_voltage;	// 100 | Volt | Coldplate heater voltages
+	};
+	#pragma keylist Cold_voltage
+};

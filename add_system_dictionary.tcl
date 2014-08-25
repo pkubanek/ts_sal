@@ -1,5 +1,5 @@
 
-set SYSDIC(systems) "auxscope calibration camera dm enclosure environment lasercal m1m3 m2 mount network operations power scheduler seeing skycam system tcs"
+set SYSDIC(systems) "auxscope calibration camera dm enclosure environment hexapod lasercal m1m3 m2 mount network operations power scheduler seeing skycam system tcs"
 foreach s $SYSDIC(systems) {set SYSDIC($s,type) system}
 
 set SYSDIC(datatypes) "byte short int long float string int64 double ubyte ushort uint ulong"
@@ -117,6 +117,13 @@ environment.Seismometer - Earthquake monitoring
 environment.TC - Temperature control systems
 environment.Weather - Local weather sensing
 environment.Video - Local video cameras
+hexapod - Hexapod/Rotator subsystem
+hexapod.Application - Derived metadata
+hexapod.Actuators - Position control systems
+hexapod.Electrical - Power monitoring
+hexapod.LimitSensors - Position monitoring/control
+hexapod.Metrology - Position monitoring/control
+hexapod.TC - Thermal monitoring/control
 lasercal - Laser calibration system
 lasercal.Application - Derived metadata
 lasercal.Electrical - Electrical system monitoring

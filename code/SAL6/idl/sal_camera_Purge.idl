@@ -1,0 +1,36 @@
+module camera
+{
+	struct Purge_acceleration {
+	  long	Accelerometer[6];	// 58 | m/s2 | Accelerometers
+	};
+	#pragma keylist Purge_acceleration
+	struct Purge_current {
+	  float	Heater_current;	// 58 | Amp | Heater settings
+	  float	Heaters;	// 58 | Amp | Heaters
+	};
+	#pragma keylist Purge_current
+	struct Purge_flow {
+	  float	Flow_meter;	// 58 | lps | Flow meters
+	  float	Flow_meter2;	// 58 | lps | Flow meters
+	};
+	#pragma keylist Purge_flow
+	struct Purge_microphone {
+	  long	Microphone;	// 58 | none | Microphone
+	};
+	#pragma keylist Purge_microphone
+	struct Purge_speed {
+	  long	Blower_setting;	// 58 | Hz | Blower speed setting
+	  long	Blower_speed;	// 58 | Hz | Blower speed
+	};
+	#pragma keylist Purge_speed
+	struct Purge_temperature {
+	  long	Temp;	// 58 | Celsius | Temperature
+	  long	Temp2;	// 58 | Celsius | Temperature
+	};
+	#pragma keylist Purge_temperature
+	struct Purge_x {
+	  long	Valve_setting;	// 58 | none | Valve settings
+	  long	Valves;	// 58 | none | Valves
+	};
+	#pragma keylist Purge_x
+};

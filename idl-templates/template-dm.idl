@@ -1,0 +1,47 @@
+struct dm_derived_dataquality {
+  double metric1[200];
+  double metric2[200];
+  double metric3[200];
+  double metric4[200];
+  double metric5[200];
+  double metric6[200];
+  double summary[100];
+};
+
+
+
+
+struct dm_derived_psf {
+  double metric1[200];
+  double metric2[200];
+  double metric3[200];
+  double metric4[200];
+  double metric5[200];
+  double metric6[200];
+};
+
+
+
+
+struct dm_pointing_wcs {
+  double ra[200];
+  double dec[200];
+  double coeff[32];
+};
+
+
+
+
+struct dm_raw_dataquality {
+  double metric1[200];
+  double metric2[200];
+  double metric3[200];
+  double metric4[200];
+  double metric5[200];
+  double metric6[200];
+  double summary[100];
+};
+
+
+
+

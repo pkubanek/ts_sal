@@ -1,0 +1,191 @@
+const NUMCCD=201
+const FREQUENCY=0.1
+const PUBLISHERS=1
+
+struct camera_BEE_clocks {
+  long	serial_1A[NUMCCD];	#	none |	none |	Serial clock voltage 1A raw value
+  long	serial_2A[NUMCCD];	#	none |	none |	Serial clock voltage 2A raw value
+  long	serial_3A[NUMCCD];	#	none |	none |	Serial clock voltage 3A raw value
+  long	serial_1B[NUMCCD];	#	none |	none |	Serial clock voltage 1B raw value
+  long	serial_2B[NUMCCD];	#	none |	none |	Serial clock voltage 2B raw value
+  long	serial_3B[NUMCCD];	#	none |	none |	Serial clock voltage 3B raw value
+  long  parallel_1A[NUMCCD];	#	none |	none |	Parallel clock voltage 1A raw value
+  long  parallel_1B[NUMCCD];	#	none |	none |	Parallel clock voltage 1B raw value
+  long  parallel_2A[NUMCCD];	#	none |	none |	Parallel clock voltage 2A raw value
+  long  parallel_2B[NUMCCD];	#	none |	none |	Parallel clock voltage 2B raw value
+}
+
+struct camera_BEE_biases {
+  long	reset[NUMCCD];		#	none |	none |	Reset bias voltage raw value
+  long	operate[NUMCCD];	#	none |	none |	Operating bias voltage raw value
+  long	substrate[NUMCCD];	#	none |	none |	Substrate voltage raw value
+}
+
+const PUBLISHERS=25
+struct camera_BEE_thermal {
+  unsigned short raftID;	#	none |	none |	Raft Identification code
+  float temp[20];		#	kelvin | 0.0,200.0 | Temperatures
+  float heaterPower[10];	#	watt |	0.0,10.0 | Heater output power
+  long  heaterStatus[10];	#	none |	none |	Heater status bits
+  unsigned long cfgChkSum;	#	none |	none |	Configuration checksum
+}
+
+struct camera_TCM {
+  float	parameters[10];		#	none |	none | Timing parameters
+}
+
+const PUBLISHERS=1
+struct camera_CCS {
+  unsigned long expHist[1024];	#	none |	none |	Statuses throughout exposure
+  unsigned long flags[10];	#	none |	none |	Summary Error flags
+}
+
+const FREQUENCY=0.01
+
+struct camera_FCS {
+  float motion_profile[2400];	#	none |	none |	Filter motion profile
+  string<32> algorithm;		#	none |	none |	Control algorithm used
+  unsigned long flags;		#	none |	none |	Limit switches and error flags
+}
+
+const FREQUENCY=10.0
+struct camera_GAS {
+  string<32> algorithm;		#	none |	none |	Centroiding algorithm used
+  float parameters[10];		#	none |	none |	Input parameters
+  float sampleData_00[25];	#	none |	none |	Measured centroid parameters, lower left
+  float sampleData_01[25];	#	none |	none |	Measured centroid parameters, lower right
+  float sampleData_10[25];	#	none |	none |	Measured centroid parameters, upper left
+  float sampleData_11[25];	#	none |	none |	Measured centroid parameters, upper right
+}
+
+const FREQUENCY=0.2
+struct camera_SCS {
+  float open_profile[1024];	#	none |	none |	Open shutter motion profile
+  float close_profile[1024];	#	none |	none |	Close shutter motion profile
+  string<32> algorithm;		#	none |	none |	Control algorithm used
+  unsigned long flags;		#	none |	none |	Limit switches and error flags
+}
+
+const FREQUENCY=0.1
+struct camera_SDS_status {
+  unsigned long flags[20]; 	#	none |	none |	Error flags
+  float current[80];		#	none |	none |	Generic health parameters
+}
+
+const PUBLISHERS=25
+struct camera_SDS_amplifiers {
+  unsigned short raftID;	#	none |	none |	Raft Identification code
+  unsigned long flags[132]; 	#	none |	none |	Error flags
+  unsigned long status[132]; 	#	none |	none |	Status bits
+  float voltage1[132];		#	volt |	none |	voltage 1 
+  float voltage2[132];		#	volt |	none |	voltage 2 
+  float voltage3[132];		#	volt |	none |	voltage 3 
+  float voltage4[132];		#	volt |	none |	voltage 4 
+}
+
+struct camera_QA_measured {
+  float metric1[132];		#	none |	none |	Quality assurance metric 1
+  float metric2[132];		#	none |	none |	Quality assurance metric 1
+  float metric3[132];		#	none |	none |	Quality assurance metric 1
+  float metric4[132];		#	none |	none |	Quality assurance metric 1
+}
+
+const PUBLISHERS=1
+const FREQUENCY=1.0
+struct camera_TC_zone1 {
+  float cold_plate[25];		#	kelvin | none |	Cold plate temperatures
+  float flow_rate[25];		#	none |	none |	Flow rates
+  float temperature[25];	#	kelvin | none |	Zone 1 temperatures
+  float setpoint[25];		#	kelvin | none |	Zone 1 target temperatures
+  unsigned int status[25];	#	none |	none |	Zone 1 statuses
+}
+
+struct camera_TC_zone2 {
+  float cold_plate[25];		#	kelvin | none |	Cold plate temperatures
+  float temperature[25];	#	kelvin | none |	Zone 2 temperatures
+  float setpoint[25];		#	kelvin | none |	Zone 2 target temperatures
+  unsigned int status[25];	#	none |	none |	Zone 2 statuses
+}
+
+struct camera_TC_zone3 {
+  float temperature[50];	#	kelvin | none |	Zone 3 temperatures
+  float setpoint[50];		#	kelvin | none |	Zone 3 target temperatures
+  unsigned int status[50];	#	none |	none |	Zone 3 statuses
+}
+
+const FREQUENCY=0.01
+struct camera_TC_zone4 {
+  float flow_rate[10];		#	none | none |	Flow rates
+  float temperature[10];	#	kelvin | none |	Zone 4 temperatures
+  float setpoint[10];		#	kelvin | none |	Zone 4 target temperatures
+  unsigned int status[10];	#	none | none |	Zone 4 statuses
+}
+
+const FREQUENCY=1.0
+struct camera_TC_zone5 {
+  float flow_rate[10];		#	none |	none |	Flow rates
+  float temperature[10];	#	kelvin | none |	Zone 5 temperatures
+  float setpoint[10];		#	kelvin | none |	Zone 5 target temperatures
+  unsigned int status[10];	#	none |	none |	Zone 5 statuses
+}
+
+const FREQUENCY=0.01
+struct camera_TC_zone6 {
+  float flow_rate[10];		#	none |	none |	Flow rates
+  float temperature[10];	#	kelvin | none |	Zone 6 temperatures
+  float setpoint[10];		#	kelvin | none |	Zone 6 target temperatures
+  unsigned int status[10];	#	none |	none |	Zone 6 statuses
+}
+
+const FREQUENCY=0.1
+struct camera_TC_control {
+  float temperature[10];	#	kelvin | none |	Global temperatures
+  float setpoint[10];		#	kelvin | none |	Global target temperatures
+  unsigned int status[10];	#	none |	none |	Global  statuses
+}
+
+struct camera_PWR {
+  float supply_voltage[25];	#	volt |	none |	Power supply voltages, measured
+  float current[25];		#	volt |	none |	Power supply currents, measured
+}
+
+struct camera_VCS {
+  float control[10];		#	none |	none |	Vacuum parameters
+  float pressure[10];		#	none |	none |	Vacuum characteristics, measured
+}
+
+const PUBLISHERS=4
+struct camera_WDS_wfsRaft {
+  float parameters[32];		#	none |	none |	Control parameters
+  float metrics[32];		#	none |	none |	Measured metrics
+  float zernikes[16];		#	none |	none |	Measured zernikes
+  unsigned long status;		#	none |	none |	Status flags
+  string<128> avgInsideImage;	#	none |	none |	BLOB ref for inside focus average
+  string<128> avgOutsideImage;	#	none |	none |	BLOB ref for outside focus average
+  string<128> CalcImage1;	#	none |	none |	BLOB ref for reduced image 1 
+  string<128> CalcImage2;	#	none |	none |	BLOB ref for reduced image 2
+}
+
+const PUBLISHERS=1
+struct camera_WTCM {
+  float parameters[10];		#	none |	none |	Process parameters
+}
+
+const FREQUENCY=0.001
+struct camera_CALSYS {
+  float profile[1024];		#	none |	none |	Motion profile during calibration run 
+}
+
+const FREQUENCY=0.1
+struct camera_UTIL {
+  float flow_rate[10];		#	none |	none |	Utility trunk Flow rates
+  float temperature[10];	#	kelvin | none |	Utility trunk temperatures
+  float setpoint[10];		#	kelvin | none |	Utility trunk target temperatures
+  unsigned int status[10];	#	none |	none |	Utility trunk statuses
+}
+
+const FREQUENCY=0.001
+struct camera_LASERCAL {
+  float positions[10];		#	none |	none |	Measured references during calibration
+}
+

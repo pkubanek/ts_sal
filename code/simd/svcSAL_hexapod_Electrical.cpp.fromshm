@@ -1,0 +1,10 @@
+		for (unsigned int count=0; count<17; count++) {
+			d.status[count] = hexapod_Electrical_ref->status[count];
+		}
+		for (unsigned int count=0; count<17; count++) {
+			d.error[count] = hexapod_Electrical_ref->error[count];
+		}
+		for (unsigned int count=0; count<17; count++) {
+			d.voltage[count] = hexapod_Electrical_ref->voltage[count];
+		}
+		hexapod_Electrical_ref->syncO = 1;

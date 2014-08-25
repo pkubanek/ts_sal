@@ -1,0 +1,12 @@
+struct tcs_kernel_PointingModel {
+  string<32> private_revCode; //private
+  double private_sndStamp; //private
+  double private_rcvStamp; //private
+  long private_seqNum; //private
+  long private_origin; //private
+  long Model[30];
+  float Coeffv[100];
+  long Nterml;
+  long Ntermx;
+  long Nterms;
+};

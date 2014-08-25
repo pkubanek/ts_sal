@@ -1,0 +1,15 @@
+struct m1m3_Actuators {
+  string<32> private_revCode; //private
+  double private_sndStamp; //private
+  double private_rcvStamp; //private
+  long private_seqNum; //private
+  long private_origin; //private
+  long setpoint[120];
+  long position[120];
+  long error[120];
+  long status[120];
+  float cyltemp[120];
+  float envtemp[120];
+  float lvdtcorr[120];
+  float pressure[120];
+};

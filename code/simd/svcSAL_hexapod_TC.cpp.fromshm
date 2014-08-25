@@ -1,0 +1,13 @@
+		for (unsigned int count=0; count<17; count++) {
+			d.status[count] = hexapod_TC_ref->status[count];
+		}
+		for (unsigned int count=0; count<17; count++) {
+			d.error[count] = hexapod_TC_ref->error[count];
+		}
+		for (unsigned int count=0; count<17; count++) {
+			d.setpoint[count] = hexapod_TC_ref->setpoint[count];
+		}
+		for (unsigned int count=0; count<17; count++) {
+			d.temperature[count] = hexapod_TC_ref->temperature[count];
+		}
+		hexapod_TC_ref->syncO = 1;

@@ -6,15 +6,16 @@
 
 
 
-proc addSALDDStypes { idlfile id lang} {
+proc addSALDDStypes { idlfile id lang base } {
+global SAL_DIR
  set atypes $idlfile
  if { $lang == "java" } {
-  set fin [open SALDDS.java.template r]
+  set fin [open $SAL_DIR/code/templates/SALDDS.java.template r]
   set fout [open [set id]/java/src/org/lsst/sal/SALDDS.java w]
   puts stdout "Configuring [set id]/java/src/org/lsst/sal/SALDDS.java"
   while { [gets $fin rec] > -1 } {
      if { [string range $rec 0 20] == "// INSERT SAL IMPORTS" } {
-        puts $fout "import [lindex [string split $id _] 0].*"
+        puts $fout "import [set base].*;"
      }
      if { [string range $rec 0 21] == "// INSERT TYPE SUPPORT" } {
         puts $fout "        public void salTypeSupport(String topicName) \{
@@ -27,7 +28,7 @@ proc addSALDDStypes { idlfile id lang} {
                set name [lindex $j 2]
                puts stdout "	for $base $name"
                puts $fout "
-                    if ( \"[set base]_$name\").equals(topicName) ) \{
+                    if ( \"[set base]_$name\".equals(topicName) ) \{
 			[set name]TypeSupport [set name]TS = new [set name]TypeSupport();
 			registerType([set name]TS);
 		    \}"
@@ -41,37 +42,37 @@ proc addSALDDStypes { idlfile id lang} {
            foreach j $ptypes {
                set name [lindex $j 2]
 puts $fout "
-	public int putSample([set base]::$name data)
+	public int putSample($name data)
 	\{
           int status = SAL__OK;
 	  DataWriter dwriter = getWriter();
-	  [set base]::[set name]DataWriter SALWriter = [set base]::[set name]DataWriterHelper.narrow(dwriter);
+	  [set name]DataWriter SALWriter = [set name]DataWriterHelper.narrow(dwriter);
 	  data.private_revCode = \"LSST TEST REVCODE\";
 	  if (debugLevel > 0) \{
-	    System.out.println(\"=== \[putSample [set base]::$name\] writing a message containing :\");
+	    System.out.println(\"=== \[putSample $name\] writing a message containing :\");
 	    System.out.println(\"    revCode  : \" + data.private_revCode);
 	  \}
 	  SALWriter.register_instance(data);
 	  status = SALWriter.write(data, HANDLE_NIL.value);
-	  checkStatus(status, \"[set base]::[set name]DataWriter.write\");
+	  checkStatus(status, \"[set name]DataWriter.write\");
 	  return status;
 	\}
 
 
-	public int getSample([set base]::$name data)
+	public int getSample($name data)
 	\{
 	  int status =  -1;
           int last = 0;
-          [set base]::[set name]SeqHolder SALInstance = new [set base]::[set name]SeqHolder();
+          [set name]SeqHolder SALInstance = new [set name]SeqHolder();
 	  DataReader dreader = getReader();
-	  [set base]::[set name]DataReader SALReader = [set base]::[set name]DataReaderHelper.narrow(dreader);
+	  [set name]DataReader SALReader = [set name]DataReaderHelper.narrow(dreader);
   	  SampleInfoSeqHolder infoSeq = new SampleInfoSeqHolder();
 	  SALReader.take(SALInstance, infoSeq, LENGTH_UNLIMITED.value,
 					ANY_SAMPLE_STATE.value, ANY_VIEW_STATE.value,
 					ANY_INSTANCE_STATE.value);
 	  if (debugLevel > 0) \{
 		for (int i = 0; i < SALInstance.value.length; i++) \{
-				System.out.println(\"=== \[getSample [set base]::$name \] message received :\");
+				System.out.println(\"=== \[getSample $name \] message received :\");
 				System.out.println(\"    revCode  : \"
 						+ SALInstance.value\[i\].private_revCode);
                    last = i;
@@ -95,20 +96,21 @@ puts $fout "
   close $fout
  }
  if { $lang == "cpp" } {
-  set finh [open SALDDS.h.template r]
-  set fouth [open [set id]/cpp/src/SALDDS.h w]
+  set finh [open $SAL_DIR/code/templates/SALDDS.h.template r]
+  set fouth [open [set base]/cpp/src/SALDDS.h w]
   set rec ""
   while { [string range $rec 0 21] != "// INSERT TYPE SUPPORT" } {
      if { [string range $rec 0 22] == "// INSERT TYPE INCLUDES" } {
-       puts $fouth "#include ccpp_sal_[lindex [split $id _] 0].h"
+       puts $fouth "  #include \"ccpp_sal_[lindex [split $id _] 0].h\""
+       gets $finh rec ; puts $fouth $rec
      } else {
        gets $finh rec
        puts $fouth $rec
      }
   }
-  set fin [open SALDDS.cpp.template r]
+  set fin [open $SAL_DIR/code/templates/SALDDS.cpp.template r]
   puts stdout "Configuring [set id]/cpp/src/SALDDS.cpp"
-  set fout [open [set id]/cpp/src/SALDDS.cpp w]
+  set fout [open [set base]/cpp/src/SALDDS.cpp w]
   while { [gets $fin rec] > -1 } {
      if { [string range $rec 0 21] == "// INSERT TYPE SUPPORT" } {
         puts $fout " void SALDDS::salTypeSupport(char *topicName) 
@@ -149,7 +151,7 @@ salReturn SALDDS::putSample([set base]::[set name] data)
   return status;
 \}
 
-salReturn SALDDS::getSample([set base]::[set name] data)
+salReturn SALDDS::getSample([set base]::[set name]Seq data)
 \{
   SampleInfoSeq infoSeq;
   ReturnCode_t status =  - 1;
@@ -175,7 +177,11 @@ salReturn SALDDS::getSample([set base]::[set name] data)
            }
         }
      } else {
-        puts $fout $rec
+        if { $rec == "using namespace SALData;" } {
+          puts $fout "using namespace [set base];"
+        } else {
+          puts $fout $rec
+        }
      }
   }
   close $fin 

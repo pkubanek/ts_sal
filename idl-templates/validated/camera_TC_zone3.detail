@@ -1,0 +1,3 @@
+camera.TC.zone3.temperature 50 float 0.1
+camera.TC.zone3.setpoint 50 float 0.1
+camera.TC.zone3.status 50 long 0.1

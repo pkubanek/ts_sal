@@ -1,0 +1,208 @@
+struct m2_Actuators {
+  long Raw[15];
+  float Calibrated[31];
+  byte Status[15];
+};
+
+
+
+
+struct m2_Application {
+  float Demand[2];
+  float Position[2];
+  float Error[2];
+  string<128> Status_1;
+  string<128> Status_2;
+  string<128> Status_3;
+  string<128> Status_4;
+  string<128> Status_5;
+  string<128> Status_6;
+  string<128> Status_7;
+  string<128> Status_8;
+  string<128> Status_9;
+  string<128> Status_10;
+  string<128> Status_11;
+  string<128> Status_12;
+  string<128> Status_13;
+  string<128> Status_14;
+  string<128> Status_15;
+};
+
+
+
+
+struct m2_Electrical {
+  long Raw[15];
+  float Calibrated[31];
+  byte Status[15];
+};
+
+
+
+
+struct m2_Hexapod {
+  long Raw[31];
+  float Calibrated[31];
+  byte Status[31];
+};
+
+
+
+
+struct m2_Metrology {
+  long Raw[15];
+  float Calibrated[15];
+  byte Limits[63];
+  byte Status[63];
+};
+
+
+
+
+struct m2_Surface {
+  long Raw[200];
+  float Calibrated[200];
+  byte Status[200];
+ };
+
+
+
+
+struct m2_Temps {
+  long Raw[15];
+  float Calibrated[15];
+  byte Health[15];
+};
+
+
+
+
+struct m2_Actuators {
+  long Raw[15];
+  float Calibrated[31];
+  octet Status[15];
+};
+
+
+
+
+struct m2_Application {
+  float Demand[2];
+  float Position[2];
+  float Error[2];
+  string<128> Status_1;
+  string<128> Status_2;
+  string<128> Status_3;
+  string<128> Status_4;
+  string<128> Status_5;
+  string<128> Status_6;
+  string<128> Status_7;
+  string<128> Status_8;
+  string<128> Status_9;
+  string<128> Status_10;
+  string<128> Status_11;
+  string<128> Status_12;
+  string<128> Status_13;
+  string<128> Status_14;
+  string<128> Status_15;
+};
+
+
+
+
+struct m2_Electrical {
+  long voltage[16];
+  long error[16];
+  short status[16];
+};
+
+
+
+
+struct m2_Hexapod {
+  long Raw[31];
+  float Calibrated[31];
+  octet Status[31];
+};
+
+
+
+
+struct m2_LimitSensors {
+  short liftoff[64];
+  short limit[64];
+};
+
+
+
+
+struct m2_Metrology {
+  long distance[16];
+  long error[16];
+  short status[16];
+};
+
+
+
+
+struct m2_Surface {
+  long Raw[200];
+  float Calibrated[200];
+  octet Status[50];
+ };
+
+
+
+
+struct m2_TC {
+  float setpoint[16];
+  float temperature[16];
+  float error[16];
+  short status[16];
+};
+
+
+
+
+struct m2_Temps {
+  long Raw_[15]
+  float Calibrated[15];
+  octet Health[15];
+};
+
+
+
+
+struct m2_actuators {
+  long targetpos[72];
+  long stepcnt[72];
+  float force[72];
+};
+
+
+
+
+struct m2_command {
+  long cmdID;
+  string<16> device;
+  string<16> operation;
+  string<16> value;
+  string<128> modifiers;
+};
+
+
+
+
+struct m2_response {
+  long cmdID;
+  string<16> ack;
+  string<16> error;
+  long timeout;
+  short repeat;
+  short submits;
+  string<64> result;
+};
+
+
+
+

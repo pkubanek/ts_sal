@@ -1,0 +1,88 @@
+
+	svcRTN salhexapod_Actuators::getItem ( svcIID itemId , svcLONG value[], svcUINT size)
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    switch (itemId) {
+
+                 case SAL_IID_hexapod_Actuators_Raw :
+                      if ( size > 19 ) {return SAL__INDEX_OUT_OF_RANGE;}
+                      for (unsigned int count=0; count<size; count++) {
+                        value[count] = data.Raw[count];
+                      }
+                      result = SAL__OK;
+                      break;
+
+	    }
+	    return result;
+	}
+
+ 	svcRTN salhexapod_Actuators::setItem ( svcIID itemId , svcLONG value[] , svcUINT size)
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    switch (itemId) {
+
+                 case SAL_IID_hexapod_Actuators_Raw :
+                      if ( size > 19 ) {return SAL__INDEX_OUT_OF_RANGE;}
+                      for (unsigned int count=0; count<size; count++) {
+                        data.Raw[count] = value[count];
+                      }
+                      result = SAL__OK;
+                      break;
+
+	    }
+	    return result;
+	}
+
+	svcRTN salhexapod_Actuators::getItem ( svcIID itemId , svcFLT value[], svcUINT size)
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    switch (itemId) {
+
+                 case SAL_IID_hexapod_Actuators_Calibrated :
+                      if ( size > 19 ) {return SAL__INDEX_OUT_OF_RANGE;}
+                      for (unsigned int count=0; count<size; count++) {
+                        value[count] = data.Calibrated[count];
+                      }
+                      result = SAL__OK;
+                      break;
+
+	    }
+	    return result;
+	}
+
+ 	svcRTN salhexapod_Actuators::setItem ( svcIID itemId , svcFLT value[] , svcUINT size)
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    switch (itemId) {
+
+                 case SAL_IID_hexapod_Actuators_Calibrated :
+                      if ( size > 19 ) {return SAL__INDEX_OUT_OF_RANGE;}
+                      for (unsigned int count=0; count<size; count++) {
+                        data.Calibrated[count] = value[count];
+                      }
+                      result = SAL__OK;
+                      break;
+
+	    }
+	    return result;
+	}
+
+       svcRTN salhexapod_Actuators::setItemStr ( svcIID itemId , svcCHAR *textValue)
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    
+	    switch (itemId) {
+
+	    }
+	    return result;
+	}
+
+       svcRTN salhexapod_Actuators::getItemStr ( svcIID itemId , svcCHAR *textValue)
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    
+	    switch (itemId) {
+
+	    }
+	    return result;
+	}

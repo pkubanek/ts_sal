@@ -1,0 +1,5 @@
+struct hexapod_Electrical {
+  long voltage[16];
+  long error[16];
+  short status[16];
+};

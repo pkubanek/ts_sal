@@ -1,0 +1,47 @@
+module camera
+{
+	struct Cryo_flow {
+	  float	Intake_flow[2];	// 100 | lps | Compressor intake  flow
+	};
+	#pragma keylist Cryo_flow
+	struct Cryo_interlock {
+	  short	Flow_interlock[2];	// 100 | none | Compressor  flow interlock
+	};
+	#pragma keylist Cryo_interlock
+	struct Cryo_power {
+	  long	Compressor load[2];	// 100 | Watts | Compressor electrical load
+	};
+	#pragma keylist Cryo_power
+	struct Cryo_pressure {
+	  float	Intake_pressure[2];	// 100 | Pa | Compressor intake  pressure
+	  float	Pre_expansion_pressure[2];	// 100 | Pa | Pre-expansion C4 pressure
+	  float	Post_expansion_pressure[2];	// 100 | Pa | Post-evaporator pressure
+	};
+	#pragma keylist Cryo_pressure
+	struct Cryo_speed {
+	  long	Compressor_speed[2];	// 100 | Hz | Compressor speed
+	  float	Dischaarge_pressure[2];	// 100 | Pa | Compressor discharge  pressure
+	  long	Discharge_temp[2];	// 100 | Celsius | Compressor discharge  temperature
+	};
+	#pragma keylist Cryo_speed
+	struct Cryo_temperature {
+	  long	Intake_temp[2];	// 100 | Celsius | Compressor intake temperature
+	  long	Pre_expansion_temp[2];	// 100 | Celsius | Pre-expansion C4 temperature
+	  long	Post_expansion_temp[2];	// 100 | Celsius | Post-evaporator temperature
+	  long	Return_temp[2];	// 100 | Celsius | Return line temperature
+	};
+	#pragma keylist Cryo_temperature
+	struct _Cryo_current {
+	  float	Heater_current;	// 100 | Amp | Cryoplate heater currents
+	};
+	#pragma keylist _Cryo_current
+	struct _Cryo_temperature {
+	  float	Cold_temperature[3];	// 100 | Kelvin | Straps, cryoplate, coldplate (3/raft)
+	  float	Cryo_temperature[12];	// 100 | Kelvin | L3 flange, etc.
+	};
+	#pragma keylist _Cryo_temperature
+	struct _Cryo_voltage {
+	  float	Heater_voltage;	// 100 | Volt | Cryoplate heater voltages
+	};
+	#pragma keylist _Cryo_voltage
+};

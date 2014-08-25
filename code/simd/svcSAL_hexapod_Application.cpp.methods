@@ -1,0 +1,86 @@
+
+	svcRTN salhexapod_Application::getItem ( svcIID itemId , svcFLT value[], svcUINT size)
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    switch (itemId) {
+
+                 case SAL_IID_hexapod_Application_Demand :
+                      if ( size > 7 ) {return SAL__INDEX_OUT_OF_RANGE;}
+                      for (unsigned int count=0; count<size; count++) {
+                        value[count] = data.Demand[count];
+                      }
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_hexapod_Application_Error :
+                      if ( size > 7 ) {return SAL__INDEX_OUT_OF_RANGE;}
+                      for (unsigned int count=0; count<size; count++) {
+                        value[count] = data.Error[count];
+                      }
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_hexapod_Application_Position :
+                      if ( size > 7 ) {return SAL__INDEX_OUT_OF_RANGE;}
+                      for (unsigned int count=0; count<size; count++) {
+                        value[count] = data.Position[count];
+                      }
+                      result = SAL__OK;
+                      break;
+
+	    }
+	    return result;
+	}
+
+ 	svcRTN salhexapod_Application::setItem ( svcIID itemId , svcFLT value[] , svcUINT size)
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    switch (itemId) {
+
+                 case SAL_IID_hexapod_Application_Demand :
+                      if ( size > 7 ) {return SAL__INDEX_OUT_OF_RANGE;}
+                      for (unsigned int count=0; count<size; count++) {
+                        data.Demand[count] = value[count];
+                      }
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_hexapod_Application_Error :
+                      if ( size > 7 ) {return SAL__INDEX_OUT_OF_RANGE;}
+                      for (unsigned int count=0; count<size; count++) {
+                        data.Error[count] = value[count];
+                      }
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_hexapod_Application_Position :
+                      if ( size > 7 ) {return SAL__INDEX_OUT_OF_RANGE;}
+                      for (unsigned int count=0; count<size; count++) {
+                        data.Position[count] = value[count];
+                      }
+                      result = SAL__OK;
+                      break;
+
+	    }
+	    return result;
+	}
+
+       svcRTN salhexapod_Application::setItemStr ( svcIID itemId , svcCHAR *textValue)
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    
+	    switch (itemId) {
+
+	    }
+	    return result;
+	}
+
+       svcRTN salhexapod_Application::getItemStr ( svcIID itemId , svcCHAR *textValue)
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    
+	    switch (itemId) {
+
+	    }
+	    return result;
+	}

@@ -1,0 +1,4 @@
+		result = salHandle->setItem(SAL_IID_hexapod_Application_Demand, Demand, 7);
+		result = salHandle->setItem(SAL_IID_hexapod_Application_Error, Error, 7);
+		result = salHandle->setItem(SAL_IID_hexapod_Application_Position, Position, 7);
+		result = salHandle->putSample();

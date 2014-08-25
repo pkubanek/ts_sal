@@ -1,0 +1,7 @@
+		for (unsigned int count=0; count<19; count++) {
+			d.Raw[count] = hexapod_Actuators_ref->Raw[count];
+		}
+		for (unsigned int count=0; count<19; count++) {
+			d.Calibrated[count] = hexapod_Actuators_ref->Calibrated[count];
+		}
+		hexapod_Actuators_ref->syncO = 1;

@@ -1,0 +1,30 @@
+
+
+import SALData.*;
+import org.lsst.sal.SALDDS;
+
+public class SALNAMESTRINGDataPublisher {
+
+	public static void main(String[] args) {
+		SALDDS mgr = new SALDDS();
+                mgr.salInitialize();
+
+		// Publish Telemetry
+		int count=0;
+		mgr.salTelemetryPub("SALNAMESTRING");
+		SALTopic theTopicInstance = new SALTopic();
+		while (true) {
+			mgr.putSample(theTopicInstance);
+			System.out.println("=== [SALTopic Publisher] message sent" + count);
+			try {
+				Thread.sleep(4000);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			++count;
+		}
+		// clean up
+		//mgr.salShutdown();
+	}
+}
+

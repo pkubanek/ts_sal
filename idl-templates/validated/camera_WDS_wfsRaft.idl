@@ -1,0 +1,15 @@
+struct camera_WDS_wfsRaft {
+  string<32> private_revCode;  //private
+  double     private_sndStamp; //private
+  double     private_rcvStamp; //private
+  long       private_seqNum;   //private
+  long       private_origin;   //private
+  float	parameters[32];
+  float	metrics[32];
+  float	zernikes[16];
+  unsigned long	status;
+  string<128>	avgInsideImage;
+  string<128>	avgOutsideImage;
+  string<128>	CalcImage1;
+  string<128>	CalcImage2;
+};

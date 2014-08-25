@@ -1,0 +1,23 @@
+struct tcs_kernel_PointingLog {
+  string<32> private_revCode; //private
+  double private_sndStamp; //private
+  double private_rcvStamp; //private
+  long private_seqNum; //private
+  long private_origin; //private
+  float Ra;
+  float Dec;
+  float Wavel;
+  float Roll;
+  float Pitch;
+  float Casspa;
+  float Xr;
+  float Yr;
+  float Fl;
+  float Temp;
+  float Press;
+  float Humid;
+  float Tlr;
+  float Rcorr;
+  float Aux[3];
+  long Marked;
+};

@@ -1,0 +1,22 @@
+struct tcs_kernel_TrackRefSys {
+  string<32> private_revCode; //private
+  double private_sndStamp; //private
+  double private_rcvStamp; //private
+  long private_seqNum; //private
+  long private_origin; //private
+  float tdbj;
+  float amprms[21];
+  float ae2mt[9];
+  float hm;
+  float tlat;
+  float diurab;
+  float refa;
+  float refb;
+  float temp;
+  float press;
+  float humid;
+  float tlr;
+  float wavel;
+  float sst;
+  float cst;
+};

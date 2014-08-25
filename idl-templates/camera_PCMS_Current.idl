@@ -1,0 +1,14 @@
+struct camera_PCMS_Current {
+  string<32> private_revCode;  //private
+  double     private_sndStamp; //private
+  double     private_rcvStamp; //private
+  long       private_seqNum;   //private
+  long       private_origin;   //private
+  float	FPGA_current;	// 0.054 | none | FPGA current | none | Utility trunk | 75 | 175,135  | 700,541 
+  float	Low_current;	// 0.054 | none | Low current | none | Utility trunk | 75 | 175,135  | 700,541 
+  float	Clock_current;	// 0.054 | none | Clock current | none | Utility trunk | 75 | 175,135  | 700,541 
+  float	OD_current;	// 0.054 | none | OD current | none | Utility trunk | 75 | 175,135  | 700,541 
+  float	Bias_current;	// 0.054 | none | Bias current | none | Utility trunk | 75 | 175,135  | 700,541 
+  unsigned short	REB_ID;	// 0.054 | none | Raft Electronics Board ID | none | Cryostat
+};
+#pragma keylist camera_PCMS_Current 

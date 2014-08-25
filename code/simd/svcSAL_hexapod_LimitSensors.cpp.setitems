@@ -1,0 +1,3 @@
+		result = salHandle->setItem(SAL_IID_hexapod_LimitSensors_liftoff, liftoff, 19);
+		result = salHandle->setItem(SAL_IID_hexapod_LimitSensors_limit, limit, 19);
+		result = salHandle->putSample();

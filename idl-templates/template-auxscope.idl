@@ -1,0 +1,82 @@
+struct auxscope_Application {
+  float Demand[4];
+  float Position[4];
+  float Error[4];
+  string<16> Status;
+};
+
+
+
+
+struct auxscope_Camera {
+  long Raw[16];
+  float Calibrated[32];
+};
+
+
+
+
+struct auxscope_Electrical {
+  long Raw[16];
+  float Calibrated[32];
+};
+
+
+
+
+struct auxscope_Metrology {
+  long Raw[16];
+  float Calibrated[16];
+};
+
+
+
+
+struct auxscope_Spectrometer {
+  long Raw[16];
+  float Calibrated[32];
+};
+
+
+
+
+struct auxscope_TC {
+  long Raw[16];
+  float Calibrated[16];
+};
+
+
+
+
+struct auxscope_TCS {
+  long Raw[200];
+  float Calibrated[200];
+};
+
+
+
+
+struct auxscope_command {
+  long cmdID;
+  string<16> device;
+  string<16> operation;
+  string<16> value;
+  string<128> modifiers;
+};
+
+
+
+
+struct auxscope_response {
+  long cmdID;
+  string<16> ack;
+  string<16> error;
+  long timeout;
+  short repeat;
+  short submits;
+  string<64> result;
+};
+
+
+
+

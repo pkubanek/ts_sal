@@ -1,0 +1,10 @@
+struct camera_Shutter_time {
+  string<32> private_revCode;  //private
+  double     private_sndStamp; //private
+  double     private_rcvStamp; //private
+  long       private_seqNum;   //private
+  long       private_origin;   //private
+  float	Open_profile[24];	// 0.054 | seconds | Open Hall probe readings | none | Camera body | 24 | 56,043  | 224,173 
+  float	Close_profile[24];	// 0.054 | seconds | Close Hall probe readings | none | Camera body | 24 | 56,043  | 224,173 
+};
+#pragma keylist camera_Shutter_time 

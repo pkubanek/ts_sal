@@ -1,0 +1,50 @@
+struct lasercal_Application {
+  float Demand[4];
+  float Position[4];
+  float Error[4];
+  string<16> Status;
+};
+
+
+
+
+struct lasercal_Electrical {
+  long Raw[16];
+  float Calibrated[32];
+};
+
+
+
+
+struct lasercal_TC {
+  long Raw[16];
+  float Calibrated[16];
+};
+
+
+
+
+struct lasercal_command {
+  long cmdID;
+  string<16> device;
+  string<16> operation;
+  string<16> value;
+  string<128> modifiers;
+};
+
+
+
+
+struct lasercal_response {
+  long cmdID;
+  string<16> ack;
+  string<16> error;
+  long timeout;
+  short repeat;
+  short submits;
+  string<64> result;
+};
+
+
+
+

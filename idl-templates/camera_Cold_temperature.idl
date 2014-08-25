@@ -1,0 +1,13 @@
+struct camera_Cold_temperature {
+  string<32> private_revCode;  //private
+  double     private_sndStamp; //private
+  double     private_rcvStamp; //private
+  long       private_seqNum;   //private
+  long       private_origin;   //private
+  float	UtilityRoom_temperature;	// 0.010 | Celsius | Temperatures in utility room (8) | none | Utility room | 8 | 3,456  | 13,824 
+  float	Intake_temp[6];	// 0.010 | Celsius | Compressor intake temperature | none | Utility room | 6 | 2,592  | 10,368 
+  float	Pre_expansion_temp[6];	// 0.010 | Celsius | Pre-expansion C4 temperature | none | Cryostat or utility trunk | 6 | 2,592  | 10,368 
+  float	Post_expansion_temp[6];	// 0.010 | Celsius | Post-evaporator temperature | none | Cryostat or utility trunk | 6 | 2,592  | 10,368 
+  float	Return_temp[6];	// 0.010 | Celsius | Return line temperature | none | Cryostat or utility trunk | 6 | 2,592  | 10,368 
+};
+#pragma keylist camera_Cold_temperature 

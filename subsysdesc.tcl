@@ -138,10 +138,31 @@ set DESC(m2.Metrology) "
 subsystem.<BR>Raw sensor readings, calibrated positions, limit
 switches, status bits. "
 
+set DESC(hexapod.TC) "
+<P>Temperature monitoring  for sensors located in the hexapod
+subsystem.<BR>Raw sensor readings, calibrated temperatures,
+time series statistics, sensor health. "
 
-set DESC(m2.Hexapod) "
+set DESC(hexapod.Electrical) "
+<P>Electrical monitoring  for devices located in the hexapod subsystem.<BR>Raw
+data, calibrated voltages, calibrated current, device power status. "
+
+set DESC(hexapod.Metrology) "
+<P>Position control  for sensors located in the hexapod
+subsystem.<BR>Raw sensor readings, calibrated positions, limit
+switches, status bits. "
+
+set DESC(hexapod.Actuators) "
+<P>This subsystem maintains information on a per actuator basis<BR>persuant
+to the low level behaviour of the components of<BR>the hexapod support
+system. "
+
+set DESC(hexapod.LimitSensors) "
+<P>This subsystem maintains information on the state of Limit sensors"
+
+set DESC(hexapod.Application) "
 <P>This subsystem maintains application level data concerning the<BR>requested
-and actual state of the haxapod support system. "
+and actual state of the hexapod support system. "
 
 set DESC(m2.Actuators) "
 <P>This subsystem maintains information on a per actuator basis<BR>persuant
@@ -488,6 +509,16 @@ set SID(seeing_mass.Electrical) 12.2
 set SID(seeing_mass.Metrology) 12.3
 
 set SID(tcs) 13
+
+set SID(heaxpod) 14
+set SID(heaxpod.Actuators) 14.1
+set SID(heaxpod.Application) 14.2
+set SID(heaxpod.Electrical) 14.3
+set SID(heaxpod.LimitSensors) 14.4
+set SID(heaxpod.Metrology) 14.5
+set SID(heaxpod.TC) 14.6
+
+
 
 set DOCO(ocs) Document-869
 set DOCO(standards-sw) "ESA 1991, Software Engineering Standards, ESA PSS-05-0, Issue 2, European Space Agency"

@@ -1,0 +1,8 @@
+		result = salHandle->setItem(SAL_IID_hexapod_response_repeat, repeat);
+		result = salHandle->setItem(SAL_IID_hexapod_response_submits, submits);
+		result = salHandle->setItem(SAL_IID_hexapod_response_cmdID, cmdID);
+		result = salHandle->setItem(SAL_IID_hexapod_response_timeout, timeout);
+		result = salHandle->setItem(SAL_IID_hexapod_response_ack, ack);
+		result = salHandle->setItem(SAL_IID_hexapod_response_error, error);
+		result = salHandle->setItem(SAL_IID_hexapod_response_result, result);
+		result = salHandle->putSample();

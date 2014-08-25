@@ -1,0 +1,6 @@
+		d.cmdID = hexapod_command_ref->cmdID;
+		strncpy(d.device,hexapod_command_ref->device,16);
+		strncpy(d.modifiers,hexapod_command_ref->modifiers,128);
+		strncpy(d.operation,hexapod_command_ref->operation,16);
+		strncpy(d.value,hexapod_command_ref->value,16);
+		hexapod_command_ref->syncO = 1;

@@ -1,0 +1,75 @@
+module mount
+{
+	struct Alt {
+	  string<32> private_revCode;  //private
+	  double     private_sndStamp; //private
+	  double     private_rcvStamp; //private
+	  long       private_seqNum;   //private
+	  long       private_origin;   //private
+	  long	Raw[16];
+	  float	Calibrated[32];
+	};
+	#pragma keylist Alt
+	struct Application {
+	  string<32> private_revCode;  //private
+	  double     private_sndStamp; //private
+	  double     private_rcvStamp; //private
+	  long       private_seqNum;   //private
+	  long       private_origin;   //private
+	  float	Demand[4];
+	  float	Position[4];
+	  float	Error[4];
+	  string<16>	Status;
+	};
+	#pragma keylist Application
+	struct Az {
+	  string<32> private_revCode;  //private
+	  double     private_sndStamp; //private
+	  double     private_rcvStamp; //private
+	  long       private_seqNum;   //private
+	  long       private_origin;   //private
+	  long	Raw[16];
+	  float	Calibrated[32];
+	};
+	#pragma keylist Az
+	struct Electrical {
+	  string<32> private_revCode;  //private
+	  double     private_sndStamp; //private
+	  double     private_rcvStamp; //private
+	  long       private_seqNum;   //private
+	  long       private_origin;   //private
+	  long	Raw[16];
+	  float	Calibrated[32];
+	};
+	#pragma keylist Electrical
+	struct Metrology {
+	  string<32> private_revCode;  //private
+	  double     private_sndStamp; //private
+	  double     private_rcvStamp; //private
+	  long       private_seqNum;   //private
+	  long       private_origin;   //private
+	  long	Raw[16];
+	  float	Calibrated[16];
+	};
+	#pragma keylist Metrology
+	struct Rotator {
+	  string<32> private_revCode;  //private
+	  double     private_sndStamp; //private
+	  double     private_rcvStamp; //private
+	  long       private_seqNum;   //private
+	  long       private_origin;   //private
+	  long	Raw[16];
+	  float	Calibrated[32];
+	};
+	#pragma keylist Rotator
+	struct TC {
+	  string<32> private_revCode;  //private
+	  double     private_sndStamp; //private
+	  double     private_rcvStamp; //private
+	  long       private_seqNum;   //private
+	  long       private_origin;   //private
+	  long	Raw[16];
+	  float	Calibrated[16];
+	};
+	#pragma keylist TC
+};

@@ -131,7 +131,7 @@ $DDSGEN -d ./gen -S -l c++ [set topic].idl"
   }
   exec mkdir -p $SAL_WORK_DIR/lib
   stdlog "Generating SAL interface code for $topic"
-  simdlibrary $topic
+###  simdlibrary $topic
   simdmethods $topic
   addsimdmethods $topic
   insertgenerated $topic

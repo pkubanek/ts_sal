@@ -1,0 +1,6 @@
+		result = salHandle->setItem(SAL_IID_hexapod_command_cmdID, cmdID);
+		result = salHandle->setItem(SAL_IID_hexapod_command_device, device);
+		result = salHandle->setItem(SAL_IID_hexapod_command_modifiers, modifiers);
+		result = salHandle->setItem(SAL_IID_hexapod_command_operation, operation);
+		result = salHandle->setItem(SAL_IID_hexapod_command_value, value);
+		result = salHandle->putSample();

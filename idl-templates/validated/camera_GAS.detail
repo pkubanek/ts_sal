@@ -1,0 +1,6 @@
+camera.GAS.algorithm 32 string<32> 0.1
+camera.GAS.parameters 10 float 0.1
+camera.GAS.sampleData_00 25 float 0.1
+camera.GAS.sampleData_01 25 float 0.1
+camera.GAS.sampleData_10 25 float 0.1
+camera.GAS.sampleData_11 25 float 0.1

@@ -1,0 +1,2 @@
+camera.PWR.supply_voltage 25 float 0.1
+camera.PWR.current 25 float 0.1

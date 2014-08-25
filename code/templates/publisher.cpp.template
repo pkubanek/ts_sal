@@ -1,0 +1,14 @@
+
+#include "implementation.hpp"
+
+/**
+ * @addtogroup examplesdcpsSALisocpp
+ */
+/** @{*/
+/** @file */
+/** @}*/
+
+int EXAMPLE_MAIN (int argc, char *argv[])
+{
+  return examples::dcps::SAL::isocpp::publisher(argc, argv);
+}

@@ -1,0 +1,4 @@
+		result = salHandle->setItem(SAL_IID_hexapod_Electrical_status, status, 17);
+		result = salHandle->setItem(SAL_IID_hexapod_Electrical_error, error, 17);
+		result = salHandle->setItem(SAL_IID_hexapod_Electrical_voltage, voltage, 17);
+		result = salHandle->putSample();

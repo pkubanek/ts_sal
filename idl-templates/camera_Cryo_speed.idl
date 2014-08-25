@@ -1,0 +1,11 @@
+struct camera_Cryo_speed {
+  string<32> private_revCode;  //private
+  double     private_sndStamp; //private
+  double     private_rcvStamp; //private
+  long       private_seqNum;   //private
+  long       private_origin;   //private
+  float	Compressor_speed[2];	// 0.010 | Hz | Compressor speed | none | Utility room | 2 | 864  | 3,456 
+  float	Dischaarge_pressure[2];	// 0.010 | Pa | Compressor discharge  pressure | none | Utility room | 2 | 864  | 3,456 
+  float	Discharge_temp[2];	// 0.010 | Celsius | Compressor discharge  temperature | none | Utility room | 2 | 864  | 3,456 
+};
+#pragma keylist camera_Cryo_speed 

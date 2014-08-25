@@ -78,18 +78,18 @@ TopicId__sub_OBJECTS = \
 TopicId__sub_EXTERNAL_OBJECTS =
 
 TopicId-sub: CMakeFiles/TopicId-sub.dir/TopicId-sub.cpp.o
-TopicId-sub: /opt/OpenSplice/HDE/x86.linux2.6/lib/libdcpsgapi.so
-TopicId-sub: /opt/OpenSplice/HDE/x86.linux2.6/lib/libdcpssacpp.so
-TopicId-sub: /opt/OpenSplice/HDE/x86.linux2.6/lib/libddsdatabase.so
-TopicId-sub: /opt/OpenSplice/HDE/x86.linux2.6/lib/libddsos.so
+TopicId-sub: /opt/OpenSpliceBase/lib/libdcpsgapi.so
+TopicId-sub: /opt/OpenSpliceBase/lib/libdcpssacpp.so
+TopicId-sub: /opt/OpenSpliceBase/lib/libddsdatabase.so
+TopicId-sub: /opt/OpenSpliceBase/lib/libddsos.so
 TopicId-sub: /usr/lib/libboost_thread-mt.so
 TopicId-sub: /usr/lib/libboost_program_options-mt.so
 TopicId-sub: /usr/lib/libboost_system-mt.so
 TopicId-sub: libdatamodel.a
-TopicId-sub: /opt/OpenSplice/HDE/x86.linux2.6/lib/libdcpsgapi.so
-TopicId-sub: /opt/OpenSplice/HDE/x86.linux2.6/lib/libdcpssacpp.so
-TopicId-sub: /opt/OpenSplice/HDE/x86.linux2.6/lib/libddsdatabase.so
-TopicId-sub: /opt/OpenSplice/HDE/x86.linux2.6/lib/libddsos.so
+TopicId-sub: /opt/OpenSpliceBase/lib/libdcpsgapi.so
+TopicId-sub: /opt/OpenSpliceBase/lib/libdcpssacpp.so
+TopicId-sub: /opt/OpenSpliceBase/lib/libddsdatabase.so
+TopicId-sub: /opt/OpenSpliceBase/lib/libddsos.so
 TopicId-sub: /usr/lib/libboost_thread-mt.so
 TopicId-sub: /usr/lib/libboost_program_options-mt.so
 TopicId-sub: /usr/lib/libboost_system-mt.so

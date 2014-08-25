@@ -1,0 +1,7 @@
+module camera
+{
+	struct Thermal {
+	  float	Setpoint[2];	// 100 | Volts | xxx
+	};
+	#pragma keylist Thermal
+};

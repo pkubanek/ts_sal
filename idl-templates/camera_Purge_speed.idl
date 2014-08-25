@@ -1,0 +1,10 @@
+struct camera_Purge_speed {
+  string<32> private_revCode;  //private
+  double     private_sndStamp; //private
+  double     private_rcvStamp; //private
+  long       private_seqNum;   //private
+  long       private_origin;   //private
+  float	Blower_setting;	// 0.017 | Hz | Blower speed setting |  | Camera body | 1 | 720  | 2,880 
+  float	Blower_speed;	// 0.017 | Hz | Blower speed |  | Camera body | 1 | 720  | 2,880 
+};
+#pragma keylist camera_Purge_speed 

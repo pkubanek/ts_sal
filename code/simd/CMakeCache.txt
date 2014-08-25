@@ -182,22 +182,22 @@ CMAKE_USE_RELATIVE_PATHS:BOOL=OFF
 CMAKE_VERBOSE_MAKEFILE:BOOL=FALSE
 
 //Path to a library.
-DCPSGAPI_LIBRARY:FILEPATH=/opt/OpenSplice/HDE/x86.linux2.6/lib/libdcpsgapi.so
+DCPSGAPI_LIBRARY:FILEPATH=/opt/OpenSpliceBase/lib/libdcpsgapi.so
 
 //Path to a library.
-DCPSSACPP_LIBRARY:FILEPATH=/opt/OpenSplice/HDE/x86.linux2.6/lib/libdcpssacpp.so
+DCPSSACPP_LIBRARY:FILEPATH=/opt/OpenSpliceBase/lib/libdcpssacpp.so
 
 //Path to a library.
-DDSDATABASE_LIBRARY:FILEPATH=/opt/OpenSplice/HDE/x86.linux2.6/lib/libddsdatabase.so
+DDSDATABASE_LIBRARY:FILEPATH=/opt/OpenSpliceBase/lib/libddsdatabase.so
 
 //Path to a library.
-DDSOS_LIBRARY:FILEPATH=/opt/OpenSplice/HDE/x86.linux2.6/lib/libddsos.so
+DDSOS_LIBRARY:FILEPATH=/opt/OpenSpliceBase/lib/libddsos.so
 
 //The directory containing a CMake configuration file for OpenSplice.
 OpenSplice_DIR:PATH=OpenSplice_DIR-NOTFOUND
 
 //Path to a file.
-OpenSplice_INCLUDE_DIR:PATH=/opt/OpenSplice/HDE/x86.linux2.6/include/dcps/C++/SACPP
+OpenSplice_INCLUDE_DIR:PATH=/opt/OpenSpliceBase/include/dcps/C++/SACPP
 
 //The directory containing a CMake configuration file for SimD.
 SimD_DIR:PATH=SimD_DIR-NOTFOUND
@@ -215,7 +215,7 @@ TopicId_BINARY_DIR:STATIC=SAL_WORK_DIR
 TopicId_SOURCE_DIR:STATIC=SAL_WORK_DIR
 
 //Dependencies for the target
-datamodel_LIB_DEPENDS:STATIC=general;/opt/OpenSplice/HDE/x86.linux2.6/lib/libdcpsgapi.so;general;/opt/OpenSplice/HDE/x86.linux2.6/lib/libdcpssacpp.so;general;/opt/OpenSplice/HDE/x86.linux2.6/lib/libddsdatabase.so;general;/opt/OpenSplice/HDE/x86.linux2.6/lib/libddsos.so;general;/usr/lib/libboost_thread-mt.so;general;/usr/lib/libboost_program_options-mt.so;general;/usr/lib/libboost_system-mt.so;general;SIMD_BASE_DIR/lib/libSimD.so;
+datamodel_LIB_DEPENDS:STATIC=general;/opt/OpenSpliceBase/lib/libdcpsgapi.so;general;/opt/OpenSpliceBase/lib/libdcpssacpp.so;general;/opt/OpenSpliceBase/lib/libddsdatabase.so;general;/opt/OpenSpliceBase/lib/libddsos.so;general;/usr/lib/libboost_thread-mt.so;general;/usr/lib/libboost_program_options-mt.so;general;/usr/lib/libboost_system-mt.so;general;SIMD_BASE_DIR/lib/libSimD.so;
 
 
 ########################

@@ -1,0 +1,11 @@
+struct camera_WAS_temperature {
+  string<32> private_revCode;  //private
+  double     private_sndStamp; //private
+  double     private_rcvStamp; //private
+  long       private_seqNum;   //private
+  long       private_origin;   //private
+  float	CCD_temp;	// 0.054 | Kelvin | CCD temperatures | none | Corner rafts | 8 | 18,681  | 74,724 
+  float	Board_temp[12];	// 0.054 | Kelvin | Board temps | none | Corner rafts | 96 | 224,173  | 896,692 
+  unsigned short	REB_ID;	// 0.054 | none | Raft Electronics Board ID | none | Cryostat
+};
+#pragma keylist camera_WAS_temperature 

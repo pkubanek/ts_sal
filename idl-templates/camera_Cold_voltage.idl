@@ -1,0 +1,9 @@
+struct camera_Cold_voltage {
+  string<32> private_revCode;  //private
+  double     private_sndStamp; //private
+  double     private_rcvStamp; //private
+  long       private_seqNum;   //private
+  long       private_origin;   //private
+  float	Heater_voltage[6];	// 0.010 | Volt | Coldplate heater voltages | none | Cryostat | 6 | 2,592  | 5,184 
+};
+#pragma keylist camera_Cold_voltage 

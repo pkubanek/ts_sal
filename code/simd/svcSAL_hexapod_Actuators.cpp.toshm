@@ -1,0 +1,7 @@
+		for (unsigned int count=0; count<19; count++) {
+			hexapod_Actuators_ref->Raw[count] = samples[i].Raw[count];
+		}
+		for (unsigned int count=0; count<19; count++) {
+			hexapod_Actuators_ref->Calibrated[count] = samples[i].Calibrated[count];
+		}
+		hexapod_Actuators_ref->syncI++;

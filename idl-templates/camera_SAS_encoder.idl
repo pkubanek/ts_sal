@@ -1,0 +1,10 @@
+struct camera_SAS_encoder {
+  string<32> private_revCode;  //private
+  double     private_sndStamp; //private
+  double     private_rcvStamp; //private
+  long       private_seqNum;   //private
+  long       private_origin;   //private
+  long	CABAC_MUX[12];	// 0.054 | none | CABAC/ASPIC V &amp; T  (2 at a time, MUXed) | none | Science rafts | 756 | 1,765,362  | 7,061,449 
+  unsigned short	REB_ID;	// 0.054 | none | Raft Electronics Board ID | none | Cryostat
+};
+#pragma keylist camera_SAS_encoder 

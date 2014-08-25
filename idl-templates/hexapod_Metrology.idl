@@ -1,0 +1,5 @@
+struct hexapod_Metrology {
+  long distance[18];
+  long error[18];
+  short status[18];
+};

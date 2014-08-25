@@ -1,0 +1,34 @@
+struct system_Command_history {
+  string<32> Command;
+  float Data[16];
+};
+
+
+
+
+struct system_Computer_status {
+  long Raw[16];
+  float Calibrated[32];
+};
+
+
+
+
+struct system_Hardware_revision_history {
+  string<32> Part;
+  string<32> Reason;
+  long Version[3];
+};
+
+
+
+
+struct system_Software_revision_history {
+  string<32> PackageName;
+  string<32> Notes;
+  long Version[3];
+};
+
+
+
+

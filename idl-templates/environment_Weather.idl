@@ -1,0 +1,9 @@
+struct environment_Weather {
+  string<32> private_revCode; //private
+  double private_sndStamp; //private
+  double private_rcvStamp; //private
+  long private_seqNum; //private
+  long private_origin; //private
+  long Raw[128];
+  float Calibrated[256];
+};

@@ -1,0 +1,16 @@
+struct seeing_dimm_Measurement {
+  string<32> private_revCode; //private
+  double private_sndStamp; //private
+  double private_rcvStamp; //private
+  long private_seqNum; //private
+  long private_origin; //private
+  long hrnum;
+  float exposure;
+  long numlines;
+  float seeing_corr;
+  long flux;
+  float scintleft;
+  float scintright;
+  float strehlleft;
+  float strehlright;
+};

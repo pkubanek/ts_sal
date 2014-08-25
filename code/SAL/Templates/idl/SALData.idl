@@ -1,0 +1,54 @@
+/**
+ * @addtogroup examplesdcpsSALisocpp
+ */
+/** @{*/
+/** @file */
+
+module SALData
+{
+   struct SALTopic
+   {
+      string<32>	private_revCode;
+      double		private_sndStamp;
+      double		private_rcvStamp;
+      long		private_origin;
+   };
+   #pragma keylist SALTopic
+   struct SALCommand
+   {
+      string<32>	private_revCode;
+      double		private_sndStamp;
+      double		private_rcvStamp;
+      long		private_origin;
+      long		private_seqNum;
+      string<32>	device;
+      string<32>	property;
+      string<32>	action;
+      string<32>	value;
+      string<128>	modifiers;
+   };
+   #pragma keylist SALCommand
+   struct SALResponse
+   {
+      string<32>	private_revCode;
+      double		private_sndStamp;
+      double		private_rcvStamp;
+      long		private_origin;
+      long		private_seqNum;
+      long 		ack;
+      long 		error;
+      string<32>	result;
+   };
+   #pragma keylist SALResponse
+   struct SALEvent
+   {
+      string<32>	private_revCode;
+      double		private_sndStamp;
+      double		private_rcvStamp;
+      long		private_origin;
+      string<128>	message;
+   };
+   #pragma keylist SALEvent
+};
+
+/** @}*/

@@ -1,0 +1,8 @@
+		result = salHandle->getSample(SAL__SLOWPOLL);
+		result = salHandle->getItem(SAL_IID_hexapod_response_repeat, repeat);
+		result = salHandle->getItem(SAL_IID_hexapod_response_submits, submits);
+		result = salHandle->getItem(SAL_IID_hexapod_response_cmdID, cmdID);
+		result = salHandle->getItem(SAL_IID_hexapod_response_timeout, timeout);
+		result = salHandle->getItem(SAL_IID_hexapod_response_ack, ack);
+		result = salHandle->getItem(SAL_IID_hexapod_response_error, error);
+		result = salHandle->getItem(SAL_IID_hexapod_response_result, result);

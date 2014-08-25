@@ -1,0 +1,22 @@
+struct tcs_kernel_Target {
+  string<32> private_revCode; //private
+  double private_sndStamp; //private
+  double private_rcvStamp; //private
+  long private_seqNum; //private
+  long private_origin; //private
+  float t0;
+  float az;
+  float el;
+  float azdot;
+  float eldot;
+  float Wavel;
+  float XOffset;
+  float YOffset;
+  float focalplaneX;
+  float focalplaneY;
+  float Temp;
+  float Press;
+  float Humid;
+  float TLR;
+  float Tai;
+};

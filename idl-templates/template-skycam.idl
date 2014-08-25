@@ -1,0 +1,59 @@
+struct skycam_Application {
+  float Sky_parms[32];
+  string<4096> Catalog;
+  float Data[64];
+  float Error[4];
+  string<16> Status;
+};
+
+
+
+
+struct skycam_Electrical {
+  long Raw[16];
+  float Calibrated[32];
+};
+
+
+
+
+struct skycam_Metrology {
+  long Raw[16];
+  float Calibrated[16];
+};
+
+
+
+
+struct skycam_TC {
+  long Raw[16];
+  float Calibrated[16];
+};
+
+
+
+
+struct skycam_command {
+  long cmdID;
+  string<16> device;
+  string<16> operation;
+  string<16> value;
+  string<128> modifiers;
+};
+
+
+
+
+struct skycam_response {
+  long cmdID;
+  string<16> ack;
+  string<16> error;
+  long timeout;
+  short repeat;
+  short submits;
+  string<64> result;
+};
+
+
+
+

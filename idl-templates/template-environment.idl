@@ -1,0 +1,80 @@
+struct environment_Dust_monitor {
+  long Raw[16];
+  float Calibrated[32];
+};
+
+
+
+
+struct environment_Electrical {
+  long Raw[16];
+  float Calibrated[32];
+};
+
+
+
+
+struct environment_Lightning_detector {
+  long Raw[16];
+  float Calibrated[32];
+};
+
+
+
+
+struct environment_Seismometer {
+  long Raw[16];
+  float Calibrated[32];
+};
+
+
+
+
+struct environment_TC {
+  long Raw[64];
+  float Calibrated[64];
+};
+
+
+
+
+struct environment_Video_cameras {
+  long Raw[16];
+  float Calibrated[32];
+};
+
+
+
+
+struct environment_Weather {
+  long Raw[128];
+  float Calibrated[256];
+};
+
+
+
+
+struct environment_command {
+  long cmdID;
+  string<16> device;
+  string<16> operation;
+  string<16> value;
+  string<128> modifiers;
+};
+
+
+
+
+struct environment_response {
+  long cmdID;
+  string<16> ack;
+  string<16> error;
+  long timeout;
+  short repeat;
+  short submits;
+  string<64> result;
+};
+
+
+
+

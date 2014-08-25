@@ -1,0 +1,4 @@
+camera.SCS.open_profile 1024 float 0.1
+camera.SCS.close_profile 1024 float 0.1
+camera.SCS.algorithm 32 string<32> 0.1
+camera.SCS.flags 1 long 0.1

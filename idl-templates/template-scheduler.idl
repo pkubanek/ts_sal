@@ -1,0 +1,32 @@
+struct scheduler_Application {
+  string<50> Status;
+  float data[200];
+};
+
+
+
+
+struct scheduler_command {
+  long cmdID;
+  string<16> device;
+  string<16> operation;
+  string<16> value;
+  string<128> modifiers;
+};
+
+
+
+
+struct scheduler_response {
+  long cmdID;
+  string<16> ack;
+  string<16> error;
+  long timeout;
+  short repeat;
+  short submits;
+  string<64> result;
+};
+
+
+
+

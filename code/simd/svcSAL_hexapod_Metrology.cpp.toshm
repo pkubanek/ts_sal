@@ -1,0 +1,10 @@
+		for (unsigned int count=0; count<19; count++) {
+			hexapod_Metrology_ref->status[count] = samples[i].status[count];
+		}
+		for (unsigned int count=0; count<19; count++) {
+			hexapod_Metrology_ref->distance[count] = samples[i].distance[count];
+		}
+		for (unsigned int count=0; count<19; count++) {
+			hexapod_Metrology_ref->error[count] = samples[i].error[count];
+		}
+		hexapod_Metrology_ref->syncI++;
