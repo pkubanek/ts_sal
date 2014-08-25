@@ -51,7 +51,7 @@ set SDESC(camera.Guide_sensors) "
 regions, and the results of the processing of<BR>the subimages. Items
 such as bax pixel counts, H/V profiles<BR>profile fit results etc. "
 
-set SDESC(camera.Dewar_Cooler/Heater) "
+set SDESC(camera.Dewar_CoolerHeater) "
 <P>This topic records application level data for the dewar<BR>heating
 and cooling systems. Target and actual statuses<BR>health , limits,
 etc. "
@@ -315,42 +315,42 @@ set SDESC(lasercal.Application) "
 <P>Application specific information derived from sensors in the
 laser<BR>calibration subsystem. "
 
-set SDESC(seeing-dimm.Temps) "
+set SDESC(seeing_dimm.Temps) "
 <P>Temperature sensing information for sensors located in the DIMM
 subsystem.<BR>Raw sensor readings, calibrated temperatures,
 time-series statistics, sensor health. "
 
-set SDESC(seeing-dimm.Electrical) "
+set SDESC(seeing_dimm.Electrical) "
 <P>Electrical parameters for devices located in the DIMM
 subsystem.<BR>Raw data, calibrated voltages, calibrated current,
 device power status. "
 
-set SDESC(seeing-dimm.Metrology) "
+set SDESC(seeing_dimm.Metrology) "
 <P>Position sensing information for sensors located in the DIMM
 subsystem.<BR>Raw sensor readings, calibrated positions, limit
 switches, status bits. "
 
-set SDESC(seeing-dimm.Application) "
+set SDESC(seeing_dimm.Application) "
 <P>Application specific information derived from sensors in the DIMM
 subsystem.<BR>Raw and processed subimages, derived atmospheric
 parameters etc. "
 
-set SDESC(seeing-mass.Temps) "
+set SDESC(seeing_mass.Temps) "
 <P>Temperature sensing information for sensors located in the MASS
 subsystem.<BR>Raw sensor readings, calibrated temperatures,
 time-series statistics, sensor health. "
 
-set SDESC(seeing-mass.Electrical) "
+set SDESC(seeing_mass.Electrical) "
 <P>Electrical parameters for devices located in the MASS
 subsystem.<BR>Raw data, calibrated voltages, calibrated current,
 device power status. "
 
-set SDESC(seeing-mass.Metrology) "
+set SDESC(seeing_mass.Metrology) "
 <P>Position sensing information for sensors located in the MASS
 subsystem.<BR>Raw sensor readings, calibrated positions, limit
 switches, status bits. "
 
-set SDESC(seeing-mass.Application) "
+set SDESC(seeing_mass.Application) "
 <P>Application specific information derived from sensors in the MASS
 subsystem.<BR>Raw and processed images, derived atmospheric
 parameters etc. "

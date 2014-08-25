@@ -195,6 +195,42 @@ global TYPESIZE TYPEFORMAT
                            }
               }
         }
+        lvfromcache { 
+              switch $ltyp {
+                    char   { return "ilen = strlen([set subsys]_ref->$name);\n	LStrLen(*$name) = ilen;\n	memcpy(*(char **)$name+4,[set subsys]_ref->$name, ilen);" }
+                    byte   -
+                    short  -
+                    int    -
+                    long   -
+                    float  -
+                    double {
+                              if { $size > 1 } {
+                                 set n [expr $TYPESIZE($type) * $size]
+                                 return "LStrLen(*$name) = $n;\n	memcpy(*(char **)$name+4,[set subsys]_ref->$name, $n);"
+                              } else {
+                                 return "*$name=[set subsys]_ref->$name;"
+                              }
+                           }
+              }
+        }
+        lvtocache { 
+              switch $ltyp {
+                    char   { return "strncpy([set subsys]_ref->$name,*(char **)$name+4, $size);" }
+                    byte   -
+                    short  -
+                    int    -
+                    long   -
+                    float  -
+                    double {
+                              if { $size > 1 } {
+                                 set n [expr $TYPESIZE($type) * $size]
+                                 return "memcpy([set subsys]_ref->$name,*(char **)$name+4, $n);"
+                              } else {
+                                 return "[set subsys]_ref->$name = $name;"
+                              }
+                           }
+              }
+        }
         tclfromcache { 
               switch $ltyp {
                     char   { return "      Tcl_SetVar2(interp, \"SHM[set subsys]\", \"$name\", [set subsys]_ref->$name, TCL_GLOBAL_ONLY);"
@@ -232,6 +268,17 @@ proc testtransferdata { } {
           puts stdout "$case $typ :: [transferdata tcs_kernel_Target test $typ 16 $case]"
       }
    }
+}
+
+proc lvtypebuilder { base op name type size } {
+   set t [string tolower $type]
+   if { $t == "char" || $size > 1 } {
+      return "$base LStrHandle $name,"
+   }
+   if { $op == "get" } {
+     return "$base $type* $name,"     
+   }
+   return "$base $type $name,"
 }
 
 

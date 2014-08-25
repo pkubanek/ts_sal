@@ -5,6 +5,7 @@ proc doitem { i fid name type n {unit none} {range none} {help "No comment"} } {
       byte   { puts $fid "<option value=\"byte\" selected>byte
                           <option value=\"short\">short
                           <option value=\"int\">int
+                           <option value=\"long\">long
                           <option value=\"float\">float
                           <option value=\"string\">string
                           </select></TD>"
@@ -12,6 +13,7 @@ proc doitem { i fid name type n {unit none} {range none} {help "No comment"} } {
       short   { puts $fid "<option value=\"byte\">byte
                           <option value=\"short\" selected>short
                           <option value=\"int\">int
+                          <option value=\"long\">long
                           <option value=\"float\">float
                           <option value=\"string\">string
                           </select></TD>"
@@ -19,6 +21,15 @@ proc doitem { i fid name type n {unit none} {range none} {help "No comment"} } {
       int   { puts $fid "<option value=\"byte\">byte
                           <option value=\"short\">short
                           <option value=\"int\" selected>int
+                           <option value=\"long\">long
+                         <option value=\"float\">float
+                          <option value=\"string\">string
+                          </select></TD>"
+             }
+      long   { puts $fid "<option value=\"byte\">byte
+                          <option value=\"short\">short
+                          <option value=\"int\">int
+                          <option value=\"long\" selected>long
                           <option value=\"float\">float
                           <option value=\"string\">string
                           </select></TD>"
@@ -26,6 +37,7 @@ proc doitem { i fid name type n {unit none} {range none} {help "No comment"} } {
       float   { puts $fid "<option value=\"byte\">byte
                           <option value=\"short\">short
                           <option value=\"int\">int
+                          <option value=\"long\">long
                           <option value=\"float\" selected>float
                           <option value=\"string\">string
                           </select></TD>"
@@ -33,6 +45,7 @@ proc doitem { i fid name type n {unit none} {range none} {help "No comment"} } {
       string  { puts $fid "<option value=\"byte\">byte
                           <option value=\"short\">short
                           <option value=\"int\">int
+                          <option value=\"long\">long
                           <option value=\"float\">float
                           <option value=\"string\" selected>string
                           </select></TD>"
@@ -46,42 +59,18 @@ proc doitem { i fid name type n {unit none} {range none} {help "No comment"} } {
 }
 
 proc dounit { fid id u} {
+global UDESC
+  set u [string tolower $u]
+  if { [string trim $u] == "" } {set u none}
   puts $fid "<TD><select name=\"unit$id\">"
-  switch [string tolower $u] {
-      none   { puts $fid "<option value=\"none\" selected>none
-			<option value=\"meter\">meter
-			<option value=\"second\">second
-			<option value=\"volt\">volt
-			<option value=\"amp\">amp"
-             }
-      meter  { puts $fid "<option value=\"none\">none
-			<option value=\"meter\" selected>meter
-			<option value=\"second\">second
-			<option value=\"volt\">volt
-			<option value=\"amp\">amp"
-             }
-      second { puts $fid "<option value=\"none\">none
-			<option value=\"meter\">meter
-			<option value=\"second\ selected">second
-			<option value=\"volt\">volt
-			<option value=\"amp\">amp"
-             }
-      volt   { puts $fid "<option value=\"none\">none
-			<option value=\"meter\">meter
-			<option value=\"second\">second
-			<option value=\"volt\" selected>volt
-			<option value=\"amp\">amp"
-             }
-      amp    { puts $fid "<option value=\"none\">none
-			<option value=\"meter\">meter
-			<option value=\"second\">second
-			<option value=\"volt\">volt
-			<option value=\"amp\" selected>amp"
-             }
+  puts $fid "<option value=\"$u\" selected>$u"
+  foreach i [lsort [array names UDESC]] {
+     if { $u != $i } {
+       puts $fid "<option value=\"$i\">$i"
+     }
   }
   puts $fid "</select></TD>"
 }
-
 
 proc dogen { fid id } {
    puts $fid "<TR><TD>$id</TD>
@@ -90,4 +79,34 @@ proc dogen { fid id } {
 <TD><INPUT TYPE=\"checkbox\" NAME=\"issue_$id\" VALUE=\"yes\">
 <TD><INPUT TYPE=\"checkbox\" NAME=\"proc_$id\" VALUE=\"yes\">"
 }
+
+
+proc idlpreamble { fid id } {
+  puts $fid "struct [join [split $id .] _] \{
+  string<32>	private_revCode; //private
+  long		private_sndStamp; //private
+  long		private_rcvStamp; //private
+  long		private_seqNum; //private
+  long		private_origin; //private" 
+}
+
+proc sqlpreamble { fid id } {
+  puts $fid  "CREATE TABLE $id \{"
+  puts $fid  "  date_time date time NOT NULL,
+  private_revCode char(32),
+  private_sndStamp int,
+  private_rcvStamp int,
+  private_seqNum int,
+  private_origin int,"
+}
+
+set WORKING /home/shared/lsst/tests/api/streams
+if { [info exists FormData(workingDir)] } {
+   set WORKING $FormData(workingDir)
+}
+if { [info exists env(workingDir)] } {
+   set WORKING $env(workingDir)
+}
+
+
 
