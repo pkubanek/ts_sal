@@ -265,7 +265,7 @@ global SAL_DIR SAL_SUBSYSTEMS SAL_SID SAL_WORK_DIR
       stdlog "Creating svcSAL.cpp.[set s]_topics"
       stdlog "Creating svcSAL_[set s]_topics.h"
       set fo3 [open $SAL_DIR/code/simd/svcSAL.cpp.[set s]_topics w]
-      set fo2 [open $SAL_DIR/code/simd/svcSAL_[set s]_topics.h w]
+      set fo2 [open $SAL_DIR/code/include/sal/svcSAL_[set s]_topics.h w]
       puts $fo2 "#if !defined(__INCLUDED_SAL_[set s]_TOPICS)"
       puts $fo2 "#define __INCLUDED_SAL_[set s]_TOPICS"
       set topicdirs [lsort [glob $SAL_WORK_DIR/ospl-$s*]]

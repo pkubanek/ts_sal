@@ -20,11 +20,11 @@ $DESC($i)<P>
   }
 }
 
-set scriptdir /usr/local/scripts/tcl
+set scriptdir $SAL_DIR
 #source $scriptdir/newstreams.tcl
-source ../tests/api/streams/datastreams.comments
+catch {source $SAL_WORK_DIR/.salwork/datastreams.comments}
 
-set fin [open ../tests/api/streams/datastreams.detail r]
+set fin [open $SAL_WORK_DIR/.salwork/datastreams.detail r]
 while { [gets $fin rec] > -1 } {
   set r [split [lindex $rec 0] .]
   if { [llength $r] == 4 } {
@@ -45,7 +45,6 @@ source $scriptdir/subsysdesc.tcl
 source $scriptdir/camera-subsysdesc.tcl
 source $scriptdir/newcomments.tcl
 source $scriptdir/datastream_desc.tcl  
-set SUBS "auxscope calibration camera enclosure environment lasercal m1m3 m2 mount power seeing_dimm seeing_mass skycam"
 
 set ACTIVEGLOSSARY ""
 foreach i [lsort [array names GLOSSARY]] {
@@ -62,7 +61,7 @@ foreach i $SUBS {
   set SUBSYSTEM2 $i
   set ORIGDATE [exec date +%m/%d/20%y]
   source $scriptdir/icd_template.html
-  set fout [open icd-sw-$SID($SUBSYSTEM1)-$SID($SUBSYSTEM2).html w]
+  set fout [open $SAL_WORK_DIR/html/icd-sw-$SID($SUBSYSTEM1)-$SID($SUBSYSTEM2).html w]
   puts $fout "$TICD"
   telemetrytables $fout
   puts $fout "$TICD2"

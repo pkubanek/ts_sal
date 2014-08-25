@@ -4,7 +4,7 @@
 # Command line tool for SAL code/document/etc generation.
 #
 
-if { $argc == 0 } {
+if { $argc < 2 } {
    puts stdout "SAL generator tool - Usage :
 
 	salgenerator match*.idl flag(s)
@@ -16,7 +16,7 @@ if { $argc == 0 } {
 		java     - generate JNI interface
 		tcl      - generate tcl interface
 		html     - generate web form interfaces
-
+		labview  - generate Labview low-level interface
 		db       - generate telemetry database table
 
                     Arguments required are
@@ -26,6 +26,7 @@ if { $argc == 0 } {
                     where the times are formatted like \"2008-11-12 16:20:01\"
                     and the interval is in seconds
 
+		shmem	 - generate shared memory interface
 		sim      - generate simulation configuration
 		icd      - generate ICD document
 		verbose  - be more verbose ;-)
@@ -61,7 +62,7 @@ if { $TARGETS == "" } {
 }
 
 
-foreach o "validate code c++ java tcl -debug -testcode db icd html sim verbose" {
+foreach o "validate code c++ java tcl -debug -testcode db icd labview html shmem sim verbose" {
   set OPTIONS($o) 0
   if { [lsearch [string tolower $argv] $o] > -1 } {
      set OPTIONS($o) 1
@@ -116,7 +117,7 @@ if { $OPTIONS(c++) } {
   }
 }
 
-if { $OPTIONS(tcl) } {
+if { $OPTIONS(tcl) || $OPTIONS(shmem) } {
   cd $SAL_WORK_DIR
   foreach subsys $TARGETS {
      stdlog "Generating Tcl for $topic"
@@ -130,6 +131,19 @@ if { $OPTIONS(tcl) } {
   }
 }
 
+if { $OPTIONS(labview) } {
+  cd $SAL_WORK_DIR
+  foreach subsys $TARGETS {
+     if { [file exists $SAL_WORK_DIR/shmem-[set subsys]/[set subsys]_lvprostub.txt] != 0 } {
+        errorexit "Labview interface requires shmem interface"
+     }
+     lappend topics [file rootname $subsys]
+  }
+  stdlog "Generating Labview low level code for $topics"
+  source $SAL_DIR/genshmem-labview.tcl
+  catch { set result [dolvgen $topics] } bad
+}
+  
 if { $OPTIONS(java) } {
   source $SAL_DIR/genjnicode.tcl
   foreach subsys $TARGETS {
@@ -176,7 +190,10 @@ if { $OPTIONS(sim) } {
 
 
 if { $OPTIONS(icd) } {
-   stdlog "Not yet implemented  - use VM web interface"
+   set subsys [lindex [split $argv _] 0]
+   stdlog "Generating ICD for OCS to $subsys"
+   set SINGLESUBSYSTEM $subsys
+   source $SAL_DIR/icd/icd.tcl
 }
 
 

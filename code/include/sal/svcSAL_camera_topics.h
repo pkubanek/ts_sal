@@ -1,6 +1,3 @@
-#ifndef __INCLUDED_DEF_camera_BEE_biases
-#define __INCLUDED_DEF_camera_BEE_biases
-#include "svcSAL_camera_BEE_biases_iid.h"
 
 #define SAL_SID_camera_BEE_biases 0xed0d9d
 #define SAL_SID_camera_BEE_clocks 0xa83872
@@ -27,4 +24,6 @@
 #define SAL_SID_camera_VCS 0x187b71
 #define SAL_SID_camera_WDS_wfsRaft 0x4088e0
 #define SAL_SID_camera_WTCM 0x775d44
-#endif
+#define SAL_SHMEM_KEY_camera_PWR 0x7a2a
+#include "svcSAL_camera_PWR_iid.h"
+

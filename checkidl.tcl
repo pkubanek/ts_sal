@@ -152,7 +152,7 @@ global SAL_DIR TIDUSED
            close $fcmt
            set mdid [lindex [exec md5sum validated/$topicid.idl] 0]
            set tid [format %d 0x[string range $mdid 26 end]]
-           set fdef [open $SAL_DIR/code/simd/svcSAL_[set topicid]_iid.h w]
+           set fdef [open $SAL_DIR/code/include/sal/svcSAL_[set topicid]_iid.h w]
            gentopicdefsql $topicid
            set fsql [open $SAL_DIR/code/sql/[set topicid]_items.sql a]
            puts $fdef "
@@ -303,7 +303,7 @@ proc checkall { } {
 
 proc testdupiid { } {
 global SAL_DIR
-   set all [lsort [glob $SAL_DIR/code/simd/svcSAL_*_iid.h]]
+   set all [lsort [glob $SAL_DIR/code/include/sal/svcSAL_*_iid.h]]
    foreach i $all { 
       stdlog "Checking $i"
       set fin [open $i r]

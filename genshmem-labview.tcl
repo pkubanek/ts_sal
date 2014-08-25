@@ -1,13 +1,14 @@
 
-proc dolvgen { sublist publist } {
-global scriptdir SALVERSION
+proc dolvgen { sublist {publist ""} } {
+global SAL_DIR SALVERSION SAL_DIR SAL_WORK_DIR
    set topiclist [lsort -unique "$sublist $publist"]
+   exec mkdir -p $SAL_WORK_DIR/labview
    set subsys [lindex [split [lindex $topiclist 0] _] 0]
-   set incs [glob $scriptdir/code/labview/*.h]
-   foreach i $incs {exec cp $i .}
-   exec cp $scriptdir/code/labview/makefile.lvsal .
-   set fin [open $scriptdir/code/labview/SAL_commLib.h.template r]
-   set fout [open SAL_commLib.h w]
+   set incs [glob $SAL_DIR/code/labview/*.h]
+   foreach i $incs {exec cp $i $SAL_WORK_DIR/labview/.}
+   exec cp $SAL_DIR/code/labview/makefile.lvsal $SAL_WORK_DIR/labview/.
+   set fin [open $SAL_DIR/code/labview/SAL_commLib.h.template r]
+   set fout [open $SAL_WORK_DIR/labview/svcSAL_commLib.h w]
    while { [gets $fin rec] > -1 } {
       if { [string range $rec 0 8] == "###INSERT" } {
          replacelvcode $topiclist [lindex $rec 1] $fout
@@ -17,8 +18,8 @@ global scriptdir SALVERSION
    }
    close $fin
    close $fout
-   set fin [open $scriptdir/code/labview/SAL_commLib.c.template r]
-   set fout [open SAL_commLib.c w]
+   set fin [open $SAL_DIR/code/labview/SAL_commLib.c.template r]
+   set fout [open $SAL_WORK_DIR/labview/svcSAL_commLib.c w]
    while { [gets $fin rec] > -1 } {
       if { [string range $rec 0 8] == "###INSERT" } {
          replacelvcode $topiclist [lindex $rec 1] $fout
@@ -42,8 +43,9 @@ proc replacelvcode { topiclist op fid } {
                  foreach t $topiclist {
                     puts $fid "
 extern int LVcomm_get_i[set t](int fd);
-extern int LVcomm_send_e[set t](int fd);extern int LVcomm_close_[set t](int fd);"
-                    set fpi [open ../shmem-[set t]/[set t]_lvprostub.txt r]
+extern int LVcomm_send_e[set t](int fd);
+extern int LVcomm_close_[set t](int fd);"
+                    set fpi [open $SAL_WORK_DIR/shmem-[set t]/[set t]_lvprostub.txt r]
                     gets $fpi rec ; puts $fid "extern $rec"
                     gets $fpi rec ; puts $fid "extern $rec"
                     close $fpi
@@ -51,11 +53,11 @@ extern int LVcomm_send_e[set t](int fd);extern int LVcomm_close_[set t](int fd)
      }
      readwrite {
                  foreach t $topiclist {
-                    set fpi [open ../shmem-[set t]/[set t]_lvprostub.txt r]
+                    set fpi [open $SAL_WORK_DIR/shmem-[set t]/[set t]_lvprostub.txt r]
                     gets $fpi rec
                     puts $fid [string trim $rec " ;"]
                     puts $fid "\{\n	int ilen=0;"
-                    set fpro [open ../shmem-[set t]/[set t]_lvgetstub.txt r]
+                    set fpro [open $SAL_WORK_DIR/shmem-[set t]/[set t]_lvgetstub.txt r]
                     puts $fid "
 	[set t]_cache *[set t]_ref;
 	[set t]_ref = ([set t]_cache *)LV_serial\[fd\].shm_ptr;"
@@ -67,7 +69,7 @@ extern int LVcomm_send_e[set t](int fd);extern int LVcomm_close_[set t](int fd)
                     gets $fpi rec
                     puts $fid [string trim $rec " ;"]
                     puts $fid "\{\n"
-                    set fpro [open ../shmem-[set t]/[set t]_lvputstub.txt r]
+                    set fpro [open $SAL_WORK_DIR/shmem-[set t]/[set t]_lvputstub.txt r]
                     puts $fid "
 	[set t]_cache *[set t]_ref;
 	[set t]_ref = ([set t]_cache *)LV_serial\[fd\].shm_ptr;"
