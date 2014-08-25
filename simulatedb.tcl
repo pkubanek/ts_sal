@@ -196,7 +196,7 @@ set KEYRANGE(ccdID) 201
 set KEYRANGE(raftID) 25
 set KEYRANGE(ampID) 132
 
-source /usr/local/scripts/tcl/streamutils.tcl
+source $SAL_DIR/streamutils.tcl
 
 set recdef [glob $SAL_WORK_DIR/sql/*.sqlwrt]
 foreach i $recdef { 

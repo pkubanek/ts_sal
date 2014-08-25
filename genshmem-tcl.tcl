@@ -79,8 +79,8 @@ global SHC TOPICPROPS
   set fcod [open test_shmem_[set subsys].cpp w]
   puts $fcod $SHC(genericshclient.cpp)
   close $fcod
-  exec g++ -shared -g shmem_[set subsys]_server.cpp -o libshm_[set subsys]_server.so -lstdc++
-  exec gcc -g test_shmem_[set subsys].cpp -o shm_test1 -lpthread -L. -lshm_[set subsys]_server
+  exec g++ -shared -g -fPIC shmem_[set subsys]_server.cpp -o libshm_[set subsys]_server.so -lstdc++
+  exec gcc -g -fPIC test_shmem_[set subsys].cpp -o shm_test1 -lpthread -L. -lshm_[set subsys]_server
 }
 
 
@@ -149,8 +149,8 @@ global SHC TOPICPROPS
   set fcod [open test_shmem_[set subsys].cpp w]
   puts $fcod $SHC(genericshclient.cpp)
   close $fcod
-  exec g++ -shared -g shmem_[set subsys]_server.cpp -o libshm_[set subsys]_server.so -lstdc++
-  exec gcc -g test_shmem_[set subsys].cpp -o shm_test1 -lpthread -L. -lshm_[set subsys]_server
+  exec g++ -shared -g -fPIC shmem_[set subsys]_server.cpp -o libshm_[set subsys]_server.so -lstdc++
+  exec gcc -g -fPIC test_shmem_[set subsys].cpp -o shm_test1 -lpthread -L. -lshm_[set subsys]_server
 }
 
 

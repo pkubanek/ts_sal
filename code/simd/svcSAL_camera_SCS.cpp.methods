@@ -129,7 +129,7 @@
 	    return result;
 	}
 
-	svcRTN salcamera_SCS::getItem ( svcIID itemId , svcFLOAT &value, svcUINT size)
+	svcRTN salcamera_SCS::getItem ( svcIID itemId , svcFLT &value, svcUINT size)
 	{
 	    svcRTN result = SAL__NOT_DEFINED;
 	    switch (itemId) {
@@ -154,7 +154,7 @@
 	    return result;
 	}
 
- 	svcRTN salcamera_SCS::setItem ( svcIID itemId , svcFLOAT &value , svcUINT size)
+ 	svcRTN salcamera_SCS::setItem ( svcIID itemId , svcFLT &value , svcUINT size)
 	{
 	    svcRTN result = SAL__NOT_DEFINED;
 	    switch (itemId) {

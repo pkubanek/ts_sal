@@ -1,4 +1,4 @@
 	svcSHORT	status[17];
-	svcFLOAT	demand[7];
-	svcFLOAT	error[7];
-	svcFLOAT	position[7];
+	svcFLT	demand[7];
+	svcFLT	error[7];
+	svcFLT	position[7];

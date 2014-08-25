@@ -1,11 +1,11 @@
 	svcLONG	flux;
 	svcLONG	hrnum;
 	svcLONG	numlines;
-	svcFLOAT	exposure;
-	svcFLOAT	scintleft;
-	svcFLOAT	scintright;
-	svcFLOAT	seeing_corr;
-	svcFLOAT	strehlleft;
-	svcFLOAT	strehlright;
+	svcFLT	exposure;
+	svcFLT	scintleft;
+	svcFLT	scintright;
+	svcFLT	seeing_corr;
+	svcFLT	strehlleft;
+	svcFLT	strehlright;
 	char	[16];
 	char	[16];

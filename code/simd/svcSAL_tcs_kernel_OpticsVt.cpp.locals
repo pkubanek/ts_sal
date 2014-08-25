@@ -1,2 +1,2 @@
-	svcFLOAT	tilt;
-	svcFLOAT	tip;
+	svcFLT	tilt;
+	svcFLT	tip;

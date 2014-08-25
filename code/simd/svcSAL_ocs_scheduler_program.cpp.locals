@@ -1,4 +1,4 @@
 	svcLONG	id;
 	svcLONG	priority;
 	svcLONG	status;
-	svcFLOAT	completion;
+	svcFLT	completion;

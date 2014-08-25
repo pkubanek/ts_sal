@@ -272,7 +272,7 @@ global SAL_DIR SAL_SUBSYSTEMS SAL_SID SAL_WORK_DIR
       foreach t $topicdirs {
          set id [string range [file tail [file root $t]] 5 end]
          puts $fo2 "#include \"svcSAL_[set id]_iid.h\""
-         puts $fo2 "#define SAL_SHMEM_KEY_[set id] [calcshmid $id]"
+         puts $fo2 "#define SAL_SHMEM_KEY_[set id] 0x[calcshmid $id]"
          puts $fo3 "
 	    case SAL_IID_$id :
 	    	salTopic = ([set id] *)new [set id]();

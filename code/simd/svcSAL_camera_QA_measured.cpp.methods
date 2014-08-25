@@ -1,5 +1,5 @@
 
-	svcRTN salcamera_QA_measured::getItem ( svcIID itemId , svcFLOAT &value, svcUINT size)
+	svcRTN salcamera_QA_measured::getItem ( svcIID itemId , svcFLT &value, svcUINT size)
 	{
 	    svcRTN result = SAL__NOT_DEFINED;
 	    switch (itemId) {
@@ -40,7 +40,7 @@
 	    return result;
 	}
 
- 	svcRTN salcamera_QA_measured::setItem ( svcIID itemId , svcFLOAT &value , svcUINT size)
+ 	svcRTN salcamera_QA_measured::setItem ( svcIID itemId , svcFLT &value , svcUINT size)
 	{
 	    svcRTN result = SAL__NOT_DEFINED;
 	    switch (itemId) {

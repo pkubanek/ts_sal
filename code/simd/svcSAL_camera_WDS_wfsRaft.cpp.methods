@@ -165,7 +165,7 @@
 	    return result;
 	}
 
-	svcRTN salcamera_WDS_wfsRaft::getItem ( svcIID itemId , svcFLOAT &value, svcUINT size)
+	svcRTN salcamera_WDS_wfsRaft::getItem ( svcIID itemId , svcFLT &value, svcUINT size)
 	{
 	    svcRTN result = SAL__NOT_DEFINED;
 	    switch (itemId) {
@@ -198,7 +198,7 @@
 	    return result;
 	}
 
- 	svcRTN salcamera_WDS_wfsRaft::setItem ( svcIID itemId , svcFLOAT &value , svcUINT size)
+ 	svcRTN salcamera_WDS_wfsRaft::setItem ( svcIID itemId , svcFLT &value , svcUINT size)
 	{
 	    svcRTN result = SAL__NOT_DEFINED;
 	    switch (itemId) {

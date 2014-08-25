@@ -1,2 +1,2 @@
-	svcFLOAT	control[11];
-	svcFLOAT	pressure[11];
+	svcFLT	control[11];
+	svcFLT	pressure[11];

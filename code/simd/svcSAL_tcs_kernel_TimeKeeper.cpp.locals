@@ -1,6 +1,6 @@
-	svcFLOAT	Cst;
-	svcFLOAT	Dcst;
-	svcFLOAT	Dsst;
-	svcFLOAT	Sst;
-	svcFLOAT	Tai;
-	svcFLOAT	Tt;
+	svcFLT	Cst;
+	svcFLT	Dcst;
+	svcFLT	Dsst;
+	svcFLT	Sst;
+	svcFLT	Tai;
+	svcFLT	Tt;

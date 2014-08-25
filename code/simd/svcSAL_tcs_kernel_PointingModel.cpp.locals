@@ -20,4 +20,4 @@
 	char	[32];
 	char	[32];
 	svcLONG	Model[31];
-	svcFLOAT	Coeffv[101];
+	svcFLT	Coeffv[101];

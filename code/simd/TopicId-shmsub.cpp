@@ -14,7 +14,7 @@
 #include <gen/ccpp_TopicId.h>
 #include <sys/shm.h>
 #include "TopicId_cache.h"
-#include "svcSAL_TopicId_topics.h"
+#include "svcSAL_TopicSubSystem_topics.h"
 TopicId_cache *TopicId_ref;
 
 REGISTER_TOPIC_TRAITS(TopicId);
@@ -85,7 +85,7 @@ int main(int argc, char* argv[]) {
 
    int TopicId_shmsize;
    int lshmid;
-   int icount=0;
+
    int TopicId_shmid = SAL_SHMEM_KEY_TopicId;
    TopicId_shmsize = sizeof(struct TopicId_cache);
    lshmid = shmget(TopicId_shmid, TopicId_shmsize , IPC_CREAT|0666);

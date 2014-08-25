@@ -101,7 +101,7 @@
 	    return result;
 	}
 
-	svcRTN salocs_staticanalysis::getItem ( svcIID itemId , svcFLOAT &value )
+	svcRTN salocs_staticanalysis::getItem ( svcIID itemId , svcFLT &value )
 	{
 	    svcRTN result = SAL__NOT_DEFINED;
 	    switch (itemId) {
@@ -122,7 +122,7 @@
 	
 
 
-	svcRTN salocs_staticanalysis::setItem ( svcIID itemId , svcFLOAT &value )
+	svcRTN salocs_staticanalysis::setItem ( svcIID itemId , svcFLT &value )
 	{
 	    svcRTN result = SAL__NOT_DEFINED;
 	    switch (itemId) {

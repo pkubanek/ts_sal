@@ -67,8 +67,6 @@ public:
 
         svcRTN getProperty ( svcCHAR *propertyName , svcCHAR *textValue);
         svcRTN setProperty ( svcCHAR *propertyName , svcCHAR *textValue);
-        int m_tcs_kernel_Target_shmid;
-        static shmMapper m_shmMapper;
 	
 private:
 	static const char * _local_id;
@@ -101,6 +99,8 @@ private:
         dds::Topic<TopicId> topic;
 	TopicId data;
 	TopicIdSeq dataSeq;
+	(TopicId_cache *) shmdata;
+        int m_tcs_kernel_Target_shmid;
 
 };
 

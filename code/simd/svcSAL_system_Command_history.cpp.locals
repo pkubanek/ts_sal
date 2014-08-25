@@ -1,2 +1,2 @@
 	char	[32];
-	svcFLOAT	Data[17];
+	svcFLT	Data[17];

@@ -1,5 +1,5 @@
 
-	svcRTN saltcs_kernel_FK5Target::getItem ( svcIID itemId , svcFLOAT &value )
+	svcRTN saltcs_kernel_FK5Target::getItem ( svcIID itemId , svcFLT &value )
 	{
 	    svcRTN result = SAL__NOT_DEFINED;
 	    switch (itemId) {
@@ -50,7 +50,7 @@
 	
 
 
-	svcRTN saltcs_kernel_FK5Target::setItem ( svcIID itemId , svcFLOAT &value )
+	svcRTN saltcs_kernel_FK5Target::setItem ( svcIID itemId , svcFLT &value )
 	{
 	    svcRTN result = SAL__NOT_DEFINED;
 	    switch (itemId) {

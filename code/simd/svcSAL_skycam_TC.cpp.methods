@@ -53,7 +53,7 @@
 	    return result;
 	}
 
-	svcRTN salskycam_TC::getItem ( svcIID itemId , svcFLOAT &value, svcUINT size)
+	svcRTN salskycam_TC::getItem ( svcIID itemId , svcFLT &value, svcUINT size)
 	{
 	    svcRTN result = SAL__NOT_DEFINED;
 	    switch (itemId) {
@@ -70,7 +70,7 @@
 	    return result;
 	}
 
- 	svcRTN salskycam_TC::setItem ( svcIID itemId , svcFLOAT &value , svcUINT size)
+ 	svcRTN salskycam_TC::setItem ( svcIID itemId , svcFLT &value , svcUINT size)
 	{
 	    svcRTN result = SAL__NOT_DEFINED;
 	    switch (itemId) {

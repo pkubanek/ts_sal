@@ -127,9 +127,10 @@ proc checkidl { f } {
 global NEWTOPICS NEWSIZES NEWCONSTS
 global DESC SDESC IDLTYPES IDLSIZES
 global PUBLISHERS FREQUENCY KEYINDEX
-global SAL_DIR TIDUSED
+global SAL_DIR TIDUSED SAL_WORK_DIR
   set fin [open $f r]
-  set fout [open validated/$f w]
+  set fout [open $SAL_WORK_DIR/idl-templates/validated/$f w]
+  stdlog "Creating $SAL_WORK_DIR/idl-templates/validated/$f"
   set id [file rootname $f]
   set hid [join [split $id _] .]
   set NONCODING 0
@@ -144,7 +145,7 @@ global SAL_DIR TIDUSED
 #puts stdout "is noncoding"
      } else {
        if { [string trim $rec] == "\}" ||  [string trim $rec] == "\};" } {
-#puts stdout "end of topic"
+           puts stdout "end of topic"
            puts $fout "\};"
            puts $fout "#pragma keylist $topicid"
            close $fout

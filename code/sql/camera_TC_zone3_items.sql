@@ -10,6 +10,6 @@ CREATE TABLE camera_TC_zone3_items (
   comment char(128),
   PRIMARY KEY (num)
 );
-INSERT INTO camera_TC_zone3_items VALUES (1,"temperature","float",50,"none",0.1,"","");
-INSERT INTO camera_TC_zone3_items VALUES (2,"setpoint","float",50,"none",0.1,"","");
-INSERT INTO camera_TC_zone3_items VALUES (3,"status"," unsignedlong",50,"none",0.1,"","");
+INSERT INTO camera_TC_zone3_items VALUES (1,"temperature","float",50,"",0.1,"","");
+INSERT INTO camera_TC_zone3_items VALUES (2,"setpoint","float",50,"",0.1,"","");
+INSERT INTO camera_TC_zone3_items VALUES (3,"status","long",50,"",0.1,"","");

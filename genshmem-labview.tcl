@@ -7,7 +7,7 @@ global SAL_DIR SALVERSION SAL_DIR SAL_WORK_DIR
    set incs [glob $SAL_DIR/code/labview/*.h]
    foreach i $incs {exec cp $i $SAL_WORK_DIR/labview/.}
    exec cp $SAL_DIR/code/labview/makefile.lvsal $SAL_WORK_DIR/labview/.
-   set fin [open $SAL_DIR/code/labview/SAL_commLib.h.template r]
+   set fin [open $SAL_DIR/code/labview/svcSAL_commLib.h.template r]
    set fout [open $SAL_WORK_DIR/labview/svcSAL_commLib.h w]
    while { [gets $fin rec] > -1 } {
       if { [string range $rec 0 8] == "###INSERT" } {
@@ -18,7 +18,7 @@ global SAL_DIR SALVERSION SAL_DIR SAL_WORK_DIR
    }
    close $fin
    close $fout
-   set fin [open $SAL_DIR/code/labview/SAL_commLib.c.template r]
+   set fin [open $SAL_DIR/code/labview/svcSAL_commLib.c.template r]
    set fout [open $SAL_WORK_DIR/labview/svcSAL_commLib.c w]
    while { [gets $fin rec] > -1 } {
       if { [string range $rec 0 8] == "###INSERT" } {
@@ -32,6 +32,7 @@ global SAL_DIR SALVERSION SAL_DIR SAL_WORK_DIR
 }
 
 proc replacelvcode { topiclist op fid } {
+global SAL_WORK_DIR
   switch $op {
      includes {
                puts $fid "#include \"svcSAL.h\""

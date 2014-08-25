@@ -1,11 +1,11 @@
 
-	svcRTN salcamera_TC_zone1::getItem ( svcIID itemId , svcULONG &value, svcUINT size)
+	svcRTN salcamera_TC_zone1::getItem ( svcIID itemId , svcLONG value[], svcUINT size)
 	{
 	    svcRTN result = SAL__NOT_DEFINED;
 	    switch (itemId) {
 
                  case SAL_IID_camera_TC_zone1_status :
-                      if { size > 26 } {return SAL__INDEX_OUT_OF_RANGE;}
+                      if ( size > 26 ) {return SAL__INDEX_OUT_OF_RANGE;}
                       for (unsigned int count=0; count<size; count++) {
                         value[count] = data.status[count];
                       }
@@ -16,13 +16,13 @@
 	    return result;
 	}
 
- 	svcRTN salcamera_TC_zone1::setItem ( svcIID itemId , svcULONG &value , svcUINT size)
+ 	svcRTN salcamera_TC_zone1::setItem ( svcIID itemId , svcLONG value[] , svcUINT size)
 	{
 	    svcRTN result = SAL__NOT_DEFINED;
 	    switch (itemId) {
 
                  case SAL_IID_camera_TC_zone1_status :
-                      if { size > 26 } {return SAL__INDEX_OUT_OF_RANGE;}
+                      if ( size > 26 ) {return SAL__INDEX_OUT_OF_RANGE;}
                       for (unsigned int count=0; count<size; count++) {
                         data.status[count] = value[count];
                       }
@@ -33,33 +33,13 @@
 	    return result;
 	}
 
-       svcRTN salcamera_TC_zone1::setItemStr ( svcIID itemId , svcCHAR *textValue)
-	{
-	    svcRTN result = SAL__NOT_DEFINED;
-	    
-	    switch (itemid) {
-
-	    }
-	    return result;
-	}
-
-       svcRTN salcamera_TC_zone1::getItemStr ( svcIID itemId , svcCHAR *textValue)
-	{
-	    svcRTN result = SAL__NOT_DEFINED;
-	    
-	    switch (itemid) {
-
-	    }
-	    return result;
-	}
-
-	svcRTN salcamera_TC_zone1::getItem ( svcIID itemId , svcFLOAT &value, svcUINT size)
+	svcRTN salcamera_TC_zone1::getItem ( svcIID itemId , svcFLT value[], svcUINT size)
 	{
 	    svcRTN result = SAL__NOT_DEFINED;
 	    switch (itemId) {
 
                  case SAL_IID_camera_TC_zone1_cold_plate :
-                      if { size > 26 } {return SAL__INDEX_OUT_OF_RANGE;}
+                      if ( size > 26 ) {return SAL__INDEX_OUT_OF_RANGE;}
                       for (unsigned int count=0; count<size; count++) {
                         value[count] = data.cold_plate[count];
                       }
@@ -67,7 +47,7 @@
                       break;
 
                  case SAL_IID_camera_TC_zone1_flow_rate :
-                      if { size > 26 } {return SAL__INDEX_OUT_OF_RANGE;}
+                      if ( size > 26 ) {return SAL__INDEX_OUT_OF_RANGE;}
                       for (unsigned int count=0; count<size; count++) {
                         value[count] = data.flow_rate[count];
                       }
@@ -75,7 +55,7 @@
                       break;
 
                  case SAL_IID_camera_TC_zone1_setpoint :
-                      if { size > 26 } {return SAL__INDEX_OUT_OF_RANGE;}
+                      if ( size > 26 ) {return SAL__INDEX_OUT_OF_RANGE;}
                       for (unsigned int count=0; count<size; count++) {
                         value[count] = data.setpoint[count];
                       }
@@ -83,7 +63,7 @@
                       break;
 
                  case SAL_IID_camera_TC_zone1_temperature :
-                      if { size > 26 } {return SAL__INDEX_OUT_OF_RANGE;}
+                      if ( size > 26 ) {return SAL__INDEX_OUT_OF_RANGE;}
                       for (unsigned int count=0; count<size; count++) {
                         value[count] = data.temperature[count];
                       }
@@ -94,13 +74,13 @@
 	    return result;
 	}
 
- 	svcRTN salcamera_TC_zone1::setItem ( svcIID itemId , svcFLOAT &value , svcUINT size)
+ 	svcRTN salcamera_TC_zone1::setItem ( svcIID itemId , svcFLT value[] , svcUINT size)
 	{
 	    svcRTN result = SAL__NOT_DEFINED;
 	    switch (itemId) {
 
                  case SAL_IID_camera_TC_zone1_cold_plate :
-                      if { size > 26 } {return SAL__INDEX_OUT_OF_RANGE;}
+                      if ( size > 26 ) {return SAL__INDEX_OUT_OF_RANGE;}
                       for (unsigned int count=0; count<size; count++) {
                         data.cold_plate[count] = value[count];
                       }
@@ -108,7 +88,7 @@
                       break;
 
                  case SAL_IID_camera_TC_zone1_flow_rate :
-                      if { size > 26 } {return SAL__INDEX_OUT_OF_RANGE;}
+                      if ( size > 26 ) {return SAL__INDEX_OUT_OF_RANGE;}
                       for (unsigned int count=0; count<size; count++) {
                         data.flow_rate[count] = value[count];
                       }
@@ -116,7 +96,7 @@
                       break;
 
                  case SAL_IID_camera_TC_zone1_setpoint :
-                      if { size > 26 } {return SAL__INDEX_OUT_OF_RANGE;}
+                      if ( size > 26 ) {return SAL__INDEX_OUT_OF_RANGE;}
                       for (unsigned int count=0; count<size; count++) {
                         data.setpoint[count] = value[count];
                       }
@@ -124,7 +104,7 @@
                       break;
 
                  case SAL_IID_camera_TC_zone1_temperature :
-                      if { size > 26 } {return SAL__INDEX_OUT_OF_RANGE;}
+                      if ( size > 26 ) {return SAL__INDEX_OUT_OF_RANGE;}
                       for (unsigned int count=0; count<size; count++) {
                         data.temperature[count] = value[count];
                       }
@@ -139,7 +119,7 @@
 	{
 	    svcRTN result = SAL__NOT_DEFINED;
 	    
-	    switch (itemid) {
+	    switch (itemId) {
 
 	    }
 	    return result;
@@ -149,7 +129,7 @@
 	{
 	    svcRTN result = SAL__NOT_DEFINED;
 	    
-	    switch (itemid) {
+	    switch (itemId) {
 
 	    }
 	    return result;

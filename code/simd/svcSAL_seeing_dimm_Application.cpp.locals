@@ -1,4 +1,4 @@
 	char	[16];
 	svcLONG	Raw[17];
-	svcFLOAT	Calibrated[33];
-	svcFLOAT	Error[5];
+	svcFLT	Calibrated[33];
+	svcFLT	Error[5];

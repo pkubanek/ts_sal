@@ -1,6 +1,6 @@
 		result = salHandle->getSample(SAL__SLOWPOLL);
-		result = salHandle->getitem(SAL_IID_camera_TC_zone1_status, status, 26);
-		result = salHandle->getitem(SAL_IID_camera_TC_zone1_cold_plate, cold_plate, 26);
-		result = salHandle->getitem(SAL_IID_camera_TC_zone1_flow_rate, flow_rate, 26);
-		result = salHandle->getitem(SAL_IID_camera_TC_zone1_setpoint, setpoint, 26);
-		result = salHandle->getitem(SAL_IID_camera_TC_zone1_temperature, temperature, 26);
+		result = salHandle->getItem(SAL_IID_camera_TC_zone1_status, status, 26);
+		result = salHandle->getItem(SAL_IID_camera_TC_zone1_cold_plate, cold_plate, 26);
+		result = salHandle->getItem(SAL_IID_camera_TC_zone1_flow_rate, flow_rate, 26);
+		result = salHandle->getItem(SAL_IID_camera_TC_zone1_setpoint, setpoint, 26);
+		result = salHandle->getItem(SAL_IID_camera_TC_zone1_temperature, temperature, 26);

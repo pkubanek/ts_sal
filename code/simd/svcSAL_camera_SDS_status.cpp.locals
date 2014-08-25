@@ -1,2 +1,2 @@
 	svcULONG	flags[21];
-	svcFLOAT	current[81];
+	svcFLT	current[81];

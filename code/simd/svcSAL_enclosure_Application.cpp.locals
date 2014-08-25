@@ -1,4 +1,4 @@
 	char	[16];
-	svcFLOAT	Demand[5];
-	svcFLOAT	Error[5];
-	svcFLOAT	Position[5];
+	svcFLT	Demand[5];
+	svcFLT	Error[5];
+	svcFLT	Position[5];

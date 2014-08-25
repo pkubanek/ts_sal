@@ -57,7 +57,7 @@
 	    return result;
 	}
 
-	svcRTN salsystem_Command_history::getItem ( svcIID itemId , svcFLOAT &value, svcUINT size)
+	svcRTN salsystem_Command_history::getItem ( svcIID itemId , svcFLT &value, svcUINT size)
 	{
 	    svcRTN result = SAL__NOT_DEFINED;
 	    switch (itemId) {
@@ -74,7 +74,7 @@
 	    return result;
 	}
 
- 	svcRTN salsystem_Command_history::setItem ( svcIID itemId , svcFLOAT &value , svcUINT size)
+ 	svcRTN salsystem_Command_history::setItem ( svcIID itemId , svcFLT &value , svcUINT size)
 	{
 	    svcRTN result = SAL__NOT_DEFINED;
 	    switch (itemId) {

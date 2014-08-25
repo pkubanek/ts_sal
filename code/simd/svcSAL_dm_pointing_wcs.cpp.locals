@@ -1,3 +1,3 @@
-	svcDOUBLE	coeff[33];
-	svcDOUBLE	dec[201];
-	svcDOUBLE	ra[201];
+	svcDBL	coeff[33];
+	svcDBL	dec[201];
+	svcDBL	ra[201];

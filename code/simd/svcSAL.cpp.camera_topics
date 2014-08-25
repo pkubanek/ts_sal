@@ -1,6 +1,162 @@
 
+	    case SAL_IID_camera_BEE_biases :
+	    	salTopic = (camera_BEE_biases *)new camera_BEE_biases();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_camera_BEE_clocks :
+	    	salTopic = (camera_BEE_clocks *)new camera_BEE_clocks();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_camera_BEE_thermal :
+	    	salTopic = (camera_BEE_thermal *)new camera_BEE_thermal();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_camera_CALSYS :
+	    	salTopic = (camera_CALSYS *)new camera_CALSYS();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_camera_CCS :
+	    	salTopic = (camera_CCS *)new camera_CCS();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_camera_FCS :
+	    	salTopic = (camera_FCS *)new camera_FCS();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_camera_GAS :
+	    	salTopic = (camera_GAS *)new camera_GAS();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_camera_LASERCAL :
+	    	salTopic = (camera_LASERCAL *)new camera_LASERCAL();
+		result = SAL__OK;
+		break;
+
+
 	    case SAL_IID_camera_PWR :
 	    	salTopic = (camera_PWR *)new camera_PWR();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_camera_QA_measured :
+	    	salTopic = (camera_QA_measured *)new camera_QA_measured();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_camera_SCS :
+	    	salTopic = (camera_SCS *)new camera_SCS();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_camera_SDS_amplifiers :
+	    	salTopic = (camera_SDS_amplifiers *)new camera_SDS_amplifiers();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_camera_SDS_status :
+	    	salTopic = (camera_SDS_status *)new camera_SDS_status();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_camera_TCM :
+	    	salTopic = (camera_TCM *)new camera_TCM();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_camera_TC_control :
+	    	salTopic = (camera_TC_control *)new camera_TC_control();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_camera_TC_zone1 :
+	    	salTopic = (camera_TC_zone1 *)new camera_TC_zone1();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_camera_TC_zone2 :
+	    	salTopic = (camera_TC_zone2 *)new camera_TC_zone2();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_camera_TC_zone3 :
+	    	salTopic = (camera_TC_zone3 *)new camera_TC_zone3();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_camera_TC_zone4 :
+	    	salTopic = (camera_TC_zone4 *)new camera_TC_zone4();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_camera_TC_zone5 :
+	    	salTopic = (camera_TC_zone5 *)new camera_TC_zone5();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_camera_TC_zone6 :
+	    	salTopic = (camera_TC_zone6 *)new camera_TC_zone6();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_camera_UTIL :
+	    	salTopic = (camera_UTIL *)new camera_UTIL();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_camera_VCS :
+	    	salTopic = (camera_VCS *)new camera_VCS();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_camera_WDS_wfsRaft :
+	    	salTopic = (camera_WDS_wfsRaft *)new camera_WDS_wfsRaft();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_camera_WTCM :
+	    	salTopic = (camera_WTCM *)new camera_WTCM();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_camera_command :
+	    	salTopic = (camera_command *)new camera_command();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_camera_response :
+	    	salTopic = (camera_response *)new camera_response();
 		result = SAL__OK;
 		break;
 

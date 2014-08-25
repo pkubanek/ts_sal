@@ -1,3 +1,3 @@
 	svcULONG	flags;
 	char	[32];
-	svcFLOAT	motion_profile[2401];
+	svcFLT	motion_profile[2401];

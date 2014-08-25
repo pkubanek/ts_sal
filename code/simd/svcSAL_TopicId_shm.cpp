@@ -30,8 +30,8 @@ std::string topic("TopicIdTopic");
 #include "svcSAL_TopicId.h"
 #include "shmem_TopicId.h"
 
-void GetObject_TopicId(shm_TopicId ** pshm_TopicId) {
-       *pshm_TopicId = (shm_TopicId *)shm_TopicId::m_shared_mem;
+void salTopicId::GetObject((TopicId_cache *) pshm_TopicId) {
+       *pshm_TopicId = (TopicId_cache*)shm_TopicId::m_shared_mem;
 }
 
 
@@ -166,7 +166,6 @@ DDS::Boolean salTopicId::_local_is_a (const char * _id)
    return false;
 }
 
-shmMapper salTopicId::m_shmMapper;
 
 svcRTN TopicId::shmMapper()
 {
@@ -194,7 +193,7 @@ svcRTN TopicId::shmMapper()
            bCreated = true;
        }
 
-       salTopicId::m_shared_mem = shmat(m_TopicId_shmid, NULL, 0);
+       m_shared_mem = shmat(m_TopicId_shmid, NULL, 0);
 
        if (-1 == (int)shm_TopicId::m_shared_mem) {
            cerr <<  __FILE__ <<  ":" <<  __LINE__ <<  " Critical error in shmat" << endl;
@@ -203,9 +202,8 @@ svcRTN TopicId::shmMapper()
 
        if (bCreated) {
            // Construct objects on the shared memory
-           shm_TopicId * pshm_TopicId;
-           pshm_TopicId = new shm_TopicId;
-           pshm_TopicId->syncO = 0;
+           shmdata = (TopicId_cache *)m_shared_mem;
+           shmdata->syncO = 0;
        }
 
        return SAL__OK;

@@ -1,5 +1,5 @@
 
-	svcRTN salcamera_PWR::getItem ( svcIID itemId , svcFLOAT &value, svcUINT size)
+	svcRTN salcamera_PWR::getItem ( svcIID itemId , svcFLT &value, svcUINT size)
 	{
 	    svcRTN result = SAL__NOT_DEFINED;
 	    switch (itemId) {
@@ -24,7 +24,7 @@
 	    return result;
 	}
 
- 	svcRTN salcamera_PWR::setItem ( svcIID itemId , svcFLOAT &value , svcUINT size)
+ 	svcRTN salcamera_PWR::setItem ( svcIID itemId , svcFLT &value , svcUINT size)
 	{
 	    svcRTN result = SAL__NOT_DEFINED;
 	    switch (itemId) {

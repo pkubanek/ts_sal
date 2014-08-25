@@ -1,5 +1,5 @@
 
-	svcRTN salcamera_TC_zone2::getItem ( svcIID itemId , svcULONG &value, svcUINT size)
+	svcRTN salcamera_TC_zone2::getItem ( svcIID itemId , svcLONG &value, svcUINT size)
 	{
 	    svcRTN result = SAL__NOT_DEFINED;
 	    switch (itemId) {
@@ -16,7 +16,7 @@
 	    return result;
 	}
 
- 	svcRTN salcamera_TC_zone2::setItem ( svcIID itemId , svcULONG &value , svcUINT size)
+ 	svcRTN salcamera_TC_zone2::setItem ( svcIID itemId , svcLONG &value , svcUINT size)
 	{
 	    svcRTN result = SAL__NOT_DEFINED;
 	    switch (itemId) {
@@ -35,9 +35,10 @@
 
        svcRTN salcamera_TC_zone2::setItemStr ( svcIID itemId , svcCHAR *textValue)
 	{
+                      break;
 	    svcRTN result = SAL__NOT_DEFINED;
 	    
-	    switch (itemid) {
+	    switch (itemId) {
 
 	    }
 	    return result;
@@ -47,13 +48,13 @@
 	{
 	    svcRTN result = SAL__NOT_DEFINED;
 	    
-	    switch (itemid) {
+	    switch (itemId) {
 
 	    }
 	    return result;
 	}
 
-	svcRTN salcamera_TC_zone2::getItem ( svcIID itemId , svcFLOAT &value, svcUINT size)
+	svcRTN salcamera_TC_zone2::getItem ( svcIID itemId , svcFLT &value, svcUINT size)
 	{
 	    svcRTN result = SAL__NOT_DEFINED;
 	    switch (itemId) {
@@ -86,7 +87,7 @@
 	    return result;
 	}
 
- 	svcRTN salcamera_TC_zone2::setItem ( svcIID itemId , svcFLOAT &value , svcUINT size)
+ 	svcRTN salcamera_TC_zone2::setItem ( svcIID itemId , svcFLT &value , svcUINT size)
 	{
 	    svcRTN result = SAL__NOT_DEFINED;
 	    switch (itemId) {
@@ -121,9 +122,10 @@
 
        svcRTN salcamera_TC_zone2::setItemStr ( svcIID itemId , svcCHAR *textValue)
 	{
+                      break;
 	    svcRTN result = SAL__NOT_DEFINED;
 	    
-	    switch (itemid) {
+	    switch (itemId) {
 
 	    }
 	    return result;
@@ -133,7 +135,7 @@
 	{
 	    svcRTN result = SAL__NOT_DEFINED;
 	    
-	    switch (itemid) {
+	    switch (itemId) {
 
 	    }
 	    return result;
