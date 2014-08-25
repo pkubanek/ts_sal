@@ -1,13 +1,13 @@
 
 
 import SALData.*;
-import org.lsst.sal.SALDDS;
+import org.lsst.sal.SAL_SALData;
 
 public class SALNAMESTRINGDataSubscriber {
 
 	public static void main(String[] args) {
-		SALDDS mgr = new SALDDS();
-                mgr.salInitialize();
+                short aKey=1;
+		SAL_SALData mgr = new SAL_SALData(SALSUBSYSID);
 		mgr.salTelemetrySub("SALNAMESTRING");
 
 		SALTopic SALInstance = new SALTopic();

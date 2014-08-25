@@ -1,13 +1,13 @@
 
 
 import SALData.*;
-import org.lsst.sal.SALDDS;
+import org.lsst.sal.SAL_SALData;
 
 public class SALNAMESTRINGDataPublisher {
 
 	public static void main(String[] args) {
-		SALDDS mgr = new SALDDS();
-                mgr.salInitialize();
+                short aKey=1;
+		SAL_SALData mgr = new SAL_SALData(SALSUBSYSID);
 
 		// Publish Telemetry
 		int count=0;
@@ -17,7 +17,7 @@ public class SALNAMESTRINGDataPublisher {
 			mgr.putSample(theTopicInstance);
 			System.out.println("=== [SALTopic Publisher] message sent" + count);
 			try {
-				Thread.sleep(4000);
+				Thread.sleep(1000);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}

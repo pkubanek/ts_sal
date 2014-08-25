@@ -12,21 +12,12 @@
 
   <xsd:element name="SALTelemetry" type="tlm:SALTelemetryType"/>
 
-  <xsd:element name="comment" type="xsd:string"/>
-
   <xsd:complexType name="SALTelemetryType">
     <xsd:sequence>
       <xsd:element   name="Subsystem"     type="xsd:string"/>
       <xsd:element   name="Version"       type="xsd:decimal"/>
       <xsd:element   name="Author"        type="xsd:string"/>
-      <xsd:element   ref="comment"        minOccurs="0"/>
-    </xsd:sequence>
-    <xsd:attribute name="updateDate"    type="xsd:date"/>
-  </xsd:complexType>
-
-  <xsd:complexType name="Items">
-    <xsd:sequence>
-      <xsd:element name="item" minOccurs="1" maxOccurs="unbounded">
+      <xsd:element   name="item" minOccurs="1" maxOccurs="unbounded">
         <xsd:complexType>
           <xsd:sequence>
 
@@ -88,15 +79,17 @@
                 </xsd:simpleType>
               </xsd:element>
 
-              <xsd:element name="Needed_by_DM"     minOccurs="0" maxOccurs="1"  type="xsd:string"/>
-              <xsd:element name="Needed_by_Camera" minOccurs="0" maxOccurs="1"  type="xsd:string"/>
-              <xsd:element name="Needed_by_OCS"    minOccurs="0" maxOccurs="1"  type="xsd:string"/>
-              <xsd:element name="Needed_by_TCS"    minOccurs="0" maxOccurs="1"  type="xsd:string"/>
-              <xsd:element name="Needed_by_EPO"    minOccurs="0" maxOccurs="1"  type="xsd:string"/>
+              <xsd:element name="Needed_by_DM"     minOccurs="0" maxOccurs="1"  type="xsd:boolean"/>
+              <xsd:element name="Needed_by_Camera" minOccurs="0" maxOccurs="1"  type="xsd:boolean"/>
+              <xsd:element name="Needed_by_OCS"    minOccurs="0" maxOccurs="1"  type="xsd:boolean"/>
+              <xsd:element name="Needed_by_TCS"    minOccurs="0" maxOccurs="1"  type="xsd:boolean"/>
+              <xsd:element name="Needed_by_EPO"    minOccurs="0" maxOccurs="1"  type="xsd:boolean"/>
               <xsd:element name="Explanation"      minOccurs="0" maxOccurs="1"  type="xsd:anyURI"/>
+          </xsd:sequence>
         </xsd:complexType>
       </xsd:element>
     </xsd:sequence>
+    <xsd:attribute name="updateDate"    type="xsd:date"/>
   </xsd:complexType>
 
 </xsd:schema>

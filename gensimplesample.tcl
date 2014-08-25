@@ -10,16 +10,19 @@ global SAL_WORK_DIR
    exec mkdir -p $SAL_WORK_DIR/[set base]_[set name]/isocpp
    exec mkdir -p $SAL_WORK_DIR/[set base]_[set name]/java/src/org/lsst/sal
    exec mkdir -p $SAL_WORK_DIR/[set base]_[set name]/java/src/org/lsst/sal/$base/$name
-   exec mkdir -p $SAL_WORK_DIR/SALDDS/java/src/org/lsst/sal
+   exec touch $SAL_WORK_DIR/[set base]/java/src/.depend.Makefile.saj_[set base]_cmdctl
+###   exec mkdir -p $SAL_WORK_DIR/SAL_[set base]/java/src/org/lsst/sal
    exec mkdir -p $SAL_WORK_DIR/[set base]/java/src
+   exec mkdir -p $SAL_WORK_DIR/[set base]/java/src/org/lsst/sal
    exec mkdir -p $SAL_WORK_DIR/[set base]/cpp/src
    exec mkdir -p $SAL_WORK_DIR/[set base]/isocpp/src
    exec mkdir -p $SAL_WORK_DIR/[set base]_[set name]/java/standalone
-   exec touch $SAL_WORK_DIR/[set base]_[set name]/java/standalone/.depend.Makefile.saj_[set base]_[set name]_pub
-   exec touch $SAL_WORK_DIR/[set base]_[set name]/java/standalone/.depend.Makefile.saj_[set base]_[set name]_sub
-   exec touch $SAL_WORK_DIR/[set base]_[set name]/cpp/standalone/.depend.Makefile.sacpp_[set base]_[set name]_pub
-   exec touch $SAL_WORK_DIR/[set base]_[set name]/cpp/standalone/.depend.Makefile.sacpp_[set base]_[set name]_sub
-###   exec mkdir -p $SAL_WORK_DIR/SALDDS/cpp/src
+   exec touch $SAL_WORK_DIR/[set base]_[set name]/java/standalone/.depend.Makefile.saj_[set base]_pub
+   exec touch $SAL_WORK_DIR/[set base]_[set name]/java/standalone/.depend.Makefile.saj_[set base]_sub
+   exec touch $SAL_WORK_DIR/[set base]_[set name]/cpp/standalone/.depend.Makefile.sacpp_[set base]_pub
+   exec touch $SAL_WORK_DIR/[set base]_[set name]/cpp/standalone/.depend.Makefile.sacpp_[set base]_sub
+   exec touch $SAL_WORK_DIR/[set base]/cpp/src/.depend.Makefile.sacpp_[set name]_cmd
+###   exec mkdir -p $SAL_WORK_DIR/SAL_[set base]/cpp/src
    exec ln -sf $SAL_WORK_DIR/idl-templates/validated/sal/sal_$base.idl $SAL_WORK_DIR/$base/cpp/.
    exec ln -sf $SAL_WORK_DIR/idl-templates/validated/sal/sal_$base.idl $SAL_WORK_DIR/$base/isocpp/.
    exec ln -sf $SAL_WORK_DIR/idl-templates/validated/sal/sal_$base.idl $SAL_WORK_DIR/$base/java/.
@@ -29,32 +32,87 @@ global SAL_WORK_DIR
 }
 
 proc makesalidl { subsys } {
-global SAL_DIR SAL_WORK_DIR
+global SAL_DIR SAL_WORK_DIR SYSDIC VPROPS
    set all [lsort [glob $SAL_WORK_DIR/idl-templates/validated/$subsys*.idl]]
    exec mkdir -p $SAL_WORK_DIR/idl-templates/validated/sal
    set fout [open $SAL_WORK_DIR/idl-templates/validated/sal/sal_$subsys.idl w]
+   exec mkdir -p $SAL_WORK_DIR/[set subsys]/cpp/src
+   set fhdr [open $SAL_WORK_DIR/[set subsys]/cpp/src/SAL_[set subsys]C.h w]
+   puts $fhdr "
+#ifndef _SAL_hexapodC_
+#define _SAL_hexapodC_
+
+#include <string>
+
+using namespace std;
+"
+   set fbst [open $SAL_WORK_DIR/include/SAL_[set subsys]C.bp w]
+   set fbst2 [open $SAL_WORK_DIR/include/SAL_[set subsys]C.bp2 w]
    puts $fout "module $subsys
 \{"
    foreach i $all {
       set fin [open $i r]
       gets $fin rec
       set name [join [lrange [split [file rootname [file tail $i]] _] 1 end] _]
+      set fcod1 [open $SAL_WORK_DIR/include/SAL_[set subsys]_[set name]Cget.tmp w]
+      set fcod2 [open $SAL_WORK_DIR/include/SAL_[set subsys]_[set name]Cput.tmp w]
+      set fcod3 [open $SAL_WORK_DIR/include/SAL_[set subsys]_[set name]Csub.tmp w]
+      set fcod4 [open $SAL_WORK_DIR/include/SAL_[set subsys]_[set name]Cpub.tmp w]
       puts $fout "	struct $name \{"
+      puts $fhdr "struct [set subsys]_[set name]C
+\{"
+      puts $fbst "   bp::class_<[set subsys]_[set name]C>(\"[set subsys]_[set name]C\")"
+      puts $fbst2 "  .def(
+      \"get[set name]\" ,  &::SAL_[set subsys]::getSample[set name] )
+  .def(
+      \"put[set name]\" ,  &::SAL_[set subsys]::putSample[set name] )"
+      if { [info exists SYSDIC($subsys,keyedID)] } {
+          puts $fout "	  short [set subsys]ID;"
+      }
       while { [gets $fin rec] > -1 } {
          if { [string range $rec 0 6] == "#pragma" } {
-            puts $fout "	#pragma keylist $name"
+            if { [info exists SYSDIC($subsys,keyedID)] } {
+               puts $fout "	#pragma keylist $name [set subsys]ID"
+            } else {
+               puts $fout "	#pragma keylist $name"
+            }
+            puts $fhdr "
+
+  [set subsys]_[set name]C()  \{ std::cout << \"[set subsys]_[set name]C()\"  << std::endl; \}
+  ~[set subsys]_[set name]C() \{ std::cout << \"~[set subsys]_[set name]C()\"  << std::endl; \}
+\};
+"
+           puts $fbst "      ;"
          } else {
             puts $fout "	$rec"
+            if { [string range [lindex $rec 1] 0 7] != "private_" && [llength $rec] > 1 } {
+               puts $fhdr [typeidltoc $rec]
+               updatecfragments $fcod1 $fcod2 $fcod3 $fcod4
+               set vname $VPROPS(name)
+               if { $VPROPS(array) } {
+                  puts $fbst "      .add_property(\"$vname\", make_array(&[set subsys]_[set name]C::$vname))"
+               } else {
+                  puts $fbst "      .def_readwrite(\"$vname\", &[set subsys]_[set name]C::$vname)"
+               }
+            }
          }
       }
       close $fin
+      close $fcod1
+      close $fcod2
+      close $fcod3
+      close $fcod4
    }
-   puts $fout "   struct command
+   if { [info exists SYSDIC($subsys,keyedID)] } {
+       genkeyedidl $fout $subsys
+   } else {
+     puts $fout "   struct command
    \{
       string<32>	private_revCode;
       double		private_sndStamp;
       double		private_rcvStamp;
       long		private_origin;
+      long 		private_host;
       long		private_seqNum;
       string<32>	device;
       string<32>	property;
@@ -63,42 +121,151 @@ global SAL_DIR SAL_WORK_DIR
       string<128>	modifiers;
    \};
    #pragma keylist command
-   struct response
+   struct ackcmd
    \{
       string<32>	private_revCode;
       double		private_sndStamp;
       double		private_rcvStamp;
       long		private_origin;
+      long 		private_host;
       long		private_seqNum;
       long 		ack;
       long 		error;
       string<32>	result;
    \};
-   #pragma keylist response
+   #pragma keylist ackcmd
    struct logevent
    \{
       string<32>	private_revCode;
       double		private_sndStamp;
       double		private_rcvStamp;
       long		private_origin;
+      long 		private_host;
       string<128>	message;
    \};
    #pragma keylist logevent"
-   puts $fout "\};
+     puts $fout "\};
+"
+   }
+   puts $fhdr "
+struct [set subsys]_commandC
+\{
+      std::string	device;
+      std::string	property;
+      std::string	action;
+      std::string	value;
+      std::string	modifiers;
+
+      [set subsys]_commandC()  \{ std::cout << \"[set subsys]_commandC() \"  << std::endl; \}
+      ~[set subsys]_commandC()  \{ std::cout << \"~[set subsys]_commandC() \"  << std::endl; \}
+\};
+struct [set subsys]_ackcmdC
+\{
+      long 	ack;
+      long 	error;
+      std::string	result;
+
+      [set subsys]_ackcmdC()   \{ std::cout << \"[set subsys]_ackcmdC() \"  << std::endl; \}
+      ~[set subsys]_ackcmdC()  \{ std::cout << \"~[set subsys]_ackcmdC() \"  << std::endl; \}
+\};
+struct [set subsys]_logeventC
+\{
+      std::string	message;
+
+      [set subsys]_logeventC()   \{ std::cout << \"[set subsys]_logeventC() \"  << std::endl; \}
+      ~[set subsys]_logeventC()  \{ std::cout << \"~[set subsys]_logeventC() \"  << std::endl; \}
+\};
+
+#endif
 "
    close $fout
+   close $fhdr
+   close $fbst
+   close $fbst2
    return $SAL_WORK_DIR/idl-templates/validated/sal/sal_$subsys.idl
 }
 
+proc updatecfragments { fcod1 fcod2 fcod3 fcod4 } {
+global VPROPS
+   if { $VPROPS(array) } {
+      puts $fcod1 "    for (iseq=0;iseq<$VPROPS(dim);iseq++) \{data->$VPROPS(name)\[iseq\] = Instances\[j\].$VPROPS(name)\[iseq\];\}"
+      puts $fcod2 "    for (iseq=0;iseq<$VPROPS(dim);iseq++) \{Instance.$VPROPS(name)\[iseq\] = data->$VPROPS(name)\[iseq\];\}"
+      puts $fcod3 "       cout << \"    $VPROPS(name) : \" << SALInstance.$VPROPS(name)\[0\] << endl;"
+      puts $fcod4 "    for (i=0;i<$VPROPS(dim);i++)\{myData.$VPROPS(name)\[i\] = i+iseq;\}"
+   } else {
+      if { $VPROPS(string) } {
+         puts $fcod1 "    data->$VPROPS(name) = Instances\[j\].$VPROPS(name);"
+         puts $fcod2 "    Instance.$VPROPS(name) = DDS::string_dup(data->$VPROPS(name).c_str());"
+         puts $fcod3 "    cout << \"    $VPROPS(name) : \" << SALInstance.$VPROPS(name) << endl;"
+         puts $fcod4 "    myData.$VPROPS(name) = \"LSST TEST STRING\";"
+      } else {
+         puts $fcod1 "    data->$VPROPS(name) = Instances\[j\].$VPROPS(name);"
+         puts $fcod1 "    Instances\[j\].$VPROPS(name) = data->$VPROPS(name);"
+         puts $fcod3 "    cout << \"    $VPROPS(name) : \" << SALInstance.$VPROPS(name) << endl;"
+         puts $fcod4 "    myData.$VPROPS(name) = 1";
+      }
+   }
+}
+
+
+proc genkeyedidl { fout base } {
+     puts $fout "   struct command
+   \{
+      short            [set base]ID;
+      string<32>	private_revCode;
+      double		private_sndStamp;
+      double		private_rcvStamp;
+      long		private_origin;
+      long 		private_host;
+      long		private_seqNum;
+      string<32>	device;
+      string<32>	property;
+      string<32>	action;
+      string<32>	value;
+      string<128>	modifiers;
+   \};
+   #pragma keylist command [set base]ID
+   struct ackcmd
+   \{
+      short            [set base]ID;
+      string<32>	private_revCode;
+      double		private_sndStamp;
+      double		private_rcvStamp;
+      long		private_origin;
+      long 		private_host;
+      long		private_seqNum;
+      long 		ack;
+      long 		error;
+      string<32>	result;
+   \};
+   #pragma keylist ackcmd [set base]ID
+   struct logevent
+   \{
+      short            [set base]ID;
+      string<32>	private_revCode;
+      double		private_sndStamp;
+      double		private_rcvStamp;
+      long		private_origin;
+      long 		private_host;
+      string<128>	message;
+   \};
+   #pragma keylist logevent [set base]ID"
+     puts $fout "\};
+"
+}
+
+
 
 proc makesalcode { idlfile base name lang } {
-global SAL_DIR
-      puts stdout "Processing $base $name"
+global SAL_DIR SAL_WORK_DIR SYSDIC
+      puts stdout "Processing $base $name in $SAL_WORK_DIR"
+      cd $SAL_WORK_DIR
       catch {makesaldirs $base $name}
       set id [set base]_[set name]
       set frep [open /tmp/sreplace.sal w]
       puts $frep "#!/bin/sh"
       if { $lang == "cpp" } {
+        exec cp $SAL_DIR/code/templates/SAL_defines.h $SAL_DIR/../include/.
         exec cp $SAL_DIR/code/templates/Makefile-cpp.template [set id]/cpp/standalone/Makefile
         puts $frep "perl -pi -w -e 's/sacpp_SAL_types/sacpp_[set base]_types/g;' [set id]/cpp/standalone/Makefile"
         puts $frep "perl -pi -w -e 's/_SAL_/_[set id]_/g;' [set id]/cpp/standalone/Makefile"
@@ -108,24 +275,55 @@ global SAL_DIR
         puts $frep "perl -pi -w -e 's/sacpp_SAL_types/sacpp_[set base]_types/g;' [set base]/cpp/Makefile.sacpp_[set base]_types"
         exec cp $SAL_DIR/code/templates/Makefile.sacpp_SAL_sub.template [set id]/cpp/standalone/Makefile.sacpp_[set id]_sub
         puts $frep "perl -pi -w -e 's/_SAL_/_[set base]_/g;' [set id]/cpp/standalone/Makefile.sacpp_[set id]_sub"
+        puts $frep "perl -pi -w -e 's/SALSubsys/[set base]/g;' [set id]/cpp/standalone/Makefile.sacpp_[set id]_sub"
         puts $frep "perl -pi -w -e 's/SALData/[set id]/g;' [set id]/cpp/standalone/Makefile.sacpp_[set id]_sub"
+        if { [info exists SYSDIC($base,keyedID)] } {
+          puts $frep "perl -pi -w -e 's/#-DSAL_SUBSYSTEM/-DSAL_SUBSYSTEM/g;' [set id]/cpp/standalone/Makefile.sacpp_[set id]_sub"
+        }
         exec cp $SAL_DIR/code/templates/Makefile.sacpp_SAL_pub.template [set id]/cpp/standalone/Makefile.sacpp_[set id]_pub
         puts $frep "perl -pi -w -e 's/_SAL_/_[set base]_/g;' [set id]/cpp/standalone/Makefile.sacpp_[set id]_pub"
+        puts $frep "perl -pi -w -e 's/SALSubsys/[set base]/g;' [set id]/cpp/standalone/Makefile.sacpp_[set id]_pub"
         puts $frep "perl -pi -w -e 's/SALData/[set id]/g;' [set id]/cpp/standalone/Makefile.sacpp_[set id]_pub"
-        exec cp $SAL_DIR/code/templates/Makefile.saj_SAL_pub.template [set id]/java/standalone/Makefile.saj_[set id]_pub
-        exec cp $SAL_DIR/code/templates/SALDataPublisher.cpp.template [set id]/cpp/src/[set id]DataPublisher.cpp
-        puts $frep "perl -pi -w -e 's/SALTopic/[set base]\:\:[set name]/g;' [set id]/cpp/src/[set id]DataPublisher.cpp"
+        if { [info exists SYSDIC($base,keyedID)] } {
+          puts $frep "perl -pi -w -e 's/#-DSAL_SUBSYSTEM/-DSAL_SUBSYSTEM/g;' [set id]/cpp/standalone/Makefile.sacpp_[set id]_pub"
+        }
+        exec cp $SAL_DIR/code/templates/Makefile.sacpp_SAL_cmd.template [set base]/cpp/src/Makefile.sacpp_[set base]_cmd
+        puts $frep "perl -pi -w -e 's/_SAL_/_[set base]_/g;' [set base]/cpp/src/Makefile.sacpp_[set base]_cmd"
+        puts $frep "perl -pi -w -e 's/SALSubsys/[set base]/g;' [set base]/cpp/src/Makefile.sacpp_[set base]_cmd"
+        puts $frep "perl -pi -w -e 's/SALData/[set base]/g;' [set base]/cpp/src/Makefile.sacpp_[set base]_cmd"
+        if { [info exists SYSDIC($base,keyedID)] } {
+          puts $frep "perl -pi -w -e 's/#-DSAL_SUBSYSTEM/-DSAL_SUBSYSTEM/g;' [set base]/cpp/src/Makefile.sacpp_[set base]_cmd"
+        }
+        modpubsubexamples $id
+        puts $frep "perl -pi -w -e 's/SALTopic/[set name]/g;' [set id]/cpp/src/[set id]DataPublisher.cpp"
         puts $frep "perl -pi -w -e 's/SALNAMESTRING/[set base]_[set name]/g;' [set id]/cpp/src/[set id]DataPublisher.cpp"
         puts $frep "perl -pi -w -e 's/SALData/$base/g;' [set id]/cpp/src/[set id]DataPublisher.cpp"
-        exec cp $SAL_DIR/code/templates/SALDataSubscriber.cpp.template [set id]/cpp/src/[set id]DataSubscriber.cpp
-        puts $frep "perl -pi -w -e 's/SALTopic/[set base]\:\:[set name]/g;' [set id]/cpp/src/[set id]DataSubscriber.cpp"
+        puts $frep "perl -pi -w -e 's/SALTopic/[set name]/g;' [set id]/cpp/src/[set id]DataSubscriber.cpp"
         puts $frep "perl -pi -w -e 's/SALNAMESTRING/[set base]_[set name]/g;' [set id]/cpp/src/[set id]DataSubscriber.cpp"
         puts $frep "perl -pi -w -e 's/SALData/$base/g;' [set id]/cpp/src/[set id]DataSubscriber.cpp"
+        exec cp $SAL_DIR/code/templates/Makefile.sacpp_SAL_event.template [set base]/cpp/src/Makefile.sacpp_[set base]_event
+        puts $frep "perl -pi -w -e 's/_SAL_/_[set base]_/g;' [set base]/cpp/src/Makefile.sacpp_[set base]_event"
+        puts $frep "perl -pi -w -e 's/SALSubsys/[set base]/g;' [set base]/cpp/src/Makefile.sacpp_[set base]_event"
+        puts $frep "perl -pi -w -e 's/SALData/[set base]/g;' [set base]/cpp/src/Makefile.sacpp_[set base]_event"
+        if { [info exists SYSDIC($base,keyedID)] } {
+          puts $frep "perl -pi -w -e 's/#-DSAL_SUBSYSTEM/-DSAL_SUBSYSTEM/g;' [set base]/cpp/src/Makefile.sacpp_[set base]_event"
+        }
+        exec cp $SAL_DIR/code/templates/SALDataCommander.cpp.template [set base]/cpp/src/[set base]Commander.cpp
+        puts $frep "perl -pi -w -e 's/SALTopic/[set base]\:\:[set name]/g;' [set base]/cpp/src/[set base]Commander.cpp"
+        puts $frep "perl -pi -w -e 's/SALData/$base/g;' [set base]/cpp/src/[set base]Commander.cpp"
+        exec cp $SAL_DIR/code/templates/SALDataController.cpp.template [set base]/cpp/src/[set base]Controller.cpp
+        puts $frep "perl -pi -w -e 's/SALTopic/[set base]\:\:[set name]/g;' [set base]/cpp/src/[set base]Controller.cpp"
+        puts $frep "perl -pi -w -e 's/SALData/$base/g;' [set base]/cpp/src/[set base]Controller.cpp"
+        exec cp $SAL_DIR/code/templates/SALDataEvent.cpp.template [set base]/cpp/src/[set base]Event.cpp
+        puts $frep "perl -pi -w -e 's/SALData/$base/g;' [set base]/cpp/src/[set base]Event.cpp"
+        exec cp $SAL_DIR/code/templates/SALDataEventLogger.cpp.template [set base]/cpp/src/[set base]EventLogger.cpp
+        puts $frep "perl -pi -w -e 's/SALData/$base/g;' [set base]/cpp/src/[set base]EventLogger.cpp"
         foreach f "CheckStatus.cpp CheckStatus.h" {
 ##### These should be generated by idlpp
 ##### SALData.cpp SALDataDcps.cpp SALDataDcps.h SALDataDcps_impl.cpp SALDataDcps_impl.h 
 ##### SALData.h  SALDataSplDcps.cpp SALDataSplDcps.h ccpp_SALData.h"
            exec cp $SAL_DIR/code/templates/$f [set id]/cpp/src/.
+           exec cp $SAL_DIR/code/templates/$f [set base]/cpp/src/.
         }
       }
       if { $lang == "java"}  {
@@ -147,17 +345,49 @@ global SAL_DIR
         puts $frep "perl -pi -w -e 's/SALTopic/[set id]/g;' [set id]/java/standalone/Makefile.saj_[set id]_sub"
         puts $frep "perl -pi -w -e 's/SALData/[set base]/g;' [set id]/java/standalone/Makefile.saj_[set id]_sub"
         exec cp $SAL_DIR/code/templates/SALTopicDataPublisher.java.template [set id]/java/src/[set id]DataPublisher.java
+        if { [info exists SYSDIC($base,keyedID)] } {
+          puts $frep "perl -pi -w -e 's/SALSUBSYSID/aKey/g;' [set id]/java/src/[set id]DataPublisher.java"
+        } else {
+          puts $frep "perl -pi -w -e 's/SALSUBSYSID//g;' [set id]/java/src/[set id]DataPublisher.java"
+        }
         puts $frep "perl -pi -w -e 's/SALTopic/[set name]/g;' [set id]/java/src/[set id]DataPublisher.java"
         puts $frep "perl -pi -w -e 's/SALData/$base/g;' [set id]/java/src/[set id]DataPublisher.java"
         puts $frep "perl -pi -w -e 's/SALNAMESTRING/[set id]/g;' [set id]/java/src/[set id]DataPublisher.java"
         exec cp $SAL_DIR/code/templates/SALTopicDataSubscriber.java.template [set id]/java/src/[set id]DataSubscriber.java
+        if { [info exists SYSDIC($base,keyedID)] } {
+          puts $frep "perl -pi -w -e 's/SALSUBSYSID/aKey/g;' [set id]/java/src/[set id]DataSubscriber.java"
+        } else {
+          puts $frep "perl -pi -w -e 's/SALSUBSYSID//g;' [set id]/java/src/[set id]DataSubscriber.java"
+        }
         puts $frep "perl -pi -w -e 's/SALTopic/[set name]/g;' [set id]/java/src/[set id]DataSubscriber.java"
         puts $frep "perl -pi -w -e 's/SALData/$base/g;' [set id]/java/src/[set id]DataSubscriber.java"
         puts $frep "perl -pi -w -e 's/SALNAMESTRING/[set id]/g;' [set id]/java/src/[set id]DataSubscriber.java"
-###        exec cp -r $SAL_DIR/code/templates/java/standalone/SALData [set id]/java/standalone/.
+        exec cp $SAL_DIR/code/templates/Makefile.saj_SAL_cmdctl.template [set base]/java/src/Makefile.saj_[set base]_cmdctl
+        puts $frep "perl -pi -w -e 's/_SAL_/_[set base]_/g;' [set base]/java/src/Makefile.saj_[set base]_cmdctl"
+        puts $frep "perl -pi -w -e 's/SALData/[set base]/g;' [set base]/java/src/Makefile.saj_[set base]_cmdctl"
+        exec cp $SAL_DIR/code/templates/SALDataCommander.java.template [set base]/java/src/[set base]Commander.java
+        if { [info exists SYSDIC($base,keyedID)] } {
+          puts $frep "perl -pi -w -e 's/SALSUBSYSID/aKey/g;' [set base]/java/src/[set base]Commander.java"
+        } else {
+          puts $frep "perl -pi -w -e 's/SALSUBSYSID//g;' [set base]/java/src/[set base]Commander.java"
+        }
+        puts $frep "perl -pi -w -e 's/SALData/$base/g;' [set base]/java/src/[set base]Commander.java"
+        exec cp $SAL_DIR/code/templates/SALDataController.java.template [set base]/java/src/[set base]Controller.java
+        if { [info exists SYSDIC($base,keyedID)] } {
+          puts $frep "perl -pi -w -e 's/SALSUBSYSID/aKey/g;' [set base]/java/src/[set base]Controller.java"
+        } else {
+          puts $frep "perl -pi -w -e 's/SALSUBSYSID//g;' [set base]/java/src/[set base]Controller.java"
+        }
+        puts $frep "perl -pi -w -e 's/SALData/$base/g;' [set base]/java/src/[set base]Controller.java"
+        exec cp $SAL_DIR/code/templates/ErrorHandler.java [set id]/java/src/ErrorHandler.java
+        exec cp $SAL_DIR/code/templates/ErrorHandler.java [set base]/java/src/ErrorHandler.java
         exec cp $SAL_DIR/code/templates/runsample.template [set id]/java/standalone/[set id].run
         puts $frep "perl -pi -w -e 's/SALTopic/[set id]/g;' [set id]/java/standalone/[set id].run"
         puts $frep "perl -pi -w -e 's/SALData/$base/g;' [set id]/java/standalone/[set id].run"
+        puts $frep "perl -pi -w -e 's/_SAL_/_[set id]_/g;' [set id]/java/standalone/[set id].run"
+        exec cp $SAL_DIR/code/templates/runcmdctl.template [set base]/java/src/[set base]_cmdctl.run
+        puts $frep "perl -pi -w -e 's/SALData/$base/g;' [set base]/java/src/[set base]_cmdctl.run"
+        puts $frep "perl -pi -w -e 's/_SAL_/_[set id]_/g;' [set base]/java/src/[set base]_cmdctl.run"
       }
       if { $lang == "isocpp" } {
         exec cp $SAL_DIR/code/templates/Makefile-isocpp.template [set id]/isocpp/Makefile
@@ -175,7 +405,7 @@ global SAL_DIR
         puts $frep "perl -pi -w -e 's/SALTopic/$name/g;' [set id]/isocpp/implementation.cpp"
         puts $frep "perl -pi -w -e 's/SALNAMESTRING/$name/g;' [set id]/isocpp/implementation.cpp"
       }
-      if { $lang == "python" } {
+      if { $lang == "PyDDS" } {
         exec cp $SAL_DIR/code/templates/SALTopicPublisher.py.template [set id]/python/[set id]Publisher.py
         puts $frep "perl -pi -w -e 's/SALData/$base/g;' [set id]/python/[set id]Publisher.py"
         puts $frep "perl -pi -w -e 's/SALTopic/$name/g;' [set id]/python/[set id]Publisher.py"
@@ -191,25 +421,50 @@ global SAL_DIR
       if { $bad != "" } {puts stdout $bad}
 puts stdout "calling addSALDDStypes $idlfile $id $lang"
       addSALDDStypes $idlfile $id $lang $base
-      set frep [open /tmp/sreplace2.sal w]
-      puts $frep "#!/bin/sh"
-      puts $frep "perl -pi -w -e 's/SALData/$base/g;' [set base]/cpp/src/SALDDS.h"
-      puts $frep "perl -pi -w -e 's/SALData/$base/g;' [set base]/cpp/src/SALDDS.cpp"
-      puts $frep "perl -pi -w -e 's/SALCommand/$base\:\:command/g;' [set base]/cpp/src/SALDDS.cpp"
-      close $frep
-      exec chmod 755 /tmp/sreplace2.sal
-      catch { set result [exec /tmp/sreplace2.sal] } bad
+puts stdout "done addSALDDStypes $idlfile $id $lang"
+      if { $lang == "cpp" } {
+        set frep [open /tmp/sreplace2.sal w]
+        puts $frep "#!/bin/sh"
+        puts $frep "perl -pi -w -e 's/SALData/$base/g;' [set base]/cpp/src/SAL_[set base].h"
+        puts $frep "perl -pi -w -e 's/SALData/$base/g;' [set base]/cpp/src/SAL_[set base].cpp"
+        puts $frep "perl -pi -w -e 's/SALCommand/$base\:\:command/g;' [set base]/cpp/src/SAL_[set base].cpp"
+        puts $frep "perl -pi -w -e 's/SALResponse/$base\:\:ackcmd/g;' [set base]/cpp/src/SAL_[set base].cpp"
+        close $frep
+        exec chmod 755 /tmp/sreplace2.sal
+        catch { set result [exec /tmp/sreplace2.sal] } bad
+      }
+      if { $lang == "java" } {
+        set frep [open /tmp/sreplace2.sal w]
+        puts $frep "#!/bin/sh"
+        puts $frep "perl -pi -w -e 's/SALData/$base/g;' [set id]/java/src/org/lsst/sal/SAL_[set base].java"
+        puts $frep "perl -pi -w -e 's/SALCommand/command/g;' [set id]/cpp/src/org/lsst/sal/SAL_[set base].java"
+        puts $frep "perl -pi -w -e 's/SALResponse/ackcmd/g;' [set id]/cpp/src/org/lsst/sal/SAL_[set base].java"
+        puts $frep "perl -pi -w -e 's/SALData/$base/g;' [set base]/java/src/org/lsst/sal/SAL_[set base].java"
+        puts $frep "perl -pi -w -e 's/SALCommand/command/g;' [set base]/cpp/src/org/lsst/sal/SAL_[set base].java"
+        puts $frep "perl -pi -w -e 's/SALResponse/ackcmd/g;' [set base]/cpp/src/org/lsst/sal/SAL_[set base].java"
+        close $frep
+        exec chmod 755 /tmp/sreplace2.sal
+        catch { set result [exec /tmp/sreplace2.sal] } bad
+      }
 puts stdout "calling salidlgen $base $lang"
       salidlgen $base $lang
+puts stdout "done salidlgen $base $lang"
       if { $lang == "cpp" } { 
          set incfiles [glob [set base]/cpp/*.h]
          puts stdout "Updating include files : $incfiles"
-         foreach i $incfiles {  exec cp $i /opt/lsstsal/include/. }
-         exec cp [set base]/cpp/lib_sacpp_[set base]_types.so /opt/lsstsal/lib/.
+         catch { foreach i $incfiles {  exec cp $i /opt/lsstsal/include/. } }
+         exec cp [set base]/cpp/libsacpp_[set base]_types.so /opt/lsstsal/lib/.
+         exec ln -sf $SAL_WORK_DIR/[set base]/cpp/src/SAL_[set base].cpp $SAL_WORK_DIR/[set id]/cpp/src/.
+         exec ln -sf $SAL_WORK_DIR/[set base]/cpp/src/SAL_[set base].h $SAL_WORK_DIR/[set id]/cpp/src/.
+         salcpptestgen $base $id
       }
       if { $lang == "java" } {
          exec cp [set base]/java/saj_[set base]_types.jar /opt/lsstsal/lib/.
-         saljavaclassgen $id
+         saljavaclassgen $base $id
+      }
+      if { $lang == "python" } {
+         genpythonbinding $base
+         salpythontestgen $base
       }
 }
 
@@ -245,6 +500,7 @@ global SAL_WORK_DIR OPTIONS
 
 proc salidlgen { base lang } {
 global SAL_WORK_DIR OPTIONS
+   if { $lang == "python" } {set lang cpp}
    cd $SAL_WORK_DIR/$base/$lang
    puts stdout "Generating $lang type support for $base"
    if { $lang == "cpp" }     {catch { set result [exec make -f Makefile.sacpp_[set base]_types] } bad}
@@ -254,17 +510,53 @@ global SAL_WORK_DIR OPTIONS
    cd $SAL_WORK_DIR
 }
 
-proc saljavaclassgen { id } {
-global SAL_WORK_DIR OPTIONS
-   cd $SAL_WORK_DIR/$id/java/standalone
-   catch { set result [exec make -f Makefile.saj_[set id]_pub] } bad
-   puts stdout "javac : $result"
-   catch { set result [exec make -f Makefile.saj_[set id]_sub] } bad
-   puts stdout "javac : $result"
-   cd $SAL_WORK_DIR
+proc salpythontestgen { base } {
+global SAL_WORK_DIR
+   cd $SAL_WORK_DIR/$base/cpp/src
+   puts stdout "Generating Python SAL support for $base"
+   exec touch .depend.Makefile.sacpp_[set base]_python
+   catch { set result [exec make -f Makefile.sacpp_[set base]_python] } bad
+   if { $bad != "" } {puts stdout $bad}
+   puts stdout "python : Done SALPY_[set base].so"
 }
 
 
-source /opt/lsstsal/scripts/gensalgetput.tcl
+proc saljavaclassgen { base id } {
+global SAL_WORK_DIR OPTIONS
+   cd $SAL_WORK_DIR/$id/java/standalone
+   catch { set result [exec make -f Makefile.saj_[set id]_pub] } bad
+   puts stdout "javac : Done Publisher"
+   catch { set result [exec make -f Makefile.saj_[set id]_sub] } bad
+   puts stdout "javac : Done Subscriber"
+   cd $SAL_WORK_DIR/$base/java/src
+   catch { set result [exec make -f Makefile.saj_[set base]_cmdctl] } bad
+   puts stdout "javac : Done Commander/Controller"
+   catch { set result [exec make -f Makefile.saj_[set base]_event] } bad
+   puts stdout "javac : Done Event/Logger"
+   cd $SAL_WORK_DIR
+}
+
+proc salcpptestgen { base id } {
+global SAL_WORK_DIR OPTIONS
+   puts stdout "Generating cpp test programs for $id"
+   cd $SAL_WORK_DIR/$id/cpp/standalone
+   catch { set result [exec make -f Makefile.sacpp_[set id]_sub] } bad
+   puts stdout "cpp : Done Subscriber"
+   catch {puts stdout "result = $result"}
+   catch {puts stdout "bad = $bad"}
+   catch { set result [exec make -f Makefile.sacpp_[set id]_pub] } bad
+   puts stdout "cpp : Done Publisher"
+   cd $SAL_WORK_DIR/$base/cpp/src
+   catch { exec make -f Makefile.sacpp_[set base]_cmd } bad
+   puts stdout "cpp : Done Commander"
+   catch { exec make -f Makefile.sacpp_[set base]_event } bad
+   puts stdout "cpp : Done Event/Logger"
+   cd $SAL_WORK_DIR
+}
+
+source $SAL_DIR/add_system_dictionary.tcl
+source $SAL_DIR/gensalgetput.tcl
+source $SAL_DIR/gensimplepython.tcl
+source $SAL_DIR/managetypes.tcl
 
 

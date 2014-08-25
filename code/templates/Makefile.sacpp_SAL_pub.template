@@ -9,12 +9,12 @@ CXX           = g++
 LD            = $(CXX) $(CCFLAGS) $(CPPFLAGS)
 AR            = ar
 PICFLAGS      = -fPIC
-CPPFLAGS      = $(PICFLAGS) $(GENFLAGS) -g -m32 -D_REENTRANT -Wall -I"." -I"$(OSPL_HOME)/examples/include" -I"$(OSPL_HOME)/examples" -I"$(OSPL_HOME)/include" -I"$(OSPL_HOME)/include/sys" -I"$(OSPL_HOME)/include/dcps/C++/SACPP" -I/opt/lsstsal/include
+CPPFLAGS      = $(PICFLAGS) $(GENFLAGS) -g -m32 -D_REENTRANT -Wall -I"." -I"$(OSPL_HOME)/examples/include" -I"$(OSPL_HOME)/examples" -I"$(OSPL_HOME)/include" -I"$(OSPL_HOME)/include/sys" -I"$(OSPL_HOME)/include/dcps/C++/SACPP" -I"$(SAL_HOME)/include" -I../../../SALSubsys/cpp/src -I"$(SAL_WORK_DIR)/include" #-DSAL_SUBSYSTEM_ID_IS_KEYED
 OBJEXT        = .o
 OUTPUT_OPTION = -o "$@"
 COMPILE.c     = $(CC) $(CFLAGS) $(CPPFLAGS) -c
 COMPILE.cc    = $(CXX) $(CCFLAGS) $(CPPFLAGS) -c
-LDFLAGS       = -L"." -L"$(OSPL_HOME)/lib" -Wl,-rpath,\$$ORIGIN -Wl,-rpath,\$$ORIGIN/$(OSPL_HOME)/lib -L$(SAL_HOME)/lib
+LDFLAGS       = -L"." -L"$(OSPL_HOME)/lib" -Wl,-rpath,\$$ORIGIN -Wl,-rpath,\$$ORIGIN/$(OSPL_HOME)/lib -L"$(SAL_HOME)/lib"
 CCC           = $(CXX)
 MAKEFILE      = Makefile.sacpp_SAL_pub
 DEPENDENCIES  = .depend.$(MAKEFILE)
@@ -34,8 +34,8 @@ LIBPREFIX     = lib
 LIBSUFFIX     = 
 GENFLAGS      = 
 LDLIBS        = -l"sacpp_SAL_types$(LIBSUFFIX)" -l"dcpssacpp" -l"dcpsgapi" -l"ddsuser" -l"ddskernel" -l"ddsserialization" -l"ddsconfparser" -l"ddsconf" -l"ddsdatabase" -l"ddsutil" -l"ddsos" -ldl $(subst lib,-l,$(sort $(basename $(notdir $(wildcard /usr/lib/librt.so /lib/librt.so))))) -lpthread
-OBJS          = .obj/CheckStatus$(OBJEXT) .obj/SALDDS$(OBJEXT) .obj/SALDataDataPublisher$(OBJEXT)
-SRC           = ../src/CheckStatus.cpp ../src/SALDDS.cpp ../src/SALDataDataPublisher.cpp
+OBJS          = .obj/CheckStatus$(OBJEXT) .obj/SAL_SALSubsys$(OBJEXT) .obj/SALDataDataPublisher$(OBJEXT)
+SRC           = ../src/CheckStatus.cpp ../src/SAL_SALSubsys.cpp ../src/SALDataDataPublisher.cpp
 LINK.cc       = $(LD) $(LDFLAGS)
 EXPORTFLAGS   = 
 endif
@@ -70,8 +70,8 @@ LIBPREFIX     = lib
 LIBSUFFIX     = 
 GENFLAGS      = -g
 LDLIBS        = -l"sacpp_SAL_types$(LIBSUFFIX)" -l"dcpssacpp" -l"dcpsgapi" -l"ddsuser" -l"ddskernel" -l"ddsserialization" -l"ddsconfparser" -l"ddsconf" -l"ddsdatabase" -l"ddsutil" -l"ddsos" -ldl $(subst lib,-l,$(sort $(basename $(notdir $(wildcard /usr/lib/librt.so /lib/librt.so))))) -lpthread
-OBJS          = .obj/CheckStatus$(OBJEXT) .obj/SALDDS$(OBJEXT) .obj/SALDataDataPublisher$(OBJEXT)
-SRC           = ../src/CheckStatus.cpp ../src/SALDDS.cpp ../src/SALDataDataPublisher.cpp
+OBJS          = .obj/CheckStatus$(OBJEXT) .obj/SAL_SALSubsys$(OBJEXT) .obj/SALDataDataPublisher$(OBJEXT)
+SRC           = ../src/CheckStatus.cpp ../src/SAL_SALSubsys.cpp ../src/SALDataDataPublisher.cpp
 LINK.cc       = $(LD) $(LDFLAGS)
 EXPORTFLAGS   = 
 endif
@@ -93,9 +93,9 @@ generated: $(GENERATED_DIRTY)
 	@$(TESTDIRSTART) ".obj/../src" $(TESTDIREND) $(MKDIR) ".obj/../src"
 	$(COMPILE.cc) $(EXPORTFLAGS) $(OUTPUT_OPTION) ../src/CheckStatus.cpp
 
-.obj/SALDDS$(OBJEXT): ../src/SALDDS.cpp
+.obj/SAL_SALSubsys$(OBJEXT): ../src/SAL_SALSubsys.cpp
 	@$(TESTDIRSTART) ".obj/../src" $(TESTDIREND) $(MKDIR) ".obj/../src"
-	$(COMPILE.cc) $(EXPORTFLAGS) $(OUTPUT_OPTION) ../src/SALDDS.cpp
+	$(COMPILE.cc) $(EXPORTFLAGS) $(OUTPUT_OPTION) ../src/SAL_SALSubsys.cpp
 
 .obj/SALDataDataPublisher$(OBJEXT): ../src/SALDataDataPublisher.cpp
 	@$(TESTDIRSTART) ".obj/../src" $(TESTDIREND) $(MKDIR) ".obj/../src"

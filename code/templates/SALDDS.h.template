@@ -1,6 +1,6 @@
 
-#ifndef _SALDDSMGR_
-  #define _SALDDSMGR_
+#ifndef _SAL_SALDataMGR_
+  #define _SAL_SALDataMGR_
 
   #include <string>
   #include <cassert>
@@ -12,24 +12,30 @@
 // INSERT TYPE INCLUDES
 
   #include "CheckStatus.h"
+  #include "SAL_SALDataC.h"
 
   using namespace std;
   using namespace DDS;
 
-  class SALDDS
+  class SAL_SALData
   {
-
       /* Generic DDS entities */
       DomainParticipantFactory_var dpf;
       DomainParticipant_var participant;
       Topic_var topic;
+      Topic_var topic2;
+      ContentFilteredTopic_var filteredtopic;
+      ContentFilteredTopic_var filteredtopic2;
       Publisher_var publisher;
       Subscriber_var subscriber;
       DataWriter_var writer;
+      DataWriter_var writer2;
       DataReader_var reader;
+      DataReader_var reader2;
 
       /* QosPolicy holders */
       TopicQos reliable_topic_qos;
+      TopicQos reliable_topic_qos2;
       TopicQos setting_topic_qos;
       PublisherQos pub_qos;
       DataWriterQos dw_qos;
@@ -40,64 +46,111 @@
 
       DDS::String_var partition;
       DDS::String_var typeName;
+      DDS::String_var typeName2;
+      DDS::String_var sFilter;
       bool hasReader;
       bool hasWriter;
-      salUINT debugLevel;
-      salUINT sndSeqNum;
-      salUINT rcvSeqNum;
+      bool hasCommand;
+      bool hasEventReader;
+      bool hasEventWriter;
+      bool hasProcessor;
+      int subsystemID;
+      int debugLevel;
+      int sndSeqNum;
+      int rcvSeqNum;
+      int rcvOrigin;
+      salU64  origin;
 
     public:
+
+#ifdef SAL_SUBSYSTEM_ID_IS_KEYED
+     SAL_SALData(int aKey);
+#else
+     SAL_SALData();
+#endif
+
 // INSERT TYPE SUPPORT      
       void salTypeSupport(char *topicName);
-      DataWriter_var salTelemetryPub(char *topicName);
-//      DataReader_var salTelemetrySub(char *topicName);
+      void salTelemetryPub(char *topicName);
       void salTelemetrySub(char *topicName);
-      void salCommand(char *topicName);
-      void salEvent(char *topicName);
+
+
+//      void salEvent(char *topicName);
 //      template <class T1, class T2>
 //      void putSample(T1 data, T2 writer);
 //      template <class T1, class T2, class T3>
 //      void getSample(T1 data, T2 info, T3 reader);
 //      salReturn putSample(SALData::SALTopic data);
 //      salReturn getSample(SALData::SALTopicSeq data);
-      salReturn getResponse(SALData::response data);
-      salReturn getEvent(SALData::logevent data);
+
+
+      salReturn getResponse(SALData::ackcmdSeq data);
       void salShutdown();
+#ifdef SAL_SUBSYSTEM_ID_IS_KEYED
+      void salInitialize(int aKey);
+#else
       void salInitialize();
-      salUINT issueCommand( SALData::command data);
-      salReturn checkCommand( salUINT cmdSeqNum );
-      salReturn cancelCommand( salUINT cmdSeqNum );
-      salReturn abortCommand( salUINT cmdSeqNum );
-      salReturn waitForCompletion( salUINT cmdSeqNum , salINT timeout );
-      salReturn setDebugLevel( salUINT level );
-      salUINT getDebugLevel( salUINT level );
-      salUINT getOrigin();
-      salUINT getProperty(salCHAR *property, salCHAR *value);
+#endif
+      void salCommand();
+      void salProcessor();
+      int issueCommand( SALData::command data);
+      int issueCommandC( SALData_commandC *data);
+      salReturn ackCommand( int cmdSeqNum, salLONG  ack, salLONG error, char *result );
+      salReturn acceptCommand( SALData::commandSeq data);
+      int acceptCommandC( SALData_commandC *data);
+      salReturn checkCommand( int cmdSeqNum );
+      salReturn cancelCommand( int cmdSeqNum );
+      salReturn abortCommand( int cmdSeqNum );
+      salReturn waitForCompletion( int cmdSeqNum ,unsigned int timeout );
+      salReturn setDebugLevel( int level );
+      int getDebugLevel( int level );
+      int getOrigin();
+      int getProperty(salCHAR *property, salCHAR *value);
       salReturn setProperty(salCHAR *property, salCHAR *value);
       void logError(salReturn status);
-      salTIME currentTime();
-      
+//      salTIME currentTime();
+
+      salReturn logEvent( char *message, int priority );      
+      salReturn getEvent(SALData::logeventSeq data);
+      int getEventC(SALData_logeventC *data);
+
+
       void createParticipant(const char *partitiontName);
       void deleteParticipant();
       void registerType(TypeSupport *ts);
+      void registerType2(TypeSupport *ts);
       void createTopic(char *topicName);
-      void deleteTopic();
+      void createTopic2(char *topicName);
+     void createContentFilteredTopic(const char *topicName, const char *filter,
+        const StringSeq &expr);
+     void createContentFilteredTopic2(const char *topicName, const char *filter,
+        const StringSeq &expr);
+
+
+
+
       void createPublisher();
       void deletePublisher();
+      void deleteTopics();
       void createWriter();
+      void createWriter2();
       void createWriter(bool autodispose_unregistered_instances);
+      void createWriter2(bool autodispose_unregistered_instances);
       void deleteWriter();
       void createSubscriber();
       void deleteSubscriber();
-      void createReader();
+      void createReader(bool filtered);
+      void createReader2(bool filtered);
       void deleteReader();
       DataReader_ptr getReader();
+      DataReader_ptr getReader2();
       DataWriter_ptr getWriter();
+      DataWriter_ptr getWriter2();
       Publisher_ptr getPublisher();
       Subscriber_ptr getSubscriber();
       Topic_ptr getTopic();
       DomainParticipant_ptr getParticipant();
-      ~SALDDS();
+      ~SAL_SALData();
   };
 
 #endif

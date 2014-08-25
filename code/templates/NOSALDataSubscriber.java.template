@@ -25,7 +25,7 @@ import SALData.SALTopicTypeSupport;
 public class NOSALDataSubscriber {
 
 	public static void main(String[] args) {
-		SALDDS mgr = new SALDDS();
+		SAL_SALData mgr = new SAL_SALData();
 		String partitionName = "SAL LSST";
 
 		// create Domain Participant

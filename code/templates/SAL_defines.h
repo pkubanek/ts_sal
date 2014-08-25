@@ -10,6 +10,10 @@
  
 typedef unsigned int 	salUINT;   
 typedef int 		salINT;  
+typedef unsigned long 	salULONG;   
+typedef long 		salLONG;  
+typedef unsigned long long	salU64;   
+typedef long long	sal64;  
 typedef unsigned short 	salUSHORT;
 typedef short 		salSHORT;
 typedef float 		salFLT;
@@ -20,9 +24,7 @@ typedef char 		salCHAR;
 typedef int		salIID;
 typedef int		salSID;
 typedef int		salTID;
-typedef unsigned int    salReturn;
-typedef DDS_DataReader  salDataReader
-typedef DDS_DataWriter  salDataWriter
+typedef int	        salReturn;
 
 #define SAL_PID_HISTORY_DEPTH	20001
 #define SAL_PID_AUTO_DISPOSE	20002
@@ -70,9 +72,10 @@ typedef DDS_DataWriter  salDataWriter
 #define SAL__SYNC_READ  	106
 
 // generateAlert types
-#define SAL__WARN_ALERT   	200
-#define SAL__ERROR_ALERT  	201
-#define SAL__ABORT_ALERT 	-200
+#define SAL__EVENT_INFO   	200
+#define SAL__EVENT_WARN   	-200
+#define SAL__EVENT_ERROR  	-201
+#define SAL__EVENT_ABORT 	-202
 
 // issueCommand/getResponse return codes
 #define SAL__CMD_ACK        	300

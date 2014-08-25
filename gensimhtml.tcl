@@ -15,6 +15,8 @@ proc dosim { fid id nid } {
 
 
 set scriptdir $env(SAL_DIR)
+set SAL_WORK_DIR $env(SAL_WORK_DIR)
+
 source $scriptdir/streamutils.tcl
 source $scriptdir/add_system_dictionary.tcl
 catch {unset MSYS}
@@ -23,7 +25,8 @@ foreach id $MSYS {
    set SYS([lindex [split $id _] 0]) 1
 }
 
-set fall [open html/index-dbsimulate.html w]
+exec mkdir -p $SAL_WORK_DIR/html/dbsimulate
+set fall [open $SAL_WORK_DIR/html/dbsimulate/index-dbsimulate.html w]
 puts $fall "<HTML><HEAD><TITLE>Facility Subsystem and database simulation</TITLE></HEAD>
 <BODY BGCOLOR=White>
 <IMG SRC=\"LSST_logo.gif\" ALIGN=CENTER>
@@ -39,7 +42,7 @@ set nid 1
 puts $fall "<TR><TD><A HREF=\"index-dbsimulate-$subsystem.html\">$subsystem</A></TD>
 <TD><A HREF=\"index-simulate-$subsystem.html\">$subsystem</A></TD></TR>"
 
-set fidx [open html/index-simulate-$subsystem.html w]
+set fidx [open $SAL_WORK_DIR/html/dbsimulate/index-simulate-$subsystem.html w]
 puts $fidx "<HTML><HEAD><TITLE>Facility subsystem simulation</TITLE></HEAD>
 <BODY BGCOLOR=White>
 <IMG SRC=\"LSST_logo.gif\" ALIGN=CENTER>

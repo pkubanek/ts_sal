@@ -10,7 +10,7 @@ proc calcshmid { subsys } {
   return $id
 }
 
-set COMMANDABLE "auxscope calibration camera dm enclosure environment hexapod lasercal m1m3 m2 mount network ocs power scheduler seeing_dimm seeing_mass skycam system tcs"
+set COMMANDABLE "auxscope calibration camera dm enclosure environment hexapod lasercal m1m3 m2 mount network ocs power rotator scheduler seeing_dimm seeing_mass skycam system tcs"
 
 set FREQUENCY(enclosure)    1.0
 set FREQUENCY(environment)  1.0
@@ -60,12 +60,12 @@ foreach s $COMMANDABLE {
      *streamid = 0x$id1;
      *size = sizeof(svcSAL_command);
   \}"
-  set id1 [calcshmid [set s]_response]
-  lappend CSTREAMS [set s]_response
+  set id1 [calcshmid [set s]_ackcmd]
+  lappend CSTREAMS [set s]_ackcmd
   puts $fcid "
-  if (strcmp(\"[set s]_response\",subsys) == 0 ) \{
+  if (strcmp(\"[set s]_ackcmd\",subsys) == 0 ) \{
      *streamid = 0x$id1;
-     *size = sizeof(svcSAL_response);
+     *size = sizeof(svcSAL_ackcmd);
   \}"
 }
 puts $fcid "

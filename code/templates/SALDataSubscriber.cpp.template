@@ -1,17 +1,14 @@
 
 /*
- * This file contains the implementation for the 'SALDataSubscriber' executable.
+ * This file contains the implementation for the 'SALNAMESTRINGSubscriber' executable.
  *
  ***/
 
-// Control optional compilation 
-#define USE_SAL_WRAPPER
-#define USE_SAL_COMMAND
 
 #include <string>
 #include <sstream>
 #include <iostream>
-#include "SALDDS.h"
+#include "SAL_SALData.h"
 #include "ccpp_sal_SALData.h"
 #include "os.h"
 
@@ -24,81 +21,26 @@ using namespace SALData;
 extern "C"
 {
   OS_API_EXPORT
-  int SALDataSubscriber(int argc, char *argv[]);
+  int SALTelemetrySubscriber(int argc, char *argv[]);
 }
 
-int SALDataSubscriber(int argc, char *argv[])
-{
-  os_time delay_2ms = { 0, 2000000 };
-  os_time delay_200ms = { 0, 200000000 };
-  SALTopicSeq theTopicList;
-  SampleInfoSeq infoSeq;
-
-  SALDDS mgr;
-
-  // create domain participant
-  mgr.createParticipant("LSST");
-
-  //create type
-  SALTopicTypeSupport_var mt = new SALTopicTypeSupport();
-  mgr.registerType(mt.in());
-
-  //create Topic
-  char topic_name[] = "SALData_SALTopic";
-  mgr.createTopic(topic_name);
-
-  //create Subscriber
-  mgr.createSubscriber();
-
-  // create DataReader
-  mgr.createReader();
-
-  DataReader_var dreader = mgr.getReader();
-  SALTopicDataReader_var SALReader = SALTopicDataReader::_narrow(dreader.in());
-  checkHandle(SALReader.in(), "SALTopicDataReader::_narrow");
-
-  cout << "=== [Subscriber] Ready ..." << endl;
-
-  bool closed = false;
-  ReturnCode_t status =  - 1;
-  int count = 0;
-  while (!closed && count < 1500) // We dont want the example to run indefinitely
-  {
-    status = SALReader->take(theTopicList, infoSeq, LENGTH_UNLIMITED,
-      ANY_SAMPLE_STATE, ANY_VIEW_STATE, ANY_INSTANCE_STATE);
-    checkStatus(status, "SALTopicDataReader::take");
-    for (DDS::ULong j = 0; j < theTopicList.length(); j++)
-    {
-      cout << "=== [Subscriber] message received :" << endl;
-      cout << "    revCode  : " << theTopicList[j].private_revCode << endl;
-    }
-    status = SALReader->return_loan(theTopicList, infoSeq);
-    checkStatus(status, "SALTopicDataReader::return_loan");
-    os_nanoSleep(delay_200ms);
-    ++count;
-  }
-
-  os_nanoSleep(delay_2ms);
-
-  //cleanup
-  mgr.deleteReader();
-  mgr.deleteSubscriber();
-  mgr.deleteTopic();
-  mgr.deleteParticipant();
-
-  return 0;
-}
 
 int SALTelemetrySubscriber(char *topic_name)
 {
   os_time delay_2ms = { 0, 2000000 };
   os_time delay_200ms = { 0, 200000000 };
-  SALTopicSeq SALInstance;
+  SALNAMESTRINGC SALInstance;
 
-  SALDDS mgr;
 
-  mgr.salInitialize();
-//  DataReader_var dreader = mgr.salTelemetrySub(topic_name);
+#ifdef SAL_SUBSYSTEM_ID_IS_KEYED
+  int SALDataID = 1;
+  SAL_SALData mgr = SAL_SALData(SALDataID);
+//  cmd.salInitialize(SALDataID);
+#else
+  SAL_SALData mgr = SAL_SALData();
+//  cmd.salInitialize();
+#endif
+
   mgr.salTelemetrySub(topic_name);
 
   cout << "=== [Subscriber] Ready ..." << endl;
@@ -108,7 +50,10 @@ int SALTelemetrySubscriber(char *topic_name)
   int count = 0;
   while (!closed && count < 1500) // We dont want the example to run indefinitely
   {
-    status = mgr.getSample(SALInstance);
+    status = mgr.getSampleSALTopic(&SALInstance);
+    if (status == SAL__OK) {
+// INSERT_SAL_SUBC
+    }
     os_nanoSleep(delay_200ms);
     ++count;
   }
@@ -123,11 +68,7 @@ int SALTelemetrySubscriber(char *topic_name)
 
 int OSPL_MAIN (int argc, char *argv[])
 {
-#ifdef USE_SAL_WRAPPER
-  return SALTelemetrySubscriber("SALData_SALTopic");
-#else
-  return SALDataSubscriber (argc, argv);
-#endif
+  return SALTelemetrySubscriber("SALNAMESTRING");
 }
 
 

@@ -11,7 +11,7 @@ if { $argc < 2 } {
 
    where flag(s) may be
 
-		validate - check the IDL
+		validate - check the IDL and Command/LogEvent definitions
 		simd     - generate SIMD c++ code
                 sal      - generate SAL wrappers for cpp, java, isocpp, python
 		compile  - compile a c++ module
@@ -112,7 +112,13 @@ if { $OPTIONS(validate) } {
       checkidl $subsys
       stdlog "Completed $subsys validation\n\n"
   }
-  cd $SAL_WORK_DIR
+  set base [lindex [split $subsys "_"]]
+  if { [file exists $SAL_WORK_DIR/[set base]_command list] } { 
+     catch { set result [exec $SAL_DIR/parse_command_list.tcl $base] } bad
+  }
+  if { [file exists $SAL_WORK_DIR/[set base]_event list] } { 
+     catch { set result [exec $SAL_DIR/parse_event_list.tcl $base] } bad
+  }
 }
 
 exec rmdir saltemptest

@@ -123,12 +123,12 @@ if { [info exists FormData(GenerateALL)] } {
   foreach t [array names ISSU] {
      set s [lindex [split $t ._] 0]
      set PUBS([set s]_command)  1
-     set SUBS([set s]_response) 1
+     set SUBS([set s]_ackcmd) 1
   }
   foreach t [array names PROC] {
      set s [lindex [split $t ._] 0]
      set SUBS([set s]_command)  1
-     set PUBS([set s]_response) 1
+     set PUBS([set s]_ackcmd) 1
   }
 #  foreach t [array names PUBS] {
 #     set id [join [split $t .] _]

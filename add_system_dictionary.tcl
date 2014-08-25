@@ -1,8 +1,12 @@
 
-set SYSDIC(systems) "auxscope calibration camera dm enclosure environment hexapod lasercal m1m3 m2 mount network operations power scheduler seeing skycam system tcs"
+set SYSDIC(systems) "auxscope calibration camera dm enclosure environment hexapod lasercal m1m3 m2 mount network operations power rotator scheduler seeing skycam system tcs"
 foreach s $SYSDIC(systems) {set SYSDIC($s,type) system}
 
 set SYSDIC(datatypes) "byte short int long float string int64 double ubyte ushort uint ulong"
+set SYSDIC(hexapod,keyedID) 1
+
+set SYSDIC(hexapod,1) "m2hexapod"
+set SYSDIC(hexapod,2) "camerahexapod"
 
 set TSYSDIC(subsystems) "<H2>Appendix A - System Dictionary</H2><P>
 <H2>Contents : </H2>

@@ -1,9 +1,9 @@
 #!/usr/bin/tclsh
 
 proc dometa { id } {
-global SDESC UDESC QDESC
+global SDESC UDESC QDESC SAL_WORK_DIR
    exec mkdir -p $id
-   set fmet [open $id/[tidyname $id]-metadata.html w]
+   set fmet [open $SAL_WORK_DIR/html/$id/[tidyname $id]-metadata.html w]
    puts $fmet "<HTML><HEAD><TITLE>Stream definition editor - $id</TITLE></HEAD>
 <BODY BGCOLOR=White><H1>
 <IMG SRC=\"../LSST_logo.gif\" ALIGN=CENTER>
@@ -62,6 +62,8 @@ proc tidyname { f } {
 
 catch { unset MSYS}
 set scriptdir $env(SAL_DIR)
+set SAL_WORK_DIR $env(SAL_WORK_DIR)
+exec mkdir -p $SAL_WORK_DIR/html/salgenerator
 
 source $scriptdir/add_system_dictionary.tcl
 source $scriptdir/checkdesc.tcl
@@ -70,7 +72,7 @@ source $scriptdir/streamutils.tcl
 pubsubs
 
 set SYSTEMS ""
-set fidx [open index-streamdef.html w]
+set fidx [open $SAL_WORK_DIR/html/salgenerator/index-streamdef.html w]
 puts $fidx "<HTML><HEAD><TITLE>Stream definition editor index</TITLE></HEAD>
 <BODY BGCOLOR=White>
 <IMG SRC=\"LSST_logo.gif\" ALIGN=CENTER>
@@ -103,7 +105,7 @@ puts $fidx "</select>
 <TR BGCOLOR=Yellow><B><TD>Stream Name</TD><TD>Edit contents</TD><TD>Edit MetaData</TD>
 <TD>Configure SAL</TD></B></TR>"
 
-set fgen [open sal-generator.html w]
+set fgen [open $SAL_WORK_DIR/html/salgenerator/sal-generator.html w]
 puts $fgen "<HTML><HEAD><TITLE>Service Abstraction Layer API generator</TITLE></HEAD>
 <BODY BGCOLOR=White><H1>
 <IMG SRC=\"LSST_logo.gif\" ALIGN=CENTER>
@@ -123,7 +125,7 @@ set last ""
 set fin [open $SAL_WORK_DIR/.salwork/datastreams.detail r]
 while { [gets $fin rec] > -1 } {
   set cmdresp [lindex [split $rec "_ "] 1]
-  if { $cmdresp != "command" && $cmdresp != "response" } {
+  if { $cmdresp != "command" && $cmdresp != "ackcmd" } {
    set d [split [lindex $rec 0] "./_"]
    set id [join [lrange $d 0 1] .]
    if { $id == "" } {set id [lindex $rec 0]}
@@ -142,7 +144,7 @@ while { [gets $fin rec] > -1 } {
       set last $id
       exec mkdir -p $id
       puts stdout "Creating $id/[tidyname $id] stream editor"
-      set fout [open $id/[tidyname $id]-streamdef.html w]
+      set fout [open $SAL_WORK_DIR/html/salgenerator/$id/[tidyname $id]-streamdef.html w]
       set nid 1
       set CSYS $id
       puts $fout "<HTML><HEAD><TITLE>Stream definition editor - $id</TITLE></HEAD>
@@ -234,7 +236,7 @@ close $fgen
 # 
 foreach s $SYSDIC(systems) {
 catch {unset doneit}
-set fgen [open sal-generator-$s.html w]
+set fgen [open $SAL_WORK_DIR/html/salgenerator/sal-generator-$s.html w]
 puts stdout "Creating sal-generator-$s form"
 puts $fgen "<HTML><HEAD><TITLE>Service Abstraction Layer API generator</TITLE></HEAD>
 <BODY BGCOLOR=White><H1>

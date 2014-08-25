@@ -30,12 +30,16 @@ import DDS.LENGTH_UNLIMITED;
 import DDS.SampleInfoSeqHolder;
 // INSERT SAL IMPORTS
 
-public class SALDDS {
+public class SAL_SALData {
 
 	private DomainParticipantFactory dpf;
 	private DomainParticipant participant;
 	private Topic topic;
+        private Topic topic2;
+        private ContentFilteredTopic filteredtopic;
+        private ContentFilteredTopic filteredtopic2;
 	private TopicQosHolder topicQos = new TopicQosHolder();
+	private TopicQosHolder topicQos2 = new TopicQosHolder();
 	private PublisherQosHolder pubQos = new PublisherQosHolder();
 	private SubscriberQosHolder subQos = new SubscriberQosHolder();
 
@@ -43,17 +47,27 @@ public class SALDDS {
 
 	private Publisher publisher;
 	private DataWriter writer;
+	private DataWriter writer2;
 
 	private Subscriber subscriber;
 	private DataReader reader;
+	private DataReader reader2;
 
 	private String typeName;
+	private String typeName2;
 	private String partitionName;
         private Boolean hasReader;
         private Boolean hasWriter;
+        private Boolean hasEventReader;
+        private Boolean hasEventWriter;
+        private Boolean hasProcessor;
+        private Boolean hasCommand;
         private int debugLevel;
         private int sndSeqNum;
         private int rcvSeqNum;
+        private int rcvOrigin;
+        private short subsystemID;
+        private long origin;
 
 // INSERT TYPE SUPPORT      
 
@@ -74,7 +88,7 @@ public class SALDDS {
 		createPublisher();
 
 		// create DataWriter
-		createWriter();
+		createWriter(false);
 
 		// Publish Events
 
@@ -97,28 +111,78 @@ public class SALDDS {
 		createSubscriber();
 
 		// create DataReader
-		createReader();
+#ifdef SAL_SUBSYSTEM_ID_IS_KEYED
+  		// Filter expr
+                String expr[] = new String[0];
+                String sFilter = "SALDataID = " + subsystemID;
+    		createContentFilteredTopic("filteredtopic", sFilter, expr);
 
+		// create DataReader
+ 		createReader(true);
+#else
+		createReader();
+#endif
 	}
 
 	public void logError(int status) 
 	{
-	   System.out.println("=== ERROR return value = " + status); 
+		System.out.println("=== ERROR return value = " + status); 
 	}
 
+        
+#ifdef SAL_SUBSYSTEM_ID_IS_KEYED
+        public void salInitialize(short aKey)
+	{
+		hasReader = false;
+		hasWriter = false;
+		debugLevel = 1;
+		hasCommand = false;
+		hasProcessor = false;
+		subsystemID = aKey;
+                rcvOrigin = 0;
+	}
 
+        public SAL_SALData(short aKey)
+	{
+		hasReader = false;
+		hasWriter = false;
+		hasCommand = false;
+		hasProcessor = false;
+		subsystemID = aKey;
+		debugLevel = 1;
+                rcvOrigin = 0;
+	}
+#else
         public void salInitialize()
 	{
-	   hasReader = false;
-	   hasWriter = false;
-	   debugLevel = 1;
+		hasReader = false;
+		hasWriter = false;
+		debugLevel = 1;
+		hasCommand = false;
+		hasProcessor = false;
+		subsystemID = 0;
+                rcvOrigin = 0;
 	}
 
-	int issueCommand( command data )
+	public SAL_SALData::SAL_SALData()
 	{
+		hasReader = false;
+		hasWriter = false;
+		hasCommand = false;
+		hasEventReader = false;
+		hasProcessor = false;
+		subsystemID = 0;
+		debugLevel = 1;
+                rcvOrigin = 0;
+	}
+#endif
+
+	public int issueCommand( command data )
+	{
+  	  long cmdHandle = HANDLE_NIL.value;
           int status;
 	  if (!hasWriter) {
-	     createWriter();
+	     createWriter(false);
 	     hasWriter = true;
 	     sndSeqNum = 1;
 	  }
@@ -126,46 +190,162 @@ public class SALDDS {
 	  commandDataWriter SALWriter = commandDataWriterHelper.narrow(dwriter);
 	  data.private_revCode = "LSST TEST COMMAND";
 	  data.private_seqNum = sndSeqNum;
+#ifdef SAL_SUBSYSTEM_ID_IS_KEYED
+	  data.SALDataID = subsystemID;
+	  cmdHandle = SALWriter.register_instance(data);
+#else
+	  SALWriter.register_instance(data);
+#endif
 	  if (debugLevel > 0) {
 	    System.out.println( "=== [issueCommand] writing a command containing :");
 	    System.out.println( " " + data.device + "." + data.property + "." + data.action + " : " + data.value);
 	  }
-	  SALWriter.register_instance(data);
-	  status = SALWriter.write(data, HANDLE_NIL.value);
-	  checkStatus(status, "commandDataWriter.write");
+	  status = SALWriter.write(data, cmdHandle);
 	  sndSeqNum++;
 	  return (sndSeqNum-1);
 	}
 
+	public int ackCommand( int cmdId, int ack, int error, String result )
+	{
+   		int istatus = -1;
+   		long ackHandle = HANDLE_NIL.value;
+
+   		SALData.ackcmd ackdata;
+   		DataWriter dwriter = getWriter2();
+   		ackcmdDataWriter SALWriter = ackcmdDataWriterHelper.narrow(dwriter);
+                ackdata = new SALData.ackcmd();
+   		ackdata.private_origin = rcvOrigin;
+   		ackdata.private_seqNum = rcvSeqNum;
+   		ackdata.error = error;
+   		ackdata.ack = ack;
+   		ackdata.result = result;
+#ifdef SAL_SUBSYSTEM_ID_IS_KEYED
+   		ackdata.SALDataID = subsystemID;
+#endif
+   		if (debugLevel > 0) {
+      			System.out.println(  "=== [ackCommand] acknowledging a command with :" );
+      			System.out.println(  "    seqNum   : " + ackdata.private_seqNum );
+      			System.out.println(  "    ack      : " + ackdata.ack );
+      			System.out.println(  "    error    : " + ackdata.error );
+      			System.out.println(  "    result   : " + ackdata.result );
+   		}
+#ifdef SAL_SUBSYSTEM_ID_IS_KEYED
+   		ackdata.SALDataID = subsystemID;
+   		ackHandle = SALWriter.register_instance(ackdata);
+#endif
+   		istatus = SALWriter.write(ackdata, ackHandle);
+#ifdef SAL_SUBSYSTEM_ID_IS_KEYED
+    		SALWriter.unregister_instance(ackdata, ackHandle);
+#endif
+   		return SAL__OK;
+	}
+
+
+
+	public int acceptCommand( SALData.command data )
+	{
+                commandSeqHolder aCmd = new commandSeqHolder();
+   		SampleInfoSeqHolder info;
+   		int status = 0;
+   		int istatus =  -1;
+   		SALData.ackcmd ackdata;;
+   		long ackHandle = HANDLE_NIL.value;
+
+  		// create DataWriter :
+  		// If autodispose_unregistered_instances is set to true (default value),
+  		// you will have to start the subscriber before the publisher
+  		boolean autodispose_unregistered_instances = false;
+  		if (!hasWriter) {
+     			createWriter2(autodispose_unregistered_instances);
+     			hasWriter = true;
+  		}
+  		DataWriter dwriter = getWriter2();
+  		ackcmdDataWriter SALWriter = ackcmdDataWriterHelper.narrow(dwriter);
+  		DataReader dreader = getReader();
+  		commandDataReader SALReader = commandDataReaderHelper.narrow(dreader);
+                info = new SampleInfoSeqHolder();
+  		istatus = SALReader.take(aCmd, info, LENGTH_UNLIMITED.value,ANY_SAMPLE_STATE.value, ANY_VIEW_STATE.value, ANY_INSTANCE_STATE.value);
+		if (aCmd.value.length > 0) {
+   		  if (info.value[0].valid_data) {
+    		     if (debugLevel > 0) {
+      			System.out.println(  "=== [acceptCommand] reading a command containing :" );
+      			System.out.println(  "    seqNum   : " + aCmd.value[0].private_seqNum );
+      			System.out.println(  "    device   : " + aCmd.value[0].device);
+      			System.out.println(  "    property : " + aCmd.value[0].property);
+      			System.out.println(  "    action   : " + aCmd.value[0].action);
+      			System.out.println(  "    value    : " + aCmd.value[0].value);
+      			System.out.println(  "    modifiers: " + aCmd.value[0].modifiers);
+    		    }
+                    ackdata = new SALData.ackcmd();
+#ifdef SAL_SUBSYSTEM_ID_IS_KEYED
+	            ackdata.SALDataID = subsystemID;
+#endif
+		    ackdata.private_origin = aCmd.value[0].private_origin;
+		    ackdata.private_seqNum = aCmd.value[0].private_seqNum;
+		    ackdata.error  = 0;
+		    ackdata.result = "SAL ACK";
+                    data.device    = aCmd.value[0].device;
+                    data.property  = aCmd.value[0].property;
+                    data.action    = aCmd.value[0].action;
+                    data.value     = aCmd.value[0].value;
+                    data.modifiers = aCmd.value[0].modifiers;
+		    status = aCmd.value[0].private_seqNum;
+		    rcvSeqNum = status;
+		    rcvOrigin = aCmd.value[0].private_origin;
+		    ackdata.ack = SAL__CMD_ACK;
+		    SALReader.return_loan(aCmd, info);
+#ifdef SAL_SUBSYSTEM_ID_IS_KEYED
+		    ackdata.SALDataID = subsystemID;
+		    ackHandle = SALWriter.register_instance(ackdata);
+#endif
+		    istatus = SALWriter.write(ackdata, ackHandle);
+           	    SALWriter.dispose(ackdata, ackHandle);
+		    SALWriter.unregister_instance(ackdata, ackHandle);
+		 }
+	     } else {
+	        status = 0;
+	     }
+	     return status;
+	}
+
+
+
 	public int checkCommand( int cmdSeqNum )
 	{
 	   int status;
-	   responseSeqHolder response = new responseSeqHolder();
-	   status = getResponse(response);
+	   ackcmdSeqHolder ackcmd = new ackcmdSeqHolder();
+	   status = getResponse(ackcmd);
 	   return status;
 	}
 
-	public int getResponse(responseSeqHolder data)
+	public int getResponse(ackcmdSeqHolder data)
 	{
 	  int status =  -1;
           int lastsample = 0;
 
-	  DataReader dreader = getReader();
-	  responseDataReader SALReader = responseDataReaderHelper.narrow(dreader);
+	  DataReader dreader = getReader2();
+	  ackcmdDataReader SALReader = ackcmdDataReaderHelper.narrow(dreader);
   	  SampleInfoSeqHolder infoSeq = new SampleInfoSeqHolder();
 	  SALReader.take(data, infoSeq, LENGTH_UNLIMITED.value,
 					ANY_SAMPLE_STATE.value, ANY_VIEW_STATE.value,
 					ANY_INSTANCE_STATE.value);
-	  if (debugLevel > 0) {
-		for (int i = 0; i < data.value.length; i++) {
+	  if (data.value.length > 0) {
+ 		for (int i = 0; i < data.value.length; i++) {
+                     if ( debugLevel > 0) {
 				System.out.println("=== [getResponse] message received :");
 				System.out.println("    revCode  : "
 						+ data.value[i].private_revCode);
+		    }
                     lastsample = i;
 		}
+	 	status = data.value[lastsample].ack;
+	  	rcvSeqNum = data.value[lastsample].private_seqNum;
+	  	rcvOrigin = data.value[lastsample].private_origin;
+	  } else {
+	        System.out.println("=== [getResponse] No ack yet!"); 
+	        status = SAL__CMD_NOACK;
 	  }
-	  status = data.value[lastsample].ack;
-	  rcvSeqNum = data.value[lastsample].private_seqNum;
+    	  SALReader.return_loan(data, infoSeq);
 	  return status;
 	}
 
@@ -182,36 +362,53 @@ public class SALDDS {
 	   return status;
 	}
 
-        public static final int SAL__CMD_COMPLETE = 300;
-        public static final int SAL__CMD_NOACK = -300;
         public static final int SAL__SLOWPOLL= 1;
         public static final int SAL__OK = 0;
         public static final int SAL__LOG_ROUTINES = 1;
+        public static final int SAL__CMD_ACK =        300;
+        public static final int SAL__CMD_INPROGRESS = 301;
+        public static final int SAL__CMD_STALLED =    302;
+        public static final int SAL__CMD_COMPLETE =   303;
+        public static final int SAL__CMD_NOPERM =   	-300;
+        public static final int SAL__CMD_NOACK =    	-301;
+        public static final int SAL__CMD_FAILED =   	-302;
+        public static final int SAL__CMD_ABORTED =  	-303;
+        public static final int SAL__CMD_TIMEOUT =  	-304;
         
 	public int waitForCompletion( int cmdSeqNum , int timeout )
 	{
 	   int status = 0;
 	   int countdown = timeout;
-	   responseSeqHolder response = new responseSeqHolder();
+	   ackcmdSeqHolder ackcmd = new ackcmdSeqHolder();
 
-	   while (status != SAL__CMD_COMPLETE && countdown > 0) {
-	      status = getResponse(response);
-	      if (response.value[0].private_seqNum != cmdSeqNum) { 
-	         status = SAL__CMD_NOACK;
+	   while (status != SAL__CMD_COMPLETE && countdown != 0) {
+	      status = getResponse(ackcmd);
+	      if (status != SAL__CMD_NOACK) {
+	        if (rcvSeqNum != cmdSeqNum) { 
+	           status = SAL__CMD_NOACK;
+	        }
 	      }
 	      try
 		{
-	 	  Thread.sleep(1);
+	 	  Thread.sleep(100*timeout);
 		}
 		catch(InterruptedException ie)
 		{
 			// nothing to do
 	      }
+	      System.out.println( "=== [waitForCompletion] command " + cmdSeqNum +  " countdown = " + countdown);
 	      countdown--;
 	   }
 	   if (status != SAL__CMD_COMPLETE) {
-	          logError(status);
-	   }
+	      if (debugLevel > 0) {
+	         System.out.println( "=== [waitForCompletion] command " + cmdSeqNum +  " timed out");
+	      } 
+	      logError(status);
+	   } else {
+	      if (debugLevel > 0) {
+	         System.out.println( "=== [waitForCompletion] command " + cmdSeqNum +  " completed ok");
+	      } 
+           }
  	   return status;
 	}
 
@@ -228,13 +425,50 @@ public class SALDDS {
 					ANY_INSTANCE_STATE.value);
 	  if (debugLevel > 0) {
 		for (int i = 0; i < data.value.length; i++) {
-				System.out.println("=== [getSample] message received :");
+				System.out.println("=== [getEvent] message received :");
 				System.out.println("    revCode  : "
 						+ data.value[i].private_revCode);
 		}
 	  }
 	  return status;
 	}
+
+	public int logEvent( String message, int priority )
+	{
+	   int status = 0;
+	   int istatus =  -1;
+	   logevent event;
+	   String stopic="SALData_logevent";
+	   long eventHandle = HANDLE_NIL.value;
+
+	  if (hasEventWriter == false) {
+	    salTelemetryPub(stopic);
+	    // create DataWriter :
+	    // If autodispose_unregistered_instances is set to true (default value),
+	    //  you will have to start the subscriber before the publisher
+	    boolean autodispose_unregistered_instances = false;
+	    createWriter(autodispose_unregistered_instances);
+	    hasEventWriter = true;	
+  	  }
+	  DataWriter dwriter = getWriter();
+	  logeventDataWriter SALWriter = logeventDataWriterHelper.narrow(dwriter);
+          event = new logevent();
+	  event.message = message;
+#ifdef SAL_SUBSYSTEM_ID_IS_KEYED
+	   event.SALDataID = subsystemID;
+	   eventHandle = SALWriter.register_instance(event);	
+#endif
+	  status=SALWriter.write(event, eventHandle);
+	  checkStatus(status, "logEventDataWriter.write");
+	  SALWriter.dispose(event, eventHandle);
+#ifdef SAL_SUBSYSTEM_ID_IS_KEYED
+	   SALWriter.unregister_instance(event, eventHandle);
+#endif
+	   return status;
+	}
+
+
+
 
 	public int setDebugLevel( int level )
 	{
@@ -278,31 +512,108 @@ public class SALDDS {
 	}
  
 
-	public void salCommand(String topicName)
+	public void salCommand()
 	{
-		String partitionName = "LSST";
+	  String stopic1="keyedCommand";
+	  String stopic2="keyedResponse";
+	  String scommand="SALData_command";
+	  String sresponse="SALData_ackcmd";
 
-		// create Domain Participant
-		createParticipant(partitionName);
+	  // create domain participant
+	  createParticipant("LSST");
 
-		// create Type
-		commandTypeSupport commandTS = new commandTypeSupport();
-		registerType(commandTS);
+	  //create Publisher
+	  createPublisher();
+	  createSubscriber();
 
-		// create Topic
-		createTopic(topicName);
+	  //create types
+	  commandTypeSupport mt = new commandTypeSupport();
+	  registerType(mt);
+	  ackcmdTypeSupport mtr = new ackcmdTypeSupport();
+	  registerType2(mtr);
+
+	  //create Topics
+#ifdef SAL_SUBSYSTEM_ID_IS_KEYED
+	  createTopic(stopic1);
+	  createTopic2(stopic2);
+#else
+	  createTopic(scommand);
+	  createTopic2(sresponse);
+#endif
+	
+	  //create a reader for responses
+#ifdef SAL_SUBSYSTEM_ID_IS_KEYED
+  	  // Filter expr
+          String expr[] = new String[0];
+          String sFilter = "SALDataID = " + subsystemID;
+    	  createContentFilteredTopic2("filteredResponse", sFilter, expr);
+
+	  // create DataReader
+ 	  createReader2(true);
+#else
+	  createReader2(false);
+#endif
+	  hasReader = true;
+	  hasCommand = true;
+}
+
+	public void salProcessor()
+	{
+	  String stopic1="keyedCommand";
+	  String stopic2="keyedResponse";
+	  String scommand="SALData_command";
+	  String sresponse="SALData_ackcmd";
+
+	  // create domain participant
+	  createParticipant("LSST");
+
+	  //create Publisher
+	  createPublisher();
+	  createSubscriber();
+
+	  //create types
+	  commandTypeSupport mt = new commandTypeSupport();
+	  registerType(mt);
+	  ackcmdTypeSupport mtr = new ackcmdTypeSupport();
+	  registerType2(mtr);
+
+	  //create Topics
+#ifdef SAL_SUBSYSTEM_ID_IS_KEYED
+	  createTopic(stopic1);
+	  createTopic2(stopic2);
+#else
+	  createTopic(scommand);
+	  createTopic2(sresponse);
+#endif
+
+	  //create a reader for commands
+#ifdef SAL_SUBSYSTEM_ID_IS_KEYED
+  	  // Filter expr
+          String expr[] = new String[0];
+          String sFilter = "SALDataID = " + subsystemID;
+    	  createContentFilteredTopic("filteredCommand", sFilter, expr);
+ 	  createReader(true);
+#else
+	  createReader(false);
+#endif
+	  boolean autodispose_unregistered_instances = false;
+	  createWriter2(autodispose_unregistered_instances);
+	  hasWriter = true;
+	  hasProcessor = true;
 	}
 
 
 	public void salShutdown()
 	{
-	  if ( hasReader ) { 
+	  if ( hasReader ) {
+             deleteReaders();
 	     deleteSubscriber();     
 	  }
-	  if ( hasWriter ) {
+	  if ( hasWriter ) { 
+	     deleteWriters();
 	     deletePublisher();
 	  }
-	  deleteTopic();
+	  deleteTopics();
 	  deleteParticipant();
 	}
 
@@ -342,6 +653,12 @@ public class SALDDS {
 		checkStatus(status, "register_type");
 	}
 
+	public void registerType2(TypeSupportImpl ts) {
+		typeName2 = ts.get_type_name();
+		int status = ts.register_type(participant, typeName2);
+		checkStatus(status, "register_type");
+	}
+
 	public void createTopic(String topicName) {
 		int status = -1;
 		participant.get_default_topic_qos(topicQos);
@@ -350,15 +667,58 @@ public class SALDDS {
 		status = participant.set_default_topic_qos(topicQos.value);
 		checkStatus(status,
 				"DomainParticipant.set_default_topic_qos");
+		System.out.println("=== [createTopic] : topicName " + topicName + " type = " + typeName);
 		topic = participant.create_topic(topicName, typeName, topicQos.value,
 				null, STATUS_MASK_NONE.value);
 		checkHandle(topic, "DomainParticipant.create_topic");
 	}
 
-	public void deleteTopic() {
+	public void createTopic2(String topicName) {
+		int status = -1;
+		participant.get_default_topic_qos(topicQos);
+		topicQos.value.reliability.kind = ReliabilityQosPolicyKind.RELIABLE_RELIABILITY_QOS;
+		topicQos.value.durability.kind = DurabilityQosPolicyKind.TRANSIENT_DURABILITY_QOS;
+		status = participant.set_default_topic_qos(topicQos.value);
+		checkStatus(status,
+				"DomainParticipant.set_default_topic_qos");
+		System.out.println("=== [createTopic2] : topicName " + topicName + " type = " + typeName2);
+
+		topic2 = participant.create_topic(topicName, typeName2, topicQos.value,
+				null, STATUS_MASK_NONE.value);
+		checkHandle(topic2, "DomainParticipant.create_topic");
+	}
+
+        public void  createContentFilteredTopic( String topicName, String filter, String[] expr)
+	{
+	  filteredtopic = participant.create_contentfilteredtopic(topicName,topic, filter, expr);
+	  checkHandle(filteredtopic, "DomainParticipant::create_contentfilteredtopic");
+	}
+
+        public void  createContentFilteredTopic2( String topicName, String filter, String[] expr)
+	{
+	  filteredtopic2 = participant.create_contentfilteredtopic(topicName,topic2, filter, expr);
+	  checkHandle(filteredtopic2, "DomainParticipant::create_contentfilteredtopic");
+	}
+
+	public void deleteTopics() {
+            if (filteredtopic != null) {
+		int status = participant.delete_contentfilteredtopic(filteredtopic);
+		checkStatus(status, "DDS.DomainParticipant.delete_contentfilteredtopic");
+            }
+            if (filteredtopic2 != null) {
+		int status = participant.delete_contentfilteredtopic(filteredtopic2);
+		checkStatus(status, "DDS.DomainParticipant.delete_contentfilteredtopic");
+            }
+            if (topic != null) {
 		int status = participant.delete_topic(topic);
 		checkStatus(status, "DDS.DomainParticipant.delete_topic");
+            }
+            if (topic2 != null) {
+		int status = participant.delete_topic(topic2);
+		checkStatus(status, "DDS.DomainParticipant.delete_topic");
+            }
 	}
+
 
 	public void createPublisher() {
 		int status = participant.get_default_publisher_qos(pubQos);
@@ -377,14 +737,40 @@ public class SALDDS {
 		participant.delete_publisher(publisher);
 	}
 
-	public void createWriter() {
+	public void deleteReaders() {
+            if (reader != null) {
+		subscriber.delete_datareader(reader);
+            }
+            if (reader2 != null) {
+		subscriber.delete_datareader(reader2);
+            }
+	}
+
+	public void deleteWriters() {
+            if (writer != null) {
+		publisher.delete_datawriter(writer);
+            }
+            if (writer2 != null) {
+		publisher.delete_datawriter(writer2);
+            }
+	}
+	public void createWriter(boolean autodispose) {
 		publisher.get_default_datawriter_qos(WQosH);
 		publisher.copy_from_topic_qos(WQosH, topicQos.value);
-		WQosH.value.writer_data_lifecycle.autodispose_unregistered_instances = false;
+		WQosH.value.writer_data_lifecycle.autodispose_unregistered_instances = autodispose;
 		writer = publisher.create_datawriter(topic, WQosH.value, null,STATUS_MASK_NONE.value);
 		checkHandle(writer, "Publisher.create_datawriter");
 	}
         
+	public void createWriter2(boolean autodispose) {
+		publisher.get_default_datawriter_qos(WQosH);
+		publisher.copy_from_topic_qos(WQosH, topicQos.value);
+		WQosH.value.writer_data_lifecycle.autodispose_unregistered_instances = autodispose;
+		writer2 = publisher.create_datawriter(topic2, WQosH.value, null,STATUS_MASK_NONE.value);
+		checkHandle(writer2, "Publisher.create_datawriter");
+	}
+
+
 	public void createSubscriber() {
 		int status = participant.get_default_subscriber_qos(subQos);
 		checkStatus(status,
@@ -402,18 +788,43 @@ public class SALDDS {
 		participant.delete_subscriber(subscriber);
 	}
 
-	public void createReader() {
+	public void createReader(boolean filtered) {
+	  if (filtered) {
+	  	 reader = subscriber.create_datareader(filteredtopic,
+		   	 DATAREADER_QOS_USE_TOPIC_QOS.value, null, STATUS_MASK_NONE.value);
+	  } else {
 		reader = subscriber.create_datareader(topic,
-				DATAREADER_QOS_USE_TOPIC_QOS.value, null, STATUS_MASK_NONE.value);
-		checkHandle(reader, "Subscriber.create_datareader");
+			DATAREADER_QOS_USE_TOPIC_QOS.value, null, STATUS_MASK_NONE.value);
+	  }
+	  checkHandle(reader, "Subscriber.create_datareader");
 	}
+
+	public void createReader2(boolean filtered) {
+	  if (filtered) {
+	  	 reader2 = subscriber.create_datareader(filteredtopic2,
+		   	 DATAREADER_QOS_USE_TOPIC_QOS.value, null, STATUS_MASK_NONE.value);
+	  } else {
+		reader2 = subscriber.create_datareader(topic2,
+			DATAREADER_QOS_USE_TOPIC_QOS.value, null, STATUS_MASK_NONE.value);
+	  }
+	  checkHandle(reader2, "Subscriber.create_datareader");
+	}
+
 
 	public DataReader getReader() {
 		return reader;
 	}
 
+	public DataReader getReader2() {
+		return reader2;
+	}
+
 	public DataWriter getWriter() {
 		return writer;
+	}
+
+	public DataWriter getWriter2() {
+		return writer2;
 	}
 
 	public Publisher getPublisher() {

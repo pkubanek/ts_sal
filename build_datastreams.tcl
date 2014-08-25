@@ -12,7 +12,7 @@ source $scriptdir/qosdesc.tcl
 set fin [open .salwork/datastreams.detail r]
 while { [gets $fin rec] > -1 } {
    set s [split [lindex $rec 1] .]
-   if { [lindex $s 1] != "command" &&  [lindex $s 1] != "response" } {
+   if { [lindex $s 1] != "command" &&  [lindex $s 1] != "ackcmd" } {
      set SYSTEMS([lindex $s 0]) 1
      set topic [join [lrange $s 0 [expr [llength $s]-2]] .]
      lappend T($topic) [lindex $s end]

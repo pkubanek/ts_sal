@@ -77,6 +77,36 @@ global TYPESUBS
    }
 }
 
+proc typeidltoc { rec } {
+global TYPESUBS VPROPS
+   set u ""
+   set VPROPS(array) 0
+   set VPROPS(string) 0
+   set VPROPS(name) ""
+   if { [lindex $rec 0] == "unsigned" } {set u "unsigned"; set rec [join [lrange $rec 1 end] " "]}
+   if { [llength [split $rec "<"]] > 1 } {
+      set s [lindex [split $rec "<>"] 1]
+      set VPROPS(dim) $s
+      set res "  char	lindex $rec 1]\[$s\]   [join [lrange $rec 2 end]]"
+      set VPROPS(name) [string trim [join [lrange $rec 1 end]] ";"]
+      set VPROPS(string) 1
+   } else {
+      if { [llength [split $rec "\["]] > 1 } {
+        set s [lindex [split $rec "\[\]"] 1]
+        set n [lindex [lindex [split $rec "\[\]"] 0] 1]
+        set VPROPS(name) $n
+        set VPROPS(array) 1
+        set VPROPS(dim) $s
+        set res "  [set u] $TYPESUBS([lindex $rec 0]) $n\[$s\];"
+      } else {
+        set res " [set u] $TYPESUBS([lindex $rec 0]) [join [lrange $rec 1 end]]"
+        set VPROPS(name) [string trim [join [lrange $rec 1 end]] ";"]
+      }
+   }
+   return $res
+}
+
+
 proc testsimpletypecode { } {
    foreach case "c idl sql" {
       foreach typ "byte short int long float double string" {

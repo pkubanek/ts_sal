@@ -1,6 +1,6 @@
 
 
-salReturn SALDDS::putSample(SALData::SALTopic data)
+salReturn SAL_SALData::putSample(SALData::SALTopic data)
 {
   DataWriter_var dwriter = getWriter();
   SALTopicDataWriter_var SALWriter = SALTopicDataWriter::_narrow(dwriter.in());
@@ -14,7 +14,7 @@ salReturn SALDDS::putSample(SALData::SALTopic data)
   return status;
 }
 
-salReturn SALDDS::getSample(SALData::SALTopicSeq data)
+salReturn SAL_SALData::getSample(SALData::SALTopicSeq data)
 {
   SampleInfoSeq infoSeq;
   ReturnCode_t status =  - 1;

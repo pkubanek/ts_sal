@@ -1,0 +1,20 @@
+set h [SAL_hexapod]
+$h salInitialize 1
+$h salTelemetryPub hexapod_Actuators
+
+
+set x [hexapod_ActuatorsC]  
+$h putSampleActuators $x
+_d8317a08_p_salReturn
+
+hexapod_ActuatorsC data
+
+Invalid method. Must be one of: configure cget -acquire -disown -delete putSampleActuators getSampleActuators putSampleApplication getSampleApplication putSampleElectrical getSampleElectrical putSampleLimitSensors getSampleLimitSensors putSampleMetrology getSampleMetrology putSample getSample putSampleTC getSampleTC salTypeSupport salTelemetryPub salTelemetrySub salEvent getResponse getEvent salShutdown salInitialize salCommand salProcessor issueCommand ackCommand acceptCommand checkCommand cancelCommand abortCommand waitForCompletion setDebugLevel getDebugLevel getOrigin getProperty setProperty logError logEvent
+
+
+swig -tcl -c++ -DSAL_SUBSYSTEM_ID_IS_KEYED SAL_hexapod.i
+
+g++ -g -I. -c SAL_hexapod_wrap.cxx -I/opt/test/include -I/opt/lsstsal/include -fPIC  -g -m32 -D_REENTRANT -Wall -I"." -I"/opt/OpenSpliceDDS/V6.4.0/HDE/x86.linux/examples/include" -I"/opt/OpenSpliceDDS/V6.4.0/HDE/x86.linux/examples" -I"/opt/OpenSpliceDDS/V6.4.0/HDE/x86.linux/include" -I"/opt/OpenSpliceDDS/V6.4.0/HDE/x86.linux/include/sys" -I"/opt/OpenSpliceDDS/V6.4.0/HDE/x86.linux/include/dcps/C++/SACPP"   -DSAL_SUBSYSTEM_ID_IS_KEYED
+
+g++ -o libSAL_hexapod.so -shared SAL_hexapod_wrap.o -ltcl -fPIC -L"." -L"/opt/OpenSpliceDDS/V6.4.0/HDE/x86.linux/lib" -Wl,-rpath,\$ORIGIN -Wl,-rpath,\$ORIGIN//opt/OpenSpliceDDS/V6.4.0/HDE/x86.linux/lib -L"/opt/lsstsal/lib" .obj/CheckStatus.o .obj/SAL_hexapod.o  -l"sacpp_hexapod_types" -l"dcpssacpp" -l"dcpsgapi" -l"ddsuser" -l"ddskernel" -l"ddsserialization" -l"ddsconfparser" -l"ddsconf" -l"ddsdatabase" -l"ddsutil" -l"ddsos" -ldl -lrt -lpthread -lsacpp_hexapod_types
+

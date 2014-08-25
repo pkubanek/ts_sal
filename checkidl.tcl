@@ -220,13 +220,15 @@ global XMLTOPICS XMLTLM
               set fdet [open $SAL_WORK_DIR/idl-templates/validated/$nt.detail w]
               if { $KEYINDEX != "" } {puts $fdet "#index $KEYINDEX"; set KEYINDEX ""}
               set fcmt [open $SAL_WORK_DIR/idl-templates/validated/$nt.comments w]
-              puts $fout "struct $nt \{
-  string<32> private_revCode;  //private
-  double     private_sndStamp; //private
-  double     private_rcvStamp; //private
-  long       private_seqNum;   //private
-  long       private_origin;   //private
-  long       private_host;     //private"
+              idlpreamble $fout $nt
+# use streamutils version
+#              puts $fout "struct $nt \{
+#  string<32> private_revCode;  //private
+#  double     private_sndStamp; //private
+#  double     private_rcvStamp; //private
+#  long       private_seqNum;   //private
+#  long       private_origin;   //private
+#  long       private_host;     //private"
               set NEWTOPICS($hid) 1
               set NEWSIZES($hid)  0
            } else {

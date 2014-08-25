@@ -1,17 +1,13 @@
 
 /*
- * This file contains the implementation for the 'SALDataPublisher' executable.
+ * This file contains the implementation for the 'SALNAMESTRINGPublisher' executable.
  *
  ***/
-
-// Control optional compilation 
-#define USE_SAL_WRAPPER
-//#define USE_SAL_COMMAND
 
 #include <string>
 #include <sstream>
 #include <iostream>
-#include "SALDDS.h"
+#include "SAL_SALData.h"
 #include "ccpp_sal_SALData.h"
 #include "os.h"
 
@@ -24,22 +20,32 @@ using namespace SALData;
 extern "C"
 {
   OS_API_EXPORT
-  int SALDataPublisher(int argc, char *argv[]);
+  int SALTelemetryPublisher(int argc, char *argv[]);
 }
 
 int SALTelemetryPublisher(char *topic_name)
 {
   os_time delay_1s = { 1, 0 };
-  SALDDS mgr;
+  SALNAMESTRINGC myData;
+  long i,iseq;
 
   // Publish Events
   //create Topic
-  mgr.salInitialize();
-  DataWriter_var dwriter = mgr.salTelemetryPub(topic_name);
-  SALTopic theTopicInstance; /* Example on Stack */
-  theTopicInstance.private_revCode = DDS::string_dup("LSST TEST REVCODE");
+#ifdef SAL_SUBSYSTEM_ID_IS_KEYED
+  int SALDataID = 1;
+  SAL_SALData mgr = SAL_SALData(SALDataID);
+//  cmd.salInitialize(SALDataID);
+#else
+  SAL_SALData mgr = SAL_SALData();
+//  cmd.salInitialize();
+#endif
+
+  mgr.salTelemetryPub(topic_name);
+  iseq = 1;
   while (1) {
-    mgr.putSample(theTopicInstance);
+// INSERT_SAL_PUBC
+    iseq++;
+    mgr.putSampleSALTopic(&myData);
     os_nanoSleep(delay_1s);
   }
 
@@ -49,105 +55,10 @@ int SALTelemetryPublisher(char *topic_name)
   return 0;
 }
 
-int SALCommander(char *topic_name, char *device, char *property, char *action, char *value, char *modifiers)
-{
-  salReturn status = SAL__OK;
-  salUINT cmdId;
-
-  os_time delay_1s = { 1, 0 };
-  SALDDS cmd;
-
-  // Publish Events
-  //create Topic
-  cmd.salInitialize();
-  cmd.salCommand(topic_name);
-
-  SALData::command command; /* Example on Stack */
-  command.private_revCode = DDS::string_dup("LSST TEST COMMAND");\
-  command.device = device;
-  command.property = property;
-  command.action = action;
-  command.value = value;
-  command.modifiers = modifiers;
-  cmdId = cmd.issueCommand(command);
-
-  os_nanoSleep(delay_1s);
-  status = cmd.waitForCompletion(cmdId, 10);
-
-  /* Remove the DataWriters etc */
-  cmd.salShutdown();
-
-  return 0;
-}
-
-
-int SALDataPublisher(int argc, char *argv[])
-{
-  os_time delay_1s = { 1, 0 };
-  SALDDS mgr;
-  char topic_name[] = "SALData_SALTopic";
-
-  // create Telemetry publisher
-  mgr.createParticipant("LSST");
-
-  //create type
-  SALTopicTypeSupport_var mt = new SALTopicTypeSupport();
-  mgr.registerType(mt.in());
-
-  //create Topic
-  mgr.createTopic(topic_name);
-
-  //create Publisher
-  mgr.createPublisher();
-
-  // create DataWriter :
-  // If autodispose_unregistered_instances is set to true (default value),
-  // you will have to start the subscriber before the publisher
-  bool autodispose_unregistered_instances = false;
-  mgr.createWriter(autodispose_unregistered_instances);
-
-  // Publish Events
-  DataWriter_var dwriter = mgr.getWriter();
-  SALTopicDataWriter_var SALWriter = SALTopicDataWriter::_narrow(dwriter.in());
-
-  SALTopic theTopicInstance; /* Example on Stack */
-  theTopicInstance.private_revCode = DDS::string_dup("LSST TEST REVCODE");
-  cout << "=== [Publisher] writing a message containing :" << endl;
-  cout << "    revCode  : " << theTopicInstance.private_revCode << endl;
-
-  ReturnCode_t status = SALWriter->write(theTopicInstance, DDS::HANDLE_NIL);
-  checkStatus(status, "SALTopicDataWriter::write");
-  while (1) {
-    mgr.putSample(theTopicInstance);
-    os_nanoSleep(delay_1s);
-  }
-
-  /* Remove the DataWriters */
-  mgr.deleteWriter();
-
-  /* Remove the Publisher. */
-  mgr.deletePublisher();
-
-  /* Remove the Topics. */
-  mgr.deleteTopic();
-
-  /* Remove Participant. */
-  mgr.deleteParticipant();
-
-  return 0;
-}
 
 int OSPL_MAIN (int argc, char *argv[])
 {
-#ifdef USE_SAL_WRAPPER
-#ifdef USE_SAL_COMMAND
-  return SALCommander ("SALData_command", argv[1], argv[2], argv[3], argv[4], argv[5]);
-#else
-  return SALTelemetryPublisher ("SALData_SALTopic");
-#endif
-#else
-  return SALDataPublisher (argc, argv);
-#endif
+  return SALTelemetryPublisher ("SALNAMESTRING");
 }
 
 

@@ -5,16 +5,13 @@ global XMLTLM XMLTOPICS
   set fout [open $dpath/[set subsys]_Telemetry.xml w]
   set updatedate [exec date]
   if { $ftype == "subsystem" } {
-    puts $fout "
-<?xml version=\"1.0\"?>
-<tlm:SALTelemetry xmlns:tlm=\"http://sal.lsst.org/SALTelemetry\" 
-                  Version=\"1.0\"
-                  Author=\"dmills@noao.edu\"
-                  updateDate=\"$updatedate\">
-
-   <Subsystem=\"$subsys\">
+    puts $fout "<SALTelemetry xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"
+	xsi:noNamespaceSchemaLocation=\"file:///C:\SALTelemetry.xsd\">
+<Subsystem>camera</Subsystem>
+<Version>1</Version>
+<Author>D Mills</Author>
+<sequence>
 "
-    puts $fout "   <Ttems>"
   }
   foreach i [lsort [array names XMLTOPICS]] {
     if { $i != "camera_" } {
@@ -29,8 +26,8 @@ global XMLTLM XMLTOPICS
     }
   }
   if { $ftype == "subsystem" } {
-    puts $fout "   </Items>"
-    puts $fout "</tlm:SALTelemetry>"
+    puts $fout "</sequence>"
+    puts $fout "</SALTelemetry>"
   }
   close $fout
 }

@@ -20,9 +20,9 @@ foreach i $all {
   string<128>	modifiers;
 \};"
   close $fout
-  set topic [set subsys]_response
+  set topic [set subsys]_ackcmd
   set fout [open $topic.idl w]
-  idlpreamble $fout [set subsys]_response
+  idlpreamble $fout [set subsys]_ackcmd
   puts $fout "  long		cmdID;
   string<16>	ack;
   string<16>	error;
