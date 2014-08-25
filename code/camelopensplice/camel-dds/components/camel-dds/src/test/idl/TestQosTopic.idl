@@ -1,0 +1,11 @@
+
+module TestQosTopic
+{
+   struct TestQos
+   {
+      long userID;    // User ID
+      string message; // content
+   };
+   #pragma keylist TestQos userID
+
+};

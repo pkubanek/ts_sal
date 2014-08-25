@@ -1,3 +1,0 @@
-m2.Surface.Raw 200 long 0.1
-m2.Surface.Calibrated 200 float 0.1
-m2.Surface.Status 50 octet 0.1

@@ -1,25 +1,11 @@
 struct m2_Application {
   string<32> private_revCode;  //private
-  double     private_sndStamp; //private
-  double     private_rcvStamp; //private
+  long       private_sndStamp; //private
+  long       private_rcvStamp; //private
   long       private_seqNum;   //private
   long       private_origin;   //private
-  float	Demand[2];
-  float	Position[2];
-  float	Error[2];
-  string<128>	Status_1;
-  string<128>	Status_2;
-  string<128>	Status_3;
-  string<128>	Status_4;
-  string<128>	Status_5;
-  string<128>	Status_6;
-  string<128>	Status_7;
-  string<128>	Status_8;
-  string<128>	Status_9;
-  string<128>	Status_10;
-  string<128>	Status_11;
-  string<128>	Status_12;
-  string<128>	Status_13;
-  string<128>	Status_14;
-  string<128>	Status_15;
+  float demand[6];		#	none ; none ; Target configuration
+  float position[6];		#	none ; none ; Current value
+  float error[6];		#	none ; none ; Target configuration
+  unsigned short status[16];	#	none ; none ; Status bits
 };

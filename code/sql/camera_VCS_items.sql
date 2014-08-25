@@ -7,9 +7,8 @@ CREATE TABLE camera_VCS_items (
   units char(32),
   freq  float,
   range char(32),
-  location char(32),
   comment char(128),
   PRIMARY KEY (num)
 );
-INSERT INTO camera_VCS_items VALUES (1,"control","float",10,"",0.054,"","","");
-INSERT INTO camera_VCS_items VALUES (2,"pressure","float",10,"",0.054,"","","");
+INSERT INTO camera_VCS_items VALUES (1,"control","float",10,"none",0.1,"","");
+INSERT INTO camera_VCS_items VALUES (2,"pressure","float",10,"none",0.1,"","");

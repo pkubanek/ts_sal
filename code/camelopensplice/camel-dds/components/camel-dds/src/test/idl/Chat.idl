@@ -1,0 +1,10 @@
+module Chat
+{
+   struct ChatMessage
+   {
+      long userID;    // User ID
+      string message; // content
+   };
+   #pragma keylist ChatMessage userID
+
+};

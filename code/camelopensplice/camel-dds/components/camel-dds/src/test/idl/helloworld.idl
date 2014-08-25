@@ -1,0 +1,11 @@
+
+module HelloWorld
+{
+   struct Msg
+   {
+      long userID;    // User ID
+      string message; // content
+   };
+   #pragma keylist Msg userID
+
+};

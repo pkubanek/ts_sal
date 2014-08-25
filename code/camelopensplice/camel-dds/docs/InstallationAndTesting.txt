@@ -1,0 +1,108 @@
+List of Required Software
+=========================
+Java: SE 6
+Maven: 2.0.9
+Camel: 1.6.1
+OpenSpliceDDS 4.1.1 (Windows or Linux)
+Subversion
+
+List of Optional Software
+-------------------------
+Eclipse: 3.4 (eclipse-java-ganymede-SR2-win32.zip)
+Additional Eclipse Plugins using Eclipse Update mechanism:
+. Eclipse Maven Plugin Update Site:
+    http://m2eclipse.sonatype.org/update/
+    (Select Maven Integration Components only)
+. Eclipse Subversion Plugin Update Site:
+    http://subclipse.tigris.org/update_1.6.x
+
+Installation Steps
+==================
+Installing DDS jar files
+------------------------
+Run the OSPL_install_jars script file (i.e., OSPL_install_jars.bat for
+Windows, OSPL_install_jars.sh for Linux) to install the DDS jar files.
+The installation file is located in the same directory as this
+installation file.
+
+Installing the Camel DDS software
+---------------------------------
+Download the Camel DDS software from the svn repository.
+There are two projects: camel-dds and maven-dds.
+Commands to check them out are:
+    svn checkout svn://65.164.187.133/apache/camel-dds/trunk camel-dds
+    svn checkout svn://65.164.187.133/apache/maven-dds/trunk maven-dds
+If for some reason the SVN native protocol doesn't work, use http:
+    svn checkout http://65.164.187.133/svn/apache/camel-dds/trunk camel-dds
+    svn checkout http://65.164.187.133/svn/apache/maven-dds/trunk maven-dds
+Installing Other Software
+-------------------------
+All the other software should be installed as specified by the provider.
+
+Running the Camel DDS tests
+===========================
+1. Start the OpenSplice daemon (e.g., open a window and type "ospl start").
+2. Navigate to the camel-dds component directory. This directory is under
+   the camel-dds/components directory downloaded from the subversion
+   repository (e.g., C:\camel-dds\components\camel-dds).
+3. Type "mvn install" and check the results of building the software and
+   tests and running the tests.
+
+
+Notes
+=====
+Standard eclipse goals
+----------------------
+. eclipse:configure-workspace is used to add the classpath variable M2_REPO
+  to Eclipse which points to your local repository and optional to configure
+  other workspace features.
+. eclipse:eclipse generates the Eclipse configuration files.
+. eclipse:clean is used to delete the files used by the Eclipse IDE.
+
+Specific goals
+--------------
+Specific goals to support m2eclipse
+. eclipse:m2eclipse generates the Eclipse configuration files that are
+  already configured for M2eclipse.
+Specific goals for PDE developments
+. eclipse:to-maven Add eclipse artifacts from an eclipse installation to
+  the local repo. This mojo automatically analize the eclipse directory,
+  copy plugins jars to the local maven repo, and generates appropriate poms.
+  This is the official central repository builder for Eclipse plugins, so it
+  has the necessary default values. For customized repositories see
+  eclipse:make-artifacts.
+. eclipse:install-plugins installs all resolved project dependencies of
+  a particular type (usually 'eclipse-plugin') into the specified Eclipse
+  installation directory.
+. eclipse:make-artifacts copies all Eclipse plugins from an installation
+  directory to the local repository, generating POMs for each.
+
+
+Setting up eclipse environment for maven checkstyle
+---------------------------------------------------
+1. If you want to view checkstyle errors in eclipse editor, there is a
+   checkstyle plugin: http://eclipse-cs.sf.net/update/
+   (Select the first option 5.0.0…).
+2. Select Window -> Preferences from the menu toolbar. Select
+   'Java -> Code Style -> Formatter'. Click on import and select
+   maven_checkstyle_profile.xml file from the file system. This file
+   exists in the same directory as this file. Apply the changes and
+   press OK.  Source -> Format to format the code. Some settings might
+   have to be changed (e.g., changing the default space for arrays).
+3. To remove the trailing spaces, install this plugin:
+     Update Site: http://andrei.gmxhome.de/eclipse/
+     (Install the AnyEditTools for Eclipse 3.3 – 3.5 )
+
+For additional information see:
+   http://dbestudio.wiki.sourceforge.net/Code+Formatting+with+Checkstyle
+
+Setting Up Eclipse to ignore Maven's Checkstyle.
+------------------------------------------------
+1. Start Eclipse.
+2. Select "Run -> Run Configurations..." from the menu bar
+3. Under Maven Build, right click and create a New configuration
+4. In the "Goals:" tell Eclipse to turn off Checkstyle, e.g.,
+   "compile -Dcheckstyle.skip=true"
+5. In the "Base directory:" specify the directory where the DDS Camel
+   component .project and pom.xml files are located.
+6. Click the "Run" button and make sure there are no errors.

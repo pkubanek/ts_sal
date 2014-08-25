@@ -1,2 +1,0 @@
-ocs.command.health.subsystem 128 string<128> 0.1
-ocs.command.health.device 128 string<128> 0.1

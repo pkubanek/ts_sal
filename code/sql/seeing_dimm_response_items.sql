@@ -7,14 +7,10 @@ CREATE TABLE seeing_dimm_response_items (
   units char(32),
   freq  float,
   range char(32),
-  location char(32),
   comment char(128),
   PRIMARY KEY (num)
 );
-INSERT INTO seeing_dimm_response_items VALUES (1,"cmdID","long",1,"",0.054,"","","");
-INSERT INTO seeing_dimm_response_items VALUES (2,"ack","string",16,"",0.054,"","","");
-INSERT INTO seeing_dimm_response_items VALUES (3,"error","string",16,"",0.054,"","","");
-INSERT INTO seeing_dimm_response_items VALUES (4,"timeout","long",1,"",0.054,"","","");
-INSERT INTO seeing_dimm_response_items VALUES (5,"repeat","short",1,"",0.054,"","","");
-INSERT INTO seeing_dimm_response_items VALUES (6,"submits","short",1,"",0.054,"","","");
-INSERT INTO seeing_dimm_response_items VALUES (7,"result","string",64,"",0.054,"","","");
+INSERT INTO seeing_dimm_response_items VALUES (1,"cmdID","long",1,"",0.1,"","");
+INSERT INTO seeing_dimm_response_items VALUES (2,"timeout","long",1,"",0.1,"","");
+INSERT INTO seeing_dimm_response_items VALUES (3,"repeat","short",1,"",0.1,"","");
+INSERT INTO seeing_dimm_response_items VALUES (4,"submits","short",1,"",0.1,"","");

@@ -1,3 +1,0 @@
-dm.pointing.wcs.ra 200 double 0.1
-dm.pointing.wcs.dec 200 double 0.1
-dm.pointing.wcs.coeff 32 double 0.1

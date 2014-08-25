@@ -1,0 +1,4 @@
+set COMMENT(m2.Application.demand) "Target configuration"
+set COMMENT(m2.Application.position) "Current value"
+set COMMENT(m2.Application.error) "Target configuration"
+set COMMENT(m2.Application.status) "Status bits"

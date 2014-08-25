@@ -1,7 +1,0 @@
-ocs.database.state.name 64 string<64> 0.1
-ocs.database.state.table 64 string<64> 0.1
-ocs.database.state.status 32 long 0.1
-ocs.database.state.recin 32 long 0.1
-ocs.database.state.recout 32 long 0.1
-ocs.database.state.capacity 32 long 0.1
-ocs.database.state.lastrep 32 long 0.1

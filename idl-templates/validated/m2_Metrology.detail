@@ -1,3 +1,3 @@
-m2.Metrology.distance 16 long 0.1
-m2.Metrology.error 16 long 0.1
-m2.Metrology.status 16 short 0.1
+m2.Metrology.distance 16 long 1.0
+m2.Metrology.error 16 long 1.0
+m2.Metrology.status 16 short 1.0

@@ -8,7 +8,7 @@
 subsystem.<BR>Raw sensor readings, calibrated positions, limit
 switches, status bits. 
 <H2>Update frequency</H2>
-This telemetry stream publishes a new record every 1000 seconds
+This telemetry stream publishes a new record at 1 Hz
 <H2>Publishers</H2>
 Only one instance of this stream is published.
 <P><HR><H2>Topic Definition</H2><P>
@@ -17,8 +17,8 @@ Only one instance of this stream is published.
 <TABLE BORDER=3 CELLPADDING=5 BGCOLOR=LightBlue  WIDTH=600>
 <TR BGCOLOR=Yellow><B><TD>Name</TD><TD>Type</TD><TD>Size</TD><TD>Units</TD>
 <TD>Range</TD><TD>Comment</TD><TD>Delete</TD></B></TR>
-<TR><TD><INPUT NAME="id68" VALUE="distance"></TD>
-<TD><select name="type68">
+<TR><TD><INPUT NAME="id18" VALUE="distance"></TD>
+<TD><select name="type18">
 <option value="byte">byte
                           <option value="short">short
                           <option value="int">int
@@ -26,8 +26,8 @@ Only one instance of this stream is published.
                           <option value="float">float
                           <option value="string">string
                           </select></TD>
-<TD><INPUT NAME="siz68" VALUE="16"></TD>
-<TD><select name="unit68">
+<TD><INPUT NAME="siz18" VALUE="16"></TD>
+<TD><select name="unit18">
 <option value="none" selected>none
 <option value="amp">amp
 <option value="degC">degC
@@ -37,11 +37,11 @@ Only one instance of this stream is published.
 <option value="volt">volt
 <option value="watt">watt
 </select></TD>
-<TD><INPUT NAME="range68" VALUE=""></TD>
-<TD><INPUT NAME="help68" VALUE=""></TD>
-<TD><INPUT TYPE="checkbox" NAME="delete_68" VALUE="yes"></TD></TR>
-<TR><TD><INPUT NAME="id69" VALUE="error"></TD>
-<TD><select name="type69">
+<TD><INPUT NAME="range18" VALUE="none"></TD>
+<TD><INPUT NAME="help18" VALUE="Measured distance"></TD>
+<TD><INPUT TYPE="checkbox" NAME="delete_18" VALUE="yes"></TD></TR>
+<TR><TD><INPUT NAME="id19" VALUE="error"></TD>
+<TD><select name="type19">
 <option value="byte">byte
                           <option value="short">short
                           <option value="int">int
@@ -49,8 +49,8 @@ Only one instance of this stream is published.
                           <option value="float">float
                           <option value="string">string
                           </select></TD>
-<TD><INPUT NAME="siz69" VALUE="16"></TD>
-<TD><select name="unit69">
+<TD><INPUT NAME="siz19" VALUE="16"></TD>
+<TD><select name="unit19">
 <option value="none" selected>none
 <option value="amp">amp
 <option value="degC">degC
@@ -60,11 +60,11 @@ Only one instance of this stream is published.
 <option value="volt">volt
 <option value="watt">watt
 </select></TD>
-<TD><INPUT NAME="range69" VALUE=""></TD>
-<TD><INPUT NAME="help69" VALUE=""></TD>
-<TD><INPUT TYPE="checkbox" NAME="delete_69" VALUE="yes"></TD></TR>
-<TR><TD><INPUT NAME="id70" VALUE="status"></TD>
-<TD><select name="type70">
+<TD><INPUT NAME="range19" VALUE="none"></TD>
+<TD><INPUT NAME="help19" VALUE="Error"></TD>
+<TD><INPUT TYPE="checkbox" NAME="delete_19" VALUE="yes"></TD></TR>
+<TR><TD><INPUT NAME="id20" VALUE="status"></TD>
+<TD><select name="type20">
 <option value="byte">byte
                           <option value="short" selected>short
                           <option value="int">int
@@ -72,8 +72,8 @@ Only one instance of this stream is published.
                           <option value="float">float
                           <option value="string">string
                           </select></TD>
-<TD><INPUT NAME="siz70" VALUE="16"></TD>
-<TD><select name="unit70">
+<TD><INPUT NAME="siz20" VALUE="16"></TD>
+<TD><select name="unit20">
 <option value="none" selected>none
 <option value="amp">amp
 <option value="degC">degC
@@ -83,7 +83,7 @@ Only one instance of this stream is published.
 <option value="volt">volt
 <option value="watt">watt
 </select></TD>
-<TD><INPUT NAME="range70" VALUE=""></TD>
-<TD><INPUT NAME="help70" VALUE=""></TD>
-<TD><INPUT TYPE="checkbox" NAME="delete_70" VALUE="yes"></TD></TR>
+<TD><INPUT NAME="range20" VALUE="none"></TD>
+<TD><INPUT NAME="help20" VALUE="Status bits"></TD>
+<TD><INPUT TYPE="checkbox" NAME="delete_20" VALUE="yes"></TD></TR>
 </TABLE><P>Click here to update: <input type="submit" value="Submit" name="update"></FORM><P></BODY></HTML>

@@ -4,7 +4,6 @@ struct camera_FCS {
   long       private_rcvStamp; //private
   long       private_seqNum;   //private
   long       private_origin;   //private
-  float motion_profile[60*40];	//	none :	none :	Filter motion profile
-  string<32> algorithm;		//	none :	none :	Control algorithm used
-  unsigned long flags;		//	none :	none :	Limit switches and error flags
-};
+  float motion_profile[60*40];	#	none ;	none ;	Filter motion profile
+  string<32> algorithm;		#	none ;	none ;	Control algorithm used
+  unsigned long flags;		#	none ;	none ;	Limit switches and error flags

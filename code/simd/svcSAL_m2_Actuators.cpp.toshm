@@ -1,10 +1,10 @@
-		for (unsigned int count=0; count<73; count++) {
-			m2_actuators_ref->stepcnt[count] = samples[i].stepcnt[count];
+		for (unsigned int count=0; count<16; count++) {
+			m2_Actuators_ref->Status[count] = samples[i].Status[count];
 		}
-		for (unsigned int count=0; count<73; count++) {
-			m2_actuators_ref->targetpos[count] = samples[i].targetpos[count];
+		for (unsigned int count=0; count<16; count++) {
+			m2_Actuators_ref->Raw[count] = samples[i].Raw[count];
 		}
-		for (unsigned int count=0; count<73; count++) {
-			m2_actuators_ref->force[count] = samples[i].force[count];
+		for (unsigned int count=0; count<32; count++) {
+			m2_Actuators_ref->Calibrated[count] = samples[i].Calibrated[count];
 		}
-		m2_actuators_ref->syncI++;
+		m2_Actuators_ref->syncI++;

@@ -4,10 +4,9 @@ struct camera_GAS {
   long       private_rcvStamp; //private
   long       private_seqNum;   //private
   long       private_origin;   //private
-  string<32> algorithm;		//	none :	none :	Centroiding algorithm used
-  float parameters[10];		//	none :	none :	Input parameters
-  float sampleData_00[25];	//	none :	none :	Measured centroid parameters, lower left
-  float sampleData_01[25];	//	none :	none :	Measured centroid parameters, lower right
-  float sampleData_10[25];	//	none :	none :	Measured centroid parameters, upper left
-  float sampleData_11[25];	//	none :	none :	Measured centroid parameters, upper right
-};
+  string<32> algorithm;		#	none ;	none ;	Centroiding algorithm used
+  float parameters[10];		#	none ;	none ;	Input parameters
+  float sampleData_00[25];	#	none ;	none ;	Measured centroid parameters, lower left
+  float sampleData_01[25];	#	none ;	none ;	Measured centroid parameters, lower right
+  float sampleData_10[25];	#	none ;	none ;	Measured centroid parameters, upper left
+  float sampleData_11[25];	#	none ;	none ;	Measured centroid parameters, upper right

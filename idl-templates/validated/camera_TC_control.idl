@@ -4,7 +4,6 @@ struct camera_TC_control {
   long       private_rcvStamp; //private
   long       private_seqNum;   //private
   long       private_origin;   //private
-  float temperature[10];	//	kelvin : none :	Global temperatures
-  float setpoint[10];		//	kelvin : none :	Global target temperatures
-  unsigned int status[10];	//	none :	none :	Global  statuses
-};
+  float temperature[10];	#	kelvin ; none ;	Global temperatures
+  float setpoint[10];		#	kelvin ; none ;	Global target temperatures
+  unsigned int status[10];	#	none ;	none ;	Global  statuses

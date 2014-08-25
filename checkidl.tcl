@@ -122,21 +122,12 @@ global NEWSIZES FREQUENCY PUBLISHERS
   puts stdout "\n[format %-20s Total]	size=[format %6d $btotal]	rate=[format %6d [expr int($stotal)]] Bytes/sec [expr int($dtotal)] Mb/day" 
 }
 
-proc getfrequency { hid } {
-global FREQUENCY
-   set subsys [lindex [split $hid "._"] 0]
-   if { [info exists FREQUENCY($subsys)] }  { return $FREQUENCY($subsys) }
-   return 0.054
-}
-
-
 
 proc checkidl { f } {
 global NEWTOPICS NEWSIZES NEWCONSTS
 global DESC SDESC IDLTYPES IDLSIZES
 global PUBLISHERS FREQUENCY KEYINDEX
 global SAL_DIR TIDUSED SAL_WORK_DIR
-global XMLTOPICS XMLTLM
   set fin [open $f r]
   set fout [open $SAL_WORK_DIR/idl-templates/validated/$f w]
   stdlog "Creating $SAL_WORK_DIR/idl-templates/validated/$f"
@@ -144,8 +135,6 @@ global XMLTOPICS XMLTLM
   set hid [join [split $id _] .]
   set NONCODING 0
   set KEYINDEX ""
-  catch {unset XMLTOPICS}
-  catch {unset XMLTLM}
   set finds 0
   set iinum 0
   set eid 0
@@ -176,7 +165,7 @@ global XMLTOPICS XMLTLM
                  incr ps 1
               }
               puts $fdef "#define SAL_IID_[set topicid]_[set t] $tid		// $t $props($t,type) $ps"
-              puts $fsql "INSERT INTO [set topicid]_items VALUES ($props($t,num),\"$t\",\"$props($t,type)\",$props($t,size),\"$props($t,units)\",$props($t,freq),\"$props($t,range)\",\"$props($t,location)\",\"$props($t,comment)\");"
+              puts $fsql "INSERT INTO [set topicid]_items VALUES ($props($t,num),\"$t\",\"$props($t,type)\",$props($t,size),\"$props($t,units)\",$props($t,freq),\"$props($t,range)\",\"$props($t,comment)\");"
               incr tid 1
            }
            puts $fdef "#endif\n"
@@ -252,24 +241,18 @@ global XMLTOPICS XMLTLM
            if { [lindex [split $id _] 0] == "private" } {
               puts stdout "Skipping private item $id"
            } else {
-             set m1 [lindex [split $rec "/"] 2]
-             set meta [split $m1 "|"]
-             set freq  [string trim [lindex $meta 0]]
-             set units [string trim [lindex $meta 1]]
-             set comments [string trim [lindex $meta 2]]
-             set range [string trim [lindex $meta 3]]
-             set location [string trim [lindex $meta 4]]
-             set pubsize [string trim [lindex $meta 5]]
+             set m1 [string trim [lindex [split $rec "|"] 1]]
+             set meta [split $m1 ";"]
+             set units [string trim [lindex $meta 0]]
+             set range [string trim [lindex $meta 1]]
+             set comments [string trim [lrange $meta 2 end] " \{\}"]
 #             puts stdout "$nt - $u $id $type $siz $units $range $comments"
              incr NEWSIZES($hid) $siz
              puts $fout " $u [string trim $vitem];"
              incr eid 1
              doitem $eid $fhtm $id $type $siz "$units" "$range" "$comments" 
-             puts stdout  "doitem $eid $fhtm $id $type $siz |$units |$range  |$comments "
-             if { $freq != "" && $freq != "tbd" } {set FREQUENCY($hid) $freq }
-             if { [info exists FREQUENCY($hid)] == 0 } {
-                 set FREQUENCY($hid) [getfrequency $hid]
-             }
+            puts stdout  "doitem $eid $fhtm $id $type $siz |$units |$range  |$comments "
+             if { [info exists FREQUENCY($hid)] == 0 } {set FREQUENCY($hid) 0.1}
              puts $fdet "$hid.$id $siz $type $FREQUENCY($hid)"
              lappend tnames $id
              incr iinum 1
@@ -279,27 +262,7 @@ global XMLTOPICS XMLTLM
              set props($id,freq) "$FREQUENCY($hid)"
              set props($id,range) "$range"
              set props($id,units) "$units"
-             set props($id,location) "$location"
              set props($id,comment) "$comments"
-             set ikey "[set nt]_[set id]"
-             set XMLTOPICS($ikey) 1
-             set XMLTLM($ikey,EFDB_Topic) $nt
-             set XMLTLM($ikey,EFDB_Name) $id
-             set XMLTLM($ikey,Description) $comments
-             set XMLTLM($ikey,Frequency) $FREQUENCY($hid)
-             set XMLTLM($ikey,Publishers) 1
-             if { $pubsize != "" } {catch {set XMLTLM($ikey,Publishers) [expr $pubsize/$siz]}}
-             set XMLTLM($ikey,Values_per_Publisher) $siz
-             set bytesiz $IDLSIZES([lindex [split $type "<"] 0])
-             set XMLTLM($ikey,Size_in_bytes) [expr $siz * $bytesiz]
-             set XMLTLM($ikey,IDL_Type) $type
-             set XMLTLM($ikey,Units) $units
-             set XMLTLM($ikey,Conversion) $range
-             set XMLTLM($ikey,Sensor_location) $location
-             set XMLTLM($ikey,Count) $siz
-             set XMLTLM($ikey,Instances_per_night) [expr  $FREQUENCY($hid)*43200]
-             set XMLTLM($ikey,Bytes_per_night) [expr int($FREQUENCY($hid)*43200*$siz*$bytesiz)]
-             set XMLTLM($ikey,Explanation) "http://sal.lsst.org/SAL/Telemetry/$ikey.html"
              if { [string trim $comments] != "none" && [string trim $comments] != "" } {
                 puts $fcmt "set COMMENT($hid.$id) \"[string trim $comments]\""
              }
@@ -309,7 +272,6 @@ global XMLTOPICS XMLTLM
      }
   }
   close $fin
-  writeXMLsubsys $SAL_WORK_DIR/xml $nt topic
   if { $finds == 0 } {
      errorexit "No struct found in $f"
   }
@@ -329,7 +291,6 @@ CREATE TABLE [set topic]_items (
   units char(32),
   freq  float,
   range char(32),
-  location char(32),
   comment char(128),
   PRIMARY KEY (num)
 );"
@@ -338,7 +299,7 @@ CREATE TABLE [set topic]_items (
 
 
 proc checkall { } {
-  set all [lsort [glob *.idl]]
+  set all [glob *.idl]
   foreach i $all { checkidl $i ; puts stdout "Validated $i" }
 }
 
@@ -362,15 +323,12 @@ global SAL_DIR
    }
 }
 
-set SAL_WORK_DIR $env(SAL_WORK_DIR)
-set SAL_DIR $env(SAL_DIR)
+
 source $env(SAL_DIR)/streamutils.tcl
 source $env(SAL_DIR)/unitsdesc.tcl
 source $env(SAL_DIR)/datastream_desc.tcl
 source $env(SAL_DIR)/camera-subsysdesc.tcl
 source $env(SAL_DIR)/utilities.tcl
-source $env(SAL_DIR)/xml/SALTopicTemplateXML.tcl
-
 
 set IDLTYPES "boolean char byte octet short int long longlong float double string unsigned"
 set IDLSIZES(byte)     1

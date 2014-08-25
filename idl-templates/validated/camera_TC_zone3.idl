@@ -4,7 +4,6 @@ struct camera_TC_zone3 {
   long       private_rcvStamp; //private
   long       private_seqNum;   //private
   long       private_origin;   //private
-  float temperature[50];	//	kelvin : none :	Zone 3 temperatures
-  float setpoint[50];		//	kelvin : none :	Zone 3 target temperatures
-  unsigned int status[50];	//	none :	none :	Zone 3 statuses
-};
+  float temperature[50];	#	kelvin ; none ;	Zone 3 temperatures
+  float setpoint[50];		#	kelvin ; none ;	Zone 3 target temperatures
+  unsigned int status[50];	#	none ;	none ;	Zone 3 statuses

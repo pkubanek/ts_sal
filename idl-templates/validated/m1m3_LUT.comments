@@ -1,0 +1,2 @@
+set COMMENT(m1m3.LUT.algorithm) "LUT interpolation algo."
+set COMMENT(m1m3.LUT.param) "LUT parameters"

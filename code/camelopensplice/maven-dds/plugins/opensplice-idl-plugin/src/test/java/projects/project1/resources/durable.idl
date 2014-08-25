@@ -1,0 +1,11 @@
+
+module durable
+{
+   struct Message
+   {
+      long id; 
+      String content;
+   };
+   #pragma keylist Message id
+
+};

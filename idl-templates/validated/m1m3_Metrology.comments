@@ -1,0 +1,3 @@
+set COMMENT(m1m3.Metrology.distance) "Measured distance"
+set COMMENT(m1m3.Metrology.error) "Error"
+set COMMENT(m1m3.Metrology.status) "Status bits"

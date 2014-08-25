@@ -4,5 +4,4 @@ struct camera_LASERCAL {
   long       private_rcvStamp; //private
   long       private_seqNum;   //private
   long       private_origin;   //private
-  float positions [10];		//	none :	none :	Measured references during calibration
-};
+  float positions [10];		#	none ;	none ;	Measured references during calibration

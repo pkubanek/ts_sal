@@ -1,8 +1,5 @@
 
 set SID(ocs) 4.5.7.1
-set SID(operations) 4.5.7.1
-set SID(scheduler) 4.5.7.1
-set SID(system) 4.5.7.xx
 
 set SID(middleware) 4.5.7.xx
 

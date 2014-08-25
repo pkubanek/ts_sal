@@ -7,9 +7,8 @@ CREATE TABLE camera_SDS_status_items (
   units char(32),
   freq  float,
   range char(32),
-  location char(32),
   comment char(128),
   PRIMARY KEY (num)
 );
-INSERT INTO camera_SDS_status_items VALUES (1,"flags"," unsignedlong",20,"",0.054,"","","");
-INSERT INTO camera_SDS_status_items VALUES (2,"current","float",80,"",0.054,"","","");
+INSERT INTO camera_SDS_status_items VALUES (1,"flags"," unsignedlong",20,"none",0.1,"","");
+INSERT INTO camera_SDS_status_items VALUES (2,"current","float",80,"none",0.1,"","");

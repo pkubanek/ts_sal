@@ -4,8 +4,7 @@ struct camera_TC_zone2 {
   long       private_rcvStamp; //private
   long       private_seqNum;   //private
   long       private_origin;   //private
-  float cold_plate[25];		//	kelvin : none :	Cold plate temperatures
-  float temperature[25];	//	kelvin : none :	Zone 2 temperatures
-  float setpoint[25];		//	kelvin : none :	Zone 2 target temperatures
-  unsigned int status[25];	//	none :	none :	Zone 2 statuses
-};
+  float cold_plate[25];		#	kelvin ; none ;	Cold plate temperatures
+  float temperature[25];	#	kelvin ; none ;	Zone 2 temperatures
+  float setpoint[25];		#	kelvin ; none ;	Zone 2 target temperatures
+  unsigned int status[25];	#	none ;	none ;	Zone 2 statuses

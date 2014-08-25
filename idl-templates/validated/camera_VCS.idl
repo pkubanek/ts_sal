@@ -4,6 +4,5 @@ struct camera_VCS {
   long       private_rcvStamp; //private
   long       private_seqNum;   //private
   long       private_origin;   //private
-  float control[10];		//	none :	none :	Vacuum parameters
-  float pressure[10];		//	none :	none :	Vacuum characteristics, measured
-};
+  float control[10];		#	none ;	none ;	Vacuum parameters
+  float pressure[10];		#	none ;	none ;	Vacuum characteristics, measured

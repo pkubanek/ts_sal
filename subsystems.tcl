@@ -10,14 +10,7 @@ proc calcshmid { subsys } {
   return $id
 }
 
-set COMMANDABLE "auxscope calibration camera dm enclosure environment lasercal m1m3 m2 mount network ocs power scheduler seeing_dimm seeing_mass skycam system tcs"
-
-set FREQUENCY(enclosure)    1.0
-set FREQUENCY(environment)  1.0
-set FREQUENCY(m1m3)         1.0
-set FREQUENCY(m2)           1.0
-set FREQUENCY(mount)       10.0
-set FREQUENCY(tcs)         10.0
+set COMMANDABLE "auxscope calibration camera enclosure environment lasercal m1m3 m2 mount network operations power scheduler seeing_dimm seeing_mass skycam tcs"
 
 set STREAMS [split [exec cat .salwork/datastreams.names] \n]
 set includedir $scriptdir/include

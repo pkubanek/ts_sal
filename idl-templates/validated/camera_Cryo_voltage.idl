@@ -1,9 +1,0 @@
-struct Cryo_voltage {
-  string<32> private_revCode;  //private
-  double     private_sndStamp; //private
-  double     private_rcvStamp; //private
-  long       private_seqNum;   //private
-  long       private_origin;   //private
-  float	Heater_voltage[6];	// 0.010 | Volt | Cryoplate heater voltages | none | Cryostat | 6 |  2,592  |  10,368 
-};
-#pragma keylist Cryo_voltage

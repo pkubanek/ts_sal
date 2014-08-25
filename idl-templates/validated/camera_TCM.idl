@@ -4,5 +4,4 @@ struct camera_TCM {
   long       private_rcvStamp; //private
   long       private_seqNum;   //private
   long       private_origin;   //private
-  float	parameters[10];		//	none :	none : Timing parameters
-};
+  float	parameters[10];		#	none ;	none ; Timing parameters

@@ -1,5 +1,0 @@
-ocs.scheduler.parameters.algorithm 32 string<32> 0.1
-ocs.scheduler.parameters.p1 32 string<32> 0.1
-ocs.scheduler.parameters.p2 32 string<32> 0.1
-ocs.scheduler.parameters.p3 32 string<32> 0.1
-ocs.scheduler.parameters.p4 32 string<32> 0.1

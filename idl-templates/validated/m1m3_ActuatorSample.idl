@@ -1,12 +1,12 @@
 struct m1m3_ActuatorSample {
   string<32> private_revCode;  //private
-  double     private_sndStamp; //private
-  double     private_rcvStamp; //private
+  long       private_sndStamp; //private
+  long       private_rcvStamp; //private
   long       private_seqNum;   //private
   long       private_origin;   //private
-  short	actuatorID;
-  long	setpoint[100];
-  long	position[100];
-  long	error[100];
-  long	status[100];
+  unsigned short actuatorID;	#	none ; none ; Actuator id
+  long setpoint[100];		#	none ; none ; Force setpoint
+  long position[100];		#	none ; none ; Position readback
+  long error[100];		#	none ; none ; Error
+  long status[100];		#	none ; none ; Status bits
 };

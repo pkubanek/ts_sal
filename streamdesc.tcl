@@ -1,9 +1,3 @@
-
-set DESC(system) "Meta-level telemetry concerning the computer system infrastructure, IPMI data etc."
-
-set SDESC(operations) "Observatory control system Meta-level
-telemetry"
-
 set SDESC(system.Computer_status) "
 <P>This topic consists of computer system status information.
 <BR>Variables such cpu, memory, disk usage, cpu temp, fan
@@ -73,9 +67,6 @@ well as lower level filter mechanism parameters. "
 set SDESC(camera.Shutter) "
 <P>This topic records shutter positioning and motion information<BR>as
 well as lower level shutter mechanism parameters. "
-
-set DESC(dm) "Data Management Subsystem"
-
 
 set SDESC(m1.Temps) "
 <P>Temperature sensing information for sensors located in the m1
@@ -201,9 +192,6 @@ set SDESC(mount.Rotator) "
 <P>This topic records application level information about
 the<BR>instrument rotator requested and actual position and status." 
 
-
-set DESC(network) "Meta-level networking infrastructure data"
-
 set SDESC(power.Temps) "
 <P>Temperature sensing information for sensors located in the power
 subsystem.<BR>Raw sensor readings, calibrated temperatures,
@@ -327,9 +315,6 @@ set SDESC(lasercal.Application) "
 <P>Application specific information derived from sensors in the
 laser<BR>calibration subsystem. "
 
-set DESC(scheduler) "OCS observation sheduling subsystem"
-
-
 set SDESC(seeing_dimm.Temps) "
 <P>Temperature sensing information for sensors located in the DIMM
 subsystem.<BR>Raw sensor readings, calibrated temperatures,
@@ -426,3 +411,12 @@ remote networking components (switches, gateways, VPN, bulk data
 transport etc). "
 
 
+set SDESC(camera.Dewar_Cooler) ""
+set SDESC(seeing_dimm.Temps) ""
+set SDESC(seeing_dimm.Electrical) ""
+set SDESC(seeing_dimm.Metrology) ""
+set SDESC(seeing_dimm.Application) "" 
+set SDESC(seeing_mass.Temps) ""
+set SDESC(seeing_mass.Electrical) ""
+set SDESC(seeing_mass.Metrology) ""
+set SDESC(seeing_mass.Application) "" 

@@ -1,0 +1,5 @@
+set COMMENT(m1m3.ActuatorSample.actuatorID) "Actuator id"
+set COMMENT(m1m3.ActuatorSample.setpoint) "Force setpoint"
+set COMMENT(m1m3.ActuatorSample.position) "Position readback"
+set COMMENT(m1m3.ActuatorSample.error) "Error"
+set COMMENT(m1m3.ActuatorSample.status) "Status bits"

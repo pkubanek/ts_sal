@@ -1,7 +1,0 @@
-ocs.staticanalysis.subsystem 128 string<128> 0.1
-ocs.staticanalysis.part 128 string<128> 0.1
-ocs.staticanalysis.start 1 float 0.1
-ocs.staticanalysis.end 1 float 0.1
-ocs.staticanalysis.result 1 long 0.1
-ocs.staticanalysis.action 1 long 0.1
-ocs.staticanalysis.actuuid 32 string<32> 0.1

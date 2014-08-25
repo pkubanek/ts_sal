@@ -41,10 +41,8 @@ set SAL_DIR $env(SAL_DIR)
 source $SAL_DIR/versioning.tcl
 source $SAL_DIR/utilities.tcl
 
-
-
-
 set TSUBSYSTEMS [lindex $argv 0]
+
 set SAL_WORK_DIR [file dirname $TSUBSYSTEMS]
 if { [file exists $SAL_WORK_DIR] == 0 } {
    errorexit "Working directory $SAL_WORK_DIR does not exist"
@@ -83,31 +81,10 @@ if { [file exists saltemptest] == 0 } {
    errorexit "Working directory $SAL_WORK_DIR does not have write permission"
 }
 
-# For html option , process everything
-if { $OPTIONS(html) } {
-   cd $SAL_WORK_DIR
-   source $SAL_DIR/updatedetails.tcl
-   source $SAL_DIR/genidlshmem.tcl
-   exec mkdir -p $SAL_WORK_DIR/sql
-   set sqlf [glob *.sqldef *.sqlwrt]
-   foreach f $sqlf { exec mv $f $SAL_WORK_DIR/sql/. }
-   stdlog "Generating telemetry stream definition editor html"
-   exec mkdir -p $SAL_WORK_DIR/html
-   stdlog "Generating Facility database table creation html"
-   source $SAL_DIR/gendbhtml.tcl
-   cd $SAL_WORK_DIR
-   stdlog "Generating Subsystem simulation control html"
-   source $SAL_DIR/gensimhtml.tcl
-   cd $SAL_WORK_DIR/html
-   source $SAL_DIR/genhtml.tcl
-   exit
-}
-
-
 exec rmdir saltemptest
 exec mkdir -p .salwork
 set TARGETS ""
-set matches [lsort [glob idl-templates/validated/$TSUBSYSTEMS*]]
+set matches [lsort [glob $TSUBSYSTEMS*]]
 foreach f $matches {
    if { [file extension $f] == ".idl" } {
       set TARGETS "$TARGETS [file tail $f]"
@@ -131,6 +108,24 @@ if { $OPTIONS(validate) } {
       stdlog "Completed $subsys validation\n\n"
   }
   cd $SAL_WORK_DIR
+}
+
+if { $OPTIONS(html) } {
+   cd $SAL_WORK_DIR
+   source $SAL_DIR/updatedetails.tcl
+   source $SAL_DIR/genidlshmem.tcl
+   exec mkdir -p $SAL_WORK_DIR/sql
+   set sqlf [glob *.sqldef *.sqlwrt]
+   foreach f $sqlf { exec mv $f $SAL_WORK_DIR/sql/. }
+   stdlog "Generating telemetry stream definition editor html"
+   exec mkdir -p $SAL_WORK_DIR/html
+   cd $SAL_WORK_DIR/html
+   source $SAL_DIR/genhtml.tcl
+   stdlog "Generating Facility database table creation html"
+   source $SAL_DIR/gendbhtml.tcl
+   cd $SAL_WORK_DIR
+   stdlog "Generating Subsystem simulation control html"
+   source $SAL_DIR/gensimhtml.tcl
 }
 
 if { $OPTIONS(c++) } {

@@ -1,2 +1,2 @@
-m1m3.LimitSensors.liftoff 64 short 0.1
-m1m3.LimitSensors.limit 64 short 0.1
+m1m3.LimitSensors.liftoff 64 short 1.0
+m1m3.LimitSensors.limit 64 short 1.0

@@ -4,11 +4,10 @@ struct camera_SDS_amplifiers {
   long       private_rcvStamp; //private
   long       private_seqNum;   //private
   long       private_origin;   //private
-  unsigned short raftID;	//	none :	none :	Raft Identification code
-  unsigned long flags[132]; 	//	none :	none :	Error flags
-  unsigned long status[132]; 	//	none :	none :	Status bits
-  float voltage1[132];		//	volt :	none :	voltage 1 
-  float voltage2[132];		//	volt :	none :	voltage 2 
-  float voltage3[132];		//	volt :	none :	voltage 3 
-  float voltage4[132];		//	volt :	none :	voltage 4 
-};
+  unsigned short raftID;	#	none ;	none ;	Raft Identification code
+  unsigned long flags[132]; 	#	none ;	none ;	Error flags
+  unsigned long status[132]; 	#	none ;	none ;	Status bits
+  float voltage1[132];		#	volt ;	none ;	voltage 1 
+  float voltage2[132];		#	volt ;	none ;	voltage 2 
+  float voltage3[132];		#	volt ;	none ;	voltage 3 
+  float voltage4[132];		#	volt ;	none ;	voltage 4 

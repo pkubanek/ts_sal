@@ -151,7 +151,7 @@ exec mkdir -p  $basedir/shmem-$basename
 #printformdata
 #puts stdout "basedir = $basedir"
 
-puts stdout "<HTML><HEAD><TITLE>Service Abstraction Layer API generator</TITLE></HEAD>
+puts stdout "<HTML><HEAD><TITLE>Software Abstraction Layer API generator</TITLE></HEAD>
 <BODY BGCOLOR=White><H1>
 <IMG SRC=\"/LSST_logo.gif\" ALIGN=CENTER>
 <IMG SRC=\"/salg.gif\" ALIGN=CENTER><P><HR><P>

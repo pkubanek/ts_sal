@@ -5,7 +5,7 @@
 <H1>Stream m2.actuators</H1><P>
 <H2>Description</H2><P>TBD
 <H2>Update frequency</H2>
-This telemetry stream publishes a new record every 1000 seconds
+This telemetry stream publishes a new record at 1 Hz
 <H2>Publishers</H2>
 Only one instance of this stream is published.
 <P><HR><H2>Topic Definition</H2><P>
@@ -14,8 +14,8 @@ Only one instance of this stream is published.
 <TABLE BORDER=3 CELLPADDING=5 BGCOLOR=LightBlue  WIDTH=600>
 <TR BGCOLOR=Yellow><B><TD>Name</TD><TD>Type</TD><TD>Size</TD><TD>Units</TD>
 <TD>Range</TD><TD>Comment</TD><TD>Delete</TD></B></TR>
-<TR><TD><INPUT NAME="id81" VALUE="targetpos"></TD>
-<TD><select name="type81">
+<TR><TD><INPUT NAME="id2" VALUE="targetpos"></TD>
+<TD><select name="type2">
 <option value="byte">byte
                           <option value="short">short
                           <option value="int">int
@@ -23,8 +23,8 @@ Only one instance of this stream is published.
                           <option value="float">float
                           <option value="string">string
                           </select></TD>
-<TD><INPUT NAME="siz81" VALUE="72"></TD>
-<TD><select name="unit81">
+<TD><INPUT NAME="siz2" VALUE="72"></TD>
+<TD><select name="unit2">
 <option value="none" selected>none
 <option value="amp">amp
 <option value="degC">degC
@@ -34,11 +34,11 @@ Only one instance of this stream is published.
 <option value="volt">volt
 <option value="watt">watt
 </select></TD>
-<TD><INPUT NAME="range81" VALUE=""></TD>
-<TD><INPUT NAME="help81" VALUE=""></TD>
-<TD><INPUT TYPE="checkbox" NAME="delete_81" VALUE="yes"></TD></TR>
-<TR><TD><INPUT NAME="id82" VALUE="stepcnt"></TD>
-<TD><select name="type82">
+<TD><INPUT NAME="range2" VALUE="none"></TD>
+<TD><INPUT NAME="help2" VALUE="Stepper Motor target position"></TD>
+<TD><INPUT TYPE="checkbox" NAME="delete_2" VALUE="yes"></TD></TR>
+<TR><TD><INPUT NAME="id3" VALUE="stepcnt"></TD>
+<TD><select name="type3">
 <option value="byte">byte
                           <option value="short">short
                           <option value="int">int
@@ -46,8 +46,8 @@ Only one instance of this stream is published.
                           <option value="float">float
                           <option value="string">string
                           </select></TD>
-<TD><INPUT NAME="siz82" VALUE="72"></TD>
-<TD><select name="unit82">
+<TD><INPUT NAME="siz3" VALUE="72"></TD>
+<TD><select name="unit3">
 <option value="none" selected>none
 <option value="amp">amp
 <option value="degC">degC
@@ -57,11 +57,11 @@ Only one instance of this stream is published.
 <option value="volt">volt
 <option value="watt">watt
 </select></TD>
-<TD><INPUT NAME="range82" VALUE=""></TD>
-<TD><INPUT NAME="help82" VALUE=""></TD>
-<TD><INPUT TYPE="checkbox" NAME="delete_82" VALUE="yes"></TD></TR>
-<TR><TD><INPUT NAME="id83" VALUE="force"></TD>
-<TD><select name="type83">
+<TD><INPUT NAME="range3" VALUE="none"></TD>
+<TD><INPUT NAME="help3" VALUE="Stepper Motor actual position"></TD>
+<TD><INPUT TYPE="checkbox" NAME="delete_3" VALUE="yes"></TD></TR>
+<TR><TD><INPUT NAME="id4" VALUE="force"></TD>
+<TD><select name="type4">
 <option value="byte">byte
                           <option value="short">short
                           <option value="int">int
@@ -69,8 +69,8 @@ Only one instance of this stream is published.
                           <option value="float" selected>float
                           <option value="string">string
                           </select></TD>
-<TD><INPUT NAME="siz83" VALUE="72"></TD>
-<TD><select name="unit83">
+<TD><INPUT NAME="siz4" VALUE="72"></TD>
+<TD><select name="unit4">
 <option value="none" selected>none
 <option value="amp">amp
 <option value="degC">degC
@@ -80,7 +80,7 @@ Only one instance of this stream is published.
 <option value="volt">volt
 <option value="watt">watt
 </select></TD>
-<TD><INPUT NAME="range83" VALUE=""></TD>
-<TD><INPUT NAME="help83" VALUE=""></TD>
-<TD><INPUT TYPE="checkbox" NAME="delete_83" VALUE="yes"></TD></TR>
+<TD><INPUT NAME="range4" VALUE="none"></TD>
+<TD><INPUT NAME="help4" VALUE="Measured force"></TD>
+<TD><INPUT TYPE="checkbox" NAME="delete_4" VALUE="yes"></TD></TR>
 </TABLE><P>Click here to update: <input type="submit" value="Submit" name="update"></FORM><P></BODY></HTML>

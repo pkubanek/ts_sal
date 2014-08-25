@@ -1,3 +1,3 @@
-m2.Hexapod.Raw 31 long 0.1
-m2.Hexapod.Calibrated 31 float 0.1
-m2.Hexapod.Status 31 octet 0.1
+m2.Hexapod.targetpos 16 long 1.0
+m2.Hexapod.error 16 long 1.0
+m2.Hexapod.status 16 short 1.0

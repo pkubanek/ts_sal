@@ -1,0 +1,36 @@
+module CamelDDS
+{
+    typedef sequence<octet> OctetSeq;
+
+    struct SerializedPOJO
+    {
+       string class_name;
+       OctetSeq serialized_object;
+    };
+
+    struct CamelHeader
+    {
+        string name;
+        SerializedPOJO value;
+    };
+    typedef sequence<CamelHeader> CamelHeaders;
+
+    struct CamelAttachment
+    {
+        string id;
+        string mime_type;
+        OctetSeq content;
+    };
+    typedef sequence<CamelAttachment> CamelAttachments;
+
+    struct CamelMessage
+    {
+        string message_id;
+        string target;
+        CamelHeaders headers;
+        SerializedPOJO body;
+        CamelAttachments attachments;
+    };
+    #pragma keylist CamelMessage  // no key
+};
+

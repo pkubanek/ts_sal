@@ -1,11 +1,10 @@
 struct m2_TC {
   string<32> private_revCode;  //private
-  double     private_sndStamp; //private
-  double     private_rcvStamp; //private
+  long       private_sndStamp; //private
+  long       private_rcvStamp; //private
   long       private_seqNum;   //private
   long       private_origin;   //private
-  float	setpoint[16];
-  float	temperature[16];
-  float	error[16];
-  short	status[16];
-};
+  float setpoint[16];		#	none ; none ; Setpoint temp
+  float temperature[16];	#	none ; none ; Measured temp
+  float error[16];		#	none ; none ; Error
+  unsigned short status[16];	#	none ; none ; Status bits

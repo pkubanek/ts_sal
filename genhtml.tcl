@@ -11,7 +11,7 @@ global SDESC UDESC QDESC
 <H1>Stream $id MetaData</H1><P>"
       if { [info exists SDESC($id)] == 0 } {
            puts stderr "No SDESC for $id"
-           set SDESC($id) "Detail : unknown"
+           set SDESC($id) "unknown"
       }
       puts $fmet "$SDESC($id)<HR><P>
 <FORM action=\"/cgi-bin/metadef\" method=\"post\">
@@ -63,7 +63,6 @@ proc tidyname { f } {
 catch { unset MSYS}
 set scriptdir $env(SAL_DIR)
 
-source $scriptdir/add_system_dictionary.tcl
 source $scriptdir/checkdesc.tcl
 source $scriptdir/comments.tcl
 source $scriptdir/streamutils.tcl
@@ -79,16 +78,16 @@ puts $fidx "<HTML><HEAD><TITLE>Stream definition editor index</TITLE></HEAD>
 <FORM action=\"/cgi-bin/streamdef\" method=\"post\">
 <P>Copy item list from named datastream (optional) : 
 <select name=\"copy\"><option value=\" \" selected>"
-
-foreach s [liststreams] {
+foreach s [lsort [array names SDESC]] {
   puts $fidx "<option value=\"$s\">$s"
+  set MSYS([lindex [split $s .] 0]) 1
 }
 
 
 puts $fidx "</select>
 <P>Name of new datastream definition: 
 <select name=\"system\"><option value=\"?\" selected>"
-foreach s $SYSDIC(systems) {
+foreach s [lsort [array names MSYS]] {
   puts $fidx "<option value=\"$s\">$s."
 }
 
@@ -104,13 +103,13 @@ puts $fidx "</select>
 <TD>Configure SAL</TD></B></TR>"
 
 set fgen [open sal-generator.html w]
-puts $fgen "<HTML><HEAD><TITLE>Service Abstraction Layer API generator</TITLE></HEAD>
+puts $fgen "<HTML><HEAD><TITLE>Software Abstraction Layer API generator</TITLE></HEAD>
 <BODY BGCOLOR=White><H1>
 <IMG SRC=\"LSST_logo.gif\" ALIGN=CENTER>
 <IMG SRC=\"salg.gif\" ALIGN=CENTER><P><HR><P>
 <H1>Datastream and command capabilties</H1><P><HR><P>
 Use the checkboxes in the form to select the combination<BR>
-of subsystems for which the application requires<BR>
+of telemetry datastreams for which the application requires<BR>
 read and/or write access, and the command streams upon<BR>
 which commands need to be issued or processed.<P>
 <FORM action=\"/cgi-bin/salgenerator\" method=\"post\">
@@ -118,30 +117,24 @@ which commands need to be issued or processed.<P>
 <TR BGCOLOR=Yellow><B><TD>Stream Name</TD><TD>Subscribe</TD><TD>Publish</TD><TD>Issue Command</TD>
 <TD>Process Comamnd</TD></B></TR>"
 
-set nid 0
 set last ""
 set fin [open $SAL_WORK_DIR/.salwork/datastreams.detail r]
 while { [gets $fin rec] > -1 } {
   set cmdresp [lindex [split $rec "_ "] 1]
   if { $cmdresp != "command" && $cmdresp != "response" } {
    set d [split [lindex $rec 0] "./_"]
-   set id [join [lrange $d 0 1] .]
-   if { $id == "" } {set id [lindex $rec 0]}
-   set aname [lindex $rec 1]
+   set id [join [lrange $d 0 [expr [llength $d]-2]] .]
    set FREQUENCY($id) [lindex $rec 4]
    set system [lindex $d 0]
-   set asize [lindex $rec 2]
-   set atype [lindex $rec 3]
    set topic [join $d .]
    if { $id != $last  } {
-      catch { doitem $nid $fout "" 1 int
+      catch { doitem $nid $fout "" int 1
               puts $fout "</TABLE><P>Click here to update: <input type=\"submit\" value=\"Submit\" name=\"update\"></FORM><P></BODY></HTML>"
               close $fout
               puts stdout "Done $last"
             }
       set last $id
       exec mkdir -p $id
-      puts stdout "Creating $id/[tidyname $id] stream editor"
       set fout [open $id/[tidyname $id]-streamdef.html w]
       set nid 1
       set CSYS $id
@@ -150,12 +143,11 @@ while { [gets $fin rec] > -1 } {
 <IMG SRC=\"../LSST_logo.gif\" ALIGN=CENTER>
 <IMG SRC=\"../dde.gif\" ALIGN=CENTER><P><HR><P>
 <H1>Stream $id</H1><P><H2>Description</H2>"
-      puts $fout "$SYSDIC($id,title)<P>"
       if { [info exists SDESC($id)] == 0 } {
            puts stderr "No SDESC for $id"
-           set SDESC($id) "Detail : unknown"
+           set SDESC($id) "unknown"
       }
-      puts $fout "Detail : $SDESC($id)<HR><P>"
+      puts $fout "$SDESC($id)<HR><P>"
       if { [info exists FREQUENCY($id)] } {
             puts $fout "<H2>Update frequency</H2>"
             if { $FREQUENCY($id) < 1.0 } {
@@ -178,21 +170,18 @@ while { [gets $fin rec] > -1 } {
 <TR BGCOLOR=Yellow><B><TD>Name</TD><TD>Type</TD><TD>Size</TD><TD>Units</TD>
 <TD>Range</TD><TD>Comment</TD><TD>Delete</TD></B></TR>"
 #      puts $fidx "<LI><A HREF=\"$id/[tidyname $id]-streamdef.html\">Edit stream definition for $id</A>"
-      puts $fidx "<TR><TD>$id</TD><TD><A HREF=\"[tidyname $id]-streamdef.html\">Edit</A></TD><TD>
-<A HREF=\"[tidyname $id]-metadata.html\">Edit</A></TD><TD><A HREF=\"sal-generator-$system.html\">Setup</A></TD></TR>"
+      puts $fidx "<TR><TD>$id</TD><TD><A HREF=\"$id/[tidyname $id]-streamdef.html\">Edit</A></TD><TD>
+<A HREF=\"$id/[tidyname $id]-metadata.html\">Edit</A></TD><TD><A HREF=\"sal-generator-$system.html\">Setup</A></TD></TR>"
+      dogen $fgen $id
       dometa $id
    }
-   doitem $nid $fout $aname $asize $atype
+   doitem $nid $fout [lindex $d end] [lindex $rec 2] [lindex $rec 1]
    incr nid 1
   }
 }
 
-doitem $nid $fout "" 1 int
-
-foreach sname $SYSDIC(systems) {
-   set id [join [split $sname "_"] "."]
-   dogen $fgen $id
-}
+doitem $nid $fout "" int 1
+dogen $fgen $id
 catch {
   puts $fout "</TABLE><P>Click here to update: <input type=\"submit\" value=\"Submit\" name=\"update\"></FORM><P></BODY></HTML>"
   close $fout
@@ -216,15 +205,17 @@ Select the required language product(s) for code generation
 <INPUT TYPE=\"checkbox\" NAME=\"langjava\" VALUE=\"yes\">Generate Java classes and sample applications <BR>
 <INPUT TYPE=\"checkbox\" NAME=\"langlv\" VALUE=\"yes\">Generate Labview library<BR>
 <INPUT TYPE=\"checkbox\" NAME=\"langpy\" VALUE=\"yes\">Generate Python wrapper and sample applications<BR>
+<INPUT TYPE=\"checkbox\" NAME=\"langruby\" VALUE=\"yes\">Generate Ruby wrapper and sample applications<BR>
 <INPUT TYPE=\"checkbox\" NAME=\"langxml\" VALUE=\"yes\">Generate XML for use with Enterprise Architect <BR>
 <P><HR><P>
 <P>
 Select the required middleware transport(s) for code generation
 <P>
-<INPUT TYPE=\"checkbox\" NAME=\"mw_test\" VALUE=\"yes\" CHECKED>Generate shmem SAL library<BR>
-<INPUT TYPE=\"checkbox\" NAME=\"mw_opensplice\" VALUE=\"yes\">Generate OpenSplice DDS SAL library<BR>
-<INPUT TYPE=\"checkbox\" NAME=\"mw_opendds\" VALUE=\"yes\">Generate OpenDDS SAL library<BR>
-<INPUT TYPE=\"checkbox\" NAME=\"mw_coredx\" VALUE=\"yes\">Generate CoreDX DDS SAL library<BR>
+<INPUT TYPE=\"checkbox\" NAME=\"mw_ice\" VALUE=\"yes\">Generate ICE SAL library<BR>
+<INPUT TYPE=\"checkbox\" NAME=\"mw_ndds\" VALUE=\"yes\">Generate RTI NDDS SAL library<BR>
+<INPUT TYPE=\"checkbox\" NAME=\"mw_orte\" VALUE=\"yes\">Generate ORTE RTPS SAL  library<BR>
+<INPUT TYPE=\"checkbox\" NAME=\"mw_activemq\" VALUE=\"yes\">Generate ActiveMQ SAL library<BR>
+<INPUT TYPE=\"checkbox\" NAME=\"mw_test\" VALUE=\"yes\" CHECKED>Generate test stub SAL library<BR>
 <P><HR>
 <P>Click here to generate code : <input type=\"submit\" value=\"Submit\" name=\"update\"></FORM><P></BODY></HTML>"
 close $fgen
@@ -232,11 +223,10 @@ close $fgen
 #
 # do fgen for each system on its own
 # 
-foreach s $SYSDIC(systems) {
+foreach s [array names MSYS] {
 catch {unset doneit}
 set fgen [open sal-generator-$s.html w]
-puts stdout "Creating sal-generator-$s form"
-puts $fgen "<HTML><HEAD><TITLE>Service Abstraction Layer API generator</TITLE></HEAD>
+puts $fgen "<HTML><HEAD><TITLE>Software Abstraction Layer API generator</TITLE></HEAD>
 <BODY BGCOLOR=White><H1>
 <IMG SRC=\"LSST_logo.gif\" ALIGN=CENTER>
 <IMG SRC=\"salg.gif\" ALIGN=CENTER><P><HR><P>
@@ -244,16 +234,27 @@ puts $fgen "<HTML><HEAD><TITLE>Service Abstraction Layer API generator</TITLE></
 <H2>$s</H2><P><HR><P>
 Use the checkboxes in the form to select the combination<BR>
 of telemetry datastreams for which the application requires<BR>
-read and/or write access.<P>
+read and/or write access, and the command streams upon<BR>
+which commands need to be issued or processed.<P>
 <FORM action=\"/cgi-bin/salgenerator\" method=\"post\">
 <TABLE BORDER=3 CELLPADDING=5 BGCOLOR=LightBlue  WIDTH=600>
-<TR BGCOLOR=Yellow><B><TD>Stream Name</TD><TD>Subscribe</TD><TD>Publish</TD></B></TR>"
+<TR BGCOLOR=Yellow><B><TD>Stream Name</TD><TD>Subscribe</TD><TD>Publish</TD><TD>Issue Command</TD>
+<TD>Process Comamnd</TD></B></TR>"
 
-
-foreach sname [liststreams $s] {
-   set id [join [split $sname "_"] "."]
-   dogen $fgen $id no
-   puts stdout "Added sal-generator-$id to form"
+set nid 1
+set fin [open $SAL_WORK_DIR/.salwork/datastreams.detail r]
+while { [gets $fin rec] > -1 } {
+   set d [split [lindex $rec 0] "./"]
+   set id [join [lrange $d 0 [expr [llength $d]-2]] .]
+   set topic [join [lrange $d 0 [expr [llength $d]-2]] _]
+   if { [lindex $d 0] == $s } {
+    if { [info exists doneit($id)] == 0 } {
+      dogen $fgen $id
+      set doneit($id) 1
+      puts stdout "Done $id"
+      incr nid 1
+    }
+   }
 }
 close $fin
 
@@ -266,15 +267,17 @@ Select the required language product(s) for code generation
 <INPUT TYPE=\"checkbox\" NAME=\"langjava\" VALUE=\"yes\">Generate Java classes and sample applications <BR>
 <INPUT TYPE=\"checkbox\" NAME=\"langlv\" VALUE=\"yes\">Generate Labview library<BR>
 <INPUT TYPE=\"checkbox\" NAME=\"langpy\" VALUE=\"yes\">Generate Python wrapper and sample applications<BR>
+<INPUT TYPE=\"checkbox\" NAME=\"langruby\" VALUE=\"yes\">Generate Ruby wrapper and sample applications<BR>
 <INPUT TYPE=\"checkbox\" NAME=\"langxml\" VALUE=\"yes\">Generate XML for use with Enterprise Architect <BR>
 <P><HR><P>
 <P>
 Select the required middleware transport(s) for code generation
 <P>
-<INPUT TYPE=\"checkbox\" NAME=\"mw_test\" VALUE=\"yes\" CHECKED>Generate shmem SAL library<BR>
-<INPUT TYPE=\"checkbox\" NAME=\"mw_opensplice\" VALUE=\"yes\">Generate OpenSplice DDS SAL library<BR>
-<INPUT TYPE=\"checkbox\" NAME=\"mw_opendds\" VALUE=\"yes\">Generate OpenDDS SAL library<BR>
-<INPUT TYPE=\"checkbox\" NAME=\"mw_coredx\" VALUE=\"yes\">Generate CoreDX DDS SAL library<BR>
+<INPUT TYPE=\"checkbox\" NAME=\"mw_ice\" VALUE=\"yes\">Generate ICE SAL library<BR>
+<INPUT TYPE=\"checkbox\" NAME=\"mw_ndds\" VALUE=\"yes\">Generate RTI NDDS SAL library<BR>
+<INPUT TYPE=\"checkbox\" NAME=\"mw_orte\" VALUE=\"yes\">Generate ORTE RTPS SAL library<BR>
+<INPUT TYPE=\"checkbox\" NAME=\"mw_activemq\" VALUE=\"yes\">Generate ActiveMQ SAL library<BR>
+<INPUT TYPE=\"checkbox\" NAME=\"mw_test\" VALUE=\"yes\" CHECKED>Generate test stub SAL library<BR>
 <P><HR>
 <P>Click here to generate code : <input type=\"submit\" value=\"Submit\" name=\"update\"></FORM><P></BODY></HTML>"
 close $fgen

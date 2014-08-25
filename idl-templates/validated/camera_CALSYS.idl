@@ -4,5 +4,4 @@ struct camera_CALSYS {
   long       private_rcvStamp; //private
   long       private_seqNum;   //private
   long       private_origin;   //private
-  float profile [1024];		//	none :	none :	Motion profile during calibration run 
-};
+  float profile [1024];		#	none ;	none ;	Motion profile during calibration run 

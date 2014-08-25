@@ -15,7 +15,7 @@ $DESC($i)<P><UL>
            set it $PROP($i,$p)
            set cmt "None"
            catch { set cmt $COMMENT($i.$p) }
-           puts $fid "<TR><TD>$p</TD><TD>[lindex $it 2]</TD><TD>[lindex $it 1]</TD><TD>[lindex $it 3]</TD><TD>$cmt</TD></TR>"
+           puts $fid "<TR><TD>$p</TD><TD>[lindex $it 1]</TD><TD>[lindex $it 0]</TD><TD>[lindex $it 2]</TD><TD>$cmt</TD></TR>"
        }
        puts $fid "</TABLE></UL><P>"
      }
@@ -108,11 +108,11 @@ set GLOSSARY(OMG) "Object Management Group"
 set GLOSSARY(LSST) "Large Synoptic Survey Telescope"
 set GLOSSARY(QoS) "Quality of Service"
 set GLOSSARY(RTI) "Real Time Innovation"
-set GLOSSARY(SAL) "Service Abstraction Layer"
+set GLOSSARY(SAL) "Software Abstraction Layer"
 
 foreach i [array names SDESC] {
   if { [info exists DESC($i)] == 0 } {set DESC($i) $SDESC($i)}
-  if { [info exists SINGLESUBSYSTEM] == 0  } {
+  if { [info exists SINGLESUBSYSTEM] ==0  } {
     puts stdout "No DESC for $i"
   }
 }
@@ -132,9 +132,9 @@ foreach i $SUBS {
   puts stdout "Done $i"
 }
 
-source $SAL_DIR/add_system_dictionary.tcl
 source $SAL_DIR/icd/bandwidth-appendix.tcl
-exec cp  $SAL_DIR/icd/lse74-template.html LSE74-html/index.html
+source $SAL_DIR/icd/add_system_dictionary.tcl
+cp  $SAL_DIR/icd/lse74-template.html LSE74-html/index.html
 set fout [open LSE74-html/index.html a]
 add_system_dictionary_appendix $fout
 set n 1
@@ -146,7 +146,7 @@ set SUBSYSTEM2 $i
   incr n 1
 }
 set n 1
-  set SUBS "auxscope calibration dm enclosure environment lasercal m1m3 m2 mount network operations power scheduler seeing skycam system tcs"
+  set SUBS "auxscope calibration dm enclosure environment lasercal m1m3 m2 mount network operations power scheduler seeing_dimm seeing_mass skycam system tcs"
 puts $fout "<P><H1>Appendix C - Command Definitions</H1><P>"
 foreach i $SUBS {
 set SUBSYSTEM2 $i

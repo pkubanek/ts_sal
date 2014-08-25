@@ -93,7 +93,7 @@ exec cp lsst_SAL_xml.tar.gz /var/www/html/downloads/salcode/.
  
  
 puts stdout "<P><HR><P>
-<H2>Service Abstraction Layer - XML Model</H2>
+<H2>Software Abstraction Layer - XML Model</H2>
 This archive contains an XML model for import into Enterprise Architect.<P><UL>"
 if { $SUBS != "" } {
    puts stdout "Models subscription for :

@@ -2,7 +2,7 @@
 <BODY BGCOLOR=White>
 <IMG SRC="LSST_logo.gif" ALIGN=LEFT>
 <H3><BR>LSE-74<BR>
-Subsystem : Middleware</H3>
+Subsystem : Middle ware</H3>
 <HR>
 <PRE>
 <H3>
@@ -317,77 +317,9 @@ transitions, transparent to the application level developers.
 <P><HR><HR><P>
 <H4>2.2.1 Interfaces - C/C++</H4>
 The SAL C++ interface provides per-subsystem and per-datastreams specific objects
-to facilitate application level publishing of all telemetry, commands and alerts.
+to facilitate application level publishing of all telemetry.
 <P>
 See the <A HREF="sal-c++/annotated.html">SAL C++ API Documentation</A> for details.
-<P>
-eg
-<P>
-<PRE>
-// -- STD C++ Include
-#include <iostream>
-#include <sstream>
-#include <iterator>
-
-// -- BOOST Include
-#include <boost/shared_ptr.hpp>
-#include <boost/program_options.hpp>
-
-// -- SIMD Include
-#include <dds/dds.hpp>
-
-#include "svcSAL.h"
-#include "svcSAL_validtopics.h"
-
-int main(int argc, char* argv[]) 
-{
-	salRTN result = 0;
-	salINT iseq  =  1;
-	m1m3_Metrology *top1;
-	
-	salInstance = (sal *)new sal();
-	salpub1 = (salTelemetry *)new salTelemetry();
-
-	sprintf ("SAL timestamp is %lf\n", salInstance->currentTime());
-
-	result = salpub1->connect(sid_m1m3_Metrology);
-	if (result == SAL__OK) {
-	   top1 = (m1m3_Metrology *)salpub1.salTopic;
-	} else {
-	   printf ("connect failed %d\n",result);
-	}
-	
-	if (strcmp(argv[1],"publish")==0) {
-	  result = top1->publisher()
-	} else {
-	  result = top1->subscriber();
-	}
-
-        while (1) {
-
- 	if (strcmp(argv[1],"publish")==0) {
-  	  result = top1->setItem(SAL_IID_m1m3_Metrology_number, iseq);
-	  result = top1->setItem(SAL_IID_m1m3_Metrology_counter, iseq);
-	  result = top1->setItem(SAL_IID_m1m3_Metrology_vendor, "LSST SAL");	
-	  result = top1->putSample();
-
-   	  sleep(5);
-          incr iseq 1;
-	  
-       } else {
-	  result = top1->getSample(SAL__SLOWPOLL);
-  	  result = top1->getItem(SAL_IID_m1m3_Metrology_number, iseq);
-	  result = top1->getItem(SAL_IID_m1m3_Metrology_counter, iseq);
-	  result = top1->getItem(SAL_IID_m1m3_Metrology_vendor, "LSST SAL");	
-          printf("number = %d, text = %s\n",iseq,istring);
-       }
-       
-       
-       }
-
-}
-
-</PRE>
 <P>
 See the <A HREF="salgenerated-c++/annotated.html">Example generated classes</A> for details.
 <P>
@@ -396,20 +328,6 @@ to facilitate application level access to all published telemetry.
 <P>
 The SAL will provide automatic version and temporal consistency
 checking and appropriate feedback to the application level code.
-e.g.
-<PRE>
-// issueCommand/getResponse return codes
-#define SAL__CMD_ACK        	300
-#define SAL__CMD_INPROGRESS 	301
-#define SAL__CMD_STALLED    	302
-#define SAL__CMD_COMPLETE   	303
-#define SAL__CMD_NOPERM    	-300
-#define SAL__CMD_NOACK     	-301
-#define SAL__CMD_FAILED    	-302
-#define SAL__CMD_ABORTED   	-303
-#define SAL__CMD_TIMEOUT   	-304
-
-</PRE>
 <P>
 The SAL will  provide automatically generated objects based on the SIMD API.
 <P>
@@ -419,90 +337,7 @@ The SAL generates a <A HREF="https://code.google.com/p/simd-cxx/">SIMD</A>
 compatible cmake build environment.
 <H4>2.2.2 Interfaces - Java</H4>
 The SAL Java interface will provide per-subsystem and per-datastreams specific objects
-to facilitate application level publishing of all telemetry, plus sample publisher 
-and subscriber programs.
-<P>
-e.g.
-
-<PRE>
-
-package org.opensplice.demo.sal_m1m3_Metrology;
-import java.util.Date;
-import java.util.Random;
-import org.omg.dds.core.Duration;
-import org.omg.dds.core.event.InconsistentTopicEvent;
-import org.omg.dds.core.policy.*;
-import org.omg.dds.domain.*;
-import org.omg.dds.topic.Topic;
-import org.omg.dds.pub.*;
-import org.omg.dds.topic.TopicQos;
-import org.opensplice.demo.sal_m1m3_MetrologyType;
-import sun.rmi.log.ReliableLog;
-
-public class m1m3_MetrologyPublisher {
-    public static void main(String args[]) throws Exception {
-        Random generator=new Random();
-        Date date=new Date();
-
-        if (args.length < 4) {
-            System.out.println("USAGE:\n\tm1m3_MetrologyPublisher <period ms> <i
-terations> <id> <name>");
-            System.exit(1);
-        }
-
-
-        DomainParticipantFactory dpf =
-                DomainParticipantFactory.getInstance();
-
-        DomainParticipant dp = dpf.createParticipant(0);
-
-        TopicQos tQos = new TopicQos(Reliability.Reliable());
-
-        Topic<sal_m1m3_MetrologyType> topic = dp.createTopic("m1m3_MetrologyTopi
-c", sal_m1m3_MetrologyType.class);
-
-        Publisher pub = dp.createPublisher();
-
-        DataWriterQos dwQos =
-                new DataWriterQos(Reliability.Reliable(),
-                                  Durability.Transient(),
-                                  History.KeepLast(10));
-
-        DataWriter<sal_m1m3_MetrologyType> writer =
-                pub.createDataWriter(topic, dwQos);
-
-        sal_m1m3_MetrologyType m1m3_Metrology = new sal_m1m3_MetrologyType();
-
-        int period  = Integer.parseInt(args[0]);
-        int N = Integer.parseInt(args[1]);
-        int id = Integer.parseInt(args[2]);
-        String name = args[3];
-        int j;
-        for (int i = 0; i < N; ++i) {
-
-            for(j=0; i<16; i++) {         
-              m1m3_Metrology.distance[i] = generator.nextInt(250);
-            }
-
-            for(j=0; i<16; i++) {         
-              m1m3_Metrology.error[i] = generator.nextInt(250);
-            }
-
-            for(j=0; i<16; i++) {         
-              m1m3_Metrology.status[i] = (short) generator.nextInt(250);
-            }
-            writer.write(m1m3_Metrology);
-            System.out.println("Published " + i);
-
-            try {
-                Thread.sleep(period);
-            } catch (InterruptedException e) { }
-        }
-    }
-}
-
-</PRE>
-
+to facilitate application level publishing of all telemetry.
 <P>
 See the <A HREF="salgenerated-java/annotated.html">Example generated classes</A> for details.
 <P>
@@ -570,7 +405,6 @@ checking and appropriate feedback to the application level code.
 
 <H4>2.2.5 Interfaces - Python</H4>
 The SAL will provide a Simple test/debug interface similar to the SAL Tcl interface.
-This will be based on the PyDDS package.
 <P><HR><P>
 <P><HR><P>
 
@@ -939,21 +773,21 @@ characteristics of applications. Users generally do not need to be concerned wit
 Functional commands : commands that implement the specific functional characteristics of a
 subsystem components.
 <P>
-Functional operation is based on the Command/Action/Response model that isolates the transmission of the command from the resulting action that is performed. When an application receives a command, it validates any parameter associated with that command and immediately accepts or rejects the command. If the command is accepted, the application then initiates an independent internal action to meet the conditions imposed by the command. Once those conditions have been met, an event is posted signifying the successful completion of the action (or the unsuccessful completion if the conditions can not be met).
+Functional operation is based on the Command/Action/Response model that isolates the transmission of the command from the resulting action that is performed. When an application receives a command, it validates any Configuration associated with that command and immediately accepts or rejects the command. If the command is accepted, the application then initiates an independent internal action to meet the conditions imposed by the command. Once those conditions have been met, an event is posted signifying the successful completion of the action (or the unsuccessful completion if the conditions can not be met).
 <P>
 Commands return immediately but the actions that are initiated as a result of a command may take some time to complete. When the action completes, an action status event is posted that includes the completion status of that action. The subsystem generating the command monitors this status event prior to issuing the command on the remote system. While the monitoring is performed automatically by the command system, Subsystem developers may need to attach a callback to perform processing on action completion. This callback may be null if no processing is needed.
 <P>
-If a command is accepted by the subsystem it causes an independent action to begin. A response to the command is returned immediately. The action begins matching the current configuration to the new demand configuration. When the configurations match (i.e., the subsystem has performed the input operations) the action signals the successful end of the action. If the commands  cannot be matched (whether by hardware failure, external stop command, timeout, or some other fault) the action signals the unsuccessful end of the action.
+If a command is accepted by the subsystem it causes an independent action to begin. A response to the command is returned immediately. The action begins matching the current configuration to the new demand configuration. When the configurations match (i.e., the subsystem has performed the input operations) the action signals the successful end of the action. If the configurations cannot be matched (whether by hardware failure, external stop command, timeout, or some other fault) the action signals the unsuccessful end of the action.
 <P>
 The important features of the command/action/response model are:
 <P>
 <UL>
 <LI>Commands are never blocked. As soon as one command is started, another one can be issued. The
-behavior of the controller when two or more commands are started can be configured on a
+behavior of the controller when two or more configurations are started can be configured on a
 per subsystem basis.
 <LI>The actions are performed using one or more separate threads. They can be tuned for priority, number of
 simultaneous actions, critical resources, or any other parameters.
-<LI>Action completions produce events that tell the state of the current configuration. Actions push the lifecycle of the ccommand through to completion.
+<LI>Action completions produce events that tell the state of the current configuration. Actions push the lifecycle of the configuration through to completion.
 <LI>Responses may be monitored by any other subsystems.<P>
 </UL><P>
 
@@ -974,8 +808,8 @@ other commanding is possible)</TD></TR>
 
 <H3> 3.1.1 Interface Processing Time Requirements</H3>
 Command messages issued via the middleware must be received by the computer system(s)
-of the commanded subsystem within  5ms. A preliminary response (ACK) must be issued within
-10ms and received by the caller within 20ms of the command origination time.
+of the commanded subsystem within TDB ms. A preliminary response (ACK) must be issued within
+TBD ms and received by the caller within TDB ms of the command origination time.
  
 <H3> 3.1.2 Message Requirements</H3>
 
@@ -993,7 +827,7 @@ checking and performance monitoring support
 </UL>
 <H3> 3.2 Telemetry Requirements</H3>
 Telemetry data issued via the middleware must be received by the computer system(s)
-of the Facility database , and any other subscribers , within  20ms. 
+of the Facility database , and any other subscribers , within TDB ms. 
 
 <H3> 3.3 Event Notifications Requirements</H3>
 Any application may

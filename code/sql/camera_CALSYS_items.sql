@@ -7,8 +7,7 @@ CREATE TABLE camera_CALSYS_items (
   units char(32),
   freq  float,
   range char(32),
-  location char(32),
   comment char(128),
   PRIMARY KEY (num)
 );
-INSERT INTO camera_CALSYS_items VALUES (1,"profile","float",1024,"",0.054,"","","");
+INSERT INTO camera_CALSYS_items VALUES (1,"profile","float",1024,"none",0.1,"","");

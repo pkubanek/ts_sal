@@ -4,5 +4,4 @@ struct camera_WTCM {
   long       private_rcvStamp; //private
   long       private_seqNum;   //private
   long       private_origin;   //private
-  float parameters[10];		//	none :	none :	Process parameters
-};
+  float parameters[10];		#	none ;	none ;	Process parameters

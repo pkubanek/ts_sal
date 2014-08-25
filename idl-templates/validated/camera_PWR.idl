@@ -4,6 +4,5 @@ struct camera_PWR {
   long       private_rcvStamp; //private
   long       private_seqNum;   //private
   long       private_origin;   //private
-  float supply_voltage[25];	//	volt :	none :	Power supply voltages, measured
-  float current[25];		//	volt :	none :	Power supply currents, measured
-};
+  float supply_voltage[25];	#	volt ;	none ;	Power supply voltages, measured
+  float current[25];		#	volt ;	none ;	Power supply currents, measured

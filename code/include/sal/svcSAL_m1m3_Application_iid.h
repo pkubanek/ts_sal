@@ -1,9 +1,7 @@
 
 #if !defined(SAL_m1m3_Application_IID__INCLUDED_)
 #define SAL_m1m3_Application_IID__INCLUDED_
-#define SAL_IID_m1m3_Application_demand 14413297		// demand float 7
-#define SAL_IID_m1m3_Application_position 14413298		// position float 7
-#define SAL_IID_m1m3_Application_error 14413299		// error float 7
-#define SAL_IID_m1m3_Application_status 14413300		// status short 17
-#endif
-
+#define SAL_IID_m1m3_Application_demand 3521253		// demand float 7
+#define SAL_IID_m1m3_Application_position 3521254		// position float 7
+#define SAL_IID_m1m3_Application_error 3521255		// error float 7
+#define SAL_IID_m1m3_Application_status 3521256		// status short 17

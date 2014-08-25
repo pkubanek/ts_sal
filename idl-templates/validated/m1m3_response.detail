@@ -1,4 +1,0 @@
-m1m3.response.cmdID 1 long 0.1
-m1m3.response.timeout 1 long 0.1
-m1m3.response.repeat 1 short 0.1
-m1m3.response.submits 1 short 0.1

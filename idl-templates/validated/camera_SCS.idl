@@ -4,8 +4,7 @@ struct camera_SCS {
   long       private_rcvStamp; //private
   long       private_seqNum;   //private
   long       private_origin;   //private
-  float open_profile[1024];	//	none :	none :	Open shutter motion profile
-  float close_profile[1024];	//	none :	none :	Close shutter motion profile
-  string<32> algorithm;		//	none :	none :	Control algorithm used
-  unsigned long flags;		//	none :	none :	Limit switches and error flags
-};
+  float open_profile[1024];	#	none ;	none ;	Open shutter motion profile
+  float close_profile[1024];	#	none ;	none ;	Close shutter motion profile
+  string<32> algorithm;		#	none ;	none ;	Control algorithm used
+  unsigned long flags;		#	none ;	none ;	Limit switches and error flags

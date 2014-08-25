@@ -1,0 +1,52 @@
+List of Tools
+
+Java: SE 6
+Maven: 2.0.9
+Camel: 1.6.1
+Eclipse: 3.4 (eclipse-java-ganymede-SR2-win32.zip)
+
+Additional Eclipse Plugins using Eclipse Update mechanism:
+•	Eclipse Maven Plugin Update Site: http://m2eclipse.sonatype.org/update/
+            (Select Maven Integration Components only)
+
+•	Eclipse Subversion Plugin Update Site: http://subclipse.tigris.org/update_1.6.x
+
+
+
+
+Notes
+Standard eclipse goals
+•	eclipse:configure-workspace is used to add the classpath variable M2_REPO to Eclipse which points to your local repository and optional to configure other workspace features.
+•	eclipse:eclipse generates the Eclipse configuration files.
+•	eclipse:clean is used to delete the files used by the Eclipse IDE.
+Specific goals
+Specific goals to support m2eclipse
+•	eclipse:m2eclipse generates the Eclipse configuration files that are already configured for M2eclipse.
+Specific goals for PDE developments
+•	eclipse:to-maven Add eclipse artifacts from an eclipse installation to the local repo. This mojo automatically analize the eclipse directory, copy plugins jars to the local maven repo, and generates appropriate poms. This is the official central repository builder for Eclipse plugins, so it has the necessary default values. For customized repositories see eclipse:make-artifacts.
+•	eclipse:install-plugins installs all resolved project dependencies of a particular type (usually 'eclipse-plugin') into the specified Eclipse installation directory.
+•	eclipse:make-artifacts copies all Eclipse plugins from an installation directory to the local repository, generating POMs for each.
+
+
+Setting up eclipse environment for maven checkstyle
+
+1.	If you want to view checkstyle errors in eclipse editor, there is a checkstyle plugin: http://eclipse-cs.sf.net/update/  (Select the first option 5.0.0…).
+2.	Select Window -> Preferences from the menu toolbar. Select 'Java -> Code Style -> Formatter'. Click on import and select maven_checkstyle-profile.xml file from the file system. Apply the changes and press OK. (File attached).  Source -> Format to format the code. Some settings might have to be changed (I had to change the default space for arrays).
+3.	To remove the trailing spaces, install this plugin: Update Site: http://andrei.gmxhome.de/eclipse/  (Install the AnyEditTools for Eclipse 3.3 – 3.5 )
+
+2 & 3 taken from: http://dbestudio.wiki.sourceforge.net/Code+Formatting+with+Checkstyle
+
+Disabling Checkstyle:
+Use -Dcheckstyle.skip=true
+
+
+Setting Up Eclipse to ignore Maven's Checkstyle.
+------------------------------------------------
+
+1. Start Eclipse.
+2. Select "Run -> Run Configurations..." from the menu bar
+3. Under Maven Build, right click and create a New configuration
+4. In the "Goals:" tell Eclipse to turn off Checkstyle, e.g., "compile -Dcheckstyle.skip=true"
+5. In the "Base directory:" specify the directory where the DDS Camel component .project and
+pom.xml files are located.
+6. Click the "Run" button and make sure there are no errors.

@@ -1,0 +1,35 @@
+/*
+ *                         OpenSplice DDS
+ *
+ *   This software and documentation are Copyright 2006 to 2009 PrismTech 
+ *   Limited and its licensees. All rights reserved. See file:
+ *
+ *                     $OSPL_HOME/LICENSE 
+ *
+ *   for full copyright notice and license terms. 
+ *
+ */
+
+/************************************************************************
+ * LOGICAL_NAME:    Chat.idl
+ * FUNCTION:        Adapted from the OpenSplice Tutorial example code.
+ * MODULE:          Demonstration topic for the Camel OpenSplice project.
+ * DATE             june 2006.
+ ************************************************************************
+ * 
+ * This file contains the data definitions for the tutorial examples.
+ *
+ ***/
+
+module Chat {
+
+    const long MAX_NAME = 32;
+    typedef string<MAX_NAME> nameType;
+
+    struct SimpleChatMessage {
+        long      userID;          // owner of message
+        long      index;           // message number
+        string    content;         // message body
+    };
+#pragma keylist SimpleChatMessage userID
+};

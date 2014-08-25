@@ -7,8 +7,7 @@ CREATE TABLE camera_TCM_items (
   units char(32),
   freq  float,
   range char(32),
-  location char(32),
   comment char(128),
   PRIMARY KEY (num)
 );
-INSERT INTO camera_TCM_items VALUES (1,"parameters","float",10,"",0.054,"","","");
+INSERT INTO camera_TCM_items VALUES (1,"parameters","float",10,"none",0.1,"","");

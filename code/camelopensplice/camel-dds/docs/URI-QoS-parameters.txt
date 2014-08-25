@@ -1,0 +1,317 @@
+DDS Component
+=============
+The DDS component implements the Data Distribution Service pub/sub middleware.
+Currently, only the OpenSplice DDS implementation is supported.
+
+URI Format
+----------
+dds:topicname[:domainId]/dataclassname[?Options]
+
+The DDS component supports both producer and consumer functionality (i.e.,
+messages can both be received from DDS and sent to DDS).
+
+QoS options are a subset of the options that can be appended to the URI. The
+format for the QoS options is the following:
+
+   ?qos-parameter=value&qos-parameter=value&...
+
+Enumerations values for QoS policy parameters can be found in the DDS
+specification.
+
+NOTES:
+------
+Setting QoS on Specific DDS Entity Types:
+
+In general, when a QoS parameter value is specified in the URI it will be
+applied to all relevant DDS entities. For example, if the URI contains
+"HistoryDepth=7" then the depth of 7 for the History QoS policy will be set
+on the topic, data reader, and data writer since the History QoS policy is
+applicable to those entities.
+
+However, there can be cases where the QoS specified for a topic will need
+to differ from the QoS specified for other DDS entities (e.g., data readers,
+data writers). Specifically, all entities participating with a
+particular topic need to agree on the QoS settings for that topic if any one
+of the executables can create the topic. The topic name as well as the
+QoS settings for the topic determine a particular topic.
+
+The DDS Camel component supports setting QoS parameters for all applicable
+DDS entities (as described above), for data readers and data writers, for
+data readers only, and for data writers only. To specify a QoS parameter
+for data readers data writers the letter 'D' is appended to the QoS
+parameter name. For example, if the URI contains "HistoryDepthD=5" then the
+depth of 5 for the History QoS policy will be set on the data readers and
+data writers.
+
+To specify a QoS parameter only for data readers the letter 'R' is appended
+to the QoS parameter name. For example, if the URI contains
+"HistoryDepthR=100" then the depth of 100 for the History QoS policy will be
+set on the data readers. Likewise, to specify a QoS parameter only for data
+writers the letter 'W' is appended to the QoS parameter name (e.g.,
+"HistoryDepthW=1").
+
+In the documentation below we list the QoS parameter and the optional
+suffixes for particular DDS entity types in braces (e.g., {D,R,W} to
+designate that the parameter can be set for both data readers and data
+writers, data readers only, or data writers only respectively).
+
+Using Topic QoS for Data Readers and Writers:
+It is a common idiom when using DDS to set QoS on the topic and then copy
+the relevant topic QoS for the data readers and writers. The Camel DDS
+component follows this idiom. Moreover, the Camel DDS component retrieves
+existing applicable topics rather than always trying to create new ones. A
+Camel DDS component will not create a topic if the DDS implementation finds
+a matching topic that already exists.
+
+Therefore, the QoS for data readers and data writers for a particular
+executable might come from topics that have been created before the
+executable starts. This design allows for information modelers to determine
+consistent data distribution semantics. The application developers can
+then concentrate on those QoS policies that will implement the business
+logic.
+
+QoS Options
+-----------
+
+Name:        DeadlinePeriod{D,R,W}
+Description: The period (in seconds) for the deadline QoS. This parameter sets
+             the deadline period for all the applicable DDS entities
+             (i.e., topic, data writer, data reader).
+Example:     "DeadlinePeriod=0.01"
+
+Name:        DestinationOrder{D,R,W}
+Description: The kind for the destination order QoS.
+             This parameter sets the destination order kind for all the
+             applicable DDS entities (i.e., topic, data writer, data reader).
+Example:     "DestinationOrder=BY_RECEPTION_TIMESTAMP"
+
+Name:        DurabilityKind{D,R,W}
+Description: The kind for the durability QoS.
+             This parameter sets the durability kind for all the
+             applicable DDS entities (i.e., topic, data writer, data reader).
+Example:     "DurabilityKind=VOLATILE"
+
+Name:        DurabilityServiceCleanupDelay{W}
+Description: The cleanup delay (in seconds) for the durability service QoS.
+             This parameter sets the cleanup delay for all the
+             applicable DDS entities (i.e., topic, data writer, data reader).
+Example:     "DurabilityServiceCleanupDelay=0.005"
+
+Name:        DurabilityServiceDepth{W}
+Description: The depth for the durability service QoS.
+             This parameter sets the cleanup delay for all the
+             applicable DDS entities (i.e., topic, data writer, data reader).
+Example:     "DurabilityServiceDepth=5"
+
+Name:        DurabilityServiceKind{W}
+Description: The kind for the durability service QoS.
+             This parameter sets the durability kind for all the
+             applicable DDS entities (i.e., topic, data writer, data reader).
+Example:     "DurabilityServiceKind=KEEP_ALL"
+
+Name:        DurabilityServiceMaxInstances{W}
+Description: The maximum instances for the durability service QoS.
+             This parameter sets the cleanup delay for all the
+             applicable DDS entities (i.e., topic, data writer, data reader).
+Example:     "DurabilityServiceMaxInstances=5"
+
+Name:        DurabilityServiceMaxSamples{W}
+Description: The maximum samples for the durability service QoS.
+             This parameter sets the cleanup delay for all the
+             applicable DDS entities (i.e., topic, data writer, data reader).
+Example:     "DurabilityServiceMaxSamples=5"
+
+Name:        DurabilityServiceMaxSamplesPerInstance{W}
+Description: The maximum samples per instance for the durability service QoS.
+             This parameter sets the cleanup delay for all the
+             applicable DDS entities (i.e., topic, data writer, data reader).
+Example:     "DurabilityServiceMaxSamplesPerInstance=5"
+
+Name:        EntityFactoryAutoenable
+Description: Whether or not to autoenable entity created.
+             This parameter sets the autoenable flag for all the
+             applicable DDS entities (i.e., domain participant factory,
+             participant, publisher, subscriber).
+Example:     "EntityFactoryAutoenable=false"
+
+Name:        GroupData
+Description: The data (as byte array) for the group data QoS.
+             This parameter sets the group data for all the
+             applicable DDS entities (i.e., publisher, subscriber).
+Example:     "GroupData=MyGroupData"
+
+Name:        HistoryDepth{D,R,W}
+Description: The depth for the history QoS.
+             This parameter sets the depth for all the
+             applicable DDS entities (i.e., topic, data writer, data reader).
+Example:     "HistoryDepth=5"
+
+Name:        HistoryKind{D,R,W}
+Description: The kind for the history QoS.
+             This parameter sets the durability kind for all the
+             applicable DDS entities (i.e., topic, data writer, data reader).
+Example:     "HistoryKind=KEEP_ALL"
+
+Name:        LatencyDuration{D,R,W}
+Description: The duration (in seconds) for the latency budget QoS.
+             This parameter sets the duration for all the
+             applicable DDS entities (i.e., topic, data writer, data reader).
+Example:     "LatencyDuration=0.005"
+
+Name:        LifespanDuration{W}
+Description: The duration (in seconds) for the lifespan QoS.
+             This parameter sets the duration for all the applicable DDS
+             entities (i.e., topic, data writer).
+Example:     "LifespanDuration=0.005"
+
+Name:        LivelinessDuration{D,R,W}
+Description: The lease duration (in seconds) for the liveliness QoS.
+             This parameter sets the duration for all the
+             applicable DDS entities (i.e., topic, data reader, data writer).
+Example:     "LivelinessDuration=0.005"
+
+Name:        LivelinessKind{D,R,W}
+Description: The lease kind for the liveliness QoS.
+             This parameter sets the kind for all the applicable DDS
+             entities (i.e., topic, data reader, data writer).
+Example:     "LivelinessKind=AUTOMATIC"
+
+Name:        OwnershipKind{D,R,W}
+Description: The kind for the ownership QoS.
+             This parameter sets the kind for all the applicable DDS
+             entities (i.e., topic, data reader, data writer).
+Example:     "OwnershipKind=SHARED"
+
+Name:        OwnershipStrength
+Description: The strength for the ownership strength QoS.
+             This parameter sets the strength for all the applicable DDS
+             entities (i.e., data writer).
+Example:     "OwnershipKind=10"
+
+Name:        Partition
+Description: The partitions for the partition QoS.
+             This parameter sets the partition for all the applicable DDS
+             entities (i.e., publisher, subscriber).
+NOTE:        The partitions specified must be separated by an encoded '%'
+             character. The '%' character is encoded as "%25". This encoded
+             character delimits the partitions specified in the URI.
+Example:     "Partition=MyPartition1%25MyPartition2"
+
+Name:        PresentationAccessScope
+Description: The access scope for the presentation QoS.
+             This parameter sets the access scope for all the applicable DDS
+             entities (i.e., publisher, subscriber).
+Example:     "PresentationAccessScope=INSTANCE"
+
+Name:        PresentationCoherentAccess
+Description: The coherent access for the presentation QoS.
+             This parameter sets the coherent access for all the applicable DDS
+             entities (i.e., publisher, subscriber).
+Example:     "PresentationCoherentAccess=true"
+
+Name:        PresentationOrderedAccess
+Description: The ordered access for the presentation QoS.
+             This parameter sets the ordered access for all the applicable DDS
+             entities (i.e., publisher, subscriber).
+Example:     "PresentationCoherentAccess=true"
+
+Name:        ReaderDataLifecycleAutopurgeDisposedDelay
+Description: The autopurge disposed samples delay (in seconds) for the reader
+             data lifecycle QoS.
+             This parameter sets the autopurge disposed samples delay for
+             all the applicable DDS entities (i.e., data reader).
+Example:     "ReaderDataLifecycleAutopurgeDisposedDelay=10.5"
+
+Name:        ReaderDataLifecycleAutopurgeNowriterDelay
+Description: The autopurge no writer samples delay (in seconds) for the reader
+             data lifecycle QoS.
+             This parameter sets the autopurge no writer samples delay for
+             all the applicable DDS entities (i.e., data reader).
+Example:     "ReaderDataLifecycleAutopurgeNowriterDelay=10.5"
+
+Name:        ReliabilityBlockingTime{D,R,W}
+Description: The maximum blocking time (in seconds) for the reliability QoS.
+             This parameter sets the maximum blocking time for all the
+             applicable DDS entities (i.e., topic, data reader, data writer).
+Example:     "ReliabilityBlockingTime=10.5"
+
+Name:        ReliabilityKind{D,R,W}
+Description: The kind for the reliability QoS.
+             This parameter sets the kind for all the applicable DDS
+             entities (i.e., topic, data reader, data writer).
+Example:     "ReliabilityKind=RELIABLE"
+
+Name:        ResourceLimitsMaxInstances{D,R,W}
+Description: The maximum instances for the resource limits QoS.
+             This parameter sets the maximum instances for all the
+             applicable DDS entities (i.e., topic, data reader, data writer).
+Example:     "ResourceLimitsMaxInstances=1000"
+
+Name:        ResourceLimitsMaxSamples{D,R,W}
+Description: The maximum samples for the Resource Limits QoS.
+             This parameter sets the maximum samples for all the
+             applicable DDS entities (i.e., topic, data reader, data writer).
+Example:     "ResourceLimitsMaxSamples=50000000"
+
+Name:        ResourceLimitsMaxSamplesPerInstance{D,R,W}
+Description: The maximum samples per instance for the resource limits QoS.
+             This parameter sets the maximum samples for all the
+             applicable DDS entities (i.e., topic, data reader, data writer).
+Example:     "ResourceLimitsMaxSamplesPerInstance=50000"
+
+Name:        TimebasedFilter
+Description: The minimum separation time (in seconds) for the timebased filter
+             QoS.
+             This parameter sets the minimum separation time for all the
+             applicable DDS entities (i.e., data reader).
+Example:     "TimebasedFilter=10.5"
+
+Name:        TopicData
+Description: The data (as byte array) for the topic data QoS.
+             This parameter sets the topic data for all the
+             applicable DDS entities (i.e., publisher, subscriber).
+Example:     "TopicData=MyTopicData"
+
+Name:        TransportPriority{W}
+Description: The priority for the transport priority QoS.
+             This parameter sets the priority for all the
+             applicable DDS entities (i.e., topic, data writer).
+Example:     "TransportPriority=100"
+
+Name:        UserData
+Description: The data (as byte array) for the user data QoS.
+             This parameter sets the user data for all the
+             applicable DDS entities (i.e., participant, data reader, data
+             writer).
+Example:     "UserData=MyUserData"
+
+Name:        WriterDataLifecycleAutodispose
+Description: The automatic dispose flag for the writer data lifecycle QoS.
+             This parameter sets the automatic dispose flag for all the
+             applicable DDS entities (i.e., data writer).
+Example:     "WriterDataLifecycleAutodispose=true"
+
+
+Example QoS settings for a URI:
+-------------------------------
+"HistoryKindD=KEEP_ALL&HistoryDepthR=100&HistoryDepthW=1&HistoryKindT=KEEP_LAST&HistoryDepthT=3&LifespanDuration=0.001&DeadlinePeriod=1.5&GroupData=MyGroupData&Partition=MyPartition1%25MyPartition2"
+
+In this example, the following QoS parameters are set:
+  history kind = KEEP_ALL for all data writers and readers,
+  history depth = 100 for all data readers,
+  history depth = 1 for all data writers,
+  history kind = KEEP_LAST for the topic,
+  history depth = 3 for the topic,
+  lifespan duration = 0.001 seconds for the topic (if created) and all
+                      data writers,
+  deadline period = 1.5 seconds for the topic (if created) and all data
+                    writers and readers,
+  group data = "MyGroupData" for al publishers and subscribers,
+  partition = "MyPartition1" and "MyPartition2" for all publishers and
+              subscribers.
+
+NOTE: No assumption should be made as to the order of setting QoS parameters.
+      The user should take care not to have duplicate QoS parameters with
+      different values specified. The order of evaluation is not necessarily
+      determined by the order in which the QoS parameters are specified in
+      the URI.
