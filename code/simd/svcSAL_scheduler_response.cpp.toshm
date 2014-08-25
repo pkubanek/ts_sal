@@ -1,8 +1,0 @@
-		scheduler_response_ref->repeat = samples[i].repeat;
-		scheduler_response_ref->submits = samples[i].submits;
-		scheduler_response_ref->cmdID = samples[i].cmdID;
-		scheduler_response_ref->timeout = samples[i].timeout;
-		strncpy(scheduler_response_ref->ack,samples[i].ack,16);
-		strncpy(scheduler_response_ref->error,samples[i].error,16);
-		strncpy(scheduler_response_ref->result,samples[i].result,64);
-		scheduler_response_ref->syncI++;

@@ -1,8 +1,0 @@
-		d.repeat = mount_response_ref->repeat;
-		d.submits = mount_response_ref->submits;
-		d.cmdID = mount_response_ref->cmdID;
-		d.timeout = mount_response_ref->timeout;
-		strncpy(d.ack,mount_response_ref->ack,16);
-		strncpy(d.error,mount_response_ref->error,16);
-		strncpy(d.result,mount_response_ref->result,64);
-		mount_response_ref->syncO = 1;

@@ -1,6 +1,0 @@
-		result = salHandle->setitem(SAL_IID_ocs_system_networking_mac, mac);
-		result = salHandle->setitem(SAL_IID_ocs_system_networking_subsystem, subsystem);
-		result = salHandle->setitem(SAL_IID_ocs_system_networking_ip, ip, 5);
-		result = salHandle->setitem(SAL_IID_ocs_system_networking_rx, rx, 7);
-		result = salHandle->setitem(SAL_IID_ocs_system_networking_tx, tx, 7);
-		result = salHandle->putSample();

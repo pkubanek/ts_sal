@@ -1,4 +1,0 @@
-SAL_WORK_DIR/CMakeFiles/TopicId-asub.dir
-SAL_WORK_DIR/CMakeFiles/TopicId-pub.dir
-SAL_WORK_DIR/CMakeFiles/TopicId-sub.dir
-SAL_WORK_DIR/CMakeFiles/datamodel.dir

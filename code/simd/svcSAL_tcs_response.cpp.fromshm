@@ -1,8 +1,0 @@
-		d.repeat = tcs_response_ref->repeat;
-		d.submits = tcs_response_ref->submits;
-		d.cmdID = tcs_response_ref->cmdID;
-		d.timeout = tcs_response_ref->timeout;
-		strncpy(d.ack,tcs_response_ref->ack,16);
-		strncpy(d.error,tcs_response_ref->error,16);
-		strncpy(d.result,tcs_response_ref->result,64);
-		tcs_response_ref->syncO = 1;

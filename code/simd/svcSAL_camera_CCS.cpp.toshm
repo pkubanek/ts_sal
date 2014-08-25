@@ -1,7 +1,0 @@
-		for (unsigned int count=0; count<1025; count++) {
-			camera_CCS_ref->expHist[count] = samples[i].expHist[count];
-		}
-		for (unsigned int count=0; count<11; count++) {
-			camera_CCS_ref->flags[count] = samples[i].flags[count];
-		}
-		camera_CCS_ref->syncI++;

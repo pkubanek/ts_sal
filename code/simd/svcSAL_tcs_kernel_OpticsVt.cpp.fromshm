@@ -1,3 +1,0 @@
-		d.tilt = tcs_kernel_OpticsVt_ref->tilt;
-		d.tip = tcs_kernel_OpticsVt_ref->tip;
-		tcs_kernel_OpticsVt_ref->syncO = 1;

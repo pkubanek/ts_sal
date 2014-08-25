@@ -1,7 +1,0 @@
-module camera
-{
-	struct PCMS_speed {
-	  float	Supply_Voltage[2];	// 100 | Volts | xxx
-	};
-	#pragma keylist PCMS_speed
-};

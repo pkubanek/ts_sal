@@ -1,3 +1,0 @@
-	svcSHORT	status[17];
-	svcLONG	distance[17];
-	svcLONG	error[17];

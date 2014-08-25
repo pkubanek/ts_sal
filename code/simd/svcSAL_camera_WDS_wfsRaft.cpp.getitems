@@ -1,9 +1,0 @@
-		result = salHandle->getSample(SAL__SLOWPOLL);
-		result = salHandle->getitem(SAL_IID_camera_WDS_wfsRaft_status, status);
-		result = salHandle->getitem(SAL_IID_camera_WDS_wfsRaft_CalcImage1, CalcImage1);
-		result = salHandle->getitem(SAL_IID_camera_WDS_wfsRaft_CalcImage2, CalcImage2);
-		result = salHandle->getitem(SAL_IID_camera_WDS_wfsRaft_avgInsideImage, avgInsideImage);
-		result = salHandle->getitem(SAL_IID_camera_WDS_wfsRaft_avgOutsideImage, avgOutsideImage);
-		result = salHandle->getitem(SAL_IID_camera_WDS_wfsRaft_metrics, metrics, 33);
-		result = salHandle->getitem(SAL_IID_camera_WDS_wfsRaft_parameters, parameters, 33);
-		result = salHandle->getitem(SAL_IID_camera_WDS_wfsRaft_zernikes, zernikes, 17);

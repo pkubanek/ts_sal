@@ -1,0 +1,32 @@
+###
+###  This file defines Commands for the camera subsystem
+###  It is processed by salgenerator parser to produce corresponding idl
+###
+###-------------------------------------------------------------------------------------------
+###  COMMANDS
+###-------------------------------------------------------------------------------------------
+#type	  device 	property 	action	value+modifiers	| alias		| frequency
+#
+command  filter 	position 	              		| filter
+						string  name
+command  image							| image
+						int	nimg
+						float	exposure
+						boolean shutter
+						boolean guide
+						boolean wfs
+command  guide	 	position 	set	                | guidestars
+						float   xcent[8]
+						float	ycent[8]
+						int	xsize[8]
+						int	ysize[8]
+						int	freq[8]
+						double  angle[72]
+command	 guide		process		start			| guideProcess
+command	 guide		process		stop			| guideStop
+command	 wfs		process		start			| wfsProcess
+command	 wfs		process		stop			| wfsStop
+command  shutter	position	open                    | openShutter
+command  shutter	position	close                   | closeShutter
+command  test		any		any			| test
+

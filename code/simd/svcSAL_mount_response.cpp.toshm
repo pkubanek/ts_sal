@@ -1,8 +1,0 @@
-		mount_response_ref->repeat = samples[i].repeat;
-		mount_response_ref->submits = samples[i].submits;
-		mount_response_ref->cmdID = samples[i].cmdID;
-		mount_response_ref->timeout = samples[i].timeout;
-		strncpy(mount_response_ref->ack,samples[i].ack,16);
-		strncpy(mount_response_ref->error,samples[i].error,16);
-		strncpy(mount_response_ref->result,samples[i].result,64);
-		mount_response_ref->syncI++;

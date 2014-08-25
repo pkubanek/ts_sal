@@ -1,5 +1,0 @@
-	svcUSHORT	raftID;
-	svcULONG	cfgChkSum;
-	svcLONG	heaterStatus[11];
-	svcFLT	heaterPower[11];
-	svcFLT	temp[21];

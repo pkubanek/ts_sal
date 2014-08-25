@@ -1,7 +1,0 @@
-		tcs_kernel_TimeKeeper_ref->Cst = samples[i].Cst;
-		tcs_kernel_TimeKeeper_ref->Dcst = samples[i].Dcst;
-		tcs_kernel_TimeKeeper_ref->Dsst = samples[i].Dsst;
-		tcs_kernel_TimeKeeper_ref->Sst = samples[i].Sst;
-		tcs_kernel_TimeKeeper_ref->Tai = samples[i].Tai;
-		tcs_kernel_TimeKeeper_ref->Tt = samples[i].Tt;
-		tcs_kernel_TimeKeeper_ref->syncI++;

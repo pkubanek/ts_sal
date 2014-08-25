@@ -1,7 +1,0 @@
-		for (unsigned int count=0; count<11; count++) {
-			d.control[count] = camera_VCS_ref->control[count];
-		}
-		for (unsigned int count=0; count<11; count++) {
-			d.pressure[count] = camera_VCS_ref->pressure[count];
-		}
-		camera_VCS_ref->syncO = 1;

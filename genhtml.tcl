@@ -2,8 +2,9 @@
 
 proc dometa { id } {
 global SDESC UDESC QDESC SAL_WORK_DIR
-   exec mkdir -p $id
-   set fmet [open $SAL_WORK_DIR/html/$id/[tidyname $id]-metadata.html w]
+   set system [lindex [split $id "_."] 0]
+   exec mkdir -p $SAL_WORK_DIR/html/salgenerator/$system
+   set fmet [open $SAL_WORK_DIR/html/salgenerator/$system/[tidyname $id]-metadata.html w]
    puts $fmet "<HTML><HEAD><TITLE>Stream definition editor - $id</TITLE></HEAD>
 <BODY BGCOLOR=White><H1>
 <IMG SRC=\"../LSST_logo.gif\" ALIGN=CENTER>
@@ -142,9 +143,10 @@ while { [gets $fin rec] > -1 } {
               puts stdout "Done $last"
             }
       set last $id
-      exec mkdir -p $id
-      puts stdout "Creating $id/[tidyname $id] stream editor"
-      set fout [open $SAL_WORK_DIR/html/salgenerator/$id/[tidyname $id]-streamdef.html w]
+#      exec mkdir -p $system
+      puts stdout "Creating $system/[tidyname $id] stream editor" 
+      exec mkdir -p $SAL_WORK_DIR/html/salgenerator/$system
+      set fout [open $SAL_WORK_DIR/html/salgenerator/$system/[tidyname $id]-streamdef.html w]
       set nid 1
       set CSYS $id
       puts $fout "<HTML><HEAD><TITLE>Stream definition editor - $id</TITLE></HEAD>

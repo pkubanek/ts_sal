@@ -1,6 +1,0 @@
-		result = salHandle->getSample(SAL__SLOWPOLL);
-		result = salHandle->getitem(SAL_IID_seeing_mass_command_cmdID, cmdID);
-		result = salHandle->getitem(SAL_IID_seeing_mass_command_device, device);
-		result = salHandle->getitem(SAL_IID_seeing_mass_command_modifiers, modifiers);
-		result = salHandle->getitem(SAL_IID_seeing_mass_command_operation, operation);
-		result = salHandle->getitem(SAL_IID_seeing_mass_command_value, value);

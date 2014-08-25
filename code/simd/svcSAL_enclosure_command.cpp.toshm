@@ -1,6 +1,0 @@
-		enclosure_command_ref->cmdID = samples[i].cmdID;
-		strncpy(enclosure_command_ref->device,samples[i].device,16);
-		strncpy(enclosure_command_ref->modifiers,samples[i].modifiers,128);
-		strncpy(enclosure_command_ref->operation,samples[i].operation,16);
-		strncpy(enclosure_command_ref->value,samples[i].value,16);
-		enclosure_command_ref->syncI++;

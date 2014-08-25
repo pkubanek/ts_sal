@@ -1,7 +1,0 @@
-		result = salHandle->getSample(SAL__SLOWPOLL);
-		result = salHandle->getitem(SAL_IID_dm_derived_psf_metric1, metric1, 201);
-		result = salHandle->getitem(SAL_IID_dm_derived_psf_metric2, metric2, 201);
-		result = salHandle->getitem(SAL_IID_dm_derived_psf_metric3, metric3, 201);
-		result = salHandle->getitem(SAL_IID_dm_derived_psf_metric4, metric4, 201);
-		result = salHandle->getitem(SAL_IID_dm_derived_psf_metric5, metric5, 201);
-		result = salHandle->getitem(SAL_IID_dm_derived_psf_metric6, metric6, 201);

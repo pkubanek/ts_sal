@@ -1,8 +1,0 @@
-		d.repeat = auxscope_response_ref->repeat;
-		d.submits = auxscope_response_ref->submits;
-		d.cmdID = auxscope_response_ref->cmdID;
-		d.timeout = auxscope_response_ref->timeout;
-		strncpy(d.ack,auxscope_response_ref->ack,16);
-		strncpy(d.error,auxscope_response_ref->error,16);
-		strncpy(d.result,auxscope_response_ref->result,64);
-		auxscope_response_ref->syncO = 1;

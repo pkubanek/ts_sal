@@ -1,0 +1,68 @@
+#     subsystem        .device    .property  .action  .modifiers
+
+	mount		control    state      set      online
+	mount		control    state      set      offline
+	mount		control    state      set      pause
+	mount		control    state      set      resume
+	mount		control    state      set      start
+	mount		control    state      set      stop
+
+	mount		target	   position   set      [radec]
+	mount		target	   offset     set      [radec]
+	mount		target	   tracking   on
+	mount		target	   tracking   off
+
+	mount		az	   position   set	[float]
+	mount		az	   offset     set       [float]
+	mount		az	   index      set       [float]
+	mount		az	   rate       set       [float]
+	mount		az	              stop
+	mount		az	   brake      on
+	mount		az	   brake      off
+	mount		az	   power      on
+	mount		az	   power      off
+	mount		az	   pump       on
+	mount		az	   pump       off
+	mount		az	   tracking   on
+	mount		az	   tracking   off
+	mount		az	   [axis-property] configure
+
+	mount		alt	   position   set       [float]
+	mount		alt	   offset     set       [float]
+	mount		alt	   index      set       [float]
+	mount		alt	   rate       set       [float]
+	mount		alt	              stop
+	mount		alt	   brake      on
+	mount		alt	   brake      off
+	mount		alt	   power      on
+	mount		alt	   power      off
+	mount		alt        pump       on
+	mount		alt	   pump       off
+	mount		alt	   tracking   on
+	mount		alt	   tracking   off
+	mount		alt	   [axis-property] configure
+
+	mount		hexapod    power      on
+	mount		hexapod    power      off
+	mount		hexapod    brake      on
+	mount		hexapod	   brake      off
+	mount		hexapod	   xangle     set       [float]
+	mount		hexapod	   yangle     set       [float]
+	mount		hexapod	   zangle     set       [float]
+	mount		hexapod	   xpos       set       [float]
+	mount		hexapod	   ypos       set       [float]
+	mount		hexapod	   zpos       set       [float]
+	mount		hexapod	   [hexapod-property] configure
+
+	mount		rotator    power      on
+	mount		rotator    power      off
+	mount		rotator    brake      on
+	mount		rotator	   brake      off
+	mount		rotator	   angle      set       [float]
+	mount		rotator	   offset     set       [float]
+	mount		rotator	   index      set       [float]
+
+	mount 		balance	   mode
+	mount 		balance    [balance-property] configure
+
+

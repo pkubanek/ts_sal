@@ -1,4 +1,0 @@
-		result = salHandle->setitem(SAL_IID_ocs_system_configuration_stationid, stationid);
-		result = salHandle->setitem(SAL_IID_ocs_system_configuration_device, device);
-		result = salHandle->setitem(SAL_IID_ocs_system_configuration_subssystem, subssystem);
-		result = salHandle->putSample();

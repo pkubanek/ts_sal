@@ -1,3 +1,0 @@
-		result = salHandle->setitem(SAL_IID_m1m3_Surface_Raw, Raw, 1025);
-		result = salHandle->setitem(SAL_IID_m1m3_Surface_Calibrated, Calibrated, 1025);
-		result = salHandle->putSample();

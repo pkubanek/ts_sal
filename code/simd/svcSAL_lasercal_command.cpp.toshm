@@ -1,6 +1,0 @@
-		lasercal_command_ref->cmdID = samples[i].cmdID;
-		strncpy(lasercal_command_ref->device,samples[i].device,16);
-		strncpy(lasercal_command_ref->modifiers,samples[i].modifiers,128);
-		strncpy(lasercal_command_ref->operation,samples[i].operation,16);
-		strncpy(lasercal_command_ref->value,samples[i].value,16);
-		lasercal_command_ref->syncI++;

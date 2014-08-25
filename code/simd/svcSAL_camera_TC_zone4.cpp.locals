@@ -1,4 +1,0 @@
-	svcLONG	status[11];
-	svcFLT	flow_rate[11];
-	svcFLT	setpoint[11];
-	svcFLT	temperature[11];

@@ -1,3 +1,0 @@
-	svcUCHAR	Status[51];
-	svcLONG	Raw[201];
-	svcFLT	Calibrated[201];

@@ -1,6 +1,0 @@
-		d.cmdID = skycam_command_ref->cmdID;
-		strncpy(d.device,skycam_command_ref->device,16);
-		strncpy(d.modifiers,skycam_command_ref->modifiers,128);
-		strncpy(d.operation,skycam_command_ref->operation,16);
-		strncpy(d.value,skycam_command_ref->value,16);
-		skycam_command_ref->syncO = 1;

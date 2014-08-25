@@ -1,7 +1,0 @@
-		for (unsigned int count=0; count<11; count++) {
-			camera_VCS_ref->control[count] = samples[i].control[count];
-		}
-		for (unsigned int count=0; count<11; count++) {
-			camera_VCS_ref->pressure[count] = samples[i].pressure[count];
-		}
-		camera_VCS_ref->syncI++;

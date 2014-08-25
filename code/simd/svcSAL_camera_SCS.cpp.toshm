@@ -1,9 +1,0 @@
-		camera_SCS_ref->flags = samples[i].flags;
-		strncpy(camera_SCS_ref->algorithm,samples[i].algorithm,32);
-		for (unsigned int count=0; count<1025; count++) {
-			camera_SCS_ref->close_profile[count] = samples[i].close_profile[count];
-		}
-		for (unsigned int count=0; count<1025; count++) {
-			camera_SCS_ref->open_profile[count] = samples[i].open_profile[count];
-		}
-		camera_SCS_ref->syncI++;

@@ -1,4 +1,0 @@
-		result = salHandle->setitem(SAL_IID_m2_Metrology_status, status, 17);
-		result = salHandle->setitem(SAL_IID_m2_Metrology_distance, distance, 17);
-		result = salHandle->setitem(SAL_IID_m2_Metrology_error, error, 17);
-		result = salHandle->putSample();

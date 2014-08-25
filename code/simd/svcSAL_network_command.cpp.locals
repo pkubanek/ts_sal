@@ -1,5 +1,0 @@
-	svcLONG	cmdID;
-	char	[16];
-	char	[128];
-	char	[16];
-	char	[16];

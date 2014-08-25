@@ -89,10 +89,8 @@ public class SAL_SALData {
 
 		// create DataWriter
 		createWriter(false);
+		hasWriter = true;
 
-		// Publish Events
-
-		DataWriter dwriter = getWriter();
         }
 
         public void salTelemetrySub(String topicName) {
@@ -120,7 +118,7 @@ public class SAL_SALData {
 		// create DataReader
  		createReader(true);
 #else
-		createReader();
+		createReader(false);
 #endif
 	}
 
@@ -138,6 +136,8 @@ public class SAL_SALData {
 		debugLevel = 1;
 		hasCommand = false;
 		hasProcessor = false;
+		hasEventReader = false;
+		hasEventWriter = false;
 		subsystemID = aKey;
                 rcvOrigin = 0;
 	}
@@ -148,6 +148,8 @@ public class SAL_SALData {
 		hasWriter = false;
 		hasCommand = false;
 		hasProcessor = false;
+		hasEventReader = false;
+		hasEventWriter = false;
 		subsystemID = aKey;
 		debugLevel = 1;
                 rcvOrigin = 0;
@@ -160,16 +162,19 @@ public class SAL_SALData {
 		debugLevel = 1;
 		hasCommand = false;
 		hasProcessor = false;
+		hasEventReader = false;
+		hasEventWriter = false;
 		subsystemID = 0;
                 rcvOrigin = 0;
 	}
 
-	public SAL_SALData::SAL_SALData()
+	public SAL_SALData()
 	{
 		hasReader = false;
 		hasWriter = false;
 		hasCommand = false;
 		hasEventReader = false;
+		hasEventWriter = false;
 		hasProcessor = false;
 		subsystemID = 0;
 		debugLevel = 1;
@@ -362,13 +367,14 @@ public class SAL_SALData {
 	   return status;
 	}
 
-        public static final int SAL__SLOWPOLL= 1;
-        public static final int SAL__OK = 0;
-        public static final int SAL__LOG_ROUTINES = 1;
-        public static final int SAL__CMD_ACK =        300;
-        public static final int SAL__CMD_INPROGRESS = 301;
-        public static final int SAL__CMD_STALLED =    302;
-        public static final int SAL__CMD_COMPLETE =   303;
+        public static final int SAL__SLOWPOLL= 		   1;
+        public static final int SAL__OK = 		   0;
+        public static final int SAL__NO_UPDATES = 	-100;
+        public static final int SAL__LOG_ROUTINES = 	   1;
+        public static final int SAL__CMD_ACK =      	 300;
+        public static final int SAL__CMD_INPROGRESS = 	 301;
+        public static final int SAL__CMD_STALLED =    	 302;
+        public static final int SAL__CMD_COMPLETE =   	 303;
         public static final int SAL__CMD_NOPERM =   	-300;
         public static final int SAL__CMD_NOACK =    	-301;
         public static final int SAL__CMD_FAILED =   	-302;
@@ -413,23 +419,37 @@ public class SAL_SALData {
 	}
 
 
-	public int getEvent(logeventSeqHolder data)
+	public int getEvent(SALData.logevent anEvent)
 	{
 	  int status =  -1;
 
+	  if (hasEventReader == false) {
+	     salTelemetrySub("SALData_logevent");
+	     hasEventReader = true;
+	  }
 	  DataReader dreader = getReader();
 	  logeventDataReader SALReader = logeventDataReaderHelper.narrow(dreader);
+          logeventSeqHolder data = new logeventSeqHolder();
   	  SampleInfoSeqHolder infoSeq = new SampleInfoSeqHolder();
 	  SALReader.take(data, infoSeq, LENGTH_UNLIMITED.value,
 					ANY_SAMPLE_STATE.value, ANY_VIEW_STATE.value,
 					ANY_INSTANCE_STATE.value);
-	  if (debugLevel > 0) {
+          if (data.value.length > 0) {
+  	     if (infoSeq.value[0].valid_data) {
 		for (int i = 0; i < data.value.length; i++) {
+		  if (debugLevel > 0) {
 				System.out.println("=== [getEvent] message received :");
 				System.out.println("    revCode  : "
 						+ data.value[i].private_revCode);
+                  }
 		}
+                anEvent.message = data.value[0].message;
+                status = SAL__OK;
+             } else {
+                status = SAL__NO_UPDATES;
+             }
 	  }
+          SALReader.return_loan(data,infoSeq);
 	  return status;
 	}
 
@@ -443,11 +463,6 @@ public class SAL_SALData {
 
 	  if (hasEventWriter == false) {
 	    salTelemetryPub(stopic);
-	    // create DataWriter :
-	    // If autodispose_unregistered_instances is set to true (default value),
-	    //  you will have to start the subscriber before the publisher
-	    boolean autodispose_unregistered_instances = false;
-	    createWriter(autodispose_unregistered_instances);
 	    hasEventWriter = true;	
   	  }
 	  DataWriter dwriter = getWriter();

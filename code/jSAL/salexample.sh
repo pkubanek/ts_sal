@@ -1,1 +1,0 @@
-java -Dorg.omg.dds.serviceClassName=org.lsst.sal.SALBootStrap -cp lib/example.jar:lib/jSAL.jar:../omgdds/lib/omgdds.jar:${OSPL_HOME}/jar/dcpssaj.jar:${OSPL_HOME}/jar/dcpscj.jar org.lsst.sal.example.SALSampleApp

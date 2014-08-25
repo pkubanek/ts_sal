@@ -1,7 +1,0 @@
-		for (unsigned int count=0; count<17; count++) {
-			system_Computer_status_ref->Raw[count] = samples[i].Raw[count];
-		}
-		for (unsigned int count=0; count<33; count++) {
-			system_Computer_status_ref->Calibrated[count] = samples[i].Calibrated[count];
-		}
-		system_Computer_status_ref->syncI++;

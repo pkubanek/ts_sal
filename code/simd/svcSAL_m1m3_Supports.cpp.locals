@@ -1,3 +1,0 @@
-	svcLONG	stepcnt[7];
-	svcLONG	targetpos[7];
-	svcFLT	force[7];

@@ -1,6 +1,0 @@
-		strncpy(ocs_system_accesscontrol_ref->byoperator,samples[i].byoperator,500);
-		strncpy(ocs_system_accesscontrol_ref->bypolicy,samples[i].bypolicy,500);
-		strncpy(ocs_system_accesscontrol_ref->bystation,samples[i].bystation,500);
-		strncpy(ocs_system_accesscontrol_ref->device,samples[i].device,128);
-		strncpy(ocs_system_accesscontrol_ref->subssystem,samples[i].subssystem,128);
-		ocs_system_accesscontrol_ref->syncI++;

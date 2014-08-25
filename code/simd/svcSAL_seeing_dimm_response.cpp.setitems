@@ -1,8 +1,0 @@
-		result = salHandle->setitem(SAL_IID_seeing_dimm_response_repeat, repeat);
-		result = salHandle->setitem(SAL_IID_seeing_dimm_response_submits, submits);
-		result = salHandle->setitem(SAL_IID_seeing_dimm_response_cmdID, cmdID);
-		result = salHandle->setitem(SAL_IID_seeing_dimm_response_timeout, timeout);
-		result = salHandle->setitem(SAL_IID_seeing_dimm_response_ack, ack);
-		result = salHandle->setitem(SAL_IID_seeing_dimm_response_error, error);
-		result = salHandle->setitem(SAL_IID_seeing_dimm_response_result, result);
-		result = salHandle->putSample();

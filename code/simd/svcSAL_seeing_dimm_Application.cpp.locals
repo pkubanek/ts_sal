@@ -1,4 +1,0 @@
-	char	[16];
-	svcLONG	Raw[17];
-	svcFLT	Calibrated[33];
-	svcFLT	Error[5];

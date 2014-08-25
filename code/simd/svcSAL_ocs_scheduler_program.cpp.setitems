@@ -1,5 +1,0 @@
-		result = salHandle->setitem(SAL_IID_ocs_scheduler_program_id, id);
-		result = salHandle->setitem(SAL_IID_ocs_scheduler_program_priority, priority);
-		result = salHandle->setitem(SAL_IID_ocs_scheduler_program_status, status);
-		result = salHandle->setitem(SAL_IID_ocs_scheduler_program_completion, completion);
-		result = salHandle->putSample();

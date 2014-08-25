@@ -1,5 +1,0 @@
-		strncpy(scheduler_Application_ref->Status,samples[i].Status,50);
-		for (unsigned int count=0; count<201; count++) {
-			scheduler_Application_ref->data[count] = samples[i].data[count];
-		}
-		scheduler_Application_ref->syncI++;

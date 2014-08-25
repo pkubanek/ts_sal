@@ -1,3 +1,0 @@
-		strncpy(d.device,ocs_command_health_ref->device,128);
-		strncpy(d.subsystem,ocs_command_health_ref->subsystem,128);
-		ocs_command_health_ref->syncO = 1;

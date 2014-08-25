@@ -1,3 +1,0 @@
-		result = salHandle->setitem(SAL_IID_auxscope_Camera_Raw, Raw, 17);
-		result = salHandle->setitem(SAL_IID_auxscope_Camera_Calibrated, Calibrated, 33);
-		result = salHandle->putSample();

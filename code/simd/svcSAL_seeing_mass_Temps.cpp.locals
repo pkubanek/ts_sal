@@ -1,3 +1,0 @@
-	svcUCHAR	Health[16];
-	svcLONG	Raw[16];
-	svcFLT	Calibrated[16];

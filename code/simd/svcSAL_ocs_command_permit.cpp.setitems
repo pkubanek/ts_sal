@@ -1,5 +1,0 @@
-		result = salHandle->setitem(SAL_IID_ocs_command_permit_command, command);
-		result = salHandle->setitem(SAL_IID_ocs_command_permit_device, device);
-		result = salHandle->setitem(SAL_IID_ocs_command_permit_subsystem, subsystem);
-		result = salHandle->setitem(SAL_IID_ocs_command_permit_actionmask, actionmask, 9);
-		result = salHandle->putSample();

@@ -1,7 +1,0 @@
-		for (unsigned int count=0; count<19; count++) {
-			hexapod_LimitSensors_ref->liftoff[count] = samples[i].liftoff[count];
-		}
-		for (unsigned int count=0; count<19; count++) {
-			hexapod_LimitSensors_ref->limit[count] = samples[i].limit[count];
-		}
-		hexapod_LimitSensors_ref->syncI++;

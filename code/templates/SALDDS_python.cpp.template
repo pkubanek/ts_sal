@@ -417,10 +417,6 @@ BOOST_PYTHON_MODULE(SALPY_SALData){
         .def( 
             "salCommand"
             , (void ( ::SAL_SALData::* )(  ) )( &::SAL_SALData::salCommand ) )
-        .def( 
-            "salEvent"
-            , (void ( ::SAL_SALData::* )( char * ) )( &::SAL_SALData::salEvent )
-            , ( bp::arg("topicName") ) )    
 #ifdef SAL_SUBSYSTEM_ID_IS_KEYED
         .def( 
             "salInitialize"

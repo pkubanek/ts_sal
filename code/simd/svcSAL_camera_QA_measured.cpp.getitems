@@ -1,5 +1,0 @@
-		result = salHandle->getSample(SAL__SLOWPOLL);
-		result = salHandle->getitem(SAL_IID_camera_QA_measured_metric1, metric1, 133);
-		result = salHandle->getitem(SAL_IID_camera_QA_measured_metric2, metric2, 133);
-		result = salHandle->getitem(SAL_IID_camera_QA_measured_metric3, metric3, 133);
-		result = salHandle->getitem(SAL_IID_camera_QA_measured_metric4, metric4, 133);

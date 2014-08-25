@@ -1,6 +1,0 @@
-		result = salHandle->setitem(SAL_IID_ocs_activity_record_part, part);
-		result = salHandle->setitem(SAL_IID_ocs_activity_record_subsystem, subsystem);
-		result = salHandle->setitem(SAL_IID_ocs_activity_record_supervid, supervid);
-		result = salHandle->setitem(SAL_IID_ocs_activity_record_type, type);
-		result = salHandle->setitem(SAL_IID_ocs_activity_record_uuid, uuid);
-		result = salHandle->putSample();

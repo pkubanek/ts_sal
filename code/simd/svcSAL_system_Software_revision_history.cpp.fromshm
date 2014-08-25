@@ -1,6 +1,0 @@
-		strncpy(d.Notes,system_Software_revision_history_ref->Notes,32);
-		strncpy(d.PackageName,system_Software_revision_history_ref->PackageName,32);
-		for (unsigned int count=0; count<4; count++) {
-			d.Version[count] = system_Software_revision_history_ref->Version[count];
-		}
-		system_Software_revision_history_ref->syncO = 1;

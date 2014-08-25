@@ -1,6 +1,0 @@
-		result = salHandle->setitem(SAL_IID_mount_command_cmdID, cmdID);
-		result = salHandle->setitem(SAL_IID_mount_command_device, device);
-		result = salHandle->setitem(SAL_IID_mount_command_modifiers, modifiers);
-		result = salHandle->setitem(SAL_IID_mount_command_operation, operation);
-		result = salHandle->setitem(SAL_IID_mount_command_value, value);
-		result = salHandle->putSample();

@@ -1,3 +1,0 @@
-		d.Bypass = tcs_kernel_DawdleFilter_ref->Bypass;
-		d.T = tcs_kernel_DawdleFilter_ref->T;
-		tcs_kernel_DawdleFilter_ref->syncO = 1;

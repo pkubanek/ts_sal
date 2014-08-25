@@ -1,6 +1,0 @@
-		result = salHandle->getSample(SAL__SLOWPOLL);
-		result = salHandle->getitem(SAL_IID_ocs_activity_planning_part, part);
-		result = salHandle->getitem(SAL_IID_ocs_activity_planning_subsystem, subsystem);
-		result = salHandle->getitem(SAL_IID_ocs_activity_planning_supervid, supervid);
-		result = salHandle->getitem(SAL_IID_ocs_activity_planning_type, type);
-		result = salHandle->getitem(SAL_IID_ocs_activity_planning_uuid, uuid);

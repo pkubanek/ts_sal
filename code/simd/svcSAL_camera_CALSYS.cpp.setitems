@@ -1,2 +1,0 @@
-		result = salHandle->setitem(SAL_IID_camera_CALSYS_profile, profile, 1025);
-		result = salHandle->putSample();

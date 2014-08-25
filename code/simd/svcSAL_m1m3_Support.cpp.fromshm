@@ -1,7 +1,0 @@
-		for (unsigned int count=0; count<17; count++) {
-			d.Raw[count] = m1m3_Support_ref->Raw[count];
-		}
-		for (unsigned int count=0; count<33; count++) {
-			d.Calibrated[count] = m1m3_Support_ref->Calibrated[count];
-		}
-		m1m3_Support_ref->syncO = 1;

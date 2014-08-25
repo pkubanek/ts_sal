@@ -1,0 +1,6 @@
+struct camera_WDS {
+  long	flag[20];		// 0.054 | none | Error flags[ | none | Science and corner rafts | 160 | 373,622  | 1,494,486 
+  long	Timing_parameter[10];	// 0.054 | none | Timing parameters[ | none | Science and corner rafts | 80 | 186,811  | 747,243 
+  unsigned short REB_ID;	// 0.054 | none | Raft Electronics Board ID | none | Cryostat
+};
+#pragma keylist camera_WDS 

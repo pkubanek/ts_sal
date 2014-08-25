@@ -1,7 +1,0 @@
-		result = salHandle->setitem(SAL_IID_tcs_kernel_PointingControl_AGuide, AGuide);
-		result = salHandle->setitem(SAL_IID_tcs_kernel_PointingControl_ALocal, ALocal);
-		result = salHandle->setitem(SAL_IID_tcs_kernel_PointingControl_BGuide, BGuide);
-		result = salHandle->setitem(SAL_IID_tcs_kernel_PointingControl_BLocal, BLocal);
-		result = salHandle->setitem(SAL_IID_tcs_kernel_PointingControl_PitchFilter, PitchFilter);
-		result = salHandle->setitem(SAL_IID_tcs_kernel_PointingControl_RollFilter, RollFilter);
-		result = salHandle->putSample();

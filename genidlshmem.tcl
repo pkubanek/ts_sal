@@ -62,27 +62,27 @@ global ITEMLIST
        int    -
        long   -
        Int    { puts $fid "  long $name\[$nd\];" 
-                set i 1 ; while { $i <= $nd } {puts $fo2 "  [set name]_$i int," ; set ITEMLIST "$ITEMLIST,int.[set name]_$i"; incr i 1}
+                puts $fo2 "  [set name] int\[$nd\]," ; set ITEMLIST "$ITEMLIST,int.[set name].$nd"
               }
        short  -
        Short  { puts $fid "  short $name\[$nd\];" 
-                set i 1 ; while { $i <= $nd } {puts $fo2 "  [set name]_$i smallint,"; set ITEMLIST "$ITEMLIST,short.[set name]_$i" ; incr i 1}
+                puts $fo2 "  [set name] smallint\[$nd\],"; set ITEMLIST "$ITEMLIST,short.[set name].$nd"
               }
        char   -
        Char   {
                 puts $fid "  string<$nd> $name;"
-                set i 1 ; while { $i <= $nd } {puts $fo2 "  [set name]_$i tinyint,"; set ITEMLIST "$ITEMLIST,byte.[set name]_$i" ; incr i 1}
+                puts $fo2 "  [set name] tinyint\[$nd\],"; set ITEMLIST "$ITEMLIST,byte.[set name].$nd"
               }       byte   -
        Byte   { puts $fid "  octet $name\[$nd\];"
-                set i 1 ; while { $i <= $nd } {puts $fo2 "  [set name]_$i tinyint,"; set ITEMLIST "$ITEMLIST,byte.[set name]_$i" ; incr i 1}
+                puts $fo2 "  [set name] tinyint\[$nd\],"; set ITEMLIST "$ITEMLIST,byte.[set name].$nd"
               }
        float  -
        Float  { puts $fid "  float $name\[$nd\];" 
-                set i 1 ; while { $i <= $nd } {puts $fo2 "  [set name]_$i float,"; set ITEMLIST "$ITEMLIST,float.[set name]_$i"  ; incr i 1}
+                puts $fo2 "  [set name] real\[$nd\],"; set ITEMLIST "$ITEMLIST,float.[set name].$nd"
                }
        double -
        Double { puts $fid "  double $name\[$nd\];" 
-                set i 1 ; while { $i <= $nd } {puts $fo2 "  [set name]_$i double," ; set ITEMLIST "$ITEMLIST,double.[set name]_$i" ; incr i 1}
+                puts $fo2 "  [set name] double precision\[$nd\]," ; set ITEMLIST "$ITEMLIST,double.[set name].$nd"
                }
    }
 }
@@ -133,10 +133,10 @@ while { [gets $fin rec] > -1 } {
   long private_host; //private"
       puts $fo2  "DROP TABLE IF EXISTS $topic;"
       puts $fo2  "CREATE TABLE $topic ("
-      puts $fo2  "  date_time datetime NOT NULL,
+      puts $fo2  "  date_time timestamp NOT NULL,
   private_revCode char(32),
-  private_sndStamp double,
-  private_rcvStamp double,
+  private_sndStamp double precision,
+  private_rcvStamp double precision,
   private_seqNum int,
   private_origin int,
   private_host int,"

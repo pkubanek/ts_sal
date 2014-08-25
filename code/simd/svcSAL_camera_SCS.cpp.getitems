@@ -1,5 +1,0 @@
-		result = salHandle->getSample(SAL__SLOWPOLL);
-		result = salHandle->getitem(SAL_IID_camera_SCS_flags, flags);
-		result = salHandle->getitem(SAL_IID_camera_SCS_algorithm, algorithm);
-		result = salHandle->getitem(SAL_IID_camera_SCS_close_profile, close_profile, 1025);
-		result = salHandle->getitem(SAL_IID_camera_SCS_open_profile, open_profile, 1025);

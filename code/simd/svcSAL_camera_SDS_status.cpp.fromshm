@@ -1,7 +1,0 @@
-		for (unsigned int count=0; count<21; count++) {
-			d.flags[count] = camera_SDS_status_ref->flags[count];
-		}
-		for (unsigned int count=0; count<81; count++) {
-			d.current[count] = camera_SDS_status_ref->current[count];
-		}
-		camera_SDS_status_ref->syncO = 1;

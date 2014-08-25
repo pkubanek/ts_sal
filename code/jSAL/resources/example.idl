@@ -1,6 +1,0 @@
-module def {
-struct Greeting {
-  string value;
-};
-#pragma keylist Greeting
-};

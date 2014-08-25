@@ -1,7 +1,0 @@
-		for (unsigned int count=0; count<26; count++) {
-			d.current[count] = camera_PWR_ref->current[count];
-		}
-		for (unsigned int count=0; count<26; count++) {
-			d.supply_voltage[count] = camera_PWR_ref->supply_voltage[count];
-		}
-		camera_PWR_ref->syncO = 1;

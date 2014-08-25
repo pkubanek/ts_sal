@@ -1,6 +1,0 @@
-		strncpy(ocs_activity_record_ref->part,samples[i].part,128);
-		strncpy(ocs_activity_record_ref->subsystem,samples[i].subsystem,128);
-		strncpy(ocs_activity_record_ref->supervid,samples[i].supervid,128);
-		strncpy(ocs_activity_record_ref->type,samples[i].type,128);
-		strncpy(ocs_activity_record_ref->uuid,samples[i].uuid,32);
-		ocs_activity_record_ref->syncI++;

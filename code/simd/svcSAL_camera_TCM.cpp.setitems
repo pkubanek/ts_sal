@@ -1,2 +1,0 @@
-		result = salHandle->setitem(SAL_IID_camera_TCM_parameters, parameters, 11);
-		result = salHandle->putSample();

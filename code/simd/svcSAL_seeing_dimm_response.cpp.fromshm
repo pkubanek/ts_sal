@@ -1,8 +1,0 @@
-		d.repeat = seeing_dimm_response_ref->repeat;
-		d.submits = seeing_dimm_response_ref->submits;
-		d.cmdID = seeing_dimm_response_ref->cmdID;
-		d.timeout = seeing_dimm_response_ref->timeout;
-		strncpy(d.ack,seeing_dimm_response_ref->ack,16);
-		strncpy(d.error,seeing_dimm_response_ref->error,16);
-		strncpy(d.result,seeing_dimm_response_ref->result,64);
-		seeing_dimm_response_ref->syncO = 1;

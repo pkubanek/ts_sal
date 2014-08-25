@@ -1,3 +1,0 @@
-		result = salHandle->getSample(SAL__SLOWPOLL);
-		result = salHandle->getitem(SAL_IID_camera_PWR_current, current, 26);
-		result = salHandle->getitem(SAL_IID_camera_PWR_supply_voltage, supply_voltage, 26);

@@ -1,5 +1,0 @@
-		result = salHandle->setitem(SAL_IID_enclosure_Application_Status, Status);
-		result = salHandle->setitem(SAL_IID_enclosure_Application_Demand, Demand, 5);
-		result = salHandle->setitem(SAL_IID_enclosure_Application_Error, Error, 5);
-		result = salHandle->setitem(SAL_IID_enclosure_Application_Position, Position, 5);
-		result = salHandle->putSample();

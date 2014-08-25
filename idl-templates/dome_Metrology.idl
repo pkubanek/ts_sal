@@ -1,0 +1,9 @@
+struct dome_Metrology {
+  long  azEncoder[4];
+  float azCalibrated[4];
+  long  elevEncoder[4];
+  float elevCalibrated[4];
+  long  screenEncoder[4];
+  long  shutterL[4];
+  long  shutterR[4];
+};

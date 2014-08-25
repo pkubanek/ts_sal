@@ -1,9 +1,12 @@
 
 /*
- * This file contains the implementation for the 'SALData_EventLogger' executable.
+ * This file contains the implementation for the 'SALDataSubscriber' executable.
  *
  ***/
 
+// Control optional compilation 
+#define USE_SAL_WRAPPER
+#define USE_SAL_COMMAND
 
 #include <string>
 #include <sstream>
@@ -21,36 +24,35 @@ using namespace SALData;
 extern "C"
 {
   OS_API_EXPORT
-  int SALData_EventLogger(char *topic_name);
+  int SALDataSubscriber(int argc, char *argv[]);
 }
 
 
-int SALData_EventLogger(char *topic_name)
+int SALTelemetrySubscriber(char *topic_name)
 {
   os_time delay_2ms = { 0, 2000000 };
   os_time delay_200ms = { 0, 200000000 };
-  SALData_logeventC SALInstance;
+  SALTopicSeq SALInstance;
 
+  SAL_SALData mgr;
 
 #ifdef SAL_SUBSYSTEM_ID_IS_KEYED
-  int SALDataID = 1;
-  SAL_SALData mgr = SAL_SALData(SALDataID);
+  salUINT SALDataID = 1;
+  mgr.salInitialize(SALDataID);
 #else
-  SAL_SALData mgr = SAL_SALData();
+  mgr.salInitialize();
 #endif
 
+  mgr.salTelemetrySub(topic_name);
 
-  cout << "=== [EventLog] Ready ..." << endl;
+  cout << "=== [Subscriber] Ready ..." << endl;
 
   bool closed = false;
   ReturnCode_t status =  - 1;
   int count = 0;
   while (!closed && count < 1500) // We dont want the example to run indefinitely
   {
-    status = mgr.getEventC(&SALInstance);
-    if (status == SAL__OK) {
-        cout << "=== message = " + SALInstance.message << endl;
-    }
+    status = mgr.getSample(SALInstance);
     os_nanoSleep(delay_200ms);
     ++count;
   }
@@ -65,7 +67,7 @@ int SALData_EventLogger(char *topic_name)
 
 int OSPL_MAIN (int argc, char *argv[])
 {
-  return SALData_EventLogger("SALData_logevent");
+  return SALTelemetrySubscriber("SALNAMESTRING");
 }
 
 

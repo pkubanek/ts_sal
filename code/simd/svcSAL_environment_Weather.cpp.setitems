@@ -1,3 +1,0 @@
-		result = salHandle->setitem(SAL_IID_environment_Weather_Raw, Raw, 129);
-		result = salHandle->setitem(SAL_IID_environment_Weather_Calibrated, Calibrated, 257);
-		result = salHandle->putSample();

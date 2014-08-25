@@ -1,3 +1,0 @@
-		result = salHandle->getSample(SAL__SLOWPOLL);
-		result = salHandle->getItem(SAL_IID_hexapod_LimitSensors_liftoff, liftoff, 19);
-		result = salHandle->getItem(SAL_IID_hexapod_LimitSensors_limit, limit, 19);

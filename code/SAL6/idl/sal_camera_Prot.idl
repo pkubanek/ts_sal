@@ -1,7 +1,0 @@
-module camera
-{
-	struct Prot {
-	  float	Status[2];	// 100 | Volts | xxx
-	};
-	#pragma keylist Prot
-};

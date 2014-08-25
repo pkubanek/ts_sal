@@ -1,3 +1,0 @@
-	svcULONG	status[11];
-	svcFLT	setpoint[11];
-	svcFLT	temperature[11];

@@ -1,6 +1,0 @@
-		ocs_operator_log_ref->opid = samples[i].opid;
-		ocs_operator_log_ref->stationid = samples[i].stationid;
-		strncpy(ocs_operator_log_ref->device,samples[i].device,32);
-		strncpy(ocs_operator_log_ref->event,samples[i].event,128);
-		strncpy(ocs_operator_log_ref->subsystem,samples[i].subsystem,32);
-		ocs_operator_log_ref->syncI++;

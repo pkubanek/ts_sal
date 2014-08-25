@@ -1,7 +1,0 @@
-		for (unsigned int count=0; count<17; count++) {
-			d.Raw[count] = environment_Seismometer_ref->Raw[count];
-		}
-		for (unsigned int count=0; count<33; count++) {
-			d.Calibrated[count] = environment_Seismometer_ref->Calibrated[count];
-		}
-		environment_Seismometer_ref->syncO = 1;

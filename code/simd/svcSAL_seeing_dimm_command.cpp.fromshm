@@ -1,6 +1,0 @@
-		d.cmdID = seeing_dimm_command_ref->cmdID;
-		strncpy(d.device,seeing_dimm_command_ref->device,16);
-		strncpy(d.modifiers,seeing_dimm_command_ref->modifiers,128);
-		strncpy(d.operation,seeing_dimm_command_ref->operation,16);
-		strncpy(d.value,seeing_dimm_command_ref->value,16);
-		seeing_dimm_command_ref->syncO = 1;

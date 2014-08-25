@@ -1,0 +1,6 @@
+struct dome_Louvers {
+  long  raw[72];
+  float calibrated[72];
+  float temperature[72];
+  float windSpeed[72];
+};

@@ -1,7 +1,0 @@
-	svcSHORT	repeat;
-	svcSHORT	submits;
-	svcLONG	cmdID;
-	svcLONG	timeout;
-	char	[16];
-	char	[16];
-	char	[64];

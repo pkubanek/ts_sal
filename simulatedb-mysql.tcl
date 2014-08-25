@@ -24,7 +24,6 @@ global SQLREC KEYRANGE
       set flds [lrange $flds 1 end]
       set type [lindex [split $i .] 0]
       set name [lindex [split $i .] 1]
-      set isarray [lindex [split $i .] 2]
       if { [info exists KEYRANGE($name)] } {
          set i 1
          while { $i <= $KEYRANGE($name) } {
@@ -34,27 +33,11 @@ global SQLREC KEYRANGE
          return
       } else {
           set generic [lindex [split $name _] 0]
-          if { $isarray != "" } {
-             if { [info command simulate_[set generic]_value] != "" } {
-                set value [simulate_[set generic]_value $topic]
-             } else {
-                set value [simulate_[set type]_value]
-             }
+          if { [info command simulate_[set generic]_value] != "" } {
+             set value [simulate_[set generic]_value $topic]
           } else {
-             set astr "'\{"
-             set j 0
-             while { $j <= $isarray } {
-                if { [info command simulate_[set generic]_value] != "" } {
-                  set value [simulate_[set generic]_value $topic]
-                } else {
-                   set value [simulate_[set type]_value]
-                }
-                set astr "$astr,$value"
-                incr j 1
-             }
-             set value "$astr\}'"
+             set value [simulate_[set type]_value]
           }
-         
       }
       set cmd "$cmd ,$value"
   }

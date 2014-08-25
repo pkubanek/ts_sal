@@ -1,6 +1,0 @@
-		d.cmdID = lasercal_command_ref->cmdID;
-		strncpy(d.device,lasercal_command_ref->device,16);
-		strncpy(d.modifiers,lasercal_command_ref->modifiers,128);
-		strncpy(d.operation,lasercal_command_ref->operation,16);
-		strncpy(d.value,lasercal_command_ref->value,16);
-		lasercal_command_ref->syncO = 1;

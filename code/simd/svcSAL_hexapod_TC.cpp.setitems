@@ -1,5 +1,0 @@
-		result = salHandle->setItem(SAL_IID_hexapod_TC_status, status, 17);
-		result = salHandle->setItem(SAL_IID_hexapod_TC_error, error, 17);
-		result = salHandle->setItem(SAL_IID_hexapod_TC_setpoint, setpoint, 17);
-		result = salHandle->setItem(SAL_IID_hexapod_TC_temperature, temperature, 17);
-		result = salHandle->putSample();

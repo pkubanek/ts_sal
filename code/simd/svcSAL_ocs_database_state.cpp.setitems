@@ -1,8 +1,0 @@
-		result = salHandle->setitem(SAL_IID_ocs_database_state_name, name);
-		result = salHandle->setitem(SAL_IID_ocs_database_state_table, table);
-		result = salHandle->setitem(SAL_IID_ocs_database_state_capacity, capacity, 33);
-		result = salHandle->setitem(SAL_IID_ocs_database_state_lastrep, lastrep, 33);
-		result = salHandle->setitem(SAL_IID_ocs_database_state_recin, recin, 33);
-		result = salHandle->setitem(SAL_IID_ocs_database_state_recout, recout, 33);
-		result = salHandle->setitem(SAL_IID_ocs_database_state_status, status, 33);
-		result = salHandle->putSample();

@@ -1,7 +1,0 @@
-		for (unsigned int count=0; count<17; count++) {
-			environment_Video_cameras_ref->Raw[count] = samples[i].Raw[count];
-		}
-		for (unsigned int count=0; count<33; count++) {
-			environment_Video_cameras_ref->Calibrated[count] = samples[i].Calibrated[count];
-		}
-		environment_Video_cameras_ref->syncI++;

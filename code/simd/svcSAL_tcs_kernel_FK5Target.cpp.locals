@@ -1,8 +1,0 @@
-	svcFLT	dec;
-	svcFLT	epoc;
-	svcFLT	equinox;
-	svcFLT	parallax;
-	svcFLT	pmDec;
-	svcFLT	pmRA;
-	svcFLT	ra;
-	svcFLT	rv;

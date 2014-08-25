@@ -1,7 +1,0 @@
-		result = salHandle->getSample(SAL__SLOWPOLL);
-		result = salHandle->getitem(SAL_IID_tcs_kernel_PointingControl_AGuide, AGuide);
-		result = salHandle->getitem(SAL_IID_tcs_kernel_PointingControl_ALocal, ALocal);
-		result = salHandle->getitem(SAL_IID_tcs_kernel_PointingControl_BGuide, BGuide);
-		result = salHandle->getitem(SAL_IID_tcs_kernel_PointingControl_BLocal, BLocal);
-		result = salHandle->getitem(SAL_IID_tcs_kernel_PointingControl_PitchFilter, PitchFilter);
-		result = salHandle->getitem(SAL_IID_tcs_kernel_PointingControl_RollFilter, RollFilter);

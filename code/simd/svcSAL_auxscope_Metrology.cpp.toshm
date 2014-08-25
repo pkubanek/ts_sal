@@ -1,7 +1,0 @@
-		for (unsigned int count=0; count<17; count++) {
-			auxscope_Metrology_ref->Raw[count] = samples[i].Raw[count];
-		}
-		for (unsigned int count=0; count<17; count++) {
-			auxscope_Metrology_ref->Calibrated[count] = samples[i].Calibrated[count];
-		}
-		auxscope_Metrology_ref->syncI++;

@@ -1,0 +1,28 @@
+#     subsystem        .device    .property  .action  .modifiers
+
+	ao		control    state      set      online
+	ao		control    state      set      offline
+	ao		control    state      set      pause
+	ao		control    state      set      resume
+	ao		control    state      set      start
+	ao		control    state      set      stop
+
+	ao		tip	   position   set      [float]
+	ao		tilt	   position   set      [float]
+			
+	ao		lutm1m3	   	      load     [uri]
+	ao		lutm1m3	   	      enable
+	ao		lutm1m3	              disable
+
+	ao		lutm2	   	      enable
+	ao		lutm2	              disable
+
+	ao		wfc	   	      enable
+	ao		wfc	              disable
+	ao		wfc	   [wfc-property] configure
+
+	ao		actuator   [actuator-property] configure
+	ao		coeffs     [ao-property] load  [uri]
+	ao		coeffs     [ao-property] enable
+	ao		coeffs     [ao-property] disable
+

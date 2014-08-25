@@ -1,7 +1,0 @@
-		for (unsigned int count=0; count<17; count++) {
-			d.Raw[count] = skycam_Electrical_ref->Raw[count];
-		}
-		for (unsigned int count=0; count<33; count++) {
-			d.Calibrated[count] = skycam_Electrical_ref->Calibrated[count];
-		}
-		skycam_Electrical_ref->syncO = 1;

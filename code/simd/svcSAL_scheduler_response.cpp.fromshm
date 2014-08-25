@@ -1,8 +1,0 @@
-		d.repeat = scheduler_response_ref->repeat;
-		d.submits = scheduler_response_ref->submits;
-		d.cmdID = scheduler_response_ref->cmdID;
-		d.timeout = scheduler_response_ref->timeout;
-		strncpy(d.ack,scheduler_response_ref->ack,16);
-		strncpy(d.error,scheduler_response_ref->error,16);
-		strncpy(d.result,scheduler_response_ref->result,64);
-		scheduler_response_ref->syncO = 1;

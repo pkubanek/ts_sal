@@ -1,9 +1,0 @@
-		result = salHandle->setitem(SAL_IID_m1m3_Actuators_error, error, 121);
-		result = salHandle->setitem(SAL_IID_m1m3_Actuators_position, position, 121);
-		result = salHandle->setitem(SAL_IID_m1m3_Actuators_setpoint, setpoint, 121);
-		result = salHandle->setitem(SAL_IID_m1m3_Actuators_status, status, 121);
-		result = salHandle->setitem(SAL_IID_m1m3_Actuators_cyltemp, cyltemp, 121);
-		result = salHandle->setitem(SAL_IID_m1m3_Actuators_envtemp, envtemp, 121);
-		result = salHandle->setitem(SAL_IID_m1m3_Actuators_lvdtcorr, lvdtcorr, 121);
-		result = salHandle->setitem(SAL_IID_m1m3_Actuators_pressure, pressure, 121);
-		result = salHandle->putSample();

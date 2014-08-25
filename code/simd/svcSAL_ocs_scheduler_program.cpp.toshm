@@ -1,5 +1,0 @@
-		ocs_scheduler_program_ref->id = samples[i].id;
-		ocs_scheduler_program_ref->priority = samples[i].priority;
-		ocs_scheduler_program_ref->status = samples[i].status;
-		ocs_scheduler_program_ref->completion = samples[i].completion;
-		ocs_scheduler_program_ref->syncI++;

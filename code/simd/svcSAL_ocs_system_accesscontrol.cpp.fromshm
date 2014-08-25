@@ -1,6 +1,0 @@
-		strncpy(d.byoperator,ocs_system_accesscontrol_ref->byoperator,500);
-		strncpy(d.bypolicy,ocs_system_accesscontrol_ref->bypolicy,500);
-		strncpy(d.bystation,ocs_system_accesscontrol_ref->bystation,500);
-		strncpy(d.device,ocs_system_accesscontrol_ref->device,128);
-		strncpy(d.subssystem,ocs_system_accesscontrol_ref->subssystem,128);
-		ocs_system_accesscontrol_ref->syncO = 1;

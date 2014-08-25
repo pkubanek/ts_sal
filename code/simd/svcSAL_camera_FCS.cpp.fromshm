@@ -1,6 +1,0 @@
-		d.flags = camera_FCS_ref->flags;
-		strncpy(d.algorithm,camera_FCS_ref->algorithm,32);
-		for (unsigned int count=0; count<2401; count++) {
-			d.motion_profile[count] = camera_FCS_ref->motion_profile[count];
-		}
-		camera_FCS_ref->syncO = 1;

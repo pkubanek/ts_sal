@@ -1,4 +1,0 @@
-		result = salHandle->setitem(SAL_IID_camera_FCS_flags, flags);
-		result = salHandle->setitem(SAL_IID_camera_FCS_algorithm, algorithm);
-		result = salHandle->setitem(SAL_IID_camera_FCS_motion_profile, motion_profile, 2401);
-		result = salHandle->putSample();

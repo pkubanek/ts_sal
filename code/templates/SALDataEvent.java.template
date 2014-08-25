@@ -1,0 +1,34 @@
+
+
+import SALData.*;
+import org.lsst.sal.SAL_SALData;
+
+public class SALDataEvent {
+
+	public static void main(String[] args) {
+
+
+	  // Initialize
+          int status=0;
+          short aKey=1;
+	  SAL_SALData mgr = new SAL_SALData(SALSUBSYSID);
+	  
+          if (args.length < 3) {
+
+            System.err.println("Usage: alias message modifiers");
+            System.exit(1);
+
+          } else {
+
+	    String msg=args[1] + " " + args[2];
+	    int priority=1;
+	    status = mgr.logEvent(msg,priority);
+         
+	    /* Remove the DataWriters etc */
+	    mgr.salShutdown();
+
+	  }
+       }
+
+}
+

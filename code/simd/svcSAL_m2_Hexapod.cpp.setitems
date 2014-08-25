@@ -1,4 +1,0 @@
-		result = salHandle->setitem(SAL_IID_m2_Hexapod_Status, Status, 32);
-		result = salHandle->setitem(SAL_IID_m2_Hexapod_Raw, Raw, 32);
-		result = salHandle->setitem(SAL_IID_m2_Hexapod_Calibrated, Calibrated, 32);
-		result = salHandle->putSample();

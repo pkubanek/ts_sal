@@ -1,7 +1,0 @@
-	svcLONG	filter[11];
-	svcLONG	numexp[11];
-	svcDBL	airmass[11];
-	svcDBL	catid[11];
-	svcDBL	dec[11];
-	svcDBL	ra[11];
-	svcDBL	rotangle[11];

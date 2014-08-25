@@ -1,8 +1,0 @@
-		d.action = ocs_staticanalysis_ref->action;
-		d.result = ocs_staticanalysis_ref->result;
-		d.end = ocs_staticanalysis_ref->end;
-		d.start = ocs_staticanalysis_ref->start;
-		strncpy(d.actuuid,ocs_staticanalysis_ref->actuuid,32);
-		strncpy(d.part,ocs_staticanalysis_ref->part,128);
-		strncpy(d.subsystem,ocs_staticanalysis_ref->subsystem,128);
-		ocs_staticanalysis_ref->syncO = 1;

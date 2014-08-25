@@ -1,5 +1,0 @@
-	char	[4096];
-	char	[16];
-	svcFLT	Data[65];
-	svcFLT	Error[5];
-	svcFLT	Sky_parms[33];

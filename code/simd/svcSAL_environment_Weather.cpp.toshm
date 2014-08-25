@@ -1,7 +1,0 @@
-		for (unsigned int count=0; count<129; count++) {
-			environment_Weather_ref->Raw[count] = samples[i].Raw[count];
-		}
-		for (unsigned int count=0; count<257; count++) {
-			environment_Weather_ref->Calibrated[count] = samples[i].Calibrated[count];
-		}
-		environment_Weather_ref->syncI++;

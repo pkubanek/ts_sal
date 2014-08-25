@@ -1,6 +1,0 @@
-		d.cmdID = calibration_command_ref->cmdID;
-		strncpy(d.device,calibration_command_ref->device,16);
-		strncpy(d.modifiers,calibration_command_ref->modifiers,128);
-		strncpy(d.operation,calibration_command_ref->operation,16);
-		strncpy(d.value,calibration_command_ref->value,16);
-		calibration_command_ref->syncO = 1;

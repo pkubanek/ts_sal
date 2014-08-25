@@ -1,7 +1,0 @@
-		for (unsigned int count=0; count<17; count++) {
-			d.Raw[count] = auxscope_Metrology_ref->Raw[count];
-		}
-		for (unsigned int count=0; count<17; count++) {
-			d.Calibrated[count] = auxscope_Metrology_ref->Calibrated[count];
-		}
-		auxscope_Metrology_ref->syncO = 1;

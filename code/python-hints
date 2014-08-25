@@ -34,4 +34,7 @@ h.salProcessor()
 x=h.acceptCommand(cmd)
 h.ackCommand(x,SAL__OK,0,"OK")
 
+from SALPY_hexapod import *
+h=SAL_hexapod(1)
+h.logEvent("test message",1)
 

@@ -1,5 +1,0 @@
-		result = salHandle->setitem(SAL_IID_ocs_scheduler_progress_priority, priority, 33);
-		result = salHandle->setitem(SAL_IID_ocs_scheduler_progress_projection, projection, 33);
-		result = salHandle->setitem(SAL_IID_ocs_scheduler_progress_taskid, taskid, 33);
-		result = salHandle->setitem(SAL_IID_ocs_scheduler_progress_completion, completion, 33);
-		result = salHandle->putSample();

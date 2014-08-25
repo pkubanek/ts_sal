@@ -1,8 +1,0 @@
-		result = salHandle->getSample(SAL__SLOWPOLL);
-		result = salHandle->getitem(SAL_IID_ocs_database_state_name, name);
-		result = salHandle->getitem(SAL_IID_ocs_database_state_table, table);
-		result = salHandle->getitem(SAL_IID_ocs_database_state_capacity, capacity, 33);
-		result = salHandle->getitem(SAL_IID_ocs_database_state_lastrep, lastrep, 33);
-		result = salHandle->getitem(SAL_IID_ocs_database_state_recin, recin, 33);
-		result = salHandle->getitem(SAL_IID_ocs_database_state_recout, recout, 33);
-		result = salHandle->getitem(SAL_IID_ocs_database_state_status, status, 33);

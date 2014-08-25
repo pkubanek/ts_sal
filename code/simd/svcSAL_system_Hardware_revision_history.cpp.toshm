@@ -1,6 +1,0 @@
-		strncpy(system_Hardware_revision_history_ref->Part,samples[i].Part,32);
-		strncpy(system_Hardware_revision_history_ref->Reason,samples[i].Reason,32);
-		for (unsigned int count=0; count<4; count++) {
-			system_Hardware_revision_history_ref->Version[count] = samples[i].Version[count];
-		}
-		system_Hardware_revision_history_ref->syncI++;

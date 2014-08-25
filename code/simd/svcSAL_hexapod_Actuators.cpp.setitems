@@ -1,3 +1,0 @@
-		result = salHandle->setItem(SAL_IID_hexapod_Actuators_Raw, Raw, 19);
-		result = salHandle->setItem(SAL_IID_hexapod_Actuators_Calibrated, Calibrated, 19);
-		result = salHandle->putSample();

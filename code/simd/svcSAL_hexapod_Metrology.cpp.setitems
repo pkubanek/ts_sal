@@ -1,4 +1,0 @@
-		result = salHandle->setItem(SAL_IID_hexapod_Metrology_status, status, 19);
-		result = salHandle->setItem(SAL_IID_hexapod_Metrology_distance, distance, 19);
-		result = salHandle->setItem(SAL_IID_hexapod_Metrology_error, error, 19);
-		result = salHandle->putSample();

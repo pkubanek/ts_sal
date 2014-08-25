@@ -1,8 +1,0 @@
-		d.repeat = hexapod_response_ref->repeat;
-		d.submits = hexapod_response_ref->submits;
-		d.cmdID = hexapod_response_ref->cmdID;
-		d.timeout = hexapod_response_ref->timeout;
-		strncpy(d.ack,hexapod_response_ref->ack,16);
-		strncpy(d.error,hexapod_response_ref->error,16);
-		strncpy(d.result,hexapod_response_ref->result,64);
-		hexapod_response_ref->syncO = 1;

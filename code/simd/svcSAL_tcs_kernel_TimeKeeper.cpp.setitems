@@ -1,7 +1,0 @@
-		result = salHandle->setitem(SAL_IID_tcs_kernel_TimeKeeper_Cst, Cst);
-		result = salHandle->setitem(SAL_IID_tcs_kernel_TimeKeeper_Dcst, Dcst);
-		result = salHandle->setitem(SAL_IID_tcs_kernel_TimeKeeper_Dsst, Dsst);
-		result = salHandle->setitem(SAL_IID_tcs_kernel_TimeKeeper_Sst, Sst);
-		result = salHandle->setitem(SAL_IID_tcs_kernel_TimeKeeper_Tai, Tai);
-		result = salHandle->setitem(SAL_IID_tcs_kernel_TimeKeeper_Tt, Tt);
-		result = salHandle->putSample();

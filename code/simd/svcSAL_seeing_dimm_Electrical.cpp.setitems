@@ -1,4 +1,0 @@
-		result = salHandle->setitem(SAL_IID_seeing_dimm_Electrical_Status, Status, 16);
-		result = salHandle->setitem(SAL_IID_seeing_dimm_Electrical_Raw, Raw, 17);
-		result = salHandle->setitem(SAL_IID_seeing_dimm_Electrical_Calibrated, Calibrated, 32);
-		result = salHandle->putSample();

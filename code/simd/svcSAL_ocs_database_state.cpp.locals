@@ -1,7 +1,0 @@
-	char	[64];
-	char	[64];
-	svcLONG	capacity[33];
-	svcLONG	lastrep[33];
-	svcLONG	recin[33];
-	svcLONG	recout[33];
-	svcLONG	status[33];

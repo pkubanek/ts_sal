@@ -1,4 +1,0 @@
-		result = salHandle->setitem(SAL_IID_ocs_system_health, health, 501);
-		result = salHandle->setitem(SAL_IID_ocs_system_power, power, 501);
-		result = salHandle->setitem(SAL_IID_ocs_system_thermal, thermal, 501);
-		result = salHandle->putSample();

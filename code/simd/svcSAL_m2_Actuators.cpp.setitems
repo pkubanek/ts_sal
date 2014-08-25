@@ -1,4 +1,0 @@
-		result = salHandle->setitem(SAL_IID_m2_Actuators_Status, Status, 16);
-		result = salHandle->setitem(SAL_IID_m2_Actuators_Raw, Raw, 16);
-		result = salHandle->setitem(SAL_IID_m2_Actuators_Calibrated, Calibrated, 32);
-		result = salHandle->putSample();

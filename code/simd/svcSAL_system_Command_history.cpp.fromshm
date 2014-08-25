@@ -1,5 +1,0 @@
-		strncpy(d.Command,system_Command_history_ref->Command,32);
-		for (unsigned int count=0; count<17; count++) {
-			d.Data[count] = system_Command_history_ref->Data[count];
-		}
-		system_Command_history_ref->syncO = 1;

@@ -1,6 +1,0 @@
-		result = salHandle->setitem(SAL_IID_skycam_Application_Catalog, Catalog);
-		result = salHandle->setitem(SAL_IID_skycam_Application_Status, Status);
-		result = salHandle->setitem(SAL_IID_skycam_Application_Data, Data, 65);
-		result = salHandle->setitem(SAL_IID_skycam_Application_Error, Error, 5);
-		result = salHandle->setitem(SAL_IID_skycam_Application_Sky_parms, Sky_parms, 33);
-		result = salHandle->putSample();

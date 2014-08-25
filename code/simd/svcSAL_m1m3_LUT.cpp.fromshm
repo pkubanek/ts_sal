@@ -1,5 +1,0 @@
-		strncpy(d.algorithm,m1m3_LUT_ref->algorithm,32);
-		for (unsigned int count=0; count<33; count++) {
-			d.param[count] = m1m3_LUT_ref->param[count];
-		}
-		m1m3_LUT_ref->syncO = 1;

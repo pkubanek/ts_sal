@@ -1,0 +1,10 @@
+struct camera_Shutter {
+  float	Motor_current[2];		// 0.054 | none | Shutter motor currents | none | Camera body | 2 | 4,670  | 18,681 
+  string<32>	Profile_function;	// 0.054 | none | Name of Motion profile configuration | none | Camera body | 1 | 2,335  | 74,724 
+  short	Open_direction;			// 0.054 | none | Stack A or B moved first? | none | Camera body | 1 | 2,335  | 4,670 
+  short	Blade_home[2];			// 0.054 | none | A and/or B at home? | none | Camera body | 2 | 4,670  | 9,341 
+  float	Motor_temp[2];			// 0.054 | none | Shutter motor temperatures | none | Camera body | 2 | 4,670  | 18,681 
+  float	Open_profile[24];		// 0.054 | seconds | Open Hall probe readings | none | Camera body | 24 | 56,043  | 224,173 
+  float	Close_profile[24];		// 0.054 | seconds | Close Hall probe readings | none | Camera body | 24 | 56,043  | 224,173 
+};
+#pragma keylist camera_Shutter

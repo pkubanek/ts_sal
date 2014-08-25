@@ -1,8 +1,0 @@
-		d.repeat = lasercal_response_ref->repeat;
-		d.submits = lasercal_response_ref->submits;
-		d.cmdID = lasercal_response_ref->cmdID;
-		d.timeout = lasercal_response_ref->timeout;
-		strncpy(d.ack,lasercal_response_ref->ack,16);
-		strncpy(d.error,lasercal_response_ref->error,16);
-		strncpy(d.result,lasercal_response_ref->result,64);
-		lasercal_response_ref->syncO = 1;

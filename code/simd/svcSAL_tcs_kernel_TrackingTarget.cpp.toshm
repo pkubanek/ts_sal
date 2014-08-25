@@ -1,6 +1,0 @@
-		tcs_kernel_TrackingTarget_ref->PositionX = samples[i].PositionX;
-		tcs_kernel_TrackingTarget_ref->PositionY = samples[i].PositionY;
-		tcs_kernel_TrackingTarget_ref->T0 = samples[i].T0;
-		tcs_kernel_TrackingTarget_ref->VelocityX = samples[i].VelocityX;
-		tcs_kernel_TrackingTarget_ref->VelocityY = samples[i].VelocityY;
-		tcs_kernel_TrackingTarget_ref->syncI++;

@@ -1,7 +1,0 @@
-		for (unsigned int count=0; count<17; count++) {
-			power_UPSs_ref->Raw[count] = samples[i].Raw[count];
-		}
-		for (unsigned int count=0; count<33; count++) {
-			power_UPSs_ref->Calibrated[count] = samples[i].Calibrated[count];
-		}
-		power_UPSs_ref->syncI++;

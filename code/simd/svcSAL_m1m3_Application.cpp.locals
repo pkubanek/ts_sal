@@ -1,4 +1,0 @@
-	svcSHORT	status[17];
-	svcFLT	demand[7];
-	svcFLT	error[7];
-	svcFLT	position[7];

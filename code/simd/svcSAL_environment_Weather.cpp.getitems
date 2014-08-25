@@ -1,3 +1,0 @@
-		result = salHandle->getSample(SAL__SLOWPOLL);
-		result = salHandle->getitem(SAL_IID_environment_Weather_Raw, Raw, 129);
-		result = salHandle->getitem(SAL_IID_environment_Weather_Calibrated, Calibrated, 257);

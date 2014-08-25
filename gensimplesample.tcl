@@ -10,13 +10,13 @@ global SAL_WORK_DIR
    exec mkdir -p $SAL_WORK_DIR/[set base]_[set name]/isocpp
    exec mkdir -p $SAL_WORK_DIR/[set base]_[set name]/java/src/org/lsst/sal
    exec mkdir -p $SAL_WORK_DIR/[set base]_[set name]/java/src/org/lsst/sal/$base/$name
-   exec touch $SAL_WORK_DIR/[set base]/java/src/.depend.Makefile.saj_[set base]_cmdctl
 ###   exec mkdir -p $SAL_WORK_DIR/SAL_[set base]/java/src/org/lsst/sal
    exec mkdir -p $SAL_WORK_DIR/[set base]/java/src
    exec mkdir -p $SAL_WORK_DIR/[set base]/java/src/org/lsst/sal
    exec mkdir -p $SAL_WORK_DIR/[set base]/cpp/src
    exec mkdir -p $SAL_WORK_DIR/[set base]/isocpp/src
    exec mkdir -p $SAL_WORK_DIR/[set base]_[set name]/java/standalone
+   exec touch $SAL_WORK_DIR/[set base]/java/src/.depend.Makefile.saj_[set base]_cmdctl
    exec touch $SAL_WORK_DIR/[set base]_[set name]/java/standalone/.depend.Makefile.saj_[set base]_pub
    exec touch $SAL_WORK_DIR/[set base]_[set name]/java/standalone/.depend.Makefile.saj_[set base]_sub
    exec touch $SAL_WORK_DIR/[set base]_[set name]/cpp/standalone/.depend.Makefile.sacpp_[set base]_pub
@@ -362,6 +362,7 @@ global SAL_DIR SAL_WORK_DIR SYSDIC
         puts $frep "perl -pi -w -e 's/SALTopic/[set name]/g;' [set id]/java/src/[set id]DataSubscriber.java"
         puts $frep "perl -pi -w -e 's/SALData/$base/g;' [set id]/java/src/[set id]DataSubscriber.java"
         puts $frep "perl -pi -w -e 's/SALNAMESTRING/[set id]/g;' [set id]/java/src/[set id]DataSubscriber.java"
+
         exec cp $SAL_DIR/code/templates/Makefile.saj_SAL_cmdctl.template [set base]/java/src/Makefile.saj_[set base]_cmdctl
         puts $frep "perl -pi -w -e 's/_SAL_/_[set base]_/g;' [set base]/java/src/Makefile.saj_[set base]_cmdctl"
         puts $frep "perl -pi -w -e 's/SALData/[set base]/g;' [set base]/java/src/Makefile.saj_[set base]_cmdctl"
@@ -388,6 +389,27 @@ global SAL_DIR SAL_WORK_DIR SYSDIC
         exec cp $SAL_DIR/code/templates/runcmdctl.template [set base]/java/src/[set base]_cmdctl.run
         puts $frep "perl -pi -w -e 's/SALData/$base/g;' [set base]/java/src/[set base]_cmdctl.run"
         puts $frep "perl -pi -w -e 's/_SAL_/_[set id]_/g;' [set base]/java/src/[set base]_cmdctl.run"
+
+        exec cp $SAL_DIR/code/templates/Makefile.saj_SAL_event.template [set base]/java/src/Makefile.saj_[set base]_event
+        puts $frep "perl -pi -w -e 's/_SAL_/_[set base]_/g;' [set base]/java/src/Makefile.saj_[set base]_event"
+        puts $frep "perl -pi -w -e 's/SALData/[set base]/g;' [set base]/java/src/Makefile.saj_[set base]_event"
+        exec cp $SAL_DIR/code/templates/SALDataEvent.java.template [set base]/java/src/[set base]Event.java
+        if { [info exists SYSDIC($base,keyedID)] } {
+          puts $frep "perl -pi -w -e 's/SALSUBSYSID/aKey/g;' [set base]/java/src/[set base]Event.java"
+        } else {
+          puts $frep "perl -pi -w -e 's/SALSUBSYSID//g;' [set base]/java/src/[set base]Event.java"
+        }
+        puts $frep "perl -pi -w -e 's/SALData/$base/g;' [set base]/java/src/[set base]Event.java"
+        exec cp $SAL_DIR/code/templates/SALDataEventLogger.java.template [set base]/java/src/[set base]EventLogger.java
+        if { [info exists SYSDIC($base,keyedID)] } {
+          puts $frep "perl -pi -w -e 's/SALSUBSYSID/aKey/g;' [set base]/java/src/[set base]EventLogger.java"
+        } else {
+          puts $frep "perl -pi -w -e 's/SALSUBSYSID//g;' [set base]/java/src/[set base]EventLogger.java"
+        }
+        puts $frep "perl -pi -w -e 's/SALData/$base/g;' [set base]/java/src/[set base]EventLogger.java"
+        exec cp $SAL_DIR/code/templates/runevent.template [set base]/java/src/[set base]_event.run
+        puts $frep "perl -pi -w -e 's/SALData/$base/g;' [set base]/java/src/[set base]_event.run"
+        puts $frep "perl -pi -w -e 's/_SAL_/_[set id]_/g;' [set base]/java/src/[set base]_event.run"
       }
       if { $lang == "isocpp" } {
         exec cp $SAL_DIR/code/templates/Makefile-isocpp.template [set id]/isocpp/Makefile

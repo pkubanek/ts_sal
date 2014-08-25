@@ -1,9 +1,0 @@
-		d.flags = camera_SCS_ref->flags;
-		strncpy(d.algorithm,camera_SCS_ref->algorithm,32);
-		for (unsigned int count=0; count<1025; count++) {
-			d.close_profile[count] = camera_SCS_ref->close_profile[count];
-		}
-		for (unsigned int count=0; count<1025; count++) {
-			d.open_profile[count] = camera_SCS_ref->open_profile[count];
-		}
-		camera_SCS_ref->syncO = 1;

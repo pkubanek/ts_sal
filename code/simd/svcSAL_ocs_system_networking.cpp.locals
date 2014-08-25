@@ -1,5 +1,0 @@
-	char	[32];
-	char	[128];
-	svcLONG	ip[5];
-	svcLONG	rx[7];
-	svcLONG	tx[7];

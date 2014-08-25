@@ -1,0 +1,30 @@
+
+
+import SALData.*;
+import org.lsst.sal.SAL_SALData;
+
+public class SALDataEventLogger {
+
+	public static void main(String[] args) {
+          short aKey   = 1;
+	  int status   = SAL_SALData.SAL__OK;
+	  boolean finished=false;
+
+	  // Initialize
+	  SAL_SALData evt = new SAL_SALData(SALSUBSYSID);
+	  SALData.logevent event = new SALData.logevent();
+
+	  while (!finished) {
+	     status = evt.getEvent(event);
+	     if (status == SAL_SALData.SAL__OK) {
+                System.out.println("=== Event Logged : " + event.message);
+             }
+ 	     try {Thread.sleep(100);} catch (InterruptedException e)  { e.printStackTrace(); }
+	  }
+
+	  /* Remove the DataWriters etc */
+	  evt.salShutdown();
+       }
+}
+
+

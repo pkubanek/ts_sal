@@ -1,8 +1,0 @@
-		result = salHandle->getSample(SAL__SLOWPOLL);
-		result = salHandle->getitem(SAL_IID_skycam_response_repeat, repeat);
-		result = salHandle->getitem(SAL_IID_skycam_response_submits, submits);
-		result = salHandle->getitem(SAL_IID_skycam_response_cmdID, cmdID);
-		result = salHandle->getitem(SAL_IID_skycam_response_timeout, timeout);
-		result = salHandle->getitem(SAL_IID_skycam_response_ack, ack);
-		result = salHandle->getitem(SAL_IID_skycam_response_error, error);
-		result = salHandle->getitem(SAL_IID_skycam_response_result, result);

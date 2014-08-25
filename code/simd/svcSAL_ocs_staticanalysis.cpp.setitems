@@ -1,8 +1,0 @@
-		result = salHandle->setitem(SAL_IID_ocs_staticanalysis_action, action);
-		result = salHandle->setitem(SAL_IID_ocs_staticanalysis_result, result);
-		result = salHandle->setitem(SAL_IID_ocs_staticanalysis_end, end);
-		result = salHandle->setitem(SAL_IID_ocs_staticanalysis_start, start);
-		result = salHandle->setitem(SAL_IID_ocs_staticanalysis_actuuid, actuuid);
-		result = salHandle->setitem(SAL_IID_ocs_staticanalysis_part, part);
-		result = salHandle->setitem(SAL_IID_ocs_staticanalysis_subsystem, subsystem);
-		result = salHandle->putSample();

@@ -36,7 +36,7 @@ salReturn SAL_[set base]::putSample[set name]([set base]_[set name]C *data)
    Instance.[set base]ID = subsystemID;
    InstanceHandle_t dataHandle = SALWriter->register_instance(Instance);
 #else
-   InstanceHandle_t dataHandle = DDS::HANDLE_NIL;
+   InstanceHandle_t dataHandle = HANDLE_NIL;
 #endif
   ReturnCode_t status = SALWriter->write(Instance, dataHandle);
   checkStatus(status, \"[set base]::[set name]DataWriter::write\");  
@@ -118,7 +118,7 @@ global SYSDIC
       while { $rec != "#endif" && $rec != "#else" } {gets $fin rec}
       while { $rec != "#endif" } {
           gets $fin rec
-          if { $rec != "#endif" } {puts $fout rec}
+          if { $rec != "#endif" } {puts $fout $rec}
       }
    }
 }
@@ -185,7 +185,7 @@ puts $fout "
            SALWriter.unregister_instance(data, dataHandle);"
         } else { 
           puts $fout "
-           long dataHandle = DDS.HANDLE.NIL;
+           long dataHandle = HANDLE_NIL.value;
 	   status = SALWriter.write(data, dataHandle);
 	   checkStatus(status, \"[set name]DataWriter.write\");"
         }
@@ -288,7 +288,7 @@ salReturn SAL_[set base]::putSample([set base]::[set name] data)
    data.[set base]ID = subsystemID;
    InstanceHandle_t dataHandle = SALWriter->register_instance(data);
 #else
-   InstanceHandle_t dataHandle = DDS::HANDLE_NIL;
+   InstanceHandle_t dataHandle = HANDLE_NIL;
 #endif
   ReturnCode_t status = SALWriter->write(data, dataHandle);
   checkStatus(status, \"[set base]::[set name]DataWriter::write\");  

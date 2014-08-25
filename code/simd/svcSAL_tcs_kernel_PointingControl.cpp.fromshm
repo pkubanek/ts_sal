@@ -1,7 +1,0 @@
-		d.AGuide = tcs_kernel_PointingControl_ref->AGuide;
-		d.ALocal = tcs_kernel_PointingControl_ref->ALocal;
-		d.BGuide = tcs_kernel_PointingControl_ref->BGuide;
-		d.BLocal = tcs_kernel_PointingControl_ref->BLocal;
-		strncpy(d.PitchFilter,tcs_kernel_PointingControl_ref->PitchFilter,32);
-		strncpy(d.RollFilter,tcs_kernel_PointingControl_ref->RollFilter,32);
-		tcs_kernel_PointingControl_ref->syncO = 1;

@@ -1,5 +1,0 @@
-		d.id = ocs_scheduler_program_ref->id;
-		d.priority = ocs_scheduler_program_ref->priority;
-		d.status = ocs_scheduler_program_ref->status;
-		d.completion = ocs_scheduler_program_ref->completion;
-		ocs_scheduler_program_ref->syncO = 1;

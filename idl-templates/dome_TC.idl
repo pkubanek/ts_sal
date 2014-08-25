@@ -1,0 +1,9 @@
+struct enclosure_TC {
+  long  raw[16];
+  float calibrated[16];
+  float setPoint[16];
+  long  status[16];
+  float glycolFlow[4];
+  float glycolTemperature[4];
+  float boosterSpeed[4];
+};

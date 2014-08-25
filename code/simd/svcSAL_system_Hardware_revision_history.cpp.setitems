@@ -1,4 +1,0 @@
-		result = salHandle->setitem(SAL_IID_system_Hardware_revision_history_Part, Part);
-		result = salHandle->setitem(SAL_IID_system_Hardware_revision_history_Reason, Reason);
-		result = salHandle->setitem(SAL_IID_system_Hardware_revision_history_Version, Version, 4);
-		result = salHandle->putSample();

@@ -1,7 +1,0 @@
-		for (unsigned int count=0; count<201; count++) {
-			d.Raw[count] = auxscope_TCS_ref->Raw[count];
-		}
-		for (unsigned int count=0; count<201; count++) {
-			d.Calibrated[count] = auxscope_TCS_ref->Calibrated[count];
-		}
-		auxscope_TCS_ref->syncO = 1;
