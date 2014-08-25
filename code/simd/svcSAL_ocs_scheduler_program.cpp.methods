@@ -111,7 +111,7 @@
 	    return result;
 	}
 
-	svcRTN salocs_scheduler_program::getItem ( svcIID itemId , svcFLT &value )
+	svcRTN salocs_scheduler_program::getItem ( svcIID itemId , svcFLOAT &value )
 	{
 	    svcRTN result = SAL__NOT_DEFINED;
 	    switch (itemId) {
@@ -127,7 +127,7 @@
 	
 
 
-	svcRTN salocs_scheduler_program::setItem ( svcIID itemId , svcFLT &value )
+	svcRTN salocs_scheduler_program::setItem ( svcIID itemId , svcFLOAT &value )
 	{
 	    svcRTN result = SAL__NOT_DEFINED;
 	    switch (itemId) {

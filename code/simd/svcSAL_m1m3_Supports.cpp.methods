@@ -69,7 +69,7 @@
 	    return result;
 	}
 
-	svcRTN salm1m3_Supports::getItem ( svcIID itemId , svcFLT &value, svcUINT size)
+	svcRTN salm1m3_Supports::getItem ( svcIID itemId , svcFLOAT &value, svcUINT size)
 	{
 	    svcRTN result = SAL__NOT_DEFINED;
 	    switch (itemId) {
@@ -86,7 +86,7 @@
 	    return result;
 	}
 
- 	svcRTN salm1m3_Supports::setItem ( svcIID itemId , svcFLT &value , svcUINT size)
+ 	svcRTN salm1m3_Supports::setItem ( svcIID itemId , svcFLOAT &value , svcUINT size)
 	{
 	    svcRTN result = SAL__NOT_DEFINED;
 	    switch (itemId) {

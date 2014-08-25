@@ -127,10 +127,9 @@ proc checkidl { f } {
 global NEWTOPICS NEWSIZES NEWCONSTS
 global DESC SDESC IDLTYPES IDLSIZES
 global PUBLISHERS FREQUENCY KEYINDEX
-global SAL_DIR TIDUSED SAL_WORK_DIR
+global SAL_DIR TIDUSED
   set fin [open $f r]
-  set fout [open $SAL_WORK_DIR/idl-templates/validated/$f w]
-  stdlog "Creating $SAL_WORK_DIR/idl-templates/validated/$f"
+  set fout [open validated/$f w]
   set id [file rootname $f]
   set hid [join [split $id _] .]
   set NONCODING 0
@@ -145,15 +144,15 @@ global SAL_DIR TIDUSED SAL_WORK_DIR
 #puts stdout "is noncoding"
      } else {
        if { [string trim $rec] == "\}" ||  [string trim $rec] == "\};" } {
-           puts stdout "end of topic"
+#puts stdout "end of topic"
            puts $fout "\};"
            puts $fout "#pragma keylist $topicid"
            close $fout
            close $fdet
            close $fcmt
-           set mdid [lindex [exec md5sum $SAL_WORK_DIR/idl-templates/validated/$topicid.idl] 0]
+           set mdid [lindex [exec md5sum validated/$topicid.idl] 0]
            set tid [format %d 0x[string range $mdid 26 end]]
-           set fdef [open $SAL_DIR/code/include/sal/svcSAL_[set topicid]_iid.h w]
+           set fdef [open $SAL_DIR/code/simd/svcSAL_[set topicid]_iid.h w]
            gentopicdefsql $topicid
            set fsql [open $SAL_DIR/code/sql/[set topicid]_items.sql a]
            puts $fdef "
@@ -203,19 +202,18 @@ global SAL_DIR TIDUSED SAL_WORK_DIR
                  close $fdet
                  close $fcmt
               }    
-              set fhtm [open $SAL_WORK_DIR/idl-templates/validated/$nt-streamdef.html w]
+              set fhtm [open validated/$nt-streamdef.html w]
               htmheader $fhtm $hid
-              set fout [open $SAL_WORK_DIR/idl-templates/validated/$nt.idl w]
-              set fdet [open $SAL_WORK_DIR/idl-templates/validated/$nt.detail w]
+              set fout [open validated/$nt.idl w]
+              set fdet [open validated/$nt.detail w]
               if { $KEYINDEX != "" } {puts $fdet "#index $KEYINDEX"; set KEYINDEX ""}
-              set fcmt [open $SAL_WORK_DIR/idl-templates/validated/$nt.comments w]
+              set fcmt [open validated/$nt.comments w]
               puts $fout "struct $nt \{
   string<32> private_revCode;  //private
   double     private_sndStamp; //private
   double     private_rcvStamp; //private
   long       private_seqNum;   //private
-  long       private_origin;   //private
-  long       private_host;     //private"
+  long       private_origin;   //private"
               set NEWTOPICS($hid) 1
               set NEWSIZES($hid)  0
            } else {
@@ -251,7 +249,7 @@ global SAL_DIR TIDUSED SAL_WORK_DIR
              puts $fout " $u [string trim $vitem];"
              incr eid 1
              doitem $eid $fhtm $id $type $siz "$units" "$range" "$comments" 
-            puts stdout  "doitem $eid $fhtm $id $type $siz |$units |$range  |$comments "
+#            puts stdout  "doitem $eid $fhtm $id $type $siz |$units |$range  |$comments "
              if { [info exists FREQUENCY($hid)] == 0 } {set FREQUENCY($hid) 0.1}
              puts $fdet "$hid.$id $siz $type $FREQUENCY($hid)"
              lappend tnames $id
@@ -305,7 +303,7 @@ proc checkall { } {
 
 proc testdupiid { } {
 global SAL_DIR
-   set all [lsort [glob $SAL_DIR/code/include/sal/svcSAL_*_iid.h]]
+   set all [lsort [glob $SAL_DIR/code/simd/svcSAL_*_iid.h]]
    foreach i $all { 
       stdlog "Checking $i"
       set fin [open $i r]
@@ -328,20 +326,16 @@ source $env(SAL_DIR)/streamutils.tcl
 source $env(SAL_DIR)/unitsdesc.tcl
 source $env(SAL_DIR)/datastream_desc.tcl
 source $env(SAL_DIR)/camera-subsysdesc.tcl
-source $env(SAL_DIR)/utilities.tcl
 
-set IDLTYPES "boolean char byte octet short int long longlong float double string unsigned"
-set IDLSIZES(byte)     1
-set IDLSIZES(char)     1
-set IDLSIZES(octet)    1
-set IDLSIZES(boolean)  2
-set IDLSIZES(string)   1
-set IDLSIZES(short)    2
-set IDLSIZES(int)      4
-set IDLSIZES(long)     4
-set IDLSIZES(longlong) 8
-set IDLSIZES(float)    4
-set IDLSIZES(double)   8
+set IDLTYPES "byte octet  short int long float double string unsigned"
+set IDLSIZES(byte)   1
+set IDLSIZES(octet)  1
+set IDLSIZES(string) 1
+set IDLSIZES(short)  2
+set IDLSIZES(int)    4
+set IDLSIZES(long)   4
+set IDLSIZES(float)  4
+set IDLSIZES(double) 8
 set IDLRESERVED "abstract any attribute boolean case char component const consumes context custom default double emits enum eventtype exception factory false finder fixed float getraises home import in inout interface local long module multiple native object octet oneway out primarykey private provides public publishes raises readonly sequence setraises short string struct supports switch true truncatable typedef typeid typeprefix union unsigned uses valuebase valuetype void wchar wstring"
 
 

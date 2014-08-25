@@ -1,5 +1,5 @@
 
-	svcRTN saldm_derived_psf::getItem ( svcIID itemId , svcDBL &value, svcUINT size)
+	svcRTN saldm_derived_psf::getItem ( svcIID itemId , svcDOUBLE &value, svcUINT size)
 	{
 	    svcRTN result = SAL__NOT_DEFINED;
 	    switch (itemId) {
@@ -56,7 +56,7 @@
 	    return result;
 	}
 
- 	svcRTN saldm_derived_psf::setItem ( svcIID itemId , svcDBL &value , svcUINT size)
+ 	svcRTN saldm_derived_psf::setItem ( svcIID itemId , svcDOUBLE &value , svcUINT size)
 	{
 	    svcRTN result = SAL__NOT_DEFINED;
 	    switch (itemId) {

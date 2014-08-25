@@ -5,7 +5,6 @@
 #include <string>
 using namespace std;
 
-#include "svcSAL.h"
 #include "svcSAL_TopicId_onlyshm.h"
 
 int main(int argc, char* argv[]) 
@@ -18,7 +17,7 @@ int main(int argc, char* argv[])
 
 	salHandle = (salTopicId *)new salTopicId();
 	printf ("SAL timestamp is %lf\n", salHandle->getCurrentTime());
-	result = salHandle->salConnect(op);
+	result = salHandle->salConnect(SAL_SID_TopicId,op);
 
 	if (result != SAL__OK) {
 	   printf ("Topic initialization failed %d\n",result);

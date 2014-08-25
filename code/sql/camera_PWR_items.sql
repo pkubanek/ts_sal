@@ -10,5 +10,5 @@ CREATE TABLE camera_PWR_items (
   comment char(128),
   PRIMARY KEY (num)
 );
-INSERT INTO camera_PWR_items VALUES (1,"supply_voltage","float",25,"none",0.1,"","");
-INSERT INTO camera_PWR_items VALUES (2,"current","float",25,"none",0.1,"","");
+INSERT INTO camera_PWR_items VALUES (1,"supply_voltage","float",25,"",0.1,"","");
+INSERT INTO camera_PWR_items VALUES (2,"current","float",25,"",0.1,"","");

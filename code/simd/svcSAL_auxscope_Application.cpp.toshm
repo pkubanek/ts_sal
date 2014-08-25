@@ -1,3 +1,4 @@
+		strncpy(auxscope_Application_ref->Status,samples[i].Status,16);
 		for (unsigned int count=0; count<5; count++) {
 			auxscope_Application_ref->Demand[count] = samples[i].Demand[count];
 		}

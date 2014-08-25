@@ -1,6 +1,0 @@
-<map id="G" name="G">
-<area shape="rect" href="$classdds_1_1peer_1_1ConditionImpl.html" title="dds::peer::ConditionImpl" alt="" coords="5,32,168,61"/>
-<area shape="rect" href="$classdds_1_1peer_1_1ReadConditionImpl.html" title="dds::peer::ReadConditionImpl" alt="" coords="216,32,408,61"/>
-<area shape="rect" href="$classdds_1_1peer_1_1QueryConditionImpl.html" title="dds::peer::QueryConditionImpl" alt="" coords="517,5,715,35"/>
-<area shape="rect" href="$classdds_1_1peer_1_1TReadConditionImpl.html" title="dds::peer::TReadConditionImpl\&lt; ARG, FUNCTOR \&gt;" alt="" coords="456,59,776,88"/>
-</map>

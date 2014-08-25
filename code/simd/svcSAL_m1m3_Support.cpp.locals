@@ -1,2 +1,2 @@
 	svcLONG	Raw[17];
-	svcFLT	Calibrated[33];
+	svcFLOAT	Calibrated[33];

@@ -1,2 +1,2 @@
 	char	[50];
-	svcFLT	data[201];
+	svcFLOAT	data[201];

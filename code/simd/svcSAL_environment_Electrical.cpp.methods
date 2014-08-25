@@ -53,7 +53,7 @@
 	    return result;
 	}
 
-	svcRTN salenvironment_Electrical::getItem ( svcIID itemId , svcFLT &value, svcUINT size)
+	svcRTN salenvironment_Electrical::getItem ( svcIID itemId , svcFLOAT &value, svcUINT size)
 	{
 	    svcRTN result = SAL__NOT_DEFINED;
 	    switch (itemId) {
@@ -70,7 +70,7 @@
 	    return result;
 	}
 
- 	svcRTN salenvironment_Electrical::setItem ( svcIID itemId , svcFLT &value , svcUINT size)
+ 	svcRTN salenvironment_Electrical::setItem ( svcIID itemId , svcFLOAT &value , svcUINT size)
 	{
 	    svcRTN result = SAL__NOT_DEFINED;
 	    switch (itemId) {

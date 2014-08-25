@@ -8,16 +8,15 @@ using namespace std;
 
 int main (int argc, char ** argv[])
 \{
-       [set subsys]_cache * pshm_[set subsys];
-       shm_[set subsys] *obj = new shm_[set subsys]();
+       shm_[set subsys] * pshm_[set subsys];
 
-       obj->GetObject(pshm_[set subsys]);
+       GetObject_[set subsys](&pshm_[set subsys]);
 
-       cout << (size_t)pshm_[set subsys] << \"\t\";
+       cout << (int)pshm_[set subsys] << \"\t\";
 
-       cout << \"sync0 = \" << obj->syncO << endl;
+       cout << \"sync0 = \" << pshm_[set subsys]->syncO << endl;
 
-       obj->Handle();
+       pshm_[set subsys]->Handle();
 
        return 0;
 \}

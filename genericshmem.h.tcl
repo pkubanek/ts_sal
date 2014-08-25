@@ -1,24 +1,18 @@
 set SHC(genericshmem.h) "
 #ifndef __[set subsys]_H__
 #define __[set subsys]_H__
-#include \"[set subsys]_cache.h\"
 
-class shm_[set subsys]\
-\{
+class shm_[set subsys] \{
    public:
-     shm_[set subsys]();
      virtual void Handle();
-     void GetObject( [set subsys]_cache *pshm);
-
 [set TOPICPROPS($subsys)]
-     static shm_[set subsys] m_sInitializer;
-     int m_[set subsys]_shmid;
-     [set subsys]_cache *m_shared_mem;
-     [set subsys]_cache *data;
+     static void * m_shared_mem;
+     void * operator new (unsigned int);
 \};
 
 
 
+void GetObject_[set subsys](shm_[set subsys] ** pshm_[set subsys]);
 
 #endif //__[set subsys]_H__
 "

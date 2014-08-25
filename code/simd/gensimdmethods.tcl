@@ -4,15 +4,15 @@ set SALTYPES(short) SHORT
 set SALTYPES(unsignedshort) USHORT
 set SALTYPES(long) LONG
 set SALTYPES(unsignedlong) ULONG 
-set SALTYPES(float) FLT
-set SALTYPES(double) DBL
+set SALTYPES(float) FLOAT
+set SALTYPES(double) DOUBLE
 set SALTYPES(octetarray) UCHAR
 set SALTYPES(shortarray) SHORT
 set SALTYPES(unsignedshortarray) USHORT
 set SALTYPES(longarray) LONG
 set SALTYPES(unsignedlongarray) ULONG 
-set SALTYPES(floatarray) FLT
-set SALTYPES(doublearray) DBL
+set SALTYPES(floatarray) FLOAT
+set SALTYPES(doublearray) DOUBLE
 
 set SALFORMATS(octet) "%d"
 set SALFORMATS(short) "%d"
@@ -31,7 +31,7 @@ set SALFORMATS(doublearray) "%lf"
 
 proc genallmethods { } {
 global SAL_DIR
-  set topics [lsort [glob $SAL_DIR/code/include/sal/svcSAL_*_iid.h]]
+  set topics [lsort [glob $SAL_DIR/code/simd/svcSAL_*_iid.h]]
   foreach t $topics {
      set id [string range [file tail $t] 7 end]
      set l [expr [string length $id]-7]
@@ -45,7 +45,7 @@ global SAL_DIR
 
 proc addsimdmethods { topic } {
 global SAL_WORK_DIR SAL_DIR
-  foreach f "svcSAL_[set topic].cpp svcSAL_[set topic]_shm.cpp svcSAL_[set topic]-onlyshm.cpp" {
+  foreach f "svcSAL_[set topic].cpp svcSAL_[set topic]_shm.cpp" {
    set fin [open $SAL_WORK_DIR/ospl-$topic/$f r]
    set fout [open /tmp/[set topic]methods.gen w]
    while { [gets $fin rec] > -1 } {
@@ -155,9 +155,9 @@ global Ptypes Psizes
                              dolocaldefs $fo6 $t $topic array
                }
          }
+         doitemsastext $fout $topic
       }
    }
-   doitemsastext $fout $topic
    puts $fo2 "		[set topic]_ref->syncI++;"
    puts $fo3 "		[set topic]_ref->syncO = 1;"
    close $fout
@@ -178,7 +178,7 @@ global Ptypes Psizes SALFORMATS
 	\{
 	    svcRTN result = SAL__NOT_DEFINED;
 	    
-	    switch (itemId) \{"
+	    switch (itemid) \{"
   foreach t [array names Ptypes] {
      switch $t {
                octet -
@@ -207,7 +207,7 @@ global Ptypes Psizes SALFORMATS
 	\{
 	    svcRTN result = SAL__NOT_DEFINED;
 	    
-	    switch (itemId) \{"
+	    switch (itemid) \{"
   foreach t [array names Ptypes] {
      switch $t {
                octet -
@@ -286,8 +286,8 @@ global SALTYPES Ptypes Psizes
   foreach i [lsort $Ptypes($type)] {
     puts $fo2 "		[set topic]_ref->$i = samples\[i\].$i;"
     puts $fo3 "		d.$i = [set topic]_ref->$i;"
-    puts $fo4 "		result = salHandle->setItem(SAL_IID_[set topic]_[set i], $i);"
-    puts $fo5 "		result = salHandle->getItem(SAL_IID_[set topic]_[set i], $i);"
+    puts $fo4 "		result = salHandle->setitem(SAL_IID_[set topic]_[set i], $i);"
+    puts $fo5 "		result = salHandle->getitem(SAL_IID_[set topic]_[set i], $i);"
   }
 }
 
@@ -301,8 +301,8 @@ global SALTYPES Ptypes Psizes
     puts $fo3 "		for (unsigned int count=0; count<$Psizes($i); count++) \{"
     puts $fo3 "			d.$i\[count\] = [set topic]_ref->$i\[count\];"
     puts $fo3 "		\}"
-    puts $fo4 "		result = salHandle->setItem(SAL_IID_[set topic]_[set i], $i, $Psizes($i));"
-    puts $fo5 "		result = salHandle->getItem(SAL_IID_[set topic]_[set i], $i, $Psizes($i));"
+    puts $fo4 "		result = salHandle->setitem(SAL_IID_[set topic]_[set i], $i, $Psizes($i));"
+    puts $fo5 "		result = salHandle->getitem(SAL_IID_[set topic]_[set i], $i, $Psizes($i));"
   }
 }
 
@@ -312,8 +312,8 @@ global SALTYPES Ptypes Psizes
   foreach i [lsort $Ptypes($type)] {
     puts $fo2 "		strncpy([set topic]_ref->$i,samples\[i\].$i,$Psizes($i));"
     puts $fo3 "		strncpy(d.$i,[set topic]_ref->$i,$Psizes($i));"
-    puts $fo4 "		result = salHandle->setItem(SAL_IID_[set topic]_[set i], $i);"
-    puts $fo5 "		result = salHandle->getItem(SAL_IID_[set topic]_[set i], $i);"
+    puts $fo4 "		result = salHandle->setitem(SAL_IID_[set topic]_[set i], $i);"
+    puts $fo5 "		result = salHandle->getitem(SAL_IID_[set topic]_[set i], $i);"
   }
 }
 
@@ -379,14 +379,14 @@ global SALTYPES Ptypes Psizes
 proc doarrayitems { fout type topic } {
 global SALTYPES Ptypes Psizes
   puts $fout "
-	svcRTN sal[set topic]::getItem ( svcIID itemId , svc$SALTYPES($type) value\[\], svcUINT size)
+	svcRTN sal[set topic]::getItem ( svcIID itemId , svc$SALTYPES($type) \&value, svcUINT size)
 	\{
 	    svcRTN result = SAL__NOT_DEFINED;
 	    switch (itemId) \{"
   foreach i [lsort $Ptypes($type)] {
     puts $fout "
                  case SAL_IID_[set topic]_[set i] :
-                      if ( size > $Psizes($i) ) \{return SAL__INDEX_OUT_OF_RANGE;\}
+                      if \{ size > $Psizes($i) \} \{return SAL__INDEX_OUT_OF_RANGE;\}
                       for (unsigned int count=0; count<size; count++) \{
                         value\[count\] = data.$i\[count\];
                       \}
@@ -398,14 +398,14 @@ global SALTYPES Ptypes Psizes
 	    return result;
 	\}"
   puts $fout "
- 	svcRTN sal[set topic]::setItem ( svcIID itemId , svc$SALTYPES($type) value\[\] , svcUINT size)
+ 	svcRTN sal[set topic]::setItem ( svcIID itemId , svc$SALTYPES($type) \&value , svcUINT size)
 	\{
 	    svcRTN result = SAL__NOT_DEFINED;
 	    switch (itemId) \{"
   foreach i [lsort $Ptypes($type)] {
     puts $fout "
                  case SAL_IID_[set topic]_[set i] :
-                      if ( size > $Psizes($i) ) \{return SAL__INDEX_OUT_OF_RANGE;\}
+                      if \{ size > $Psizes($i) \} \{return SAL__INDEX_OUT_OF_RANGE;\}
                       for (unsigned int count=0; count<size; count++) \{
                         data.$i\[count\] = value\[count\];
                       \}

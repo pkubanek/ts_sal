@@ -477,7 +477,7 @@
 	    return result;
 	}
 
-	svcRTN saltcs_kernel_PointingModel::getItem ( svcIID itemId , svcFLT &value, svcUINT size)
+	svcRTN saltcs_kernel_PointingModel::getItem ( svcIID itemId , svcFLOAT &value, svcUINT size)
 	{
 	    svcRTN result = SAL__NOT_DEFINED;
 	    switch (itemId) {
@@ -494,7 +494,7 @@
 	    return result;
 	}
 
- 	svcRTN saltcs_kernel_PointingModel::setItem ( svcIID itemId , svcFLT &value , svcUINT size)
+ 	svcRTN saltcs_kernel_PointingModel::setItem ( svcIID itemId , svcFLOAT &value , svcUINT size)
 	{
 	    svcRTN result = SAL__NOT_DEFINED;
 	    switch (itemId) {

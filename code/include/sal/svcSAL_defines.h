@@ -25,14 +25,6 @@ typedef int		svcIID;
 typedef int		svcSID;
 typedef int		svcTID;
 typedef unsigned int	svcBOOL;
-typedef unsigned int 	*svcpUINT;   
-typedef int 		*svcpINT;  
-typedef unsigned long 	*svcpULONG;   
-typedef long		*svcpLONG;  
-typedef unsigned short 	*svcpUSHORT;
-typedef short 		*svcpSHORT;
-typedef float 		*svcpFLT;
-typedef double 		*svcpDBL;
 
 #define SAL_PID_HISTORY_DEPTH	20001
 #define SAL_PID_AUTO_DISPOSE	20002
@@ -69,7 +61,6 @@ typedef double 		*svcpDBL;
 
 // telemetry stream update types
 #define SAL__NO_UPDATES		-100
-#define SAL__INDEX_OUT_OF_RANGE -101
 #define SAL__WAITING_FOR_NEXT 	100
 #define SAL__GOT_UPDATE 	101
 #define SAL__SYNC_IN    	102

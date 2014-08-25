@@ -141,7 +141,7 @@
 	    return result;
 	}
 
-	svcRTN salcamera_SDS_amplifiers::getItem ( svcIID itemId , svcFLT &value, svcUINT size)
+	svcRTN salcamera_SDS_amplifiers::getItem ( svcIID itemId , svcFLOAT &value, svcUINT size)
 	{
 	    svcRTN result = SAL__NOT_DEFINED;
 	    switch (itemId) {
@@ -182,7 +182,7 @@
 	    return result;
 	}
 
- 	svcRTN salcamera_SDS_amplifiers::setItem ( svcIID itemId , svcFLT &value , svcUINT size)
+ 	svcRTN salcamera_SDS_amplifiers::setItem ( svcIID itemId , svcFLOAT &value , svcUINT size)
 	{
 	    svcRTN result = SAL__NOT_DEFINED;
 	    switch (itemId) {

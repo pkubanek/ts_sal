@@ -107,7 +107,7 @@
 	    return result;
 	}
 
-	svcRTN salseeing_dimm_Temps::getItem ( svcIID itemId , svcFLT &value, svcUINT size)
+	svcRTN salseeing_dimm_Temps::getItem ( svcIID itemId , svcFLOAT &value, svcUINT size)
 	{
 	    svcRTN result = SAL__NOT_DEFINED;
 	    switch (itemId) {
@@ -124,7 +124,7 @@
 	    return result;
 	}
 
- 	svcRTN salseeing_dimm_Temps::setItem ( svcIID itemId , svcFLT &value , svcUINT size)
+ 	svcRTN salseeing_dimm_Temps::setItem ( svcIID itemId , svcFLOAT &value , svcUINT size)
 	{
 	    svcRTN result = SAL__NOT_DEFINED;
 	    switch (itemId) {

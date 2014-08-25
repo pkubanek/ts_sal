@@ -1,7 +1,7 @@
 	svcLONG	action;
 	svcLONG	result;
-	svcFLT	end;
-	svcFLT	start;
+	svcFLOAT	end;
+	svcFLOAT	start;
 	char	[32];
 	char	[128];
 	char	[128];

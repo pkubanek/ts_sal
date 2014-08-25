@@ -53,7 +53,7 @@
 	    return result;
 	}
 
-	svcRTN salpower_UPSs::getItem ( svcIID itemId , svcFLT &value, svcUINT size)
+	svcRTN salpower_UPSs::getItem ( svcIID itemId , svcFLOAT &value, svcUINT size)
 	{
 	    svcRTN result = SAL__NOT_DEFINED;
 	    switch (itemId) {
@@ -70,7 +70,7 @@
 	    return result;
 	}
 
- 	svcRTN salpower_UPSs::setItem ( svcIID itemId , svcFLT &value , svcUINT size)
+ 	svcRTN salpower_UPSs::setItem ( svcIID itemId , svcFLOAT &value , svcUINT size)
 	{
 	    svcRTN result = SAL__NOT_DEFINED;
 	    switch (itemId) {

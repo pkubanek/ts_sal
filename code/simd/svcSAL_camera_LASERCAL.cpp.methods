@@ -1,5 +1,5 @@
 
-	svcRTN salcamera_LASERCAL::getItem ( svcIID itemId , svcFLT &value, svcUINT size)
+	svcRTN salcamera_LASERCAL::getItem ( svcIID itemId , svcFLOAT &value, svcUINT size)
 	{
 	    svcRTN result = SAL__NOT_DEFINED;
 	    switch (itemId) {
@@ -16,7 +16,7 @@
 	    return result;
 	}
 
- 	svcRTN salcamera_LASERCAL::setItem ( svcIID itemId , svcFLT &value , svcUINT size)
+ 	svcRTN salcamera_LASERCAL::setItem ( svcIID itemId , svcFLOAT &value , svcUINT size)
 	{
 	    svcRTN result = SAL__NOT_DEFINED;
 	    switch (itemId) {

@@ -1,5 +1,5 @@
 
-	svcRTN saldm_pointing_wcs::getItem ( svcIID itemId , svcDBL &value, svcUINT size)
+	svcRTN saldm_pointing_wcs::getItem ( svcIID itemId , svcDOUBLE &value, svcUINT size)
 	{
 	    svcRTN result = SAL__NOT_DEFINED;
 	    switch (itemId) {
@@ -32,7 +32,7 @@
 	    return result;
 	}
 
- 	svcRTN saldm_pointing_wcs::setItem ( svcIID itemId , svcDBL &value , svcUINT size)
+ 	svcRTN saldm_pointing_wcs::setItem ( svcIID itemId , svcDOUBLE &value , svcUINT size)
 	{
 	    svcRTN result = SAL__NOT_DEFINED;
 	    switch (itemId) {

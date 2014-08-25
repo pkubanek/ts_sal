@@ -1,4 +1,4 @@
-	svcFLT	metric1[133];
-	svcFLT	metric2[133];
-	svcFLT	metric3[133];
-	svcFLT	metric4[133];
+	svcFLOAT	metric1[133];
+	svcFLOAT	metric2[133];
+	svcFLOAT	metric3[133];
+	svcFLOAT	metric4[133];

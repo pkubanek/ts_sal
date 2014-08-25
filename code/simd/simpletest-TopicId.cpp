@@ -19,12 +19,12 @@ int main(int argc, char* argv[])
         std::string op(argv[1]);
 	svcRTN result = 0;
 	svcUINT idim;
-        salTopicId *salHandle;
+        salTelemetry *salHandle;
 // INSERT TOPIC_LOCALITEMS
 
-	salHandle = (salTopicId *)new salTopicId();
-//	printf ("SAL timestamp is %lf\n", salHandle->getCurrentTime());
-	result = salHandle->salConnect(op);
+	salHandle = (salTelemetry *)new salTelemetry();
+	printf ("SAL timestamp is %lf\n", salHandle->getCurrentTime());
+	result = salHandle->salConnect(SAL_SID_TopicId,op);
 
 	if (result != SAL__OK) {
 	   printf ("Topic initialization failed %d\n",result);

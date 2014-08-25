@@ -3,10 +3,10 @@
 proc doddsgen { sublist publist } {
 global scriptdir
 puts stdout "doddsgen sublist = $sublist"
-#   parsesub $sublist
-#puts stdout "doddsgen publist = $publist"
-#   parsepub $publist
-#  parsemakefile  $sublist $publist
+   parsesub $sublist
+puts stdout "doddsgen publist = $publist"
+   parsepub $publist
+   parsemakefile  $sublist $publist
 }
 
 proc doortegen { sublist publist } {
@@ -184,9 +184,8 @@ puts stdout "Building shmem interfaces"
 puts stdout "Processing $sublist $publist"
 set workdir $basedir/shmem-$basename
 cd $workdir
-#source $scriptdir/genshmem-rtidds.tcl
-#doddsgen "$sublist" "$publist"
-
+source $scriptdir/genshmem-rtidds.tcl
+doddsgen "$sublist" "$publist"
 if { [info exists FormData(mw_orte)] } {
   source $scriptdir/genshmem-orte.tcl
   doortegen $sublist $publist

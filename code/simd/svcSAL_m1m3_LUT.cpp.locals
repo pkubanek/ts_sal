@@ -1,2 +1,2 @@
 	char	[32];
-	svcFLT	param[33];
+	svcFLOAT	param[33];

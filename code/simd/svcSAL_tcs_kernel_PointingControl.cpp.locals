@@ -1,6 +1,6 @@
-	svcFLT	AGuide;
-	svcFLT	ALocal;
-	svcFLT	BGuide;
-	svcFLT	BLocal;
+	svcFLOAT	AGuide;
+	svcFLOAT	ALocal;
+	svcFLOAT	BGuide;
+	svcFLOAT	BLocal;
 	char	[32];
 	char	[32];

@@ -85,7 +85,7 @@
 	    return result;
 	}
 
-	svcRTN salocs_scheduler_progress::getItem ( svcIID itemId , svcDBL &value, svcUINT size)
+	svcRTN salocs_scheduler_progress::getItem ( svcIID itemId , svcDOUBLE &value, svcUINT size)
 	{
 	    svcRTN result = SAL__NOT_DEFINED;
 	    switch (itemId) {
@@ -102,7 +102,7 @@
 	    return result;
 	}
 
- 	svcRTN salocs_scheduler_progress::setItem ( svcIID itemId , svcDBL &value , svcUINT size)
+ 	svcRTN salocs_scheduler_progress::setItem ( svcIID itemId , svcDOUBLE &value , svcUINT size)
 	{
 	    svcRTN result = SAL__NOT_DEFINED;
 	    switch (itemId) {

@@ -1,4 +1,4 @@
 	svcSHORT	status[17];
-	svcFLT	error[17];
-	svcFLT	setpoint[17];
-	svcFLT	temperature[17];
+	svcFLOAT	error[17];
+	svcFLOAT	setpoint[17];
+	svcFLOAT	temperature[17];

@@ -19,11 +19,11 @@ using namespace std;
 
 
 // -- SAL Include
-#include "svcSAL_TopicId-onlyshm.h"
+#include "svcSAL_TopicId.h"
 #include "shmem_TopicId.h"
 
-void salTopicId::GetObject(TopicId_cache *  pshm_TopicId) {
-       pshm_TopicId = (TopicId_cache *)m_shared_mem;
+void GetObject_TopicId(shm_TopicId ** pshm_TopicId) {
+       *pshm_TopicId = (shm_TopicId *)shm_TopicId::m_shared_mem;
 }
 
 
@@ -50,8 +50,13 @@ salTopicId::salTopicId()
 	readCount = 0;
 	writeCount = 0;
         lastI=0;
-	deadline = 0;
+	deadline = {1,0};
 	pid = getpid();
+        if (operation.compare(PubOP) == 0) {
+           haveWrt = TRUE;
+        } else {
+           haveRdr = TRUE;
+        }
 }
 
  
@@ -64,7 +69,7 @@ salTopicId::~salTopicId()
 svcRTN salTopicId::publisher ()
 {
    if ( !haveWrt ) {
-      haveWrt = 1;
+      haveWrt = TRUE;
    }
    return SAL__OK;
 }
@@ -72,7 +77,7 @@ svcRTN salTopicId::publisher ()
 svcRTN salTopicId::subscriber ()
 {
    if ( !haveRdr ) {
-      haveRdr = 1;
+      haveRdr = TRUE;
    }
    return SAL__OK;
 }
@@ -123,8 +128,9 @@ svcRTN salTopicId::setProperty ( svcCHAR *propertyName , svcCHAR *textValue)
 }
 	
 
+shmMapper salTopicId::m_shmMapper;
 
-svcRTN TopicId::salConnect(std::string operation)
+svcRTN TopicId::salConnect(svcTID topicnumber, std::string operation)
 {
        key_t key = SAL_SHMEM_KEY_TopicId;
        size_t TopicId_shmsize = sizeof(TopicId_cache);
@@ -150,7 +156,7 @@ svcRTN TopicId::salConnect(std::string operation)
            bCreated = true;
        }
 
-       m_shared_mem = shmat(m_TopicId_shmid, NULL, 0);
+       salTopicId::m_shared_mem = shmat(m_TopicId_shmid, NULL, 0);
 
        if (-1 == (int)shm_TopicId::m_shared_mem) {
            cerr <<  __FILE__ <<  ":" <<  __LINE__ <<  " Critical error in shmat" << endl;
@@ -159,8 +165,9 @@ svcRTN TopicId::salConnect(std::string operation)
 
        if (bCreated) {
            // Construct objects on the shared memory
-           data = (camera_TC_zone1_cache *)m_shared_mem;
-           data->syncO = 0;
+           shm_TopicId * pshm_TopicId;
+           pshm_TopicId = new shm_TopicId;
+           pshm_TopicId->syncO = 0;
        }
 
        return SAL__OK;
@@ -186,7 +193,7 @@ svcINT salTopicId::::setDebug( level )
 svcINT salTopicId::::getDebug( )
 {
 	    return debugLevel;
-} 
+}
 
 // INSERT PERTOPIC_METHODS
 

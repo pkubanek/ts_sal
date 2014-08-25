@@ -1,3 +1,4 @@
+		strncpy(d.Status,auxscope_Application_ref->Status,16);
 		for (unsigned int count=0; count<5; count++) {
 			d.Demand[count] = auxscope_Application_ref->Demand[count];
 		}

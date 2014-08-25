@@ -16,7 +16,7 @@ LD = ld
 LDFLAGS =  -L. -lshmSAL_linux -lm -lc -lrt -lpthread
 # INCS = -I/home/LVSAL/rtai/rtai-1.6/include
 
-CFILES = svcSAL_commLib.c
+CFILES = SAL_commLib.c
 	
 OFILES = $(CFILES:%c=%o)
 

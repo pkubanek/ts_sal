@@ -123,7 +123,7 @@
 	    return result;
 	}
 
-	svcRTN salseeing_mass_Metrology::getItem ( svcIID itemId , svcFLT &value, svcUINT size)
+	svcRTN salseeing_mass_Metrology::getItem ( svcIID itemId , svcFLOAT &value, svcUINT size)
 	{
 	    svcRTN result = SAL__NOT_DEFINED;
 	    switch (itemId) {
@@ -140,7 +140,7 @@
 	    return result;
 	}
 
- 	svcRTN salseeing_mass_Metrology::setItem ( svcIID itemId , svcFLT &value , svcUINT size)
+ 	svcRTN salseeing_mass_Metrology::setItem ( svcIID itemId , svcFLOAT &value , svcUINT size)
 	{
 	    svcRTN result = SAL__NOT_DEFINED;
 	    switch (itemId) {

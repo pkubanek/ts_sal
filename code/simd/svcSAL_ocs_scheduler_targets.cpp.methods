@@ -69,7 +69,7 @@
 	    return result;
 	}
 
-	svcRTN salocs_scheduler_targets::getItem ( svcIID itemId , svcDBL &value, svcUINT size)
+	svcRTN salocs_scheduler_targets::getItem ( svcIID itemId , svcDOUBLE &value, svcUINT size)
 	{
 	    svcRTN result = SAL__NOT_DEFINED;
 	    switch (itemId) {
@@ -118,7 +118,7 @@
 	    return result;
 	}
 
- 	svcRTN salocs_scheduler_targets::setItem ( svcIID itemId , svcDBL &value , svcUINT size)
+ 	svcRTN salocs_scheduler_targets::setItem ( svcIID itemId , svcDOUBLE &value , svcUINT size)
 	{
 	    svcRTN result = SAL__NOT_DEFINED;
 	    switch (itemId) {

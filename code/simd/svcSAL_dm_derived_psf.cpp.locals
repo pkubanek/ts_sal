@@ -1,6 +1,6 @@
-	svcDBL	metric1[201];
-	svcDBL	metric2[201];
-	svcDBL	metric3[201];
-	svcDBL	metric4[201];
-	svcDBL	metric5[201];
-	svcDBL	metric6[201];
+	svcDOUBLE	metric1[201];
+	svcDOUBLE	metric2[201];
+	svcDOUBLE	metric3[201];
+	svcDOUBLE	metric4[201];
+	svcDOUBLE	metric5[201];
+	svcDOUBLE	metric6[201];

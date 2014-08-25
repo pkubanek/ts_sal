@@ -129,8 +129,7 @@ while { [gets $fin rec] > -1 } {
   double private_sndStamp; //private
   double private_rcvStamp; //private
   long private_seqNum; //private
-  long private_origin; //private
-  long private_host; //private"
+  long private_origin; //private"
       puts $fo2  "DROP TABLE IF EXISTS $topic;"
       puts $fo2  "CREATE TABLE $topic ("
       puts $fo2  "  date_time datetime NOT NULL,
@@ -138,9 +137,8 @@ while { [gets $fin rec] > -1 } {
   private_sndStamp double,
   private_rcvStamp double,
   private_seqNum int,
-  private_origin int,
-  private_host int,"
-      set ITEMLIST "char.revCode,double.sndStamp,double.rcvStamp,int.seqNum,int.origin,int.host"
+  private_origin int,"
+      set ITEMLIST "char.revCode,double.sndStamp,double.rcvStamp,int.seqNum,int.origin"
    }
    set name [lindex [split [lindex $rec 1] .] end]
    set type [lindex $rec 3]

@@ -3,6 +3,6 @@
 	char	[128];
 	char	[128];
 	char	[128];
-	svcFLT	metrics[33];
-	svcFLT	parameters[33];
-	svcFLT	zernikes[17];
+	svcFLOAT	metrics[33];
+	svcFLOAT	parameters[33];
+	svcFLOAT	zernikes[17];

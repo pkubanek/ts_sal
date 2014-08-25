@@ -1,5 +1,5 @@
-	svcFLT	PositionX;
-	svcFLT	PositionY;
-	svcFLT	T0;
-	svcFLT	VelocityX;
-	svcFLT	VelocityY;
+	svcFLOAT	PositionX;
+	svcFLOAT	PositionY;
+	svcFLOAT	T0;
+	svcFLOAT	VelocityX;
+	svcFLOAT	VelocityY;

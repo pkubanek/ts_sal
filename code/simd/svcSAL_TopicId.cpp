@@ -26,7 +26,7 @@ std::string topic("TopicIdTopic");
 // -- SAL Include
 #include "svcSAL_TopicId.h"
 
-salTopicId::salTopicId(std::string operation)
+salTopicId::salTopicId()
 {
      char *env;
      string PubOP("publish");
@@ -112,7 +112,7 @@ svcRTN salTopicId::getSample (svcINT timeout)
 	    }
          }
       } else {
-//         data.private_rcvStamp = currentTime();
+         data.private_rcvStamp = currentTime();
 	 timeOfRcv = data.private_rcvStamp;
 	 readCount++;
 	 if (timeout == SAL__WAIT_FOR_CHANGE) {
@@ -128,7 +128,7 @@ svcRTN salTopicId::getSample (svcINT timeout)
 
 svcRTN salTopicId::putSample () {
     svcRTN result;
-//    data.private_sndStamp = currentTime();
+    data.private_sndStamp = currentTime();
     timeOfSnd = data.private_rcvStamp;
     data.private_origin = pid;
     result = salTopicId::write(data,currentInstance);

@@ -33,8 +33,7 @@ global MPG_ROUTER TOPIC CONFIG_DIR
   long		private_sndStamp; //private
   long		private_rcvStamp; //private
   long		private_seqNum; //private
-  long		private_origin; //private
-  long		private_host; //private"
+  long		private_origin; //private"
   foreach i $items {
     set desc [$MPG_ROUTER info $s.$i]
     set type [lindex $desc 1]

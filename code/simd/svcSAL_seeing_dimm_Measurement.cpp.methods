@@ -161,7 +161,7 @@
 	    return result;
 	}
 
-	svcRTN salseeing_dimm_Measurement::getItem ( svcIID itemId , svcFLT &value )
+	svcRTN salseeing_dimm_Measurement::getItem ( svcIID itemId , svcFLOAT &value )
 	{
 	    svcRTN result = SAL__NOT_DEFINED;
 	    switch (itemId) {
@@ -202,7 +202,7 @@
 	
 
 
-	svcRTN salseeing_dimm_Measurement::setItem ( svcIID itemId , svcFLT &value )
+	svcRTN salseeing_dimm_Measurement::setItem ( svcIID itemId , svcFLOAT &value )
 	{
 	    svcRTN result = SAL__NOT_DEFINED;
 	    switch (itemId) {

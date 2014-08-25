@@ -1,6 +1,6 @@
 	char	[32];
-	svcFLT	parameters[11];
-	svcFLT	sampleData_00[26];
-	svcFLT	sampleData_01[26];
-	svcFLT	sampleData_10[26];
-	svcFLT	sampleData_11[26];
+	svcFLOAT	parameters[11];
+	svcFLOAT	sampleData_00[26];
+	svcFLOAT	sampleData_01[26];
+	svcFLOAT	sampleData_10[26];
+	svcFLOAT	sampleData_11[26];

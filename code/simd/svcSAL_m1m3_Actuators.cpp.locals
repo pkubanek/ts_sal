@@ -2,7 +2,7 @@
 	svcLONG	position[121];
 	svcLONG	setpoint[121];
 	svcLONG	status[121];
-	svcFLT	cyltemp[121];
-	svcFLT	envtemp[121];
-	svcFLT	lvdtcorr[121];
-	svcFLT	pressure[121];
+	svcFLOAT	cyltemp[121];
+	svcFLOAT	envtemp[121];
+	svcFLOAT	lvdtcorr[121];
+	svcFLOAT	pressure[121];

@@ -18,7 +18,6 @@
 
 #include "svcSAL.h"
 #include "svcSAL_TopicId_iid.h"
-#include "TopicId_cache.h"
 
 
 	
@@ -26,12 +25,10 @@ class salTopicId : 	public sal
 
 {
 public:
-        salTopicId();
+        salTopicId(std::string operation);
         ~salTopicId();
        	svcRTN salTelemetry();	
        	svcRTN salConnect(svcTID topicnumber, std::string operation);	
-        virtual void Handle();
-        void GetObject( camera_TC_zone1_cache *pshm);
 	svcRTN reSynchronize();
 	svcRTN publisher ();
 	svcRTN subscriber ();
@@ -45,40 +42,34 @@ public:
 	svcRTN getItem ( svcIID itemId , svcUSHORT &value );
 	svcRTN getItem ( svcIID itemId , svcINT &value );
 	svcRTN getItem ( svcIID itemId , svcUINT &value );
-	svcRTN getItem ( svcIID itemId , svcLONG &value );
 	svcRTN getItem ( svcIID itemId , svcFLT &fvalue );
-	svcRTN getItem ( svcIID itemId , svcULONG &value );
 	svcRTN getItem ( svcIID itemId , svcDBL &dvalue );
-	svcRTN getItem ( svcIID itemId , svcSHORT value[] , svcINT size );
-	svcRTN getItem ( svcIID itemId , svcUSHORT value[], svcINT size );
-	svcRTN getItem ( svcIID itemId , svcINT value[] , svcINT size );
-	svcRTN getItem ( svcIID itemId , svcUINT value[], svcINT size );
-	svcRTN getItem ( svcIID itemId , svcLONG value[] , svcINT size );
-	svcRTN getItem ( svcIID itemId , svcULONG value[] , svcINT size );
-	svcRTN getItem ( svcIID itemId , svcFLT fvalue[], svcINT size );
-	svcRTN getItem ( svcIID itemId , svcDBL dvalue[], svcINT size);
+	svcRTN getItem ( svcIID itemId , svcSHORT &value , svcINT size );
+	svcRTN getItem ( svcIID itemId , svcUSHORT &value, svcINT size );
+	svcRTN getItem ( svcIID itemId , svcINT &value , svcINT size );
+	svcRTN getItem ( svcIID itemId , svcUINT &value, svcINT size );
+	svcRTN getItem ( svcIID itemId , svcFLT &fvalue, svcINT size );
+	svcRTN getItem ( svcIID itemId , svcDBL &dvalue, svcINT size);
         svcRTN getItemStr ( svcIID itemId , svcCHAR *textValue);
 	
 	svcRTN setItem ( svcIID itemId , svcSHORT &value );
 	svcRTN setItem ( svcIID itemId , svcUSHORT &value );
 	svcRTN setItem ( svcIID itemId , svcINT &value );
 	svcRTN setItem ( svcIID itemId , svcUINT &value );
-	svcRTN setItem ( svcIID itemId , svcLONG &value );
-	svcRTN setItem ( svcIID itemId , svcULONG &value );
 	svcRTN setItem ( svcIID itemId , svcFLT &fvalue );
 	svcRTN setItem ( svcIID itemId , svcDBL &dvalue );
-	svcRTN setItem ( svcIID itemId , svcSHORT value[] , svcINT size );
-	svcRTN setItem ( svcIID itemId , svcUSHORT value[], svcINT size );
-	svcRTN setItem ( svcIID itemId , svcINT value[] , svcINT size );
-	svcRTN setItem ( svcIID itemId , svcUINT value[], svcINT size );
-	svcRTN setItem ( svcIID itemId , svcLONG value[] , svcINT size );
-	svcRTN setItem ( svcIID itemId , svcULONG value[] , svcINT size );
-	svcRTN setItem ( svcIID itemId , svcFLT fvalue[], svcINT size );
-	svcRTN setItem ( svcIID itemId , svcDBL dvalue[], svcINT size);
+	svcRTN setItem ( svcIID itemId , svcSHORT &value , svcINT size );
+	svcRTN setItem ( svcIID itemId , svcUSHORT &value, svcINT size );
+	svcRTN setItem ( svcIID itemId , svcINT &value , svcINT size );
+	svcRTN setItem ( svcIID itemId , svcUINT &value, svcINT size );
+	svcRTN setItem ( svcIID itemId , svcFLT &fvalue, svcINT size );
+	svcRTN setItem ( svcIID itemId , svcDBL &dvalue, svcINT size);
         svcRTN setItemStr ( svcIID itemId , svcCHAR *textValue);
 
         svcRTN getProperty ( svcCHAR *propertyName , svcCHAR *textValue);
         svcRTN setProperty ( svcCHAR *propertyName , svcCHAR *textValue);
+        int m_TopicId_shmid;
+        static shmMapper m_shmMapper;
 	
 private:
         svcINT newData;
@@ -95,9 +86,6 @@ private:
 	svcINT priority;
 	svcINT pid;
 	TopicId data;
-        svcINT m_TopicId_shmid;
-        TopicId_cache *m_shared_mem;
-        TopicId_cache *data;
 
 };
 

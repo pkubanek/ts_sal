@@ -13,6 +13,6 @@
 	char	[128];
 	char	[128];
 	char	[128];
-	svcFLT	Demand[3];
-	svcFLT	Error[3];
-	svcFLT	Position[3];
+	svcFLOAT	Demand[3];
+	svcFLOAT	Error[3];
+	svcFLOAT	Position[3];
