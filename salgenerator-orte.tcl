@@ -211,6 +211,6 @@ foreach sid [array names PUBS] {
    }
 }
 
-set IDLCOMPILER /usr/local/bin/orte-idl
+set IDLCOMPILER /opt/lsstsal/bin/orte-idl
 
 

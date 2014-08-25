@@ -1,0 +1,27 @@
+typedef struct tcs_kernel_Target_cache {
+  int cppDummy;
+  int syncI;
+  char private_revCode[32];
+  long private_sndStamp;
+  long private_rcvStamp;
+  long private_seqNum;
+  long private_origin;
+  char site[128];
+  float t0;
+  float az;
+  float el;
+  float azdot;
+  float eldot;
+  float Wavel;
+  float XOffset;
+  float YOffset;
+  char OffSys[128];
+  float focalplaneX;
+  float focalplaneY;
+  float Temp;
+  float Press;
+  float Humid;
+  float TLR;
+  float Tai;
+  int syncO;
+} tcs_kernel_Target_cache;

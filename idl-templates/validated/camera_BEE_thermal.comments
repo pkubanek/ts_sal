@@ -1,0 +1,5 @@
+set COMMENT(camera.BEE.thermal.raftID) "Raft Identification code"
+set COMMENT(camera.BEE.thermal.temp) "Temperatures"
+set COMMENT(camera.BEE.thermal.heaterPower) "Heater output power"
+set COMMENT(camera.BEE.thermal.heaterStatus) "Heater status bits"
+set COMMENT(camera.BEE.thermal.cfgChkSum) "Configuration checksum"

@@ -1,0 +1,10 @@
+
+struct TopicId
+{
+  long         number;
+  long         counter;
+  string<32>   vendor;
+};
+#pragma keylist TopicId
+
+

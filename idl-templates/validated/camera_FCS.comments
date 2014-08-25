@@ -1,0 +1,3 @@
+set COMMENT(camera.FCS.motion_profile) "Filter motion profile"
+set COMMENT(camera.FCS.algorithm) "Control algorithm used"
+set COMMENT(camera.FCS.flags) "Limit switches and error flags"

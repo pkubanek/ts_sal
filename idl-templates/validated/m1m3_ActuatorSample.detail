@@ -1,0 +1,5 @@
+m1m3.ActuatorSample.actuatorID 1 short 1.0
+m1m3.ActuatorSample.setpoint 100 long 1.0
+m1m3.ActuatorSample.position 100 long 1.0
+m1m3.ActuatorSample.error 100 long 1.0
+m1m3.ActuatorSample.status 100 long 1.0

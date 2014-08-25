@@ -1,0 +1,4 @@
+camera.UTIL.flow_rate 10 float 0.1
+camera.UTIL.temperature 10 float 0.1
+camera.UTIL.setpoint 10 float 0.1
+camera.UTIL.status 10 int 0.1

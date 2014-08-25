@@ -87,7 +87,7 @@ global ITEMLIST
    }
 }
 
-source /usr/local/scripts/tcl/streamutils.tcl
+source /opt/lsstsal/scripts/streamutils.tcl
 set defdir $WORKING
 set last ""
 set hasindex 0

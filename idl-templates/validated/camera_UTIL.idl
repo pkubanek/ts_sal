@@ -1,0 +1,11 @@
+struct camera_UTIL {
+  string<32> private_revCode;  //private
+  long       private_sndStamp; //private
+  long       private_rcvStamp; //private
+  long       private_seqNum;   //private
+  long       private_origin;   //private
+  float flow_rate[10];		//	none :	none :	Utility trunk Flow rates
+  float temperature[10];	//	kelvin : none :	Utility trunk temperatures
+  float setpoint[10];		//	kelvin : none :	Utility trunk target temperatures
+  unsigned int status[10];	//	none :	none :	Utility trunk statuses
+};

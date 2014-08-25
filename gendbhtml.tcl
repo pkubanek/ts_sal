@@ -13,7 +13,7 @@ proc dodbsim { fid id nid } {
 
 
 
-set scriptdir /usr/local/scripts/tcl
+set scriptdir /opt/lsstsal/scripts
 source $scriptdir/streamutils.tcl
 
 set MSYS [lsort [split [exec cat $WORKING/datastreams.names] \n]]]

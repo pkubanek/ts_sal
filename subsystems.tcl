@@ -1,6 +1,6 @@
 #!/usr/bin/tclsh 
 
-set scriptdir /usr/local/scripts/tcl
+set scriptdir /opt/lsstsal/scripts
 
 proc calcshmid { subsys } {
   set fout [open /tmp/subsys.tmp w]
@@ -13,8 +13,8 @@ proc calcshmid { subsys } {
 set COMMANDABLE "auxscope calibration camera enclosure environment lasercal m1m3 m2 mount network operations power scheduler seeing_dimm seeing_mass skycam tcs"
 
 set STREAMS [split [exec cat datastreams.names] \n]
-set scriptdir /usr/local/scripts/tcl
-set includedir /usr/local/scripts/include
+set scriptdir /opt/lsstsal/scripts
+set includedir /opt/lsstsal/scripts/include
 foreach i $STREAMS { 
    if { [file exists shmem-$i/[set i]_cache.h] } {
       exec cp shmem-$i/[set i]_cache.h $includedir/.

@@ -1,0 +1,4 @@
+m2.Application.demand 6 float 1.0
+m2.Application.position 6 float 1.0
+m2.Application.error 6 float 1.0
+m2.Application.status 16 short 1.0

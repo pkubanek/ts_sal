@@ -100,7 +100,7 @@ if { [info exists JUSTTESTING] } {
   set SUBS(camera_CCS) "yes"
 }
 
-set scriptdir /usr/local/scripts/tcl
+set scriptdir /opt/lsstsal/scripts
  
 source $scriptdir/ndds_version.tcl
 source $scriptdir/streamutils.tcl
@@ -208,7 +208,7 @@ foreach f $code { exec cp $f . }
 exec cp $scriptdir/code/version.mak .
 exec cp $scriptdir/code/makefile.sal .
 exec cp $scriptdir/code/makefile.saltcl .
-exec cp /usr/local/scripts/include/svcSAL.h .
+exec cp /opt/lsstsal/scripts/include/svcSAL.h .
 
 source $scriptdir/genshmtclpersubsys.tcl
 puts stdout "</PRE><P><HR><P><H1>Compilation phase</H1><P><PRE>"

@@ -1,0 +1,64 @@
+
+proc writesql { pkey topic } {
+global SQLREC KEYINDEX
+  set flds [split $SQLREC($topic) ,]
+  set cmd "INSERT INTO $topic VALUES (\"$pkey\""
+  foreach i $flds {
+      set type [lindex [split $i .] 0]
+      set name [lindex [split $i .] 1]
+      if { [info exists KEYINDEX($name)] } {
+         set value [expr int(rand()*$KEYRANGE($name))+1]
+      } else {
+          if { [info command simulate_[set name]_value] != "" } {
+             set value [simulate_[set name]_value]
+          } else {
+             set value [simulate_[set type]_value]
+          }
+      }
+      set cmd "$cmd ,$value"
+  }
+  return "$cmd)"
+}
+
+proc simulate_int_value { } {
+  set v [expr int(rand()*20)+90]
+  return $v
+}
+
+proc simulate_short_value { } {
+  set v [expr int(rand()*20)+90]
+  return $v
+}
+
+proc simulate_byte_value { } {
+  set v [expr int(rand()*20)+90]
+  return $v
+}
+
+proc simulate_float_value { } {
+  set v [expr rand()*20.+90.]
+  return $v
+}
+
+proc simulate_double_value { } {
+  set v [expr rand()*20.+90.]
+  return $v
+}
+
+proc simulate_char_value { } {
+  set v [expr rand()*20.+90.]
+  return "\"Text $v\""
+}
+
+
+set KEYRANGE(ccdID) 201
+set KEYRANGE(raftID) 25
+set KEYRANGE(ampID) 132
+
+
+set recdef [glob *.sqlwrt]
+foreach i $recdef { 
+   source $i
+}
+
+

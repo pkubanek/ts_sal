@@ -1,0 +1,3 @@
+set COMMENT(m2.actuators.targetpos) "Stepper Motor target position"
+set COMMENT(m2.actuators.stepcnt) "Stepper Motor actual position"
+set COMMENT(m2.actuators.force) "Measured force"

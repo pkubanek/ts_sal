@@ -1,0 +1,4 @@
+camera.TC.zone6.flow_rate 10 float 0.01
+camera.TC.zone6.temperature 10 float 0.01
+camera.TC.zone6.setpoint 10 float 0.01
+camera.TC.zone6.status 10 int 0.01

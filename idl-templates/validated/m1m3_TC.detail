@@ -1,0 +1,4 @@
+m1m3.TC.setpoint 16 float 1.0
+m1m3.TC.temperature 16 float 1.0
+m1m3.TC.error 16 float 1.0
+m1m3.TC.status 16 short 1.0

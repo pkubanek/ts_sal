@@ -1,0 +1,10 @@
+struct camera_BEE_biases {
+  string<32> private_revCode;  //private
+  long       private_sndStamp; //private
+  long       private_rcvStamp; //private
+  long       private_seqNum;   //private
+  long       private_origin;   //private
+  long	reset[NUMCCD];		//	none :	none :	Reset bias voltage raw value
+  long	operate[NUMCCD];	//	none :	none :	Operating bias voltage raw value
+  long	substrate[NUMCCD];	//	none :	none :	Substrate voltage raw value
+};

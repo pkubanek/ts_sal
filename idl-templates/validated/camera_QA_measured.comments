@@ -1,0 +1,4 @@
+set COMMENT(camera.QA.measured.metric1) "Quality assurance metric 1"
+set COMMENT(camera.QA.measured.metric2) "Quality assurance metric 1"
+set COMMENT(camera.QA.measured.metric3) "Quality assurance metric 1"
+set COMMENT(camera.QA.measured.metric4) "Quality assurance metric 1"

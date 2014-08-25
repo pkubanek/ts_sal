@@ -1,10 +1,10 @@
 
-set scriptdir /usr/local/scripts/tcl
+set scriptdir /opt/lsstsal/scripts
 
 source $scriptdir/genshmempersubsys.tcl
 
 set stagingdir /tmp/salgenerator/lsst_SAL_c_$basename
-set scriptdir /usr/local/scripts/tcl
+set scriptdir /opt/lsstsal/scripts
 
 catch { exec rm -fr $stagingdir }
 catch { exec mkdir -p $stagingdir }

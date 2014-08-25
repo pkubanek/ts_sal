@@ -1,0 +1,9 @@
+struct camera_VCS {
+  string<32> private_revCode;  //private
+  long       private_sndStamp; //private
+  long       private_rcvStamp; //private
+  long       private_seqNum;   //private
+  long       private_origin;   //private
+  float control[10];		//	none :	none :	Vacuum parameters
+  float pressure[10];		//	none :	none :	Vacuum characteristics, measured
+};

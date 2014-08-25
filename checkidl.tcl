@@ -60,6 +60,7 @@ global PUBLISHERS FREQUENCY KEYINDEX
      if { [noncoding $rec] } {
         incr NONCODING 1
      } else {
+         if { [string trim $rec] == "\}" } { set rec "\};" }
          if { [string trim $rec] == "\};" } {
            puts $fout $rec
            close $fout
@@ -188,8 +189,8 @@ global PUBLISHERS FREQUENCY KEYINDEX
            if { [lindex [split $item _] 0] == "private" } {
               puts stdout "Skipping private item $item"
            } else {
-             set m1 [string trim [lindex [split $rec #] 1]]
-             set meta [split $m1 ";"]
+             set m1 [string trim [lindex [split $rec "/"] 2]]
+             set meta [split $m1 ":"]
              set units [string trim [lindex $meta 0]]
              set range [string trim [lindex $meta 1]]
              set comments [string trim [lrange $meta 2 end] " \{\}"]
@@ -226,10 +227,10 @@ proc checkall { } {
 }
 
 
-source /usr/local/scripts/tcl/streamutils.tcl
-source /usr/local/scripts/tcl/unitsdesc.tcl
-source /usr/local/scripts/tcl/datastream_desc.tcl
-source /usr/local/scripts/tcl/camera-subsysdesc.tcl
+source /opt/lsstsal/scripts/streamutils.tcl
+source /opt/lsstsal/scripts/unitsdesc.tcl
+source /opt/lsstsal/scripts/datastream_desc.tcl
+source /opt/lsstsal/scripts/camera-subsysdesc.tcl
 
 set IDLTYPES "byte short int long float double string unsigned"
 set IDLSIZES(byte)   1

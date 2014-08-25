@@ -1,0 +1,15 @@
+struct m1m3_Actuators {
+  string<32> private_revCode;  //private
+  long       private_sndStamp; //private
+  long       private_rcvStamp; //private
+  long       private_seqNum;   //private
+  long       private_origin;   //private
+  long setpoint[M1M3NUMACT];	//	none : none : Force setpoint
+  long position[M1M3NUMACT];	//	none : none : Position readback
+  long error[M1M3NUMACT];	//	none : none : Error
+  long status[M1M3NUMACT];	//	none : none : Status bits
+  float cyltemp[M1M3NUMACT];	//	none : none : Cylinder temperature
+  float envtemp[M1M3NUMACT];	//	none : none : Envir. temperature
+  float lvdtcorr[M1M3NUMACT];	//	none : none : LVDT calibration adjustment
+  float pressure[M1M3NUMACT];	//	none : none : Valve pressure
+};

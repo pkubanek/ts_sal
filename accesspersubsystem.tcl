@@ -1,6 +1,6 @@
 #!/usr/bin/tclsh 
 
-set scriptdir /usr/local/scripts/tcl
+set scriptdir /opt/lsstsal/scripts
 
 proc calcshmid { subsys } {
   set fout [open /tmp/subsys.tmp w]

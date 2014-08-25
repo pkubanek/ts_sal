@@ -1,0 +1,4 @@
+set COMMENT(m2.TC.setpoint) "Setpoint temp"
+set COMMENT(m2.TC.temperature) "Measured temp"
+set COMMENT(m2.TC.error) "Error"
+set COMMENT(m2.TC.status) "Status bits"

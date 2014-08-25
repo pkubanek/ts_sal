@@ -1,0 +1,2 @@
+/usr/bin/ar cr libdatamodel.a  CMakeFiles/datamodel.dir/gen/TopicId.cpp.o CMakeFiles/datamodel.dir/gen/TopicIdDcps.cpp.o CMakeFiles/datamodel.dir/gen/TopicIdDcps_impl.cpp.o CMakeFiles/datamodel.dir/gen/TopicIdSplDcps.cpp.o
+/usr/bin/ranlib libdatamodel.a

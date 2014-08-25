@@ -1,0 +1,2 @@
+camera.SDS.status.flags 20 long 0.1
+camera.SDS.status.current 80 float 0.1

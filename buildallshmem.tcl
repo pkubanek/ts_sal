@@ -1,6 +1,6 @@
 #!/usr/bin/tclsh
 
-set scriptdir /usr/local/scripts/tcl
+set scriptdir /opt/lsstsal/scripts
 set start [clock seconds]
 set whereami [pwd]
 puts stdout "Building idl and sql definition files"

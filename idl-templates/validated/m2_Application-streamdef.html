@@ -1,0 +1,111 @@
+<HTML><HEAD><TITLE>Stream definition editor - m2.Application</TITLE></HEAD>
+<BODY BGCOLOR=White><H1>
+<IMG SRC="../LSST_logo.gif" ALIGN=CENTER>
+<IMG SRC="../dde.gif" ALIGN=CENTER><P><HR><P>
+<H1>Stream m2.Application</H1><P>
+<H2>Description</H2><P>
+<P>Application specific information derived from sensors in the m2
+subsystem. 
+<H2>Update frequency</H2>
+This telemetry stream publishes a new record at 1 Hz
+<H2>Publishers</H2>
+Only one instance of this stream is published.
+<P><HR><H2>Topic Definition</H2><P>
+<FORM action="/cgi-bin/streamdef" method="post">
+<INPUT NAME="streamid" TYPE="HIDDEN" VALUE="m2_Application">
+<TABLE BORDER=3 CELLPADDING=5 BGCOLOR=LightBlue  WIDTH=600>
+<TR BGCOLOR=Yellow><B><TD>Name</TD><TD>Type</TD><TD>Size</TD><TD>Units</TD>
+<TD>Range</TD><TD>Comment</TD><TD>Delete</TD></B></TR>
+<TR><TD><INPUT NAME="id21" VALUE="demand"></TD>
+<TD><select name="type21">
+<option value="byte">byte
+                          <option value="short">short
+                          <option value="int">int
+                          <option value="long">long
+                          <option value="float" selected>float
+                          <option value="string">string
+                          </select></TD>
+<TD><INPUT NAME="siz21" VALUE="6"></TD>
+<TD><select name="unit21">
+<option value="none" selected>none
+<option value="amp">amp
+<option value="degC">degC
+<option value="kelvin">kelvin
+<option value="meter">meter
+<option value="second">second
+<option value="volt">volt
+<option value="watt">watt
+</select></TD>
+<TD><INPUT NAME="range21" VALUE="none"></TD>
+<TD><INPUT NAME="help21" VALUE="Target configuration"></TD>
+<TD><INPUT TYPE="checkbox" NAME="delete_21" VALUE="yes"></TD></TR>
+<TR><TD><INPUT NAME="id22" VALUE="position"></TD>
+<TD><select name="type22">
+<option value="byte">byte
+                          <option value="short">short
+                          <option value="int">int
+                          <option value="long">long
+                          <option value="float" selected>float
+                          <option value="string">string
+                          </select></TD>
+<TD><INPUT NAME="siz22" VALUE="6"></TD>
+<TD><select name="unit22">
+<option value="none" selected>none
+<option value="amp">amp
+<option value="degC">degC
+<option value="kelvin">kelvin
+<option value="meter">meter
+<option value="second">second
+<option value="volt">volt
+<option value="watt">watt
+</select></TD>
+<TD><INPUT NAME="range22" VALUE="none"></TD>
+<TD><INPUT NAME="help22" VALUE="Current value"></TD>
+<TD><INPUT TYPE="checkbox" NAME="delete_22" VALUE="yes"></TD></TR>
+<TR><TD><INPUT NAME="id23" VALUE="error"></TD>
+<TD><select name="type23">
+<option value="byte">byte
+                          <option value="short">short
+                          <option value="int">int
+                          <option value="long">long
+                          <option value="float" selected>float
+                          <option value="string">string
+                          </select></TD>
+<TD><INPUT NAME="siz23" VALUE="6"></TD>
+<TD><select name="unit23">
+<option value="none" selected>none
+<option value="amp">amp
+<option value="degC">degC
+<option value="kelvin">kelvin
+<option value="meter">meter
+<option value="second">second
+<option value="volt">volt
+<option value="watt">watt
+</select></TD>
+<TD><INPUT NAME="range23" VALUE="none"></TD>
+<TD><INPUT NAME="help23" VALUE="Target configuration"></TD>
+<TD><INPUT TYPE="checkbox" NAME="delete_23" VALUE="yes"></TD></TR>
+<TR><TD><INPUT NAME="id24" VALUE="status"></TD>
+<TD><select name="type24">
+<option value="byte">byte
+                          <option value="short" selected>short
+                          <option value="int">int
+                          <option value="long">long
+                          <option value="float">float
+                          <option value="string">string
+                          </select></TD>
+<TD><INPUT NAME="siz24" VALUE="16"></TD>
+<TD><select name="unit24">
+<option value="none" selected>none
+<option value="amp">amp
+<option value="degC">degC
+<option value="kelvin">kelvin
+<option value="meter">meter
+<option value="second">second
+<option value="volt">volt
+<option value="watt">watt
+</select></TD>
+<TD><INPUT NAME="range24" VALUE="none"></TD>
+<TD><INPUT NAME="help24" VALUE="Status bits"></TD>
+<TD><INPUT TYPE="checkbox" NAME="delete_24" VALUE="yes"></TD></TR>
+</TABLE><P>Click here to update: <input type="submit" value="Submit" name="update"></FORM><P></BODY></HTML>

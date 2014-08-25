@@ -196,7 +196,7 @@ set KEYRANGE(ccdID) 201
 set KEYRANGE(raftID) 25
 set KEYRANGE(ampID) 132
 
-source /usr/local/scripts/tcl/streamutils.tcl
+source /opt/lsstsal/scripts/streamutils.tcl
 
 set recdef [glob $WORKING/*.sqlwrt]
 foreach i $recdef { 
@@ -214,7 +214,7 @@ foreach s [array names FREQUENCY] {
 }
 
 ##clock format 1226532001 -format "%Y-%m-%d %H:%M:%S"
-## source /usr/local/scripts/tcl/checkidl.tcl
+## source /opt/lsstsal/scripts/checkidl.tcl
 ## checkidl camera-subsystems-init-v1.idl
 ## cat validated/*.detail > datastreams.detail
 ## generaterecs stdout somekey camera_BEE_biases

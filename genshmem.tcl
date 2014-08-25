@@ -347,8 +347,8 @@ proc parsemakefile { subsys } {
   close $fout
 }
 
-set scriptdir /usr/local/scripts/tcl
-set includedir /usr/local/scripts/include
+set scriptdir /opt/lsstsal/scripts
+set includedir /opt/lsstsal/scripts/include
 source $scriptdir/managetypes.tcl
 source $scriptdir/ndds_version.tcl
 source $scriptdir/streamutils.tcl

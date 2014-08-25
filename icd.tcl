@@ -20,7 +20,7 @@ $DESC($i)<P>
   }
 }
 
-set scriptdir /usr/local/scripts/tcl
+set scriptdir /opt/lsstsal/scripts
 #source $scriptdir/newstreams.tcl
 source ../tests/api/streams/datastreams.comments
 

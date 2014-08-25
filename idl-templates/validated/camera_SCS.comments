@@ -1,0 +1,4 @@
+set COMMENT(camera.SCS.open_profile) "Open shutter motion profile"
+set COMMENT(camera.SCS.close_profile) "Close shutter motion profile"
+set COMMENT(camera.SCS.algorithm) "Control algorithm used"
+set COMMENT(camera.SCS.flags) "Limit switches and error flags"

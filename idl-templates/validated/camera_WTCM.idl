@@ -1,0 +1,8 @@
+struct camera_WTCM {
+  string<32> private_revCode;  //private
+  long       private_sndStamp; //private
+  long       private_rcvStamp; //private
+  long       private_seqNum;   //private
+  long       private_origin;   //private
+  float parameters[10];		//	none :	none :	Process parameters
+};

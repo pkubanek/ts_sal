@@ -1,0 +1,9 @@
+struct camera_SDS_status {
+  string<32> private_revCode;  //private
+  long       private_sndStamp; //private
+  long       private_rcvStamp; //private
+  long       private_seqNum;   //private
+  long       private_origin;   //private
+  unsigned long flags[20]; 	//	none :	none :	Error flags
+  float current[80];		//	none :	none :	Generic health parameters
+};

@@ -1,0 +1,10 @@
+struct m2_actuators {
+  string<32> private_revCode;  //private
+  long       private_sndStamp; //private
+  long       private_rcvStamp; //private
+  long       private_seqNum;   //private
+  long       private_origin;   //private
+  long targetpos[M2NUMACT];	//	none : none : Stepper Motor target position
+  long stepcnt[M2NUMACT];	//	none : none : Stepper Motor actual position
+  float force[M2NUMACT];	//	none : none : Measured force
+};

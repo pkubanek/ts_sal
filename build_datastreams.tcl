@@ -1,7 +1,7 @@
 #!/usr/bin/tclsh
 
 puts stdout "Building datastreams.html"
-set scriptdir /usr/local/scripts/tcl
+set scriptdir /opt/lsstsal/scripts
 
 source $scriptdir/datastream_desc.tcl
 source $scriptdir/camera-subsysdesc.tcl

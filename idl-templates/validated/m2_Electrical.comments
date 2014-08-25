@@ -1,0 +1,3 @@
+set COMMENT(m2.Electrical.voltage) "Voltage"
+set COMMENT(m2.Electrical.error) "Error"
+set COMMENT(m2.Electrical.status) "Status bits"

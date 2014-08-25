@@ -1,0 +1,7 @@
+set COMMENT(camera.SDS.amplifiers.raftID) "Raft Identification code"
+set COMMENT(camera.SDS.amplifiers.flags) "Error flags"
+set COMMENT(camera.SDS.amplifiers.status) "Status bits"
+set COMMENT(camera.SDS.amplifiers.voltage1) "voltage 1"
+set COMMENT(camera.SDS.amplifiers.voltage2) "voltage 2"
+set COMMENT(camera.SDS.amplifiers.voltage3) "voltage 3"
+set COMMENT(camera.SDS.amplifiers.voltage4) "voltage 4"

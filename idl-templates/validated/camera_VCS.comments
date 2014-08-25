@@ -1,0 +1,2 @@
+set COMMENT(camera.VCS.control) "Vacuum parameters"
+set COMMENT(camera.VCS.pressure) "Vacuum characteristics, measured"

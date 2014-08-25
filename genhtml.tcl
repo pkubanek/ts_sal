@@ -57,7 +57,7 @@ proc tidyname { f } {
 
 
 
-set scriptdir /usr/local/scripts/tcl
+set scriptdir /opt/lsstsal/scripts
 
 source $scriptdir/checkdesc.tcl
 source $scriptdir/comments.tcl
