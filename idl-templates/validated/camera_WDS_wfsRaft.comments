@@ -1,8 +1,0 @@
-set COMMENT(camera.WDS.wfsRaft.parameters) "Control parameters"
-set COMMENT(camera.WDS.wfsRaft.metrics) "Measured metrics"
-set COMMENT(camera.WDS.wfsRaft.zernikes) "Measured zernikes"
-set COMMENT(camera.WDS.wfsRaft.status) "Status flags"
-set COMMENT(camera.WDS.wfsRaft.avgInsideImage) "BLOB ref for inside focus average"
-set COMMENT(camera.WDS.wfsRaft.avgOutsideImage) "BLOB ref for outside focus average"
-set COMMENT(camera.WDS.wfsRaft.CalcImage1) "BLOB ref for reduced image 1"
-set COMMENT(camera.WDS.wfsRaft.CalcImage2) "BLOB ref for reduced image 2"

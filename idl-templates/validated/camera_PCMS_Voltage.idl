@@ -1,0 +1,14 @@
+struct PCMS_Voltage {
+  string<32> private_revCode;  //private
+  double     private_sndStamp; //private
+  double     private_rcvStamp; //private
+  long       private_seqNum;   //private
+  long       private_origin;   //private
+  float	FPGA_voltage;	// 0.054 | none | FPGA voltage | none | Utility trunk | 75 |  175,135  |  700,541 
+  float	Low_voltage;	// 0.054 | none | Low voltage | none | Utility trunk | 75 |  175,135  |  700,541 
+  float	Clock_voltage;	// 0.054 | none | Clock voltage | none | Utility trunk | 75 |  175,135  |  700,541 
+  float	OD_voltage;	// 0.054 | none | OD voltage | none | Utility trunk | 75 |  175,135  |  700,541 
+  float	Bias_voltage;	// 0.054 | none | Bias voltage | none | Utility trunk | 75 |  175,135  |  700,541 
+  unsigned short	REB_ID;	// none | | Raft Electronics Board ID
+};
+#pragma keylist PCMS_Voltage

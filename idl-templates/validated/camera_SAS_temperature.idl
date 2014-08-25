@@ -1,0 +1,11 @@
+struct SAS_temperature {
+  string<32> private_revCode;  //private
+  double     private_sndStamp; //private
+  double     private_rcvStamp; //private
+  long       private_seqNum;   //private
+  long       private_origin;   //private
+  long	CCD_temp[3];	// 0.054 | Kelvin | CCD temperatures | none | Science rafts | 189 |  441,341  |  1,765,362 
+  float	Board_temp[12];	// 0.054 | Kelvin | Board temps | none | Science rafts | 756 |  1,765,362  |  7,061,449 
+  unsigned short	REB_ID;	// none | | Raft Electronics Board ID
+};
+#pragma keylist SAS_temperature

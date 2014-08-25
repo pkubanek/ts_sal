@@ -1,8 +1,0 @@
-struct camera_CCS {
-  string<32> private_revCode;  //private
-  long       private_sndStamp; //private
-  long       private_rcvStamp; //private
-  long       private_seqNum;   //private
-  long       private_origin;   //private
-  unsigned long expHist[1024];	#	none ;	none ;	Statuses throughout exposure
-  unsigned long flags[10];	#	none ;	none ;	Summary Error flags

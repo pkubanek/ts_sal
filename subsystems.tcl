@@ -98,7 +98,7 @@ puts $fcid "
 
 int svcSAL_accessPrivate ( int handle , char *operation, char *revCode , 
                            long *sndStamp, long *rcvStamp,
-                           long *seqNum  , long *origin ) \{
+                           long *seqNum  , long *origin, long *host ) \{
 "
 foreach s "$STREAMS $CSTREAMS" {
   set rev $REVCODE($s)
@@ -112,12 +112,14 @@ foreach s "$STREAMS $CSTREAMS" {
         *rcvStamp = [set s]_ref->private_rcvStamp; 
         *seqNum = [set s]_ref->private_seqNum; 
         *origin = [set s]_ref->private_origin; 
+        *host = [set s]_ref->private_host; 
      \}
      if (strcmp(operation,\"write\") == 0 ) \{
         [set s]_ref->private_sndStamp = *sndStamp; 
         [set s]_ref->private_rcvStamp = *rcvStamp; 
         [set s]_ref->private_seqNum = *seqNum; 
         [set s]_ref->private_origin = *origin; 
+        [set s]_ref->private_host = *host; 
      \}
      if (strcmp(operation,\"verify\") == 0 ) \{
         if ( strcmp(revCode,\"$rev\") != 0 ) { return SAL__ILLEGAL_REVCODE; }

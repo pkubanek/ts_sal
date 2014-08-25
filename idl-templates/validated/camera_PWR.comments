@@ -1,2 +1,0 @@
-set COMMENT(camera.PWR.supply_voltage) "Power supply voltages, measured"
-set COMMENT(camera.PWR.current) "Power supply currents, measured"

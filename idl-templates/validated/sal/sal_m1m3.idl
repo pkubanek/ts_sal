@@ -1,0 +1,130 @@
+module m1m3
+{
+	struct ActuatorSample {
+	  string<32> private_revCode;  //private
+	  double     private_sndStamp; //private
+	  double     private_rcvStamp; //private
+	  long       private_seqNum;   //private
+	  long       private_origin;   //private
+	  short	actuatorID;
+	  long	setpoint[100];
+	  long	position[100];
+	  long	error[100];
+	  long	status[100];
+	#pragma keylist ActuatorSample
+	};
+	struct Actuators {
+	  string<32> private_revCode;  //private
+	  double     private_sndStamp; //private
+	  double     private_rcvStamp; //private
+	  long       private_seqNum;   //private
+	  long       private_origin;   //private
+	  long	setpoint[120];
+	  long	position[120];
+	  long	error[120];
+	  long	status[120];
+	  float	cyltemp[120];
+	  float	envtemp[120];
+	  float	lvdtcorr[120];
+	  float	pressure[120];
+	#pragma keylist Actuators
+	};
+	struct Application {
+	  string<32> private_revCode;  //private
+	  double     private_sndStamp; //private
+	  double     private_rcvStamp; //private
+	  long       private_seqNum;   //private
+	  long       private_origin;   //private
+	  float	demand[6];
+	  float	position[6];
+	  float	error[6];
+	  short	status[16];
+	#pragma keylist Application
+	};
+	struct Electrical {
+	  string<32> private_revCode;  //private
+	  double     private_sndStamp; //private
+	  double     private_rcvStamp; //private
+	  long       private_seqNum;   //private
+	  long       private_origin;   //private
+	  long	voltage[16];
+	  long	error[16];
+	  short	status[16];
+	#pragma keylist Electrical
+	};
+	struct LUT {
+	  string<32> private_revCode;  //private
+	  double     private_sndStamp; //private
+	  double     private_rcvStamp; //private
+	  long       private_seqNum;   //private
+	  long       private_origin;   //private
+	  long       private_host;     //private
+	  float	param[32];
+	#pragma keylist LUT
+	};
+	#pragma keylist LUT
+	struct LimitSensors {
+	  string<32> private_revCode;  //private
+	  double     private_sndStamp; //private
+	  double     private_rcvStamp; //private
+	  long       private_seqNum;   //private
+	  long       private_origin;   //private
+	  short	liftoff[64];
+	  short	limit[64];
+	#pragma keylist LimitSensors
+	};
+	struct Metrology {
+	  string<32> private_revCode;  //private
+	  double     private_sndStamp; //private
+	  double     private_rcvStamp; //private
+	  long       private_seqNum;   //private
+	  long       private_origin;   //private
+	  long	distance[16];
+	  long	error[16];
+	  short	status[16];
+	#pragma keylist Metrology
+	};
+	struct Support {
+	  string<32> private_revCode;  //private
+	  double     private_sndStamp; //private
+	  double     private_rcvStamp; //private
+	  long       private_seqNum;   //private
+	  long       private_origin;   //private
+	  long	Raw[16];
+	  float	Calibrated[32];
+	#pragma keylist Support
+	};
+	struct Supports {
+	  string<32> private_revCode;  //private
+	  double     private_sndStamp; //private
+	  double     private_rcvStamp; //private
+	  long       private_seqNum;   //private
+	  long       private_origin;   //private
+	  long	targetpos[6];
+	  long	stepcnt[6];
+	  float	force[6];
+	#pragma keylist Supports
+	};
+	struct Surface {
+	  string<32> private_revCode;  //private
+	  double     private_sndStamp; //private
+	  double     private_rcvStamp; //private
+	  long       private_seqNum;   //private
+	  long       private_origin;   //private
+	  long	Raw[1024];
+	  float	Calibrated[1024];
+	#pragma keylist Surface
+	};
+	struct TC {
+	  string<32> private_revCode;  //private
+	  double     private_sndStamp; //private
+	  double     private_rcvStamp; //private
+	  long       private_seqNum;   //private
+	  long       private_origin;   //private
+	  float	setpoint[16];
+	  float	temperature[16];
+	  float	error[16];
+	  short	status[16];
+	#pragma keylist TC
+	};
+};

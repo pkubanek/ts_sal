@@ -1,0 +1,12 @@
+module org {
+  module lsst {
+    module sal {
+      struct SALTopicType {
+	string private_revCode;
+      };
+#pragma keylist SALTopicType
+    };
+  };
+};
+
+

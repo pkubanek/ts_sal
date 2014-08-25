@@ -1,3 +1,0 @@
-set COMMENT(camera.TC.control.temperature) "Global temperatures"
-set COMMENT(camera.TC.control.setpoint) "Global target temperatures"
-set COMMENT(camera.TC.control.status) "Global  statuses"

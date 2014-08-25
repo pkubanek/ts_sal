@@ -1,0 +1,166 @@
+-*- auto-fill -*-
+
+ImageNdds
+Image Transfer via Ndds
+Version
+2.0beta
+
+Kurt Schwehr
+Jan 1997
+
+** DRAFT **
+
+Version 1 of the image Ndds code was written before I got to IMG.  It
+uses a simple algorithm consisisting of a loop sending each image
+packet and then waiting for an acknoledgement (ACK).  This algorithm
+is very similiar to TFTP.  The code was tightly integrated into the
+vip frame grabber software.
+
+The next version (2), is a complete rewrite of the software after
+looking at the environment that images are usually sent in.  This
+version is by no means perfect.  Make sure that the assumptions this
+algorithm makes match the environment you are using.
+
+ASSUMPTIONS:
+
+* The network route for sending images is stable and known.  There is
+usually one link that is much slower than all the others in the
+route.  This could be a satellite link or a radio modem.  What ever it
+is, you know what its throughput is.
+
+* There can be large round trip times for satellite links.  For our
+1996 Arizona field test, the round trip time from ping was around 650
+ms.  Waiting for an ack before sending the next packet was expensive.
+
+* Frequently there several machines receiving the images.  One machine
+can be used in the field and one on the other side of the slow
+satellite link.  The machine on the field side will drop fewer
+packets.
+
+* You may not always want to have reliable transmission.  If images
+are coming in fast and there is no time to wait for retransmission of
+packets, it is prefereable to keep moving.  This can be done by not
+requesting retransmissions of packets.
+
+* You want to use as much of the bandwidth for sending images as
+possible.  Based on the slowest part of the link, this algorithm feeds
+data as fast as possible.  You may want to tell imageNdds that the
+link is a few percent slower than it really is, if you want to
+preserve some bandwidth for other data (e.g. telemetry).
+
+* A major assumption is that the route being used is very reliable.
+The routes used so far have only be dropping a few percent of the
+packets in the worst cases.
+
+* All memory allocations on the realtime side are done once in the
+initialization phase.  This is to prevent memory fragmentation over
+time that could cripple the rover.
+
+* Ndds reliable productions for images is probably not a good idea for
+image packets.  You can not send the next packet until the currently
+one has been acknoledged.  Performance would be at the level of
+imageNdds version 1.  You could do a window using multiple reliable
+windows.  I do not know how well that would work.
+
+ALGORITHM DESCRIPTION
+
+The alogirthm is based around a sequential packet stream.  An image is
+broken into packets which are sent out over the network via Ndds.
+Since the packets have a sequential packet number, the receiver can
+notice that there are packet(s) missing between the current packet it
+just got and the previous packet.  When the receiver notices that it
+has missed packet(s), it has the option to send a request for
+retransmit to the sender.
+
+The senders handling of resends is important.  Resends are handled in
+a first in first out (FIFO) list with resending packets having
+priority over sending out new packets.  No new packets will be sent
+until all queued resends are handled.
+
+There is a packet cache to allow for resending packets.  The size of
+the cache is tuneable to match the amount of avaible memory on the
+sending system.  The default is a cache of 1024 packets with each
+packet holding up to 1024 bytes of image data.  The cache is a ring so
+that old packets will be overwritten after a time.  If a resend
+request is received for an overwritten packet, the sender drop the
+request without notification.
+
+The way the algorithm is currently implemented, there is only one
+chance for resend requesting to happen.
+
+
+GRAPHICAL USER INTERFACE:
+
+I'm putting in a GUI which will hopefully be optional.  The goal is to
+have a way to see how well things are going, but primarily it is being
+put in for helping out with debugging.  Pages of printf's can get very
+annoying some days.
+
+I'm using tcl/tk graphics to do the job for me.  Since I don't have
+time to figure out how to do all the layout with tk, I decided to try
+out Visual Tcl (vt).  See http://www.neuron.com/stewart/vt for info
+about the package.  You do not need vt to any of this, but it makes
+things pretty simple for me.  It is in no way required to use or
+modify this code.  There are no special vt files.
+
+As of Jan 1997, I'm using tcl 7.6, tk 4.2.  Hopefully, this code will
+not be version dependent!
+
+
+NOTES ON	** Ndds Reliable and Sending Explicit Acks **
+
+While working on the the code to use ndds reliable, it looks to be a
+VERY bad idea to use.  The problem is with the way that Ndds does it's
+ack and manages packets.  You are required to wait until the ack has
+been received.  This delay causes major latency problems.
+
+On the topic of explicit Acks send by User code (not Ndds itself)
+using Ndds, this also appears to be a bad idea for the goals of this
+code.  If you try to do reliable image transfer to multiple machines,
+you are going to run into a nightmare.  How many acks are you
+expecting?  What if a machine goes away?  For the Nomad project, the
+data rate is so high and continuous, that it is better to give up on
+an image if it doesn't get quicky.  Better to make forward progress at
+the expense of an occasional image that is bad do to some missing
+data.
+
+If you really want to absolutely guarentee delivery to a number of
+sights, you should use something other than this code.  Something like
+a socket to a forwarding machine from the rover, which then opens
+sockets to all the receiving machines should be much more appropriate!
+
+
+ROLL OVER:	PACKET COUNT AND IMAGE (header) ID
+
+I'm NOT going to try to deal with rollover of these counters.
+
+	Max int: 	  2    GigBytes
+	Data per packet:  1024 Bytes
+			  ----
+	Bytes before roll:2048 GB
+
+If you transfer 2048 GB of data using this code with out ever
+rebooting your machine, congrats!  If your using this code unmodified
+in an actual flight system, I'd say you insane.
+
+
+
+STANDARD TEMPLATE LIBRARY (STL): (17-Feb-1997)
+
+  I'm going to try to use STL to avoid having to worry about linked
+lists and all the bugs I'm sure I'd have to deal with building such
+stuff.  I'm going to try to keep my usage pretty simple, so if we
+must, it should be relatively easy to replace STL with a standard
+C/C++ type.
+
+  So far, it looks like I'm only going to use the MAP type.  I'm
+hoping to use it to manage packets in imageReceive.  There are a lot
+of possible cases and I think I can handle more of them if I try to do
+some packet handling outside of the file system I used before.
+
+  One problem I just noticed is the extreme jump in filesize of the
+STL executable.  That can probably be solved by creating a shared
+libg++.  For now, I'm not going to worry if my executable is 1.5 MB
+with debugging info.
+
+

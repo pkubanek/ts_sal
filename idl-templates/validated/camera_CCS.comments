@@ -1,2 +1,0 @@
-set COMMENT(camera.CCS.expHist) "Statuses throughout exposure"
-set COMMENT(camera.CCS.flags) "Summary Error flags"

@@ -1,5 +1,0 @@
-set COMMENT(camera.TC.zone1.cold_plate) "Cold plate temperatures"
-set COMMENT(camera.TC.zone1.flow_rate) "Flow rates"
-set COMMENT(camera.TC.zone1.temperature) "Zone 1 temperatures"
-set COMMENT(camera.TC.zone1.setpoint) "Zone 1 target temperatures"
-set COMMENT(camera.TC.zone1.status) "Zone 1 statuses"

@@ -34,6 +34,14 @@ proc doitem { i fid name type n {unit none} {range none} {help "No comment"} } {
                           <option value=\"string\">string
                           </select></TD>"
              }
+      longlong   { puts $fid "<option value=\"byte\">byte
+                          <option value=\"short\">short
+                          <option value=\"int\">int
+                          <option value=\"long\" selected>long
+                          <option value=\"float\">float
+                          <option value=\"string\">string
+                          </select></TD>"
+             }
       float   { puts $fid "<option value=\"byte\">byte
                           <option value=\"short\">short
                           <option value=\"int\">int
@@ -87,7 +95,8 @@ proc idlpreamble { fid id } {
   double	private_sndStamp; //private
   double	private_rcvStamp; //private
   long		private_seqNum; //private
-  long		private_origin; //private" 
+  long		private_origin; //private
+  long		private_host; //private" 
 }
 
 proc sqlpreamble { fid id } {
@@ -97,7 +106,8 @@ proc sqlpreamble { fid id } {
   private_sndStamp double,
   private_rcvStamp double,
   private_seqNum int,
-  private_origin int,"
+  private_origin int,
+  private_host int,"
 }
 
 set WORKING /home/shared/lsst/tests/api/streams

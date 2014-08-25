@@ -1,4 +1,0 @@
-set COMMENT(camera.TC.zone5.flow_rate) "Flow rates"
-set COMMENT(camera.TC.zone5.temperature) "Zone 5 temperatures"
-set COMMENT(camera.TC.zone5.setpoint) "Zone 5 target temperatures"
-set COMMENT(camera.TC.zone5.status) "Zone 5 statuses"

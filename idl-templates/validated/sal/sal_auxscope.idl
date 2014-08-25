@@ -1,0 +1,81 @@
+module auxscope
+{
+	struct Application {
+	  string<32> private_revCode;  //private
+	  double     private_sndStamp; //private
+	  double     private_rcvStamp; //private
+	  long       private_seqNum;   //private
+	  long       private_origin;   //private
+	  float	Demand[4];
+	  float	Position[4];
+	  float	Error[4];
+	#pragma keylist Application
+	};
+	#pragma keylist Application
+	struct Camera {
+	  string<32> private_revCode;  //private
+	  double     private_sndStamp; //private
+	  double     private_rcvStamp; //private
+	  long       private_seqNum;   //private
+	  long       private_origin;   //private
+	  long	Raw[16];
+	  float	Calibrated[32];
+	#pragma keylist Camera
+	};
+	#pragma keylist Camera
+	struct Electrical {
+	  string<32> private_revCode;  //private
+	  double     private_sndStamp; //private
+	  double     private_rcvStamp; //private
+	  long       private_seqNum;   //private
+	  long       private_origin;   //private
+	  long	Raw[16];
+	  float	Calibrated[32];
+	#pragma keylist Electrical
+	};
+	#pragma keylist Electrical
+	struct Metrology {
+	  string<32> private_revCode;  //private
+	  double     private_sndStamp; //private
+	  double     private_rcvStamp; //private
+	  long       private_seqNum;   //private
+	  long       private_origin;   //private
+	  long	Raw[16];
+	  float	Calibrated[16];
+	#pragma keylist Metrology
+	};
+	#pragma keylist Metrology
+	struct Spectrometer {
+	  string<32> private_revCode;  //private
+	  double     private_sndStamp; //private
+	  double     private_rcvStamp; //private
+	  long       private_seqNum;   //private
+	  long       private_origin;   //private
+	  long	Raw[16];
+	  float	Calibrated[32];
+	#pragma keylist Spectrometer
+	};
+	#pragma keylist Spectrometer
+	struct TC {
+	  string<32> private_revCode;  //private
+	  double     private_sndStamp; //private
+	  double     private_rcvStamp; //private
+	  long       private_seqNum;   //private
+	  long       private_origin;   //private
+	  long	Raw[16];
+	  float	Calibrated[16];
+	#pragma keylist TC
+	};
+	#pragma keylist TC
+	struct TCS {
+	  string<32> private_revCode;  //private
+	  double     private_sndStamp; //private
+	  double     private_rcvStamp; //private
+	  long       private_seqNum;   //private
+	  long       private_origin;   //private
+	  long	Raw[200];
+	  float	Calibrated[200];
+	#pragma keylist TCS
+	};
+	#pragma keylist TCS
+};

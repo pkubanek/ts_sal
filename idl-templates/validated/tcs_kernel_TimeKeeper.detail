@@ -1,0 +1,6 @@
+tcs.kernel.TimeKeeper.Tai 1 float 0.1
+tcs.kernel.TimeKeeper.Tt 1 float 0.1
+tcs.kernel.TimeKeeper.Cst 1 float 0.1
+tcs.kernel.TimeKeeper.Sst 1 float 0.1
+tcs.kernel.TimeKeeper.Dcst 1 float 0.1
+tcs.kernel.TimeKeeper.Dsst 1 float 0.1

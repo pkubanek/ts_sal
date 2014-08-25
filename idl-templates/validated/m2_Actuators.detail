@@ -1,0 +1,3 @@
+m2.Actuators.Raw 15 long 0.1
+m2.Actuators.Calibrated 31 float 0.1
+m2.Actuators.Status 15 octet 0.1

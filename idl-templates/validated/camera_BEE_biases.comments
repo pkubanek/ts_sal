@@ -1,3 +1,0 @@
-set COMMENT(camera.BEE.biases.reset) "Reset bias voltage raw value"
-set COMMENT(camera.BEE.biases.operate) "Operating bias voltage raw value"
-set COMMENT(camera.BEE.biases.substrate) "Substrate voltage raw value"

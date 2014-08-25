@@ -1,0 +1,17 @@
+
+export SAL_DIR=/opt/lsstsal/scripts
+export SAL_WORK_DIR=/efdb1/test
+
+cd $SAL_WORK_DIR/idl-templates/
+
+cp $SAL_DIR/idl-templates/LSE-165.xhtml.html .
+tclsh
+source /opt/lsstsal/scripts/parse-lse165
+exit
+
+tclsh
+source $env(SAL_DIR)/checkidl.tcl
+checkall
+source $env(SAL_DIR)/updatedetails.tcl
+
+

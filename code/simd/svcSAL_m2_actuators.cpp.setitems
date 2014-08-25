@@ -1,4 +1,4 @@
-		result = salHandle->setitem(SAL_IID_m2_actuators_stepcnt, stepcnt, 73);
-		result = salHandle->setitem(SAL_IID_m2_actuators_targetpos, targetpos, 73);
-		result = salHandle->setitem(SAL_IID_m2_actuators_force, force, 73);
+		result = salHandle->setitem(SAL_IID_m2_Actuators_Status, Status, 16);
+		result = salHandle->setitem(SAL_IID_m2_Actuators_Raw, Raw, 16);
+		result = salHandle->setitem(SAL_IID_m2_Actuators_Calibrated, Calibrated, 32);
 		result = salHandle->putSample();

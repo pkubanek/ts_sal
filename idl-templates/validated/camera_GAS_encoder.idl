@@ -1,0 +1,10 @@
+struct GAS_encoder {
+  string<32> private_revCode;  //private
+  double     private_sndStamp; //private
+  double     private_rcvStamp; //private
+  long       private_seqNum;   //private
+  long       private_origin;   //private
+  long	CABAC_MUX[4];	// 0.054 | none | CABAC/ASPIC V &amp; T  (2 at a time, MUXed) | none | Corner rafts | 16 |  37,362  |  149,449 
+  unsigned short	REB_ID;	// none | | Raft Electronics Board ID
+};
+#pragma keylist GAS_encoder

@@ -1,0 +1,14 @@
+struct ocs_staticanalysis {
+  string<32> private_revCode;  //private
+  double     private_sndStamp; //private
+  double     private_rcvStamp; //private
+  long       private_seqNum;   //private
+  long       private_origin;   //private
+  string<128>	subsystem;
+  string<128>	part;
+  float	start;
+  float	end;
+  long	result;
+  long	action;
+  string<32>	actuuid;
+};

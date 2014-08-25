@@ -1,0 +1,9 @@
+struct ocs_command_health {
+  string<32> private_revCode;  //private
+  double     private_sndStamp; //private
+  double     private_rcvStamp; //private
+  long       private_seqNum;   //private
+  long       private_origin;   //private
+  string<128>	subsystem;
+  string<128>	device;
+};

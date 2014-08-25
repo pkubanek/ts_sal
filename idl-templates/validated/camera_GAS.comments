@@ -1,6 +1,0 @@
-set COMMENT(camera.GAS.algorithm) "Centroiding algorithm used"
-set COMMENT(camera.GAS.parameters) "Input parameters"
-set COMMENT(camera.GAS.sampleData_00) "Measured centroid parameters, lower left"
-set COMMENT(camera.GAS.sampleData_01) "Measured centroid parameters, lower right"
-set COMMENT(camera.GAS.sampleData_10) "Measured centroid parameters, upper left"
-set COMMENT(camera.GAS.sampleData_11) "Measured centroid parameters, upper right"

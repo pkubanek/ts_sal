@@ -1,0 +1,9 @@
+struct Cryo_power {
+  string<32> private_revCode;  //private
+  double     private_sndStamp; //private
+  double     private_rcvStamp; //private
+  long       private_seqNum;   //private
+  long       private_origin;   //private
+  float	Compressor load[2];	// 0.010 | Watts | Compressor electrical load | none | Utility room | 2 |  864  |  3,456 
+};
+#pragma keylist Cryo_power

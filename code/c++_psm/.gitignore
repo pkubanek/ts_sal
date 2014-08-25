@@ -1,0 +1,9 @@
+dds-psm-cxx.*
+*/ipch/*
+ipch
+ipch/*
+*/Debug/*
+*~
+.cproject
+.project
+Debug

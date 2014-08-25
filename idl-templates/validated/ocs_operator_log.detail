@@ -1,0 +1,5 @@
+ocs.operator.log.opid 1 long 0.1
+ocs.operator.log.stationid 1 long 0.1
+ocs.operator.log.subsystem 32 string<32> 0.1
+ocs.operator.log.device 32 string<32> 0.1
+ocs.operator.log.event 128 string<128> 0.1

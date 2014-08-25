@@ -1,0 +1,11 @@
+struct ocs_command_permit {
+  string<32> private_revCode;  //private
+  double     private_sndStamp; //private
+  double     private_rcvStamp; //private
+  long       private_seqNum;   //private
+  long       private_origin;   //private
+  string<128>	subsystem;
+  string<128>	device;
+  string<32>	command;
+  long	actionmask[8];
+};

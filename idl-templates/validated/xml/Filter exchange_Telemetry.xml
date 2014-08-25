@@ -1,0 +1,332 @@
+
+<?xml version="1.0"?>
+<tlm:SALTelemetry xmlns:tlm="http://sal.lsst.org/SALTelemetry" 
+                  Version="1.0"
+                  Author="dmills@noao.edu"
+                  updateDate="Fri Aug 30 10:53:03 MST 2013">
+
+   <Subsystem="Filter exchange">
+
+   <Ttems>
+      <item>
+          <EFDB_Topic>camera_Filter</EFDB_Topic>
+          <EFDB_Name>Loader_telemetry</EFDB_Name>
+          <Description>Loader</Description>
+          <Frequency>tbd</Frequency>
+          <Publishers>??</Publishers>
+          <Values_per_Publisher>1</Values_per_Publisher>
+          <Size_in_bytes>4</Size_in_bytes>
+          <IDL_Type>long</IDL_Type>
+          <Units>??</Units>
+          <Conversion>none</Conversion>
+          <Sensor_location>none</Sensor_location>
+          <Count>??</Count>
+          <Instances_per_night></Instances_per_night>
+          <Bytes_per_night></Bytes_per_night>
+      </item>
+      <item>
+          <EFDB_Topic>camera_Filter_angle</EFDB_Topic>
+          <EFDB_Name>Inclinometer</EFDB_Name>
+          <Description>FCS: inclinometer [2?]</Description>
+          <Frequency>2.31E-04</Frequency>
+          <Publishers>1</Publishers>
+          <Values_per_Publisher>2</Values_per_Publisher>
+          <Size_in_bytes>4</Size_in_bytes>
+          <IDL_Type>float</IDL_Type>
+          <Units>Degrees</Units>
+          <Conversion>none</Conversion>
+          <Sensor_location>Camera body</Sensor_location>
+          <Count>2</Count>
+          <Instances_per_night> 20 </Instances_per_night>
+          <Bytes_per_night> 80 </Bytes_per_night>
+      </item>
+      <item>
+          <EFDB_Topic>camera_Filter_current</EFDB_Topic>
+          <EFDB_Name>Auto_current</EFDB_Name>
+          <Description>Auto: Motor current</Description>
+          <Frequency>2.31E-04</Frequency>
+          <Publishers>1</Publishers>
+          <Values_per_Publisher>1</Values_per_Publisher>
+          <Size_in_bytes>4</Size_in_bytes>
+          <IDL_Type>float</IDL_Type>
+          <Units>Amp</Units>
+          <Conversion>none</Conversion>
+          <Sensor_location>Camera body</Sensor_location>
+          <Count>1</Count>
+          <Instances_per_night> 10 </Instances_per_night>
+          <Bytes_per_night> 40 </Bytes_per_night>
+      </item>
+      <item>
+          <EFDB_Topic>camera_Filter_current</EFDB_Topic>
+          <EFDB_Name>Carousel_current</EFDB_Name>
+          <Description>Carousel: motor current</Description>
+          <Frequency>2.31E-04</Frequency>
+          <Publishers>1</Publishers>
+          <Values_per_Publisher>1</Values_per_Publisher>
+          <Size_in_bytes>4</Size_in_bytes>
+          <IDL_Type>float</IDL_Type>
+          <Units>Amp</Units>
+          <Conversion>none</Conversion>
+          <Sensor_location>Camera body</Sensor_location>
+          <Count>1</Count>
+          <Instances_per_night> 10 </Instances_per_night>
+          <Bytes_per_night> 40 </Bytes_per_night>
+      </item>
+      <item>
+          <EFDB_Topic>camera_Filter_name</EFDB_Topic>
+          <EFDB_Name>Filter_online</EFDB_Name>
+          <Description>FCS: Name of filter at online position</Description>
+          <Frequency>0.054</Frequency>
+          <Publishers>1</Publishers>
+          <Values_per_Publisher>1</Values_per_Publisher>
+          <Size_in_bytes>32</Size_in_bytes>
+          <IDL_Type>string<32></IDL_Type>
+          <Units>none</Units>
+          <Conversion>none</Conversion>
+          <Sensor_location>Camera body</Sensor_location>
+          <Count>1</Count>
+          <Instances_per_night> 2,335 </Instances_per_night>
+          <Bytes_per_night> 74,724 </Bytes_per_night>
+      </item>
+      <item>
+          <EFDB_Topic>camera_Filter_position</EFDB_Topic>
+          <EFDB_Name>Carousel_position</EFDB_Name>
+          <Description>Carousel:Position</Description>
+          <Frequency>2.31E-04</Frequency>
+          <Publishers>1</Publishers>
+          <Values_per_Publisher>1</Values_per_Publisher>
+          <Size_in_bytes>4</Size_in_bytes>
+          <IDL_Type>float</IDL_Type>
+          <Units>Radian</Units>
+          <Conversion>none</Conversion>
+          <Sensor_location>Camera body</Sensor_location>
+          <Count>1</Count>
+          <Instances_per_night> 10 </Instances_per_night>
+          <Bytes_per_night> 40 </Bytes_per_night>
+      </item>
+      <item>
+          <EFDB_Topic>camera_Filter_position</EFDB_Topic>
+          <EFDB_Name>Rail_position</EFDB_Name>
+          <Description>Auto: Rail position</Description>
+          <Frequency>2.31E-04</Frequency>
+          <Publishers>1</Publishers>
+          <Values_per_Publisher>2</Values_per_Publisher>
+          <Size_in_bytes>4</Size_in_bytes>
+          <IDL_Type>float</IDL_Type>
+          <Units>m</Units>
+          <Conversion>none</Conversion>
+          <Sensor_location>Camera body</Sensor_location>
+          <Count>2</Count>
+          <Instances_per_night> 20 </Instances_per_night>
+          <Bytes_per_night> 80 </Bytes_per_night>
+      </item>
+      <item>
+          <EFDB_Topic>camera_Filter_position</EFDB_Topic>
+          <EFDB_Name>Truck_position</EFDB_Name>
+          <Description>Auto: Truck position</Description>
+          <Frequency>2.31E-04</Frequency>
+          <Publishers>1</Publishers>
+          <Values_per_Publisher>1</Values_per_Publisher>
+          <Size_in_bytes>4</Size_in_bytes>
+          <IDL_Type>float</IDL_Type>
+          <Units>m</Units>
+          <Conversion>none</Conversion>
+          <Sensor_location>Camera body</Sensor_location>
+          <Count>1</Count>
+          <Instances_per_night> 10 </Instances_per_night>
+          <Bytes_per_night> 40 </Bytes_per_night>
+      </item>
+      <item>
+          <EFDB_Topic>camera_Filter_speed</EFDB_Topic>
+          <EFDB_Name>Carousel_speed</EFDB_Name>
+          <Description>Carousel: Speed</Description>
+          <Frequency>2.31E-04</Frequency>
+          <Publishers>1</Publishers>
+          <Values_per_Publisher>1</Values_per_Publisher>
+          <Size_in_bytes>4</Size_in_bytes>
+          <IDL_Type>float</IDL_Type>
+          <Units>m/s</Units>
+          <Conversion>none</Conversion>
+          <Sensor_location>Camera body</Sensor_location>
+          <Count>1</Count>
+          <Instances_per_night> 10 </Instances_per_night>
+          <Bytes_per_night> 40 </Bytes_per_night>
+      </item>
+      <item>
+          <EFDB_Topic>camera_Filter_speed</EFDB_Topic>
+          <EFDB_Name>Truck_speed</EFDB_Name>
+          <Description>Auto: Truck speed</Description>
+          <Frequency>2.31E-04</Frequency>
+          <Publishers>1</Publishers>
+          <Values_per_Publisher>1</Values_per_Publisher>
+          <Size_in_bytes>4</Size_in_bytes>
+          <IDL_Type>float</IDL_Type>
+          <Units>m/s</Units>
+          <Conversion>none</Conversion>
+          <Sensor_location>Camera body</Sensor_location>
+          <Count>1</Count>
+          <Instances_per_night> 10 </Instances_per_night>
+          <Bytes_per_night> 40 </Bytes_per_night>
+      </item>
+      <item>
+          <EFDB_Topic>camera_Filter_status</EFDB_Topic>
+          <EFDB_Name>Brake_status</EFDB_Name>
+          <Description>Carousel: Brake sensor</Description>
+          <Frequency>2.31E-04</Frequency>
+          <Publishers>1</Publishers>
+          <Values_per_Publisher>1</Values_per_Publisher>
+          <Size_in_bytes>2</Size_in_bytes>
+          <IDL_Type>short</IDL_Type>
+          <Units>none</Units>
+          <Conversion>none</Conversion>
+          <Sensor_location>Camera body</Sensor_location>
+          <Count>1</Count>
+          <Instances_per_night> 10 </Instances_per_night>
+          <Bytes_per_night> 20 </Bytes_per_night>
+      </item>
+      <item>
+          <EFDB_Topic>camera_Filter_status</EFDB_Topic>
+          <EFDB_Name>Clamp_status</EFDB_Name>
+          <Description>Auto: Clamp locking sensors</Description>
+          <Frequency>2.31E-04</Frequency>
+          <Publishers>1</Publishers>
+          <Values_per_Publisher>5</Values_per_Publisher>
+          <Size_in_bytes>2</Size_in_bytes>
+          <IDL_Type>short</IDL_Type>
+          <Units>none</Units>
+          <Conversion>none</Conversion>
+          <Sensor_location>Camera body</Sensor_location>
+          <Count>5</Count>
+          <Instances_per_night> 50 </Instances_per_night>
+          <Bytes_per_night> 100 </Bytes_per_night>
+      </item>
+      <item>
+          <EFDB_Topic>camera_Filter_status</EFDB_Topic>
+          <EFDB_Name>Filter_presence</EFDB_Name>
+          <Description>FCS: 10 filter presence sensors</Description>
+          <Frequency>2.31E-04</Frequency>
+          <Publishers>1</Publishers>
+          <Values_per_Publisher>10</Values_per_Publisher>
+          <Size_in_bytes>2</Size_in_bytes>
+          <IDL_Type>short</IDL_Type>
+          <Units>none</Units>
+          <Conversion>none</Conversion>
+          <Sensor_location>Camera body</Sensor_location>
+          <Count>10</Count>
+          <Instances_per_night> 100 </Instances_per_night>
+          <Bytes_per_night> 200 </Bytes_per_night>
+      </item>
+      <item>
+          <EFDB_Topic>camera_Filter_temperature</EFDB_Topic>
+          <EFDB_Name>Auto_temperature</EFDB_Name>
+          <Description>Auto: Motor temperature</Description>
+          <Frequency>2.31E-04</Frequency>
+          <Publishers>1</Publishers>
+          <Values_per_Publisher>1</Values_per_Publisher>
+          <Size_in_bytes>4</Size_in_bytes>
+          <IDL_Type>float</IDL_Type>
+          <Units>Celsius</Units>
+          <Conversion>none</Conversion>
+          <Sensor_location>Camera body</Sensor_location>
+          <Count>1</Count>
+          <Instances_per_night> 10 </Instances_per_night>
+          <Bytes_per_night> 40 </Bytes_per_night>
+      </item>
+      <item>
+          <EFDB_Topic>camera_Filter_temperature</EFDB_Topic>
+          <EFDB_Name>Carousel_temperature</EFDB_Name>
+          <Description>Carousel: Motor temperature</Description>
+          <Frequency>2.31E-04</Frequency>
+          <Publishers>1</Publishers>
+          <Values_per_Publisher>1</Values_per_Publisher>
+          <Size_in_bytes>4</Size_in_bytes>
+          <IDL_Type>float</IDL_Type>
+          <Units>Celsius</Units>
+          <Conversion>none</Conversion>
+          <Sensor_location>Camera body</Sensor_location>
+          <Count>1</Count>
+          <Instances_per_night> 10 </Instances_per_night>
+          <Bytes_per_night> 40 </Bytes_per_night>
+      </item>
+      <item>
+          <EFDB_Topic>camera_Filter_temperature</EFDB_Topic>
+          <EFDB_Name>Clamp_temperature</EFDB_Name>
+          <Description>Auto: Clamp temperatures</Description>
+          <Frequency>2.31E-04</Frequency>
+          <Publishers>1</Publishers>
+          <Values_per_Publisher>5</Values_per_Publisher>
+          <Size_in_bytes>4</Size_in_bytes>
+          <IDL_Type>float</IDL_Type>
+          <Units>Celsius</Units>
+          <Conversion>none</Conversion>
+          <Sensor_location>Camera body</Sensor_location>
+          <Count>5</Count>
+          <Instances_per_night> 50 </Instances_per_night>
+          <Bytes_per_night> 200 </Bytes_per_night>
+      </item>
+      <item>
+          <EFDB_Topic>camera_Filter_temperature</EFDB_Topic>
+          <EFDB_Name>Latch_temperature</EFDB_Name>
+          <Description>Carousel: 10 latch temperatures</Description>
+          <Frequency>2.31E-04</Frequency>
+          <Publishers>1</Publishers>
+          <Values_per_Publisher>10</Values_per_Publisher>
+          <Size_in_bytes>4</Size_in_bytes>
+          <IDL_Type>float</IDL_Type>
+          <Units>Celsius</Units>
+          <Conversion>none</Conversion>
+          <Sensor_location>Camera body</Sensor_location>
+          <Count>10</Count>
+          <Instances_per_night> 100 </Instances_per_night>
+          <Bytes_per_night> 400 </Bytes_per_night>
+      </item>
+      <item>
+          <EFDB_Topic>camera_Filter_time</EFDB_Topic>
+          <EFDB_Name>Change_Duration</EFDB_Name>
+          <Description>FCS: Time to complete filter operations</Description>
+          <Frequency>2.31E-04</Frequency>
+          <Publishers>1</Publishers>
+          <Values_per_Publisher>1</Values_per_Publisher>
+          <Size_in_bytes>4</Size_in_bytes>
+          <IDL_Type>float</IDL_Type>
+          <Units>sec</Units>
+          <Conversion>none</Conversion>
+          <Sensor_location>Camera body</Sensor_location>
+          <Count>1</Count>
+          <Instances_per_night> 10 </Instances_per_night>
+          <Bytes_per_night> 40 </Bytes_per_night>
+      </item>
+      <item>
+          <EFDB_Topic>camera_Filter_voltage</EFDB_Topic>
+          <EFDB_Name>Clamp_voltage</EFDB_Name>
+          <Description>Auto: Actuator voltages</Description>
+          <Frequency>2.31E-04</Frequency>
+          <Publishers>1</Publishers>
+          <Values_per_Publisher>5</Values_per_Publisher>
+          <Size_in_bytes>4</Size_in_bytes>
+          <IDL_Type>float</IDL_Type>
+          <Units>Volt</Units>
+          <Conversion>none</Conversion>
+          <Sensor_location>Camera body</Sensor_location>
+          <Count>5</Count>
+          <Instances_per_night> 50 </Instances_per_night>
+          <Bytes_per_night> 200 </Bytes_per_night>
+      </item>
+      <item>
+          <EFDB_Topic>camera_Filter_voltage</EFDB_Topic>
+          <EFDB_Name>Latch_voltage</EFDB_Name>
+          <Description>Carousel: 10 actuator voltages</Description>
+          <Frequency>2.31E-04</Frequency>
+          <Publishers>1</Publishers>
+          <Values_per_Publisher>10</Values_per_Publisher>
+          <Size_in_bytes>4</Size_in_bytes>
+          <IDL_Type>float</IDL_Type>
+          <Units>Volt</Units>
+          <Conversion>none</Conversion>
+          <Sensor_location>Camera body</Sensor_location>
+          <Count>10</Count>
+          <Instances_per_night> 100 </Instances_per_night>
+          <Bytes_per_night> 400 </Bytes_per_night>
+      </item>
+   </Items>
+</tlm:SALTelemetry>

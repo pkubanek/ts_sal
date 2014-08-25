@@ -1,3 +1,0 @@
-set COMMENT(m2.Hexapod.targetpos) "Target position"
-set COMMENT(m2.Hexapod.error) "Error"
-set COMMENT(m2.Hexapod.status) "Status bits"

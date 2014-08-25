@@ -1,0 +1,12 @@
+struct ocs_activity_record {
+  string<32> private_revCode;  //private
+  double     private_sndStamp; //private
+  double     private_rcvStamp; //private
+  long       private_seqNum;   //private
+  long       private_origin;   //private
+  string<128>	type;
+  string<128>	subsystem;
+  string<128>	part;
+  string<128>	supervid;
+  string<32>	uuid;
+};

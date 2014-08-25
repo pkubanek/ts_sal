@@ -1,10 +1,10 @@
-		for (unsigned int count=0; count<16; count++) {
-			d.Status[count] = m2_Actuators_ref->Status[count];
+		for (unsigned int count=0; count<73; count++) {
+			d.stepcnt[count] = m2_actuators_ref->stepcnt[count];
 		}
-		for (unsigned int count=0; count<16; count++) {
-			d.Raw[count] = m2_Actuators_ref->Raw[count];
+		for (unsigned int count=0; count<73; count++) {
+			d.targetpos[count] = m2_actuators_ref->targetpos[count];
 		}
-		for (unsigned int count=0; count<32; count++) {
-			d.Calibrated[count] = m2_Actuators_ref->Calibrated[count];
+		for (unsigned int count=0; count<73; count++) {
+			d.force[count] = m2_actuators_ref->force[count];
 		}
-		m2_Actuators_ref->syncO = 1;
+		m2_actuators_ref->syncO = 1;

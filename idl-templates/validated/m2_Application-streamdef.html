@@ -7,7 +7,7 @@
 <P>Application specific information derived from sensors in the m2
 subsystem. 
 <H2>Update frequency</H2>
-This telemetry stream publishes a new record at 1 Hz
+This telemetry stream publishes a new record every 1000 seconds
 <H2>Publishers</H2>
 Only one instance of this stream is published.
 <P><HR><H2>Topic Definition</H2><P>
@@ -16,8 +16,8 @@ Only one instance of this stream is published.
 <TABLE BORDER=3 CELLPADDING=5 BGCOLOR=LightBlue  WIDTH=600>
 <TR BGCOLOR=Yellow><B><TD>Name</TD><TD>Type</TD><TD>Size</TD><TD>Units</TD>
 <TD>Range</TD><TD>Comment</TD><TD>Delete</TD></B></TR>
-<TR><TD><INPUT NAME="id21" VALUE="demand"></TD>
-<TD><select name="type21">
+<TR><TD><INPUT NAME="id42" VALUE="Demand"></TD>
+<TD><select name="type42">
 <option value="byte">byte
                           <option value="short">short
                           <option value="int">int
@@ -25,8 +25,8 @@ Only one instance of this stream is published.
                           <option value="float" selected>float
                           <option value="string">string
                           </select></TD>
-<TD><INPUT NAME="siz21" VALUE="6"></TD>
-<TD><select name="unit21">
+<TD><INPUT NAME="siz42" VALUE="2"></TD>
+<TD><select name="unit42">
 <option value="none" selected>none
 <option value="amp">amp
 <option value="degC">degC
@@ -36,11 +36,11 @@ Only one instance of this stream is published.
 <option value="volt">volt
 <option value="watt">watt
 </select></TD>
-<TD><INPUT NAME="range21" VALUE="none"></TD>
-<TD><INPUT NAME="help21" VALUE="Target configuration"></TD>
-<TD><INPUT TYPE="checkbox" NAME="delete_21" VALUE="yes"></TD></TR>
-<TR><TD><INPUT NAME="id22" VALUE="position"></TD>
-<TD><select name="type22">
+<TD><INPUT NAME="range42" VALUE=""></TD>
+<TD><INPUT NAME="help42" VALUE=""></TD>
+<TD><INPUT TYPE="checkbox" NAME="delete_42" VALUE="yes"></TD></TR>
+<TR><TD><INPUT NAME="id43" VALUE="Position"></TD>
+<TD><select name="type43">
 <option value="byte">byte
                           <option value="short">short
                           <option value="int">int
@@ -48,8 +48,8 @@ Only one instance of this stream is published.
                           <option value="float" selected>float
                           <option value="string">string
                           </select></TD>
-<TD><INPUT NAME="siz22" VALUE="6"></TD>
-<TD><select name="unit22">
+<TD><INPUT NAME="siz43" VALUE="2"></TD>
+<TD><select name="unit43">
 <option value="none" selected>none
 <option value="amp">amp
 <option value="degC">degC
@@ -59,11 +59,11 @@ Only one instance of this stream is published.
 <option value="volt">volt
 <option value="watt">watt
 </select></TD>
-<TD><INPUT NAME="range22" VALUE="none"></TD>
-<TD><INPUT NAME="help22" VALUE="Current value"></TD>
-<TD><INPUT TYPE="checkbox" NAME="delete_22" VALUE="yes"></TD></TR>
-<TR><TD><INPUT NAME="id23" VALUE="error"></TD>
-<TD><select name="type23">
+<TD><INPUT NAME="range43" VALUE=""></TD>
+<TD><INPUT NAME="help43" VALUE=""></TD>
+<TD><INPUT TYPE="checkbox" NAME="delete_43" VALUE="yes"></TD></TR>
+<TR><TD><INPUT NAME="id44" VALUE="Error"></TD>
+<TD><select name="type44">
 <option value="byte">byte
                           <option value="short">short
                           <option value="int">int
@@ -71,8 +71,8 @@ Only one instance of this stream is published.
                           <option value="float" selected>float
                           <option value="string">string
                           </select></TD>
-<TD><INPUT NAME="siz23" VALUE="6"></TD>
-<TD><select name="unit23">
+<TD><INPUT NAME="siz44" VALUE="2"></TD>
+<TD><select name="unit44">
 <option value="none" selected>none
 <option value="amp">amp
 <option value="degC">degC
@@ -82,20 +82,13 @@ Only one instance of this stream is published.
 <option value="volt">volt
 <option value="watt">watt
 </select></TD>
-<TD><INPUT NAME="range23" VALUE="none"></TD>
-<TD><INPUT NAME="help23" VALUE="Target configuration"></TD>
-<TD><INPUT TYPE="checkbox" NAME="delete_23" VALUE="yes"></TD></TR>
-<TR><TD><INPUT NAME="id24" VALUE="status"></TD>
-<TD><select name="type24">
-<option value="byte">byte
-                          <option value="short" selected>short
-                          <option value="int">int
-                          <option value="long">long
-                          <option value="float">float
-                          <option value="string">string
-                          </select></TD>
-<TD><INPUT NAME="siz24" VALUE="16"></TD>
-<TD><select name="unit24">
+<TD><INPUT NAME="range44" VALUE=""></TD>
+<TD><INPUT NAME="help44" VALUE=""></TD>
+<TD><INPUT TYPE="checkbox" NAME="delete_44" VALUE="yes"></TD></TR>
+<TR><TD><INPUT NAME="id45" VALUE="Status_1"></TD>
+<TD><select name="type45">
+<TD><INPUT NAME="siz45" VALUE="128"></TD>
+<TD><select name="unit45">
 <option value="none" selected>none
 <option value="amp">amp
 <option value="degC">degC
@@ -105,7 +98,231 @@ Only one instance of this stream is published.
 <option value="volt">volt
 <option value="watt">watt
 </select></TD>
-<TD><INPUT NAME="range24" VALUE="none"></TD>
-<TD><INPUT NAME="help24" VALUE="Status bits"></TD>
-<TD><INPUT TYPE="checkbox" NAME="delete_24" VALUE="yes"></TD></TR>
+<TD><INPUT NAME="range45" VALUE=""></TD>
+<TD><INPUT NAME="help45" VALUE=""></TD>
+<TD><INPUT TYPE="checkbox" NAME="delete_45" VALUE="yes"></TD></TR>
+<TR><TD><INPUT NAME="id46" VALUE="Status_2"></TD>
+<TD><select name="type46">
+<TD><INPUT NAME="siz46" VALUE="128"></TD>
+<TD><select name="unit46">
+<option value="none" selected>none
+<option value="amp">amp
+<option value="degC">degC
+<option value="kelvin">kelvin
+<option value="meter">meter
+<option value="second">second
+<option value="volt">volt
+<option value="watt">watt
+</select></TD>
+<TD><INPUT NAME="range46" VALUE=""></TD>
+<TD><INPUT NAME="help46" VALUE=""></TD>
+<TD><INPUT TYPE="checkbox" NAME="delete_46" VALUE="yes"></TD></TR>
+<TR><TD><INPUT NAME="id47" VALUE="Status_3"></TD>
+<TD><select name="type47">
+<TD><INPUT NAME="siz47" VALUE="128"></TD>
+<TD><select name="unit47">
+<option value="none" selected>none
+<option value="amp">amp
+<option value="degC">degC
+<option value="kelvin">kelvin
+<option value="meter">meter
+<option value="second">second
+<option value="volt">volt
+<option value="watt">watt
+</select></TD>
+<TD><INPUT NAME="range47" VALUE=""></TD>
+<TD><INPUT NAME="help47" VALUE=""></TD>
+<TD><INPUT TYPE="checkbox" NAME="delete_47" VALUE="yes"></TD></TR>
+<TR><TD><INPUT NAME="id48" VALUE="Status_4"></TD>
+<TD><select name="type48">
+<TD><INPUT NAME="siz48" VALUE="128"></TD>
+<TD><select name="unit48">
+<option value="none" selected>none
+<option value="amp">amp
+<option value="degC">degC
+<option value="kelvin">kelvin
+<option value="meter">meter
+<option value="second">second
+<option value="volt">volt
+<option value="watt">watt
+</select></TD>
+<TD><INPUT NAME="range48" VALUE=""></TD>
+<TD><INPUT NAME="help48" VALUE=""></TD>
+<TD><INPUT TYPE="checkbox" NAME="delete_48" VALUE="yes"></TD></TR>
+<TR><TD><INPUT NAME="id49" VALUE="Status_5"></TD>
+<TD><select name="type49">
+<TD><INPUT NAME="siz49" VALUE="128"></TD>
+<TD><select name="unit49">
+<option value="none" selected>none
+<option value="amp">amp
+<option value="degC">degC
+<option value="kelvin">kelvin
+<option value="meter">meter
+<option value="second">second
+<option value="volt">volt
+<option value="watt">watt
+</select></TD>
+<TD><INPUT NAME="range49" VALUE=""></TD>
+<TD><INPUT NAME="help49" VALUE=""></TD>
+<TD><INPUT TYPE="checkbox" NAME="delete_49" VALUE="yes"></TD></TR>
+<TR><TD><INPUT NAME="id50" VALUE="Status_6"></TD>
+<TD><select name="type50">
+<TD><INPUT NAME="siz50" VALUE="128"></TD>
+<TD><select name="unit50">
+<option value="none" selected>none
+<option value="amp">amp
+<option value="degC">degC
+<option value="kelvin">kelvin
+<option value="meter">meter
+<option value="second">second
+<option value="volt">volt
+<option value="watt">watt
+</select></TD>
+<TD><INPUT NAME="range50" VALUE=""></TD>
+<TD><INPUT NAME="help50" VALUE=""></TD>
+<TD><INPUT TYPE="checkbox" NAME="delete_50" VALUE="yes"></TD></TR>
+<TR><TD><INPUT NAME="id51" VALUE="Status_7"></TD>
+<TD><select name="type51">
+<TD><INPUT NAME="siz51" VALUE="128"></TD>
+<TD><select name="unit51">
+<option value="none" selected>none
+<option value="amp">amp
+<option value="degC">degC
+<option value="kelvin">kelvin
+<option value="meter">meter
+<option value="second">second
+<option value="volt">volt
+<option value="watt">watt
+</select></TD>
+<TD><INPUT NAME="range51" VALUE=""></TD>
+<TD><INPUT NAME="help51" VALUE=""></TD>
+<TD><INPUT TYPE="checkbox" NAME="delete_51" VALUE="yes"></TD></TR>
+<TR><TD><INPUT NAME="id52" VALUE="Status_8"></TD>
+<TD><select name="type52">
+<TD><INPUT NAME="siz52" VALUE="128"></TD>
+<TD><select name="unit52">
+<option value="none" selected>none
+<option value="amp">amp
+<option value="degC">degC
+<option value="kelvin">kelvin
+<option value="meter">meter
+<option value="second">second
+<option value="volt">volt
+<option value="watt">watt
+</select></TD>
+<TD><INPUT NAME="range52" VALUE=""></TD>
+<TD><INPUT NAME="help52" VALUE=""></TD>
+<TD><INPUT TYPE="checkbox" NAME="delete_52" VALUE="yes"></TD></TR>
+<TR><TD><INPUT NAME="id53" VALUE="Status_9"></TD>
+<TD><select name="type53">
+<TD><INPUT NAME="siz53" VALUE="128"></TD>
+<TD><select name="unit53">
+<option value="none" selected>none
+<option value="amp">amp
+<option value="degC">degC
+<option value="kelvin">kelvin
+<option value="meter">meter
+<option value="second">second
+<option value="volt">volt
+<option value="watt">watt
+</select></TD>
+<TD><INPUT NAME="range53" VALUE=""></TD>
+<TD><INPUT NAME="help53" VALUE=""></TD>
+<TD><INPUT TYPE="checkbox" NAME="delete_53" VALUE="yes"></TD></TR>
+<TR><TD><INPUT NAME="id54" VALUE="Status_10"></TD>
+<TD><select name="type54">
+<TD><INPUT NAME="siz54" VALUE="128"></TD>
+<TD><select name="unit54">
+<option value="none" selected>none
+<option value="amp">amp
+<option value="degC">degC
+<option value="kelvin">kelvin
+<option value="meter">meter
+<option value="second">second
+<option value="volt">volt
+<option value="watt">watt
+</select></TD>
+<TD><INPUT NAME="range54" VALUE=""></TD>
+<TD><INPUT NAME="help54" VALUE=""></TD>
+<TD><INPUT TYPE="checkbox" NAME="delete_54" VALUE="yes"></TD></TR>
+<TR><TD><INPUT NAME="id55" VALUE="Status_11"></TD>
+<TD><select name="type55">
+<TD><INPUT NAME="siz55" VALUE="128"></TD>
+<TD><select name="unit55">
+<option value="none" selected>none
+<option value="amp">amp
+<option value="degC">degC
+<option value="kelvin">kelvin
+<option value="meter">meter
+<option value="second">second
+<option value="volt">volt
+<option value="watt">watt
+</select></TD>
+<TD><INPUT NAME="range55" VALUE=""></TD>
+<TD><INPUT NAME="help55" VALUE=""></TD>
+<TD><INPUT TYPE="checkbox" NAME="delete_55" VALUE="yes"></TD></TR>
+<TR><TD><INPUT NAME="id56" VALUE="Status_12"></TD>
+<TD><select name="type56">
+<TD><INPUT NAME="siz56" VALUE="128"></TD>
+<TD><select name="unit56">
+<option value="none" selected>none
+<option value="amp">amp
+<option value="degC">degC
+<option value="kelvin">kelvin
+<option value="meter">meter
+<option value="second">second
+<option value="volt">volt
+<option value="watt">watt
+</select></TD>
+<TD><INPUT NAME="range56" VALUE=""></TD>
+<TD><INPUT NAME="help56" VALUE=""></TD>
+<TD><INPUT TYPE="checkbox" NAME="delete_56" VALUE="yes"></TD></TR>
+<TR><TD><INPUT NAME="id57" VALUE="Status_13"></TD>
+<TD><select name="type57">
+<TD><INPUT NAME="siz57" VALUE="128"></TD>
+<TD><select name="unit57">
+<option value="none" selected>none
+<option value="amp">amp
+<option value="degC">degC
+<option value="kelvin">kelvin
+<option value="meter">meter
+<option value="second">second
+<option value="volt">volt
+<option value="watt">watt
+</select></TD>
+<TD><INPUT NAME="range57" VALUE=""></TD>
+<TD><INPUT NAME="help57" VALUE=""></TD>
+<TD><INPUT TYPE="checkbox" NAME="delete_57" VALUE="yes"></TD></TR>
+<TR><TD><INPUT NAME="id58" VALUE="Status_14"></TD>
+<TD><select name="type58">
+<TD><INPUT NAME="siz58" VALUE="128"></TD>
+<TD><select name="unit58">
+<option value="none" selected>none
+<option value="amp">amp
+<option value="degC">degC
+<option value="kelvin">kelvin
+<option value="meter">meter
+<option value="second">second
+<option value="volt">volt
+<option value="watt">watt
+</select></TD>
+<TD><INPUT NAME="range58" VALUE=""></TD>
+<TD><INPUT NAME="help58" VALUE=""></TD>
+<TD><INPUT TYPE="checkbox" NAME="delete_58" VALUE="yes"></TD></TR>
+<TR><TD><INPUT NAME="id59" VALUE="Status_15"></TD>
+<TD><select name="type59">
+<TD><INPUT NAME="siz59" VALUE="128"></TD>
+<TD><select name="unit59">
+<option value="none" selected>none
+<option value="amp">amp
+<option value="degC">degC
+<option value="kelvin">kelvin
+<option value="meter">meter
+<option value="second">second
+<option value="volt">volt
+<option value="watt">watt
+</select></TD>
+<TD><INPUT NAME="range59" VALUE=""></TD>
+<TD><INPUT NAME="help59" VALUE=""></TD>
+<TD><INPUT TYPE="checkbox" NAME="delete_59" VALUE="yes"></TD></TR>
 </TABLE><P>Click here to update: <input type="submit" value="Submit" name="update"></FORM><P></BODY></HTML>

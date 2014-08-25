@@ -1,8 +1,0 @@
-set COMMENT(m1m3.Actuators.setpoint) "Force setpoint"
-set COMMENT(m1m3.Actuators.position) "Position readback"
-set COMMENT(m1m3.Actuators.error) "Error"
-set COMMENT(m1m3.Actuators.status) "Status bits"
-set COMMENT(m1m3.Actuators.cyltemp) "Cylinder temperature"
-set COMMENT(m1m3.Actuators.envtemp) "Envir. temperature"
-set COMMENT(m1m3.Actuators.lvdtcorr) "LVDT calibration adjustment"
-set COMMENT(m1m3.Actuators.pressure) "Valve pressure"

@@ -1,0 +1,268 @@
+
+<?xml version="1.0"?>
+<tlm:SALTelemetry xmlns:tlm="http://sal.lsst.org/SALTelemetry" 
+                  Version="1.0"
+                  Author="dmills@noao.edu"
+                  updateDate="Fri Aug 30 11:18:19 MST 2013">
+
+   <Subsystem="Electronics">
+
+   <Ttems>
+      <item>
+          <EFDB_Topic>camera_PCMS_Current</EFDB_Topic>
+          <EFDB_Name>Bias_current</EFDB_Name>
+          <Description>Bias current</Description>
+          <Frequency>0.054</Frequency>
+          <Publishers>75</Publishers>
+          <Values_per_Publisher>1</Values_per_Publisher>
+          <Size_in_bytes>4</Size_in_bytes>
+          <IDL_Type>float</IDL_Type>
+          <Units>none</Units>
+          <Conversion>none</Conversion>
+          <Sensor_location>Utility trunk</Sensor_location>
+          <Count>75</Count>
+          <Instances_per_night> 175,135 </Instances_per_night>
+          <Bytes_per_night> 700,541 </Bytes_per_night>
+      </item>
+      <item>
+          <EFDB_Topic>camera_PCMS_Current</EFDB_Topic>
+          <EFDB_Name>Clock_current</EFDB_Name>
+          <Description>Clock current</Description>
+          <Frequency>0.054</Frequency>
+          <Publishers>75</Publishers>
+          <Values_per_Publisher>1</Values_per_Publisher>
+          <Size_in_bytes>4</Size_in_bytes>
+          <IDL_Type>float</IDL_Type>
+          <Units>none</Units>
+          <Conversion>none</Conversion>
+          <Sensor_location>Utility trunk</Sensor_location>
+          <Count>75</Count>
+          <Instances_per_night> 175,135 </Instances_per_night>
+          <Bytes_per_night> 700,541 </Bytes_per_night>
+      </item>
+      <item>
+          <EFDB_Topic>camera_PCMS_Current</EFDB_Topic>
+          <EFDB_Name>FPGA_current</EFDB_Name>
+          <Description>FPGA current</Description>
+          <Frequency>0.054</Frequency>
+          <Publishers>75</Publishers>
+          <Values_per_Publisher>1</Values_per_Publisher>
+          <Size_in_bytes>4</Size_in_bytes>
+          <IDL_Type>float</IDL_Type>
+          <Units>none</Units>
+          <Conversion>none</Conversion>
+          <Sensor_location>Utility trunk</Sensor_location>
+          <Count>75</Count>
+          <Instances_per_night> 175,135 </Instances_per_night>
+          <Bytes_per_night> 700,541 </Bytes_per_night>
+      </item>
+      <item>
+          <EFDB_Topic>camera_PCMS_Current</EFDB_Topic>
+          <EFDB_Name>Low_current</EFDB_Name>
+          <Description>Low current</Description>
+          <Frequency>0.054</Frequency>
+          <Publishers>75</Publishers>
+          <Values_per_Publisher>1</Values_per_Publisher>
+          <Size_in_bytes>4</Size_in_bytes>
+          <IDL_Type>float</IDL_Type>
+          <Units>none</Units>
+          <Conversion>none</Conversion>
+          <Sensor_location>Utility trunk</Sensor_location>
+          <Count>75</Count>
+          <Instances_per_night> 175,135 </Instances_per_night>
+          <Bytes_per_night> 700,541 </Bytes_per_night>
+      </item>
+      <item>
+          <EFDB_Topic>camera_PCMS_Current</EFDB_Topic>
+          <EFDB_Name>OD_current</EFDB_Name>
+          <Description>OD current</Description>
+          <Frequency>0.054</Frequency>
+          <Publishers>75</Publishers>
+          <Values_per_Publisher>1</Values_per_Publisher>
+          <Size_in_bytes>4</Size_in_bytes>
+          <IDL_Type>float</IDL_Type>
+          <Units>none</Units>
+          <Conversion>none</Conversion>
+          <Sensor_location>Utility trunk</Sensor_location>
+          <Count>75</Count>
+          <Instances_per_night> 175,135 </Instances_per_night>
+          <Bytes_per_night> 700,541 </Bytes_per_night>
+      </item>
+      <item>
+          <EFDB_Topic>camera_PCMS_Status</EFDB_Topic>
+          <EFDB_Name>Bias_Status</EFDB_Name>
+          <Description>Bias Status</Description>
+          <Frequency>0.054</Frequency>
+          <Publishers>75</Publishers>
+          <Values_per_Publisher>1</Values_per_Publisher>
+          <Size_in_bytes>2</Size_in_bytes>
+          <IDL_Type>short</IDL_Type>
+          <Units>none</Units>
+          <Conversion>none</Conversion>
+          <Sensor_location>Utility trunk</Sensor_location>
+          <Count>75</Count>
+          <Instances_per_night> 175,135 </Instances_per_night>
+          <Bytes_per_night> 350,270 </Bytes_per_night>
+      </item>
+      <item>
+          <EFDB_Topic>camera_PCMS_Status</EFDB_Topic>
+          <EFDB_Name>Clock_Status</EFDB_Name>
+          <Description>Clock Status</Description>
+          <Frequency>0.054</Frequency>
+          <Publishers>75</Publishers>
+          <Values_per_Publisher>1</Values_per_Publisher>
+          <Size_in_bytes>2</Size_in_bytes>
+          <IDL_Type>short</IDL_Type>
+          <Units>none</Units>
+          <Conversion>none</Conversion>
+          <Sensor_location>Utility trunk</Sensor_location>
+          <Count>75</Count>
+          <Instances_per_night> 175,135 </Instances_per_night>
+          <Bytes_per_night> 350,270 </Bytes_per_night>
+      </item>
+      <item>
+          <EFDB_Topic>camera_PCMS_Status</EFDB_Topic>
+          <EFDB_Name>FPGA_Status</EFDB_Name>
+          <Description>FPGA Status</Description>
+          <Frequency>0.054</Frequency>
+          <Publishers>75</Publishers>
+          <Values_per_Publisher>1</Values_per_Publisher>
+          <Size_in_bytes>2</Size_in_bytes>
+          <IDL_Type>short</IDL_Type>
+          <Units>none</Units>
+          <Conversion>none</Conversion>
+          <Sensor_location>Utility trunk</Sensor_location>
+          <Count>75</Count>
+          <Instances_per_night> 175,135 </Instances_per_night>
+          <Bytes_per_night> 350,270 </Bytes_per_night>
+      </item>
+      <item>
+          <EFDB_Topic>camera_PCMS_Status</EFDB_Topic>
+          <EFDB_Name>Low_Status</EFDB_Name>
+          <Description>Low Status</Description>
+          <Frequency>0.054</Frequency>
+          <Publishers>75</Publishers>
+          <Values_per_Publisher>1</Values_per_Publisher>
+          <Size_in_bytes>2</Size_in_bytes>
+          <IDL_Type>short</IDL_Type>
+          <Units>none</Units>
+          <Conversion>none</Conversion>
+          <Sensor_location>Utility trunk</Sensor_location>
+          <Count>75</Count>
+          <Instances_per_night> 175,135 </Instances_per_night>
+          <Bytes_per_night> 350,270 </Bytes_per_night>
+      </item>
+      <item>
+          <EFDB_Topic>camera_PCMS_Status</EFDB_Topic>
+          <EFDB_Name>OD_Status</EFDB_Name>
+          <Description>OD Status</Description>
+          <Frequency>0.054</Frequency>
+          <Publishers>75</Publishers>
+          <Values_per_Publisher>1</Values_per_Publisher>
+          <Size_in_bytes>2</Size_in_bytes>
+          <IDL_Type>short</IDL_Type>
+          <Units>none</Units>
+          <Conversion>none</Conversion>
+          <Sensor_location>Utility trunk</Sensor_location>
+          <Count>75</Count>
+          <Instances_per_night> 175,135 </Instances_per_night>
+          <Bytes_per_night> 350,270 </Bytes_per_night>
+      </item>
+      <item>
+          <EFDB_Topic>camera_PCMS_Voltage</EFDB_Topic>
+          <EFDB_Name>Bias_voltage</EFDB_Name>
+          <Description>Bias voltage</Description>
+          <Frequency>0.054</Frequency>
+          <Publishers>75</Publishers>
+          <Values_per_Publisher>1</Values_per_Publisher>
+          <Size_in_bytes>4</Size_in_bytes>
+          <IDL_Type>float</IDL_Type>
+          <Units>none</Units>
+          <Conversion>none</Conversion>
+          <Sensor_location>Utility trunk</Sensor_location>
+          <Count>75</Count>
+          <Instances_per_night> 175,135 </Instances_per_night>
+          <Bytes_per_night> 700,541 </Bytes_per_night>
+      </item>
+      <item>
+          <EFDB_Topic>camera_PCMS_Voltage</EFDB_Topic>
+          <EFDB_Name>Clock_voltage</EFDB_Name>
+          <Description>Clock voltage</Description>
+          <Frequency>0.054</Frequency>
+          <Publishers>75</Publishers>
+          <Values_per_Publisher>1</Values_per_Publisher>
+          <Size_in_bytes>4</Size_in_bytes>
+          <IDL_Type>float</IDL_Type>
+          <Units>none</Units>
+          <Conversion>none</Conversion>
+          <Sensor_location>Utility trunk</Sensor_location>
+          <Count>75</Count>
+          <Instances_per_night> 175,135 </Instances_per_night>
+          <Bytes_per_night> 700,541 </Bytes_per_night>
+      </item>
+      <item>
+          <EFDB_Topic>camera_PCMS_Voltage</EFDB_Topic>
+          <EFDB_Name>FPGA_voltage</EFDB_Name>
+          <Description>FPGA voltage</Description>
+          <Frequency>0.054</Frequency>
+          <Publishers>75</Publishers>
+          <Values_per_Publisher>1</Values_per_Publisher>
+          <Size_in_bytes>4</Size_in_bytes>
+          <IDL_Type>float</IDL_Type>
+          <Units>none</Units>
+          <Conversion>none</Conversion>
+          <Sensor_location>Utility trunk</Sensor_location>
+          <Count>75</Count>
+          <Instances_per_night> 175,135 </Instances_per_night>
+          <Bytes_per_night> 700,541 </Bytes_per_night>
+      </item>
+      <item>
+          <EFDB_Topic>camera_PCMS_Voltage</EFDB_Topic>
+          <EFDB_Name>Low_voltage</EFDB_Name>
+          <Description>Low voltage</Description>
+          <Frequency>0.054</Frequency>
+          <Publishers>75</Publishers>
+          <Values_per_Publisher>1</Values_per_Publisher>
+          <Size_in_bytes>4</Size_in_bytes>
+          <IDL_Type>float</IDL_Type>
+          <Units>none</Units>
+          <Conversion>none</Conversion>
+          <Sensor_location>Utility trunk</Sensor_location>
+          <Count>75</Count>
+          <Instances_per_night> 175,135 </Instances_per_night>
+          <Bytes_per_night> 700,541 </Bytes_per_night>
+      </item>
+      <item>
+          <EFDB_Topic>camera_PCMS_Voltage</EFDB_Topic>
+          <EFDB_Name>OD_voltage</EFDB_Name>
+          <Description>OD voltage</Description>
+          <Frequency>0.054</Frequency>
+          <Publishers>75</Publishers>
+          <Values_per_Publisher>1</Values_per_Publisher>
+          <Size_in_bytes>4</Size_in_bytes>
+          <IDL_Type>float</IDL_Type>
+          <Units>none</Units>
+          <Conversion>none</Conversion>
+          <Sensor_location>Utility trunk</Sensor_location>
+          <Count>75</Count>
+          <Instances_per_night> 175,135 </Instances_per_night>
+          <Bytes_per_night> 700,541 </Bytes_per_night>
+      </item>
+      <item>
+          <EFDB_Topic>infrastructure_</EFDB_Topic>
+          <EFDB_Name>No information</EFDB_Name>
+          <Description></Description>
+          <Frequency></Frequency>
+          <Publishers></Publishers>
+          <Values_per_Publisher></Values_per_Publisher>
+          <Size_in_bytes></Size_in_bytes>
+          <IDL_Type></IDL_Type>
+          <Units></Units>
+          <Conversion></Conversion>
+          <Sensor_location></Sensor_location>
+          <Count></Count>
+          <Instances_per_night></Instances_per_night>
+          <Bytes_per_night></Bytes_per_night>
+      </item>
+   </Items>
+</tlm:SALTelemetry>

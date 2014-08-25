@@ -1,0 +1,18 @@
+module org {
+  module lsst {
+    module sal {
+      struct SALTopic_eventType {
+	  string<32> private_revCode;  //private
+	  long       private_sndStamp; //private
+	  long       private_rcvStamp; //private
+	  long       private_seqNum;   //private
+	  long       private_origin;   //private
+	  long       private_cmdID;    //private
+          string<128> message;
+      };
+#pragma keylist SALTopic_eventType
+    };
+  };
+};
+
+

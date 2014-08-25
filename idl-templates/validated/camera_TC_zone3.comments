@@ -1,3 +1,0 @@
-set COMMENT(camera.TC.zone3.temperature) "Zone 3 temperatures"
-set COMMENT(camera.TC.zone3.setpoint) "Zone 3 target temperatures"
-set COMMENT(camera.TC.zone3.status) "Zone 3 statuses"

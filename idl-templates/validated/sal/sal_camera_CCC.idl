@@ -1,0 +1,13 @@
+module camera
+{
+	struct CCC_status {
+	  string<32> private_revCode;  //private
+	  double     private_sndStamp; //private
+	  double     private_rcvStamp; //private
+	  long       private_seqNum;   //private
+	  long       private_origin;   //private
+	  long	Image_Status[20];	// 0.054 | none | CCS status during image | none | Control room | 20 |  46,703  |  186,811 
+	  long	CCS_Status[20];	// 0.017 | none | Periodic or on-demand status | none | Control room | 20 |  14,400  |  57,600 
+	};
+	#pragma keylist CCC_status
+};

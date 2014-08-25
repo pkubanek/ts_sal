@@ -1,0 +1,6 @@
+dm.derived.psf.metric1 200 double 0.1
+dm.derived.psf.metric2 200 double 0.1
+dm.derived.psf.metric3 200 double 0.1
+dm.derived.psf.metric4 200 double 0.1
+dm.derived.psf.metric5 200 double 0.1
+dm.derived.psf.metric6 200 double 0.1

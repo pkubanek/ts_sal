@@ -1,4 +1,0 @@
-set COMMENT(camera.UTIL.flow_rate) "Utility trunk Flow rates"
-set COMMENT(camera.UTIL.temperature) "Utility trunk temperatures"
-set COMMENT(camera.UTIL.setpoint) "Utility trunk target temperatures"
-set COMMENT(camera.UTIL.status) "Utility trunk statuses"

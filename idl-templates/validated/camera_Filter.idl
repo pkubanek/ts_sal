@@ -1,0 +1,10 @@
+struct Filter {
+  string<32> private_revCode;  //private
+  double     private_sndStamp; //private
+  double     private_rcvStamp; //private
+  long       private_seqNum;   //private
+  long       private_origin;   //private
+  long	Loader_telemetry;	// tbd | ?? | Loader | none | none | ?? |  | 
+  unsigned short	REB_ID;	// none | | Raft Electronics Board ID
+};
+#pragma keylist Filter

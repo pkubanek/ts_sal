@@ -1,4 +1,0 @@
-set COMMENT(m1m3.TC.setpoint) "Setpoint temp"
-set COMMENT(m1m3.TC.temperature) "Measured temp"
-set COMMENT(m1m3.TC.error) "Error"
-set COMMENT(m1m3.TC.status) "Status bits"

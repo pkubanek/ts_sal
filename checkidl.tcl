@@ -128,6 +128,7 @@ global NEWTOPICS NEWSIZES NEWCONSTS
 global DESC SDESC IDLTYPES IDLSIZES
 global PUBLISHERS FREQUENCY KEYINDEX
 global SAL_DIR TIDUSED SAL_WORK_DIR
+global XMLTOPICS XMLTLM
   set fin [open $f r]
   set fout [open $SAL_WORK_DIR/idl-templates/validated/$f w]
   stdlog "Creating $SAL_WORK_DIR/idl-templates/validated/$f"
@@ -135,6 +136,8 @@ global SAL_DIR TIDUSED SAL_WORK_DIR
   set hid [join [split $id _] .]
   set NONCODING 0
   set KEYINDEX ""
+  catch {unset XMLTOPICS}
+  catch {unset XMLTLM}
   set finds 0
   set iinum 0
   set eid 0
@@ -151,7 +154,7 @@ global SAL_DIR TIDUSED SAL_WORK_DIR
            close $fout
            close $fdet
            close $fcmt
-           set mdid [lindex [exec md5sum validated/$topicid.idl] 0]
+           set mdid [lindex [exec md5sum $SAL_WORK_DIR/idl-templates/validated/$topicid.idl] 0]
            set tid [format %d 0x[string range $mdid 26 end]]
            set fdef [open $SAL_DIR/code/include/sal/svcSAL_[set topicid]_iid.h w]
            gentopicdefsql $topicid
@@ -165,7 +168,7 @@ global SAL_DIR TIDUSED SAL_WORK_DIR
                  incr ps 1
               }
               puts $fdef "#define SAL_IID_[set topicid]_[set t] $tid		// $t $props($t,type) $ps"
-              puts $fsql "INSERT INTO [set topicid]_items VALUES ($props($t,num),\"$t\",\"$props($t,type)\",$props($t,size),\"$props($t,units)\",$props($t,freq),\"$props($t,range)\",\"$props($t,comment)\");"
+              puts $fsql "INSERT INTO [set topicid]_items VALUES ($props($t,num),\"$t\",\"$props($t,type)\",$props($t,size),\"$props($t,units)\",$props($t,freq),\"$props($t,range)\",\"$props($t,location)\",\"$props($t,comment)\");"
               incr tid 1
            }
            puts $fdef "#endif\n"
@@ -203,18 +206,19 @@ global SAL_DIR TIDUSED SAL_WORK_DIR
                  close $fdet
                  close $fcmt
               }    
-              set fhtm [open validated/$nt-streamdef.html w]
+              set fhtm [open $SAL_WORK_DIR/idl-templates/validated/$nt-streamdef.html w]
               htmheader $fhtm $hid
-              set fout [open validated/$nt.idl w]
-              set fdet [open validated/$nt.detail w]
+              set fout [open $SAL_WORK_DIR/idl-templates/validated/$nt.idl w]
+              set fdet [open $SAL_WORK_DIR/idl-templates/validated/$nt.detail w]
               if { $KEYINDEX != "" } {puts $fdet "#index $KEYINDEX"; set KEYINDEX ""}
-              set fcmt [open validated/$nt.comments w]
+              set fcmt [open $SAL_WORK_DIR/idl-templates/validated/$nt.comments w]
               puts $fout "struct $nt \{
   string<32> private_revCode;  //private
   double     private_sndStamp; //private
   double     private_rcvStamp; //private
   long       private_seqNum;   //private
-  long       private_origin;   //private"
+  long       private_origin;   //private
+  long       private_host;     //private"
               set NEWTOPICS($hid) 1
               set NEWSIZES($hid)  0
            } else {
@@ -240,18 +244,22 @@ global SAL_DIR TIDUSED SAL_WORK_DIR
            if { [lindex [split $id _] 0] == "private" } {
               puts stdout "Skipping private item $id"
            } else {
-             set m1 [string trim [lindex [split $rec "|"] 1]]
-             set meta [split $m1 ";"]
-             set units [string trim [lindex $meta 0]]
-             set range [string trim [lindex $meta 1]]
-             set comments [string trim [lrange $meta 2 end] " \{\}"]
+             set m1 [lindex [split $rec "/"] 2]
+             set meta [split $m1 "|"]
+             set freq  [string trim [lindex $meta 0]]
+             set units [string trim [lindex $meta 1]]
+             set comments [string trim [lindex $meta 2]]
+             set range [string trim [lindex $meta 3]]
+             set location [string trim [lindex $meta 4]]
+             set pubsize [string trim [lindex $meta 5]]
 #             puts stdout "$nt - $u $id $type $siz $units $range $comments"
              incr NEWSIZES($hid) $siz
              puts $fout " $u [string trim $vitem];"
              incr eid 1
              doitem $eid $fhtm $id $type $siz "$units" "$range" "$comments" 
-#            puts stdout  "doitem $eid $fhtm $id $type $siz |$units |$range  |$comments "
-             if { [info exists FREQUENCY($hid)] == 0 } {set FREQUENCY($hid) 0.1}
+             puts stdout  "doitem $eid $fhtm $id $type $siz |$units |$range  |$comments "
+             if { $freq != "" && $freq != "tbd" } {set FREQUENCY($hid) $freq }
+             if { [info exists FREQUENCY($hid)] == 0 } {set FREQUENCY($hid) 0.054}
              puts $fdet "$hid.$id $siz $type $FREQUENCY($hid)"
              lappend tnames $id
              incr iinum 1
@@ -261,7 +269,27 @@ global SAL_DIR TIDUSED SAL_WORK_DIR
              set props($id,freq) "$FREQUENCY($hid)"
              set props($id,range) "$range"
              set props($id,units) "$units"
+             set props($id,location) "$location"
              set props($id,comment) "$comments"
+             set ikey "[set nt]_[set id]"
+             set XMLTOPICS($ikey) 1
+             set XMLTLM($ikey,EFDB_Topic) $nt
+             set XMLTLM($ikey,EFDB_Name) $id
+             set XMLTLM($ikey,Description) $comments
+             set XMLTLM($ikey,Frequency) $FREQUENCY($hid)
+             set XMLTLM($ikey,Publishers) 1
+             if { $pubsize != "" } {catch {set XMLTLM($ikey,Publishers) [expr $pubsize/$siz]}}
+             set XMLTLM($ikey,Values_per_Publisher) $siz
+             set bytesiz $IDLSIZES([lindex [split $type "<"] 0])
+             set XMLTLM($ikey,Size_in_bytes) [expr $siz * $bytesiz]
+             set XMLTLM($ikey,IDL_Type) $type
+             set XMLTLM($ikey,Units) $units
+             set XMLTLM($ikey,Conversion) $range
+             set XMLTLM($ikey,Sensor_location) $location
+             set XMLTLM($ikey,Count) $siz
+             set XMLTLM($ikey,Instances_per_night) [expr  $FREQUENCY($hid)*43200]
+             set XMLTLM($ikey,Bytes_per_night) [expr int($FREQUENCY($hid)*43200*$siz*$bytesiz)]
+             set XMLTLM($ikey,Explanation) "http://sal.lsst.org/SAL/Telemetry/$ikey.html"
              if { [string trim $comments] != "none" && [string trim $comments] != "" } {
                 puts $fcmt "set COMMENT($hid.$id) \"[string trim $comments]\""
              }
@@ -271,6 +299,7 @@ global SAL_DIR TIDUSED SAL_WORK_DIR
      }
   }
   close $fin
+  writeXMLsubsys $SAL_WORK_DIR/xml $nt topic
   if { $finds == 0 } {
      errorexit "No struct found in $f"
   }
@@ -290,6 +319,7 @@ CREATE TABLE [set topic]_items (
   units char(32),
   freq  float,
   range char(32),
+  location char(32),
   comment char(128),
   PRIMARY KEY (num)
 );"
@@ -298,7 +328,7 @@ CREATE TABLE [set topic]_items (
 
 
 proc checkall { } {
-  set all [glob *.idl]
+  set all [lsort [glob *.idl]]
   foreach i $all { checkidl $i ; puts stdout "Validated $i" }
 }
 
@@ -322,21 +352,28 @@ global SAL_DIR
    }
 }
 
-
+set SAL_WORK_DIR $env(SAL_WORK_DIR)
+set SAL_DIR $env(SAL_DIR)
 source $env(SAL_DIR)/streamutils.tcl
 source $env(SAL_DIR)/unitsdesc.tcl
 source $env(SAL_DIR)/datastream_desc.tcl
 source $env(SAL_DIR)/camera-subsysdesc.tcl
+source $env(SAL_DIR)/utilities.tcl
+source $env(SAL_DIR)/xml/SALTopicTemplateXML.tcl
 
-set IDLTYPES "byte octet  short int long float double string unsigned"
-set IDLSIZES(byte)   1
-set IDLSIZES(octet)  1
-set IDLSIZES(string) 1
-set IDLSIZES(short)  2
-set IDLSIZES(int)    4
-set IDLSIZES(long)   4
-set IDLSIZES(float)  4
-set IDLSIZES(double) 8
+
+set IDLTYPES "boolean char byte octet short int long longlong float double string unsigned"
+set IDLSIZES(byte)     1
+set IDLSIZES(char)     1
+set IDLSIZES(octet)    1
+set IDLSIZES(boolean)  2
+set IDLSIZES(string)   1
+set IDLSIZES(short)    2
+set IDLSIZES(int)      4
+set IDLSIZES(long)     4
+set IDLSIZES(longlong) 8
+set IDLSIZES(float)    4
+set IDLSIZES(double)   8
 set IDLRESERVED "abstract any attribute boolean case char component const consumes context custom default double emits enum eventtype exception factory false finder fixed float getraises home import in inout interface local long module multiple native object octet oneway out primarykey private provides public publishes raises readonly sequence setraises short string struct supports switch true truncatable typedef typeid typeprefix union unsigned uses valuebase valuetype void wchar wstring"
 
 

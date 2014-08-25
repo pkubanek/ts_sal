@@ -1,0 +1,7 @@
+dm.derived.dataquality.metric1 200 double 0.1
+dm.derived.dataquality.metric2 200 double 0.1
+dm.derived.dataquality.metric3 200 double 0.1
+dm.derived.dataquality.metric4 200 double 0.1
+dm.derived.dataquality.metric5 200 double 0.1
+dm.derived.dataquality.metric6 200 double 0.1
+dm.derived.dataquality.summary 100 double 0.1

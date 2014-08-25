@@ -1,2 +1,0 @@
-set COMMENT(camera.SDS.status.flags) "Error flags"
-set COMMENT(camera.SDS.status.current) "Generic health parameters"

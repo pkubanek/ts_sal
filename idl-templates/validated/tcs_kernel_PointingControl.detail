@@ -1,0 +1,6 @@
+tcs.kernel.PointingControl.RollFilter 32 string<32> 0.1
+tcs.kernel.PointingControl.PitchFilter 32 string<32> 0.1
+tcs.kernel.PointingControl.AGuide 1 float 0.1
+tcs.kernel.PointingControl.BGuide 1 float 0.1
+tcs.kernel.PointingControl.ALocal 1 float 0.1
+tcs.kernel.PointingControl.BLocal 1 float 0.1

@@ -1,7 +1,0 @@
-struct camera_LASERCAL {
-  string<32> private_revCode;  //private
-  long       private_sndStamp; //private
-  long       private_rcvStamp; //private
-  long       private_seqNum;   //private
-  long       private_origin;   //private
-  float positions [10];		#	none ;	none ;	Measured references during calibration

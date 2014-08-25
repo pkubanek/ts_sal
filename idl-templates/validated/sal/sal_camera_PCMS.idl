@@ -1,0 +1,45 @@
+module camera
+{
+	struct PCMS_Current {
+	  string<32> private_revCode;  //private
+	  double     private_sndStamp; //private
+	  double     private_rcvStamp; //private
+	  long       private_seqNum;   //private
+	  long       private_origin;   //private
+	  float	FPGA_current;	// 18 | none | FPGA current | none | Utility trunk | 75 |  175,135  |  700,541 
+	  float	Low_current;	// 18 | none | Low current | none | Utility trunk | 75 |  175,135  |  700,541 
+	  float	Clock_current;	// 18 | none | Clock current | none | Utility trunk | 75 |  175,135  |  700,541 
+	  float	OD_current;	// 18 | none | OD current | none | Utility trunk | 75 |  175,135  |  700,541 
+	  float	Bias_current;	// 18 | none | Bias current | none | Utility trunk | 75 |  175,135  |  700,541 
+	  unsigned short	REB_ID;	// none | | Raft Electronics Board ID
+	};
+	#pragma keylist PCMS_Current
+	struct PCMS_Status {
+	  string<32> private_revCode;  //private
+	  double     private_sndStamp; //private
+	  double     private_rcvStamp; //private
+	  long       private_seqNum;   //private
+	  long       private_origin;   //private
+	  short	FPGA_Status;	// 18 | none | FPGA Status | none | Utility trunk | 75 |  175,135  |  350,270 
+	  short	Low_Status;	// 18 | none | Low Status | none | Utility trunk | 75 |  175,135  |  350,270 
+	  short	Clock_Status;	// 18 | none | Clock Status | none | Utility trunk | 75 |  175,135  |  350,270 
+	  short	OD_Status;	// 18 | none | OD Status | none | Utility trunk | 75 |  175,135  |  350,270 
+	  short	Bias_Status;	// 18 | none | Bias Status | none | Utility trunk | 75 |  175,135  |  350,270 
+	  unsigned short	REB_ID;	// none | | Raft Electronics Board ID
+	};
+	#pragma keylist PCMS_Status
+	struct PCMS_Voltage {
+	  string<32> private_revCode;  //private
+	  double     private_sndStamp; //private
+	  double     private_rcvStamp; //private
+	  long       private_seqNum;   //private
+	  long       private_origin;   //private
+	  float	FPGA_voltage;	// 18 | none | FPGA voltage | none | Utility trunk | 75 |  175,135  |  700,541 
+	  float	Low_voltage;	// 18 | none | Low voltage | none | Utility trunk | 75 |  175,135  |  700,541 
+	  float	Clock_voltage;	// 18 | none | Clock voltage | none | Utility trunk | 75 |  175,135  |  700,541 
+	  float	OD_voltage;	// 18 | none | OD voltage | none | Utility trunk | 75 |  175,135  |  700,541 
+	  float	Bias_voltage;	// 18 | none | Bias voltage | none | Utility trunk | 75 |  175,135  |  700,541 
+	  unsigned short	REB_ID;	// none | | Raft Electronics Board ID
+	};
+	#pragma keylist PCMS_Voltage
+};

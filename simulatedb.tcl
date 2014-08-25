@@ -1,9 +1,19 @@
 
-proc generaterecs { handle pkey topic } {
-global SQLREC 
-  set cmd "INSERT INTO $topic VALUES (\"$pkey\""
-  set flds [split $SQLREC($topic) ,]
-  writesql $handle $topic $cmd $flds
+proc generaterecs { handle pkey topic freq } {
+global SQLREC
+  if { $freq < 1.0 } {
+    set subsec 0.0
+    while { $subsec < 1.0 } {
+      set cmd "INSERT INTO $topic VALUES (\"$pkey.$subsec\""
+      set flds [split $SQLREC($topic) ,]
+      writesql $handle $topic $cmd $flds
+      set subsec [expr $subsec + $freq]
+    }
+  } else {
+    set cmd "INSERT INTO $topic VALUES (\"$pkey\""
+    set flds [split $SQLREC($topic) ,]
+    writesql $handle $topic $cmd $flds
+  }
 }
 
 
@@ -151,12 +161,15 @@ proc simulate_char_value { } {
 proc simulateperiod { handle topic start end freq } {
    set sample $start
    while { [calcms $sample] < [calcms $end] } {
-      generaterecs $handle $sample $topic
+      generaterecs $handle $sample $topic $freq
       set sample [nextsample $sample $freq]
    }
 }
 
+set SUBSEC 0.0
+
 proc nextsample { sample freq } {
+  if { $freq < 1.0 } {set freq 1}
   set s [clock scan $sample]
   set n [expr $s + $freq]
   return [clock format $n -format "%Y-%m-%d %H:%M:%S"]

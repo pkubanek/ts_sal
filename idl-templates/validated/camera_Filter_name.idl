@@ -1,0 +1,9 @@
+struct Filter_name {
+  string<32> private_revCode;  //private
+  double     private_sndStamp; //private
+  double     private_rcvStamp; //private
+  long       private_seqNum;   //private
+  long       private_origin;   //private
+  string<32>	Filter_online;	// 0.054 | none | FCS: Name of filter at online position | none | Camera body | 1 |  2,335  |  74,724 
+};
+#pragma keylist Filter_name

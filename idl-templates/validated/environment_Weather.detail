@@ -1,0 +1,2 @@
+environment.Weather.Raw 128 long 0.1
+environment.Weather.Calibrated 256 float 0.1
