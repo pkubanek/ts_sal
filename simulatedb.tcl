@@ -1,9 +1,19 @@
 
-proc generaterecs { handle pkey topic } {
-global SQLREC 
-  set cmd "INSERT INTO $topic VALUES (\"$pkey\""
-  set flds [split $SQLREC($topic) ,]
-  writesql $handle $topic $cmd $flds
+proc generaterecs { handle pkey topic freq } {
+global SQLREC
+  if { $freq < 1.0 } {
+    set subsec 0.0
+    while { $subsec < 1.0 } {
+      set cmd "INSERT INTO $topic VALUES (\"$pkey.$subsec\""
+      set flds [split $SQLREC($topic) ,]
+      writesql $handle $topic $cmd $flds
+      set subsec [expr $subsec + $freq]
+    }
+  } else {
+    set cmd "INSERT INTO $topic VALUES (\"$pkey\""
+    set flds [split $SQLREC($topic) ,]
+    writesql $handle $topic $cmd $flds
+  }
 }
 
 
@@ -151,12 +161,15 @@ proc simulate_char_value { } {
 proc simulateperiod { handle topic start end freq } {
    set sample $start
    while { [calcms $sample] < [calcms $end] } {
-      generaterecs $handle $sample $topic
+      generaterecs $handle $sample $topic $freq
       set sample [nextsample $sample $freq]
    }
 }
 
+set SUBSEC 0.0
+
 proc nextsample { sample freq } {
+  if { $freq < 1.0 } {set freq 1}
   set s [clock scan $sample]
   set n [expr $s + $freq]
   return [clock format $n -format "%Y-%m-%d %H:%M:%S"]
@@ -196,15 +209,16 @@ set KEYRANGE(ccdID) 201
 set KEYRANGE(raftID) 25
 set KEYRANGE(ampID) 132
 
-source /opt/lsstsal/scripts/streamutils.tcl
+source $SAL_DIR/streamutils.tcl
 
-set recdef [glob $WORKING/*.sqlwrt]
+set recdef [glob $SAL_WORK_DIR/sql/*.sqlwrt]
 foreach i $recdef { 
    source $i
 }
 
-source $WORKING/revCodes.tcl
-source $WORKING/datastreams.freqs
+source $SAL_DIR/revCodes.tcl
+source $SAL_WORK_DIR/.salwork/revCodes.tcl
+source $SAL_DIR/datastreams.freqs
 
 
 foreach s [array names FREQUENCY] {
@@ -214,7 +228,7 @@ foreach s [array names FREQUENCY] {
 }
 
 ##clock format 1226532001 -format "%Y-%m-%d %H:%M:%S"
-## source /opt/lsstsal/scripts/checkidl.tcl
+## source /usr/local/scripts/tcl/checkidl.tcl
 ## checkidl camera-subsystems-init-v1.idl
 ## cat validated/*.detail > datastreams.detail
 ## generaterecs stdout somekey camera_BEE_biases

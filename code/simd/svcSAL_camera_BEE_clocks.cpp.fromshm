@@ -1,0 +1,31 @@
+		for (unsigned int count=0; count<202; count++) {
+			d.parallel_1A[count] = camera_BEE_clocks_ref->parallel_1A[count];
+		}
+		for (unsigned int count=0; count<202; count++) {
+			d.parallel_1B[count] = camera_BEE_clocks_ref->parallel_1B[count];
+		}
+		for (unsigned int count=0; count<202; count++) {
+			d.parallel_2A[count] = camera_BEE_clocks_ref->parallel_2A[count];
+		}
+		for (unsigned int count=0; count<202; count++) {
+			d.parallel_2B[count] = camera_BEE_clocks_ref->parallel_2B[count];
+		}
+		for (unsigned int count=0; count<202; count++) {
+			d.serial_1A[count] = camera_BEE_clocks_ref->serial_1A[count];
+		}
+		for (unsigned int count=0; count<202; count++) {
+			d.serial_1B[count] = camera_BEE_clocks_ref->serial_1B[count];
+		}
+		for (unsigned int count=0; count<202; count++) {
+			d.serial_2A[count] = camera_BEE_clocks_ref->serial_2A[count];
+		}
+		for (unsigned int count=0; count<202; count++) {
+			d.serial_2B[count] = camera_BEE_clocks_ref->serial_2B[count];
+		}
+		for (unsigned int count=0; count<202; count++) {
+			d.serial_3A[count] = camera_BEE_clocks_ref->serial_3A[count];
+		}
+		for (unsigned int count=0; count<202; count++) {
+			d.serial_3B[count] = camera_BEE_clocks_ref->serial_3B[count];
+		}
+		camera_BEE_clocks_ref->syncO = 1;

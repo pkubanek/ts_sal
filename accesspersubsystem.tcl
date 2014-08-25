@@ -1,6 +1,6 @@
 #!/usr/bin/tclsh 
 
-set scriptdir /opt/lsstsal/scripts
+set scriptdir /usr/local/scripts/tcl
 
 proc calcshmid { subsys } {
   set fout [open /tmp/subsys.tmp w]
@@ -99,12 +99,14 @@ foreach s "$STREAMS" {
         *rcvStamp = [set s]_ref->private_rcvStamp; 
         *seqNum = [set s]_ref->private_seqNum; 
         *origin = [set s]_ref->private_origin; 
+        *host   = [set s]_ref->private_host; 
      \}
      if (strcmp(operation,\"write\") == 0 ) \{
         [set s]_ref->private_sndStamp = *sndStamp; 
         [set s]_ref->private_rcvStamp = *rcvStamp; 
         [set s]_ref->private_seqNum = *seqNum; 
         [set s]_ref->private_origin = *origin; 
+        [set s]_ref->private_host = *host; 
      \}
      if (strcmp(operation,\"verify\") == 0 ) \{
         if ( strcmp(revCode,\"$rev\") != 0 ) { return SAL__ILLEGAL_REVCODE; }

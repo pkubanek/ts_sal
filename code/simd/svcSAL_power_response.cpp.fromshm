@@ -1,0 +1,8 @@
+		d.repeat = power_response_ref->repeat;
+		d.submits = power_response_ref->submits;
+		d.cmdID = power_response_ref->cmdID;
+		d.timeout = power_response_ref->timeout;
+		strncpy(d.ack,power_response_ref->ack,16);
+		strncpy(d.error,power_response_ref->error,16);
+		strncpy(d.result,power_response_ref->result,64);
+		power_response_ref->syncO = 1;

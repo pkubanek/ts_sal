@@ -1,0 +1,10 @@
+		for (unsigned int count=0; count<33; count++) {
+			ocs_pointing_wcs_ref->coeff[count] = samples[i].coeff[count];
+		}
+		for (unsigned int count=0; count<201; count++) {
+			ocs_pointing_wcs_ref->dec[count] = samples[i].dec[count];
+		}
+		for (unsigned int count=0; count<201; count++) {
+			ocs_pointing_wcs_ref->ra[count] = samples[i].ra[count];
+		}
+		ocs_pointing_wcs_ref->syncI++;

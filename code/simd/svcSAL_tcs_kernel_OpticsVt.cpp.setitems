@@ -1,0 +1,3 @@
+		result = salHandle->setitem(SAL_IID_tcs_kernel_OpticsVt_tilt, tilt);
+		result = salHandle->setitem(SAL_IID_tcs_kernel_OpticsVt_tip, tip);
+		result = salHandle->putSample();

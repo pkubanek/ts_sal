@@ -1,0 +1,13 @@
+#!/bin/sh
+
+echo "Stopping default and/or LSST domain daemon"
+ospl stop
+ospl -d LSST stop
+
+echo "Starting LSST domain OpenSplice daemon"
+ospl -d LSST start
+
+echo "Starting publisher and subsciber in xterms"
+xterm -e ./$1-sub --reader-history 100 --deadline 5000 --topic test &
+xterm -e ./$1-pub --name test --samples 100  --period 1000 --topic test &
+

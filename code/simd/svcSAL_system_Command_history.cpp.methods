@@ -1,0 +1,112 @@
+
+	svcRTN salsystem_Command_history::getItem ( svcIID itemId , (svcCHAR *)value )
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    switch (itemId) {
+	    
+
+
+                 case SAL_IID_system_Command_history_Command :
+                      strncpy(value, data.Command, 32);
+                      result = SAL__OK;
+                      break;
+
+
+	    }
+	    return result;
+	}
+	
+
+
+	svcRTN salsystem_Command_history::setItem ( svcIID itemId , (svcCHAR *)value )
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    switch (itemId) {
+	    
+
+
+                 case SAL_IID_system_Command_history_Command :
+                      strncpy(data.Command, value, 32);
+                      result = SAL__OK;
+                      break;
+
+
+	    }
+	    return result;
+	}
+	
+
+
+       svcRTN salsystem_Command_history::setItemStr ( svcIID itemId , svcCHAR *textValue)
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    
+	    switch (itemid) {
+
+	    }
+	    return result;
+	}
+
+       svcRTN salsystem_Command_history::getItemStr ( svcIID itemId , svcCHAR *textValue)
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    
+	    switch (itemid) {
+
+	    }
+	    return result;
+	}
+
+	svcRTN salsystem_Command_history::getItem ( svcIID itemId , svcFLT &value, svcUINT size)
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    switch (itemId) {
+
+                 case SAL_IID_system_Command_history_Data :
+                      if { size > 17 } {return SAL__INDEX_OUT_OF_RANGE;}
+                      for (unsigned int count=0; count<size; count++) {
+                        value[count] = data.Data[count];
+                      }
+                      result = SAL__OK;
+                      break;
+
+	    }
+	    return result;
+	}
+
+ 	svcRTN salsystem_Command_history::setItem ( svcIID itemId , svcFLT &value , svcUINT size)
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    switch (itemId) {
+
+                 case SAL_IID_system_Command_history_Data :
+                      if { size > 17 } {return SAL__INDEX_OUT_OF_RANGE;}
+                      for (unsigned int count=0; count<size; count++) {
+                        data.Data[count] = value[count];
+                      }
+                      result = SAL__OK;
+                      break;
+
+	    }
+	    return result;
+	}
+
+       svcRTN salsystem_Command_history::setItemStr ( svcIID itemId , svcCHAR *textValue)
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    
+	    switch (itemid) {
+
+	    }
+	    return result;
+	}
+
+       svcRTN salsystem_Command_history::getItemStr ( svcIID itemId , svcCHAR *textValue)
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    
+	    switch (itemid) {
+
+	    }
+	    return result;
+	}

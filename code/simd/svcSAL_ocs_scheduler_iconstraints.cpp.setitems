@@ -1,0 +1,4 @@
+		result = salHandle->setitem(SAL_IID_ocs_scheduler_iconstraints_maxval, maxval);
+		result = salHandle->setitem(SAL_IID_ocs_scheduler_iconstraints_minval, minval);
+		result = salHandle->setitem(SAL_IID_ocs_scheduler_iconstraints_type, type);
+		result = salHandle->putSample();

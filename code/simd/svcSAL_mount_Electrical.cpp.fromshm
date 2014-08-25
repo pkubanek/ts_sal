@@ -1,0 +1,7 @@
+		for (unsigned int count=0; count<17; count++) {
+			d.Raw[count] = mount_Electrical_ref->Raw[count];
+		}
+		for (unsigned int count=0; count<33; count++) {
+			d.Calibrated[count] = mount_Electrical_ref->Calibrated[count];
+		}
+		mount_Electrical_ref->syncO = 1;

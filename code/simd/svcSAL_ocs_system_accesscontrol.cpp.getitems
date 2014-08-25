@@ -1,0 +1,6 @@
+		result = salHandle->getSample(SAL__SLOWPOLL);
+		result = salHandle->getitem(SAL_IID_ocs_system_accesscontrol_byoperator, byoperator);
+		result = salHandle->getitem(SAL_IID_ocs_system_accesscontrol_bypolicy, bypolicy);
+		result = salHandle->getitem(SAL_IID_ocs_system_accesscontrol_bystation, bystation);
+		result = salHandle->getitem(SAL_IID_ocs_system_accesscontrol_device, device);
+		result = salHandle->getitem(SAL_IID_ocs_system_accesscontrol_subssystem, subssystem);

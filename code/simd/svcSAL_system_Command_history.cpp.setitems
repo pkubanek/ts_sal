@@ -1,0 +1,3 @@
+		result = salHandle->setitem(SAL_IID_system_Command_history_Command, Command);
+		result = salHandle->setitem(SAL_IID_system_Command_history_Data, Data, 17);
+		result = salHandle->putSample();

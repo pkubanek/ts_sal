@@ -1,3 +1,0 @@
-set COMMENT(m1m3.Supports.targetpos) "Stepper Motor target position"
-set COMMENT(m1m3.Supports.stepcnt) "Stepper Motor actual position"
-set COMMENT(m1m3.Supports.force) "Measured force"

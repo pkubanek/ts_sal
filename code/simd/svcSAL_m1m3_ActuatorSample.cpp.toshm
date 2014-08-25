@@ -1,0 +1,14 @@
+		m1m3_ActuatorSample_ref->actuatorID = samples[i].actuatorID;
+		for (unsigned int count=0; count<101; count++) {
+			m1m3_ActuatorSample_ref->error[count] = samples[i].error[count];
+		}
+		for (unsigned int count=0; count<101; count++) {
+			m1m3_ActuatorSample_ref->position[count] = samples[i].position[count];
+		}
+		for (unsigned int count=0; count<101; count++) {
+			m1m3_ActuatorSample_ref->setpoint[count] = samples[i].setpoint[count];
+		}
+		for (unsigned int count=0; count<101; count++) {
+			m1m3_ActuatorSample_ref->status[count] = samples[i].status[count];
+		}
+		m1m3_ActuatorSample_ref->syncI++;

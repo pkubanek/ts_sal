@@ -1,0 +1,93 @@
+Kurt Schwehr
+Aug 27, 1996
+
+
+**********************************
+* Building nddswish from scratch *
+**********************************
+
+setenv CVSROOT /home/tardis/usr0/rovers/Master/
+cd
+mkdir mars
+cd mars
+cvs checkout include
+mkdir bin
+mkdir bin/IRIX
+mkdir lib
+mkdir lib/IRIX
+mkdir src
+
+cd src
+
+cvs checkout nddstypes
+cvs checkout kinematics
+cvs checkout ssl
+cvs checkout tcl
+
+cd src/nddstypes
+make depend
+make install		# Ignore warnings of anonymous functions(from nddsgen)
+
+			# User falls asleep waiting for types to compile
+
+cd ../kinematics
+make depend
+make install
+
+cd ../ssl
+make depend
+make install
+
+cd ../tcl
+make depend
+make install
+
+*****************************
+* Adding a type to nddswish *
+*****************************
+
+cd ~/mars/nddstypes
+mkdir newtypedir
+cd newtypedir
+
+cp ~dsw/marsokhod/src/pilot/*/piTakePanorama.x .	# Bring in the .x file
+cp ../arm/Makefile .
+
+vi Makefile
+  # Change these 3 variables:
+  #
+  #   NDDSTYPEEXT:  set to  the extension (probably Struct, Tag, or Type)
+  #   LIB:  Change to an appropriate name without 'lib' or '.a'
+  #   XDRS: list all the .x files in this directory
+
+make depend
+make install
+
+cd ..		# now in nddstypes
+vi Makefile
+  # SUBDIRS: if you created a new subdirectory, add it to this list
+
+cd ../tcl
+
+emacs registry_tclndds.c
+	# copy on of the blocks of 3 lines.
+	# Replace the name of the old type with yours
+	#	I suggest using "M-x query-replace"
+
+emacs registry_tclndds.h
+	# Copy a block and do a replacement to the new name.
+
+emacs make.IRIX make.SunOS
+	# Added "-lpanoramandds" to NDDS_LIBS
+
+make depend
+make 
+
+
+---------------------
+
+Note:  If you are in a pre-existing directory with subdirectories
+trying to do a "cvs update" to get changes that include one ore more
+new subdirectories, you need to add a "-d"...
+
+	nddstypes> cvs update -d

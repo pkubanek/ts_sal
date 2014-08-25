@@ -1,0 +1,4 @@
+		result = salHandle->setitem(SAL_IID_m2_Surface_Status, Status, 51);
+		result = salHandle->setitem(SAL_IID_m2_Surface_Raw, Raw, 201);
+		result = salHandle->setitem(SAL_IID_m2_Surface_Calibrated, Calibrated, 201);
+		result = salHandle->putSample();

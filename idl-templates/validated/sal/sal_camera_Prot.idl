@@ -1,0 +1,12 @@
+module camera
+{
+	struct Prot {
+	  string<32> private_revCode;  //private
+	  double     private_sndStamp; //private
+	  double     private_rcvStamp; //private
+	  long       private_seqNum;   //private
+	  long       private_origin;   //private
+	  long	Status[2];	// 100 | Volts | xxx | none | Control room | 2 |  864  |  3,456 
+	};
+	#pragma keylist Prot
+};

@@ -1,0 +1,8 @@
+		d.repeat = environment_response_ref->repeat;
+		d.submits = environment_response_ref->submits;
+		d.cmdID = environment_response_ref->cmdID;
+		d.timeout = environment_response_ref->timeout;
+		strncpy(d.ack,environment_response_ref->ack,16);
+		strncpy(d.error,environment_response_ref->error,16);
+		strncpy(d.result,environment_response_ref->result,64);
+		environment_response_ref->syncO = 1;

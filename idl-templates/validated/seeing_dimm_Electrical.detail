@@ -1,0 +1,3 @@
+seeing.dimm.Electrical.Raw 16 long 0.1
+seeing.dimm.Electrical.Calibrated 31 float 0.1
+seeing.dimm.Electrical.Status 15 octet 0.1

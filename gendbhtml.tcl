@@ -13,10 +13,10 @@ proc dodbsim { fid id nid } {
 
 
 
-set scriptdir /opt/lsstsal/scripts
+set scriptdir $env(SAL_DIR)
 source $scriptdir/streamutils.tcl
-
-set MSYS [lsort [split [exec cat $WORKING/datastreams.names] \n]]]
+catch {unset MSYS}
+set MSYS [lsort [split [exec cat $SAL_DIR/datastreams.names] \n]]]
 foreach id $MSYS {
    set SYS([lindex [split $id _] 0]) 1
 }
@@ -70,14 +70,14 @@ Select the required period for data simulation.
 <OPTION VALUE=\"2013\">2013
 <OPTION VALUE=\"2014\">2014
 <OPTION VALUE=\"2015\">2015
-<OPTION VALUE=\"2015\">2016
-<OPTION VALUE=\"2015\">2017
-<OPTION VALUE=\"2015\">2018
-<OPTION VALUE=\"2015\">2019
-<OPTION VALUE=\"2015\">2020
-<OPTION VALUE=\"2015\">2021
-<OPTION VALUE=\"2015\">2022
-<OPTION VALUE=\"2015\">2023
+<OPTION VALUE=\"2016\">2016
+<OPTION VALUE=\"2017\">2017
+<OPTION VALUE=\"2018\">2018
+<OPTION VALUE=\"2019\">2019
+<OPTION VALUE=\"2020\">2020
+<OPTION VALUE=\"2021\">2021
+<OPTION VALUE=\"2022\">2022
+<OPTION VALUE=\"2023\">2023
 </SELECT>
 Month <INPUT NAME=\"dbsim_startmon\" SIZE=4 VALUE=\"01\">
 Day <INPUT NAME=\"dbsim_startday\" SIZE=4 VALUE=\"01\">
@@ -95,14 +95,14 @@ Second <INPUT NAME=\"dbsim_startsec\" SIZE=4 VALUE=\"00\">
 <OPTION VALUE=\"2013\">2013
 <OPTION VALUE=\"2014\">2014
 <OPTION VALUE=\"2015\">2015
-<OPTION VALUE=\"2015\">2016
-<OPTION VALUE=\"2015\">2017
-<OPTION VALUE=\"2015\">2018
-<OPTION VALUE=\"2015\">2019
-<OPTION VALUE=\"2015\">2020
-<OPTION VALUE=\"2015\">2021
-<OPTION VALUE=\"2015\">2022
-<OPTION VALUE=\"2015\">2023
+<OPTION VALUE=\"2016\">2016
+<OPTION VALUE=\"2017\">2017
+<OPTION VALUE=\"2018\">2018
+<OPTION VALUE=\"2019\">2019
+<OPTION VALUE=\"2020\">2020
+<OPTION VALUE=\"2021\">2021
+<OPTION VALUE=\"2022\">2022
+<OPTION VALUE=\"2023\">2023
 
 </SELECT>
 Month <INPUT NAME=\"dbsim_endmon\" SIZE=4 VALUE=\"01\">
@@ -131,3 +131,5 @@ close $fidx
 
 puts $fall "</TABLE><P><HR><P></BODY></HTML>"
 close $fall
+
+

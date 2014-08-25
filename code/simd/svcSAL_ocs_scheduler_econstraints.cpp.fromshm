@@ -1,0 +1,4 @@
+		strncpy(d.maxval,ocs_scheduler_econstraints_ref->maxval,32);
+		strncpy(d.minval,ocs_scheduler_econstraints_ref->minval,32);
+		strncpy(d.type,ocs_scheduler_econstraints_ref->type,32);
+		ocs_scheduler_econstraints_ref->syncO = 1;

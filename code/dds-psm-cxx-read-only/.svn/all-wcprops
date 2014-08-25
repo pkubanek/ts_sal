@@ -1,0 +1,77 @@
+K 25
+svn:wc:ra_dav:version-url
+V 23
+/svn/!svn/ver/174/trunk
+END
+HOWTO
+K 25
+svn:wc:ra_dav:version-url
+V 28
+/svn/!svn/ver/17/trunk/HOWTO
+END
+NOTICE
+K 25
+svn:wc:ra_dav:version-url
+V 29
+/svn/!svn/ver/48/trunk/NOTICE
+END
+LICENSE
+K 25
+svn:wc:ra_dav:version-url
+V 30
+/svn/!svn/ver/48/trunk/LICENSE
+END
+.project
+K 25
+svn:wc:ra_dav:version-url
+V 31
+/svn/!svn/ver/11/trunk/.project
+END
+VERSION
+K 25
+svn:wc:ra_dav:version-url
+V 31
+/svn/!svn/ver/135/trunk/VERSION
+END
+AUTHORS
+K 25
+svn:wc:ra_dav:version-url
+V 31
+/svn/!svn/ver/135/trunk/AUTHORS
+END
+ChangeLog
+K 25
+svn:wc:ra_dav:version-url
+V 33
+/svn/!svn/ver/169/trunk/ChangeLog
+END
+.cproject
+K 25
+svn:wc:ra_dav:version-url
+V 32
+/svn/!svn/ver/95/trunk/.cproject
+END
+COPYRIGHT
+K 25
+svn:wc:ra_dav:version-url
+V 32
+/svn/!svn/ver/73/trunk/COPYRIGHT
+END
+dds_std_cpp_specification_mars-2010-11-01.odt
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/svn/!svn/ver/170/trunk/dds_std_cpp_specification_mars-2010-11-01.odt
+END
+doxygen.cfg
+K 25
+svn:wc:ra_dav:version-url
+V 35
+/svn/!svn/ver/150/trunk/doxygen.cfg
+END
+CMakeLists.txt
+K 25
+svn:wc:ra_dav:version-url
+V 37
+/svn/!svn/ver/29/trunk/CMakeLists.txt
+END

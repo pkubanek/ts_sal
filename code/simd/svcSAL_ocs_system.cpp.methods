@@ -1,0 +1,86 @@
+
+	svcRTN salocs_system::getItem ( svcIID itemId , svcLONG &value, svcUINT size)
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    switch (itemId) {
+
+                 case SAL_IID_ocs_system_health :
+                      if { size > 501 } {return SAL__INDEX_OUT_OF_RANGE;}
+                      for (unsigned int count=0; count<size; count++) {
+                        value[count] = data.health[count];
+                      }
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_ocs_system_power :
+                      if { size > 501 } {return SAL__INDEX_OUT_OF_RANGE;}
+                      for (unsigned int count=0; count<size; count++) {
+                        value[count] = data.power[count];
+                      }
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_ocs_system_thermal :
+                      if { size > 501 } {return SAL__INDEX_OUT_OF_RANGE;}
+                      for (unsigned int count=0; count<size; count++) {
+                        value[count] = data.thermal[count];
+                      }
+                      result = SAL__OK;
+                      break;
+
+	    }
+	    return result;
+	}
+
+ 	svcRTN salocs_system::setItem ( svcIID itemId , svcLONG &value , svcUINT size)
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    switch (itemId) {
+
+                 case SAL_IID_ocs_system_health :
+                      if { size > 501 } {return SAL__INDEX_OUT_OF_RANGE;}
+                      for (unsigned int count=0; count<size; count++) {
+                        data.health[count] = value[count];
+                      }
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_ocs_system_power :
+                      if { size > 501 } {return SAL__INDEX_OUT_OF_RANGE;}
+                      for (unsigned int count=0; count<size; count++) {
+                        data.power[count] = value[count];
+                      }
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_ocs_system_thermal :
+                      if { size > 501 } {return SAL__INDEX_OUT_OF_RANGE;}
+                      for (unsigned int count=0; count<size; count++) {
+                        data.thermal[count] = value[count];
+                      }
+                      result = SAL__OK;
+                      break;
+
+	    }
+	    return result;
+	}
+
+       svcRTN salocs_system::setItemStr ( svcIID itemId , svcCHAR *textValue)
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    
+	    switch (itemid) {
+
+	    }
+	    return result;
+	}
+
+       svcRTN salocs_system::getItemStr ( svcIID itemId , svcCHAR *textValue)
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    
+	    switch (itemid) {
+
+	    }
+	    return result;
+	}

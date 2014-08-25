@@ -1,0 +1,7 @@
+		for (unsigned int count=0; count<17; count++) {
+			enclosure_Thermal_control_ref->Raw[count] = samples[i].Raw[count];
+		}
+		for (unsigned int count=0; count<33; count++) {
+			enclosure_Thermal_control_ref->Calibrated[count] = samples[i].Calibrated[count];
+		}
+		enclosure_Thermal_control_ref->syncI++;

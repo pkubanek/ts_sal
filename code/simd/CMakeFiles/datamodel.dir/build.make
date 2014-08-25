@@ -32,10 +32,10 @@ CMAKE_COMMAND = /usr/bin/cmake
 RM = /usr/bin/cmake -E remove -f
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /opt/simd-cxx-v0.9/demo/TopicId
+CMAKE_SOURCE_DIR = SAL_WORK_DIR
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /opt/simd-cxx-v0.9/demo/TopicId
+CMAKE_BINARY_DIR = SAL_WORK_DIR
 
 # Include any dependencies generated for this target.
 include CMakeFiles/datamodel.dir/depend.make
@@ -48,17 +48,17 @@ include CMakeFiles/datamodel.dir/flags.make
 
 CMakeFiles/datamodel.dir/gen/TopicId.cpp.o: CMakeFiles/datamodel.dir/flags.make
 CMakeFiles/datamodel.dir/gen/TopicId.cpp.o: gen/TopicId.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /opt/simd-cxx-v0.9/demo/TopicId/CMakeFiles $(CMAKE_PROGRESS_1)
+	$(CMAKE_COMMAND) -E cmake_progress_report SAL_WORK_DIR/CMakeFiles $(CMAKE_PROGRESS_1)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/datamodel.dir/gen/TopicId.cpp.o"
-	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/datamodel.dir/gen/TopicId.cpp.o -c /opt/simd-cxx-v0.9/demo/TopicId/gen/TopicId.cpp
+	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/datamodel.dir/gen/TopicId.cpp.o -c SAL_WORK_DIR/gen/TopicId.cpp
 
 CMakeFiles/datamodel.dir/gen/TopicId.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/datamodel.dir/gen/TopicId.cpp.i"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -E /opt/simd-cxx-v0.9/demo/TopicId/gen/TopicId.cpp > CMakeFiles/datamodel.dir/gen/TopicId.cpp.i
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -E SAL_WORK_DIR/gen/TopicId.cpp > CMakeFiles/datamodel.dir/gen/TopicId.cpp.i
 
 CMakeFiles/datamodel.dir/gen/TopicId.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/datamodel.dir/gen/TopicId.cpp.s"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -S /opt/simd-cxx-v0.9/demo/TopicId/gen/TopicId.cpp -o CMakeFiles/datamodel.dir/gen/TopicId.cpp.s
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -S SAL_WORK_DIR/gen/TopicId.cpp -o CMakeFiles/datamodel.dir/gen/TopicId.cpp.s
 
 CMakeFiles/datamodel.dir/gen/TopicId.cpp.o.requires:
 .PHONY : CMakeFiles/datamodel.dir/gen/TopicId.cpp.o.requires
@@ -72,17 +72,17 @@ CMakeFiles/datamodel.dir/gen/TopicId.cpp.o.provides.build: CMakeFiles/datamodel.
 
 CMakeFiles/datamodel.dir/gen/TopicIdDcps.cpp.o: CMakeFiles/datamodel.dir/flags.make
 CMakeFiles/datamodel.dir/gen/TopicIdDcps.cpp.o: gen/TopicIdDcps.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /opt/simd-cxx-v0.9/demo/TopicId/CMakeFiles $(CMAKE_PROGRESS_2)
+	$(CMAKE_COMMAND) -E cmake_progress_report SAL_WORK_DIR/CMakeFiles $(CMAKE_PROGRESS_2)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/datamodel.dir/gen/TopicIdDcps.cpp.o"
-	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/datamodel.dir/gen/TopicIdDcps.cpp.o -c /opt/simd-cxx-v0.9/demo/TopicId/gen/TopicIdDcps.cpp
+	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/datamodel.dir/gen/TopicIdDcps.cpp.o -c SAL_WORK_DIR/gen/TopicIdDcps.cpp
 
 CMakeFiles/datamodel.dir/gen/TopicIdDcps.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/datamodel.dir/gen/TopicIdDcps.cpp.i"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -E /opt/simd-cxx-v0.9/demo/TopicId/gen/TopicIdDcps.cpp > CMakeFiles/datamodel.dir/gen/TopicIdDcps.cpp.i
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -E SAL_WORK_DIR/gen/TopicIdDcps.cpp > CMakeFiles/datamodel.dir/gen/TopicIdDcps.cpp.i
 
 CMakeFiles/datamodel.dir/gen/TopicIdDcps.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/datamodel.dir/gen/TopicIdDcps.cpp.s"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -S /opt/simd-cxx-v0.9/demo/TopicId/gen/TopicIdDcps.cpp -o CMakeFiles/datamodel.dir/gen/TopicIdDcps.cpp.s
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -S SAL_WORK_DIR/gen/TopicIdDcps.cpp -o CMakeFiles/datamodel.dir/gen/TopicIdDcps.cpp.s
 
 CMakeFiles/datamodel.dir/gen/TopicIdDcps.cpp.o.requires:
 .PHONY : CMakeFiles/datamodel.dir/gen/TopicIdDcps.cpp.o.requires
@@ -96,17 +96,17 @@ CMakeFiles/datamodel.dir/gen/TopicIdDcps.cpp.o.provides.build: CMakeFiles/datamo
 
 CMakeFiles/datamodel.dir/gen/TopicIdDcps_impl.cpp.o: CMakeFiles/datamodel.dir/flags.make
 CMakeFiles/datamodel.dir/gen/TopicIdDcps_impl.cpp.o: gen/TopicIdDcps_impl.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /opt/simd-cxx-v0.9/demo/TopicId/CMakeFiles $(CMAKE_PROGRESS_3)
+	$(CMAKE_COMMAND) -E cmake_progress_report SAL_WORK_DIR/CMakeFiles $(CMAKE_PROGRESS_3)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/datamodel.dir/gen/TopicIdDcps_impl.cpp.o"
-	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/datamodel.dir/gen/TopicIdDcps_impl.cpp.o -c /opt/simd-cxx-v0.9/demo/TopicId/gen/TopicIdDcps_impl.cpp
+	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/datamodel.dir/gen/TopicIdDcps_impl.cpp.o -c SAL_WORK_DIR/gen/TopicIdDcps_impl.cpp
 
 CMakeFiles/datamodel.dir/gen/TopicIdDcps_impl.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/datamodel.dir/gen/TopicIdDcps_impl.cpp.i"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -E /opt/simd-cxx-v0.9/demo/TopicId/gen/TopicIdDcps_impl.cpp > CMakeFiles/datamodel.dir/gen/TopicIdDcps_impl.cpp.i
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -E SAL_WORK_DIR/gen/TopicIdDcps_impl.cpp > CMakeFiles/datamodel.dir/gen/TopicIdDcps_impl.cpp.i
 
 CMakeFiles/datamodel.dir/gen/TopicIdDcps_impl.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/datamodel.dir/gen/TopicIdDcps_impl.cpp.s"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -S /opt/simd-cxx-v0.9/demo/TopicId/gen/TopicIdDcps_impl.cpp -o CMakeFiles/datamodel.dir/gen/TopicIdDcps_impl.cpp.s
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -S SAL_WORK_DIR/gen/TopicIdDcps_impl.cpp -o CMakeFiles/datamodel.dir/gen/TopicIdDcps_impl.cpp.s
 
 CMakeFiles/datamodel.dir/gen/TopicIdDcps_impl.cpp.o.requires:
 .PHONY : CMakeFiles/datamodel.dir/gen/TopicIdDcps_impl.cpp.o.requires
@@ -120,17 +120,17 @@ CMakeFiles/datamodel.dir/gen/TopicIdDcps_impl.cpp.o.provides.build: CMakeFiles/d
 
 CMakeFiles/datamodel.dir/gen/TopicIdSplDcps.cpp.o: CMakeFiles/datamodel.dir/flags.make
 CMakeFiles/datamodel.dir/gen/TopicIdSplDcps.cpp.o: gen/TopicIdSplDcps.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /opt/simd-cxx-v0.9/demo/TopicId/CMakeFiles $(CMAKE_PROGRESS_4)
+	$(CMAKE_COMMAND) -E cmake_progress_report SAL_WORK_DIR/CMakeFiles $(CMAKE_PROGRESS_4)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/datamodel.dir/gen/TopicIdSplDcps.cpp.o"
-	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/datamodel.dir/gen/TopicIdSplDcps.cpp.o -c /opt/simd-cxx-v0.9/demo/TopicId/gen/TopicIdSplDcps.cpp
+	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/datamodel.dir/gen/TopicIdSplDcps.cpp.o -c SAL_WORK_DIR/gen/TopicIdSplDcps.cpp
 
 CMakeFiles/datamodel.dir/gen/TopicIdSplDcps.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/datamodel.dir/gen/TopicIdSplDcps.cpp.i"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -E /opt/simd-cxx-v0.9/demo/TopicId/gen/TopicIdSplDcps.cpp > CMakeFiles/datamodel.dir/gen/TopicIdSplDcps.cpp.i
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -E SAL_WORK_DIR/gen/TopicIdSplDcps.cpp > CMakeFiles/datamodel.dir/gen/TopicIdSplDcps.cpp.i
 
 CMakeFiles/datamodel.dir/gen/TopicIdSplDcps.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/datamodel.dir/gen/TopicIdSplDcps.cpp.s"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -S /opt/simd-cxx-v0.9/demo/TopicId/gen/TopicIdSplDcps.cpp -o CMakeFiles/datamodel.dir/gen/TopicIdSplDcps.cpp.s
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -S SAL_WORK_DIR/gen/TopicIdSplDcps.cpp -o CMakeFiles/datamodel.dir/gen/TopicIdSplDcps.cpp.s
 
 CMakeFiles/datamodel.dir/gen/TopicIdSplDcps.cpp.o.requires:
 .PHONY : CMakeFiles/datamodel.dir/gen/TopicIdSplDcps.cpp.o.requires
@@ -143,9 +143,9 @@ CMakeFiles/datamodel.dir/gen/TopicIdSplDcps.cpp.o.provides.build: CMakeFiles/dat
 .PHONY : CMakeFiles/datamodel.dir/gen/TopicIdSplDcps.cpp.o.provides.build
 
 gen/TopicId.cpp: TopicId.idl
-	$(CMAKE_COMMAND) -E cmake_progress_report /opt/simd-cxx-v0.9/demo/TopicId/CMakeFiles $(CMAKE_PROGRESS_5)
+	$(CMAKE_COMMAND) -E cmake_progress_report SAL_WORK_DIR/CMakeFiles $(CMAKE_PROGRESS_5)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold "Generating gen/TopicId.cpp, gen/TopicId.h, gen/TopicIdDcps.cpp, gen/TopicIdDcps.h, gen/TopicIdDcps_impl.cpp, gen/TopicIdDcps_impl.h, gen/TopicIdSplDcps.cpp, gen/TopicIdSplDcps.h, gen/ccpp_TopicId.h"
-	/opt/OpenSplice/HDE/x86.linux2.6/bin/idlpp -S -l cpp -d gen TopicId.idl
+	OSPL_HDE/bin/idlpp -S -l cpp -d gen TopicId.idl -I OSPL_HDE/etc/idl
 
 gen/TopicId.h: gen/TopicId.cpp
 
@@ -206,6 +206,6 @@ CMakeFiles/datamodel.dir/depend: gen/TopicIdDcps_impl.h
 CMakeFiles/datamodel.dir/depend: gen/TopicIdSplDcps.cpp
 CMakeFiles/datamodel.dir/depend: gen/TopicIdSplDcps.h
 CMakeFiles/datamodel.dir/depend: gen/ccpp_TopicId.h
-	cd /opt/simd-cxx-v0.9/demo/TopicId && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /opt/simd-cxx-v0.9/demo/TopicId /opt/simd-cxx-v0.9/demo/TopicId /opt/simd-cxx-v0.9/demo/TopicId /opt/simd-cxx-v0.9/demo/TopicId /opt/simd-cxx-v0.9/demo/TopicId/CMakeFiles/datamodel.dir/DependInfo.cmake --color=$(COLOR)
+	cd SAL_WORK_DIR && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" SAL_WORK_DIR SAL_WORK_DIR SAL_WORK_DIR SAL_WORK_DIR SAL_WORK_DIR/CMakeFiles/datamodel.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/datamodel.dir/depend
 

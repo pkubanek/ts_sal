@@ -70,7 +70,7 @@ bool parse_args(int argc, char* argv[])
       period = vm["period"].as<int>();
   } 
   catch (...) {
-    std::cout << desc << "\n";
+    std::cout << desc << "\n" << std::endl;
     return false;
   }
   return true;
@@ -84,21 +84,17 @@ int main(int argc, char* argv[]) {
 
   // -- start the dds runtime to use the default DDS partition, which
   // -- as per the DDS standard is ""
-  dds::Runtime runtime("");
+  dds::Runtime runtime("LSST");
   
   dds::Topic<TopicId> TopicIdTopic(topic);
   dds::DataWriter<TopicId> writer(TopicIdTopic);
 
   TopicId d;
-  d.number = 0;
-  d.counter = 1;
-  d.vendor = name.c_str();
   for (int i = 0; i < N; ++i) {
     
     writer.write(d);
-    std::cout << ".";
+    std::cout << "." << std::endl;
     std::cout.flush();
-    d.counter++;
     msecSleep(period);
   }
   std::cout << std::endl;

@@ -1,0 +1,124 @@
+
+	svcRTN salm1m3_Supports::getItem ( svcIID itemId , svcLONG &value, svcUINT size)
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    switch (itemId) {
+
+                 case SAL_IID_m1m3_Supports_stepcnt :
+                      if { size > 7 } {return SAL__INDEX_OUT_OF_RANGE;}
+                      for (unsigned int count=0; count<size; count++) {
+                        value[count] = data.stepcnt[count];
+                      }
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_m1m3_Supports_targetpos :
+                      if { size > 7 } {return SAL__INDEX_OUT_OF_RANGE;}
+                      for (unsigned int count=0; count<size; count++) {
+                        value[count] = data.targetpos[count];
+                      }
+                      result = SAL__OK;
+                      break;
+
+	    }
+	    return result;
+	}
+
+ 	svcRTN salm1m3_Supports::setItem ( svcIID itemId , svcLONG &value , svcUINT size)
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    switch (itemId) {
+
+                 case SAL_IID_m1m3_Supports_stepcnt :
+                      if { size > 7 } {return SAL__INDEX_OUT_OF_RANGE;}
+                      for (unsigned int count=0; count<size; count++) {
+                        data.stepcnt[count] = value[count];
+                      }
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_m1m3_Supports_targetpos :
+                      if { size > 7 } {return SAL__INDEX_OUT_OF_RANGE;}
+                      for (unsigned int count=0; count<size; count++) {
+                        data.targetpos[count] = value[count];
+                      }
+                      result = SAL__OK;
+                      break;
+
+	    }
+	    return result;
+	}
+
+       svcRTN salm1m3_Supports::setItemStr ( svcIID itemId , svcCHAR *textValue)
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    
+	    switch (itemid) {
+
+	    }
+	    return result;
+	}
+
+       svcRTN salm1m3_Supports::getItemStr ( svcIID itemId , svcCHAR *textValue)
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    
+	    switch (itemid) {
+
+	    }
+	    return result;
+	}
+
+	svcRTN salm1m3_Supports::getItem ( svcIID itemId , svcFLT &value, svcUINT size)
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    switch (itemId) {
+
+                 case SAL_IID_m1m3_Supports_force :
+                      if { size > 7 } {return SAL__INDEX_OUT_OF_RANGE;}
+                      for (unsigned int count=0; count<size; count++) {
+                        value[count] = data.force[count];
+                      }
+                      result = SAL__OK;
+                      break;
+
+	    }
+	    return result;
+	}
+
+ 	svcRTN salm1m3_Supports::setItem ( svcIID itemId , svcFLT &value , svcUINT size)
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    switch (itemId) {
+
+                 case SAL_IID_m1m3_Supports_force :
+                      if { size > 7 } {return SAL__INDEX_OUT_OF_RANGE;}
+                      for (unsigned int count=0; count<size; count++) {
+                        data.force[count] = value[count];
+                      }
+                      result = SAL__OK;
+                      break;
+
+	    }
+	    return result;
+	}
+
+       svcRTN salm1m3_Supports::setItemStr ( svcIID itemId , svcCHAR *textValue)
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    
+	    switch (itemid) {
+
+	    }
+	    return result;
+	}
+
+       svcRTN salm1m3_Supports::getItemStr ( svcIID itemId , svcCHAR *textValue)
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    
+	    switch (itemid) {
+
+	    }
+	    return result;
+	}

@@ -1,0 +1,4 @@
+ocs.command.permit.subsystem 128 string<128> 0.1
+ocs.command.permit.device 128 string<128> 0.1
+ocs.command.permit.command 32 string<32> 0.1
+ocs.command.permit.actionmask 8 long 0.1

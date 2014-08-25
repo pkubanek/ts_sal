@@ -1,0 +1,4 @@
+		result = salHandle->setitem(SAL_IID_camera_BEE_biases_operate, operate, 202);
+		result = salHandle->setitem(SAL_IID_camera_BEE_biases_reset, reset, 202);
+		result = salHandle->setitem(SAL_IID_camera_BEE_biases_substrate, substrate, 202);
+		result = salHandle->putSample();

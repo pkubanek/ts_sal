@@ -1,0 +1,18 @@
+		tcs_kernel_Target_ref->Humid = samples[i].Humid;
+		tcs_kernel_Target_ref->Press = samples[i].Press;
+		tcs_kernel_Target_ref->TLR = samples[i].TLR;
+		tcs_kernel_Target_ref->Tai = samples[i].Tai;
+		tcs_kernel_Target_ref->Temp = samples[i].Temp;
+		tcs_kernel_Target_ref->Wavel = samples[i].Wavel;
+		tcs_kernel_Target_ref->XOffset = samples[i].XOffset;
+		tcs_kernel_Target_ref->YOffset = samples[i].YOffset;
+		tcs_kernel_Target_ref->az = samples[i].az;
+		tcs_kernel_Target_ref->azdot = samples[i].azdot;
+		tcs_kernel_Target_ref->el = samples[i].el;
+		tcs_kernel_Target_ref->eldot = samples[i].eldot;
+		tcs_kernel_Target_ref->focalplaneX = samples[i].focalplaneX;
+		tcs_kernel_Target_ref->focalplaneY = samples[i].focalplaneY;
+		tcs_kernel_Target_ref->t0 = samples[i].t0;
+		strncpy(tcs_kernel_Target_ref->OffSys,samples[i].OffSys,128);
+		strncpy(tcs_kernel_Target_ref->site,samples[i].site,128);
+		tcs_kernel_Target_ref->syncI++;

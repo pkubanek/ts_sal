@@ -1,0 +1,10 @@
+		for (unsigned int count=0; count<51; count++) {
+			d.Status[count] = m2_Surface_ref->Status[count];
+		}
+		for (unsigned int count=0; count<201; count++) {
+			d.Raw[count] = m2_Surface_ref->Raw[count];
+		}
+		for (unsigned int count=0; count<201; count++) {
+			d.Calibrated[count] = m2_Surface_ref->Calibrated[count];
+		}
+		m2_Surface_ref->syncO = 1;

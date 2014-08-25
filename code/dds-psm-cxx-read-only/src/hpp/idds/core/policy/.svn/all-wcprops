@@ -1,0 +1,17 @@
+K 25
+svn:wc:ra_dav:version-url
+V 48
+/svn/!svn/ver/128/trunk/src/hpp/idds/core/policy
+END
+QosPolicyCountImpl.hpp
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svn/!svn/ver/128/trunk/src/hpp/idds/core/policy/QosPolicyCountImpl.hpp
+END
+CorePolicy.hpp
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/svn/!svn/ver/128/trunk/src/hpp/idds/core/policy/CorePolicy.hpp
+END

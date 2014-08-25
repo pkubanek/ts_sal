@@ -1,0 +1,8 @@
+		result = salHandle->setitem(SAL_IID_dm_raw_dataquality_metric1, metric1, 201);
+		result = salHandle->setitem(SAL_IID_dm_raw_dataquality_metric2, metric2, 201);
+		result = salHandle->setitem(SAL_IID_dm_raw_dataquality_metric3, metric3, 201);
+		result = salHandle->setitem(SAL_IID_dm_raw_dataquality_metric4, metric4, 201);
+		result = salHandle->setitem(SAL_IID_dm_raw_dataquality_metric5, metric5, 201);
+		result = salHandle->setitem(SAL_IID_dm_raw_dataquality_metric6, metric6, 201);
+		result = salHandle->setitem(SAL_IID_dm_raw_dataquality_summary, summary, 101);
+		result = salHandle->putSample();

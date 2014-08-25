@@ -1,0 +1,2 @@
+	svcFLT	current[26];
+	svcFLT	supply_voltage[26];

@@ -1,0 +1,188 @@
+
+	svcRTN salocs_database_state::getItem ( svcIID itemId , (svcCHAR *)value )
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    switch (itemId) {
+	    
+
+
+                 case SAL_IID_ocs_database_state_name :
+                      strncpy(value, data.name, 64);
+                      result = SAL__OK;
+                      break;
+
+
+                 case SAL_IID_ocs_database_state_table :
+                      strncpy(value, data.table, 64);
+                      result = SAL__OK;
+                      break;
+
+
+	    }
+	    return result;
+	}
+	
+
+
+	svcRTN salocs_database_state::setItem ( svcIID itemId , (svcCHAR *)value )
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    switch (itemId) {
+	    
+
+
+                 case SAL_IID_ocs_database_state_name :
+                      strncpy(data.name, value, 64);
+                      result = SAL__OK;
+                      break;
+
+
+                 case SAL_IID_ocs_database_state_table :
+                      strncpy(data.table, value, 64);
+                      result = SAL__OK;
+                      break;
+
+
+	    }
+	    return result;
+	}
+	
+
+
+       svcRTN salocs_database_state::setItemStr ( svcIID itemId , svcCHAR *textValue)
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    
+	    switch (itemid) {
+
+	    }
+	    return result;
+	}
+
+       svcRTN salocs_database_state::getItemStr ( svcIID itemId , svcCHAR *textValue)
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    
+	    switch (itemid) {
+
+	    }
+	    return result;
+	}
+
+	svcRTN salocs_database_state::getItem ( svcIID itemId , svcLONG &value, svcUINT size)
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    switch (itemId) {
+
+                 case SAL_IID_ocs_database_state_capacity :
+                      if { size > 33 } {return SAL__INDEX_OUT_OF_RANGE;}
+                      for (unsigned int count=0; count<size; count++) {
+                        value[count] = data.capacity[count];
+                      }
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_ocs_database_state_lastrep :
+                      if { size > 33 } {return SAL__INDEX_OUT_OF_RANGE;}
+                      for (unsigned int count=0; count<size; count++) {
+                        value[count] = data.lastrep[count];
+                      }
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_ocs_database_state_recin :
+                      if { size > 33 } {return SAL__INDEX_OUT_OF_RANGE;}
+                      for (unsigned int count=0; count<size; count++) {
+                        value[count] = data.recin[count];
+                      }
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_ocs_database_state_recout :
+                      if { size > 33 } {return SAL__INDEX_OUT_OF_RANGE;}
+                      for (unsigned int count=0; count<size; count++) {
+                        value[count] = data.recout[count];
+                      }
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_ocs_database_state_status :
+                      if { size > 33 } {return SAL__INDEX_OUT_OF_RANGE;}
+                      for (unsigned int count=0; count<size; count++) {
+                        value[count] = data.status[count];
+                      }
+                      result = SAL__OK;
+                      break;
+
+	    }
+	    return result;
+	}
+
+ 	svcRTN salocs_database_state::setItem ( svcIID itemId , svcLONG &value , svcUINT size)
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    switch (itemId) {
+
+                 case SAL_IID_ocs_database_state_capacity :
+                      if { size > 33 } {return SAL__INDEX_OUT_OF_RANGE;}
+                      for (unsigned int count=0; count<size; count++) {
+                        data.capacity[count] = value[count];
+                      }
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_ocs_database_state_lastrep :
+                      if { size > 33 } {return SAL__INDEX_OUT_OF_RANGE;}
+                      for (unsigned int count=0; count<size; count++) {
+                        data.lastrep[count] = value[count];
+                      }
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_ocs_database_state_recin :
+                      if { size > 33 } {return SAL__INDEX_OUT_OF_RANGE;}
+                      for (unsigned int count=0; count<size; count++) {
+                        data.recin[count] = value[count];
+                      }
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_ocs_database_state_recout :
+                      if { size > 33 } {return SAL__INDEX_OUT_OF_RANGE;}
+                      for (unsigned int count=0; count<size; count++) {
+                        data.recout[count] = value[count];
+                      }
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_ocs_database_state_status :
+                      if { size > 33 } {return SAL__INDEX_OUT_OF_RANGE;}
+                      for (unsigned int count=0; count<size; count++) {
+                        data.status[count] = value[count];
+                      }
+                      result = SAL__OK;
+                      break;
+
+	    }
+	    return result;
+	}
+
+       svcRTN salocs_database_state::setItemStr ( svcIID itemId , svcCHAR *textValue)
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    
+	    switch (itemid) {
+
+	    }
+	    return result;
+	}
+
+       svcRTN salocs_database_state::getItemStr ( svcIID itemId , svcCHAR *textValue)
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    
+	    switch (itemid) {
+
+	    }
+	    return result;
+	}

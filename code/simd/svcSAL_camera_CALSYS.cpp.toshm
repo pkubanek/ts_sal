@@ -1,0 +1,4 @@
+		for (unsigned int count=0; count<1025; count++) {
+			camera_CALSYS_ref->profile[count] = samples[i].profile[count];
+		}
+		camera_CALSYS_ref->syncI++;

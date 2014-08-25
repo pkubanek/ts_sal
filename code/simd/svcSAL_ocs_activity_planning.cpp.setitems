@@ -1,0 +1,6 @@
+		result = salHandle->setitem(SAL_IID_ocs_activity_planning_part, part);
+		result = salHandle->setitem(SAL_IID_ocs_activity_planning_subsystem, subsystem);
+		result = salHandle->setitem(SAL_IID_ocs_activity_planning_supervid, supervid);
+		result = salHandle->setitem(SAL_IID_ocs_activity_planning_type, type);
+		result = salHandle->setitem(SAL_IID_ocs_activity_planning_uuid, uuid);
+		result = salHandle->putSample();

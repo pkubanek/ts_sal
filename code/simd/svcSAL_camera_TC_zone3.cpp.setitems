@@ -1,0 +1,4 @@
+		result = salHandle->setitem(SAL_IID_camera_TC_zone3_status, status, 51);
+		result = salHandle->setitem(SAL_IID_camera_TC_zone3_setpoint, setpoint, 51);
+		result = salHandle->setitem(SAL_IID_camera_TC_zone3_temperature, temperature, 51);
+		result = salHandle->putSample();

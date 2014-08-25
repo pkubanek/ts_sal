@@ -1,0 +1,2 @@
+	svcULONG	flags[21];
+	svcFLT	current[81];

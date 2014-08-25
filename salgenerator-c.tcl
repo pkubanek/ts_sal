@@ -1,10 +1,10 @@
 
-set scriptdir /opt/lsstsal/scripts
+set scriptdir /usr/local/scripts/tcl
 
 source $scriptdir/genshmempersubsys.tcl
 
 set stagingdir /tmp/salgenerator/lsst_SAL_c_$basename
-set scriptdir /opt/lsstsal/scripts
+set scriptdir /usr/local/scripts/tcl
 
 catch { exec rm -fr $stagingdir }
 catch { exec mkdir -p $stagingdir }
@@ -27,7 +27,7 @@ exec tar czf lsst_SAL_c_$basename.tar.gz lsst_SAL_c_$basename lsstsal.$SALVERSIO
 exec cp lsst_SAL_c_$basename.tar.gz /var/www/html/downloads/salcode/.
 
 puts stdout "<P><HR><P>
-<H2>Software Abstraction Layer - Downloads</H2>
+<H2>Service Abstraction Layer - Downloads</H2>
 This archive contains a SAL library and test programs.<P><UL>"
 if { [array names SUBS] != "" } {
    puts stdout "Tests subscription for :

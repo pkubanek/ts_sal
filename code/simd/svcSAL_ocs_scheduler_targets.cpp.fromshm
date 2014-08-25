@@ -1,0 +1,22 @@
+		for (unsigned int count=0; count<11; count++) {
+			d.filter[count] = ocs_scheduler_targets_ref->filter[count];
+		}
+		for (unsigned int count=0; count<11; count++) {
+			d.numexp[count] = ocs_scheduler_targets_ref->numexp[count];
+		}
+		for (unsigned int count=0; count<11; count++) {
+			d.airmass[count] = ocs_scheduler_targets_ref->airmass[count];
+		}
+		for (unsigned int count=0; count<11; count++) {
+			d.catid[count] = ocs_scheduler_targets_ref->catid[count];
+		}
+		for (unsigned int count=0; count<11; count++) {
+			d.dec[count] = ocs_scheduler_targets_ref->dec[count];
+		}
+		for (unsigned int count=0; count<11; count++) {
+			d.ra[count] = ocs_scheduler_targets_ref->ra[count];
+		}
+		for (unsigned int count=0; count<11; count++) {
+			d.rotangle[count] = ocs_scheduler_targets_ref->rotangle[count];
+		}
+		ocs_scheduler_targets_ref->syncO = 1;

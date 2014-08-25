@@ -1,0 +1,142 @@
+
+	svcRTN salcamera_TC_zone2::getItem ( svcIID itemId , svcLONG &value, svcUINT size)
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    switch (itemId) {
+
+                 case SAL_IID_camera_TC_zone2_status :
+                      if { size > 26 } {return SAL__INDEX_OUT_OF_RANGE;}
+                      for (unsigned int count=0; count<size; count++) {
+                        value[count] = data.status[count];
+                      }
+                      result = SAL__OK;
+                      break;
+
+	    }
+	    return result;
+	}
+
+ 	svcRTN salcamera_TC_zone2::setItem ( svcIID itemId , svcLONG &value , svcUINT size)
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    switch (itemId) {
+
+                 case SAL_IID_camera_TC_zone2_status :
+                      if { size > 26 } {return SAL__INDEX_OUT_OF_RANGE;}
+                      for (unsigned int count=0; count<size; count++) {
+                        data.status[count] = value[count];
+                      }
+                      result = SAL__OK;
+                      break;
+
+	    }
+	    return result;
+	}
+
+       svcRTN salcamera_TC_zone2::setItemStr ( svcIID itemId , svcCHAR *textValue)
+	{
+                      break;
+	    svcRTN result = SAL__NOT_DEFINED;
+	    
+	    switch (itemId) {
+
+	    }
+	    return result;
+	}
+
+       svcRTN salcamera_TC_zone2::getItemStr ( svcIID itemId , svcCHAR *textValue)
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    
+	    switch (itemId) {
+
+	    }
+	    return result;
+	}
+
+	svcRTN salcamera_TC_zone2::getItem ( svcIID itemId , svcFLT &value, svcUINT size)
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    switch (itemId) {
+
+                 case SAL_IID_camera_TC_zone2_cold_plate :
+                      if { size > 26 } {return SAL__INDEX_OUT_OF_RANGE;}
+                      for (unsigned int count=0; count<size; count++) {
+                        value[count] = data.cold_plate[count];
+                      }
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_camera_TC_zone2_setpoint :
+                      if { size > 26 } {return SAL__INDEX_OUT_OF_RANGE;}
+                      for (unsigned int count=0; count<size; count++) {
+                        value[count] = data.setpoint[count];
+                      }
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_camera_TC_zone2_temperature :
+                      if { size > 26 } {return SAL__INDEX_OUT_OF_RANGE;}
+                      for (unsigned int count=0; count<size; count++) {
+                        value[count] = data.temperature[count];
+                      }
+                      result = SAL__OK;
+                      break;
+
+	    }
+	    return result;
+	}
+
+ 	svcRTN salcamera_TC_zone2::setItem ( svcIID itemId , svcFLT &value , svcUINT size)
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    switch (itemId) {
+
+                 case SAL_IID_camera_TC_zone2_cold_plate :
+                      if { size > 26 } {return SAL__INDEX_OUT_OF_RANGE;}
+                      for (unsigned int count=0; count<size; count++) {
+                        data.cold_plate[count] = value[count];
+                      }
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_camera_TC_zone2_setpoint :
+                      if { size > 26 } {return SAL__INDEX_OUT_OF_RANGE;}
+                      for (unsigned int count=0; count<size; count++) {
+                        data.setpoint[count] = value[count];
+                      }
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_camera_TC_zone2_temperature :
+                      if { size > 26 } {return SAL__INDEX_OUT_OF_RANGE;}
+                      for (unsigned int count=0; count<size; count++) {
+                        data.temperature[count] = value[count];
+                      }
+                      result = SAL__OK;
+                      break;
+
+	    }
+	    return result;
+	}
+
+       svcRTN salcamera_TC_zone2::setItemStr ( svcIID itemId , svcCHAR *textValue)
+	{
+                      break;
+	    svcRTN result = SAL__NOT_DEFINED;
+	    
+	    switch (itemId) {
+
+	    }
+	    return result;
+	}
+
+       svcRTN salcamera_TC_zone2::getItemStr ( svcIID itemId , svcCHAR *textValue)
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    
+	    switch (itemId) {
+
+	    }
+	    return result;
+	}

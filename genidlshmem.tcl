@@ -45,7 +45,7 @@ global ITEMLIST
                  set ITEMLIST "$ITEMLIST,float.$name"
               }
        double -
-       Double { puts $fid "  float $name;" 
+       Double { puts $fid "  double $name;" 
                 puts $fo2 "  $name double," 
                 set ITEMLIST "$ITEMLIST,double.$name"
                }
@@ -87,26 +87,25 @@ global ITEMLIST
    }
 }
 
-source /opt/lsstsal/scripts/streamutils.tcl
-set defdir $WORKING
+source $env(SAL_DIR)/streamutils.tcl
+set defdir .salwork
 set last ""
 set hasindex 0
 set ITEMLIST ""
 set fin [open $defdir/datastreams.detail r]
-set fsum [open datastreams.names w]
+set fsum [open $defdir/datastreams.names w]
 while { [gets $fin rec] > -1 } {
    if { [string range $rec 0 5] == "#index" } {
       set ki [lindex $rec 1]
       gets $fin rec
-      set d [split [lindex $rec 0] "./"]
+      set d [split [lindex $rec 0] "./_"]
       set ncmp [expr [llength $d] -2]
+      if { $ncmp < 0}  {set ncmp 0}
       set id [join [lrange $d 0 $ncmp] _]
       set keyindex($id) $ki
    }
-   set d [split [lindex $rec 0] "./"]
-   set ncmp [expr [llength $d] -2]
-   set id [join [lrange $d 0 $ncmp] _]
-   set topic [join [lrange $d 0 $ncmp] _]
+   set id [lindex $rec 0]
+   set topic [lindex $rec 0]
    if { $id != $last  } {
       if { $last != "" } {puts $fsum $last}
       catch { puts $fout "\};"
@@ -127,27 +126,33 @@ while { [gets $fin rec] > -1 } {
       set fo3  [open $id.sqlwrt w]
       puts $fout "struct $topic \{
   string<32> private_revCode; //private
-  long private_sndStamp; //private
-  long private_rcvStamp; //private
+  double private_sndStamp; //private
+  double private_rcvStamp; //private
   long private_seqNum; //private
-  long private_origin; //private"
+  long private_origin; //private
+  long private_host; //private"
       puts $fo2  "DROP TABLE IF EXISTS $topic;"
       puts $fo2  "CREATE TABLE $topic ("
       puts $fo2  "  date_time datetime NOT NULL,
   private_revCode char(32),
-  private_sndStamp int,
-  private_rcvStamp int,
+  private_sndStamp double,
+  private_rcvStamp double,
   private_seqNum int,
-  private_origin int,"
-      set ITEMLIST "char.revCode,int.sndStamp,int.rcvStamp,int.seqNum,int.origin"
+  private_origin int,
+  private_host int,"
+      set ITEMLIST "char.revCode,double.sndStamp,double.rcvStamp,int.seqNum,int.origin,int.host"
    }
-   if { [lindex $rec 1] > 1 } {
-      set nd [lindex $rec 1]
-      nditem $fout $fo2 [lindex [lindex $d end] 0] [lindex $rec 2] $nd
+   set name [lindex [split [lindex $rec 1] .] end]
+   set type [lindex $rec 3]
+   if { [lindex $rec 2] > 1 } {
+      set nd [lindex $rec 2]
+#puts stdout "nditem $fout $fo2 $name $type $nd"
+      nditem $fout $fo2 $name $type $nd
    } else {
-      olddoitem $fout $fo2 [lindex [lindex $d end] 0] [lindex $rec 2]
+#puts stdout "olddoitem $fout $fo2 $name $type"
+      olddoitem $fout $fo2 $name $type
    }
-   puts stdout "Added [lindex [lindex $d end] 0] to $topic"
+   puts stdout "Added $name to $topic"
 }
 
 puts $fout "\};"
@@ -166,11 +171,13 @@ close $fo3
 
 
 close $fsum
-set lidl [glob *.idl]
-set fmd5 [open revCodes.tcl w]
+set lidl [glob $SAL_WORK_DIR/idl-templates/validated/*.idl]
+set fmd5 [open .salwork/revCodes.tcl w]
 foreach i [lsort $lidl] {
   set c [lindex [exec md5sum $i] 0]
-  set s [file rootname $i]
+  set s [file tail [file rootname $i]]
   puts $fmd5 "set REVCODE($s) $c"
 }
 close $fmd5
+
+

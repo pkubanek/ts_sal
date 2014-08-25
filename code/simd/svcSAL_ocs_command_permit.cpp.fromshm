@@ -1,0 +1,7 @@
+		strncpy(d.command,ocs_command_permit_ref->command,32);
+		strncpy(d.device,ocs_command_permit_ref->device,128);
+		strncpy(d.subsystem,ocs_command_permit_ref->subsystem,128);
+		for (unsigned int count=0; count<9; count++) {
+			d.actionmask[count] = ocs_command_permit_ref->actionmask[count];
+		}
+		ocs_command_permit_ref->syncO = 1;

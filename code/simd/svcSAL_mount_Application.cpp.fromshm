@@ -1,0 +1,11 @@
+		strncpy(d.Status,mount_Application_ref->Status,16);
+		for (unsigned int count=0; count<5; count++) {
+			d.Demand[count] = mount_Application_ref->Demand[count];
+		}
+		for (unsigned int count=0; count<5; count++) {
+			d.Error[count] = mount_Application_ref->Error[count];
+		}
+		for (unsigned int count=0; count<5; count++) {
+			d.Position[count] = mount_Application_ref->Position[count];
+		}
+		mount_Application_ref->syncO = 1;

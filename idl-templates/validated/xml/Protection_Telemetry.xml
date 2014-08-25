@@ -1,0 +1,28 @@
+
+<?xml version="1.0"?>
+<tlm:SALTelemetry xmlns:tlm="http://sal.lsst.org/SALTelemetry" 
+                  Version="1.0"
+                  Author="dmills@noao.edu"
+                  updateDate="Fri Aug 30 11:18:19 MST 2013">
+
+   <Subsystem="Protection">
+
+   <Ttems>
+      <item>
+          <EFDB_Topic>camera_Prot</EFDB_Topic>
+          <EFDB_Name>Status</EFDB_Name>
+          <Description>xxx</Description>
+          <Frequency>0.010</Frequency>
+          <Publishers>1</Publishers>
+          <Values_per_Publisher>2</Values_per_Publisher>
+          <Size_in_bytes>4</Size_in_bytes>
+          <IDL_Type>long</IDL_Type>
+          <Units>Volts</Units>
+          <Conversion>none</Conversion>
+          <Sensor_location>Control room</Sensor_location>
+          <Count>2</Count>
+          <Instances_per_night> 864 </Instances_per_night>
+          <Bytes_per_night> 3,456 </Bytes_per_night>
+      </item>
+   </Items>
+</tlm:SALTelemetry>

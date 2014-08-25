@@ -1,0 +1,3 @@
+	svcLONG	operate[202];
+	svcLONG	reset[202];
+	svcLONG	substrate[202];

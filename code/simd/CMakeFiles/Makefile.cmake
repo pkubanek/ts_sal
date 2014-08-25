@@ -7,10 +7,10 @@ SET(CMAKE_DEPENDS_GENERATOR "Unix Makefiles")
 # The top level Makefile was generated from the following files:
 SET(CMAKE_MAKEFILE_DEPENDS
   "CMakeCache.txt"
-  "/opt/simd-cxx-v0.9/cmake/FindOpenSplice.cmake"
-  "/opt/simd-cxx-v0.9/cmake/FindSimD.cmake"
-  "/opt/simd-cxx-v0.9/cmake/MacroOpenSplice.cmake"
-  "/opt/simd-cxx-v0.9/cmake/osmacros.cmake"
+  "SAL_CMAKE_DIR/FindOpenSplice.cmake"
+  "SAL_CMAKE_DIR/FindSimD.cmake"
+  "SAL_CMAKE_DIR/MacroOpenSplice.cmake"
+  "SAL_CMAKE_DIR/osmacros.cmake"
   "CMakeFiles/CMakeCCompiler.cmake"
   "CMakeFiles/CMakeCXXCompiler.cmake"
   "CMakeFiles/CMakeSystem.cmake"

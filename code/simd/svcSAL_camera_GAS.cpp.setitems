@@ -1,0 +1,7 @@
+		result = salHandle->setitem(SAL_IID_camera_GAS_algorithm, algorithm);
+		result = salHandle->setitem(SAL_IID_camera_GAS_parameters, parameters, 11);
+		result = salHandle->setitem(SAL_IID_camera_GAS_sampleData_00, sampleData_00, 26);
+		result = salHandle->setitem(SAL_IID_camera_GAS_sampleData_01, sampleData_01, 26);
+		result = salHandle->setitem(SAL_IID_camera_GAS_sampleData_10, sampleData_10, 26);
+		result = salHandle->setitem(SAL_IID_camera_GAS_sampleData_11, sampleData_11, 26);
+		result = salHandle->putSample();

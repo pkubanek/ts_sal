@@ -1,0 +1,3 @@
+	char	[32];
+	char	[32];
+	svcLONG	Version[4];

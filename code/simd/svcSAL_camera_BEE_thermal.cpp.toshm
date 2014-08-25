@@ -1,0 +1,12 @@
+		camera_BEE_thermal_ref->raftID = samples[i].raftID;
+		camera_BEE_thermal_ref->cfgChkSum = samples[i].cfgChkSum;
+		for (unsigned int count=0; count<11; count++) {
+			camera_BEE_thermal_ref->heaterStatus[count] = samples[i].heaterStatus[count];
+		}
+		for (unsigned int count=0; count<11; count++) {
+			camera_BEE_thermal_ref->heaterPower[count] = samples[i].heaterPower[count];
+		}
+		for (unsigned int count=0; count<21; count++) {
+			camera_BEE_thermal_ref->temp[count] = samples[i].temp[count];
+		}
+		camera_BEE_thermal_ref->syncI++;

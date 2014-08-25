@@ -1,0 +1,6 @@
+		strncpy(ocs_scheduler_parameters_ref->algorithm,samples[i].algorithm,32);
+		strncpy(ocs_scheduler_parameters_ref->p1,samples[i].p1,32);
+		strncpy(ocs_scheduler_parameters_ref->p2,samples[i].p2,32);
+		strncpy(ocs_scheduler_parameters_ref->p3,samples[i].p3,32);
+		strncpy(ocs_scheduler_parameters_ref->p4,samples[i].p4,32);
+		ocs_scheduler_parameters_ref->syncI++;

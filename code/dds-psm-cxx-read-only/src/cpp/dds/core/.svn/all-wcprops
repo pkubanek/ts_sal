@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 40
+/svn/!svn/ver/174/trunk/src/cpp/dds/core
+END
+Time.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 48
+/svn/!svn/ver/57/trunk/src/cpp/dds/core/Time.cpp
+END
+Exception.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 54
+/svn/!svn/ver/107/trunk/src/cpp/dds/core/Exception.cpp
+END
+Reference.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 54
+/svn/!svn/ver/130/trunk/src/cpp/dds/core/Reference.cpp
+END
+Duration.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 53
+/svn/!svn/ver/130/trunk/src/cpp/dds/core/Duration.cpp
+END

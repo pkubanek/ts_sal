@@ -1,0 +1,31 @@
+		d.Daz = tcs_kernel_Site_ref->Daz;
+		d.Diurab = tcs_kernel_Site_ref->Diurab;
+		d.Elong = tcs_kernel_Site_ref->Elong;
+		d.Lat = tcs_kernel_Site_ref->Lat;
+		d.Refa = tcs_kernel_Site_ref->Refa;
+		d.Refb = tcs_kernel_Site_ref->Refb;
+		d.St0 = tcs_kernel_Site_ref->St0;
+		d.T0 = tcs_kernel_Site_ref->T0;
+		d.Tt0 = tcs_kernel_Site_ref->Tt0;
+		d.Ttj = tcs_kernel_Site_ref->Ttj;
+		d.Ttmtai = tcs_kernel_Site_ref->Ttmtai;
+		d.Uau = tcs_kernel_Site_ref->Uau;
+		d.Ukm = tcs_kernel_Site_ref->Ukm;
+		d.Vau = tcs_kernel_Site_ref->Vau;
+		d.Vkm = tcs_kernel_Site_ref->Vkm;
+		d.delat = tcs_kernel_Site_ref->delat;
+		d.delut = tcs_kernel_Site_ref->delut;
+		d.elongm = tcs_kernel_Site_ref->elongm;
+		d.hm = tcs_kernel_Site_ref->hm;
+		d.latm = tcs_kernel_Site_ref->latm;
+		d.tai = tcs_kernel_Site_ref->tai;
+		d.ttmtat = tcs_kernel_Site_ref->ttmtat;
+		d.xpm = tcs_kernel_Site_ref->xpm;
+		d.ypm = tcs_kernel_Site_ref->ypm;
+		for (unsigned int count=0; count<22; count++) {
+			d.Amprms[count] = tcs_kernel_Site_ref->Amprms[count];
+		}
+		for (unsigned int count=0; count<16; count++) {
+			d.Aoprms[count] = tcs_kernel_Site_ref->Aoprms[count];
+		}
+		tcs_kernel_Site_ref->syncO = 1;

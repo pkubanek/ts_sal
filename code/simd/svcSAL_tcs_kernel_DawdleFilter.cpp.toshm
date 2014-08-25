@@ -1,0 +1,3 @@
+		tcs_kernel_DawdleFilter_ref->Bypass = samples[i].Bypass;
+		tcs_kernel_DawdleFilter_ref->T = samples[i].T;
+		tcs_kernel_DawdleFilter_ref->syncI++;

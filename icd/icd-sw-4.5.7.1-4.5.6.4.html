@@ -1,0 +1,178 @@
+
+<HTML><HEAD><TITLE>LSST - Software ICD 4.5.6.4</TITLE></HEAD>
+<BODY BGCOLOR=White>
+<IMG SRC="LSST_logo.gif" ALIGN=LEFT>
+<H3><BR>ICD-SW-4.5.6.4<BR>
+Subsystem : seeing_mass</H3>
+<HR>
+<PRE>
+
+</PRE>
+<H2>Contents<H2>
+<H3>1. SCOPE</H3>
+<UL>
+<H4>            1.1       System Identification</H4>
+<H4>            1.2       Document Overview</H4>
+<H4>		1.3	  Glossary</H4>
+<H4>            1.4       Applicable Documents</H4>
+</UL>
+<H3>2.       CONCEPT OF OPERATIONS</H3>
+<H3>3.       DETAILED INTERFACE REQUIREMENTS</H3>
+<UL>
+<H4>  3.1       Commanding Requirements</H3>
+<H4> 3.2       Interface Processing Time Requirements</H4>
+<H4>3.3       Message Requirements</H4>
+<H4>            3.4       Telemetry Requirements</H4>
+</UL>
+<H3>4.       NOTES</H3>
+<H3>5.       APPENDICES</H3>
+<H3>6.       APPROVALS</H3>
+<H3>7.       RECORD OF CHANGES</H3>
+<HR>
+<P>
+<H2>1. SCOPE</H2>
+This Interface Control Document (ICD) specifies the interface(s) between seeing_mass and other subsystems. Upon formal approval by the line Manager responsible for each participating system, this ICD shall be incorporated into the requirements baseline for each system.
+All the interfaces detailed herein are mediated by the OCS Middleware Software-Abstraction-Layer protocols, as detailed in ICD-SW-4.5.7.xx.
+<P>
+
+<H2>            1.1       System Identification</H2>
+<H3>                        1.1.1      OCS Middleware (4.5.7.xx)</H3>
+
+<P>
+<H3>                        1.1.2      seeing_mass (4.5.6.4)</H3>
+
+<P>
+<H2>            1.2       Document Overview</H2>
+The purpose of the ICD is to specify interface requirements to be met by the participating systems. It describes the concept of operations for the interface, defines the message structure and protocols which govern the interchange of data, and identifies the communication paths along which the data is expected to flow.
+
+<H2>1.3 Glossary</H2>
+<P><BR>BEE - Back-End Electronic<BR>CALSYS - Camera Calibration System<BR>CCS - Camera Control System<BR>DDS - Data Distribution Service<BR>FCS - Filter Controller Subsystem<BR>FEE - Front End Electronics<BR>FPA - Focal Plane Array Actuation<BR>GAS - Guider data acquisition system<BR>GS - Guider system<BR>L2U - L2 Controller Unit<BR>LASERCAL - Camera metrology calibration System<BR>LSST - Large Synoptic Survey Telescope<BR>OMG - Object Management Group<BR>PWR - Camera Power supply System<BR>QA - Camera Quality Assurance measurements<BR>QoS - Quality of Service<BR>RAS - Raft Alignment Subsystem<BR>RTI - Real Time Innovation<BR>SAL - Software Abstraction Layer<BR>SAS - Science Array System<BR>SCU - Shutter Controller Unit<BR>SDS - Science Data Acquisition System<BR>TC - Thermal Control<BR>TCM - Camera Timing control<BR>VCS - Vacuum Control Subsystem<BR>WDS - Wavefront data acquisition system<BR>WFS - Wave-front Sensing System<BR>WTCM - Camera wavefront sensors Timing control<<P>
+<P>
+<H2>            1.4       Applicable Documents</H2><P>
+<BR>Datastream Definitions Document - Datastream Prototypes 1.1 (Document-1887)
+<BR>Definition of subsystems - LSST Project WBS Dictionary (Document-985)
+<BR>Documentation standards - LSST DM UML Modeling Conventions (Document-469)
+<BR>Messaging standards - OMG DDS 1.1 (Document-1835)
+<BR>Software Abstraction Layer API  - Middleware Software Abstration Layer (Document-3692)
+<BR>Software coding standards LSST C++ Programming Style Guidelines (Document-3046)
+<BR>Vendor documentation - NDDS manual (Document-2241)
+<P>
+
+<H2>2.       CONCEPT OF OPERATIONS</H2>
+<H2>            2.1       System Overviews</H2>
+<BR>
+<H3>Subsystem  description : ocs</H3>
+ The Observatory Control System (OCS) is the master control system that schedules, coordinates, commands and monitors the observatory. 
+Through the OCS the system can be started, adjusted during operations, monitored and stopped, both locally and remotely. 
+The OCS provides the means to support safe observatory operations day and night.
+
+<P>
+<H3>Subsystem  description : seeing_mass</H3>
+Seeing camera, Multi aperture turbulence measurement<BR>
+Multi Aperture Scintillation Sensing (MASS). By correlating scintillation patterns in different annular pupils in a telescope the altitude and strength of turbulent motions in the atmosphere, where the scintillation originates, can be deduced. 
+<P>
+When stellar light passes through a turbulent layer and propagates down, its intensity fluctuates. Spatial scale of these variations depends on the distance to the layer. This dependence is used to separate the contributions from different layers by means of four concentric ring apertures that work as a matched spatial filter. Turbulence profile is derived from the statistical processing of the series of photon counts with 1 ms sampling.
+<P>
+Intensity of light falling into each of the ring apertures A, B, C, and D (see below) is measured by photon counters.  Scintillation index  in each aperture is computed as the variance (dispersion) of intensity normalized by the average intensity squared (or, equivalently, variance of the natural logarithm). In this way the scintillation index does not depend on the brightness of the star and reflects only the strength of atmospheric scintillation. Contribution of photon noise is carefully subtracted in the calculation.
+<P>
+Similarly, differential scintillation index for a pair of apertures (e.g. A and B) is defined as the variance of the ratio of intensities in A and B normalized by the square of the average intensity ratio A/B (or, equivalently, the variance of the natural logarithm of the intensity ratio).
+<P>
+Both normal and differential scintillation indices produced by a given turbulent layer are computed as product of the turbulence intensity in this layer (integral of Cn2 measured in m^1/3) by some weighting function which depends on the distance to the layer as well as on the shape and size of the apertures.
+<P>
+
+<H2>3.       DETAILED INTERFACE REQUIREMENTS</H2>
+<H2>            3.1       Commanding Requirements</H2>
+There are two basic classes of commands used :
+Lifecycle commands : commands used by OCS to control the lifecycle
+characteristics of applications. Users generally do not need to be concerned with the lifecycle commands
+because they are implemented by the underlying infrastructure.
+<P>
+Functional commands : commands that implement the specific functional characteristics of a
+subsystem components.
+<P>
+Functional operation is based on the Command/Action/Response model that isolates the transmission of the
+command from the resulting action that is performed. When an application receives a command, it validates any
+Configuration associated with that command and immediately accepts or rejects the command. If the command is
+accepted, the application then initiates an independent internal action to meet the conditions imposed by the
+command. Once those conditions have been met, an event is posted signifying the successful completion of the
+action (or the unsuccessful completion if the conditions can not be met).
+<P>
+Commands return immediately but the actions that are initiated as a result of a command may take some time to
+complete. When the action completes, an action status event is posted that includes the completion status of that
+action. The subsystem generating the command monitors this status event prior to issuing the command on the
+remote system. While the monitoring is performed automatically by the command system, Subsystem developers
+may need to attach a callback to perform processing on action completion. This callback may be null if no
+processing is needed.
+<P>
+If a command is accepted by the subsystem it causes an independent action to begin. A response to the
+command is returned immediately. The action begins matching the current configuration to the new demand
+configuration. When the configurations match (i.e., the subsystem has performed the input operations) the action
+signals the successful end of the action. If the configurations cannot be matched (whether by hardware failure,
+external stop command, timeout, or some other fault) the action signals the unsuccessful end of the action.
+<P>
+The important features of the command/action/response model are:
+<P>
+<UL>
+<LI>Commands are never blocked. As soon as one command is started, another one can be issued. The
+behavior of the controller when two or more configurations are started can be configured on a
+per subsystem basis.
+<LI>The actions are performed using one or more separate threads. They can be tuned for priority, number of
+simultaneous actions, critical resources, or any other parameters.
+<LI>Action completions produce events that tell the state of the current configuration. Actions push the
+lifecycle of the configuration through to completion.
+<LI>Responses may be monitored by any other subsystems.<P>
+</UL><P>
+
+
+<H4>Generic subsystem control state commands</H4>
+<UL>
+<TABLE BORDER=3 CELLPADDING=5 BGCOLOR=LightBlue WIDTH=600>
+<TR BGCOLOR=yellow><B><TD>Command</TD><TD>Description</TD></B></TR>
+<TR><TD>start</TD><TD>Prepare the subsystem to accept functional commands </TD></TR>
+<TR><TD>stop</TD><TD>Shutdown functional commanding capabilities </TD></TR>
+<TR><TD>pause</TD><TD>Suspend functional activities , internal state is retained</TD></TR>
+<TR><TD>resume</TD><TD>Resume functional actitivies (if possible) </TD></TR>
+<TR><TD>online</TD><TD>Set subsystem ready for commands</TD></TR>
+<TR><TD>offline</TD><TD>Take subsystem offline (must be brought back online before any
+other commanding is possible)</TD></TR>
+</TABLE>
+</UL><P>
+
+<H3>                        3.2       Interface Processing Time Requirements</H3>
+Command messages issued by ocs must be received by the computer system(s)
+of the commanded subsystem within TDB ms. A preliminary response (ACK) must be issued within
+TBD ms and received by ocs within TDB ms of the command origination time.
+ 
+<H3>                        3.3       Message Requirements</H3>
+
+Every stream includes items for consistency<BR>
+checking and performance monitoring support
+<P><UL>
+<TABLE BORDER=3 CELLPADDING=5 BGCOLOR=LightBlue WIDTH=600>
+<TR BGCOLOR=yellow><B><TD>Identifier</TD><TD>Description</TD></B></TR>
+<TR><TD>private_revCode</TD><TD>crc of IDL source</TD></TR>
+<TR><TD>private_sndStamp</TD><TD> system time of sender</TD></TR>
+<TR><TD>private_rcvStamp</TD><TD>system time of receiver</TD></TR>
+<TR><TD>private_seqNum</TD><TD>sequence number (process)</TD></TR>
+<TR><TD>private_origin</TD><TD>IP subaddr and PID</TD></TR>
+</TABLE>
+</UL>
+<H2>            3.4       Telemetry Requirements</H2>
+
+
+
+<H2>4.       NOTES</H2>
+
+<H2>5.       APPENDICES</H2>
+
+<H2>6.       APPROVALS</H2>
+
+<H2>7.       RECORD OF CHANGES</H2><UL>
+<TABLE BORDER=3 CELLPADDING=5 BGCOLOR=LightBlue WIDTH=600>
+<TR BGCOLOR=yellow><B><TD>Version</TD><TD>Date</TD><TD>Author</TD><TD>Notes</TD></B></TR>
+<TR><TD>1.0</TD><TD>06-15-2009</TD><TD>Mills., D.</TD><TD>Initial release</TR>
+</TABLE></UL>
+<P>
+
+</BODY></HTML>
+

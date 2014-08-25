@@ -1,0 +1,5 @@
+ocs.system.networking.subsystem 128 string<128> 0.1
+ocs.system.networking.mac 32 string<32> 0.1
+ocs.system.networking.ip 4 long 0.1
+ocs.system.networking.rx 6 long 0.1
+ocs.system.networking.tx 6 long 0.1

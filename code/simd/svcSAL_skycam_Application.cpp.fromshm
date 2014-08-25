@@ -1,0 +1,12 @@
+		strncpy(d.Catalog,skycam_Application_ref->Catalog,4096);
+		strncpy(d.Status,skycam_Application_ref->Status,16);
+		for (unsigned int count=0; count<65; count++) {
+			d.Data[count] = skycam_Application_ref->Data[count];
+		}
+		for (unsigned int count=0; count<5; count++) {
+			d.Error[count] = skycam_Application_ref->Error[count];
+		}
+		for (unsigned int count=0; count<33; count++) {
+			d.Sky_parms[count] = skycam_Application_ref->Sky_parms[count];
+		}
+		skycam_Application_ref->syncO = 1;

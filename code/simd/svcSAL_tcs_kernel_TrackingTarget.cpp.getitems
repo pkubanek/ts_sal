@@ -1,0 +1,6 @@
+		result = salHandle->getSample(SAL__SLOWPOLL);
+		result = salHandle->getitem(SAL_IID_tcs_kernel_TrackingTarget_PositionX, PositionX);
+		result = salHandle->getitem(SAL_IID_tcs_kernel_TrackingTarget_PositionY, PositionY);
+		result = salHandle->getitem(SAL_IID_tcs_kernel_TrackingTarget_T0, T0);
+		result = salHandle->getitem(SAL_IID_tcs_kernel_TrackingTarget_VelocityX, VelocityX);
+		result = salHandle->getitem(SAL_IID_tcs_kernel_TrackingTarget_VelocityY, VelocityY);

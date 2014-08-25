@@ -1,0 +1,8 @@
+		m1m3_response_ref->repeat = samples[i].repeat;
+		m1m3_response_ref->submits = samples[i].submits;
+		m1m3_response_ref->cmdID = samples[i].cmdID;
+		m1m3_response_ref->timeout = samples[i].timeout;
+		strncpy(m1m3_response_ref->ack,samples[i].ack,16);
+		strncpy(m1m3_response_ref->error,samples[i].error,16);
+		strncpy(m1m3_response_ref->result,samples[i].result,64);
+		m1m3_response_ref->syncI++;

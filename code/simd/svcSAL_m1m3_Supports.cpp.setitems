@@ -1,0 +1,4 @@
+		result = salHandle->setitem(SAL_IID_m1m3_Supports_stepcnt, stepcnt, 7);
+		result = salHandle->setitem(SAL_IID_m1m3_Supports_targetpos, targetpos, 7);
+		result = salHandle->setitem(SAL_IID_m1m3_Supports_force, force, 7);
+		result = salHandle->putSample();

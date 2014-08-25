@@ -1,0 +1,4 @@
+		for (unsigned int count=0; count<11; count++) {
+			camera_WTCM_ref->parameters[count] = samples[i].parameters[count];
+		}
+		camera_WTCM_ref->syncI++;

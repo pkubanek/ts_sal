@@ -1,0 +1,5 @@
+	svcLONG	status[26];
+	svcFLT	cold_plate[26];
+	svcFLT	flow_rate[26];
+	svcFLT	setpoint[26];
+	svcFLT	temperature[26];

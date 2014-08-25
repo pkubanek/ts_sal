@@ -1,0 +1,9 @@
+		result = salHandle->setitem(SAL_IID_tcs_kernel_FK5Target_dec, dec);
+		result = salHandle->setitem(SAL_IID_tcs_kernel_FK5Target_epoc, epoc);
+		result = salHandle->setitem(SAL_IID_tcs_kernel_FK5Target_equinox, equinox);
+		result = salHandle->setitem(SAL_IID_tcs_kernel_FK5Target_parallax, parallax);
+		result = salHandle->setitem(SAL_IID_tcs_kernel_FK5Target_pmDec, pmDec);
+		result = salHandle->setitem(SAL_IID_tcs_kernel_FK5Target_pmRA, pmRA);
+		result = salHandle->setitem(SAL_IID_tcs_kernel_FK5Target_ra, ra);
+		result = salHandle->setitem(SAL_IID_tcs_kernel_FK5Target_rv, rv);
+		result = salHandle->putSample();

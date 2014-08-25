@@ -1,0 +1,8 @@
+		d.repeat = network_response_ref->repeat;
+		d.submits = network_response_ref->submits;
+		d.cmdID = network_response_ref->cmdID;
+		d.timeout = network_response_ref->timeout;
+		strncpy(d.ack,network_response_ref->ack,16);
+		strncpy(d.error,network_response_ref->error,16);
+		strncpy(d.result,network_response_ref->result,64);
+		network_response_ref->syncO = 1;

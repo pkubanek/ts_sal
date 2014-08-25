@@ -1,0 +1,16 @@
+#     subsystem        .device    .property  .action  .modifiers
+
+	calibration	control    state      set      online
+	calibration	control    state      set      offline
+	calibration	control    state      set      pause
+	calibration	control    state      set      resume
+	calibration	control    state      set      start
+	calibration	control    state      set      stop
+
+	calibration	lamps	   power      on
+	calibration	lamps	   power      off
+
+	calibration	lamps	   intensity  set     [float]
+	calibration	lamps	   wavelength set     [float]
+
+

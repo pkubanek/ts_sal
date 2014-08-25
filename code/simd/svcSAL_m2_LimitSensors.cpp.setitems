@@ -1,0 +1,3 @@
+		result = salHandle->setitem(SAL_IID_m2_LimitSensors_liftoff, liftoff, 65);
+		result = salHandle->setitem(SAL_IID_m2_LimitSensors_limit, limit, 65);
+		result = salHandle->putSample();

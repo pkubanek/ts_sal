@@ -1,0 +1,7 @@
+		strncpy(ocs_command_permit_ref->command,samples[i].command,32);
+		strncpy(ocs_command_permit_ref->device,samples[i].device,128);
+		strncpy(ocs_command_permit_ref->subsystem,samples[i].subsystem,128);
+		for (unsigned int count=0; count<9; count++) {
+			ocs_command_permit_ref->actionmask[count] = samples[i].actionmask[count];
+		}
+		ocs_command_permit_ref->syncI++;

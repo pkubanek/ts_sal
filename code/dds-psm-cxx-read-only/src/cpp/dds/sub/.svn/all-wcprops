@@ -1,0 +1,23 @@
+K 25
+svn:wc:ra_dav:version-url
+V 39
+/svn/!svn/ver/103/trunk/src/cpp/dds/sub
+END
+Sample.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 50
+/svn/!svn/ver/103/trunk/src/cpp/dds/sub/Sample.cpp
+END
+Subscriber.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 54
+/svn/!svn/ver/101/trunk/src/cpp/dds/sub/Subscriber.cpp
+END
+parent.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 49
+/svn/!svn/ver/93/trunk/src/cpp/dds/sub/parent.cpp
+END

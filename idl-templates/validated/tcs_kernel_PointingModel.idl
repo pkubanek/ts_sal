@@ -1,0 +1,30 @@
+struct tcs_kernel_PointingModel {
+  string<32> private_revCode;  //private
+  double     private_sndStamp; //private
+  double     private_rcvStamp; //private
+  long       private_seqNum;   //private
+  long       private_origin;   //private
+  long	Model[30];
+  float	Coeffv[100];
+  long	Nterml;
+  long	Ntermx;
+  long	Nterms;
+  string<32>	Coeff1;
+  string<32>	Coeff2;
+  string<32>	Coeff3;
+  string<32>	Coeff4;
+  string<32>	Coeff5;
+  string<32>	Coeff6;
+  string<32>	Coeff7;
+  string<32>	Coeff8;
+  string<32>	Coeff9;
+  string<32>	Cofor1;
+  string<32>	Cofor2;
+  string<32>	Cofor3;
+  string<32>	Cofor4;
+  string<32>	Cofor5;
+  string<32>	Cofor6;
+  string<32>	Cofor7;
+  string<32>	Cofor8;
+  string<32>	Cofor9;
+};

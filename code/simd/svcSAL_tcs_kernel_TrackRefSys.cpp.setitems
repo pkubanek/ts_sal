@@ -1,0 +1,16 @@
+		result = salHandle->setitem(SAL_IID_tcs_kernel_TrackRefSys_cst, cst);
+		result = salHandle->setitem(SAL_IID_tcs_kernel_TrackRefSys_diurab, diurab);
+		result = salHandle->setitem(SAL_IID_tcs_kernel_TrackRefSys_hm, hm);
+		result = salHandle->setitem(SAL_IID_tcs_kernel_TrackRefSys_humid, humid);
+		result = salHandle->setitem(SAL_IID_tcs_kernel_TrackRefSys_press, press);
+		result = salHandle->setitem(SAL_IID_tcs_kernel_TrackRefSys_refa, refa);
+		result = salHandle->setitem(SAL_IID_tcs_kernel_TrackRefSys_refb, refb);
+		result = salHandle->setitem(SAL_IID_tcs_kernel_TrackRefSys_sst, sst);
+		result = salHandle->setitem(SAL_IID_tcs_kernel_TrackRefSys_tdbj, tdbj);
+		result = salHandle->setitem(SAL_IID_tcs_kernel_TrackRefSys_temp, temp);
+		result = salHandle->setitem(SAL_IID_tcs_kernel_TrackRefSys_tlat, tlat);
+		result = salHandle->setitem(SAL_IID_tcs_kernel_TrackRefSys_tlr, tlr);
+		result = salHandle->setitem(SAL_IID_tcs_kernel_TrackRefSys_wavel, wavel);
+		result = salHandle->setitem(SAL_IID_tcs_kernel_TrackRefSys_ae2mt, ae2mt, 10);
+		result = salHandle->setitem(SAL_IID_tcs_kernel_TrackRefSys_amprms, amprms, 22);
+		result = salHandle->putSample();

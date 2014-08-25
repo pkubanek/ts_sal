@@ -1,0 +1,10 @@
+struct ocs_scheduler_econstraints {
+  string<32> private_revCode;  //private
+  double     private_sndStamp; //private
+  double     private_rcvStamp; //private
+  long       private_seqNum;   //private
+  long       private_origin;   //private
+  string<32>	type;
+  string<32>	minval;
+  string<32>	maxval;
+};

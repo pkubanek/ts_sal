@@ -1,0 +1,326 @@
+
+	svcRTN salm2_response::getItem ( svcIID itemId , svcSHORT &value )
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    switch (itemId) {
+
+                 case SAL_IID_m2_response_repeat :
+                      value = data.repeat;
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_m2_response_submits :
+                      value = data.submits;
+                      result = SAL__OK;
+                      break;
+
+	    }
+	    return result;
+	}
+	
+
+
+	svcRTN salm2_response::setItem ( svcIID itemId , svcSHORT &value )
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    switch (itemId) {
+
+                 case SAL_IID_m2_response_repeat :
+                      data.repeat = value;
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_m2_response_submits :
+                      data.submits = value;
+                      result = SAL__OK;
+                      break;
+
+	    }
+	    return result;
+	}
+	
+
+
+       svcRTN salm2_response::setItemStr ( svcIID itemId , svcCHAR *textValue)
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    
+	    switch (itemid) {
+
+                 case SAL_IID_m2_response_repeat :
+                      sscanf(textValue,"%d",&data.repeat);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_m2_response_submits :
+                      sscanf(textValue,"%d",&data.submits);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_m2_response_cmdID :
+                      sscanf(textValue,"%ld",&data.cmdID);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_m2_response_timeout :
+                      sscanf(textValue,"%ld",&data.timeout);
+                      result = SAL__OK;
+                      break;
+
+	    }
+	    return result;
+	}
+
+       svcRTN salm2_response::getItemStr ( svcIID itemId , svcCHAR *textValue)
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    
+	    switch (itemid) {
+
+                 case SAL_IID_m2_response_repeat :
+                      sprintf(textValue,"%d",data.repeat);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_m2_response_submits :
+                      sprintf(textValue,"%d",data.submits);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_m2_response_cmdID :
+                      sprintf(textValue,"%ld",data.cmdID);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_m2_response_timeout :
+                      sprintf(textValue,"%ld",data.timeout);
+                      result = SAL__OK;
+                      break;
+
+	    }
+	    return result;
+	}
+
+	svcRTN salm2_response::getItem ( svcIID itemId , svcLONG &value )
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    switch (itemId) {
+
+                 case SAL_IID_m2_response_cmdID :
+                      value = data.cmdID;
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_m2_response_timeout :
+                      value = data.timeout;
+                      result = SAL__OK;
+                      break;
+
+	    }
+	    return result;
+	}
+	
+
+
+	svcRTN salm2_response::setItem ( svcIID itemId , svcLONG &value )
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    switch (itemId) {
+
+                 case SAL_IID_m2_response_cmdID :
+                      data.cmdID = value;
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_m2_response_timeout :
+                      data.timeout = value;
+                      result = SAL__OK;
+                      break;
+
+	    }
+	    return result;
+	}
+	
+
+
+       svcRTN salm2_response::setItemStr ( svcIID itemId , svcCHAR *textValue)
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    
+	    switch (itemid) {
+
+                 case SAL_IID_m2_response_repeat :
+                      sscanf(textValue,"%d",&data.repeat);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_m2_response_submits :
+                      sscanf(textValue,"%d",&data.submits);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_m2_response_cmdID :
+                      sscanf(textValue,"%ld",&data.cmdID);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_m2_response_timeout :
+                      sscanf(textValue,"%ld",&data.timeout);
+                      result = SAL__OK;
+                      break;
+
+	    }
+	    return result;
+	}
+
+       svcRTN salm2_response::getItemStr ( svcIID itemId , svcCHAR *textValue)
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    
+	    switch (itemid) {
+
+                 case SAL_IID_m2_response_repeat :
+                      sprintf(textValue,"%d",data.repeat);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_m2_response_submits :
+                      sprintf(textValue,"%d",data.submits);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_m2_response_cmdID :
+                      sprintf(textValue,"%ld",data.cmdID);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_m2_response_timeout :
+                      sprintf(textValue,"%ld",data.timeout);
+                      result = SAL__OK;
+                      break;
+
+	    }
+	    return result;
+	}
+
+	svcRTN salm2_response::getItem ( svcIID itemId , (svcCHAR *)value )
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    switch (itemId) {
+	    
+
+
+                 case SAL_IID_m2_response_ack :
+                      strncpy(value, data.ack, 16);
+                      result = SAL__OK;
+                      break;
+
+
+                 case SAL_IID_m2_response_error :
+                      strncpy(value, data.error, 16);
+                      result = SAL__OK;
+                      break;
+
+
+                 case SAL_IID_m2_response_result :
+                      strncpy(value, data.result, 64);
+                      result = SAL__OK;
+                      break;
+
+
+	    }
+	    return result;
+	}
+	
+
+
+	svcRTN salm2_response::setItem ( svcIID itemId , (svcCHAR *)value )
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    switch (itemId) {
+	    
+
+
+                 case SAL_IID_m2_response_ack :
+                      strncpy(data.ack, value, 16);
+                      result = SAL__OK;
+                      break;
+
+
+                 case SAL_IID_m2_response_error :
+                      strncpy(data.error, value, 16);
+                      result = SAL__OK;
+                      break;
+
+
+                 case SAL_IID_m2_response_result :
+                      strncpy(data.result, value, 64);
+                      result = SAL__OK;
+                      break;
+
+
+	    }
+	    return result;
+	}
+	
+
+
+       svcRTN salm2_response::setItemStr ( svcIID itemId , svcCHAR *textValue)
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    
+	    switch (itemid) {
+
+                 case SAL_IID_m2_response_repeat :
+                      sscanf(textValue,"%d",&data.repeat);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_m2_response_submits :
+                      sscanf(textValue,"%d",&data.submits);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_m2_response_cmdID :
+                      sscanf(textValue,"%ld",&data.cmdID);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_m2_response_timeout :
+                      sscanf(textValue,"%ld",&data.timeout);
+                      result = SAL__OK;
+                      break;
+
+	    }
+	    return result;
+	}
+
+       svcRTN salm2_response::getItemStr ( svcIID itemId , svcCHAR *textValue)
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    
+	    switch (itemid) {
+
+                 case SAL_IID_m2_response_repeat :
+                      sprintf(textValue,"%d",data.repeat);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_m2_response_submits :
+                      sprintf(textValue,"%d",data.submits);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_m2_response_cmdID :
+                      sprintf(textValue,"%ld",data.cmdID);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_m2_response_timeout :
+                      sprintf(textValue,"%ld",data.timeout);
+                      result = SAL__OK;
+                      break;
+
+	    }
+	    return result;
+	}

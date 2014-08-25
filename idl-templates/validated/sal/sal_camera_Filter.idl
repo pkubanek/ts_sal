@@ -1,0 +1,113 @@
+module camera
+{
+	struct Filter {
+	  string<32> private_revCode;  //private
+	  double     private_sndStamp; //private
+	  double     private_rcvStamp; //private
+	  long       private_seqNum;   //private
+	  long       private_origin;   //private
+	  long	Loader_telemetry;	// tbd | ?? | Loader | none | none | ?? |  | 
+	  unsigned short	REB_ID;	// none | | Raft Electronics Board ID
+	};
+	#pragma keylist Filter
+	struct Filter_angle {
+	  string<32> private_revCode;  //private
+	  double     private_sndStamp; //private
+	  double     private_rcvStamp; //private
+	  long       private_seqNum;   //private
+	  long       private_origin;   //private
+	  float	Inclinometer[2];	// 2.31E-04 | Degrees | FCS: inclinometer [2?] | none | Camera body | 2 |  20  |  80 
+	};
+	#pragma keylist Filter_angle
+	struct Filter_current {
+	  string<32> private_revCode;  //private
+	  double     private_sndStamp; //private
+	  double     private_rcvStamp; //private
+	  long       private_seqNum;   //private
+	  long       private_origin;   //private
+	  float	Carousel_current;	// 2.31E-04 | Amp | Carousel: motor current | none | Camera body | 1 |  10  |  40 
+	  float	Auto_current;	// 2.31E-04 | Amp | Auto: Motor current | none | Camera body | 1 |  10  |  40 
+	};
+	#pragma keylist Filter_current
+	struct Filter_name {
+	  string<32> private_revCode;  //private
+	  double     private_sndStamp; //private
+	  double     private_rcvStamp; //private
+	  long       private_seqNum;   //private
+	  long       private_origin;   //private
+	  string<32>	Filter_online;	// 0.054 | none | FCS: Name of filter at online position | none | Camera body | 1 |  2,335  |  74,724 
+	};
+	#pragma keylist Filter_name
+	struct Filter_position {
+	  string<32> private_revCode;  //private
+	  double     private_sndStamp; //private
+	  double     private_rcvStamp; //private
+	  long       private_seqNum;   //private
+	  long       private_origin;   //private
+	  float	Carousel_position;	// 2.31E-04 | Radian | Carousel:Position | none | Camera body | 1 |  10  |  40 
+	  float	Truck_position;	// 2.31E-04 | m | Auto: Truck position | none | Camera body | 1 |  10  |  40 
+	  float	Rail_position[2];	// 2.31E-04 | m | Auto: Rail position | none | Camera body | 2 |  20  |  80 
+	};
+	#pragma keylist Filter_position
+	struct Filter_speed {
+	  string<32> private_revCode;  //private
+	  double     private_sndStamp; //private
+	  double     private_rcvStamp; //private
+	  long       private_seqNum;   //private
+	  long       private_origin;   //private
+	  float	Carousel_speed;	// 2.31E-04 | m/s | Carousel: Speed | none | Camera body | 1 |  10  |  40 
+	  float	Truck_speed;	// 2.31E-04 | m/s | Auto: Truck speed | none | Camera body | 1 |  10  |  40 
+	};
+	#pragma keylist Filter_speed
+	struct Filter_status {
+	  string<32> private_revCode;  //private
+	  double     private_sndStamp; //private
+	  double     private_rcvStamp; //private
+	  long       private_seqNum;   //private
+	  long       private_origin;   //private
+	  short	Filter_presence[10];	// 2.31E-04 | none | FCS: 10 filter presence sensors | none | Camera body | 10 |  100  |  200 
+	  short	Brake_status;	// 2.31E-04 | none | Carousel: Brake sensor | none | Camera body | 1 |  10  |  20 
+	  short	Clamp_status[5];	// 2.31E-04 | none | Auto: Clamp locking sensors | none | Camera body | 5 |  50  |  100 
+	};
+	#pragma keylist Filter_status
+	struct Filter_temperature {
+	  string<32> private_revCode;  //private
+	  double     private_sndStamp; //private
+	  double     private_rcvStamp; //private
+	  long       private_seqNum;   //private
+	  long       private_origin;   //private
+	  float	Latch_temperature[10];	// 2.31E-04 | Celsius | Carousel: 10 latch temperatures | none | Camera body | 10 |  100  |  400 
+	  float	Carousel_temperature;	// 2.31E-04 | Celsius | Carousel: Motor temperature | none | Camera body | 1 |  10  |  40 
+	  float	Clamp_temperature[5];	// 2.31E-04 | Celsius | Auto: Clamp temperatures | none | Camera body | 5 |  50  |  200 
+	  float	Auto_temperature;	// 2.31E-04 | Celsius | Auto: Motor temperature | none | Camera body | 1 |  10  |  40 
+	};
+	#pragma keylist Filter_temperature
+	struct Filter_time {
+	  string<32> private_revCode;  //private
+	  double     private_sndStamp; //private
+	  double     private_rcvStamp; //private
+	  long       private_seqNum;   //private
+	  long       private_origin;   //private
+	  float	Change_Duration;	// 2.31E-04 | sec | FCS: Time to complete filter operations | none | Camera body | 1 |  10  |  40 
+	};
+	#pragma keylist Filter_time
+	struct Filter_voltage {
+	  string<32> private_revCode;  //private
+	  double     private_sndStamp; //private
+	  double     private_rcvStamp; //private
+	  long       private_seqNum;   //private
+	  long       private_origin;   //private
+	  float	Latch_voltage[10];	// 2.31E-04 | Volt | Carousel: 10 actuator voltages | none | Camera body | 10 |  100  |  400 
+	  float	Clamp_voltage[5];	// 2.31E-04 | Volt | Auto: Actuator voltages | none | Camera body | 5 |  50  |  200 
+	};
+	#pragma keylist Filter_voltage
+	struct tcs_kernel_DawdleFilter {
+	  string<32> private_revCode;  //private
+	  double     private_sndStamp; //private
+	  double     private_rcvStamp; //private
+	  long       private_seqNum;   //private
+	  long       private_origin;   //private
+	  long	Bypass;
+	  float	T;
+	};
+};

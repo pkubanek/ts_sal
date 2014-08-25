@@ -1,0 +1,7 @@
+		for (unsigned int count=0; count<17; count++) {
+			d.Raw[count] = enclosure_Vents_ref->Raw[count];
+		}
+		for (unsigned int count=0; count<33; count++) {
+			d.Calibrated[count] = enclosure_Vents_ref->Calibrated[count];
+		}
+		enclosure_Vents_ref->syncO = 1;

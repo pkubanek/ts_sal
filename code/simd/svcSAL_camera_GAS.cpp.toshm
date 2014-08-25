@@ -1,0 +1,17 @@
+		strncpy(camera_GAS_ref->algorithm,samples[i].algorithm,32);
+		for (unsigned int count=0; count<11; count++) {
+			camera_GAS_ref->parameters[count] = samples[i].parameters[count];
+		}
+		for (unsigned int count=0; count<26; count++) {
+			camera_GAS_ref->sampleData_00[count] = samples[i].sampleData_00[count];
+		}
+		for (unsigned int count=0; count<26; count++) {
+			camera_GAS_ref->sampleData_01[count] = samples[i].sampleData_01[count];
+		}
+		for (unsigned int count=0; count<26; count++) {
+			camera_GAS_ref->sampleData_10[count] = samples[i].sampleData_10[count];
+		}
+		for (unsigned int count=0; count<26; count++) {
+			camera_GAS_ref->sampleData_11[count] = samples[i].sampleData_11[count];
+		}
+		camera_GAS_ref->syncI++;

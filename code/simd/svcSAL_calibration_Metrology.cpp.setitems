@@ -1,0 +1,3 @@
+		result = salHandle->setitem(SAL_IID_calibration_Metrology_Raw, Raw, 17);
+		result = salHandle->setitem(SAL_IID_calibration_Metrology_Calibrated, Calibrated, 17);
+		result = salHandle->putSample();

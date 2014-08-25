@@ -1,0 +1,8 @@
+		seeing_mass_response_ref->repeat = samples[i].repeat;
+		seeing_mass_response_ref->submits = samples[i].submits;
+		seeing_mass_response_ref->cmdID = samples[i].cmdID;
+		seeing_mass_response_ref->timeout = samples[i].timeout;
+		strncpy(seeing_mass_response_ref->ack,samples[i].ack,16);
+		strncpy(seeing_mass_response_ref->error,samples[i].error,16);
+		strncpy(seeing_mass_response_ref->result,samples[i].result,64);
+		seeing_mass_response_ref->syncI++;

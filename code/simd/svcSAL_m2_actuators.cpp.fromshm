@@ -1,0 +1,10 @@
+		for (unsigned int count=0; count<73; count++) {
+			d.stepcnt[count] = m2_actuators_ref->stepcnt[count];
+		}
+		for (unsigned int count=0; count<73; count++) {
+			d.targetpos[count] = m2_actuators_ref->targetpos[count];
+		}
+		for (unsigned int count=0; count<73; count++) {
+			d.force[count] = m2_actuators_ref->force[count];
+		}
+		m2_actuators_ref->syncO = 1;

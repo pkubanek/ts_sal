@@ -347,8 +347,8 @@ proc parsemakefile { subsys } {
   close $fout
 }
 
-set scriptdir /opt/lsstsal/scripts
-set includedir /opt/lsstsal/scripts/include
+set scriptdir /usr/local/scripts/tcl
+set includedir /usr/local/scripts/include
 source $scriptdir/managetypes.tcl
 source $scriptdir/ndds_version.tcl
 source $scriptdir/streamutils.tcl
@@ -364,11 +364,13 @@ exec mkdir -p $workdir
 exec cp $subsys.idl $workdir/.
 set fin [open $subsys.idl r]
 set fout [open $workdir/[set subsys]_cache.h w]
+puts $fout "#ifndef __INCLUDED_[set subsys]_cache"
+puts $fout "#define __INCLUDED_[set subsys]_cache"
 set TOPICPROPS($subsys) "  int syncI;\n  int syncO;"
 set TOPICPROPS(bytesize) 8
 set VPROPS(syncI) 1
 set VPROPS(syncO) 1
-puts $fout "typedef struct [set subsys]_cache \{"
+puts $fout "struct [set subsys]_cache \{"
 puts $fout "  int cppDummy;"
 puts $fout "  int syncI;"
 puts $fout "  int syncO;"
@@ -406,6 +408,7 @@ while { [gets $fin rec] > -1 } {
  }
 }
 puts $fout "\} [set subsys]_cache;"
+puts $fout "#endif\n"
 close $fin
 close $fout
 

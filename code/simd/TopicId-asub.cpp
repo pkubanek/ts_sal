@@ -78,9 +78,8 @@ struct DataHandler {
     DDS::SampleInfoSeq infos;
     
     reader.read(samples, infos);
-    for (int i = 0; i < samples.length(); ++i) {
-      std::cout << samples[i].vendor << " . " << samples[i].counter 
-		<< std::endl;
+    for (unsigned int i = 0; i < samples.length(); ++i) {
+      std::cout << "Sample of TopicId received\n" << std::endl;
       samples_to_read--;
     }
     reader.return_loan(samples, infos);
@@ -103,7 +102,7 @@ int main(int argc, char* argv[]) {
     return 1;
   
   // -- start the dds runtime
-  dds::Runtime runtime("");
+  dds::Runtime runtime("LSST");
 
   dds::Topic<TopicId> TopicIdTopic(topic);
   dds::DataReader<TopicId> reader(TopicIdTopic);

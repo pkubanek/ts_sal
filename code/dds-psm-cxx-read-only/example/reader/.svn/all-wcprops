@@ -1,0 +1,17 @@
+K 25
+svn:wc:ra_dav:version-url
+V 38
+/svn/!svn/ver/143/trunk/example/reader
+END
+CMakeLists.txt
+K 25
+svn:wc:ra_dav:version-url
+V 52
+/svn/!svn/ver/94/trunk/example/reader/CMakeLists.txt
+END
+FindDDSPSMCxx.cmake
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/svn/!svn/ver/94/trunk/example/reader/FindDDSPSMCxx.cmake
+END

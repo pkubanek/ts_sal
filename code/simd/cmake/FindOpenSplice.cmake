@@ -65,7 +65,7 @@ SET(OpenSplice_LIBRARIES
 )
 
 # Binary for the IDL compiler 
-SET (OpenSplice_IDLGEN_BINARY $ENV{OSPL_HOME}/bin/idlpp)
+SET (OpenSplice_IDLGEN_BINARY OSPL_HDE/bin/idlpp)
 
 IF (OpenSplice_INCLUDE_DIRS AND OpenSplice_LIBRARIES)
 	SET(OpenSplice_FOUND TRUE)

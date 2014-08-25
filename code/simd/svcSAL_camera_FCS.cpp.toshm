@@ -1,0 +1,6 @@
+		camera_FCS_ref->flags = samples[i].flags;
+		strncpy(camera_FCS_ref->algorithm,samples[i].algorithm,32);
+		for (unsigned int count=0; count<2401; count++) {
+			camera_FCS_ref->motion_profile[count] = samples[i].motion_profile[count];
+		}
+		camera_FCS_ref->syncI++;

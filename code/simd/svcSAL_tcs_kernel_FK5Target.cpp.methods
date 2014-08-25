@@ -1,0 +1,202 @@
+
+	svcRTN saltcs_kernel_FK5Target::getItem ( svcIID itemId , svcFLT &value )
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    switch (itemId) {
+
+                 case SAL_IID_tcs_kernel_FK5Target_dec :
+                      value = data.dec;
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_FK5Target_epoc :
+                      value = data.epoc;
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_FK5Target_equinox :
+                      value = data.equinox;
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_FK5Target_parallax :
+                      value = data.parallax;
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_FK5Target_pmDec :
+                      value = data.pmDec;
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_FK5Target_pmRA :
+                      value = data.pmRA;
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_FK5Target_ra :
+                      value = data.ra;
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_FK5Target_rv :
+                      value = data.rv;
+                      result = SAL__OK;
+                      break;
+
+	    }
+	    return result;
+	}
+	
+
+
+	svcRTN saltcs_kernel_FK5Target::setItem ( svcIID itemId , svcFLT &value )
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    switch (itemId) {
+
+                 case SAL_IID_tcs_kernel_FK5Target_dec :
+                      data.dec = value;
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_FK5Target_epoc :
+                      data.epoc = value;
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_FK5Target_equinox :
+                      data.equinox = value;
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_FK5Target_parallax :
+                      data.parallax = value;
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_FK5Target_pmDec :
+                      data.pmDec = value;
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_FK5Target_pmRA :
+                      data.pmRA = value;
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_FK5Target_ra :
+                      data.ra = value;
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_FK5Target_rv :
+                      data.rv = value;
+                      result = SAL__OK;
+                      break;
+
+	    }
+	    return result;
+	}
+	
+
+
+       svcRTN saltcs_kernel_FK5Target::setItemStr ( svcIID itemId , svcCHAR *textValue)
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    
+	    switch (itemid) {
+
+                 case SAL_IID_tcs_kernel_FK5Target_dec :
+                      sscanf(textValue,"%lf",&data.dec);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_FK5Target_epoc :
+                      sscanf(textValue,"%lf",&data.epoc);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_FK5Target_equinox :
+                      sscanf(textValue,"%lf",&data.equinox);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_FK5Target_parallax :
+                      sscanf(textValue,"%lf",&data.parallax);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_FK5Target_pmDec :
+                      sscanf(textValue,"%lf",&data.pmDec);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_FK5Target_pmRA :
+                      sscanf(textValue,"%lf",&data.pmRA);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_FK5Target_ra :
+                      sscanf(textValue,"%lf",&data.ra);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_FK5Target_rv :
+                      sscanf(textValue,"%lf",&data.rv);
+                      result = SAL__OK;
+                      break;
+
+	    }
+	    return result;
+	}
+
+       svcRTN saltcs_kernel_FK5Target::getItemStr ( svcIID itemId , svcCHAR *textValue)
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    
+	    switch (itemid) {
+
+                 case SAL_IID_tcs_kernel_FK5Target_dec :
+                      sprintf(textValue,"%lf",data.dec);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_FK5Target_epoc :
+                      sprintf(textValue,"%lf",data.epoc);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_FK5Target_equinox :
+                      sprintf(textValue,"%lf",data.equinox);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_FK5Target_parallax :
+                      sprintf(textValue,"%lf",data.parallax);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_FK5Target_pmDec :
+                      sprintf(textValue,"%lf",data.pmDec);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_FK5Target_pmRA :
+                      sprintf(textValue,"%lf",data.pmRA);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_FK5Target_ra :
+                      sprintf(textValue,"%lf",data.ra);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_FK5Target_rv :
+                      sprintf(textValue,"%lf",data.rv);
+                      result = SAL__OK;
+                      break;
+
+	    }
+	    return result;
+	}

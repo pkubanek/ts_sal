@@ -1,0 +1,4 @@
+		result = salHandle->setitem(SAL_IID_auxscope_Application_Demand, Demand, 5);
+		result = salHandle->setitem(SAL_IID_auxscope_Application_Error, Error, 5);
+		result = salHandle->setitem(SAL_IID_auxscope_Application_Position, Position, 5);
+		result = salHandle->putSample();

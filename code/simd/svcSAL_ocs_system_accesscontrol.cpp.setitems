@@ -1,0 +1,6 @@
+		result = salHandle->setitem(SAL_IID_ocs_system_accesscontrol_byoperator, byoperator);
+		result = salHandle->setitem(SAL_IID_ocs_system_accesscontrol_bypolicy, bypolicy);
+		result = salHandle->setitem(SAL_IID_ocs_system_accesscontrol_bystation, bystation);
+		result = salHandle->setitem(SAL_IID_ocs_system_accesscontrol_device, device);
+		result = salHandle->setitem(SAL_IID_ocs_system_accesscontrol_subssystem, subssystem);
+		result = salHandle->putSample();

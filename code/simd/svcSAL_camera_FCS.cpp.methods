@@ -1,0 +1,194 @@
+
+	svcRTN salcamera_FCS::getItem ( svcIID itemId , svcULONG &value )
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    switch (itemId) {
+
+                 case SAL_IID_camera_FCS_flags :
+                      value = data.flags;
+                      result = SAL__OK;
+                      break;
+
+	    }
+	    return result;
+	}
+	
+
+
+	svcRTN salcamera_FCS::setItem ( svcIID itemId , svcULONG &value )
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    switch (itemId) {
+
+                 case SAL_IID_camera_FCS_flags :
+                      data.flags = value;
+                      result = SAL__OK;
+                      break;
+
+	    }
+	    return result;
+	}
+	
+
+
+       svcRTN salcamera_FCS::setItemStr ( svcIID itemId , svcCHAR *textValue)
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    
+	    switch (itemid) {
+
+                 case SAL_IID_camera_FCS_flags :
+                      sscanf(textValue,"%ld",&data.flags);
+                      result = SAL__OK;
+                      break;
+
+	    }
+	    return result;
+	}
+
+       svcRTN salcamera_FCS::getItemStr ( svcIID itemId , svcCHAR *textValue)
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    
+	    switch (itemid) {
+
+                 case SAL_IID_camera_FCS_flags :
+                      sprintf(textValue,"%ld",data.flags);
+                      result = SAL__OK;
+                      break;
+
+	    }
+	    return result;
+	}
+
+	svcRTN salcamera_FCS::getItem ( svcIID itemId , (svcCHAR *)value )
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    switch (itemId) {
+	    
+
+
+                 case SAL_IID_camera_FCS_algorithm :
+                      strncpy(value, data.algorithm, 32);
+                      result = SAL__OK;
+                      break;
+
+
+	    }
+	    return result;
+	}
+	
+
+
+	svcRTN salcamera_FCS::setItem ( svcIID itemId , (svcCHAR *)value )
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    switch (itemId) {
+	    
+
+
+                 case SAL_IID_camera_FCS_algorithm :
+                      strncpy(data.algorithm, value, 32);
+                      result = SAL__OK;
+                      break;
+
+
+	    }
+	    return result;
+	}
+	
+
+
+       svcRTN salcamera_FCS::setItemStr ( svcIID itemId , svcCHAR *textValue)
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    
+	    switch (itemid) {
+
+                 case SAL_IID_camera_FCS_flags :
+                      sscanf(textValue,"%ld",&data.flags);
+                      result = SAL__OK;
+                      break;
+
+	    }
+	    return result;
+	}
+
+       svcRTN salcamera_FCS::getItemStr ( svcIID itemId , svcCHAR *textValue)
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    
+	    switch (itemid) {
+
+                 case SAL_IID_camera_FCS_flags :
+                      sprintf(textValue,"%ld",data.flags);
+                      result = SAL__OK;
+                      break;
+
+	    }
+	    return result;
+	}
+
+	svcRTN salcamera_FCS::getItem ( svcIID itemId , svcFLT &value, svcUINT size)
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    switch (itemId) {
+
+                 case SAL_IID_camera_FCS_motion_profile :
+                      if { size > 2401 } {return SAL__INDEX_OUT_OF_RANGE;}
+                      for (unsigned int count=0; count<size; count++) {
+                        value[count] = data.motion_profile[count];
+                      }
+                      result = SAL__OK;
+                      break;
+
+	    }
+	    return result;
+	}
+
+ 	svcRTN salcamera_FCS::setItem ( svcIID itemId , svcFLT &value , svcUINT size)
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    switch (itemId) {
+
+                 case SAL_IID_camera_FCS_motion_profile :
+                      if { size > 2401 } {return SAL__INDEX_OUT_OF_RANGE;}
+                      for (unsigned int count=0; count<size; count++) {
+                        data.motion_profile[count] = value[count];
+                      }
+                      result = SAL__OK;
+                      break;
+
+	    }
+	    return result;
+	}
+
+       svcRTN salcamera_FCS::setItemStr ( svcIID itemId , svcCHAR *textValue)
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    
+	    switch (itemid) {
+
+                 case SAL_IID_camera_FCS_flags :
+                      sscanf(textValue,"%ld",&data.flags);
+                      result = SAL__OK;
+                      break;
+
+	    }
+	    return result;
+	}
+
+       svcRTN salcamera_FCS::getItemStr ( svcIID itemId , svcCHAR *textValue)
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    
+	    switch (itemid) {
+
+                 case SAL_IID_camera_FCS_flags :
+                      sprintf(textValue,"%ld",data.flags);
+                      result = SAL__OK;
+                      break;
+
+	    }
+	    return result;
+	}

@@ -1,0 +1,9 @@
+		tcs_kernel_FK5Target_ref->dec = samples[i].dec;
+		tcs_kernel_FK5Target_ref->epoc = samples[i].epoc;
+		tcs_kernel_FK5Target_ref->equinox = samples[i].equinox;
+		tcs_kernel_FK5Target_ref->parallax = samples[i].parallax;
+		tcs_kernel_FK5Target_ref->pmDec = samples[i].pmDec;
+		tcs_kernel_FK5Target_ref->pmRA = samples[i].pmRA;
+		tcs_kernel_FK5Target_ref->ra = samples[i].ra;
+		tcs_kernel_FK5Target_ref->rv = samples[i].rv;
+		tcs_kernel_FK5Target_ref->syncI++;

@@ -1,0 +1,9 @@
+struct _Shutter_Motion {
+  string<32> private_revCode;  //private
+  double     private_sndStamp; //private
+  double     private_rcvStamp; //private
+  long       private_seqNum;   //private
+  long       private_origin;   //private
+  short	Open_direction;	// 0.054 | none | Stack A or B moved first? | none | Camera body | 1 |  2,335  |  4,670 
+};
+#pragma keylist _Shutter_Motion

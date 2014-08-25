@@ -1,0 +1,7 @@
+		for (unsigned int count=0; count<17; count++) {
+			skycam_TC_ref->Raw[count] = samples[i].Raw[count];
+		}
+		for (unsigned int count=0; count<17; count++) {
+			skycam_TC_ref->Calibrated[count] = samples[i].Calibrated[count];
+		}
+		skycam_TC_ref->syncI++;

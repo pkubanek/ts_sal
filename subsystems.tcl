@@ -1,6 +1,6 @@
 #!/usr/bin/tclsh 
 
-set scriptdir /opt/lsstsal/scripts
+set scriptdir $env(SAL_DIR)
 
 proc calcshmid { subsys } {
   set fout [open /tmp/subsys.tmp w]
@@ -10,11 +10,17 @@ proc calcshmid { subsys } {
   return $id
 }
 
-set COMMANDABLE "auxscope calibration camera enclosure environment lasercal m1m3 m2 mount network operations power scheduler seeing_dimm seeing_mass skycam tcs"
+set COMMANDABLE "auxscope calibration camera dm enclosure environment lasercal m1m3 m2 mount network ocs power scheduler seeing_dimm seeing_mass skycam system tcs"
 
-set STREAMS [split [exec cat datastreams.names] \n]
-set scriptdir /opt/lsstsal/scripts
-set includedir /opt/lsstsal/scripts/include
+set FREQUENCY(enclosure)    1.0
+set FREQUENCY(environment)  1.0
+set FREQUENCY(m1m3)         1.0
+set FREQUENCY(m2)           1.0
+set FREQUENCY(mount)       10.0
+set FREQUENCY(tcs)         10.0
+
+set STREAMS [split [exec cat .salwork/datastreams.names] \n]
+set includedir $scriptdir/include
 foreach i $STREAMS { 
    if { [file exists shmem-$i/[set i]_cache.h] } {
       exec cp shmem-$i/[set i]_cache.h $includedir/.
@@ -88,7 +94,7 @@ close $fcid
 #                    origin is legal
 #
 
-source revCodes.tcl
+source .salwork/revCodes.tcl
 
 set finc [open $includedir/svcSAL_caches.h w]
 set fcid [open svcSAL_accessPrivate.c w]
@@ -99,7 +105,7 @@ puts $fcid "
 
 int svcSAL_accessPrivate ( int handle , char *operation, char *revCode , 
                            long *sndStamp, long *rcvStamp,
-                           long *seqNum  , long *origin ) \{
+                           long *seqNum  , long *origin, long *host ) \{
 "
 foreach s "$STREAMS $CSTREAMS" {
   set rev $REVCODE($s)
@@ -113,12 +119,14 @@ foreach s "$STREAMS $CSTREAMS" {
         *rcvStamp = [set s]_ref->private_rcvStamp; 
         *seqNum = [set s]_ref->private_seqNum; 
         *origin = [set s]_ref->private_origin; 
+        *host = [set s]_ref->private_host; 
      \}
      if (strcmp(operation,\"write\") == 0 ) \{
         [set s]_ref->private_sndStamp = *sndStamp; 
         [set s]_ref->private_rcvStamp = *rcvStamp; 
         [set s]_ref->private_seqNum = *seqNum; 
         [set s]_ref->private_origin = *origin; 
+        [set s]_ref->private_host = *host; 
      \}
      if (strcmp(operation,\"verify\") == 0 ) \{
         if ( strcmp(revCode,\"$rev\") != 0 ) { return SAL__ILLEGAL_REVCODE; }

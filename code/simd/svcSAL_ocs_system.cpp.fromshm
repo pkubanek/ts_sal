@@ -1,0 +1,10 @@
+		for (unsigned int count=0; count<501; count++) {
+			d.health[count] = ocs_system_ref->health[count];
+		}
+		for (unsigned int count=0; count<501; count++) {
+			d.power[count] = ocs_system_ref->power[count];
+		}
+		for (unsigned int count=0; count<501; count++) {
+			d.thermal[count] = ocs_system_ref->thermal[count];
+		}
+		ocs_system_ref->syncO = 1;

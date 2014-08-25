@@ -1,0 +1,738 @@
+
+	svcRTN saltcs_kernel_PointingLog::getItem ( svcIID itemId , svcLONG &value )
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    switch (itemId) {
+
+                 case SAL_IID_tcs_kernel_PointingLog_Marked :
+                      value = data.Marked;
+                      result = SAL__OK;
+                      break;
+
+	    }
+	    return result;
+	}
+	
+
+
+	svcRTN saltcs_kernel_PointingLog::setItem ( svcIID itemId , svcLONG &value )
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    switch (itemId) {
+
+                 case SAL_IID_tcs_kernel_PointingLog_Marked :
+                      data.Marked = value;
+                      result = SAL__OK;
+                      break;
+
+	    }
+	    return result;
+	}
+	
+
+
+       svcRTN saltcs_kernel_PointingLog::setItemStr ( svcIID itemId , svcCHAR *textValue)
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    
+	    switch (itemid) {
+
+                 case SAL_IID_tcs_kernel_PointingLog_Marked :
+                      sscanf(textValue,"%ld",&data.Marked);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_PointingLog_Casspa :
+                      sscanf(textValue,"%lf",&data.Casspa);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_PointingLog_Dec :
+                      sscanf(textValue,"%lf",&data.Dec);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_PointingLog_Fl :
+                      sscanf(textValue,"%lf",&data.Fl);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_PointingLog_Humid :
+                      sscanf(textValue,"%lf",&data.Humid);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_PointingLog_Pitch :
+                      sscanf(textValue,"%lf",&data.Pitch);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_PointingLog_Press :
+                      sscanf(textValue,"%lf",&data.Press);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_PointingLog_Ra :
+                      sscanf(textValue,"%lf",&data.Ra);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_PointingLog_Rcorr :
+                      sscanf(textValue,"%lf",&data.Rcorr);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_PointingLog_Roll :
+                      sscanf(textValue,"%lf",&data.Roll);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_PointingLog_Temp :
+                      sscanf(textValue,"%lf",&data.Temp);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_PointingLog_Tlr :
+                      sscanf(textValue,"%lf",&data.Tlr);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_PointingLog_Wavel :
+                      sscanf(textValue,"%lf",&data.Wavel);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_PointingLog_Xr :
+                      sscanf(textValue,"%lf",&data.Xr);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_PointingLog_Yr :
+                      sscanf(textValue,"%lf",&data.Yr);
+                      result = SAL__OK;
+                      break;
+
+	    }
+	    return result;
+	}
+
+       svcRTN saltcs_kernel_PointingLog::getItemStr ( svcIID itemId , svcCHAR *textValue)
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    
+	    switch (itemid) {
+
+                 case SAL_IID_tcs_kernel_PointingLog_Marked :
+                      sprintf(textValue,"%ld",data.Marked);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_PointingLog_Casspa :
+                      sprintf(textValue,"%lf",data.Casspa);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_PointingLog_Dec :
+                      sprintf(textValue,"%lf",data.Dec);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_PointingLog_Fl :
+                      sprintf(textValue,"%lf",data.Fl);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_PointingLog_Humid :
+                      sprintf(textValue,"%lf",data.Humid);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_PointingLog_Pitch :
+                      sprintf(textValue,"%lf",data.Pitch);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_PointingLog_Press :
+                      sprintf(textValue,"%lf",data.Press);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_PointingLog_Ra :
+                      sprintf(textValue,"%lf",data.Ra);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_PointingLog_Rcorr :
+                      sprintf(textValue,"%lf",data.Rcorr);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_PointingLog_Roll :
+                      sprintf(textValue,"%lf",data.Roll);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_PointingLog_Temp :
+                      sprintf(textValue,"%lf",data.Temp);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_PointingLog_Tlr :
+                      sprintf(textValue,"%lf",data.Tlr);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_PointingLog_Wavel :
+                      sprintf(textValue,"%lf",data.Wavel);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_PointingLog_Xr :
+                      sprintf(textValue,"%lf",data.Xr);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_PointingLog_Yr :
+                      sprintf(textValue,"%lf",data.Yr);
+                      result = SAL__OK;
+                      break;
+
+	    }
+	    return result;
+	}
+
+	svcRTN saltcs_kernel_PointingLog::getItem ( svcIID itemId , svcFLT &value )
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    switch (itemId) {
+
+                 case SAL_IID_tcs_kernel_PointingLog_Casspa :
+                      value = data.Casspa;
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_PointingLog_Dec :
+                      value = data.Dec;
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_PointingLog_Fl :
+                      value = data.Fl;
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_PointingLog_Humid :
+                      value = data.Humid;
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_PointingLog_Pitch :
+                      value = data.Pitch;
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_PointingLog_Press :
+                      value = data.Press;
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_PointingLog_Ra :
+                      value = data.Ra;
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_PointingLog_Rcorr :
+                      value = data.Rcorr;
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_PointingLog_Roll :
+                      value = data.Roll;
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_PointingLog_Temp :
+                      value = data.Temp;
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_PointingLog_Tlr :
+                      value = data.Tlr;
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_PointingLog_Wavel :
+                      value = data.Wavel;
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_PointingLog_Xr :
+                      value = data.Xr;
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_PointingLog_Yr :
+                      value = data.Yr;
+                      result = SAL__OK;
+                      break;
+
+	    }
+	    return result;
+	}
+	
+
+
+	svcRTN saltcs_kernel_PointingLog::setItem ( svcIID itemId , svcFLT &value )
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    switch (itemId) {
+
+                 case SAL_IID_tcs_kernel_PointingLog_Casspa :
+                      data.Casspa = value;
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_PointingLog_Dec :
+                      data.Dec = value;
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_PointingLog_Fl :
+                      data.Fl = value;
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_PointingLog_Humid :
+                      data.Humid = value;
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_PointingLog_Pitch :
+                      data.Pitch = value;
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_PointingLog_Press :
+                      data.Press = value;
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_PointingLog_Ra :
+                      data.Ra = value;
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_PointingLog_Rcorr :
+                      data.Rcorr = value;
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_PointingLog_Roll :
+                      data.Roll = value;
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_PointingLog_Temp :
+                      data.Temp = value;
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_PointingLog_Tlr :
+                      data.Tlr = value;
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_PointingLog_Wavel :
+                      data.Wavel = value;
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_PointingLog_Xr :
+                      data.Xr = value;
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_PointingLog_Yr :
+                      data.Yr = value;
+                      result = SAL__OK;
+                      break;
+
+	    }
+	    return result;
+	}
+	
+
+
+       svcRTN saltcs_kernel_PointingLog::setItemStr ( svcIID itemId , svcCHAR *textValue)
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    
+	    switch (itemid) {
+
+                 case SAL_IID_tcs_kernel_PointingLog_Marked :
+                      sscanf(textValue,"%ld",&data.Marked);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_PointingLog_Casspa :
+                      sscanf(textValue,"%lf",&data.Casspa);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_PointingLog_Dec :
+                      sscanf(textValue,"%lf",&data.Dec);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_PointingLog_Fl :
+                      sscanf(textValue,"%lf",&data.Fl);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_PointingLog_Humid :
+                      sscanf(textValue,"%lf",&data.Humid);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_PointingLog_Pitch :
+                      sscanf(textValue,"%lf",&data.Pitch);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_PointingLog_Press :
+                      sscanf(textValue,"%lf",&data.Press);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_PointingLog_Ra :
+                      sscanf(textValue,"%lf",&data.Ra);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_PointingLog_Rcorr :
+                      sscanf(textValue,"%lf",&data.Rcorr);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_PointingLog_Roll :
+                      sscanf(textValue,"%lf",&data.Roll);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_PointingLog_Temp :
+                      sscanf(textValue,"%lf",&data.Temp);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_PointingLog_Tlr :
+                      sscanf(textValue,"%lf",&data.Tlr);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_PointingLog_Wavel :
+                      sscanf(textValue,"%lf",&data.Wavel);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_PointingLog_Xr :
+                      sscanf(textValue,"%lf",&data.Xr);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_PointingLog_Yr :
+                      sscanf(textValue,"%lf",&data.Yr);
+                      result = SAL__OK;
+                      break;
+
+	    }
+	    return result;
+	}
+
+       svcRTN saltcs_kernel_PointingLog::getItemStr ( svcIID itemId , svcCHAR *textValue)
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    
+	    switch (itemid) {
+
+                 case SAL_IID_tcs_kernel_PointingLog_Marked :
+                      sprintf(textValue,"%ld",data.Marked);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_PointingLog_Casspa :
+                      sprintf(textValue,"%lf",data.Casspa);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_PointingLog_Dec :
+                      sprintf(textValue,"%lf",data.Dec);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_PointingLog_Fl :
+                      sprintf(textValue,"%lf",data.Fl);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_PointingLog_Humid :
+                      sprintf(textValue,"%lf",data.Humid);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_PointingLog_Pitch :
+                      sprintf(textValue,"%lf",data.Pitch);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_PointingLog_Press :
+                      sprintf(textValue,"%lf",data.Press);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_PointingLog_Ra :
+                      sprintf(textValue,"%lf",data.Ra);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_PointingLog_Rcorr :
+                      sprintf(textValue,"%lf",data.Rcorr);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_PointingLog_Roll :
+                      sprintf(textValue,"%lf",data.Roll);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_PointingLog_Temp :
+                      sprintf(textValue,"%lf",data.Temp);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_PointingLog_Tlr :
+                      sprintf(textValue,"%lf",data.Tlr);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_PointingLog_Wavel :
+                      sprintf(textValue,"%lf",data.Wavel);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_PointingLog_Xr :
+                      sprintf(textValue,"%lf",data.Xr);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_PointingLog_Yr :
+                      sprintf(textValue,"%lf",data.Yr);
+                      result = SAL__OK;
+                      break;
+
+	    }
+	    return result;
+	}
+
+	svcRTN saltcs_kernel_PointingLog::getItem ( svcIID itemId , svcFLT &value, svcUINT size)
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    switch (itemId) {
+
+                 case SAL_IID_tcs_kernel_PointingLog_Aux :
+                      if { size > 4 } {return SAL__INDEX_OUT_OF_RANGE;}
+                      for (unsigned int count=0; count<size; count++) {
+                        value[count] = data.Aux[count];
+                      }
+                      result = SAL__OK;
+                      break;
+
+	    }
+	    return result;
+	}
+
+ 	svcRTN saltcs_kernel_PointingLog::setItem ( svcIID itemId , svcFLT &value , svcUINT size)
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    switch (itemId) {
+
+                 case SAL_IID_tcs_kernel_PointingLog_Aux :
+                      if { size > 4 } {return SAL__INDEX_OUT_OF_RANGE;}
+                      for (unsigned int count=0; count<size; count++) {
+                        data.Aux[count] = value[count];
+                      }
+                      result = SAL__OK;
+                      break;
+
+	    }
+	    return result;
+	}
+
+       svcRTN saltcs_kernel_PointingLog::setItemStr ( svcIID itemId , svcCHAR *textValue)
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    
+	    switch (itemid) {
+
+                 case SAL_IID_tcs_kernel_PointingLog_Marked :
+                      sscanf(textValue,"%ld",&data.Marked);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_PointingLog_Casspa :
+                      sscanf(textValue,"%lf",&data.Casspa);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_PointingLog_Dec :
+                      sscanf(textValue,"%lf",&data.Dec);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_PointingLog_Fl :
+                      sscanf(textValue,"%lf",&data.Fl);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_PointingLog_Humid :
+                      sscanf(textValue,"%lf",&data.Humid);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_PointingLog_Pitch :
+                      sscanf(textValue,"%lf",&data.Pitch);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_PointingLog_Press :
+                      sscanf(textValue,"%lf",&data.Press);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_PointingLog_Ra :
+                      sscanf(textValue,"%lf",&data.Ra);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_PointingLog_Rcorr :
+                      sscanf(textValue,"%lf",&data.Rcorr);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_PointingLog_Roll :
+                      sscanf(textValue,"%lf",&data.Roll);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_PointingLog_Temp :
+                      sscanf(textValue,"%lf",&data.Temp);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_PointingLog_Tlr :
+                      sscanf(textValue,"%lf",&data.Tlr);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_PointingLog_Wavel :
+                      sscanf(textValue,"%lf",&data.Wavel);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_PointingLog_Xr :
+                      sscanf(textValue,"%lf",&data.Xr);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_PointingLog_Yr :
+                      sscanf(textValue,"%lf",&data.Yr);
+                      result = SAL__OK;
+                      break;
+
+	    }
+	    return result;
+	}
+
+       svcRTN saltcs_kernel_PointingLog::getItemStr ( svcIID itemId , svcCHAR *textValue)
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    
+	    switch (itemid) {
+
+                 case SAL_IID_tcs_kernel_PointingLog_Marked :
+                      sprintf(textValue,"%ld",data.Marked);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_PointingLog_Casspa :
+                      sprintf(textValue,"%lf",data.Casspa);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_PointingLog_Dec :
+                      sprintf(textValue,"%lf",data.Dec);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_PointingLog_Fl :
+                      sprintf(textValue,"%lf",data.Fl);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_PointingLog_Humid :
+                      sprintf(textValue,"%lf",data.Humid);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_PointingLog_Pitch :
+                      sprintf(textValue,"%lf",data.Pitch);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_PointingLog_Press :
+                      sprintf(textValue,"%lf",data.Press);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_PointingLog_Ra :
+                      sprintf(textValue,"%lf",data.Ra);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_PointingLog_Rcorr :
+                      sprintf(textValue,"%lf",data.Rcorr);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_PointingLog_Roll :
+                      sprintf(textValue,"%lf",data.Roll);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_PointingLog_Temp :
+                      sprintf(textValue,"%lf",data.Temp);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_PointingLog_Tlr :
+                      sprintf(textValue,"%lf",data.Tlr);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_PointingLog_Wavel :
+                      sprintf(textValue,"%lf",data.Wavel);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_PointingLog_Xr :
+                      sprintf(textValue,"%lf",data.Xr);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_PointingLog_Yr :
+                      sprintf(textValue,"%lf",data.Yr);
+                      result = SAL__OK;
+                      break;
+
+	    }
+	    return result;
+	}

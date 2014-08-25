@@ -1,0 +1,50 @@
+#include "svcSAL_camera_BEE_biases.h"
+#include "svcSAL_camera_BEE_clocks.h"
+#include "svcSAL_camera_BEE_thermal.h"
+#include "svcSAL_camera_CALSYS.h"
+#include "svcSAL_camera_CCS.h"
+#include "svcSAL_camera_FCS.h"
+#include "svcSAL_camera_GAS.h"
+#include "svcSAL_camera_LASERCAL.h"
+#include "svcSAL_camera_PWR.h"
+#include "svcSAL_camera_QA_measured.h"
+#include "svcSAL_camera_SCS.h"
+#include "svcSAL_camera_SDS_amplifiers.h"
+#include "svcSAL_camera_SDS_status.h"
+#include "svcSAL_camera_TCM.h"
+#include "svcSAL_camera_TC_control.h"
+#include "svcSAL_camera_TC_zone1.h"
+#include "svcSAL_camera_TC_zone2.h"
+#include "svcSAL_camera_TC_zone3.h"
+#include "svcSAL_camera_TC_zone4.h"
+#include "svcSAL_camera_TC_zone5.h"
+#include "svcSAL_camera_TC_zone6.h"
+#include "svcSAL_camera_UTIL.h"
+#include "svcSAL_camera_VCS.h"
+#include "svcSAL_camera_WDS_wfsRaft.h"
+#include "svcSAL_camera_WTCM.h"
+#define SAL_IID_camera_BEE_biases 0xed0d9d
+#define SAL_IID_camera_BEE_clocks 0xa83872
+#define SAL_IID_camera_BEE_thermal 0x8b205f
+#define SAL_IID_camera_CALSYS 0x647038
+#define SAL_IID_camera_CCS 0x1557cb
+#define SAL_IID_camera_FCS 0x1dc476
+#define SAL_IID_camera_GAS 0x0b2342
+#define SAL_IID_camera_LASERCAL 0x31c276
+#define SAL_IID_camera_PWR 0x7db3ab
+#define SAL_IID_camera_QA_measured 0x5c0cc5
+#define SAL_IID_camera_SCS 0x1083d5
+#define SAL_IID_camera_SDS_amplifiers 0x78a34c
+#define SAL_IID_camera_SDS_status 0xf6e41a
+#define SAL_IID_camera_TCM 0x9f688c
+#define SAL_IID_camera_TC_control 0xec20be
+#define SAL_IID_camera_TC_zone1 0xd297b2
+#define SAL_IID_camera_TC_zone2 0xbc09cf
+#define SAL_IID_camera_TC_zone3 0xe4b931
+#define SAL_IID_camera_TC_zone4 0x32bbe0
+#define SAL_IID_camera_TC_zone5 0x0c5c54
+#define SAL_IID_camera_TC_zone6 0xb7195d
+#define SAL_IID_camera_UTIL 0x556ac0
+#define SAL_IID_camera_VCS 0x187b71
+#define SAL_IID_camera_WDS_wfsRaft 0x4088e0
+#define SAL_IID_camera_WTCM 0x775d44

@@ -1,0 +1,3 @@
+		result = salHandle->setitem(SAL_IID_camera_VCS_control, control, 11);
+		result = salHandle->setitem(SAL_IID_camera_VCS_pressure, pressure, 11);
+		result = salHandle->putSample();

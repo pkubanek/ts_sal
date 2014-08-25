@@ -1,0 +1,23 @@
+K 25
+svn:wc:ra_dav:version-url
+V 46
+/svn/!svn/ver/164/trunk/src/hpp/tdds/core/cond
+END
+GuardCondition.hpp
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/!svn/ver/164/trunk/src/hpp/tdds/core/cond/GuardCondition.hpp
+END
+WaitSet.hpp
+K 25
+svn:wc:ra_dav:version-url
+V 58
+/svn/!svn/ver/117/trunk/src/hpp/tdds/core/cond/WaitSet.hpp
+END
+Condition.hpp
+K 25
+svn:wc:ra_dav:version-url
+V 60
+/svn/!svn/ver/164/trunk/src/hpp/tdds/core/cond/Condition.hpp
+END

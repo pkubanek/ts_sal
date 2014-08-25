@@ -1,0 +1,6 @@
+		result = salHandle->setitem(SAL_IID_ocs_scheduler_parameters_algorithm, algorithm);
+		result = salHandle->setitem(SAL_IID_ocs_scheduler_parameters_p1, p1);
+		result = salHandle->setitem(SAL_IID_ocs_scheduler_parameters_p2, p2);
+		result = salHandle->setitem(SAL_IID_ocs_scheduler_parameters_p3, p3);
+		result = salHandle->setitem(SAL_IID_ocs_scheduler_parameters_p4, p4);
+		result = salHandle->putSample();

@@ -1,0 +1,7 @@
+		for (unsigned int count=0; count<65; count++) {
+			d.liftoff[count] = m2_LimitSensors_ref->liftoff[count];
+		}
+		for (unsigned int count=0; count<65; count++) {
+			d.limit[count] = m2_LimitSensors_ref->limit[count];
+		}
+		m2_LimitSensors_ref->syncO = 1;

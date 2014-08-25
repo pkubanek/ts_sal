@@ -1,0 +1,6 @@
+	svcFLT	AGuide;
+	svcFLT	ALocal;
+	svcFLT	BGuide;
+	svcFLT	BLocal;
+	char	[32];
+	char	[32];

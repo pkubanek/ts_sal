@@ -1,0 +1,6 @@
+		d.cmdID = enclosure_command_ref->cmdID;
+		strncpy(d.device,enclosure_command_ref->device,16);
+		strncpy(d.modifiers,enclosure_command_ref->modifiers,128);
+		strncpy(d.operation,enclosure_command_ref->operation,16);
+		strncpy(d.value,enclosure_command_ref->value,16);
+		enclosure_command_ref->syncO = 1;

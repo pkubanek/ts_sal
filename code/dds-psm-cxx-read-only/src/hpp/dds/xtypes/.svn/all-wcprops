@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 42
+/svn/!svn/ver/161/trunk/src/hpp/dds/xtypes
+END
+BuiltinTypes.hpp
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/svn/!svn/ver/161/trunk/src/hpp/dds/xtypes/BuiltinTypes.hpp
+END
+xtypes_module.hpp
+K 25
+svn:wc:ra_dav:version-url
+V 60
+/svn/!svn/ver/143/trunk/src/hpp/dds/xtypes/xtypes_module.hpp
+END
+dds_xtypes_fwd.hpp
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/svn/!svn/ver/161/trunk/src/hpp/dds/xtypes/dds_xtypes_fwd.hpp
+END
+TypeObject.hpp
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/svn/!svn/ver/136/trunk/src/hpp/dds/xtypes/TypeObject.hpp
+END

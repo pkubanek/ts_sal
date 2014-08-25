@@ -1,0 +1,7 @@
+		for (unsigned int count=0; count<65; count++) {
+			d.Raw[count] = environment_TC_ref->Raw[count];
+		}
+		for (unsigned int count=0; count<65; count++) {
+			d.Calibrated[count] = environment_TC_ref->Calibrated[count];
+		}
+		environment_TC_ref->syncO = 1;

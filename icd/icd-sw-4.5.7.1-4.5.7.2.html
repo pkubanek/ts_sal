@@ -1,0 +1,352 @@
+
+<HTML><HEAD><TITLE>LSST - Software ICD 4.5.7.2</TITLE></HEAD>
+<BODY BGCOLOR=White>
+<IMG SRC="LSST_logo.gif" ALIGN=LEFT>
+<H3><BR>ICD-SW-4.5.7.2<BR>
+Subsystem : tcs</H3>
+<HR>
+<PRE>
+
+</PRE>
+<H2>Contents<H2>
+<H3>1. SCOPE</H3>
+<UL>
+<H4>            1.1       System Identification</H4>
+<H4>            1.2       Document Overview</H4>
+<H4>		1.3	  Glossary</H4>
+<H4>            1.4       Applicable Documents</H4>
+</UL>
+<H3>2.       CONCEPT OF OPERATIONS</H3>
+<H3>3.       DETAILED INTERFACE REQUIREMENTS</H3>
+<UL>
+<H4>  3.1       Commanding Requirements</H3>
+<H4> 3.2       Interface Processing Time Requirements</H4>
+<H4>3.3       Message Requirements</H4>
+<H4>            3.4       Telemetry Requirements</H4>
+</UL>
+<H3>4.       NOTES</H3>
+<H3>5.       APPENDICES</H3>
+<H3>6.       APPROVALS</H3>
+<H3>7.       RECORD OF CHANGES</H3>
+<HR>
+<P>
+<H2>1. SCOPE</H2>
+This Interface Control Document (ICD) specifies the interface(s) between tcs and other subsystems. Upon formal approval by the line Manager responsible for each participating system, this ICD shall be incorporated into the requirements baseline for each system.
+All the interfaces detailed herein are mediated by the OCS Middleware Software-Abstraction-Layer protocols, as detailed in ICD-SW-4.5.7.xx.
+<P>
+
+<H2>            1.1       System Identification</H2>
+<H3>                        1.1.1      OCS Middleware (4.5.7.xx)</H3>
+
+<P>
+<H3>                        1.1.2      tcs (4.5.7.2)</H3>
+
+<P>
+<H2>            1.2       Document Overview</H2>
+The purpose of the ICD is to specify interface requirements to be met by the participating systems. It describes the concept of operations for the interface, defines the message structure and protocols which govern the interchange of data, and identifies the communication paths along which the data is expected to flow.
+
+<H2>1.3 Glossary</H2>
+<P><BR>BEE - Back-End Electronic<BR>CALSYS - Camera Calibration System<BR>CCS - Camera Control System<BR>DDS - Data Distribution Service<BR>FCS - Filter Controller Subsystem<BR>FEE - Front End Electronics<BR>FPA - Focal Plane Array Actuation<BR>GAS - Guider data acquisition system<BR>GS - Guider system<BR>L2U - L2 Controller Unit<BR>LASERCAL - Camera metrology calibration System<BR>LSST - Large Synoptic Survey Telescope<BR>OMG - Object Management Group<BR>PWR - Camera Power supply System<BR>QA - Camera Quality Assurance measurements<BR>QoS - Quality of Service<BR>RAS - Raft Alignment Subsystem<BR>RTI - Real Time Innovation<BR>SAL - Software Abstraction Layer<BR>SAS - Science Array System<BR>SCU - Shutter Controller Unit<BR>SDS - Science Data Acquisition System<BR>TC - Thermal Control<BR>TCM - Camera Timing control<BR>VCS - Vacuum Control Subsystem<BR>WDS - Wavefront data acquisition system<BR>WFS - Wave-front Sensing System<BR>WTCM - Camera wavefront sensors Timing control<<P>
+<P>
+<H2>            1.4       Applicable Documents</H2><P>
+<BR>Datastream Definitions Document - Datastream Prototypes 1.1 (Document-1887)
+<BR>Definition of subsystems - LSST Project WBS Dictionary (Document-985)
+<BR>Documentation standards - LSST DM UML Modeling Conventions (Document-469)
+<BR>Messaging standards - OMG DDS 1.1 (Document-1835)
+<BR>Software Abstraction Layer API  - Middleware Software Abstration Layer (Document-3692)
+<BR>Software coding standards LSST C++ Programming Style Guidelines (Document-3046)
+<BR>Vendor documentation - NDDS manual (Document-2241)
+<P>
+
+<H2>2.       CONCEPT OF OPERATIONS</H2>
+<H2>            2.1       System Overviews</H2>
+<BR>
+<H3>Subsystem  description : ocs</H3>
+ The Observatory Control System (OCS) is the master control system that schedules, coordinates, commands and monitors the observatory. 
+Through the OCS the system can be started, adjusted during operations, monitored and stopped, both locally and remotely. 
+The OCS provides the means to support safe observatory operations day and night.
+
+<P>
+<H3>Subsystem  description : tcs</H3>
+The main purpose of the Telescope Control System (TCS) software is to accept the target position of a celestial object, which can be given in a variety of coordinate systems, and calculate mount, rotator and optical surface positions, so that the target is imaged perfectly at a given point in the focal plane. Furthermore, the TCS is characterized by the need to integrate a number of heterogeneous subsystems, which exhibit complex interactions. These interactions, although not hard realtime bounded, need a high level of synchronization.
+<P>
+The Telescope Control System (TCS) is the central coordination facility for the delivery of high quality field images to the camera. It is responsible for the precise pointing and tracking calculations necessary to observe a certain field. The TCS does not itself operate any mechanical component; rather it delegates this responsibility to the various telescope subsystems and manages them according to the observation requests.
+<P>
+The TCS design is based on a distributed system model. Under this model, the components
+interact through well defined interfaces, to accomplish the desired system behavior. The maincomponents in the proposed implementation, are tied together by the use of an Ethernet Bus, thus permitting the efficient exchange of commands and status among them.
+<P>
+The distributed nature of the TCS is complemented by the control model based on a
+supervisory control strategy. Under this model, a supervisor agent computes the “setpoint” to be applied to a controllable device. The time critical loops are closed locally at the device level, and the device makes status information available for monitoring purposes.
+<P>
+The TCS itself will be controlled either directly by a telescope operator, or by commands
+initiated by the Observatory Control System (OCS). Its role therefore, is to act as intermediary between the observer(s) and the telescope hardware, translating high level user commands into low level subsystem commands. Consistent with our control model, the TCS will return status information to be distributed system wide.
+<P>
+
+<H2>3.       DETAILED INTERFACE REQUIREMENTS</H2>
+<H2>            3.1       Commanding Requirements</H2>
+There are two basic classes of commands used :
+Lifecycle commands : commands used by OCS to control the lifecycle
+characteristics of applications. Users generally do not need to be concerned with the lifecycle commands
+because they are implemented by the underlying infrastructure.
+<P>
+Functional commands : commands that implement the specific functional characteristics of a
+subsystem components.
+<P>
+Functional operation is based on the Command/Action/Response model that isolates the transmission of the
+command from the resulting action that is performed. When an application receives a command, it validates any
+Configuration associated with that command and immediately accepts or rejects the command. If the command is
+accepted, the application then initiates an independent internal action to meet the conditions imposed by the
+command. Once those conditions have been met, an event is posted signifying the successful completion of the
+action (or the unsuccessful completion if the conditions can not be met).
+<P>
+Commands return immediately but the actions that are initiated as a result of a command may take some time to
+complete. When the action completes, an action status event is posted that includes the completion status of that
+action. The subsystem generating the command monitors this status event prior to issuing the command on the
+remote system. While the monitoring is performed automatically by the command system, Subsystem developers
+may need to attach a callback to perform processing on action completion. This callback may be null if no
+processing is needed.
+<P>
+If a command is accepted by the subsystem it causes an independent action to begin. A response to the
+command is returned immediately. The action begins matching the current configuration to the new demand
+configuration. When the configurations match (i.e., the subsystem has performed the input operations) the action
+signals the successful end of the action. If the configurations cannot be matched (whether by hardware failure,
+external stop command, timeout, or some other fault) the action signals the unsuccessful end of the action.
+<P>
+The important features of the command/action/response model are:
+<P>
+<UL>
+<LI>Commands are never blocked. As soon as one command is started, another one can be issued. The
+behavior of the controller when two or more configurations are started can be configured on a
+per subsystem basis.
+<LI>The actions are performed using one or more separate threads. They can be tuned for priority, number of
+simultaneous actions, critical resources, or any other parameters.
+<LI>Action completions produce events that tell the state of the current configuration. Actions push the
+lifecycle of the configuration through to completion.
+<LI>Responses may be monitored by any other subsystems.<P>
+</UL><P>
+
+
+<H4>Generic subsystem control state commands</H4>
+<UL>
+<TABLE BORDER=3 CELLPADDING=5 BGCOLOR=LightBlue WIDTH=600>
+<TR BGCOLOR=yellow><B><TD>Command</TD><TD>Description</TD></B></TR>
+<TR><TD>start</TD><TD>Prepare the subsystem to accept functional commands </TD></TR>
+<TR><TD>stop</TD><TD>Shutdown functional commanding capabilities </TD></TR>
+<TR><TD>pause</TD><TD>Suspend functional activities , internal state is retained</TD></TR>
+<TR><TD>resume</TD><TD>Resume functional actitivies (if possible) </TD></TR>
+<TR><TD>online</TD><TD>Set subsystem ready for commands</TD></TR>
+<TR><TD>offline</TD><TD>Take subsystem offline (must be brought back online before any
+other commanding is possible)</TD></TR>
+</TABLE>
+</UL><P>
+
+<H3>                        3.2       Interface Processing Time Requirements</H3>
+Command messages issued by ocs must be received by the computer system(s)
+of the commanded subsystem within TDB ms. A preliminary response (ACK) must be issued within
+TBD ms and received by ocs within TDB ms of the command origination time.
+ 
+<H3>                        3.3       Message Requirements</H3>
+
+Every stream includes items for consistency<BR>
+checking and performance monitoring support
+<P><UL>
+<TABLE BORDER=3 CELLPADDING=5 BGCOLOR=LightBlue WIDTH=600>
+<TR BGCOLOR=yellow><B><TD>Identifier</TD><TD>Description</TD></B></TR>
+<TR><TD>private_revCode</TD><TD>crc of IDL source</TD></TR>
+<TR><TD>private_sndStamp</TD><TD> system time of sender</TD></TR>
+<TR><TD>private_rcvStamp</TD><TD>system time of receiver</TD></TR>
+<TR><TD>private_seqNum</TD><TD>sequence number (process)</TD></TR>
+<TR><TD>private_origin</TD><TD>IP subaddr and PID</TD></TR>
+</TABLE>
+</UL>
+<H2>            3.4       Telemetry Requirements</H2>
+
+<H3>Telemetry datastream topic : tcs.kernel.DawdleFilter</H3><P>
+This subsystem is internal to the tcs pointing kernel<P><UL>
+<TABLE BORDER=3 CELLPADDING=5 BGCOLOR=LightBlue WIDTH=700><TR BGCOLOR=yellow><B><TD>Item</TD><TD>Type</TD><TD>Size</TD><TD>Freq.</TD><TD>Notes</TD></B></TR>
+<TR><TD>Bypass</TD><TD>long</TD><TD>1</TD><TD>10</TD><TD> bypass flag</TD></TR>
+<TR><TD>T</TD><TD>float</TD><TD>1</TD><TD>10</TD><TD> last time filter ran</TD></TR>
+</TABLE></UL><P>
+<H3>Telemetry datastream topic : tcs.kernel.FK5Target</H3><P>
+This subsystem is internal to the tcs pointing kernel<P><UL>
+<TABLE BORDER=3 CELLPADDING=5 BGCOLOR=LightBlue WIDTH=700><TR BGCOLOR=yellow><B><TD>Item</TD><TD>Type</TD><TD>Size</TD><TD>Freq.</TD><TD>Notes</TD></B></TR>
+<TR><TD>ra</TD><TD>float</TD><TD>1</TD><TD>10</TD><TD>None</TD></TR>
+<TR><TD>dec</TD><TD>float</TD><TD>1</TD><TD>10</TD><TD>None</TD></TR>
+<TR><TD>equinox</TD><TD>float</TD><TD>1</TD><TD>10</TD><TD>None</TD></TR>
+<TR><TD>epoc</TD><TD>float</TD><TD>1</TD><TD>10</TD><TD>None</TD></TR>
+<TR><TD>pmRA</TD><TD>float</TD><TD>1</TD><TD>10</TD><TD>None</TD></TR>
+<TR><TD>pmDec</TD><TD>float</TD><TD>1</TD><TD>10</TD><TD>None</TD></TR>
+<TR><TD>parallax</TD><TD>float</TD><TD>1</TD><TD>10</TD><TD>None</TD></TR>
+<TR><TD>rv</TD><TD>float</TD><TD>1</TD><TD>10</TD><TD>None</TD></TR>
+</TABLE></UL><P>
+<H3>Telemetry datastream topic : tcs.kernel.OpticsVt</H3><P>
+This subsystem is internal to the tcs pointing kernel<P><UL>
+<TABLE BORDER=3 CELLPADDING=5 BGCOLOR=LightBlue WIDTH=700><TR BGCOLOR=yellow><B><TD>Item</TD><TD>Type</TD><TD>Size</TD><TD>Freq.</TD><TD>Notes</TD></B></TR>
+<TR><TD>tip</TD><TD>float</TD><TD>1</TD><TD>10</TD><TD>None</TD></TR>
+<TR><TD>tilt</TD><TD>float</TD><TD>1</TD><TD>10</TD><TD>None</TD></TR>
+</TABLE></UL><P>
+<H3>Telemetry datastream topic : tcs.kernel.PointingControl</H3><P>
+This subsystem is internal to the tcs pointing kernel<P><UL>
+<TABLE BORDER=3 CELLPADDING=5 BGCOLOR=LightBlue WIDTH=700><TR BGCOLOR=yellow><B><TD>Item</TD><TD>Type</TD><TD>Size</TD><TD>Freq.</TD><TD>Notes</TD></B></TR>
+<TR><TD>RollFilter</TD><TD>string</TD><TD>32</TD><TD>10</TD><TD> filter for roll axis</TD></TR>
+<TR><TD>PitchFilter</TD><TD>string</TD><TD>32</TD><TD>10</TD><TD> filter for pitch axis</TD></TR>
+<TR><TD>AGuide</TD><TD>float</TD><TD>1</TD><TD>10</TD><TD> guide correction in roll</TD></TR>
+<TR><TD>BGuide</TD><TD>float</TD><TD>1</TD><TD>10</TD><TD> guide correction in pitch</TD></TR>
+<TR><TD>ALocal</TD><TD>float</TD><TD>1</TD><TD>10</TD><TD> local correction in roll</TD></TR>
+<TR><TD>BLocal</TD><TD>float</TD><TD>1</TD><TD>10</TD><TD> local correction in pitch</TD></TR>
+</TABLE></UL><P>
+<H3>Telemetry datastream topic : tcs.kernel.PointingLog</H3><P>
+This subsystem is internal to the tcs pointing kernel<P><UL>
+<TABLE BORDER=3 CELLPADDING=5 BGCOLOR=LightBlue WIDTH=700><TR BGCOLOR=yellow><B><TD>Item</TD><TD>Type</TD><TD>Size</TD><TD>Freq.</TD><TD>Notes</TD></B></TR>
+<TR><TD>Ra</TD><TD>float</TD><TD>1</TD><TD>10</TD><TD> ICRF right ascension of observation (radians)</TD></TR>
+<TR><TD>Dec</TD><TD>float</TD><TD>1</TD><TD>10</TD><TD> ICRF declination of observation (radians)</TD></TR>
+<TR><TD>Wavel</TD><TD>float</TD><TD>1</TD><TD>10</TD><TD> wavelength (microns)</TD></TR>
+<TR><TD>Roll</TD><TD>float</TD><TD>1</TD><TD>10</TD><TD> roll demand at Tai (radians)</TD></TR>
+<TR><TD>Pitch</TD><TD>float</TD><TD>1</TD><TD>10</TD><TD> pitch demand at Tai (radians)</TD></TR>
+<TR><TD>Casspa</TD><TD>float</TD><TD>1</TD><TD>10</TD><TD> cass equivalent rotator angle (radians)</TD></TR>
+<TR><TD>Xr</TD><TD>float</TD><TD>1</TD><TD>10</TD><TD> pointing origin X coordinate (mm)</TD></TR>
+<TR><TD>Yr</TD><TD>float</TD><TD>1</TD><TD>10</TD><TD> pointing origin Y coordinate (mm)</TD></TR>
+<TR><TD>Fl</TD><TD>float</TD><TD>1</TD><TD>10</TD><TD> focal length (mm)</TD></TR>
+<TR><TD>Temp</TD><TD>float</TD><TD>1</TD><TD>10</TD><TD> temperature (deg K)</TD></TR>
+<TR><TD>Press</TD><TD>float</TD><TD>1</TD><TD>10</TD><TD> pressure (mbar)</TD></TR>
+<TR><TD>Humid</TD><TD>float</TD><TD>1</TD><TD>10</TD><TD> relative Humidity</TD></TR>
+<TR><TD>Tlr</TD><TD>float</TD><TD>1</TD><TD>10</TD><TD> tropospheric lapse rate</TD></TR>
+<TR><TD>Rcorr</TD><TD>float</TD><TD>1</TD><TD>10</TD><TD> correction to rotator angle (radians)</TD></TR>
+<TR><TD>Aux</TD><TD>float</TD><TD>3</TD><TD>10</TD><TD> auxiliary readings</TD></TR>
+<TR><TD>Marked</TD><TD>long</TD><TD>1</TD><TD>10</TD><TD> data available flag</TD></TR>
+</TABLE></UL><P>
+<H3>Telemetry datastream topic : tcs.kernel.PointingModel</H3><P>
+This subsystem is internal to the tcs pointing kernel<P><UL>
+<TABLE BORDER=3 CELLPADDING=5 BGCOLOR=LightBlue WIDTH=700><TR BGCOLOR=yellow><B><TD>Item</TD><TD>Type</TD><TD>Size</TD><TD>Freq.</TD><TD>Notes</TD></B></TR>
+<TR><TD>Model</TD><TD>long</TD><TD>30</TD><TD>10</TD><TD> term numbers for current model</TD></TR>
+<TR><TD>Coeffv</TD><TD>float</TD><TD>100</TD><TD>10</TD><TD> coefficient value</TD></TR>
+<TR><TD>Nterml</TD><TD>long</TD><TD>1</TD><TD>10</TD><TD> number of local terms</TD></TR>
+<TR><TD>Ntermx</TD><TD>long</TD><TD>1</TD><TD>10</TD><TD> number of terms implemented explicitly</TD></TR>
+<TR><TD>Nterms</TD><TD>long</TD><TD>1</TD><TD>10</TD><TD> number of terms available currently</TD></TR>
+<TR><TD>Coeff1</TD><TD>string</TD><TD>32</TD><TD>10</TD><TD> coefficient names</TD></TR>
+<TR><TD>Coeff2</TD><TD>string</TD><TD>32</TD><TD>10</TD><TD> coefficient names</TD></TR>
+<TR><TD>Coeff3</TD><TD>string</TD><TD>32</TD><TD>10</TD><TD> coefficient names</TD></TR>
+<TR><TD>Coeff4</TD><TD>string</TD><TD>32</TD><TD>10</TD><TD> coefficient names</TD></TR>
+<TR><TD>Coeff5</TD><TD>string</TD><TD>32</TD><TD>10</TD><TD> coefficient names</TD></TR>
+<TR><TD>Coeff6</TD><TD>string</TD><TD>32</TD><TD>10</TD><TD> coefficient names</TD></TR>
+<TR><TD>Coeff7</TD><TD>string</TD><TD>32</TD><TD>10</TD><TD> coefficient names</TD></TR>
+<TR><TD>Coeff8</TD><TD>string</TD><TD>32</TD><TD>10</TD><TD> coefficient names</TD></TR>
+<TR><TD>Coeff9</TD><TD>string</TD><TD>32</TD><TD>10</TD><TD> coefficient names</TD></TR>
+<TR><TD>Cofor1</TD><TD>string</TD><TD>32</TD><TD>10</TD><TD> format of generic term</TD></TR>
+<TR><TD>Cofor2</TD><TD>string</TD><TD>32</TD><TD>10</TD><TD> format of generic term</TD></TR>
+<TR><TD>Cofor3</TD><TD>string</TD><TD>32</TD><TD>10</TD><TD> format of generic term</TD></TR>
+<TR><TD>Cofor4</TD><TD>string</TD><TD>32</TD><TD>10</TD><TD> format of generic term</TD></TR>
+<TR><TD>Cofor5</TD><TD>string</TD><TD>32</TD><TD>10</TD><TD> format of generic term</TD></TR>
+<TR><TD>Cofor6</TD><TD>string</TD><TD>32</TD><TD>10</TD><TD> format of generic term</TD></TR>
+<TR><TD>Cofor7</TD><TD>string</TD><TD>32</TD><TD>10</TD><TD> format of generic term</TD></TR>
+<TR><TD>Cofor8</TD><TD>string</TD><TD>32</TD><TD>10</TD><TD> format of generic term</TD></TR>
+<TR><TD>Cofor9</TD><TD>string</TD><TD>32</TD><TD>10</TD><TD> format of generic term</TD></TR>
+</TABLE></UL><P>
+<H3>Telemetry datastream topic : tcs.kernel.Site</H3><P>
+This subsystem is internal to the tcs pointing kernel<P><UL>
+<TABLE BORDER=3 CELLPADDING=5 BGCOLOR=LightBlue WIDTH=700><TR BGCOLOR=yellow><B><TD>Item</TD><TD>Type</TD><TD>Size</TD><TD>Freq.</TD><TD>Notes</TD></B></TR>
+<TR><TD>tai</TD><TD>float</TD><TD>1</TD><TD>10</TD><TD>None</TD></TR>
+<TR><TD>delat</TD><TD>float</TD><TD>1</TD><TD>10</TD><TD>None</TD></TR>
+<TR><TD>delut</TD><TD>float</TD><TD>1</TD><TD>10</TD><TD>None</TD></TR>
+<TR><TD>ttmtat</TD><TD>float</TD><TD>1</TD><TD>10</TD><TD>None</TD></TR>
+<TR><TD>elongm</TD><TD>float</TD><TD>1</TD><TD>10</TD><TD>None</TD></TR>
+<TR><TD>latm</TD><TD>float</TD><TD>1</TD><TD>10</TD><TD>None</TD></TR>
+<TR><TD>hm</TD><TD>float</TD><TD>1</TD><TD>10</TD><TD>None</TD></TR>
+<TR><TD>xpm</TD><TD>float</TD><TD>1</TD><TD>10</TD><TD>None</TD></TR>
+<TR><TD>ypm</TD><TD>float</TD><TD>1</TD><TD>10</TD><TD>None</TD></TR>
+<TR><TD>Delut</TD><TD>float</TD><TD>1</TD><TD>10</TD><TD> UT1 - UTC (days)</TD></TR>
+<TR><TD>Delat</TD><TD>float</TD><TD>1</TD><TD>10</TD><TD> TAI -UTC (days)</TD></TR>
+<TR><TD>Ttmtai</TD><TD>float</TD><TD>1</TD><TD>10</TD><TD> TT - TAI (days)</TD></TR>
+<TR><TD>Elong</TD><TD>float</TD><TD>1</TD><TD>10</TD><TD> corrected east longitude (radians)</TD></TR>
+<TR><TD>Lat</TD><TD>float</TD><TD>1</TD><TD>10</TD><TD> corrected latitude (radians)</TD></TR>
+<TR><TD>Uau</TD><TD>float</TD><TD>1</TD><TD>10</TD><TD> distance from spin axis (AU)</TD></TR>
+<TR><TD>Vau</TD><TD>float</TD><TD>1</TD><TD>10</TD><TD> distance from equator (AU)</TD></TR>
+<TR><TD>Ukm</TD><TD>float</TD><TD>1</TD><TD>10</TD><TD> distance from spin axis (km)</TD></TR>
+<TR><TD>Vkm</TD><TD>float</TD><TD>1</TD><TD>10</TD><TD> distance from equator (km)</TD></TR>
+<TR><TD>Diurab</TD><TD>float</TD><TD>1</TD><TD>10</TD><TD> diurnal aberration (radians)</TD></TR>
+<TR><TD>T0</TD><TD>float</TD><TD>1</TD><TD>10</TD><TD> reference epoch TAI (MJD)</TD></TR>
+<TR><TD>St0</TD><TD>float</TD><TD>1</TD><TD>10</TD><TD> reference siderial time (radians)</TD></TR>
+<TR><TD>Tt0</TD><TD>float</TD><TD>1</TD><TD>10</TD><TD> reference time TT (MJD)</TD></TR>
+<TR><TD>Ttj</TD><TD>float</TD><TD>1</TD><TD>10</TD><TD> reference time TT (Julian date)</TD></TR>
+<TR><TD>Amprms</TD><TD>float</TD><TD>21</TD><TD>10</TD><TD> apparent to mean parameters</TD></TR>
+<TR><TD>Aoprms</TD><TD>float</TD><TD>15</TD><TD>10</TD><TD> apparent to observed parameters</TD></TR>
+<TR><TD>Refa</TD><TD>float</TD><TD>1</TD><TD>10</TD><TD> tan refraction constant</TD></TR>
+<TR><TD>Refb</TD><TD>float</TD><TD>1</TD><TD>10</TD><TD> tan**3 refraction constant</TD></TR>
+<TR><TD>Daz</TD><TD>float</TD><TD>1</TD><TD>10</TD><TD> daily motion</TD></TR>
+</TABLE></UL><P>
+<H3>Telemetry datastream topic : tcs.kernel.Target</H3><P>
+This subsystem is internal to the tcs pointing kernel<P><UL>
+<TABLE BORDER=3 CELLPADDING=5 BGCOLOR=LightBlue WIDTH=700><TR BGCOLOR=yellow><B><TD>Item</TD><TD>Type</TD><TD>Size</TD><TD>Freq.</TD><TD>Notes</TD></B></TR>
+<TR><TD>site</TD><TD>string</TD><TD>128</TD><TD>10</TD><TD>None</TD></TR>
+<TR><TD>t0</TD><TD>float</TD><TD>1</TD><TD>10</TD><TD>None</TD></TR>
+<TR><TD>az</TD><TD>float</TD><TD>1</TD><TD>10</TD><TD>None</TD></TR>
+<TR><TD>el</TD><TD>float</TD><TD>1</TD><TD>10</TD><TD>None</TD></TR>
+<TR><TD>azdot</TD><TD>float</TD><TD>1</TD><TD>10</TD><TD>None</TD></TR>
+<TR><TD>eldot</TD><TD>float</TD><TD>1</TD><TD>10</TD><TD>None</TD></TR>
+<TR><TD>Wavel</TD><TD>float</TD><TD>1</TD><TD>10</TD><TD> effective wavelength (microns)</TD></TR>
+<TR><TD>XOffset</TD><TD>float</TD><TD>1</TD><TD>10</TD><TD> target offset</TD></TR>
+<TR><TD>YOffset</TD><TD>float</TD><TD>1</TD><TD>10</TD><TD>None</TD></TR>
+<TR><TD>OffSys</TD><TD>string</TD><TD>128</TD><TD>10</TD><TD> offset reference frame</TD></TR>
+<TR><TD>focalplaneX</TD><TD>float</TD><TD>1</TD><TD>10</TD><TD> focal plane position</TD></TR>
+<TR><TD>focalplaneY</TD><TD>float</TD><TD>1</TD><TD>10</TD><TD> focal plane position</TD></TR>
+<TR><TD>Temp</TD><TD>float</TD><TD>1</TD><TD>10</TD><TD> temperature (deg K)</TD></TR>
+<TR><TD>Press</TD><TD>float</TD><TD>1</TD><TD>10</TD><TD> pressure (mbar)</TD></TR>
+<TR><TD>Humid</TD><TD>float</TD><TD>1</TD><TD>10</TD><TD> relative humidity</TD></TR>
+<TR><TD>TLR</TD><TD>float</TD><TD>1</TD><TD>10</TD><TD> tropospheric lapse rate</TD></TR>
+<TR><TD>Tai</TD><TD>float</TD><TD>1</TD><TD>10</TD><TD> TAI of last pointing calculation (MJD)</TD></TR>
+</TABLE></UL><P>
+<H3>Telemetry datastream topic : tcs.kernel.TimeKeeper</H3><P>
+This subsystem is internal to the tcs pointing kernel<P><UL>
+<TABLE BORDER=3 CELLPADDING=5 BGCOLOR=LightBlue WIDTH=700><TR BGCOLOR=yellow><B><TD>Item</TD><TD>Type</TD><TD>Size</TD><TD>Freq.</TD><TD>Notes</TD></B></TR>
+<TR><TD>Tai</TD><TD>float</TD><TD>1</TD><TD>10</TD><TD> time TAI (MJD)</TD></TR>
+<TR><TD>Tt</TD><TD>float</TD><TD>1</TD><TD>10</TD><TD> TT time at Tai (MJD)</TD></TR>
+<TR><TD>Cst</TD><TD>float</TD><TD>1</TD><TD>10</TD><TD> cosine of sidereal time</TD></TR>
+<TR><TD>Sst</TD><TD>float</TD><TD>1</TD><TD>10</TD><TD> sine of sidereal time</TD></TR>
+<TR><TD>Dcst</TD><TD>float</TD><TD>1</TD><TD>10</TD><TD> rate of change of Cst per sample interval</TD></TR>
+<TR><TD>Dsst</TD><TD>float</TD><TD>1</TD><TD>10</TD><TD> rate of change of Sst per sample interval</TD></TR>
+</TABLE></UL><P>
+<H3>Telemetry datastream topic : tcs.kernel.TrackRefSys</H3><P>
+This subsystem is internal to the tcs pointing kernel<P><UL>
+<TABLE BORDER=3 CELLPADDING=5 BGCOLOR=LightBlue WIDTH=700><TR BGCOLOR=yellow><B><TD>Item</TD><TD>Type</TD><TD>Size</TD><TD>Freq.</TD><TD>Notes</TD></B></TR>
+<TR><TD>tdbj</TD><TD>float</TD><TD>1</TD><TD>10</TD><TD>None</TD></TR>
+<TR><TD>amprms</TD><TD>float</TD><TD>21</TD><TD>10</TD><TD>None</TD></TR>
+<TR><TD>ae2mt</TD><TD>float</TD><TD>9</TD><TD>10</TD><TD>None</TD></TR>
+<TR><TD>hm</TD><TD>float</TD><TD>1</TD><TD>10</TD><TD>None</TD></TR>
+<TR><TD>tlat</TD><TD>float</TD><TD>1</TD><TD>10</TD><TD>None</TD></TR>
+<TR><TD>diurab</TD><TD>float</TD><TD>1</TD><TD>10</TD><TD>None</TD></TR>
+<TR><TD>refa</TD><TD>float</TD><TD>1</TD><TD>10</TD><TD>None</TD></TR>
+<TR><TD>refb</TD><TD>float</TD><TD>1</TD><TD>10</TD><TD>None</TD></TR>
+<TR><TD>temp</TD><TD>float</TD><TD>1</TD><TD>10</TD><TD>None</TD></TR>
+<TR><TD>press</TD><TD>float</TD><TD>1</TD><TD>10</TD><TD>None</TD></TR>
+<TR><TD>humid</TD><TD>float</TD><TD>1</TD><TD>10</TD><TD>None</TD></TR>
+<TR><TD>tlr</TD><TD>float</TD><TD>1</TD><TD>10</TD><TD>None</TD></TR>
+<TR><TD>wavel</TD><TD>float</TD><TD>1</TD><TD>10</TD><TD>None</TD></TR>
+<TR><TD>sst</TD><TD>float</TD><TD>1</TD><TD>10</TD><TD>None</TD></TR>
+<TR><TD>cst</TD><TD>float</TD><TD>1</TD><TD>10</TD><TD>None</TD></TR>
+</TABLE></UL><P>
+<H3>Telemetry datastream topic : tcs.kernel.TrackingTarget</H3><P>
+This subsystem is internal to the tcs pointing kernel<P><UL>
+<TABLE BORDER=3 CELLPADDING=5 BGCOLOR=LightBlue WIDTH=700><TR BGCOLOR=yellow><B><TD>Item</TD><TD>Type</TD><TD>Size</TD><TD>Freq.</TD><TD>Notes</TD></B></TR>
+<TR><TD>PositionX</TD><TD>float</TD><TD>1</TD><TD>10</TD><TD> position in tracking frame</TD></TR>
+<TR><TD>PositionY</TD><TD>float</TD><TD>1</TD><TD>10</TD><TD> position in tracking frame</TD></TR>
+<TR><TD>T0</TD><TD>float</TD><TD>1</TD><TD>10</TD><TD> reference time</TD></TR>
+<TR><TD>VelocityX</TD><TD>float</TD><TD>1</TD><TD>10</TD><TD> tracking rate in tracking frame</TD></TR>
+<TR><TD>VelocityY</TD><TD>float</TD><TD>1</TD><TD>10</TD><TD> tracking rate in tracking frame</TD></TR>
+</TABLE></UL><P>
+
+
+<H2>4.       NOTES</H2>
+
+<H2>5.       APPENDICES</H2>
+
+<H2>6.       APPROVALS</H2>
+
+<H2>7.       RECORD OF CHANGES</H2><UL>
+<TABLE BORDER=3 CELLPADDING=5 BGCOLOR=LightBlue WIDTH=600>
+<TR BGCOLOR=yellow><B><TD>Version</TD><TD>Date</TD><TD>Author</TD><TD>Notes</TD></B></TR>
+<TR><TD>1.0</TD><TD>06-15-2009</TD><TD>Mills., D.</TD><TD>Initial release</TR>
+</TABLE></UL>
+<P>
+
+</BODY></HTML>
+

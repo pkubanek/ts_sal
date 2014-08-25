@@ -1,0 +1,6 @@
+		d.cmdID = environment_command_ref->cmdID;
+		strncpy(d.device,environment_command_ref->device,16);
+		strncpy(d.modifiers,environment_command_ref->modifiers,128);
+		strncpy(d.operation,environment_command_ref->operation,16);
+		strncpy(d.value,environment_command_ref->value,16);
+		environment_command_ref->syncO = 1;

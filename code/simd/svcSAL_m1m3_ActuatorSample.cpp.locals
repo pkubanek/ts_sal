@@ -1,0 +1,5 @@
+	svcSHORT	actuatorID;
+	svcLONG	error[101];
+	svcLONG	position[101];
+	svcLONG	setpoint[101];
+	svcLONG	status[101];

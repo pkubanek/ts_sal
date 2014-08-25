@@ -1,0 +1,5 @@
+		result = salHandle->setitem(SAL_IID_m1m3_Application_status, status, 17);
+		result = salHandle->setitem(SAL_IID_m1m3_Application_demand, demand, 7);
+		result = salHandle->setitem(SAL_IID_m1m3_Application_error, error, 7);
+		result = salHandle->setitem(SAL_IID_m1m3_Application_position, position, 7);
+		result = salHandle->putSample();

@@ -1,0 +1,25 @@
+		strncpy(d.Status_1,m2_Application_ref->Status_1,128);
+		strncpy(d.Status_10,m2_Application_ref->Status_10,128);
+		strncpy(d.Status_11,m2_Application_ref->Status_11,128);
+		strncpy(d.Status_12,m2_Application_ref->Status_12,128);
+		strncpy(d.Status_13,m2_Application_ref->Status_13,128);
+		strncpy(d.Status_14,m2_Application_ref->Status_14,128);
+		strncpy(d.Status_15,m2_Application_ref->Status_15,128);
+		strncpy(d.Status_2,m2_Application_ref->Status_2,128);
+		strncpy(d.Status_3,m2_Application_ref->Status_3,128);
+		strncpy(d.Status_4,m2_Application_ref->Status_4,128);
+		strncpy(d.Status_5,m2_Application_ref->Status_5,128);
+		strncpy(d.Status_6,m2_Application_ref->Status_6,128);
+		strncpy(d.Status_7,m2_Application_ref->Status_7,128);
+		strncpy(d.Status_8,m2_Application_ref->Status_8,128);
+		strncpy(d.Status_9,m2_Application_ref->Status_9,128);
+		for (unsigned int count=0; count<3; count++) {
+			d.Demand[count] = m2_Application_ref->Demand[count];
+		}
+		for (unsigned int count=0; count<3; count++) {
+			d.Error[count] = m2_Application_ref->Error[count];
+		}
+		for (unsigned int count=0; count<3; count++) {
+			d.Position[count] = m2_Application_ref->Position[count];
+		}
+		m2_Application_ref->syncO = 1;

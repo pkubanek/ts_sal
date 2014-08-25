@@ -1,0 +1,3 @@
+	svcLONG	status[51];
+	svcFLT	setpoint[51];
+	svcFLT	temperature[51];

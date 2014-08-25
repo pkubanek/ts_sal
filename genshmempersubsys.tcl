@@ -3,10 +3,10 @@
 proc doddsgen { sublist publist } {
 global scriptdir
 puts stdout "doddsgen sublist = $sublist"
-   parsesub $sublist
-puts stdout "doddsgen publist = $publist"
-   parsepub $publist
-   parsemakefile  $sublist $publist
+#   parsesub $sublist
+#puts stdout "doddsgen publist = $publist"
+#   parsepub $publist
+#  parsemakefile  $sublist $publist
 }
 
 proc doortegen { sublist publist } {
@@ -100,7 +100,7 @@ if { [info exists JUSTTESTING] } {
   set SUBS(camera_CCS) "yes"
 }
 
-set scriptdir /opt/lsstsal/scripts
+set scriptdir /usr/local/scripts/tcl
  
 source $scriptdir/ndds_version.tcl
 source $scriptdir/streamutils.tcl
@@ -151,7 +151,7 @@ exec mkdir -p  $basedir/shmem-$basename
 #printformdata
 #puts stdout "basedir = $basedir"
 
-puts stdout "<HTML><HEAD><TITLE>Software Abstraction Layer API generator</TITLE></HEAD>
+puts stdout "<HTML><HEAD><TITLE>Service Abstraction Layer API generator</TITLE></HEAD>
 <BODY BGCOLOR=White><H1>
 <IMG SRC=\"/LSST_logo.gif\" ALIGN=CENTER>
 <IMG SRC=\"/salg.gif\" ALIGN=CENTER><P><HR><P>
@@ -184,8 +184,9 @@ puts stdout "Building shmem interfaces"
 puts stdout "Processing $sublist $publist"
 set workdir $basedir/shmem-$basename
 cd $workdir
-source $scriptdir/genshmem-rtidds.tcl
-doddsgen "$sublist" "$publist"
+#source $scriptdir/genshmem-rtidds.tcl
+#doddsgen "$sublist" "$publist"
+
 if { [info exists FormData(mw_orte)] } {
   source $scriptdir/genshmem-orte.tcl
   doortegen $sublist $publist
@@ -208,7 +209,7 @@ foreach f $code { exec cp $f . }
 exec cp $scriptdir/code/version.mak .
 exec cp $scriptdir/code/makefile.sal .
 exec cp $scriptdir/code/makefile.saltcl .
-exec cp /opt/lsstsal/scripts/include/svcSAL.h .
+exec cp /usr/local/scripts/include/svcSAL.h .
 
 source $scriptdir/genshmtclpersubsys.tcl
 puts stdout "</PRE><P><HR><P><H1>Compilation phase</H1><P><PRE>"

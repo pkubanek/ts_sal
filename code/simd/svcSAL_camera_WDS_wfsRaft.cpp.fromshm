@@ -1,0 +1,15 @@
+		d.status = camera_WDS_wfsRaft_ref->status;
+		strncpy(d.CalcImage1,camera_WDS_wfsRaft_ref->CalcImage1,128);
+		strncpy(d.CalcImage2,camera_WDS_wfsRaft_ref->CalcImage2,128);
+		strncpy(d.avgInsideImage,camera_WDS_wfsRaft_ref->avgInsideImage,128);
+		strncpy(d.avgOutsideImage,camera_WDS_wfsRaft_ref->avgOutsideImage,128);
+		for (unsigned int count=0; count<33; count++) {
+			d.metrics[count] = camera_WDS_wfsRaft_ref->metrics[count];
+		}
+		for (unsigned int count=0; count<33; count++) {
+			d.parameters[count] = camera_WDS_wfsRaft_ref->parameters[count];
+		}
+		for (unsigned int count=0; count<17; count++) {
+			d.zernikes[count] = camera_WDS_wfsRaft_ref->zernikes[count];
+		}
+		camera_WDS_wfsRaft_ref->syncO = 1;

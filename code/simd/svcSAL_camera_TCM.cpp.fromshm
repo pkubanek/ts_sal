@@ -1,0 +1,4 @@
+		for (unsigned int count=0; count<11; count++) {
+			d.parameters[count] = camera_TCM_ref->parameters[count];
+		}
+		camera_TCM_ref->syncO = 1;

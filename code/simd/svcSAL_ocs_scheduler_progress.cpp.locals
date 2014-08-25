@@ -1,0 +1,4 @@
+	svcLONG	priority[33];
+	svcLONG	projection[33];
+	svcLONG	taskid[33];
+	svcDBL	completion[33];

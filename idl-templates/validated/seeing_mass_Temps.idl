@@ -1,0 +1,10 @@
+struct seeing_mass_Temps {
+  string<32> private_revCode;  //private
+  double     private_sndStamp; //private
+  double     private_rcvStamp; //private
+  long       private_seqNum;   //private
+  long       private_origin;   //private
+  long	Raw[15];
+  float	Calibrated[15];
+  octet	Health[15];
+};

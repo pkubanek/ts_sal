@@ -1,0 +1,6 @@
+		strncpy(d.Part,system_Hardware_revision_history_ref->Part,32);
+		strncpy(d.Reason,system_Hardware_revision_history_ref->Reason,32);
+		for (unsigned int count=0; count<4; count++) {
+			d.Version[count] = system_Hardware_revision_history_ref->Version[count];
+		}
+		system_Hardware_revision_history_ref->syncO = 1;

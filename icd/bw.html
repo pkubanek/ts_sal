@@ -1,0 +1,442 @@
+<HTML><HEAD><TITLE>Telemetry bandwidth requirements</TITLE></HEAD>
+<BODY><H1>Telemetry bandwidth requirements - Summary</H1>
+<P>This table shows the estimated bandwidth requirements<BR>
+for the LSST Observatory Telemetry. Each major subsystem<BR>
+is show, and is linked to a more detailed table.<P>
+<P><TABLE BORDER=3 CELLPADDING=5  BGCOLOR=LightBlue WIDTH=600>
+<TR BGCOLOR=Yellow><B><TD>Subsystem Id</TD><TD>Bytes/Sec</TD><TD>Mbps</TD><TD>MB per Day</TD></B></TR>
+<TR><TD><A HREF="datastreams-bandwidths-auxscope.html">auxscope</A></TD><TD>          2227.2</TD><TD>          0.0170</TD><TD>           76.50</TD></TR>
+<TR><TD><A HREF="datastreams-bandwidths-calibration.html">calibration</A></TD><TD>           576.0</TD><TD>          0.0044</TD><TD>           19.80</TD></TR>
+<TR><TD><A HREF="datastreams-bandwidths-camera.html">camera</A></TD><TD>         64587.1</TD><TD>          0.4928</TD><TD>         2217.60</TD></TR>
+<TR><TD><A HREF="datastreams-bandwidths-enclosure.html">enclosure</A></TD><TD>          1344.0</TD><TD>          0.0103</TD><TD>           46.35</TD></TR>
+<TR><TD><A HREF="datastreams-bandwidths-environment.html">environment</A></TD><TD>          3333.1</TD><TD>          0.0254</TD><TD>          114.30</TD></TR>
+<TR><TD><A HREF="datastreams-bandwidths-lasercal.html">lasercal</A></TD><TD>           448.0</TD><TD>          0.0034</TD><TD>           15.30</TD></TR>
+<TR><TD><A HREF="datastreams-bandwidths-m1m3.html">m1m3</A></TD><TD>         16073.0</TD><TD>          0.1226</TD><TD>          551.70</TD></TR>
+<TR><TD><A HREF="datastreams-bandwidths-m2.html">m2</A></TD><TD>          3104.0</TD><TD>          0.0237</TD><TD>          106.65</TD></TR>
+<TR><TD><A HREF="datastreams-bandwidths-mount.html">mount</A></TD><TD>          8256.0</TD><TD>          0.0630</TD><TD>          283.50</TD></TR>
+<TR><TD><A HREF="datastreams-bandwidths-network.html">network</A></TD><TD>           256.0</TD><TD>          0.0020</TD><TD>            9.00</TD></TR>
+<TR><TD><A HREF="datastreams-bandwidths-operations.html">operations</A></TD><TD>          6400.0</TD><TD>          0.0488</TD><TD>          219.60</TD></TR>
+<TR><TD><A HREF="datastreams-bandwidths-power.html">power</A></TD><TD>           640.0</TD><TD>          0.0049</TD><TD>           22.05</TD></TR>
+<TR><TD><A HREF="datastreams-bandwidths-scheduler.html">scheduler</A></TD><TD>           640.0</TD><TD>          0.0049</TD><TD>           22.05</TD></TR>
+<TR><TD><A HREF="datastreams-bandwidths-seeing.html">seeing</A></TD><TD>        138820.0</TD><TD>          1.0591</TD><TD>         4765.95</TD></TR>
+<TR><TD><A HREF="datastreams-bandwidths-skycam.html">skycam</A></TD><TD>         32606.1</TD><TD>          0.2488</TD><TD>         1119.60</TD></TR>
+<TR><TD><A HREF="datastreams-bandwidths-system.html">system</A></TD><TD>         75101.6</TD><TD>          0.5730</TD><TD>         2578.50</TD></TR>
+<TR><TD><A HREF="datastreams-bandwidths-tcs.html">tcs</A></TD><TD>        457240.0</TD><TD>          3.4885</TD><TD>        15698.25</TD></TR>
+<TR BGCOLOR=Orange><TD>Total for all Subsystems</TD><TD>        811652.1</TD><TD>          6.1924</TD><TD>        27865.80</TD></TR>
+</TABLE><P>
+<HTML><HEAD><TITLE>Telemetry bandwidth requirements - BLOBs</TITLE></HEAD>
+<BODY><H1>Telemetry bandwidth requirements - BLOBs</H1>
+<P>This table shows the estimated bandwidth requirements<BR>
+for the LSST Observatory Telemetry. Only subsystems which <BR>
+produce large image/vector datasets (BLOBs) are shown here.<P>
+<P><TABLE BORDER=3 CELLPADDING=5 BGCOLOR=LightBlue  WIDTH=600>
+<TR BGCOLOR=Yellow><B><TD>Subsystem</TD><TD>Bytes/Sec</TD><TD>Mbps</TD><TD>MB per Day</TD></B></TR>
+<TR ><TD>auxscope.Camera</TD><TD>        209715.2</TD><TD>          1.6000</TD><TD>         7200.00</TD></TR>
+<TR ><TD>auxscope.Spectrometer</TD><TD>        104857.6</TD><TD>          0.8000</TD><TD>         3600.00</TD></TR>
+<TR ><TD>camera.WDS.wfsRaft</TD><TD>        128000.0</TD><TD>          0.9766</TD><TD>         4394.70</TD></TR>
+<TR ><TD>environment.Lightning.detector</TD><TD>         10485.8</TD><TD>          0.0800</TD><TD>          360.00</TD></TR>
+<TR ><TD>environment.Video.cameras</TD><TD>         49152.0</TD><TD>          0.3750</TD><TD>         1687.50</TD></TR>
+<TR ><TD>seeing.dimm.Application</TD><TD>        983040.0</TD><TD>          7.5000</TD><TD>        33750.00</TD></TR>
+<TR ><TD>seeing.mass.Application</TD><TD>         32768.0</TD><TD>          0.2500</TD><TD>         1125.00</TD></TR>
+<TR ><TD>skycam.Application</TD><TD>        503316.5</TD><TD>          3.8400</TD><TD>        17280.00</TD></TR>
+<TR ><TD>All-BLOBs</TD><TD>       2021335.0</TD><TD>         15.4216</TD><TD>        69397.20</TD></TR>
+</TABLE><P>
+<HTML><HEAD><TITLE>Telemetry bandwidth requirements - auxscope</TITLE></HEAD>
+<BODY><H1>Telemetry bandwidth requirements - auxscope</H1>
+<P>This table shows the estimated bandwidth requirements<BR>
+for the LSST Observatory Telemetry. This table details the<BR>
+estimates for the auxscope Subsystem.<P>
+<P><TABLE BORDER=3 CELLPADDING=5 BGCOLOR=LightBlue  WIDTH=600>
+<TR BGCOLOR=Yellow><B><TD>Subsystem Id</TD><TD>Bytes/Sec</TD><TD>Mbps</TD><TD>MB per Day</TD></B></TR>
+<TR ><TD>auxscope.Application</TD><TD>            64.0</TD><TD>          0.0005</TD><TD>            2.25</TD></TR>
+<TR ><TD>auxscope.Camera</TD><TD>            25.6</TD><TD>          0.0002</TD><TD>            0.90</TD></TR>
+<TR ><TD>auxscope.Electrical</TD><TD>           256.0</TD><TD>          0.0020</TD><TD>            9.00</TD></TR>
+<TR ><TD>auxscope.Metrology</TD><TD>           128.0</TD><TD>          0.0010</TD><TD>            4.50</TD></TR>
+<TR ><TD>auxscope.Spectrometer</TD><TD>            25.6</TD><TD>          0.0002</TD><TD>            0.90</TD></TR>
+<TR ><TD>auxscope.TC</TD><TD>           128.0</TD><TD>          0.0010</TD><TD>            4.50</TD></TR>
+<TR ><TD>auxscope.TCS</TD><TD>          1600.0</TD><TD>          0.0122</TD><TD>           54.90</TD></TR>
+<TR BGCOLOR=Orange><TD>Total for Subsystem</TD><TD>          2227.2</TD><TD>          0.0170</TD><TD>           76.50</TD></TR>
+</TABLE><P>
+<HTML><HEAD><TITLE>Telemetry bandwidth requirements - calibration</TITLE></HEAD>
+<BODY><H1>Telemetry bandwidth requirements - calibration</H1>
+<P>This table shows the estimated bandwidth requirements<BR>
+for the LSST Observatory Telemetry. This table details the<BR>
+estimates for the calibration Subsystem.<P>
+<P><TABLE BORDER=3 CELLPADDING=5 BGCOLOR=LightBlue  WIDTH=600>
+<TR BGCOLOR=Yellow><B><TD>Subsystem Id</TD><TD>Bytes/Sec</TD><TD>Mbps</TD><TD>MB per Day</TD></B></TR>
+<TR ><TD>calibration.Application</TD><TD>            64.0</TD><TD>          0.0005</TD><TD>            2.25</TD></TR>
+<TR ><TD>calibration.Electrical</TD><TD>           256.0</TD><TD>          0.0020</TD><TD>            9.00</TD></TR>
+<TR ><TD>calibration.Metrology</TD><TD>           128.0</TD><TD>          0.0010</TD><TD>            4.50</TD></TR>
+<TR ><TD>calibration.TC</TD><TD>           128.0</TD><TD>          0.0010</TD><TD>            4.50</TD></TR>
+<TR BGCOLOR=Orange><TD>Total for Subsystem</TD><TD>           576.0</TD><TD>          0.0044</TD><TD>           19.80</TD></TR>
+</TABLE><P>
+<HTML><HEAD><TITLE>Telemetry bandwidth requirements - camera</TITLE></HEAD>
+<BODY><H1>Telemetry bandwidth requirements - camera</H1>
+<P>This table shows the estimated bandwidth requirements<BR>
+for the LSST Observatory Telemetry. This table details the<BR>
+estimates for the camera Subsystem.<P>
+<P><TABLE BORDER=3 CELLPADDING=5 BGCOLOR=LightBlue  WIDTH=600>
+<TR BGCOLOR=Yellow><B><TD>Subsystem Id</TD><TD>Bytes/Sec</TD><TD>Mbps</TD><TD>MB per Day</TD></B></TR>
+<TR ><TD>camera.BEE.biases</TD><TD>             0.5</TD><TD>          0.0000</TD><TD>            0.00</TD></TR>
+<TR ><TD>camera.BEE.clocks</TD><TD>             2.1</TD><TD>          0.0000</TD><TD>            0.00</TD></TR>
+<TR ><TD>camera.BEE.thermal</TD><TD>           510.0</TD><TD>          0.0039</TD><TD>           17.55</TD></TR>
+<TR ><TD>camera.CALSYS</TD><TD>            16.4</TD><TD>          0.0001</TD><TD>            0.45</TD></TR>
+<TR ><TD>camera.CCS</TD><TD>            40.0</TD><TD>          0.0003</TD><TD>            1.35</TD></TR>
+<TR ><TD>camera.FCS</TD><TD>            41.8</TD><TD>          0.0003</TD><TD>            1.35</TD></TR>
+<TR ><TD>camera.GAS</TD><TD>         44960.0</TD><TD>          0.3430</TD><TD>         1543.50</TD></TR>
+<TR ><TD>camera.LASERCAL</TD><TD>             0.1</TD><TD>          0.0000</TD><TD>            0.00</TD></TR>
+<TR ><TD>camera.PWR</TD><TD>            20.0</TD><TD>          0.0002</TD><TD>            0.90</TD></TR>
+<TR ><TD>camera.QA.measured</TD><TD>             1.7</TD><TD>          0.0000</TD><TD>            0.00</TD></TR>
+<TR ><TD>camera.SCS</TD><TD>          4112.0</TD><TD>          0.0314</TD><TD>          141.30</TD></TR>
+<TR ><TD>camera.SDS</TD><TD>            64.0</TD><TD>          0.0005</TD><TD>            2.25</TD></TR>
+<TR ><TD>camera.SDS.amplifiers</TD><TD>            45.0</TD><TD>          0.0003</TD><TD>            1.35</TD></TR>
+<TR ><TD>camera.SDS.status</TD><TD>            64.0</TD><TD>          0.0005</TD><TD>            2.25</TD></TR>
+<TR ><TD>camera.TC.control</TD><TD>            16.0</TD><TD>          0.0001</TD><TD>            0.45</TD></TR>
+<TR ><TD>camera.TC.zone1</TD><TD>           408.0</TD><TD>          0.0031</TD><TD>           13.95</TD></TR>
+<TR ><TD>camera.TC.zone2</TD><TD>           300.0</TD><TD>          0.0023</TD><TD>           10.35</TD></TR>
+<TR ><TD>camera.TC.zone3</TD><TD>           400.0</TD><TD>          0.0031</TD><TD>           13.95</TD></TR>
+<TR ><TD>camera.TC.zone4</TD><TD>             1.2</TD><TD>          0.0000</TD><TD>            0.00</TD></TR>
+<TR ><TD>camera.TC.zone5</TD><TD>           120.0</TD><TD>          0.0009</TD><TD>            4.05</TD></TR>
+<TR ><TD>camera.TC.zone6</TD><TD>             1.2</TD><TD>          0.0000</TD><TD>            0.00</TD></TR>
+<TR ><TD>camera.TCM</TD><TD>           200.0</TD><TD>          0.0015</TD><TD>            6.75</TD></TR>
+<TR ><TD>camera.UTIL</TD><TD>            12.0</TD><TD>          0.0001</TD><TD>            0.45</TD></TR>
+<TR ><TD>camera.VCS</TD><TD>             8.0</TD><TD>          0.0001</TD><TD>            0.45</TD></TR>
+<TR ><TD>camera.WDS.wfsRaft</TD><TD>         13211.2</TD><TD>          0.1008</TD><TD>          453.60</TD></TR>
+<TR ><TD>camera.WTCM</TD><TD>            32.0</TD><TD>          0.0002</TD><TD>            0.90</TD></TR>
+<TR BGCOLOR=Orange><TD>Total for Subsystem</TD><TD>         64587.1</TD><TD>          0.4928</TD><TD>         2217.60</TD></TR>
+</TABLE><P>
+<HTML><HEAD><TITLE>Telemetry bandwidth requirements - enclosure</TITLE></HEAD>
+<BODY><H1>Telemetry bandwidth requirements - enclosure</H1>
+<P>This table shows the estimated bandwidth requirements<BR>
+for the LSST Observatory Telemetry. This table details the<BR>
+estimates for the enclosure Subsystem.<P>
+<P><TABLE BORDER=3 CELLPADDING=5 BGCOLOR=LightBlue  WIDTH=600>
+<TR BGCOLOR=Yellow><B><TD>Subsystem Id</TD><TD>Bytes/Sec</TD><TD>Mbps</TD><TD>MB per Day</TD></B></TR>
+<TR ><TD>enclosure.Application</TD><TD>            64.0</TD><TD>          0.0005</TD><TD>            2.25</TD></TR>
+<TR ><TD>enclosure.Azimuth</TD><TD>           256.0</TD><TD>          0.0020</TD><TD>            9.00</TD></TR>
+<TR ><TD>enclosure.Electrical</TD><TD>           256.0</TD><TD>          0.0020</TD><TD>            9.00</TD></TR>
+<TR ><TD>enclosure.Metrology</TD><TD>           128.0</TD><TD>          0.0010</TD><TD>            4.50</TD></TR>
+<TR ><TD>enclosure.Shutter</TD><TD>           256.0</TD><TD>          0.0020</TD><TD>            9.00</TD></TR>
+<TR ><TD>enclosure.TC</TD><TD>           128.0</TD><TD>          0.0010</TD><TD>            4.50</TD></TR>
+<TR ><TD>enclosure.Vents</TD><TD>           256.0</TD><TD>          0.0020</TD><TD>            9.00</TD></TR>
+<TR BGCOLOR=Orange><TD>Total for Subsystem</TD><TD>          1344.0</TD><TD>          0.0103</TD><TD>           46.35</TD></TR>
+</TABLE><P>
+<HTML><HEAD><TITLE>Telemetry bandwidth requirements - environment</TITLE></HEAD>
+<BODY><H1>Telemetry bandwidth requirements - environment</H1>
+<P>This table shows the estimated bandwidth requirements<BR>
+for the LSST Observatory Telemetry. This table details the<BR>
+estimates for the environment Subsystem.<P>
+<P><TABLE BORDER=3 CELLPADDING=5 BGCOLOR=LightBlue  WIDTH=600>
+<TR BGCOLOR=Yellow><B><TD>Subsystem Id</TD><TD>Bytes/Sec</TD><TD>Mbps</TD><TD>MB per Day</TD></B></TR>
+<TR ><TD>environment.Dust.monitor</TD><TD>           256.0</TD><TD>          0.0020</TD><TD>            9.00</TD></TR>
+<TR ><TD>environment.Electrical</TD><TD>           256.0</TD><TD>          0.0020</TD><TD>            9.00</TD></TR>
+<TR ><TD>environment.Lightning.detector</TD><TD>             2.6</TD><TD>          0.0000</TD><TD>            0.00</TD></TR>
+<TR ><TD>environment.Seismometer</TD><TD>           256.0</TD><TD>          0.0020</TD><TD>            9.00</TD></TR>
+<TR ><TD>environment.TC</TD><TD>           512.0</TD><TD>          0.0039</TD><TD>           17.55</TD></TR>
+<TR ><TD>environment.Video.cameras</TD><TD>             2.6</TD><TD>          0.0000</TD><TD>            0.00</TD></TR>
+<TR ><TD>environment.Weather</TD><TD>          2048.0</TD><TD>          0.0156</TD><TD>           70.20</TD></TR>
+<TR BGCOLOR=Orange><TD>Total for Subsystem</TD><TD>          3333.1</TD><TD>          0.0254</TD><TD>          114.30</TD></TR>
+</TABLE><P>
+<HTML><HEAD><TITLE>Telemetry bandwidth requirements - lasercal</TITLE></HEAD>
+<BODY><H1>Telemetry bandwidth requirements - lasercal</H1>
+<P>This table shows the estimated bandwidth requirements<BR>
+for the LSST Observatory Telemetry. This table details the<BR>
+estimates for the lasercal Subsystem.<P>
+<P><TABLE BORDER=3 CELLPADDING=5 BGCOLOR=LightBlue  WIDTH=600>
+<TR BGCOLOR=Yellow><B><TD>Subsystem Id</TD><TD>Bytes/Sec</TD><TD>Mbps</TD><TD>MB per Day</TD></B></TR>
+<TR ><TD>lasercal.Application</TD><TD>            64.0</TD><TD>          0.0005</TD><TD>            2.25</TD></TR>
+<TR ><TD>lasercal.Electrical</TD><TD>           256.0</TD><TD>          0.0020</TD><TD>            9.00</TD></TR>
+<TR ><TD>lasercal.TC</TD><TD>           128.0</TD><TD>          0.0010</TD><TD>            4.50</TD></TR>
+<TR BGCOLOR=Orange><TD>Total for Subsystem</TD><TD>           448.0</TD><TD>          0.0034</TD><TD>           15.30</TD></TR>
+</TABLE><P>
+<HTML><HEAD><TITLE>Telemetry bandwidth requirements - m1m3</TITLE></HEAD>
+<BODY><H1>Telemetry bandwidth requirements - m1m3</H1>
+<P>This table shows the estimated bandwidth requirements<BR>
+for the LSST Observatory Telemetry. This table details the<BR>
+estimates for the m1m3 Subsystem.<P>
+<P><TABLE BORDER=3 CELLPADDING=5 BGCOLOR=LightBlue  WIDTH=600>
+<TR BGCOLOR=Yellow><B><TD>Subsystem Id</TD><TD>Bytes/Sec</TD><TD>Mbps</TD><TD>MB per Day</TD></B></TR>
+<TR ><TD>m1m3.ActuatorSample</TD><TD>           801.0</TD><TD>          0.0061</TD><TD>           27.45</TD></TR>
+<TR ><TD>m1m3.Actuators</TD><TD>          2400.0</TD><TD>          0.0183</TD><TD>           82.35</TD></TR>
+<TR ><TD>m1m3.Application</TD><TD>            96.0</TD><TD>          0.0007</TD><TD>            3.15</TD></TR>
+<TR ><TD>m1m3.Electrical</TD><TD>           128.0</TD><TD>          0.0010</TD><TD>            4.50</TD></TR>
+<TR ><TD>m1m3.LUT</TD><TD>          4096.0</TD><TD>          0.0312</TD><TD>          140.40</TD></TR>
+<TR ><TD>m1m3.LimitSensors</TD><TD>            64.0</TD><TD>          0.0005</TD><TD>            2.25</TD></TR>
+<TR ><TD>m1m3.Metrology</TD><TD>            80.0</TD><TD>          0.0006</TD><TD>            2.70</TD></TR>
+<TR ><TD>m1m3.Supports</TD><TD>            72.0</TD><TD>          0.0005</TD><TD>            2.25</TD></TR>
+<TR ><TD>m1m3.Surface</TD><TD>          8192.0</TD><TD>          0.0625</TD><TD>          281.25</TD></TR>
+<TR ><TD>m1m3.TC</TD><TD>           144.0</TD><TD>          0.0011</TD><TD>            4.95</TD></TR>
+<TR BGCOLOR=Orange><TD>Total for Subsystem</TD><TD>         16073.0</TD><TD>          0.1226</TD><TD>          551.70</TD></TR>
+</TABLE><P>
+<HTML><HEAD><TITLE>Telemetry bandwidth requirements - m2</TITLE></HEAD>
+<BODY><H1>Telemetry bandwidth requirements - m2</H1>
+<P>This table shows the estimated bandwidth requirements<BR>
+for the LSST Observatory Telemetry. This table details the<BR>
+estimates for the m2 Subsystem.<P>
+<P><TABLE BORDER=3 CELLPADDING=5 BGCOLOR=LightBlue  WIDTH=600>
+<TR BGCOLOR=Yellow><B><TD>Subsystem Id</TD><TD>Bytes/Sec</TD><TD>Mbps</TD><TD>MB per Day</TD></B></TR>
+<TR ><TD>m2.Actuators</TD><TD>           864.0</TD><TD>          0.0066</TD><TD>           29.70</TD></TR>
+<TR ><TD>m2.Application</TD><TD>            96.0</TD><TD>          0.0007</TD><TD>            3.15</TD></TR>
+<TR ><TD>m2.Electrical</TD><TD>           128.0</TD><TD>          0.0010</TD><TD>            4.50</TD></TR>
+<TR ><TD>m2.Hexapod</TD><TD>           128.0</TD><TD>          0.0010</TD><TD>            4.50</TD></TR>
+<TR ><TD>m2.LimitSensors</TD><TD>            64.0</TD><TD>          0.0005</TD><TD>            2.25</TD></TR>
+<TR ><TD>m2.Metrology</TD><TD>            80.0</TD><TD>          0.0006</TD><TD>            2.70</TD></TR>
+<TR ><TD>m2.Surface</TD><TD>          1600.0</TD><TD>          0.0122</TD><TD>           54.90</TD></TR>
+<TR ><TD>m2.TC</TD><TD>           144.0</TD><TD>          0.0011</TD><TD>            4.95</TD></TR>
+<TR BGCOLOR=Orange><TD>Total for Subsystem</TD><TD>          3104.0</TD><TD>          0.0237</TD><TD>          106.65</TD></TR>
+</TABLE><P>
+<HTML><HEAD><TITLE>Telemetry bandwidth requirements - mount</TITLE></HEAD>
+<BODY><H1>Telemetry bandwidth requirements - mount</H1>
+<P>This table shows the estimated bandwidth requirements<BR>
+for the LSST Observatory Telemetry. This table details the<BR>
+estimates for the mount Subsystem.<P>
+<P><TABLE BORDER=3 CELLPADDING=5 BGCOLOR=LightBlue  WIDTH=600>
+<TR BGCOLOR=Yellow><B><TD>Subsystem Id</TD><TD>Bytes/Sec</TD><TD>Mbps</TD><TD>MB per Day</TD></B></TR>
+<TR ><TD>mount.Alt</TD><TD>          2560.0</TD><TD>          0.0195</TD><TD>           87.75</TD></TR>
+<TR ><TD>mount.Application</TD><TD>            64.0</TD><TD>          0.0005</TD><TD>            2.25</TD></TR>
+<TR ><TD>mount.Az</TD><TD>          2560.0</TD><TD>          0.0195</TD><TD>           87.75</TD></TR>
+<TR ><TD>mount.Electrical</TD><TD>           256.0</TD><TD>          0.0020</TD><TD>            9.00</TD></TR>
+<TR ><TD>mount.Metrology</TD><TD>           128.0</TD><TD>          0.0010</TD><TD>            4.50</TD></TR>
+<TR ><TD>mount.Rotator</TD><TD>          2560.0</TD><TD>          0.0195</TD><TD>           87.75</TD></TR>
+<TR ><TD>mount.TC</TD><TD>           128.0</TD><TD>          0.0010</TD><TD>            4.50</TD></TR>
+<TR BGCOLOR=Orange><TD>Total for Subsystem</TD><TD>          8256.0</TD><TD>          0.0630</TD><TD>          283.50</TD></TR>
+</TABLE><P>
+<HTML><HEAD><TITLE>Telemetry bandwidth requirements - network</TITLE></HEAD>
+<BODY><H1>Telemetry bandwidth requirements - network</H1>
+<P>This table shows the estimated bandwidth requirements<BR>
+for the LSST Observatory Telemetry. This table details the<BR>
+estimates for the network Subsystem.<P>
+<P><TABLE BORDER=3 CELLPADDING=5 BGCOLOR=LightBlue  WIDTH=600>
+<TR BGCOLOR=Yellow><B><TD>Subsystem Id</TD><TD>Bytes/Sec</TD><TD>Mbps</TD><TD>MB per Day</TD></B></TR>
+<TR ><TD>network.Application</TD><TD>           256.0</TD><TD>          0.0020</TD><TD>            9.00</TD></TR>
+<TR BGCOLOR=Orange><TD>Total for Subsystem</TD><TD>           256.0</TD><TD>          0.0020</TD><TD>            9.00</TD></TR>
+</TABLE><P>
+<HTML><HEAD><TITLE>Telemetry bandwidth requirements - operations</TITLE></HEAD>
+<BODY><H1>Telemetry bandwidth requirements - operations</H1>
+<P>This table shows the estimated bandwidth requirements<BR>
+for the LSST Observatory Telemetry. This table details the<BR>
+estimates for the operations Subsystem.<P>
+<P><TABLE BORDER=3 CELLPADDING=5 BGCOLOR=LightBlue  WIDTH=600>
+<TR BGCOLOR=Yellow><B><TD>Subsystem Id</TD><TD>Bytes/Sec</TD><TD>Mbps</TD><TD>MB per Day</TD></B></TR>
+<TR ><TD>operations.Application</TD><TD>          6400.0</TD><TD>          0.0488</TD><TD>          219.60</TD></TR>
+<TR BGCOLOR=Orange><TD>Total for Subsystem</TD><TD>          6400.0</TD><TD>          0.0488</TD><TD>          219.60</TD></TR>
+</TABLE><P>
+<HTML><HEAD><TITLE>Telemetry bandwidth requirements - power</TITLE></HEAD>
+<BODY><H1>Telemetry bandwidth requirements - power</H1>
+<P>This table shows the estimated bandwidth requirements<BR>
+for the LSST Observatory Telemetry. This table details the<BR>
+estimates for the power Subsystem.<P>
+<P><TABLE BORDER=3 CELLPADDING=5 BGCOLOR=LightBlue  WIDTH=600>
+<TR BGCOLOR=Yellow><B><TD>Subsystem Id</TD><TD>Bytes/Sec</TD><TD>Mbps</TD><TD>MB per Day</TD></B></TR>
+<TR ><TD>power.Electrical</TD><TD>           256.0</TD><TD>          0.0020</TD><TD>            9.00</TD></TR>
+<TR ><TD>power.TC</TD><TD>           128.0</TD><TD>          0.0010</TD><TD>            4.50</TD></TR>
+<TR ><TD>power.UPSs</TD><TD>           256.0</TD><TD>          0.0020</TD><TD>            9.00</TD></TR>
+<TR BGCOLOR=Orange><TD>Total for Subsystem</TD><TD>           640.0</TD><TD>          0.0049</TD><TD>           22.05</TD></TR>
+</TABLE><P>
+<HTML><HEAD><TITLE>Telemetry bandwidth requirements - scheduler</TITLE></HEAD>
+<BODY><H1>Telemetry bandwidth requirements - scheduler</H1>
+<P>This table shows the estimated bandwidth requirements<BR>
+for the LSST Observatory Telemetry. This table details the<BR>
+estimates for the scheduler Subsystem.<P>
+<P><TABLE BORDER=3 CELLPADDING=5 BGCOLOR=LightBlue  WIDTH=600>
+<TR BGCOLOR=Yellow><B><TD>Subsystem Id</TD><TD>Bytes/Sec</TD><TD>Mbps</TD><TD>MB per Day</TD></B></TR>
+<TR ><TD>scheduler.Application</TD><TD>           640.0</TD><TD>          0.0049</TD><TD>           22.05</TD></TR>
+<TR BGCOLOR=Orange><TD>Total for Subsystem</TD><TD>           640.0</TD><TD>          0.0049</TD><TD>           22.05</TD></TR>
+</TABLE><P>
+<HTML><HEAD><TITLE>Telemetry bandwidth requirements - seeing</TITLE></HEAD>
+<BODY><H1>Telemetry bandwidth requirements - seeing</H1>
+<P>This table shows the estimated bandwidth requirements<BR>
+for the LSST Observatory Telemetry. This table details the<BR>
+estimates for the seeing Subsystem.<P>
+<P><TABLE BORDER=3 CELLPADDING=5 BGCOLOR=LightBlue  WIDTH=600>
+<TR BGCOLOR=Yellow><B><TD>Subsystem Id</TD><TD>Bytes/Sec</TD><TD>Mbps</TD><TD>MB per Day</TD></B></TR>
+<TR ><TD>seeing.dimm.Application</TD><TD>        123600.0</TD><TD>          0.9430</TD><TD>         4243.50</TD></TR>
+<TR ><TD>seeing.dimm.Electrical</TD><TD>           256.0</TD><TD>          0.0020</TD><TD>            9.00</TD></TR>
+<TR ><TD>seeing.dimm.Measurement</TD><TD>         10420.0</TD><TD>          0.0795</TD><TD>          357.75</TD></TR>
+<TR ><TD>seeing.dimm.Metrology</TD><TD>           128.0</TD><TD>          0.0010</TD><TD>            4.50</TD></TR>
+<TR ><TD>seeing.dimm.TC</TD><TD>          3840.0</TD><TD>          0.0293</TD><TD>          131.85</TD></TR>
+<TR ><TD>seeing.mass.Application</TD><TD>            64.0</TD><TD>          0.0005</TD><TD>            2.25</TD></TR>
+<TR ><TD>seeing.mass.Electrical</TD><TD>           256.0</TD><TD>          0.0020</TD><TD>            9.00</TD></TR>
+<TR ><TD>seeing.mass.Metrology</TD><TD>           128.0</TD><TD>          0.0010</TD><TD>            4.50</TD></TR>
+<TR ><TD>seeing.mass.TC</TD><TD>           128.0</TD><TD>          0.0010</TD><TD>            4.50</TD></TR>
+<TR BGCOLOR=Orange><TD>Total for Subsystem</TD><TD>        138820.0</TD><TD>          1.0591</TD><TD>         4765.95</TD></TR>
+</TABLE><P>
+<HTML><HEAD><TITLE>Telemetry bandwidth requirements - seeing_dimm</TITLE></HEAD>
+<BODY><H1>Telemetry bandwidth requirements - seeing_dimm</H1>
+<P>This table shows the estimated bandwidth requirements<BR>
+for the LSST Observatory Telemetry. This table details the<BR>
+estimates for the seeing_dimm Subsystem.<P>
+<P><TABLE BORDER=3 CELLPADDING=5 BGCOLOR=LightBlue  WIDTH=600>
+<TR BGCOLOR=Yellow><B><TD>Subsystem Id</TD><TD>Bytes/Sec</TD><TD>Mbps</TD><TD>MB per Day</TD></B></TR>
+<TR ><TD>seeing_dimm.Application</TD><TD>          9600.0</TD><TD>          0.0732</TD><TD>          329.40</TD></TR>
+<TR ><TD>seeing_dimm.Electrical</TD><TD>           272.0</TD><TD>          0.0021</TD><TD>            9.45</TD></TR>
+<TR ><TD>seeing_dimm.Metrology</TD><TD>           192.0</TD><TD>          0.0015</TD><TD>            6.75</TD></TR>
+<TR ><TD>seeing_dimm.TC</TD><TD>          5760.0</TD><TD>          0.0439</TD><TD>          197.55</TD></TR>
+<TR BGCOLOR=Orange><TD>Total for Subsystem</TD><TD>         15824.0</TD><TD>          0.1207</TD><TD>          543.15</TD></TR>
+</TABLE><P>
+<HTML><HEAD><TITLE>Telemetry bandwidth requirements - seeing_mass</TITLE></HEAD>
+<BODY><H1>Telemetry bandwidth requirements - seeing_mass</H1>
+<P>This table shows the estimated bandwidth requirements<BR>
+for the LSST Observatory Telemetry. This table details the<BR>
+estimates for the seeing_mass Subsystem.<P>
+<P><TABLE BORDER=3 CELLPADDING=5 BGCOLOR=LightBlue  WIDTH=600>
+<TR BGCOLOR=Yellow><B><TD>Subsystem Id</TD><TD>Bytes/Sec</TD><TD>Mbps</TD><TD>MB per Day</TD></B></TR>
+<TR ><TD>seeing_mass.Application</TD><TD>            64.0</TD><TD>          0.0005</TD><TD>            2.25</TD></TR>
+<TR ><TD>seeing_mass.Electrical</TD><TD>           272.0</TD><TD>          0.0021</TD><TD>            9.45</TD></TR>
+<TR ><TD>seeing_mass.Metrology</TD><TD>           192.0</TD><TD>          0.0015</TD><TD>            6.75</TD></TR>
+<TR ><TD>seeing_mass.TC</TD><TD>           192.0</TD><TD>          0.0015</TD><TD>            6.75</TD></TR>
+<TR BGCOLOR=Orange><TD>Total for Subsystem</TD><TD>           720.0</TD><TD>          0.0055</TD><TD>           24.75</TD></TR>
+</TABLE><P>
+<HTML><HEAD><TITLE>Telemetry bandwidth requirements - skycam</TITLE></HEAD>
+<BODY><H1>Telemetry bandwidth requirements - skycam</H1>
+<P>This table shows the estimated bandwidth requirements<BR>
+for the LSST Observatory Telemetry. This table details the<BR>
+estimates for the skycam Subsystem.<P>
+<P><TABLE BORDER=3 CELLPADDING=5 BGCOLOR=LightBlue  WIDTH=600>
+<TR BGCOLOR=Yellow><B><TD>Subsystem Id</TD><TD>Bytes/Sec</TD><TD>Mbps</TD><TD>MB per Day</TD></B></TR>
+<TR ><TD>skycam.Application</TD><TD>         31582.1</TD><TD>          0.2410</TD><TD>         1084.50</TD></TR>
+<TR ><TD>skycam.Electrical</TD><TD>           512.0</TD><TD>          0.0039</TD><TD>           17.55</TD></TR>
+<TR ><TD>skycam.Metrology</TD><TD>           256.0</TD><TD>          0.0020</TD><TD>            9.00</TD></TR>
+<TR ><TD>skycam.TC</TD><TD>           256.0</TD><TD>          0.0020</TD><TD>            9.00</TD></TR>
+<TR BGCOLOR=Orange><TD>Total for Subsystem</TD><TD>         32606.1</TD><TD>          0.2488</TD><TD>         1119.60</TD></TR>
+</TABLE><P>
+<HTML><HEAD><TITLE>Telemetry bandwidth requirements - tcs</TITLE></HEAD>
+<BODY><H1>Telemetry bandwidth requirements - tcs</H1>
+<P>This table shows the estimated bandwidth requirements<BR>
+for the LSST Observatory Telemetry. This table details the<BR>
+estimates for the tcs Subsystem.<P>
+<P><TABLE BORDER=3 CELLPADDING=5 BGCOLOR=LightBlue  WIDTH=600>
+<TR BGCOLOR=Yellow><B><TD>Subsystem Id</TD><TD>Bytes/Sec</TD><TD>Mbps</TD><TD>MB per Day</TD></B></TR>
+<TR ><TD>tcs.kernel.DawdleFilter</TD><TD>            40.0</TD><TD>          0.0003</TD><TD>            1.35</TD></TR>
+<TR ><TD>tcs.kernel.FK5Target</TD><TD>           320.0</TD><TD>          0.0024</TD><TD>           10.80</TD></TR>
+<TR ><TD>tcs.kernel.OpticsVt</TD><TD>            80.0</TD><TD>          0.0006</TD><TD>            2.70</TD></TR>
+<TR ><TD>tcs.kernel.PointingControl</TD><TD>         41120.0</TD><TD>          0.3137</TD><TD>         1411.65</TD></TR>
+<TR ><TD>tcs.kernel.PointingLog</TD><TD>           800.0</TD><TD>          0.0061</TD><TD>           27.45</TD></TR>
+<TR ><TD>tcs.kernel.PointingModel</TD><TD>        409680.0</TD><TD>          3.1256</TD><TD>        14065.20</TD></TR>
+<TR ><TD>tcs.kernel.Site</TD><TD>          2720.0</TD><TD>          0.0208</TD><TD>           93.60</TD></TR>
+<TR ><TD>tcs.kernel.Target</TD><TD>           720.0</TD><TD>          0.0055</TD><TD>           24.75</TD></TR>
+<TR ><TD>tcs.kernel.TimeKeeper</TD><TD>           240.0</TD><TD>          0.0018</TD><TD>            8.10</TD></TR>
+<TR ><TD>tcs.kernel.TrackRefSys</TD><TD>          1280.0</TD><TD>          0.0098</TD><TD>           44.10</TD></TR>
+<TR ><TD>tcs.kernel.TrackingTarget</TD><TD>           240.0</TD><TD>          0.0018</TD><TD>            8.10</TD></TR>
+<TR BGCOLOR=Orange><TD>Total for Subsystem</TD><TD>        457240.0</TD><TD>          3.4885</TD><TD>        15698.25</TD></TR>
+</TABLE><P>
+<HTML><HEAD><TITLE>Telemetry bandwidth requirements</TITLE></HEAD>
+<BODY><H1>Telemetry bandwidth requirements</H1>
+<P>This table shows the estimated bandwidth requirements<BR>
+for the LSST Observatory Telemetry. Each major subsystem<BR>
+is show, and is linked to a more detailed table.<P>
+<P><TABLE BORDER=3 CELLPADDING=5 BGCOLOR=LightBlue WIDTH=600>
+<TR BGCOLOR=Yellow><B><TD>Subsystem Id</TD><TD>Bytes/Sec</TD><TD>Mbps</TD><TD>MB per Day</TD></B></TR>
+<TR ><TD>auxscope.Application</TD><TD>            64.0</TD><TD>          0.0005</TD><TD>            2.25</TD></TR>
+<TR ><TD>auxscope.Camera</TD><TD>            25.6</TD><TD>          0.0002</TD><TD>            0.90</TD></TR>
+<TR ><TD>auxscope.Electrical</TD><TD>           256.0</TD><TD>          0.0020</TD><TD>            9.00</TD></TR>
+<TR ><TD>auxscope.Metrology</TD><TD>           128.0</TD><TD>          0.0010</TD><TD>            4.50</TD></TR>
+<TR ><TD>auxscope.Spectrometer</TD><TD>            25.6</TD><TD>          0.0002</TD><TD>            0.90</TD></TR>
+<TR ><TD>auxscope.TC</TD><TD>           128.0</TD><TD>          0.0010</TD><TD>            4.50</TD></TR>
+<TR ><TD>auxscope.TCS</TD><TD>          1600.0</TD><TD>          0.0122</TD><TD>           54.90</TD></TR>
+<TR ><TD>calibration.Application</TD><TD>            64.0</TD><TD>          0.0005</TD><TD>            2.25</TD></TR>
+<TR ><TD>calibration.Electrical</TD><TD>           256.0</TD><TD>          0.0020</TD><TD>            9.00</TD></TR>
+<TR ><TD>calibration.Metrology</TD><TD>           128.0</TD><TD>          0.0010</TD><TD>            4.50</TD></TR>
+<TR ><TD>calibration.TC</TD><TD>           128.0</TD><TD>          0.0010</TD><TD>            4.50</TD></TR>
+<TR ><TD>camera.BEE.biases</TD><TD>             0.5</TD><TD>          0.0000</TD><TD>            0.00</TD></TR>
+<TR ><TD>camera.BEE.clocks</TD><TD>             2.1</TD><TD>          0.0000</TD><TD>            0.00</TD></TR>
+<TR ><TD>camera.BEE.thermal</TD><TD>           510.0</TD><TD>          0.0039</TD><TD>           17.55</TD></TR>
+<TR ><TD>camera.CALSYS</TD><TD>            16.4</TD><TD>          0.0001</TD><TD>            0.45</TD></TR>
+<TR ><TD>camera.CCS</TD><TD>            40.0</TD><TD>          0.0003</TD><TD>            1.35</TD></TR>
+<TR ><TD>camera.FCS</TD><TD>            41.8</TD><TD>          0.0003</TD><TD>            1.35</TD></TR>
+<TR ><TD>camera.GAS</TD><TD>         44960.0</TD><TD>          0.3430</TD><TD>         1543.50</TD></TR>
+<TR ><TD>camera.LASERCAL</TD><TD>             0.1</TD><TD>          0.0000</TD><TD>            0.00</TD></TR>
+<TR ><TD>camera.PWR</TD><TD>            20.0</TD><TD>          0.0002</TD><TD>            0.90</TD></TR>
+<TR ><TD>camera.QA.measured</TD><TD>             1.7</TD><TD>          0.0000</TD><TD>            0.00</TD></TR>
+<TR ><TD>camera.SCS</TD><TD>          4112.0</TD><TD>          0.0314</TD><TD>          141.30</TD></TR>
+<TR ><TD>camera.SDS</TD><TD>            64.0</TD><TD>          0.0005</TD><TD>            2.25</TD></TR>
+<TR ><TD>camera.SDS.amplifiers</TD><TD>            45.0</TD><TD>          0.0003</TD><TD>            1.35</TD></TR>
+<TR ><TD>camera.SDS.status</TD><TD>            64.0</TD><TD>          0.0005</TD><TD>            2.25</TD></TR>
+<TR ><TD>camera.TC.control</TD><TD>            16.0</TD><TD>          0.0001</TD><TD>            0.45</TD></TR>
+<TR ><TD>camera.TC.zone1</TD><TD>           408.0</TD><TD>          0.0031</TD><TD>           13.95</TD></TR>
+<TR ><TD>camera.TC.zone2</TD><TD>           300.0</TD><TD>          0.0023</TD><TD>           10.35</TD></TR>
+<TR ><TD>camera.TC.zone3</TD><TD>           400.0</TD><TD>          0.0031</TD><TD>           13.95</TD></TR>
+<TR ><TD>camera.TC.zone4</TD><TD>             1.2</TD><TD>          0.0000</TD><TD>            0.00</TD></TR>
+<TR ><TD>camera.TC.zone5</TD><TD>           120.0</TD><TD>          0.0009</TD><TD>            4.05</TD></TR>
+<TR ><TD>camera.TC.zone6</TD><TD>             1.2</TD><TD>          0.0000</TD><TD>            0.00</TD></TR>
+<TR ><TD>camera.TCM</TD><TD>           200.0</TD><TD>          0.0015</TD><TD>            6.75</TD></TR>
+<TR ><TD>camera.UTIL</TD><TD>            12.0</TD><TD>          0.0001</TD><TD>            0.45</TD></TR>
+<TR ><TD>camera.VCS</TD><TD>             8.0</TD><TD>          0.0001</TD><TD>            0.45</TD></TR>
+<TR ><TD>camera.WDS.wfsRaft</TD><TD>         13211.2</TD><TD>          0.1008</TD><TD>          453.60</TD></TR>
+<TR ><TD>camera.WTCM</TD><TD>            32.0</TD><TD>          0.0002</TD><TD>            0.90</TD></TR>
+<TR ><TD>enclosure.Application</TD><TD>            64.0</TD><TD>          0.0005</TD><TD>            2.25</TD></TR>
+<TR ><TD>enclosure.Azimuth</TD><TD>           256.0</TD><TD>          0.0020</TD><TD>            9.00</TD></TR>
+<TR ><TD>enclosure.Electrical</TD><TD>           256.0</TD><TD>          0.0020</TD><TD>            9.00</TD></TR>
+<TR ><TD>enclosure.Metrology</TD><TD>           128.0</TD><TD>          0.0010</TD><TD>            4.50</TD></TR>
+<TR ><TD>enclosure.Shutter</TD><TD>           256.0</TD><TD>          0.0020</TD><TD>            9.00</TD></TR>
+<TR ><TD>enclosure.TC</TD><TD>           128.0</TD><TD>          0.0010</TD><TD>            4.50</TD></TR>
+<TR ><TD>enclosure.Vents</TD><TD>           256.0</TD><TD>          0.0020</TD><TD>            9.00</TD></TR>
+<TR ><TD>environment.Dust.monitor</TD><TD>           256.0</TD><TD>          0.0020</TD><TD>            9.00</TD></TR>
+<TR ><TD>environment.Electrical</TD><TD>           256.0</TD><TD>          0.0020</TD><TD>            9.00</TD></TR>
+<TR ><TD>environment.Lightning.detector</TD><TD>             2.6</TD><TD>          0.0000</TD><TD>            0.00</TD></TR>
+<TR ><TD>environment.Seismometer</TD><TD>           256.0</TD><TD>          0.0020</TD><TD>            9.00</TD></TR>
+<TR ><TD>environment.TC</TD><TD>           512.0</TD><TD>          0.0039</TD><TD>           17.55</TD></TR>
+<TR ><TD>environment.Video.cameras</TD><TD>             2.6</TD><TD>          0.0000</TD><TD>            0.00</TD></TR>
+<TR ><TD>environment.Weather</TD><TD>          2048.0</TD><TD>          0.0156</TD><TD>           70.20</TD></TR>
+<TR ><TD>lasercal.Application</TD><TD>            64.0</TD><TD>          0.0005</TD><TD>            2.25</TD></TR>
+<TR ><TD>lasercal.Electrical</TD><TD>           256.0</TD><TD>          0.0020</TD><TD>            9.00</TD></TR>
+<TR ><TD>lasercal.TC</TD><TD>           128.0</TD><TD>          0.0010</TD><TD>            4.50</TD></TR>
+<TR ><TD>m1m3.ActuatorSample</TD><TD>           801.0</TD><TD>          0.0061</TD><TD>           27.45</TD></TR>
+<TR ><TD>m1m3.Actuators</TD><TD>          2400.0</TD><TD>          0.0183</TD><TD>           82.35</TD></TR>
+<TR ><TD>m1m3.Application</TD><TD>            96.0</TD><TD>          0.0007</TD><TD>            3.15</TD></TR>
+<TR ><TD>m1m3.Electrical</TD><TD>           128.0</TD><TD>          0.0010</TD><TD>            4.50</TD></TR>
+<TR ><TD>m1m3.LUT</TD><TD>          4096.0</TD><TD>          0.0312</TD><TD>          140.40</TD></TR>
+<TR ><TD>m1m3.LimitSensors</TD><TD>            64.0</TD><TD>          0.0005</TD><TD>            2.25</TD></TR>
+<TR ><TD>m1m3.Metrology</TD><TD>            80.0</TD><TD>          0.0006</TD><TD>            2.70</TD></TR>
+<TR ><TD>m1m3.Supports</TD><TD>            72.0</TD><TD>          0.0005</TD><TD>            2.25</TD></TR>
+<TR ><TD>m1m3.Surface</TD><TD>          8192.0</TD><TD>          0.0625</TD><TD>          281.25</TD></TR>
+<TR ><TD>m1m3.TC</TD><TD>           144.0</TD><TD>          0.0011</TD><TD>            4.95</TD></TR>
+<TR ><TD>m2.Actuators</TD><TD>           864.0</TD><TD>          0.0066</TD><TD>           29.70</TD></TR>
+<TR ><TD>m2.Application</TD><TD>            96.0</TD><TD>          0.0007</TD><TD>            3.15</TD></TR>
+<TR ><TD>m2.Electrical</TD><TD>           128.0</TD><TD>          0.0010</TD><TD>            4.50</TD></TR>
+<TR ><TD>m2.Hexapod</TD><TD>           128.0</TD><TD>          0.0010</TD><TD>            4.50</TD></TR>
+<TR ><TD>m2.LimitSensors</TD><TD>            64.0</TD><TD>          0.0005</TD><TD>            2.25</TD></TR>
+<TR ><TD>m2.Metrology</TD><TD>            80.0</TD><TD>          0.0006</TD><TD>            2.70</TD></TR>
+<TR ><TD>m2.Surface</TD><TD>          1600.0</TD><TD>          0.0122</TD><TD>           54.90</TD></TR>
+<TR ><TD>m2.TC</TD><TD>           144.0</TD><TD>          0.0011</TD><TD>            4.95</TD></TR>
+<TR ><TD>mount.Alt</TD><TD>          2560.0</TD><TD>          0.0195</TD><TD>           87.75</TD></TR>
+<TR ><TD>mount.Application</TD><TD>            64.0</TD><TD>          0.0005</TD><TD>            2.25</TD></TR>
+<TR ><TD>mount.Az</TD><TD>          2560.0</TD><TD>          0.0195</TD><TD>           87.75</TD></TR>
+<TR ><TD>mount.Electrical</TD><TD>           256.0</TD><TD>          0.0020</TD><TD>            9.00</TD></TR>
+<TR ><TD>mount.Metrology</TD><TD>           128.0</TD><TD>          0.0010</TD><TD>            4.50</TD></TR>
+<TR ><TD>mount.Rotator</TD><TD>          2560.0</TD><TD>          0.0195</TD><TD>           87.75</TD></TR>
+<TR ><TD>mount.TC</TD><TD>           128.0</TD><TD>          0.0010</TD><TD>            4.50</TD></TR>
+<TR ><TD>network.Application</TD><TD>           256.0</TD><TD>          0.0020</TD><TD>            9.00</TD></TR>
+<TR ><TD>operations.Application</TD><TD>          6400.0</TD><TD>          0.0488</TD><TD>          219.60</TD></TR>
+<TR ><TD>power.Electrical</TD><TD>           256.0</TD><TD>          0.0020</TD><TD>            9.00</TD></TR>
+<TR ><TD>power.TC</TD><TD>           128.0</TD><TD>          0.0010</TD><TD>            4.50</TD></TR>
+<TR ><TD>power.UPSs</TD><TD>           256.0</TD><TD>          0.0020</TD><TD>            9.00</TD></TR>
+<TR ><TD>scheduler.Application</TD><TD>           640.0</TD><TD>          0.0049</TD><TD>           22.05</TD></TR>
+<TR ><TD>seeing.dimm.Application</TD><TD>        123600.0</TD><TD>          0.9430</TD><TD>         4243.50</TD></TR>
+<TR ><TD>seeing.dimm.Electrical</TD><TD>           256.0</TD><TD>          0.0020</TD><TD>            9.00</TD></TR>
+<TR ><TD>seeing.dimm.Measurement</TD><TD>         10420.0</TD><TD>          0.0795</TD><TD>          357.75</TD></TR>
+<TR ><TD>seeing.dimm.Metrology</TD><TD>           128.0</TD><TD>          0.0010</TD><TD>            4.50</TD></TR>
+<TR ><TD>seeing.dimm.TC</TD><TD>          3840.0</TD><TD>          0.0293</TD><TD>          131.85</TD></TR>
+<TR ><TD>seeing.mass.Application</TD><TD>            64.0</TD><TD>          0.0005</TD><TD>            2.25</TD></TR>
+<TR ><TD>seeing.mass.Electrical</TD><TD>           256.0</TD><TD>          0.0020</TD><TD>            9.00</TD></TR>
+<TR ><TD>seeing.mass.Metrology</TD><TD>           128.0</TD><TD>          0.0010</TD><TD>            4.50</TD></TR>
+<TR ><TD>seeing.mass.TC</TD><TD>           128.0</TD><TD>          0.0010</TD><TD>            4.50</TD></TR>
+<TR ><TD>skycam.Application</TD><TD>         31582.1</TD><TD>          0.2410</TD><TD>         1084.50</TD></TR>
+<TR ><TD>skycam.Electrical</TD><TD>           512.0</TD><TD>          0.0039</TD><TD>           17.55</TD></TR>
+<TR ><TD>skycam.Metrology</TD><TD>           256.0</TD><TD>          0.0020</TD><TD>            9.00</TD></TR>
+<TR ><TD>skycam.TC</TD><TD>           256.0</TD><TD>          0.0020</TD><TD>            9.00</TD></TR>
+<TR ><TD>system.Command.history</TD><TD>         71720.0</TD><TD>          0.5472</TD><TD>         2462.40</TD></TR>
+<TR ><TD>system.Computer.status</TD><TD>          2560.0</TD><TD>          0.0195</TD><TD>           87.75</TD></TR>
+<TR ><TD>system.Hardware.revision.history</TD><TD>           410.8</TD><TD>          0.0031</TD><TD>           13.95</TD></TR>
+<TR ><TD>system.Software.revision.history</TD><TD>           410.8</TD><TD>          0.0031</TD><TD>           13.95</TD></TR>
+<TR ><TD>tcs.kernel.DawdleFilter</TD><TD>            40.0</TD><TD>          0.0003</TD><TD>            1.35</TD></TR>
+<TR ><TD>tcs.kernel.FK5Target</TD><TD>           320.0</TD><TD>          0.0024</TD><TD>           10.80</TD></TR>
+<TR ><TD>tcs.kernel.OpticsVt</TD><TD>            80.0</TD><TD>          0.0006</TD><TD>            2.70</TD></TR>
+<TR ><TD>tcs.kernel.PointingControl</TD><TD>         41120.0</TD><TD>          0.3137</TD><TD>         1411.65</TD></TR>
+<TR ><TD>tcs.kernel.PointingLog</TD><TD>           800.0</TD><TD>          0.0061</TD><TD>           27.45</TD></TR>
+<TR ><TD>tcs.kernel.PointingModel</TD><TD>        409680.0</TD><TD>          3.1256</TD><TD>        14065.20</TD></TR>
+<TR ><TD>tcs.kernel.Site</TD><TD>          2720.0</TD><TD>          0.0208</TD><TD>           93.60</TD></TR>
+<TR ><TD>tcs.kernel.Target</TD><TD>           720.0</TD><TD>          0.0055</TD><TD>           24.75</TD></TR>
+<TR ><TD>tcs.kernel.TimeKeeper</TD><TD>           240.0</TD><TD>          0.0018</TD><TD>            8.10</TD></TR>
+<TR ><TD>tcs.kernel.TrackRefSys</TD><TD>          1280.0</TD><TD>          0.0098</TD><TD>           44.10</TD></TR>
+</TABLE><P>

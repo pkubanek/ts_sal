@@ -1,0 +1,232 @@
+
+	svcRTN saltcs_kernel_PointingControl::getItem ( svcIID itemId , svcFLT &value )
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    switch (itemId) {
+
+                 case SAL_IID_tcs_kernel_PointingControl_AGuide :
+                      value = data.AGuide;
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_PointingControl_ALocal :
+                      value = data.ALocal;
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_PointingControl_BGuide :
+                      value = data.BGuide;
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_PointingControl_BLocal :
+                      value = data.BLocal;
+                      result = SAL__OK;
+                      break;
+
+	    }
+	    return result;
+	}
+	
+
+
+	svcRTN saltcs_kernel_PointingControl::setItem ( svcIID itemId , svcFLT &value )
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    switch (itemId) {
+
+                 case SAL_IID_tcs_kernel_PointingControl_AGuide :
+                      data.AGuide = value;
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_PointingControl_ALocal :
+                      data.ALocal = value;
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_PointingControl_BGuide :
+                      data.BGuide = value;
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_PointingControl_BLocal :
+                      data.BLocal = value;
+                      result = SAL__OK;
+                      break;
+
+	    }
+	    return result;
+	}
+	
+
+
+       svcRTN saltcs_kernel_PointingControl::setItemStr ( svcIID itemId , svcCHAR *textValue)
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    
+	    switch (itemid) {
+
+                 case SAL_IID_tcs_kernel_PointingControl_AGuide :
+                      sscanf(textValue,"%lf",&data.AGuide);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_PointingControl_ALocal :
+                      sscanf(textValue,"%lf",&data.ALocal);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_PointingControl_BGuide :
+                      sscanf(textValue,"%lf",&data.BGuide);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_PointingControl_BLocal :
+                      sscanf(textValue,"%lf",&data.BLocal);
+                      result = SAL__OK;
+                      break;
+
+	    }
+	    return result;
+	}
+
+       svcRTN saltcs_kernel_PointingControl::getItemStr ( svcIID itemId , svcCHAR *textValue)
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    
+	    switch (itemid) {
+
+                 case SAL_IID_tcs_kernel_PointingControl_AGuide :
+                      sprintf(textValue,"%lf",data.AGuide);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_PointingControl_ALocal :
+                      sprintf(textValue,"%lf",data.ALocal);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_PointingControl_BGuide :
+                      sprintf(textValue,"%lf",data.BGuide);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_PointingControl_BLocal :
+                      sprintf(textValue,"%lf",data.BLocal);
+                      result = SAL__OK;
+                      break;
+
+	    }
+	    return result;
+	}
+
+	svcRTN saltcs_kernel_PointingControl::getItem ( svcIID itemId , (svcCHAR *)value )
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    switch (itemId) {
+	    
+
+
+                 case SAL_IID_tcs_kernel_PointingControl_PitchFilter :
+                      strncpy(value, data.PitchFilter, 32);
+                      result = SAL__OK;
+                      break;
+
+
+                 case SAL_IID_tcs_kernel_PointingControl_RollFilter :
+                      strncpy(value, data.RollFilter, 32);
+                      result = SAL__OK;
+                      break;
+
+
+	    }
+	    return result;
+	}
+	
+
+
+	svcRTN saltcs_kernel_PointingControl::setItem ( svcIID itemId , (svcCHAR *)value )
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    switch (itemId) {
+	    
+
+
+                 case SAL_IID_tcs_kernel_PointingControl_PitchFilter :
+                      strncpy(data.PitchFilter, value, 32);
+                      result = SAL__OK;
+                      break;
+
+
+                 case SAL_IID_tcs_kernel_PointingControl_RollFilter :
+                      strncpy(data.RollFilter, value, 32);
+                      result = SAL__OK;
+                      break;
+
+
+	    }
+	    return result;
+	}
+	
+
+
+       svcRTN saltcs_kernel_PointingControl::setItemStr ( svcIID itemId , svcCHAR *textValue)
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    
+	    switch (itemid) {
+
+                 case SAL_IID_tcs_kernel_PointingControl_AGuide :
+                      sscanf(textValue,"%lf",&data.AGuide);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_PointingControl_ALocal :
+                      sscanf(textValue,"%lf",&data.ALocal);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_PointingControl_BGuide :
+                      sscanf(textValue,"%lf",&data.BGuide);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_PointingControl_BLocal :
+                      sscanf(textValue,"%lf",&data.BLocal);
+                      result = SAL__OK;
+                      break;
+
+	    }
+	    return result;
+	}
+
+       svcRTN saltcs_kernel_PointingControl::getItemStr ( svcIID itemId , svcCHAR *textValue)
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    
+	    switch (itemid) {
+
+                 case SAL_IID_tcs_kernel_PointingControl_AGuide :
+                      sprintf(textValue,"%lf",data.AGuide);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_PointingControl_ALocal :
+                      sprintf(textValue,"%lf",data.ALocal);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_PointingControl_BGuide :
+                      sprintf(textValue,"%lf",data.BGuide);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_PointingControl_BLocal :
+                      sprintf(textValue,"%lf",data.BLocal);
+                      result = SAL__OK;
+                      break;
+
+	    }
+	    return result;
+	}

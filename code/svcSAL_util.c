@@ -1,4 +1,6 @@
 #include <time.h>
+#include "string.h"
+#include "stdio.h"
 #include <sys/time.h>
 #include "svcSAL.h"
 
@@ -60,6 +62,23 @@ char *svcSAL_infotext(int infocode)
          case SAL__OK               : return "OK";
      }
      return "Illegal info code - unknown in svcSAL_infotext";
+}
+
+int svcSAL_printarrayi(int isize,int *array,char *tostring) {
+    char buf[32760];
+    char num[16];
+
+    buf[0]=NULL;
+    if (size > 2000) return SAL__ERR;
+
+    for (j=1;j<isize;j++) {
+      i[j]=j;
+      sprintf(num,"%16ld",i[j]);
+      strcat(buf,num);
+      if (strlen(buf) > 32744) return SAL_ERR;
+    }
+    return SAL__OK;
+
 }
 
 

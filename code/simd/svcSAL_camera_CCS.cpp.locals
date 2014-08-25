@@ -1,0 +1,2 @@
+	svcULONG	expHist[1025];
+	svcULONG	flags[11];

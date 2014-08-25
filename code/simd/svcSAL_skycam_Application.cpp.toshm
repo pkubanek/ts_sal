@@ -1,0 +1,12 @@
+		strncpy(skycam_Application_ref->Catalog,samples[i].Catalog,4096);
+		strncpy(skycam_Application_ref->Status,samples[i].Status,16);
+		for (unsigned int count=0; count<65; count++) {
+			skycam_Application_ref->Data[count] = samples[i].Data[count];
+		}
+		for (unsigned int count=0; count<5; count++) {
+			skycam_Application_ref->Error[count] = samples[i].Error[count];
+		}
+		for (unsigned int count=0; count<33; count++) {
+			skycam_Application_ref->Sky_parms[count] = samples[i].Sky_parms[count];
+		}
+		skycam_Application_ref->syncI++;

@@ -1,0 +1,4 @@
+		result = salHandle->getSample(SAL__SLOWPOLL);
+		result = salHandle->getitem(SAL_IID_ocs_system_configuration_stationid, stationid);
+		result = salHandle->getitem(SAL_IID_ocs_system_configuration_device, device);
+		result = salHandle->getitem(SAL_IID_ocs_system_configuration_subssystem, subssystem);

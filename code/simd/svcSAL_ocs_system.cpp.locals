@@ -1,0 +1,3 @@
+	svcLONG	health[501];
+	svcLONG	power[501];
+	svcLONG	thermal[501];

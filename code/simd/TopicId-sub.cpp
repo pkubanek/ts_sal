@@ -82,8 +82,7 @@ public:
     reader.read(data);
     std::vector<TopicId>::iterator end = data.end();
     for (std::vector<TopicId>::iterator index = data.begin(); index < end; ++index) {
-      std::cout << index->vendor << " . " << index->counter
-		<< std::endl;
+      std::cout << "Sample of TopicId received\n" << std::endl;
     }
     /*
     TopicIdSeq samples;
@@ -104,7 +103,7 @@ int main(int argc, char* argv[]) {
     return 1;
 
   // -- start the dds runtime
-  dds::Runtime runtime("");
+  dds::Runtime runtime("LSST");
 
   dds::Topic<TopicId> TopicIdTopic(topic);
   dds::DataReader<TopicId> reader(TopicIdTopic);

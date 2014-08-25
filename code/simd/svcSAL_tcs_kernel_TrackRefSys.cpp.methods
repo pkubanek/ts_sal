@@ -1,0 +1,502 @@
+
+	svcRTN saltcs_kernel_TrackRefSys::getItem ( svcIID itemId , svcFLT &value )
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    switch (itemId) {
+
+                 case SAL_IID_tcs_kernel_TrackRefSys_cst :
+                      value = data.cst;
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_TrackRefSys_diurab :
+                      value = data.diurab;
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_TrackRefSys_hm :
+                      value = data.hm;
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_TrackRefSys_humid :
+                      value = data.humid;
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_TrackRefSys_press :
+                      value = data.press;
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_TrackRefSys_refa :
+                      value = data.refa;
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_TrackRefSys_refb :
+                      value = data.refb;
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_TrackRefSys_sst :
+                      value = data.sst;
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_TrackRefSys_tdbj :
+                      value = data.tdbj;
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_TrackRefSys_temp :
+                      value = data.temp;
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_TrackRefSys_tlat :
+                      value = data.tlat;
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_TrackRefSys_tlr :
+                      value = data.tlr;
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_TrackRefSys_wavel :
+                      value = data.wavel;
+                      result = SAL__OK;
+                      break;
+
+	    }
+	    return result;
+	}
+	
+
+
+	svcRTN saltcs_kernel_TrackRefSys::setItem ( svcIID itemId , svcFLT &value )
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    switch (itemId) {
+
+                 case SAL_IID_tcs_kernel_TrackRefSys_cst :
+                      data.cst = value;
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_TrackRefSys_diurab :
+                      data.diurab = value;
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_TrackRefSys_hm :
+                      data.hm = value;
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_TrackRefSys_humid :
+                      data.humid = value;
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_TrackRefSys_press :
+                      data.press = value;
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_TrackRefSys_refa :
+                      data.refa = value;
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_TrackRefSys_refb :
+                      data.refb = value;
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_TrackRefSys_sst :
+                      data.sst = value;
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_TrackRefSys_tdbj :
+                      data.tdbj = value;
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_TrackRefSys_temp :
+                      data.temp = value;
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_TrackRefSys_tlat :
+                      data.tlat = value;
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_TrackRefSys_tlr :
+                      data.tlr = value;
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_TrackRefSys_wavel :
+                      data.wavel = value;
+                      result = SAL__OK;
+                      break;
+
+	    }
+	    return result;
+	}
+	
+
+
+       svcRTN saltcs_kernel_TrackRefSys::setItemStr ( svcIID itemId , svcCHAR *textValue)
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    
+	    switch (itemid) {
+
+                 case SAL_IID_tcs_kernel_TrackRefSys_cst :
+                      sscanf(textValue,"%lf",&data.cst);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_TrackRefSys_diurab :
+                      sscanf(textValue,"%lf",&data.diurab);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_TrackRefSys_hm :
+                      sscanf(textValue,"%lf",&data.hm);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_TrackRefSys_humid :
+                      sscanf(textValue,"%lf",&data.humid);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_TrackRefSys_press :
+                      sscanf(textValue,"%lf",&data.press);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_TrackRefSys_refa :
+                      sscanf(textValue,"%lf",&data.refa);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_TrackRefSys_refb :
+                      sscanf(textValue,"%lf",&data.refb);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_TrackRefSys_sst :
+                      sscanf(textValue,"%lf",&data.sst);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_TrackRefSys_tdbj :
+                      sscanf(textValue,"%lf",&data.tdbj);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_TrackRefSys_temp :
+                      sscanf(textValue,"%lf",&data.temp);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_TrackRefSys_tlat :
+                      sscanf(textValue,"%lf",&data.tlat);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_TrackRefSys_tlr :
+                      sscanf(textValue,"%lf",&data.tlr);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_TrackRefSys_wavel :
+                      sscanf(textValue,"%lf",&data.wavel);
+                      result = SAL__OK;
+                      break;
+
+	    }
+	    return result;
+	}
+
+       svcRTN saltcs_kernel_TrackRefSys::getItemStr ( svcIID itemId , svcCHAR *textValue)
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    
+	    switch (itemid) {
+
+                 case SAL_IID_tcs_kernel_TrackRefSys_cst :
+                      sprintf(textValue,"%lf",data.cst);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_TrackRefSys_diurab :
+                      sprintf(textValue,"%lf",data.diurab);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_TrackRefSys_hm :
+                      sprintf(textValue,"%lf",data.hm);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_TrackRefSys_humid :
+                      sprintf(textValue,"%lf",data.humid);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_TrackRefSys_press :
+                      sprintf(textValue,"%lf",data.press);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_TrackRefSys_refa :
+                      sprintf(textValue,"%lf",data.refa);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_TrackRefSys_refb :
+                      sprintf(textValue,"%lf",data.refb);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_TrackRefSys_sst :
+                      sprintf(textValue,"%lf",data.sst);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_TrackRefSys_tdbj :
+                      sprintf(textValue,"%lf",data.tdbj);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_TrackRefSys_temp :
+                      sprintf(textValue,"%lf",data.temp);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_TrackRefSys_tlat :
+                      sprintf(textValue,"%lf",data.tlat);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_TrackRefSys_tlr :
+                      sprintf(textValue,"%lf",data.tlr);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_TrackRefSys_wavel :
+                      sprintf(textValue,"%lf",data.wavel);
+                      result = SAL__OK;
+                      break;
+
+	    }
+	    return result;
+	}
+
+	svcRTN saltcs_kernel_TrackRefSys::getItem ( svcIID itemId , svcFLT &value, svcUINT size)
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    switch (itemId) {
+
+                 case SAL_IID_tcs_kernel_TrackRefSys_ae2mt :
+                      if { size > 10 } {return SAL__INDEX_OUT_OF_RANGE;}
+                      for (unsigned int count=0; count<size; count++) {
+                        value[count] = data.ae2mt[count];
+                      }
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_TrackRefSys_amprms :
+                      if { size > 22 } {return SAL__INDEX_OUT_OF_RANGE;}
+                      for (unsigned int count=0; count<size; count++) {
+                        value[count] = data.amprms[count];
+                      }
+                      result = SAL__OK;
+                      break;
+
+	    }
+	    return result;
+	}
+
+ 	svcRTN saltcs_kernel_TrackRefSys::setItem ( svcIID itemId , svcFLT &value , svcUINT size)
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    switch (itemId) {
+
+                 case SAL_IID_tcs_kernel_TrackRefSys_ae2mt :
+                      if { size > 10 } {return SAL__INDEX_OUT_OF_RANGE;}
+                      for (unsigned int count=0; count<size; count++) {
+                        data.ae2mt[count] = value[count];
+                      }
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_TrackRefSys_amprms :
+                      if { size > 22 } {return SAL__INDEX_OUT_OF_RANGE;}
+                      for (unsigned int count=0; count<size; count++) {
+                        data.amprms[count] = value[count];
+                      }
+                      result = SAL__OK;
+                      break;
+
+	    }
+	    return result;
+	}
+
+       svcRTN saltcs_kernel_TrackRefSys::setItemStr ( svcIID itemId , svcCHAR *textValue)
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    
+	    switch (itemid) {
+
+                 case SAL_IID_tcs_kernel_TrackRefSys_cst :
+                      sscanf(textValue,"%lf",&data.cst);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_TrackRefSys_diurab :
+                      sscanf(textValue,"%lf",&data.diurab);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_TrackRefSys_hm :
+                      sscanf(textValue,"%lf",&data.hm);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_TrackRefSys_humid :
+                      sscanf(textValue,"%lf",&data.humid);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_TrackRefSys_press :
+                      sscanf(textValue,"%lf",&data.press);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_TrackRefSys_refa :
+                      sscanf(textValue,"%lf",&data.refa);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_TrackRefSys_refb :
+                      sscanf(textValue,"%lf",&data.refb);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_TrackRefSys_sst :
+                      sscanf(textValue,"%lf",&data.sst);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_TrackRefSys_tdbj :
+                      sscanf(textValue,"%lf",&data.tdbj);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_TrackRefSys_temp :
+                      sscanf(textValue,"%lf",&data.temp);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_TrackRefSys_tlat :
+                      sscanf(textValue,"%lf",&data.tlat);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_TrackRefSys_tlr :
+                      sscanf(textValue,"%lf",&data.tlr);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_TrackRefSys_wavel :
+                      sscanf(textValue,"%lf",&data.wavel);
+                      result = SAL__OK;
+                      break;
+
+	    }
+	    return result;
+	}
+
+       svcRTN saltcs_kernel_TrackRefSys::getItemStr ( svcIID itemId , svcCHAR *textValue)
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    
+	    switch (itemid) {
+
+                 case SAL_IID_tcs_kernel_TrackRefSys_cst :
+                      sprintf(textValue,"%lf",data.cst);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_TrackRefSys_diurab :
+                      sprintf(textValue,"%lf",data.diurab);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_TrackRefSys_hm :
+                      sprintf(textValue,"%lf",data.hm);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_TrackRefSys_humid :
+                      sprintf(textValue,"%lf",data.humid);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_TrackRefSys_press :
+                      sprintf(textValue,"%lf",data.press);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_TrackRefSys_refa :
+                      sprintf(textValue,"%lf",data.refa);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_TrackRefSys_refb :
+                      sprintf(textValue,"%lf",data.refb);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_TrackRefSys_sst :
+                      sprintf(textValue,"%lf",data.sst);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_TrackRefSys_tdbj :
+                      sprintf(textValue,"%lf",data.tdbj);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_TrackRefSys_temp :
+                      sprintf(textValue,"%lf",data.temp);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_TrackRefSys_tlat :
+                      sprintf(textValue,"%lf",data.tlat);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_TrackRefSys_tlr :
+                      sprintf(textValue,"%lf",data.tlr);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_TrackRefSys_wavel :
+                      sprintf(textValue,"%lf",data.wavel);
+                      result = SAL__OK;
+                      break;
+
+	    }
+	    return result;
+	}

@@ -1,0 +1,19 @@
+		for (unsigned int count=0; count<201; count++) {
+			d.metric1[count] = dm_derived_psf_ref->metric1[count];
+		}
+		for (unsigned int count=0; count<201; count++) {
+			d.metric2[count] = dm_derived_psf_ref->metric2[count];
+		}
+		for (unsigned int count=0; count<201; count++) {
+			d.metric3[count] = dm_derived_psf_ref->metric3[count];
+		}
+		for (unsigned int count=0; count<201; count++) {
+			d.metric4[count] = dm_derived_psf_ref->metric4[count];
+		}
+		for (unsigned int count=0; count<201; count++) {
+			d.metric5[count] = dm_derived_psf_ref->metric5[count];
+		}
+		for (unsigned int count=0; count<201; count++) {
+			d.metric6[count] = dm_derived_psf_ref->metric6[count];
+		}
+		dm_derived_psf_ref->syncO = 1;

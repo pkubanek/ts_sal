@@ -6,6 +6,8 @@
 #include <iostream>
 #include <sstream>
 #include <iterator>
+#include <string>
+using namespace std;
 
 #include <sys/types.h>
 #include <unistd.h>
@@ -19,24 +21,20 @@
 #include <gen/ccpp_TopicId.h>
 
 REGISTER_TOPIC_TRAITS(TopicId);
+std::string topic("TopicIdTopic");
 
 // -- SAL Include
-#include "sal/svcSAL.h"
-#include "sal/svcSAL_TopidId.h"
+#include "svcSAL_TopicId.h"
 
-class salTopicId
-{
-public:
-
-
-salTopicId::salTopicId()
+salTopicId::salTopicId(std::string operation)
 {
      char *env;
+     string PubOP("publish");
      
 	currentInstance= NULL;
         newData = SAL__NO_UPDATES;
-        env = (char *) (getgenv("SAL_DEBUG_LEVEL"));
-	if ( env !- NULL ) {
+        env = (char *) (getenv("SAL_DEBUG_LEVEL"));
+	if ( env != NULL ) {
            sscanf(env, "%d", &debugLevel);
 	}
 	debugLevel = 0;
@@ -50,20 +48,28 @@ salTopicId::salTopicId()
 	pid = 0;
 	readCount = 0;
 	writeCount = 0;
-	latency_budget = {1,0);
+//	latency_budget = {1,0);
 	deadline = {1,0};
 	pid = getpid();
 	dds::Runtime runtime();
 	tqos.set_reliable();
 	tqos.set_transient();
-	tqos.set_latency_budget(latency_budget);
+//	tqos.set_latency_budget(latency_budget);
 	tqos.set_deadline(deadline);
 	tqos.set_priority(priority);
-	dds::Topic<TopicIdType> topic("TopicId", tqos);
- }
+        tqos.set_keep_last(SAL__DEFAULT_HISTORY_DEPTH);
+        dds::Topic<TopicId> TopicIdTopic(topic);
+        if (operation.compare(PubOP) == 0) {
+           dds::DataWriter<TopicId> writer(TopicIdTopic,wQos);
+           haveWrt = TRUE;
+        } else {
+           dds::DataReader<TopicId> reader;
+           haveRdr = TRUE;
+        }
+}
 
  
-svcRTN salTopicId::~salTopicId()
+salTopicId::~salTopicId()
 {
 }
 
@@ -71,45 +77,42 @@ svcRTN salTopicId::~salTopicId()
 
 svcRTN salTopicId::publisher ()
 {
-
-   if (!haveWrt) {
-      dds::DataWriterQos wQos(tqos);
-      wQos.set_keep_last(SAL__DEFAULT_HISTORY_DEPTH);
-      wQos.set_auto_dispose(SAL__DEFAULT_AUTO_DISPOSE);
-      dds::DataWriter<TopicIdType> writer(topic,wQos);
+   if ( !haveWrt ) {
+      dds::Topic<TopicId> TopicIdTopic(topic);
       dds::DataWriter<TopicId> writer(TopicIdTopic);
       haveWrt = TRUE;
    }
-  
+   return SAL__OK;
 }
 
 svcRTN salTopicId::subscriber ()
 {
-
-   if {!haveRdr} {
-      dds::DataReaderQos rQos(tqos);
-      dds::DataReader<TopicIdType> reader(topic, rQos();
+   if ( !haveRdr ) {
+      dds::Topic<TopicId> TopicIdTopic(topic);
+      dds::DataReader<TopicId> reader(TopicIdTopic);
       haveRdr = TRUE;
    }
-   
-   
-svcRTN salTopicId::getSample (svcInt timeout)
+   return SAL__OK;
+}
+
+
+svcRTN salTopicId::getSample (svcINT timeout)
 {
     svcRTN result;
     svcINT remaining;
-    
-    remaining = timeout+1;
+   
+   remaining = timeout+1;
     while (remaining >= 0) {
-      result = reader.read(data,sinfo);
-      if { result != DDS::RETCODE_OK ) {
-         if ( result != DDS_RETCODE_TIMEOUT &&
-	      result != DDS:RETCODE_NODATA ) {
+      result = salTopicId::read(dataSeq,sinfoSeq,dum1,dum2,dum3,dum4);
+      if ( result != DDS::RETCODE_OK ) {
+         if ( result != DDS::RETCODE_TIMEOUT &&
+	      result != DDS::RETCODE_NO_DATA ) {
             if (remaining < 0) {
 	       return result;
 	    }
          }
       } else {
-         data.private_rcvStamp = sal::currentTime();
+//         data.private_rcvStamp = currentTime();
 	 timeOfRcv = data.private_rcvStamp;
 	 readCount++;
 	 if (timeout == SAL__WAIT_FOR_CHANGE) {
@@ -125,199 +128,36 @@ svcRTN salTopicId::getSample (svcInt timeout)
 
 svcRTN salTopicId::putSample () {
     svcRTN result;
-    data.private_sndStamp = sal::currentTime();
+//    data.private_sndStamp = currentTime();
     timeOfSnd = data.private_rcvStamp;
     data.private_origin = pid;
-    result = writer.write(data);
+    result = salTopicId::write(data,currentInstance);
     writeCount++;
     return SAL__OK;
 }
 
-// INSERT-PERTOPIC
-	svcRTN getItem ( svcIID itemId , svcSHORT &value );
-	{
-	}
-	
-	svcRTN getItem ( svcIID itemId , svcUSHORT &value )
-	{
-	}
-	
-	svcRTN getItem ( svcIID itemId , svcINT &value )
-	{
-	    svcRTN result = SAL__NOT_DEFINED;
-	    switch (itemOd) {
-	    
-	    case SAL_IID_TopicId_number :
-	    	value = data.number;
-		result = SAL__OK;
-		break;
-		
-	    case SAL_IID_TopicId_counter :
-	    	value = data.counter;
-		result = SAL__OK;
-		break;		
-		
-	    }
-	    return result;
-	}
-	
-	svcRTN getItem ( svcIID itemId , svcUINT &value )
-	{
-	}
-	
-	svcRTN getItem ( svcIID itemId , svcFLT &fvalue )
-	{
-	}
-	
-	svcRTN getItem ( svcIID itemId , svcDBL &dvalue )
-	{
-	}
-	
-	svcRTN getItem ( svcIID itemId , svcSHORT &value , svcINT size )
-	{
-	}
-	
-	svcRTN getItem ( svcIID itemId , svcUSHORT &value, svcINT size )
-	{
-	}
-	
-	svcRTN getItem ( svcIID itemId , svcINT &value , svcINT size )
-	{
-	}
-	
-	svcRTN getItem ( svcIID itemId , svcUINT &value, svcINT size )
-	{
-	}
-	
-	svcRTN getItem ( svcIID itemId , svcFLT &fvalue, svcINT size );
-	{
-	}
-	
-	svcRTN getItem ( svcIID itemId , svcDBL &dvalue, svcINT size)
-	{
-	}
-	
-        svcRTN getItemStr ( svcIID itemId , svcCHAR *textValue)
-	{
-	    svcRTN result = SAL__NOT_DEFINED;
-	    
-	    switch (itemid) {
-	    case SAL_IID_TopicId_number :
-	        sprintf(textValue,"%d",data.number);
-//	        snprintf(textValue,strlen()textValue),"%d",data.number);
-		result = SAL__OK;
-		break;
-		
-	    case SAL_IID_TopicId_counter :
-	        sprintf(textValue,"%d",data.counter);
-		result = SAL__OK;
-		break;
-		
-	    case SAL_IID_TopicId_vendor :
-	    	strcpy(textValue,data.venndor);
-		result = SAL__OK;
-		break;
-		
-	    }
-	}
-	
-	
-	svcRTN setItem ( svcIID itemId , svcSHORT &value )
-	{
-	}
-	
-	svcRTN setItem ( svcIID itemId , svcUSHORT &value )
-	{
-	}
-	
-	svcRTN setItem ( svcIID itemId , svcINT &value )
-	{
-	    svcRTN result = SAL__NOT_DEFINED;
-	    switch (itemOd) {
-	    
-	    case SAL_IID_TopicId_number :
-	    	data.numnber = value;
-		result = SAL__OK;
-		break;
-		
-	    case SAL_IID_TopicId_counter :
-	    	data.counter = value;
-		result = SAL__OK;
-		break;		
-		
-	    }
-	    return result;
-	}
-	
-	svcRTN setItem ( svcIID itemId , svcUINT &value )
-	{
-	}
-	
-	svcRTN setItem ( svcIID itemId , svcFLT &fvalue )
-	{
-	}
-	
-	svcRTN setItem ( svcIID itemId , svcDBL &dvalue )
-	{
-	}
-	
-	svcRTN setItem ( svcIID itemId , svcSHORT &value , svcINT size )
-	{
-	}
-	
-	svcRTN setItem ( svcIID itemId , svcUSHORT &value, svcINT size )
-	{
-	}
-	
-	svcRTN setItem ( svcIID itemId , svcINT &value , svcINT size )
-	{
-	}
-	
-	svcRTN setItem ( svcIID itemId , svcUINT &value, svcINT size )
-	{
-	}
-	
-	svcRTN setItem ( svcIID itemId , svcFLT &fvalue, svcINT size )
-	{
-	}
-	
-	svcRTN setItem ( svcIID itemId , svcDBL &dvalue, svcINT size)
-	{
-	}
-	
-        svcRTN setItemStr ( svcIID itemId , svcCHAR *textValue)
-	{
-	    svcRTN result = SAL__NOT_DEFINED;
-	    
-	    switch (itemid) {
-	    case SAL_IID_TopicId_number :
-	    	sscanf(textValue,"%d",&data.number);
-		result = SAL__OK;
-		break;
-		
-	    case SAL_IID_TopicId_counter :
-	    	sscanf(textValue,"%d",&data.counter);
-		result = SAL__OK;
-		break;
-		
-	    case SAL_IID_TopicId_vendor :
-	    	strcpy(data.vendor,textValue);
-		result = SAL__OK;
-		break;
-		
-	    }
-	    
-	}
-	
-
-        svcRTN getProperty ( svcCHAR *propertyName , svcCHAR *textValue)
-	{
-	}
-	
-        svcRTN setProperty ( svcCHAR *propertyName , svcCHAR *textValue)
-	{
-	}
-	
-
-
+svcRTN salTopicId::getProperty ( svcCHAR *propertyName , svcCHAR *textValue)
+{
+    return SAL__OK;
 }
+	
+svcRTN salTopicId::setProperty ( svcCHAR *propertyName , svcCHAR *textValue)
+{
+    return SAL__OK;
+}
+	
+DDS::Boolean salTopicId::_local_is_a (const char * _id)
+{
+   if (strcmp (_id, salTopicId::_local_id) == 0) return true;
+
+   typedef salTopicId NestedBase_1;
+
+   if (NestedBase_1::_local_is_a (_id)) return true;
+
+   return false;
+}
+
+
+// INSERT PERTOPIC_METHODS
+
+

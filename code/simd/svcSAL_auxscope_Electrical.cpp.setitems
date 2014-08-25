@@ -1,0 +1,3 @@
+		result = salHandle->setitem(SAL_IID_auxscope_Electrical_Raw, Raw, 17);
+		result = salHandle->setitem(SAL_IID_auxscope_Electrical_Calibrated, Calibrated, 33);
+		result = salHandle->putSample();

@@ -1,0 +1,3 @@
+		strncpy(ocs_command_health_ref->device,samples[i].device,128);
+		strncpy(ocs_command_health_ref->subsystem,samples[i].subsystem,128);
+		ocs_command_health_ref->syncI++;

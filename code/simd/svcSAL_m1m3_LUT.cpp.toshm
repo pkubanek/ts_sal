@@ -1,0 +1,5 @@
+		strncpy(m1m3_LUT_ref->algorithm,samples[i].algorithm,32);
+		for (unsigned int count=0; count<33; count++) {
+			m1m3_LUT_ref->param[count] = samples[i].param[count];
+		}
+		m1m3_LUT_ref->syncI++;

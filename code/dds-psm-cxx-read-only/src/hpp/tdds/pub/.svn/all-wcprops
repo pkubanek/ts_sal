@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 40
+/svn/!svn/ver/155/trunk/src/hpp/tdds/pub
+END
+Publisher.hpp
+K 25
+svn:wc:ra_dav:version-url
+V 54
+/svn/!svn/ver/147/trunk/src/hpp/tdds/pub/Publisher.hpp
+END
+CoherentSet.hpp
+K 25
+svn:wc:ra_dav:version-url
+V 55
+/svn/!svn/ver/79/trunk/src/hpp/tdds/pub/CoherentSet.hpp
+END
+SuspendedPublication.hpp
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/!svn/ver/79/trunk/src/hpp/tdds/pub/SuspendedPublication.hpp
+END
+pubfwd.hpp
+K 25
+svn:wc:ra_dav:version-url
+V 51
+/svn/!svn/ver/155/trunk/src/hpp/tdds/pub/pubfwd.hpp
+END

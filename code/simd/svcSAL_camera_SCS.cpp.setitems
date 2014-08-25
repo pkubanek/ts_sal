@@ -1,0 +1,5 @@
+		result = salHandle->setitem(SAL_IID_camera_SCS_flags, flags);
+		result = salHandle->setitem(SAL_IID_camera_SCS_algorithm, algorithm);
+		result = salHandle->setitem(SAL_IID_camera_SCS_close_profile, close_profile, 1025);
+		result = salHandle->setitem(SAL_IID_camera_SCS_open_profile, open_profile, 1025);
+		result = salHandle->putSample();

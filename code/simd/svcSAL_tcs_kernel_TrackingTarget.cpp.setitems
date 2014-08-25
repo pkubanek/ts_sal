@@ -1,0 +1,6 @@
+		result = salHandle->setitem(SAL_IID_tcs_kernel_TrackingTarget_PositionX, PositionX);
+		result = salHandle->setitem(SAL_IID_tcs_kernel_TrackingTarget_PositionY, PositionY);
+		result = salHandle->setitem(SAL_IID_tcs_kernel_TrackingTarget_T0, T0);
+		result = salHandle->setitem(SAL_IID_tcs_kernel_TrackingTarget_VelocityX, VelocityX);
+		result = salHandle->setitem(SAL_IID_tcs_kernel_TrackingTarget_VelocityY, VelocityY);
+		result = salHandle->putSample();

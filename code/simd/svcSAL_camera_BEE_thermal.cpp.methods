@@ -1,0 +1,308 @@
+
+	svcRTN salcamera_BEE_thermal::getItem ( svcIID itemId , svcUSHORT &value )
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    switch (itemId) {
+
+                 case SAL_IID_camera_BEE_thermal_raftID :
+                      value = data.raftID;
+                      result = SAL__OK;
+                      break;
+
+	    }
+	    return result;
+	}
+	
+
+
+	svcRTN salcamera_BEE_thermal::setItem ( svcIID itemId , svcUSHORT &value )
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    switch (itemId) {
+
+                 case SAL_IID_camera_BEE_thermal_raftID :
+                      data.raftID = value;
+                      result = SAL__OK;
+                      break;
+
+	    }
+	    return result;
+	}
+	
+
+
+       svcRTN salcamera_BEE_thermal::setItemStr ( svcIID itemId , svcCHAR *textValue)
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    
+	    switch (itemid) {
+
+                 case SAL_IID_camera_BEE_thermal_cfgChkSum :
+                      sscanf(textValue,"%ld",&data.cfgChkSum);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_camera_BEE_thermal_raftID :
+                      sscanf(textValue,"%d",&data.raftID);
+                      result = SAL__OK;
+                      break;
+
+	    }
+	    return result;
+	}
+
+       svcRTN salcamera_BEE_thermal::getItemStr ( svcIID itemId , svcCHAR *textValue)
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    
+	    switch (itemid) {
+
+                 case SAL_IID_camera_BEE_thermal_cfgChkSum :
+                      sprintf(textValue,"%ld",data.cfgChkSum);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_camera_BEE_thermal_raftID :
+                      sprintf(textValue,"%d",data.raftID);
+                      result = SAL__OK;
+                      break;
+
+	    }
+	    return result;
+	}
+
+	svcRTN salcamera_BEE_thermal::getItem ( svcIID itemId , svcULONG &value )
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    switch (itemId) {
+
+                 case SAL_IID_camera_BEE_thermal_cfgChkSum :
+                      value = data.cfgChkSum;
+                      result = SAL__OK;
+                      break;
+
+	    }
+	    return result;
+	}
+	
+
+
+	svcRTN salcamera_BEE_thermal::setItem ( svcIID itemId , svcULONG &value )
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    switch (itemId) {
+
+                 case SAL_IID_camera_BEE_thermal_cfgChkSum :
+                      data.cfgChkSum = value;
+                      result = SAL__OK;
+                      break;
+
+	    }
+	    return result;
+	}
+	
+
+
+       svcRTN salcamera_BEE_thermal::setItemStr ( svcIID itemId , svcCHAR *textValue)
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    
+	    switch (itemid) {
+
+                 case SAL_IID_camera_BEE_thermal_cfgChkSum :
+                      sscanf(textValue,"%ld",&data.cfgChkSum);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_camera_BEE_thermal_raftID :
+                      sscanf(textValue,"%d",&data.raftID);
+                      result = SAL__OK;
+                      break;
+
+	    }
+	    return result;
+	}
+
+       svcRTN salcamera_BEE_thermal::getItemStr ( svcIID itemId , svcCHAR *textValue)
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    
+	    switch (itemid) {
+
+                 case SAL_IID_camera_BEE_thermal_cfgChkSum :
+                      sprintf(textValue,"%ld",data.cfgChkSum);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_camera_BEE_thermal_raftID :
+                      sprintf(textValue,"%d",data.raftID);
+                      result = SAL__OK;
+                      break;
+
+	    }
+	    return result;
+	}
+
+	svcRTN salcamera_BEE_thermal::getItem ( svcIID itemId , svcLONG &value, svcUINT size)
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    switch (itemId) {
+
+                 case SAL_IID_camera_BEE_thermal_heaterStatus :
+                      if { size > 11 } {return SAL__INDEX_OUT_OF_RANGE;}
+                      for (unsigned int count=0; count<size; count++) {
+                        value[count] = data.heaterStatus[count];
+                      }
+                      result = SAL__OK;
+                      break;
+
+	    }
+	    return result;
+	}
+
+ 	svcRTN salcamera_BEE_thermal::setItem ( svcIID itemId , svcLONG &value , svcUINT size)
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    switch (itemId) {
+
+                 case SAL_IID_camera_BEE_thermal_heaterStatus :
+                      if { size > 11 } {return SAL__INDEX_OUT_OF_RANGE;}
+                      for (unsigned int count=0; count<size; count++) {
+                        data.heaterStatus[count] = value[count];
+                      }
+                      result = SAL__OK;
+                      break;
+
+	    }
+	    return result;
+	}
+
+       svcRTN salcamera_BEE_thermal::setItemStr ( svcIID itemId , svcCHAR *textValue)
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    
+	    switch (itemid) {
+
+                 case SAL_IID_camera_BEE_thermal_cfgChkSum :
+                      sscanf(textValue,"%ld",&data.cfgChkSum);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_camera_BEE_thermal_raftID :
+                      sscanf(textValue,"%d",&data.raftID);
+                      result = SAL__OK;
+                      break;
+
+	    }
+	    return result;
+	}
+
+       svcRTN salcamera_BEE_thermal::getItemStr ( svcIID itemId , svcCHAR *textValue)
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    
+	    switch (itemid) {
+
+                 case SAL_IID_camera_BEE_thermal_cfgChkSum :
+                      sprintf(textValue,"%ld",data.cfgChkSum);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_camera_BEE_thermal_raftID :
+                      sprintf(textValue,"%d",data.raftID);
+                      result = SAL__OK;
+                      break;
+
+	    }
+	    return result;
+	}
+
+	svcRTN salcamera_BEE_thermal::getItem ( svcIID itemId , svcFLT &value, svcUINT size)
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    switch (itemId) {
+
+                 case SAL_IID_camera_BEE_thermal_heaterPower :
+                      if { size > 11 } {return SAL__INDEX_OUT_OF_RANGE;}
+                      for (unsigned int count=0; count<size; count++) {
+                        value[count] = data.heaterPower[count];
+                      }
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_camera_BEE_thermal_temp :
+                      if { size > 21 } {return SAL__INDEX_OUT_OF_RANGE;}
+                      for (unsigned int count=0; count<size; count++) {
+                        value[count] = data.temp[count];
+                      }
+                      result = SAL__OK;
+                      break;
+
+	    }
+	    return result;
+	}
+
+ 	svcRTN salcamera_BEE_thermal::setItem ( svcIID itemId , svcFLT &value , svcUINT size)
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    switch (itemId) {
+
+                 case SAL_IID_camera_BEE_thermal_heaterPower :
+                      if { size > 11 } {return SAL__INDEX_OUT_OF_RANGE;}
+                      for (unsigned int count=0; count<size; count++) {
+                        data.heaterPower[count] = value[count];
+                      }
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_camera_BEE_thermal_temp :
+                      if { size > 21 } {return SAL__INDEX_OUT_OF_RANGE;}
+                      for (unsigned int count=0; count<size; count++) {
+                        data.temp[count] = value[count];
+                      }
+                      result = SAL__OK;
+                      break;
+
+	    }
+	    return result;
+	}
+
+       svcRTN salcamera_BEE_thermal::setItemStr ( svcIID itemId , svcCHAR *textValue)
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    
+	    switch (itemid) {
+
+                 case SAL_IID_camera_BEE_thermal_cfgChkSum :
+                      sscanf(textValue,"%ld",&data.cfgChkSum);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_camera_BEE_thermal_raftID :
+                      sscanf(textValue,"%d",&data.raftID);
+                      result = SAL__OK;
+                      break;
+
+	    }
+	    return result;
+	}
+
+       svcRTN salcamera_BEE_thermal::getItemStr ( svcIID itemId , svcCHAR *textValue)
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    
+	    switch (itemid) {
+
+                 case SAL_IID_camera_BEE_thermal_cfgChkSum :
+                      sprintf(textValue,"%ld",data.cfgChkSum);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_camera_BEE_thermal_raftID :
+                      sprintf(textValue,"%d",data.raftID);
+                      result = SAL__OK;
+                      break;
+
+	    }
+	    return result;
+	}

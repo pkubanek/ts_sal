@@ -1,0 +1,10 @@
+		for (unsigned int count=0; count<202; count++) {
+			d.operate[count] = camera_BEE_biases_ref->operate[count];
+		}
+		for (unsigned int count=0; count<202; count++) {
+			d.reset[count] = camera_BEE_biases_ref->reset[count];
+		}
+		for (unsigned int count=0; count<202; count++) {
+			d.substrate[count] = camera_BEE_biases_ref->substrate[count];
+		}
+		camera_BEE_biases_ref->syncO = 1;

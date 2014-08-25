@@ -1,0 +1,5 @@
+		result = salHandle->setitem(SAL_IID_camera_UTIL_status, status, 11);
+		result = salHandle->setitem(SAL_IID_camera_UTIL_flow_rate, flow_rate, 11);
+		result = salHandle->setitem(SAL_IID_camera_UTIL_setpoint, setpoint, 11);
+		result = salHandle->setitem(SAL_IID_camera_UTIL_temperature, temperature, 11);
+		result = salHandle->putSample();

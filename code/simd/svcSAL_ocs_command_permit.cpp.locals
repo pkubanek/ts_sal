@@ -1,0 +1,4 @@
+	char	[32];
+	char	[128];
+	char	[128];
+	svcLONG	actionmask[9];

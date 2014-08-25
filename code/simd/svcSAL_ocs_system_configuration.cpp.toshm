@@ -1,0 +1,4 @@
+		ocs_system_configuration_ref->stationid = samples[i].stationid;
+		strncpy(ocs_system_configuration_ref->device,samples[i].device,128);
+		strncpy(ocs_system_configuration_ref->subssystem,samples[i].subssystem,128);
+		ocs_system_configuration_ref->syncI++;

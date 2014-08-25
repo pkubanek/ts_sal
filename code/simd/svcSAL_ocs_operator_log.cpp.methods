@@ -1,0 +1,184 @@
+
+	svcRTN salocs_operator_log::getItem ( svcIID itemId , svcLONG &value )
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    switch (itemId) {
+
+                 case SAL_IID_ocs_operator_log_opid :
+                      value = data.opid;
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_ocs_operator_log_stationid :
+                      value = data.stationid;
+                      result = SAL__OK;
+                      break;
+
+	    }
+	    return result;
+	}
+	
+
+
+	svcRTN salocs_operator_log::setItem ( svcIID itemId , svcLONG &value )
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    switch (itemId) {
+
+                 case SAL_IID_ocs_operator_log_opid :
+                      data.opid = value;
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_ocs_operator_log_stationid :
+                      data.stationid = value;
+                      result = SAL__OK;
+                      break;
+
+	    }
+	    return result;
+	}
+	
+
+
+       svcRTN salocs_operator_log::setItemStr ( svcIID itemId , svcCHAR *textValue)
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    
+	    switch (itemid) {
+
+                 case SAL_IID_ocs_operator_log_opid :
+                      sscanf(textValue,"%ld",&data.opid);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_ocs_operator_log_stationid :
+                      sscanf(textValue,"%ld",&data.stationid);
+                      result = SAL__OK;
+                      break;
+
+	    }
+	    return result;
+	}
+
+       svcRTN salocs_operator_log::getItemStr ( svcIID itemId , svcCHAR *textValue)
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    
+	    switch (itemid) {
+
+                 case SAL_IID_ocs_operator_log_opid :
+                      sprintf(textValue,"%ld",data.opid);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_ocs_operator_log_stationid :
+                      sprintf(textValue,"%ld",data.stationid);
+                      result = SAL__OK;
+                      break;
+
+	    }
+	    return result;
+	}
+
+	svcRTN salocs_operator_log::getItem ( svcIID itemId , (svcCHAR *)value )
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    switch (itemId) {
+	    
+
+
+                 case SAL_IID_ocs_operator_log_device :
+                      strncpy(value, data.device, 32);
+                      result = SAL__OK;
+                      break;
+
+
+                 case SAL_IID_ocs_operator_log_event :
+                      strncpy(value, data.event, 128);
+                      result = SAL__OK;
+                      break;
+
+
+                 case SAL_IID_ocs_operator_log_subsystem :
+                      strncpy(value, data.subsystem, 32);
+                      result = SAL__OK;
+                      break;
+
+
+	    }
+	    return result;
+	}
+	
+
+
+	svcRTN salocs_operator_log::setItem ( svcIID itemId , (svcCHAR *)value )
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    switch (itemId) {
+	    
+
+
+                 case SAL_IID_ocs_operator_log_device :
+                      strncpy(data.device, value, 32);
+                      result = SAL__OK;
+                      break;
+
+
+                 case SAL_IID_ocs_operator_log_event :
+                      strncpy(data.event, value, 128);
+                      result = SAL__OK;
+                      break;
+
+
+                 case SAL_IID_ocs_operator_log_subsystem :
+                      strncpy(data.subsystem, value, 32);
+                      result = SAL__OK;
+                      break;
+
+
+	    }
+	    return result;
+	}
+	
+
+
+       svcRTN salocs_operator_log::setItemStr ( svcIID itemId , svcCHAR *textValue)
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    
+	    switch (itemid) {
+
+                 case SAL_IID_ocs_operator_log_opid :
+                      sscanf(textValue,"%ld",&data.opid);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_ocs_operator_log_stationid :
+                      sscanf(textValue,"%ld",&data.stationid);
+                      result = SAL__OK;
+                      break;
+
+	    }
+	    return result;
+	}
+
+       svcRTN salocs_operator_log::getItemStr ( svcIID itemId , svcCHAR *textValue)
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    
+	    switch (itemid) {
+
+                 case SAL_IID_ocs_operator_log_opid :
+                      sprintf(textValue,"%ld",data.opid);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_ocs_operator_log_stationid :
+                      sprintf(textValue,"%ld",data.stationid);
+                      result = SAL__OK;
+                      break;
+
+	    }
+	    return result;
+	}

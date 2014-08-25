@@ -56,14 +56,16 @@ while { [gets $fin rec] > -1 } {
   long private_sndStamp; //private
   long private_rcvStamp; //private
   long private_seqNum; //private
-  long private_origin; //private"
+  long private_origin; //private
+  long private_host; //private"
       puts $fo2  "CREATE TABLE $topic \{"
       puts $fo2  "  date_time date time NOT NULL,
   private_revCode char(32),
   private_sndStamp long,
   private_rcvStamp long,
   private_seqNum long,
-  private_origin long,"
+  private_origin long,
+  private_host long,"
    }
    if { [lindex $rec 1] > 1 && [string range [lindex $rec 2] 0 5] != "String"} {
       set i 1

@@ -1,0 +1,82 @@
+#     subsystem        .device    .property  .action  .modifiers
+
+	auxscope	control    state      set      online
+	auxscope	control    state      set      offline
+	auxscope	control    state      set      pause
+	auxscope	control    state      set      resume
+	auxscope	control    state      set      start
+	auxscope	control    state      set      stop
+
+	auxscope	target	   position   set      [radec]
+	auxscope	target	   offset     set      [radec]
+	auxscope	target	   tracking   on
+	auxscope	target	   tracking   off
+
+	auxscope	az	   position   set	[float]
+	auxscope	az	   offset     set       [float]
+	auxscope	az	   index      set       [float]
+	auxscope	az	   rate       set       [float]
+	auxscope	az	              stop
+	auxscope	az	   brake      on
+	auxscope	az	   brake      off
+	auxscope	az	   power      on
+	auxscope	az	   power      off
+	auxscope	az	   pump       on
+	auxscope	az	   pump       off
+	auxscope	az	   tracking   on
+	auxscope	az	   tracking   off
+	auxscope	az	   [axis-property] configure
+
+	auxscope	alt	   position   set       [float]
+	auxscope	alt	   offset     set       [float]
+	auxscope	alt	   index      set       [float]
+	auxscope	alt	   rate       set       [float]
+	auxscope	alt	              stop
+	auxscope	alt	   brake      on
+	auxscope	alt	   brake      off
+	auxscope	alt	   power      on
+	auxscope	alt	   power      off
+	auxscope	alt        pump       on
+	auxscope	alt	   pump       off
+	auxscope	alt	   tracking   on
+	auxscope	alt	   tracking   off
+	auxscope	alt	   [axis-property] configure
+
+	auxscope 	balance	   mode
+	auxscope 	balance    [balance-property] configure
+
+	auxscope	imager	   [exposure-properties]     configure
+	auxscope	imager		      observe
+	auxscope	spectrograph [exposure-properties]     configure
+	auxscope	spectrograph [spectrograph-properties] configure
+	auxscope	spectrograph	      observe
+
+	auxscope	lamps	   power      on
+	auxscope	lamps	   power      off
+
+	auxscope	lamps	   intensity  set     [float]
+	auxscope	lamps	   wavelength set     [float]
+
+	auxscope	dome	   position   set     [float]
+	auxscope	dome	   ha         set     [float]
+	auxscope	dome	   offset     set     [float]
+	auxscope	dome	   index      set     [float]
+	auxscope	dome	   rate       set     [float]
+	auxscope	dome	              park
+	auxscope	dome	              stop
+	auxscope	dome	   brake      on
+	auxscope	dome	   brake      off
+	auxscope	dome	   power      on
+	auxscope	dome	   power      off
+	auxscope	dome	   tracking   on
+	auxscope	dome	   tracking   off
+
+	auxscope	shutter		      open
+	auxscope	shutter		      close
+	auxscope	shutter		      stop
+	auxscope	shutter	   position   set     [float]
+	auxscope	shutter	   brake      on
+	auxscope	shutter    brake      off
+	auxscope	shutter    power      on
+	auxscope	shutter    power      off
+

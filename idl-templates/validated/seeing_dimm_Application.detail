@@ -1,0 +1,4 @@
+seeing.dimm.Application.Raw 16 long 0.1
+seeing.dimm.Application.Calibrated 32 float 0.1
+seeing.dimm.Application.Error 4 float 0.1
+seeing.dimm.Application.Status 16 string<16> 0.1

@@ -1,0 +1,10 @@
+		for (unsigned int count=0; count<16; count++) {
+			d.Health[count] = seeing_mass_Temps_ref->Health[count];
+		}
+		for (unsigned int count=0; count<16; count++) {
+			d.Raw[count] = seeing_mass_Temps_ref->Raw[count];
+		}
+		for (unsigned int count=0; count<16; count++) {
+			d.Calibrated[count] = seeing_mass_Temps_ref->Calibrated[count];
+		}
+		seeing_mass_Temps_ref->syncO = 1;

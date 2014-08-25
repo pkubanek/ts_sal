@@ -1,0 +1,150 @@
+
+	svcRTN saldm_derived_dataquality::getItem ( svcIID itemId , svcDBL &value, svcUINT size)
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    switch (itemId) {
+
+                 case SAL_IID_dm_derived_dataquality_metric1 :
+                      if { size > 201 } {return SAL__INDEX_OUT_OF_RANGE;}
+                      for (unsigned int count=0; count<size; count++) {
+                        value[count] = data.metric1[count];
+                      }
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_dm_derived_dataquality_metric2 :
+                      if { size > 201 } {return SAL__INDEX_OUT_OF_RANGE;}
+                      for (unsigned int count=0; count<size; count++) {
+                        value[count] = data.metric2[count];
+                      }
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_dm_derived_dataquality_metric3 :
+                      if { size > 201 } {return SAL__INDEX_OUT_OF_RANGE;}
+                      for (unsigned int count=0; count<size; count++) {
+                        value[count] = data.metric3[count];
+                      }
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_dm_derived_dataquality_metric4 :
+                      if { size > 201 } {return SAL__INDEX_OUT_OF_RANGE;}
+                      for (unsigned int count=0; count<size; count++) {
+                        value[count] = data.metric4[count];
+                      }
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_dm_derived_dataquality_metric5 :
+                      if { size > 201 } {return SAL__INDEX_OUT_OF_RANGE;}
+                      for (unsigned int count=0; count<size; count++) {
+                        value[count] = data.metric5[count];
+                      }
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_dm_derived_dataquality_metric6 :
+                      if { size > 201 } {return SAL__INDEX_OUT_OF_RANGE;}
+                      for (unsigned int count=0; count<size; count++) {
+                        value[count] = data.metric6[count];
+                      }
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_dm_derived_dataquality_summary :
+                      if { size > 101 } {return SAL__INDEX_OUT_OF_RANGE;}
+                      for (unsigned int count=0; count<size; count++) {
+                        value[count] = data.summary[count];
+                      }
+                      result = SAL__OK;
+                      break;
+
+	    }
+	    return result;
+	}
+
+ 	svcRTN saldm_derived_dataquality::setItem ( svcIID itemId , svcDBL &value , svcUINT size)
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    switch (itemId) {
+
+                 case SAL_IID_dm_derived_dataquality_metric1 :
+                      if { size > 201 } {return SAL__INDEX_OUT_OF_RANGE;}
+                      for (unsigned int count=0; count<size; count++) {
+                        data.metric1[count] = value[count];
+                      }
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_dm_derived_dataquality_metric2 :
+                      if { size > 201 } {return SAL__INDEX_OUT_OF_RANGE;}
+                      for (unsigned int count=0; count<size; count++) {
+                        data.metric2[count] = value[count];
+                      }
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_dm_derived_dataquality_metric3 :
+                      if { size > 201 } {return SAL__INDEX_OUT_OF_RANGE;}
+                      for (unsigned int count=0; count<size; count++) {
+                        data.metric3[count] = value[count];
+                      }
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_dm_derived_dataquality_metric4 :
+                      if { size > 201 } {return SAL__INDEX_OUT_OF_RANGE;}
+                      for (unsigned int count=0; count<size; count++) {
+                        data.metric4[count] = value[count];
+                      }
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_dm_derived_dataquality_metric5 :
+                      if { size > 201 } {return SAL__INDEX_OUT_OF_RANGE;}
+                      for (unsigned int count=0; count<size; count++) {
+                        data.metric5[count] = value[count];
+                      }
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_dm_derived_dataquality_metric6 :
+                      if { size > 201 } {return SAL__INDEX_OUT_OF_RANGE;}
+                      for (unsigned int count=0; count<size; count++) {
+                        data.metric6[count] = value[count];
+                      }
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_dm_derived_dataquality_summary :
+                      if { size > 101 } {return SAL__INDEX_OUT_OF_RANGE;}
+                      for (unsigned int count=0; count<size; count++) {
+                        data.summary[count] = value[count];
+                      }
+                      result = SAL__OK;
+                      break;
+
+	    }
+	    return result;
+	}
+
+       svcRTN saldm_derived_dataquality::setItemStr ( svcIID itemId , svcCHAR *textValue)
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    
+	    switch (itemid) {
+
+	    }
+	    return result;
+	}
+
+       svcRTN saldm_derived_dataquality::getItemStr ( svcIID itemId , svcCHAR *textValue)
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    
+	    switch (itemid) {
+
+	    }
+	    return result;
+	}

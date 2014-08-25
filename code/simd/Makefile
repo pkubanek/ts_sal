@@ -36,10 +36,10 @@ CMAKE_COMMAND = /usr/bin/cmake
 RM = /usr/bin/cmake -E remove -f
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /opt/simd-cxx-v0.9/demo/TopicId
+CMAKE_SOURCE_DIR = SAL_WORK_DIR
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /opt/simd-cxx-v0.9/demo/TopicId
+CMAKE_BINARY_DIR = SAL_WORK_DIR
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -66,9 +66,9 @@ rebuild_cache/fast: rebuild_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /opt/simd-cxx-v0.9/demo/TopicId/CMakeFiles /opt/simd-cxx-v0.9/demo/TopicId/CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start SAL_WORK_DIR/CMakeFiles SAL_WORK_DIR/CMakeFiles/progress.marks
 	$(MAKE) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /opt/simd-cxx-v0.9/demo/TopicId/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start SAL_WORK_DIR/CMakeFiles 0
 .PHONY : all
 
 # The main clean target

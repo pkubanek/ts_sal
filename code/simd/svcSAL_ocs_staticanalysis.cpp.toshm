@@ -1,0 +1,8 @@
+		ocs_staticanalysis_ref->action = samples[i].action;
+		ocs_staticanalysis_ref->result = samples[i].result;
+		ocs_staticanalysis_ref->end = samples[i].end;
+		ocs_staticanalysis_ref->start = samples[i].start;
+		strncpy(ocs_staticanalysis_ref->actuuid,samples[i].actuuid,32);
+		strncpy(ocs_staticanalysis_ref->part,samples[i].part,128);
+		strncpy(ocs_staticanalysis_ref->subsystem,samples[i].subsystem,128);
+		ocs_staticanalysis_ref->syncI++;

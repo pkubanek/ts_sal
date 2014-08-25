@@ -1,0 +1,11 @@
+struct ocs_scheduler_program {
+  string<32> private_revCode;  //private
+  double     private_sndStamp; //private
+  double     private_rcvStamp; //private
+  long       private_seqNum;   //private
+  long       private_origin;   //private
+  long	id;
+  long	priority;
+  long	status;
+  float	completion;
+};

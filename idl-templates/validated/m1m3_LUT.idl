@@ -1,9 +1,10 @@
 struct m1m3_LUT {
   string<32> private_revCode;  //private
-  long       private_sndStamp; //private
-  long       private_rcvStamp; //private
+  double     private_sndStamp; //private
+  double     private_rcvStamp; //private
   long       private_seqNum;   //private
   long       private_origin;   //private
-  string<32> algorithm;		//	none :	none :	LUT interpolation algo.
-  float param[32];		//	none :	none :	LUT parameters
+  long       private_host;     //private
+  float	param[32];
 };
+#pragma keylist m1m3_LUT

@@ -1,6 +1,6 @@
 #!/usr/bin/tclsh 
 
-set scriptdir /opt/lsstsal/scripts
+set scriptdir $SAL_DIR
 
 source $scriptdir/datastream_desc.tcl
 source $scriptdir/camera-subsysdesc.tcl
@@ -8,7 +8,7 @@ source $scriptdir/unitsdesc.tcl
 source $scriptdir/qosdesc.tcl
 
 set last ""
-set fck [open datastreams.detail r]
+set fck [open $SAL_WORK_DIR/.salwork/datastreams.detail r]
 while { [gets $fck rec] > -1 } {
    set d [split [lindex $rec 0] "./"]
    set id [join [lrange $d 0 [expr [llength $d]-2]] .]

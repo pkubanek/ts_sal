@@ -1,0 +1,19 @@
+		strncpy(d.Status_1,network_Application_ref->Status_1,128);
+		strncpy(d.Status_10,network_Application_ref->Status_10,128);
+		strncpy(d.Status_11,network_Application_ref->Status_11,128);
+		strncpy(d.Status_12,network_Application_ref->Status_12,128);
+		strncpy(d.Status_13,network_Application_ref->Status_13,128);
+		strncpy(d.Status_14,network_Application_ref->Status_14,128);
+		strncpy(d.Status_15,network_Application_ref->Status_15,128);
+		strncpy(d.Status_2,network_Application_ref->Status_2,128);
+		strncpy(d.Status_3,network_Application_ref->Status_3,128);
+		strncpy(d.Status_4,network_Application_ref->Status_4,128);
+		strncpy(d.Status_5,network_Application_ref->Status_5,128);
+		strncpy(d.Status_6,network_Application_ref->Status_6,128);
+		strncpy(d.Status_7,network_Application_ref->Status_7,128);
+		strncpy(d.Status_8,network_Application_ref->Status_8,128);
+		strncpy(d.Status_9,network_Application_ref->Status_9,128);
+		for (unsigned int count=0; count<64; count++) {
+			d.Data[count] = network_Application_ref->Data[count];
+		}
+		network_Application_ref->syncO = 1;

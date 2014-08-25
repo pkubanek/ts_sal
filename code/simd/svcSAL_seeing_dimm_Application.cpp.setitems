@@ -1,0 +1,5 @@
+		result = salHandle->setitem(SAL_IID_seeing_dimm_Application_Status, Status);
+		result = salHandle->setitem(SAL_IID_seeing_dimm_Application_Raw, Raw, 17);
+		result = salHandle->setitem(SAL_IID_seeing_dimm_Application_Calibrated, Calibrated, 33);
+		result = salHandle->setitem(SAL_IID_seeing_dimm_Application_Error, Error, 5);
+		result = salHandle->putSample();

@@ -14,10 +14,10 @@ proc dosim { fid id nid } {
 
 
 
-set scriptdir /opt/lsstsal/scripts
+set scriptdir $env(SAL_DIR)
 source $scriptdir/streamutils.tcl
-
-set MSYS [lsort [split [exec cat $WORKING/datastreams.names] \n]]]
+catch {unset MSYS}
+set MSYS [lsort [split [exec cat $SAL_DIR/datastreams.names] \n]]]
 foreach id $MSYS {
    set SYS([lindex [split $id _] 0]) 1
 }

@@ -1,0 +1,4 @@
+		result = salHandle->setitem(SAL_IID_system_Software_revision_history_Notes, Notes);
+		result = salHandle->setitem(SAL_IID_system_Software_revision_history_PackageName, PackageName);
+		result = salHandle->setitem(SAL_IID_system_Software_revision_history_Version, Version, 4);
+		result = salHandle->putSample();

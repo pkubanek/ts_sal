@@ -15,10 +15,10 @@ proc makestreamid { name } {
 }
 
 
-source /opt/lsstsal/scripts/GetPostedData.tcl
-source /opt/lsstsal/scripts/versioning.tcl
-source /opt/lsstsal/scripts/datastream_desc.tcl
-source /opt/lsstsal/scripts/camera-subsysdesc.tcl
+source /usr/local/scripts/tcl/GetPostedData.tcl
+source /usr/local/scripts/tcl/versioning.tcl
+source /usr/local/scripts/tcl/datastream_desc.tcl
+source /usr/local/scripts/tcl/camera-subsysdesc.tcl
 
 GetPostedData
 puts stdout "Content-type: text/html\n\n"
@@ -51,11 +51,11 @@ foreach i [array names TPUBS] {set PUBS([makestreamid $i]) yes}
 foreach i [array names TISSU] {set ISSU([makestreamid $i]) yes}
 foreach i [array names TPROC] {set PROC([makestreamid $i]) yes}
 
-if { [info exists FormData(langc)] }    {source /opt/lsstsal/scripts/salgenerator-c.tcl}
-if { [info exists FormData(langjava)] } {source /opt/lsstsal/scripts/salgenerator-java.tcl}
-if { [info exists FormData(langpy)] }   {source /opt/lsstsal/scripts/salgenerator-python.tcl}
-if { [info exists FormData(langruby)] } {source /opt/lsstsal/scripts/salgenerator-ruby.tcl}
-if { [info exists FormData(langxml)] }  {source /opt/lsstsal/scripts/salgenerator-xml.tcl}
+if { [info exists FormData(langc)] }    {source /usr/local/scripts/tcl/salgenerator-c.tcl}
+if { [info exists FormData(langjava)] } {source /usr/local/scripts/tcl/salgenerator-java.tcl}
+if { [info exists FormData(langpy)] }   {source /usr/local/scripts/tcl/salgenerator-python.tcl}
+if { [info exists FormData(langruby)] } {source /usr/local/scripts/tcl/salgenerator-ruby.tcl}
+if { [info exists FormData(langxml)] }  {source /usr/local/scripts/tcl/salgenerator-xml.tcl}
 
 
 

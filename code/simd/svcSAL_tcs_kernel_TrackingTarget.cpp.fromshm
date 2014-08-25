@@ -1,0 +1,6 @@
+		d.PositionX = tcs_kernel_TrackingTarget_ref->PositionX;
+		d.PositionY = tcs_kernel_TrackingTarget_ref->PositionY;
+		d.T0 = tcs_kernel_TrackingTarget_ref->T0;
+		d.VelocityX = tcs_kernel_TrackingTarget_ref->VelocityX;
+		d.VelocityY = tcs_kernel_TrackingTarget_ref->VelocityY;
+		tcs_kernel_TrackingTarget_ref->syncO = 1;

@@ -1,3 +1,0 @@
-set COMMENT(m1m3.Electrical.voltage) "Voltage"
-set COMMENT(m1m3.Electrical.error) "Error"
-set COMMENT(m1m3.Electrical.status) "Status bits"

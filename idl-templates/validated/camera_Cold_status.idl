@@ -1,0 +1,12 @@
+struct Cold_status {
+  string<32> private_revCode;  //private
+  double     private_sndStamp; //private
+  double     private_rcvStamp; //private
+  long       private_seqNum;   //private
+  long       private_origin;   //private
+  short	Valve_status[6];	// 0.000 | none | Vacuum valve status published on change | none | Utility trunk | 6 |  43  |  86 
+  short	Mech_pump[4];	// 0.010 | none | Status (2 cryostat, 2 heat exch) | none | Utility trunk | 4 |  1,728  |  6,912 
+  long	RGA[10];	// 0.010 | ?? | Two RGAs, 5 gasses each | none | Cryostat | 10 |  ??  |  ?? 
+  short	Flow_interlock[6];	// 0.010 | none | Compressor water flow interlock | none | Utility room | 6 |  2,592  |  5,184 
+};
+#pragma keylist Cold_status

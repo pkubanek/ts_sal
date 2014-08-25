@@ -1,0 +1,3 @@
+		tcs_kernel_OpticsVt_ref->tilt = samples[i].tilt;
+		tcs_kernel_OpticsVt_ref->tip = samples[i].tip;
+		tcs_kernel_OpticsVt_ref->syncI++;

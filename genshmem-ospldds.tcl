@@ -366,31 +366,34 @@ global NDDS_VERSION NDDSPUBLOOPSIZE
 }
 
 proc parsemakefile { sublist publist } {
-global LVERSION
+global LVERSION scriptdir
   set basename [lindex [split [lindex "$sublist $publist" 0] _] 0]
-  set mf [lindex [glob makefile*$LVERSION] 0]
-  set fin [open $mf r]
+  set fin [open $scriptdir/code/makefile.ospl r]
   set fout [open makefile w]
   while { [gets $fin rec] > -1 } {
     if { [string range $rec 0 3] != "EXEC" } {
-       if { [string range $rec 0 12] == "COMMONSOURCES" } {
-          puts $fout "COMMONSOURCES	= \\"
+       if { [string range $rec 0 12] == "SAL_SOURCE_FILES" } {
+          puts $fout "SAL_SOURCE_FILES	= \\"
           foreach s "$sublist $publist" {
              if { [info exists done($s)] == 0 } {
-                puts $fout "	[set s].c [set s]Plugin.c [set s]Support.c \\"
+                puts $fout "	[set s]_publisher.c [set s]_subscriber.c \\
+                puts $fout "	[set s]_shmem_tester.c [set s]_shmem_publisher.c [set s]_shmem_subscriber.c \\"
                 set done($s) 1
              }
           }
           puts $fout "\n\n"
-       } else {
-          if { [string range $rec 0 6] == "LIBS = " } {
-             puts $fout $rec
-             puts $fout "	./libshmSAL_linux.so \\"
-          } else {
-             puts $fout $rec
+          foreach s "$sublist $publist" {
+             if { [info exists done2($s)] == 0 } {
+                puts $fout "	[set s].c ospl-[set s]/[set s]SplDcps.c  ospl-[set s]/[set s]SacDcps.c \\"
+                set done2($s) 1
+             }
           }
+          puts $fout "\n\n"
+       } else {
+          puts $fout $rec
        }
     } else {
+       set progs ""
        puts $fout "EXEC          = \\"
        foreach subsys $sublist {
           puts $fout "		[set subsys]_subscriber \\
@@ -408,6 +411,22 @@ global LVERSION
           puts $fout "		[set basename]_shmem_publisher \\"
        }
        puts $fout "\n\n"
+       foreach s "$sublist $publist" {
+             if { [info exists done3($s)] == 0 } {
+                puts $fout "lib$s.so : \$(DCPS_OBJ_FILES) \$(SAL_OBJ_FILES)"
+                puts $fout "@\$(CC) \$(DCPS_OBJ_FILES) \$(SAL_OBJ_FILES) \$(LD_FLAGS) -L\$(OSPL_HOME)/lib -o \$@ \$^ $(OSPLICE_LIBS) \$(LD_LIBS)\n\n"
+                set done3($s) 1
+             }
+       }
+       foreach s "$sublist $publist" {
+         foreach p "subscriber publisher shmem_subscriber shmem_publisher shmem_tester" {
+           if { [info exists done3($s)] == 0 } {
+             puts $fout "$s_$p : \$(DCPS_OBJ_FILES) \$(SAL_OBJ_FILES) $s_$p.o"
+             puts $fout"	@\$(CC) \$(DCPS_OBJ_FILES) $s_$p.o ./lib$s.so \$(LD_FLAGS) -L\$(OSPL_HOME)/lib -o $@ \$^ \$(OSPLICE_LIBS) \$(LD_LIBS)\n\n"
+             set done4($s) 1
+           }
+         }
+       }
     }
   }
   close $fin 
@@ -415,27 +434,11 @@ global LVERSION
 }
 
 proc osplddsgen { topiclist {lang c} } {
-global WORKING
+global WORKING env
    foreach t $topiclist {
       exec mkdir -p $WORKING/ospl-$t
-      set fin [open $WORKING/$t.idl r]
-      set fout [open $WORKING/ospl-$t/$t.idl w]
-      puts $fout "module M$t
-\{
-  struct $t
-  \{
-	unsigned long       block;"
-      gets $fin rec
-      while { [gets $fin rec] > -1 } {
-           puts $fout "	$rec"
-      }
-      puts $fout "  #pragma keylist $t block     
-\};
-"
-      close $fin
-      close $fout
       foreach l $lang {
-        exec idlpp -d $WORKING/ospl-$t -S -l $l $WORKING/ospl-$t/$t.idl
+        exec idlpp -d $WORKING/ospl-$t -S -l $l $WORKING/$t.idl -I$env(OSPL_HOME)/etc/idl
       }
    }
 }

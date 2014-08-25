@@ -1,0 +1,8 @@
+		d.repeat = m2_response_ref->repeat;
+		d.submits = m2_response_ref->submits;
+		d.cmdID = m2_response_ref->cmdID;
+		d.timeout = m2_response_ref->timeout;
+		strncpy(d.ack,m2_response_ref->ack,16);
+		strncpy(d.error,m2_response_ref->error,16);
+		strncpy(d.result,m2_response_ref->result,64);
+		m2_response_ref->syncO = 1;

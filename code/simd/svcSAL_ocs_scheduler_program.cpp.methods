@@ -1,0 +1,204 @@
+
+	svcRTN salocs_scheduler_program::getItem ( svcIID itemId , svcLONG &value )
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    switch (itemId) {
+
+                 case SAL_IID_ocs_scheduler_program_id :
+                      value = data.id;
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_ocs_scheduler_program_priority :
+                      value = data.priority;
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_ocs_scheduler_program_status :
+                      value = data.status;
+                      result = SAL__OK;
+                      break;
+
+	    }
+	    return result;
+	}
+	
+
+
+	svcRTN salocs_scheduler_program::setItem ( svcIID itemId , svcLONG &value )
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    switch (itemId) {
+
+                 case SAL_IID_ocs_scheduler_program_id :
+                      data.id = value;
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_ocs_scheduler_program_priority :
+                      data.priority = value;
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_ocs_scheduler_program_status :
+                      data.status = value;
+                      result = SAL__OK;
+                      break;
+
+	    }
+	    return result;
+	}
+	
+
+
+       svcRTN salocs_scheduler_program::setItemStr ( svcIID itemId , svcCHAR *textValue)
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    
+	    switch (itemid) {
+
+                 case SAL_IID_ocs_scheduler_program_id :
+                      sscanf(textValue,"%ld",&data.id);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_ocs_scheduler_program_priority :
+                      sscanf(textValue,"%ld",&data.priority);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_ocs_scheduler_program_status :
+                      sscanf(textValue,"%ld",&data.status);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_ocs_scheduler_program_completion :
+                      sscanf(textValue,"%lf",&data.completion);
+                      result = SAL__OK;
+                      break;
+
+	    }
+	    return result;
+	}
+
+       svcRTN salocs_scheduler_program::getItemStr ( svcIID itemId , svcCHAR *textValue)
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    
+	    switch (itemid) {
+
+                 case SAL_IID_ocs_scheduler_program_id :
+                      sprintf(textValue,"%ld",data.id);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_ocs_scheduler_program_priority :
+                      sprintf(textValue,"%ld",data.priority);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_ocs_scheduler_program_status :
+                      sprintf(textValue,"%ld",data.status);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_ocs_scheduler_program_completion :
+                      sprintf(textValue,"%lf",data.completion);
+                      result = SAL__OK;
+                      break;
+
+	    }
+	    return result;
+	}
+
+	svcRTN salocs_scheduler_program::getItem ( svcIID itemId , svcFLT &value )
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    switch (itemId) {
+
+                 case SAL_IID_ocs_scheduler_program_completion :
+                      value = data.completion;
+                      result = SAL__OK;
+                      break;
+
+	    }
+	    return result;
+	}
+	
+
+
+	svcRTN salocs_scheduler_program::setItem ( svcIID itemId , svcFLT &value )
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    switch (itemId) {
+
+                 case SAL_IID_ocs_scheduler_program_completion :
+                      data.completion = value;
+                      result = SAL__OK;
+                      break;
+
+	    }
+	    return result;
+	}
+	
+
+
+       svcRTN salocs_scheduler_program::setItemStr ( svcIID itemId , svcCHAR *textValue)
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    
+	    switch (itemid) {
+
+                 case SAL_IID_ocs_scheduler_program_id :
+                      sscanf(textValue,"%ld",&data.id);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_ocs_scheduler_program_priority :
+                      sscanf(textValue,"%ld",&data.priority);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_ocs_scheduler_program_status :
+                      sscanf(textValue,"%ld",&data.status);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_ocs_scheduler_program_completion :
+                      sscanf(textValue,"%lf",&data.completion);
+                      result = SAL__OK;
+                      break;
+
+	    }
+	    return result;
+	}
+
+       svcRTN salocs_scheduler_program::getItemStr ( svcIID itemId , svcCHAR *textValue)
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    
+	    switch (itemid) {
+
+                 case SAL_IID_ocs_scheduler_program_id :
+                      sprintf(textValue,"%ld",data.id);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_ocs_scheduler_program_priority :
+                      sprintf(textValue,"%ld",data.priority);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_ocs_scheduler_program_status :
+                      sprintf(textValue,"%ld",data.status);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_ocs_scheduler_program_completion :
+                      sprintf(textValue,"%lf",data.completion);
+                      result = SAL__OK;
+                      break;
+
+	    }
+	    return result;
+	}

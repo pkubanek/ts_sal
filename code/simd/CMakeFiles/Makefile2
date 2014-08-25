@@ -44,10 +44,10 @@ CMAKE_COMMAND = /usr/bin/cmake
 RM = /usr/bin/cmake -E remove -f
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /opt/simd-cxx-v0.9/demo/TopicId
+CMAKE_SOURCE_DIR = SAL_WORK_DIR
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /opt/simd-cxx-v0.9/demo/TopicId
+CMAKE_BINARY_DIR = SAL_WORK_DIR
 
 #=============================================================================
 # Target rules for target CMakeFiles/TopicId-asub.dir
@@ -56,7 +56,7 @@ CMAKE_BINARY_DIR = /opt/simd-cxx-v0.9/demo/TopicId
 CMakeFiles/TopicId-asub.dir/all: CMakeFiles/datamodel.dir/all
 	$(MAKE) -f CMakeFiles/TopicId-asub.dir/build.make CMakeFiles/TopicId-asub.dir/depend
 	$(MAKE) -f CMakeFiles/TopicId-asub.dir/build.make CMakeFiles/TopicId-asub.dir/build
-	$(CMAKE_COMMAND) -E cmake_progress_report /opt/simd-cxx-v0.9/demo/TopicId/CMakeFiles  1
+	$(CMAKE_COMMAND) -E cmake_progress_report SAL_WORK_DIR/CMakeFiles  1
 	@echo "Built target TopicId-asub"
 .PHONY : CMakeFiles/TopicId-asub.dir/all
 
@@ -66,9 +66,9 @@ all: CMakeFiles/TopicId-asub.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/TopicId-asub.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /opt/simd-cxx-v0.9/demo/TopicId/CMakeFiles 6
+	$(CMAKE_COMMAND) -E cmake_progress_start SAL_WORK_DIR/CMakeFiles 6
 	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/TopicId-asub.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /opt/simd-cxx-v0.9/demo/TopicId/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start SAL_WORK_DIR/CMakeFiles 0
 .PHONY : CMakeFiles/TopicId-asub.dir/rule
 
 # Convenience name for target.
@@ -91,7 +91,7 @@ clean: CMakeFiles/TopicId-asub.dir/clean
 CMakeFiles/TopicId-pub.dir/all: CMakeFiles/datamodel.dir/all
 	$(MAKE) -f CMakeFiles/TopicId-pub.dir/build.make CMakeFiles/TopicId-pub.dir/depend
 	$(MAKE) -f CMakeFiles/TopicId-pub.dir/build.make CMakeFiles/TopicId-pub.dir/build
-	$(CMAKE_COMMAND) -E cmake_progress_report /opt/simd-cxx-v0.9/demo/TopicId/CMakeFiles  2
+	$(CMAKE_COMMAND) -E cmake_progress_report SAL_WORK_DIR/CMakeFiles  2
 	@echo "Built target TopicId-pub"
 .PHONY : CMakeFiles/TopicId-pub.dir/all
 
@@ -101,9 +101,9 @@ all: CMakeFiles/TopicId-pub.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/TopicId-pub.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /opt/simd-cxx-v0.9/demo/TopicId/CMakeFiles 6
+	$(CMAKE_COMMAND) -E cmake_progress_start SAL_WORK_DIR/CMakeFiles 6
 	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/TopicId-pub.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /opt/simd-cxx-v0.9/demo/TopicId/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start SAL_WORK_DIR/CMakeFiles 0
 .PHONY : CMakeFiles/TopicId-pub.dir/rule
 
 # Convenience name for target.
@@ -126,7 +126,7 @@ clean: CMakeFiles/TopicId-pub.dir/clean
 CMakeFiles/TopicId-sub.dir/all: CMakeFiles/datamodel.dir/all
 	$(MAKE) -f CMakeFiles/TopicId-sub.dir/build.make CMakeFiles/TopicId-sub.dir/depend
 	$(MAKE) -f CMakeFiles/TopicId-sub.dir/build.make CMakeFiles/TopicId-sub.dir/build
-	$(CMAKE_COMMAND) -E cmake_progress_report /opt/simd-cxx-v0.9/demo/TopicId/CMakeFiles  3
+	$(CMAKE_COMMAND) -E cmake_progress_report SAL_WORK_DIR/CMakeFiles  3
 	@echo "Built target TopicId-sub"
 .PHONY : CMakeFiles/TopicId-sub.dir/all
 
@@ -136,9 +136,9 @@ all: CMakeFiles/TopicId-sub.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/TopicId-sub.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /opt/simd-cxx-v0.9/demo/TopicId/CMakeFiles 6
+	$(CMAKE_COMMAND) -E cmake_progress_start SAL_WORK_DIR/CMakeFiles 6
 	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/TopicId-sub.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /opt/simd-cxx-v0.9/demo/TopicId/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start SAL_WORK_DIR/CMakeFiles 0
 .PHONY : CMakeFiles/TopicId-sub.dir/rule
 
 # Convenience name for target.
@@ -161,7 +161,7 @@ clean: CMakeFiles/TopicId-sub.dir/clean
 CMakeFiles/datamodel.dir/all:
 	$(MAKE) -f CMakeFiles/datamodel.dir/build.make CMakeFiles/datamodel.dir/depend
 	$(MAKE) -f CMakeFiles/datamodel.dir/build.make CMakeFiles/datamodel.dir/build
-	$(CMAKE_COMMAND) -E cmake_progress_report /opt/simd-cxx-v0.9/demo/TopicId/CMakeFiles  4 5 6 7 8
+	$(CMAKE_COMMAND) -E cmake_progress_report SAL_WORK_DIR/CMakeFiles  4 5 6 7 8
 	@echo "Built target datamodel"
 .PHONY : CMakeFiles/datamodel.dir/all
 
@@ -171,9 +171,9 @@ all: CMakeFiles/datamodel.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/datamodel.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /opt/simd-cxx-v0.9/demo/TopicId/CMakeFiles 5
+	$(CMAKE_COMMAND) -E cmake_progress_start SAL_WORK_DIR/CMakeFiles 5
 	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/datamodel.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /opt/simd-cxx-v0.9/demo/TopicId/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start SAL_WORK_DIR/CMakeFiles 0
 .PHONY : CMakeFiles/datamodel.dir/rule
 
 # Convenience name for target.

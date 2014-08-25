@@ -1,0 +1,6 @@
+		strncpy(d.algorithm,ocs_scheduler_parameters_ref->algorithm,32);
+		strncpy(d.p1,ocs_scheduler_parameters_ref->p1,32);
+		strncpy(d.p2,ocs_scheduler_parameters_ref->p2,32);
+		strncpy(d.p3,ocs_scheduler_parameters_ref->p3,32);
+		strncpy(d.p4,ocs_scheduler_parameters_ref->p4,32);
+		ocs_scheduler_parameters_ref->syncO = 1;

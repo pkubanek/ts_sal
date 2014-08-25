@@ -1,0 +1,7 @@
+	svcUSHORT	raftID;
+	svcULONG	flags[133];
+	svcULONG	status[133];
+	svcFLT	voltage1[133];
+	svcFLT	voltage2[133];
+	svcFLT	voltage3[133];
+	svcFLT	voltage4[133];

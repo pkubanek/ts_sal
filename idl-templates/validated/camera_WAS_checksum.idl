@@ -1,0 +1,10 @@
+struct WAS_checksum {
+  string<32> private_revCode;  //private
+  double     private_sndStamp; //private
+  double     private_rcvStamp; //private
+  long       private_seqNum;   //private
+  long       private_origin;   //private
+  long	FPGACheckSum[2];	// 2.31E-05 | none | FPGA Configuration checksum (2/CCD) | none | Corner rafts | 16 |  16  |  64 
+  unsigned short	REB_ID;	// none | | Raft Electronics Board ID
+};
+#pragma keylist WAS_checksum

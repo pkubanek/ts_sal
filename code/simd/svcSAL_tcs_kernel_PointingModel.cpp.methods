@@ -1,0 +1,562 @@
+
+	svcRTN saltcs_kernel_PointingModel::getItem ( svcIID itemId , svcLONG &value )
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    switch (itemId) {
+
+                 case SAL_IID_tcs_kernel_PointingModel_Nterml :
+                      value = data.Nterml;
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_PointingModel_Nterms :
+                      value = data.Nterms;
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_PointingModel_Ntermx :
+                      value = data.Ntermx;
+                      result = SAL__OK;
+                      break;
+
+	    }
+	    return result;
+	}
+	
+
+
+	svcRTN saltcs_kernel_PointingModel::setItem ( svcIID itemId , svcLONG &value )
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    switch (itemId) {
+
+                 case SAL_IID_tcs_kernel_PointingModel_Nterml :
+                      data.Nterml = value;
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_PointingModel_Nterms :
+                      data.Nterms = value;
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_PointingModel_Ntermx :
+                      data.Ntermx = value;
+                      result = SAL__OK;
+                      break;
+
+	    }
+	    return result;
+	}
+	
+
+
+       svcRTN saltcs_kernel_PointingModel::setItemStr ( svcIID itemId , svcCHAR *textValue)
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    
+	    switch (itemid) {
+
+                 case SAL_IID_tcs_kernel_PointingModel_Nterml :
+                      sscanf(textValue,"%ld",&data.Nterml);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_PointingModel_Nterms :
+                      sscanf(textValue,"%ld",&data.Nterms);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_PointingModel_Ntermx :
+                      sscanf(textValue,"%ld",&data.Ntermx);
+                      result = SAL__OK;
+                      break;
+
+	    }
+	    return result;
+	}
+
+       svcRTN saltcs_kernel_PointingModel::getItemStr ( svcIID itemId , svcCHAR *textValue)
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    
+	    switch (itemid) {
+
+                 case SAL_IID_tcs_kernel_PointingModel_Nterml :
+                      sprintf(textValue,"%ld",data.Nterml);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_PointingModel_Nterms :
+                      sprintf(textValue,"%ld",data.Nterms);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_PointingModel_Ntermx :
+                      sprintf(textValue,"%ld",data.Ntermx);
+                      result = SAL__OK;
+                      break;
+
+	    }
+	    return result;
+	}
+
+	svcRTN saltcs_kernel_PointingModel::getItem ( svcIID itemId , (svcCHAR *)value )
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    switch (itemId) {
+	    
+
+
+                 case SAL_IID_tcs_kernel_PointingModel_Coeff1 :
+                      strncpy(value, data.Coeff1, 32);
+                      result = SAL__OK;
+                      break;
+
+
+                 case SAL_IID_tcs_kernel_PointingModel_Coeff2 :
+                      strncpy(value, data.Coeff2, 32);
+                      result = SAL__OK;
+                      break;
+
+
+                 case SAL_IID_tcs_kernel_PointingModel_Coeff3 :
+                      strncpy(value, data.Coeff3, 32);
+                      result = SAL__OK;
+                      break;
+
+
+                 case SAL_IID_tcs_kernel_PointingModel_Coeff4 :
+                      strncpy(value, data.Coeff4, 32);
+                      result = SAL__OK;
+                      break;
+
+
+                 case SAL_IID_tcs_kernel_PointingModel_Coeff5 :
+                      strncpy(value, data.Coeff5, 32);
+                      result = SAL__OK;
+                      break;
+
+
+                 case SAL_IID_tcs_kernel_PointingModel_Coeff6 :
+                      strncpy(value, data.Coeff6, 32);
+                      result = SAL__OK;
+                      break;
+
+
+                 case SAL_IID_tcs_kernel_PointingModel_Coeff7 :
+                      strncpy(value, data.Coeff7, 32);
+                      result = SAL__OK;
+                      break;
+
+
+                 case SAL_IID_tcs_kernel_PointingModel_Coeff8 :
+                      strncpy(value, data.Coeff8, 32);
+                      result = SAL__OK;
+                      break;
+
+
+                 case SAL_IID_tcs_kernel_PointingModel_Coeff9 :
+                      strncpy(value, data.Coeff9, 32);
+                      result = SAL__OK;
+                      break;
+
+
+                 case SAL_IID_tcs_kernel_PointingModel_Cofor1 :
+                      strncpy(value, data.Cofor1, 32);
+                      result = SAL__OK;
+                      break;
+
+
+                 case SAL_IID_tcs_kernel_PointingModel_Cofor2 :
+                      strncpy(value, data.Cofor2, 32);
+                      result = SAL__OK;
+                      break;
+
+
+                 case SAL_IID_tcs_kernel_PointingModel_Cofor3 :
+                      strncpy(value, data.Cofor3, 32);
+                      result = SAL__OK;
+                      break;
+
+
+                 case SAL_IID_tcs_kernel_PointingModel_Cofor4 :
+                      strncpy(value, data.Cofor4, 32);
+                      result = SAL__OK;
+                      break;
+
+
+                 case SAL_IID_tcs_kernel_PointingModel_Cofor5 :
+                      strncpy(value, data.Cofor5, 32);
+                      result = SAL__OK;
+                      break;
+
+
+                 case SAL_IID_tcs_kernel_PointingModel_Cofor6 :
+                      strncpy(value, data.Cofor6, 32);
+                      result = SAL__OK;
+                      break;
+
+
+                 case SAL_IID_tcs_kernel_PointingModel_Cofor7 :
+                      strncpy(value, data.Cofor7, 32);
+                      result = SAL__OK;
+                      break;
+
+
+                 case SAL_IID_tcs_kernel_PointingModel_Cofor8 :
+                      strncpy(value, data.Cofor8, 32);
+                      result = SAL__OK;
+                      break;
+
+
+                 case SAL_IID_tcs_kernel_PointingModel_Cofor9 :
+                      strncpy(value, data.Cofor9, 32);
+                      result = SAL__OK;
+                      break;
+
+
+	    }
+	    return result;
+	}
+	
+
+
+	svcRTN saltcs_kernel_PointingModel::setItem ( svcIID itemId , (svcCHAR *)value )
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    switch (itemId) {
+	    
+
+
+                 case SAL_IID_tcs_kernel_PointingModel_Coeff1 :
+                      strncpy(data.Coeff1, value, 32);
+                      result = SAL__OK;
+                      break;
+
+
+                 case SAL_IID_tcs_kernel_PointingModel_Coeff2 :
+                      strncpy(data.Coeff2, value, 32);
+                      result = SAL__OK;
+                      break;
+
+
+                 case SAL_IID_tcs_kernel_PointingModel_Coeff3 :
+                      strncpy(data.Coeff3, value, 32);
+                      result = SAL__OK;
+                      break;
+
+
+                 case SAL_IID_tcs_kernel_PointingModel_Coeff4 :
+                      strncpy(data.Coeff4, value, 32);
+                      result = SAL__OK;
+                      break;
+
+
+                 case SAL_IID_tcs_kernel_PointingModel_Coeff5 :
+                      strncpy(data.Coeff5, value, 32);
+                      result = SAL__OK;
+                      break;
+
+
+                 case SAL_IID_tcs_kernel_PointingModel_Coeff6 :
+                      strncpy(data.Coeff6, value, 32);
+                      result = SAL__OK;
+                      break;
+
+
+                 case SAL_IID_tcs_kernel_PointingModel_Coeff7 :
+                      strncpy(data.Coeff7, value, 32);
+                      result = SAL__OK;
+                      break;
+
+
+                 case SAL_IID_tcs_kernel_PointingModel_Coeff8 :
+                      strncpy(data.Coeff8, value, 32);
+                      result = SAL__OK;
+                      break;
+
+
+                 case SAL_IID_tcs_kernel_PointingModel_Coeff9 :
+                      strncpy(data.Coeff9, value, 32);
+                      result = SAL__OK;
+                      break;
+
+
+                 case SAL_IID_tcs_kernel_PointingModel_Cofor1 :
+                      strncpy(data.Cofor1, value, 32);
+                      result = SAL__OK;
+                      break;
+
+
+                 case SAL_IID_tcs_kernel_PointingModel_Cofor2 :
+                      strncpy(data.Cofor2, value, 32);
+                      result = SAL__OK;
+                      break;
+
+
+                 case SAL_IID_tcs_kernel_PointingModel_Cofor3 :
+                      strncpy(data.Cofor3, value, 32);
+                      result = SAL__OK;
+                      break;
+
+
+                 case SAL_IID_tcs_kernel_PointingModel_Cofor4 :
+                      strncpy(data.Cofor4, value, 32);
+                      result = SAL__OK;
+                      break;
+
+
+                 case SAL_IID_tcs_kernel_PointingModel_Cofor5 :
+                      strncpy(data.Cofor5, value, 32);
+                      result = SAL__OK;
+                      break;
+
+
+                 case SAL_IID_tcs_kernel_PointingModel_Cofor6 :
+                      strncpy(data.Cofor6, value, 32);
+                      result = SAL__OK;
+                      break;
+
+
+                 case SAL_IID_tcs_kernel_PointingModel_Cofor7 :
+                      strncpy(data.Cofor7, value, 32);
+                      result = SAL__OK;
+                      break;
+
+
+                 case SAL_IID_tcs_kernel_PointingModel_Cofor8 :
+                      strncpy(data.Cofor8, value, 32);
+                      result = SAL__OK;
+                      break;
+
+
+                 case SAL_IID_tcs_kernel_PointingModel_Cofor9 :
+                      strncpy(data.Cofor9, value, 32);
+                      result = SAL__OK;
+                      break;
+
+
+	    }
+	    return result;
+	}
+	
+
+
+       svcRTN saltcs_kernel_PointingModel::setItemStr ( svcIID itemId , svcCHAR *textValue)
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    
+	    switch (itemid) {
+
+                 case SAL_IID_tcs_kernel_PointingModel_Nterml :
+                      sscanf(textValue,"%ld",&data.Nterml);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_PointingModel_Nterms :
+                      sscanf(textValue,"%ld",&data.Nterms);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_PointingModel_Ntermx :
+                      sscanf(textValue,"%ld",&data.Ntermx);
+                      result = SAL__OK;
+                      break;
+
+	    }
+	    return result;
+	}
+
+       svcRTN saltcs_kernel_PointingModel::getItemStr ( svcIID itemId , svcCHAR *textValue)
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    
+	    switch (itemid) {
+
+                 case SAL_IID_tcs_kernel_PointingModel_Nterml :
+                      sprintf(textValue,"%ld",data.Nterml);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_PointingModel_Nterms :
+                      sprintf(textValue,"%ld",data.Nterms);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_PointingModel_Ntermx :
+                      sprintf(textValue,"%ld",data.Ntermx);
+                      result = SAL__OK;
+                      break;
+
+	    }
+	    return result;
+	}
+
+	svcRTN saltcs_kernel_PointingModel::getItem ( svcIID itemId , svcLONG &value, svcUINT size)
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    switch (itemId) {
+
+                 case SAL_IID_tcs_kernel_PointingModel_Model :
+                      if { size > 31 } {return SAL__INDEX_OUT_OF_RANGE;}
+                      for (unsigned int count=0; count<size; count++) {
+                        value[count] = data.Model[count];
+                      }
+                      result = SAL__OK;
+                      break;
+
+	    }
+	    return result;
+	}
+
+ 	svcRTN saltcs_kernel_PointingModel::setItem ( svcIID itemId , svcLONG &value , svcUINT size)
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    switch (itemId) {
+
+                 case SAL_IID_tcs_kernel_PointingModel_Model :
+                      if { size > 31 } {return SAL__INDEX_OUT_OF_RANGE;}
+                      for (unsigned int count=0; count<size; count++) {
+                        data.Model[count] = value[count];
+                      }
+                      result = SAL__OK;
+                      break;
+
+	    }
+	    return result;
+	}
+
+       svcRTN saltcs_kernel_PointingModel::setItemStr ( svcIID itemId , svcCHAR *textValue)
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    
+	    switch (itemid) {
+
+                 case SAL_IID_tcs_kernel_PointingModel_Nterml :
+                      sscanf(textValue,"%ld",&data.Nterml);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_PointingModel_Nterms :
+                      sscanf(textValue,"%ld",&data.Nterms);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_PointingModel_Ntermx :
+                      sscanf(textValue,"%ld",&data.Ntermx);
+                      result = SAL__OK;
+                      break;
+
+	    }
+	    return result;
+	}
+
+       svcRTN saltcs_kernel_PointingModel::getItemStr ( svcIID itemId , svcCHAR *textValue)
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    
+	    switch (itemid) {
+
+                 case SAL_IID_tcs_kernel_PointingModel_Nterml :
+                      sprintf(textValue,"%ld",data.Nterml);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_PointingModel_Nterms :
+                      sprintf(textValue,"%ld",data.Nterms);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_PointingModel_Ntermx :
+                      sprintf(textValue,"%ld",data.Ntermx);
+                      result = SAL__OK;
+                      break;
+
+	    }
+	    return result;
+	}
+
+	svcRTN saltcs_kernel_PointingModel::getItem ( svcIID itemId , svcFLT &value, svcUINT size)
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    switch (itemId) {
+
+                 case SAL_IID_tcs_kernel_PointingModel_Coeffv :
+                      if { size > 101 } {return SAL__INDEX_OUT_OF_RANGE;}
+                      for (unsigned int count=0; count<size; count++) {
+                        value[count] = data.Coeffv[count];
+                      }
+                      result = SAL__OK;
+                      break;
+
+	    }
+	    return result;
+	}
+
+ 	svcRTN saltcs_kernel_PointingModel::setItem ( svcIID itemId , svcFLT &value , svcUINT size)
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    switch (itemId) {
+
+                 case SAL_IID_tcs_kernel_PointingModel_Coeffv :
+                      if { size > 101 } {return SAL__INDEX_OUT_OF_RANGE;}
+                      for (unsigned int count=0; count<size; count++) {
+                        data.Coeffv[count] = value[count];
+                      }
+                      result = SAL__OK;
+                      break;
+
+	    }
+	    return result;
+	}
+
+       svcRTN saltcs_kernel_PointingModel::setItemStr ( svcIID itemId , svcCHAR *textValue)
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    
+	    switch (itemid) {
+
+                 case SAL_IID_tcs_kernel_PointingModel_Nterml :
+                      sscanf(textValue,"%ld",&data.Nterml);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_PointingModel_Nterms :
+                      sscanf(textValue,"%ld",&data.Nterms);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_PointingModel_Ntermx :
+                      sscanf(textValue,"%ld",&data.Ntermx);
+                      result = SAL__OK;
+                      break;
+
+	    }
+	    return result;
+	}
+
+       svcRTN saltcs_kernel_PointingModel::getItemStr ( svcIID itemId , svcCHAR *textValue)
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    
+	    switch (itemid) {
+
+                 case SAL_IID_tcs_kernel_PointingModel_Nterml :
+                      sprintf(textValue,"%ld",data.Nterml);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_PointingModel_Nterms :
+                      sprintf(textValue,"%ld",data.Nterms);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_PointingModel_Ntermx :
+                      sprintf(textValue,"%ld",data.Ntermx);
+                      result = SAL__OK;
+                      break;
+
+	    }
+	    return result;
+	}

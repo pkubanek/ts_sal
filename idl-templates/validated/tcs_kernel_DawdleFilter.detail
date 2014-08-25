@@ -1,0 +1,2 @@
+tcs.kernel.DawdleFilter.Bypass 1 long 0.1
+tcs.kernel.DawdleFilter.T 1 float 0.1

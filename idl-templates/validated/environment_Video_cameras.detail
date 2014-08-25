@@ -1,0 +1,2 @@
+environment.Video.cameras.Raw 16 long 0.1
+environment.Video.cameras.Calibrated 32 float 0.1

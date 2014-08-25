@@ -1,0 +1,13 @@
+		for (unsigned int count=0; count<17; count++) {
+			d.status[count] = m2_TC_ref->status[count];
+		}
+		for (unsigned int count=0; count<17; count++) {
+			d.error[count] = m2_TC_ref->error[count];
+		}
+		for (unsigned int count=0; count<17; count++) {
+			d.setpoint[count] = m2_TC_ref->setpoint[count];
+		}
+		for (unsigned int count=0; count<17; count++) {
+			d.temperature[count] = m2_TC_ref->temperature[count];
+		}
+		m2_TC_ref->syncO = 1;

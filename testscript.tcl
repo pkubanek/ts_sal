@@ -11,7 +11,7 @@ global env FormData
 }
 
 
-source /opt/lsstsal/scripts/GetPostedData.tcl
+source /usr/local/scripts/tcl/GetPostedData.tcl
 
 GetPostedData
 puts stdout "Content-type: text/html\n\n"

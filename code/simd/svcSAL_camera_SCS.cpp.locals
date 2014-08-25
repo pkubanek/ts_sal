@@ -1,0 +1,4 @@
+	svcULONG	flags;
+	char	[32];
+	svcFLT	close_profile[1025];
+	svcFLT	open_profile[1025];

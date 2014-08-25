@@ -1,0 +1,78 @@
+
+	    case SAL_IID_m1m3_ActuatorSample :
+	    	salTopic = (m1m3_ActuatorSample *)new m1m3_ActuatorSample();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_m1m3_Actuators :
+	    	salTopic = (m1m3_Actuators *)new m1m3_Actuators();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_m1m3_Application :
+	    	salTopic = (m1m3_Application *)new m1m3_Application();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_m1m3_Electrical :
+	    	salTopic = (m1m3_Electrical *)new m1m3_Electrical();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_m1m3_LUT :
+	    	salTopic = (m1m3_LUT *)new m1m3_LUT();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_m1m3_LimitSensors :
+	    	salTopic = (m1m3_LimitSensors *)new m1m3_LimitSensors();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_m1m3_Metrology :
+	    	salTopic = (m1m3_Metrology *)new m1m3_Metrology();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_m1m3_Support :
+	    	salTopic = (m1m3_Support *)new m1m3_Support();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_m1m3_Supports :
+	    	salTopic = (m1m3_Supports *)new m1m3_Supports();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_m1m3_Surface :
+	    	salTopic = (m1m3_Surface *)new m1m3_Surface();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_m1m3_TC :
+	    	salTopic = (m1m3_TC *)new m1m3_TC();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_m1m3_command :
+	    	salTopic = (m1m3_command *)new m1m3_command();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_m1m3_response :
+	    	salTopic = (m1m3_response *)new m1m3_response();
+		result = SAL__OK;
+		break;
+

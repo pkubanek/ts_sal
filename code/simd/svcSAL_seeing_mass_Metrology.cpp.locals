@@ -1,0 +1,4 @@
+	svcUCHAR	Limits[64];
+	svcUCHAR	Status[64];
+	svcLONG	Raw[17];
+	svcFLT	Calibrated[17];

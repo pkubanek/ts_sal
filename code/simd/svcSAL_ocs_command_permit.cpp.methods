@@ -1,0 +1,136 @@
+
+	svcRTN salocs_command_permit::getItem ( svcIID itemId , (svcCHAR *)value )
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    switch (itemId) {
+	    
+
+
+                 case SAL_IID_ocs_command_permit_command :
+                      strncpy(value, data.command, 32);
+                      result = SAL__OK;
+                      break;
+
+
+                 case SAL_IID_ocs_command_permit_device :
+                      strncpy(value, data.device, 128);
+                      result = SAL__OK;
+                      break;
+
+
+                 case SAL_IID_ocs_command_permit_subsystem :
+                      strncpy(value, data.subsystem, 128);
+                      result = SAL__OK;
+                      break;
+
+
+	    }
+	    return result;
+	}
+	
+
+
+	svcRTN salocs_command_permit::setItem ( svcIID itemId , (svcCHAR *)value )
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    switch (itemId) {
+	    
+
+
+                 case SAL_IID_ocs_command_permit_command :
+                      strncpy(data.command, value, 32);
+                      result = SAL__OK;
+                      break;
+
+
+                 case SAL_IID_ocs_command_permit_device :
+                      strncpy(data.device, value, 128);
+                      result = SAL__OK;
+                      break;
+
+
+                 case SAL_IID_ocs_command_permit_subsystem :
+                      strncpy(data.subsystem, value, 128);
+                      result = SAL__OK;
+                      break;
+
+
+	    }
+	    return result;
+	}
+	
+
+
+       svcRTN salocs_command_permit::setItemStr ( svcIID itemId , svcCHAR *textValue)
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    
+	    switch (itemid) {
+
+	    }
+	    return result;
+	}
+
+       svcRTN salocs_command_permit::getItemStr ( svcIID itemId , svcCHAR *textValue)
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    
+	    switch (itemid) {
+
+	    }
+	    return result;
+	}
+
+	svcRTN salocs_command_permit::getItem ( svcIID itemId , svcLONG &value, svcUINT size)
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    switch (itemId) {
+
+                 case SAL_IID_ocs_command_permit_actionmask :
+                      if { size > 9 } {return SAL__INDEX_OUT_OF_RANGE;}
+                      for (unsigned int count=0; count<size; count++) {
+                        value[count] = data.actionmask[count];
+                      }
+                      result = SAL__OK;
+                      break;
+
+	    }
+	    return result;
+	}
+
+ 	svcRTN salocs_command_permit::setItem ( svcIID itemId , svcLONG &value , svcUINT size)
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    switch (itemId) {
+
+                 case SAL_IID_ocs_command_permit_actionmask :
+                      if { size > 9 } {return SAL__INDEX_OUT_OF_RANGE;}
+                      for (unsigned int count=0; count<size; count++) {
+                        data.actionmask[count] = value[count];
+                      }
+                      result = SAL__OK;
+                      break;
+
+	    }
+	    return result;
+	}
+
+       svcRTN salocs_command_permit::setItemStr ( svcIID itemId , svcCHAR *textValue)
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    
+	    switch (itemid) {
+
+	    }
+	    return result;
+	}
+
+       svcRTN salocs_command_permit::getItemStr ( svcIID itemId , svcCHAR *textValue)
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    
+	    switch (itemid) {
+
+	    }
+	    return result;
+	}

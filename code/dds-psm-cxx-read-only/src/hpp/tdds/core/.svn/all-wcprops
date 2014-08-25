@@ -1,0 +1,23 @@
+K 25
+svn:wc:ra_dav:version-url
+V 41
+/svn/!svn/ver/164/trunk/src/hpp/tdds/core
+END
+corefwd.hpp
+K 25
+svn:wc:ra_dav:version-url
+V 53
+/svn/!svn/ver/128/trunk/src/hpp/tdds/core/corefwd.hpp
+END
+Entity.hpp
+K 25
+svn:wc:ra_dav:version-url
+V 52
+/svn/!svn/ver/147/trunk/src/hpp/tdds/core/Entity.hpp
+END
+InstanceHandle.hpp
+K 25
+svn:wc:ra_dav:version-url
+V 60
+/svn/!svn/ver/157/trunk/src/hpp/tdds/core/InstanceHandle.hpp
+END

@@ -1,0 +1,142 @@
+
+	svcRTN salocs_system_configuration::getItem ( svcIID itemId , svcLONG &value )
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    switch (itemId) {
+
+                 case SAL_IID_ocs_system_configuration_stationid :
+                      value = data.stationid;
+                      result = SAL__OK;
+                      break;
+
+	    }
+	    return result;
+	}
+	
+
+
+	svcRTN salocs_system_configuration::setItem ( svcIID itemId , svcLONG &value )
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    switch (itemId) {
+
+                 case SAL_IID_ocs_system_configuration_stationid :
+                      data.stationid = value;
+                      result = SAL__OK;
+                      break;
+
+	    }
+	    return result;
+	}
+	
+
+
+       svcRTN salocs_system_configuration::setItemStr ( svcIID itemId , svcCHAR *textValue)
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    
+	    switch (itemid) {
+
+                 case SAL_IID_ocs_system_configuration_stationid :
+                      sscanf(textValue,"%ld",&data.stationid);
+                      result = SAL__OK;
+                      break;
+
+	    }
+	    return result;
+	}
+
+       svcRTN salocs_system_configuration::getItemStr ( svcIID itemId , svcCHAR *textValue)
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    
+	    switch (itemid) {
+
+                 case SAL_IID_ocs_system_configuration_stationid :
+                      sprintf(textValue,"%ld",data.stationid);
+                      result = SAL__OK;
+                      break;
+
+	    }
+	    return result;
+	}
+
+	svcRTN salocs_system_configuration::getItem ( svcIID itemId , (svcCHAR *)value )
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    switch (itemId) {
+	    
+
+
+                 case SAL_IID_ocs_system_configuration_device :
+                      strncpy(value, data.device, 128);
+                      result = SAL__OK;
+                      break;
+
+
+                 case SAL_IID_ocs_system_configuration_subssystem :
+                      strncpy(value, data.subssystem, 128);
+                      result = SAL__OK;
+                      break;
+
+
+	    }
+	    return result;
+	}
+	
+
+
+	svcRTN salocs_system_configuration::setItem ( svcIID itemId , (svcCHAR *)value )
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    switch (itemId) {
+	    
+
+
+                 case SAL_IID_ocs_system_configuration_device :
+                      strncpy(data.device, value, 128);
+                      result = SAL__OK;
+                      break;
+
+
+                 case SAL_IID_ocs_system_configuration_subssystem :
+                      strncpy(data.subssystem, value, 128);
+                      result = SAL__OK;
+                      break;
+
+
+	    }
+	    return result;
+	}
+	
+
+
+       svcRTN salocs_system_configuration::setItemStr ( svcIID itemId , svcCHAR *textValue)
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    
+	    switch (itemid) {
+
+                 case SAL_IID_ocs_system_configuration_stationid :
+                      sscanf(textValue,"%ld",&data.stationid);
+                      result = SAL__OK;
+                      break;
+
+	    }
+	    return result;
+	}
+
+       svcRTN salocs_system_configuration::getItemStr ( svcIID itemId , svcCHAR *textValue)
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    
+	    switch (itemid) {
+
+                 case SAL_IID_ocs_system_configuration_stationid :
+                      sprintf(textValue,"%ld",data.stationid);
+                      result = SAL__OK;
+                      break;
+
+	    }
+	    return result;
+	}

@@ -1,0 +1,7 @@
+		for (unsigned int count=0; count<17; count++) {
+			d.Raw[count] = auxscope_Camera_ref->Raw[count];
+		}
+		for (unsigned int count=0; count<33; count++) {
+			d.Calibrated[count] = auxscope_Camera_ref->Calibrated[count];
+		}
+		auxscope_Camera_ref->syncO = 1;

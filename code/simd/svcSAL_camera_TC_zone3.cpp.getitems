@@ -1,0 +1,4 @@
+		result = salHandle->getSample(SAL__SLOWPOLL);
+		result = salHandle->getitem(SAL_IID_camera_TC_zone3_status, status, 51);
+		result = salHandle->getitem(SAL_IID_camera_TC_zone3_setpoint, setpoint, 51);
+		result = salHandle->getitem(SAL_IID_camera_TC_zone3_temperature, temperature, 51);

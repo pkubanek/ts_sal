@@ -1,0 +1,10 @@
+		for (unsigned int count=0; count<33; count++) {
+			d.coeff[count] = dm_pointing_wcs_ref->coeff[count];
+		}
+		for (unsigned int count=0; count<201; count++) {
+			d.dec[count] = dm_pointing_wcs_ref->dec[count];
+		}
+		for (unsigned int count=0; count<201; count++) {
+			d.ra[count] = dm_pointing_wcs_ref->ra[count];
+		}
+		dm_pointing_wcs_ref->syncO = 1;

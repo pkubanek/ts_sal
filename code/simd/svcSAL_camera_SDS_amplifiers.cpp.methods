@@ -1,0 +1,254 @@
+
+	svcRTN salcamera_SDS_amplifiers::getItem ( svcIID itemId , svcUSHORT &value )
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    switch (itemId) {
+
+                 case SAL_IID_camera_SDS_amplifiers_raftID :
+                      value = data.raftID;
+                      result = SAL__OK;
+                      break;
+
+	    }
+	    return result;
+	}
+	
+
+
+	svcRTN salcamera_SDS_amplifiers::setItem ( svcIID itemId , svcUSHORT &value )
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    switch (itemId) {
+
+                 case SAL_IID_camera_SDS_amplifiers_raftID :
+                      data.raftID = value;
+                      result = SAL__OK;
+                      break;
+
+	    }
+	    return result;
+	}
+	
+
+
+       svcRTN salcamera_SDS_amplifiers::setItemStr ( svcIID itemId , svcCHAR *textValue)
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    
+	    switch (itemid) {
+
+                 case SAL_IID_camera_SDS_amplifiers_raftID :
+                      sscanf(textValue,"%d",&data.raftID);
+                      result = SAL__OK;
+                      break;
+
+	    }
+	    return result;
+	}
+
+       svcRTN salcamera_SDS_amplifiers::getItemStr ( svcIID itemId , svcCHAR *textValue)
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    
+	    switch (itemid) {
+
+                 case SAL_IID_camera_SDS_amplifiers_raftID :
+                      sprintf(textValue,"%d",data.raftID);
+                      result = SAL__OK;
+                      break;
+
+	    }
+	    return result;
+	}
+
+	svcRTN salcamera_SDS_amplifiers::getItem ( svcIID itemId , svcULONG &value, svcUINT size)
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    switch (itemId) {
+
+                 case SAL_IID_camera_SDS_amplifiers_flags :
+                      if { size > 133 } {return SAL__INDEX_OUT_OF_RANGE;}
+                      for (unsigned int count=0; count<size; count++) {
+                        value[count] = data.flags[count];
+                      }
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_camera_SDS_amplifiers_status :
+                      if { size > 133 } {return SAL__INDEX_OUT_OF_RANGE;}
+                      for (unsigned int count=0; count<size; count++) {
+                        value[count] = data.status[count];
+                      }
+                      result = SAL__OK;
+                      break;
+
+	    }
+	    return result;
+	}
+
+ 	svcRTN salcamera_SDS_amplifiers::setItem ( svcIID itemId , svcULONG &value , svcUINT size)
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    switch (itemId) {
+
+                 case SAL_IID_camera_SDS_amplifiers_flags :
+                      if { size > 133 } {return SAL__INDEX_OUT_OF_RANGE;}
+                      for (unsigned int count=0; count<size; count++) {
+                        data.flags[count] = value[count];
+                      }
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_camera_SDS_amplifiers_status :
+                      if { size > 133 } {return SAL__INDEX_OUT_OF_RANGE;}
+                      for (unsigned int count=0; count<size; count++) {
+                        data.status[count] = value[count];
+                      }
+                      result = SAL__OK;
+                      break;
+
+	    }
+	    return result;
+	}
+
+       svcRTN salcamera_SDS_amplifiers::setItemStr ( svcIID itemId , svcCHAR *textValue)
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    
+	    switch (itemid) {
+
+                 case SAL_IID_camera_SDS_amplifiers_raftID :
+                      sscanf(textValue,"%d",&data.raftID);
+                      result = SAL__OK;
+                      break;
+
+	    }
+	    return result;
+	}
+
+       svcRTN salcamera_SDS_amplifiers::getItemStr ( svcIID itemId , svcCHAR *textValue)
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    
+	    switch (itemid) {
+
+                 case SAL_IID_camera_SDS_amplifiers_raftID :
+                      sprintf(textValue,"%d",data.raftID);
+                      result = SAL__OK;
+                      break;
+
+	    }
+	    return result;
+	}
+
+	svcRTN salcamera_SDS_amplifiers::getItem ( svcIID itemId , svcFLT &value, svcUINT size)
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    switch (itemId) {
+
+                 case SAL_IID_camera_SDS_amplifiers_voltage1 :
+                      if { size > 133 } {return SAL__INDEX_OUT_OF_RANGE;}
+                      for (unsigned int count=0; count<size; count++) {
+                        value[count] = data.voltage1[count];
+                      }
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_camera_SDS_amplifiers_voltage2 :
+                      if { size > 133 } {return SAL__INDEX_OUT_OF_RANGE;}
+                      for (unsigned int count=0; count<size; count++) {
+                        value[count] = data.voltage2[count];
+                      }
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_camera_SDS_amplifiers_voltage3 :
+                      if { size > 133 } {return SAL__INDEX_OUT_OF_RANGE;}
+                      for (unsigned int count=0; count<size; count++) {
+                        value[count] = data.voltage3[count];
+                      }
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_camera_SDS_amplifiers_voltage4 :
+                      if { size > 133 } {return SAL__INDEX_OUT_OF_RANGE;}
+                      for (unsigned int count=0; count<size; count++) {
+                        value[count] = data.voltage4[count];
+                      }
+                      result = SAL__OK;
+                      break;
+
+	    }
+	    return result;
+	}
+
+ 	svcRTN salcamera_SDS_amplifiers::setItem ( svcIID itemId , svcFLT &value , svcUINT size)
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    switch (itemId) {
+
+                 case SAL_IID_camera_SDS_amplifiers_voltage1 :
+                      if { size > 133 } {return SAL__INDEX_OUT_OF_RANGE;}
+                      for (unsigned int count=0; count<size; count++) {
+                        data.voltage1[count] = value[count];
+                      }
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_camera_SDS_amplifiers_voltage2 :
+                      if { size > 133 } {return SAL__INDEX_OUT_OF_RANGE;}
+                      for (unsigned int count=0; count<size; count++) {
+                        data.voltage2[count] = value[count];
+                      }
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_camera_SDS_amplifiers_voltage3 :
+                      if { size > 133 } {return SAL__INDEX_OUT_OF_RANGE;}
+                      for (unsigned int count=0; count<size; count++) {
+                        data.voltage3[count] = value[count];
+                      }
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_camera_SDS_amplifiers_voltage4 :
+                      if { size > 133 } {return SAL__INDEX_OUT_OF_RANGE;}
+                      for (unsigned int count=0; count<size; count++) {
+                        data.voltage4[count] = value[count];
+                      }
+                      result = SAL__OK;
+                      break;
+
+	    }
+	    return result;
+	}
+
+       svcRTN salcamera_SDS_amplifiers::setItemStr ( svcIID itemId , svcCHAR *textValue)
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    
+	    switch (itemid) {
+
+                 case SAL_IID_camera_SDS_amplifiers_raftID :
+                      sscanf(textValue,"%d",&data.raftID);
+                      result = SAL__OK;
+                      break;
+
+	    }
+	    return result;
+	}
+
+       svcRTN salcamera_SDS_amplifiers::getItemStr ( svcIID itemId , svcCHAR *textValue)
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    
+	    switch (itemid) {
+
+                 case SAL_IID_camera_SDS_amplifiers_raftID :
+                      sprintf(textValue,"%d",data.raftID);
+                      result = SAL__OK;
+                      break;
+
+	    }
+	    return result;
+	}

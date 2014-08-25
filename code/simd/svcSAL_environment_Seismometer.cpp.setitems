@@ -1,0 +1,3 @@
+		result = salHandle->setitem(SAL_IID_environment_Seismometer_Raw, Raw, 17);
+		result = salHandle->setitem(SAL_IID_environment_Seismometer_Calibrated, Calibrated, 33);
+		result = salHandle->putSample();

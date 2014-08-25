@@ -1,0 +1,443 @@
+<H1>Software - Middleware - System Dictionary</H1><P>
+<H2>Contents : </H2>
+<UL>
+<H3>Introduction</H3>
+<H3>Systems and Subsystems</H3>
+<H3>Devices</H3>
+<H3>Properties</H3>
+<H3>Actions</H3>
+<H3>Units</H3>
+<P> 
+<H2>Introduction</H3>
+<P>
+This document describes the keywords used to refer to items in the
+Service Abstraction Layer (SAL) mediated services. e.g. Subsystem Telemetry. 
+<P>
+The approved names for all subsystems, components, devices, actions, 
+are defined in this dictionary. SAL generated code is validated against
+the dictionary to ensure system wide consistency.
+<P>
+The dictionary will evolve as the individual subsystem descriptions
+are completed to increasing levels of detail.
+<P>
+<H3>Systems and Subsystems</H3><P>
+<P><UL>
+<B>auxscope</B>- Auxiliary telescope<BR>
+<B>auxscope.camera</B>- Imaging system<BR>
+<B>auxscope.enclosure</B>- Dome and vents<BR>
+<B>auxscope.environment</B>- Environmental monitoring<BR>
+<B>auxscope.optics</B>- Mirror support system<BR>
+<B>auxscope.mount</B>- Alt/az/rotr control<BR>
+<B>auxscope.power</B>- Power conditioning and monitoring<BR>
+<B>auxscope.spectroscope</B>- Spectroscopic instruments<BR>
+<B>auxscope.tcs</B>- Pointing and control system<BR>
+<B>calibration</B>- Calibration subsystem<BR>
+<B>calibration.imager</B>- Test/Commissioning camera<BR>
+<B>calibration.sources</B>- Vis/IR calibration devices<BR>
+<B>calibration.mirror</B>- Calibration source selection<BR>
+<B>camera</B>- Camera sub-systems (* items not confirmed)<BR>
+<B>camera.BEE</B>- Back-end electronics<BR>
+<B>camera.CAL</B>- Calibration system<BR>
+<B>camera.CCS</B>- Camera control system<BR>
+<B>camera.CVR</B>- Lens protection system*<BR>
+<B>camera.FCS</B>- Filter control system<BR>
+<B>camera.FEE</B>- Front-end electronics<BR>
+<B>camera.GAS</B>- Guider acquisition<BR>
+<B>camera.GS</B>- Guide sensors<BR>
+<B>camera.OPT</B>- Lens monitoring and metrology*<BR>
+<B>camera.RAS</B>- Raft Alignment system<BR>
+<B>camera.RNA</B>- Raft controller<BR>
+<B>camera.SAS</B>- Science Array<BR>
+<B>camera.SCU</B>- Shutter controller<BR>
+<B>camera.T1S</B>- Temperature management, focal plane<BR>
+<B>camera.T2S</B>- Temperature management, BEE cold plate<BR>
+<B>camera.T3U</B>- Temperature management, Camera body<BR>
+<B>camera.T4U</B>- Temperature management, Utility trunk<BR>
+<B>camera.T5S</B>- Temperature management, cooling<BR>
+<B>camera.T6U</B>- Temperature management, transport<BR>
+<B>camera.TCM</B>- Timing and control module<BR>
+<B>camera.TC</B>- Thermal control<BR>
+<B>camera.VCS</B>- Vacuum control<BR>
+<B>camera.WDS</B>- Wavefront data acquisition<BR>
+<B>camera.WFS</B>- Wavefront sensing system<BR>
+<B>camera.WTCM</B>- Wavefront sensors timing control<BR>
+<B>camera.XCAL</B>- Sensor calibration system*<BR>
+<B>dm</B>- Data management subsystems<BR>
+<B>dm.ALERT</B>- Alert events<BR>
+<B>dm.DB</B>- Database statistics<BR>
+<B>dm.DQR</B>- Raw data quality assessments<BR>
+<B>dm.DQS</B>- Science data quality assessments<BR>
+<B>dm.WCS</B>- Astrometry calibrations<BR>
+<B>dm.PIPE</B>- Pipeline statuses<BR>
+<B>enclosure</B>- Dome mechanisms<BR>
+<B>enclosure.dome_az</B>- Dome rotation<BR>
+<B>enclosure.crane</B>- Camera handling system<BR>
+<B>enclosure.environment</B>- Dome environmental sensing<BR>
+<B>enclosure.liftplatform</B>- Mirror handling system<BR>
+<B>enclosure.shutter</B>- Dome aperture control<BR>
+<B>enclosure.vents</B>- Dome vents and air-flow management<BR>
+<B>environment</B>- Environmental monitoring<BR>
+<B>environment.dust_monitor</B>- Particulate monitoring<BR>
+<B>environment.lightning</B>- Electrical disturbance monitoring<BR>
+<B>environment.seismic</B>- Earthquake monitoring<BR>
+<B>environment.thermal</B>- Temperature control systems<BR>
+<B>environment.weather</B>- Local weather sensing<BR>
+<B>lasercal</B>- Laser calibration system<BR>
+<B>m1m3</B>- Primary/Tertiary mirror<BR>
+<B>m1m3.actuators</B>- Figure control systems<BR>
+<B>m1m3.electrical</B>- Power monitoring<BR>
+<B>m1m3.metrology</B>- Position monitoring/control<BR>
+<B>m1m3.support</B>- Mirror/Mount interface<BR>
+<B>m1m3.surface</B>- Figure monitoring<BR>
+<B>m1m3.TC</B>- Thermal monitoring/control<BR>
+<B>m2</B>- Secondary mirror<BR>
+<B>m2.actuators</B>- Figure control systems<BR>
+<B>m2.electrical</B>- Power monitoring<BR>
+<B>m2.metrology</B>- Position monitoring/control<BR>
+<B>m2.support</B>- Mirror/Mount interface<BR>
+<B>m2.surface</B>- Figure monitoring<BR>
+<B>m2.TC</B>- Thermal monitoring/control<BR>
+<B>mount</B>- Telescope mount<BR>
+<B>mount.azimuth</B>- Azimuth axis monitoring/control<BR>
+<B>mount.altitude</B>- Altitude axis monitoring/control<BR>
+<B>mount.balance</B>- Balance tuning mechanisms<BR>
+<B>mount.hexapod</B>- Camera mount monitoring/control<BR>
+<B>mount.metrology</B>- Configuration/Position/Velocity monitoring<BR>
+<B>mount.mirror_cover</B>- Mirror covers<BR>
+<B>mount.power</B>- Monitoring/control of power management<BR>
+<B>mount.services</B>- Monitoring/control of N2/Vac/Coolant etc<BR>
+<B>mount.TC</B>- Thermal monitoring/control<BR>
+<B>network</B>- Computer network hardware<BR>
+<B>network.camera</B>- Camera specific<BR>
+<B>network.external</B>- Links off-mountain<BR>
+<B>network.noncritical</B>- Non mission critical<BR>
+<B>network.science</B>- Science data networks<BR>
+<B>network.telescope</B>- On-site telescope and site<BR>
+<B>ocs</B>- observatory control system<BR>
+<B>operations</B>- Operator interfaces management<BR>
+<B>operations.main</B>- Main telescope control<BR>
+<B>operations.base</B>- Base control room<BR>
+<B>operations.cameralab</B>- Camera checkout area<BR>
+<B>operations.enclosure</B>- Dome floor<BR>
+<B>operations.mirrorlab</B>- Mirror Lab and coating<BR>
+<B>operations.remote</B>- WAN access<BR>
+<B>power</B>- Power supply systems<BR>
+<B>power.noncritical</B>- Other power systems<BR>
+<B>power.main</B>- Main power monitoring/control , mission critical<BR>
+<B>power.UPS</B>- Uninterruptible power supplies<BR>
+<B>scheduler</B>- Observation scheduling subsystem<BR>
+<B>seeing_dimm</B>- DIMM Seeing monitor system<BR>
+<B>seeing_dimm.imager</B>- Sensor configuration and readout<BR>
+<B>seeing_dimm.policy</B>- Configuration and operations<BR>
+<B>seeing_dimm.status</B>- Summary data<BR>
+<B>seeing_dimm.telescope</B>- Telescope mount control<BR>
+<B>seeing_mass</B>- MASS Seeing monitor system<BR>
+<B>seeing_mass.imager</B>- Sensor configuration and readout<BR>
+<B>seeing_mass.policy</B>- Configuration and operations<BR>
+<B>seeing_mass.status</B>- Summary data<BR>
+<B>seeing_mass.telescope</B>- Telescope mount control<BR>
+<B>skycam</B>- All-sky monitoring cameras<BR>
+<B>skycam.imager</B>- Sensor configuration and readout<BR>
+<B>skycam.policy</B>- Configuration and operations<BR>
+<B>skycam.status</B>- Summary data<BR>
+<B>system</B>- System configuration/history/status interfaces<BR>
+<B>system.command_history</B>- Comprehensive command log<BR>
+<B>system.computer_resources</B>- Per-computer status<BR>
+<B>system.hardware_revisions</B>- Modification logs<BR>
+<B>system.software_revisions</B>- Modification logs<BR>
+<B>tcs</B>- Telescope control system<BR>
+<B>tcs.kernel</B>- Telescope pointing kernel<BR>
+<B>tcs.mount</B>- Mount interface<BR>
+<B>tcs.optics</B>- Active optics interface<BR>
+</UL><P>
+
+<H2>Devices</H2><P>	
+Devices may occur in multiple instances in a particular system or subsystem, <P>
+e.g.	camera.Raft.RNA5 , <HR>
+	m1m3.actuators.actuator200
+<P>
+<P><UL>
+<B>Actuator</B>- Mirror support structures<BR>
+<B>Accelerometer</B>- Motion detector<BR>
+<B>AC</B>- Air conditioning unit<BR>
+<B>Alt</B>- Altitude axis motion<BR>
+<B>A2D</B>- Analog-digital converter<BR>
+<B>Application</B>- Software component<BR>
+<B>Az</B>- Azimuth axis motion<BR>
+<B>Brake</B>- Motion damping mechanism<BR>
+<B>Calib_Lamp</B>- Calibration lamps<BR>
+<B>Clamp</B>- Motion prevention/protection mechanism<BR>
+<B>Command_history</B>- Software component<BR>
+<B>Computer_status</B>- Computer hardware components<BR>
+<B>Dome_Az</B>- Dome azimuth axis motion<BR>
+<B>Dome_Shutter</B>- Dome slit position motion<BR>
+<B>Dust_monitor</B>- Dust monitoring devices<BR>
+<B>Electrical</B>- Voltage and power consumption monitors<BR>
+<B>Fan</B>- Air circulation mechanism<BR>
+<B>Filter</B>- Filter positioning devices<BR>
+<B>Firmware</B>- On-board flash memory device / EPROM<BR>
+<B>Fuse_Sensor</B>- Overcurrent sensor mechanism<BR>
+<B>Guide_sensor</B>- Camera guide sensor devices<BR>
+<B>Hand_Paddle</B>- Operator hand paddle devices<BR>
+<B>Hardware_revision</B>- Hardware component<BR>
+<B>Hexapod</B>- Camera mount motion<BR>
+<B>Imager</B>- CCD Camera or imaging sensor<BR>
+<B>Lens_Cover</B>- Camera lens protection mechanisms<BR>
+<B>Lightning_detector</B>- Lightning detection devices<BR>
+<B>Limit_Sensor</B>- Limit of motion detection mechanism<BR>
+<B>Metrology</B>- Position monitoring devices<BR>
+<B>Mirror</B>- Beam steering / fold mirrors<BR>
+<B>Mirror_Cover</B>- Mirror cover actuators and monitors<BR>
+<B>Network_Switch</B>- Computer network switch/router/hub<BR>
+<B>O2_Sensor</B>- Oxygen sensor<BR>
+<B>Raft</B>- Camera sensor raft subsystems<BR>
+<B>RNA</B>- Camera sensor raft network adaptor<BR>
+<B>Rotator</B>- Camera rotator mechanism<BR>
+<B>Science_sensor_metadata</B>- Camera sensor performance<BR>
+<B>Seismometer</B>- Seismic activity monitor<BR>
+<B>Servo_motor</B>- Servo motor<BR>
+<B>Shutter</B>- Dome shutter mechanism<BR>
+<B>Software_revision</B>- Software component<BR>
+<B>Spectrometer</B>- Calibration telescope spectrograph<BR>
+<B>Stepper_motor</B>- Stepper motor<BR>
+<B>Support</B>- Device support structures<BR>
+<B>Surface</B>- Mirror surface control and monitoring<BR>
+<B>Temp</B>- Temperature monitoring devices<BR>
+<B>UPS</B>- Power management device<BR>
+<B>Vents</B>- Dome vent control<BR>
+<B>Video_camera</B>- Video camera subsystems<BR>
+<B>Weather</B>- Weather monitoring devices and services<BR>
+<B>wfsRaft</B>- Wavefront sensor raft<BR>
+<B>Wiper</B>- Camera calibration source positioner<BR>
+</UL><P>
+ 
+<H2>Properties</H2>
+<P>
+Each device in a system or subsystem may have many different
+properties associated with it. Properties are used for both
+control and monitoring purposes.  ie Some properties may be
+controlled; others may only monitored. In general, if a property can
+be controlled there should also be another  item to allow monitoring so
+that both the target and actual properties are logged.<P>
+<P><UL>
+<B>acceleration</B>- meters/second/second or steps/second/second<BR>
+<B>active</B>- boolean state true/false<BR>
+<B>aborted</B>- boolean state true/false<BR>
+<B>algorithm</B>- software algorithm name<BR>
+<B>angle</B>- in degrees<BR>
+<B>author</B>- Name of a software author<BR>
+<B>bandwidth</B>- of network links (bps, Mbps)<BR>
+<B>biasvoltage</B>- ccd bias<BR>
+<B>blobtype</B>- datatype for large vector/image/other objects<BR>
+<B>brightness</B>- in lumens (?)<BR>
+<B>certificate</B>- sofware security certificate<BR>
+<B>checksum</B>- software check value<BR>
+<B>clamped</B>- boolean state true/false<BR>
+<B>clockfreq</B>- ccd clock frequency<BR>
+<B>cpu</B>- manufacturer-architecture-revision<BR>
+<B>credential</B>- software security credential<BR>
+<B>current</B>- in amps, milli/micro<BR>
+<B>deadband</B>-<BR>
+<B>declination</B>- in ddd:mm:ss.sss<BR>
+<B>deceleration</B>- meters/second/second or steps/second/second<BR>
+<B>delay</B>- in seconds, milli/micro<BR>
+<B>demand</B>- in amps, milli/micro<BR>
+<B>diq</B>- Delivered image quality (metric TBD)<BR>
+<B>distance</B>- in meters , centi/milli/micro<BR>
+<B>email</B>- an email address<BR>
+<B>encoder</B>- in raw counts<BR>
+<B>encoder_constant</B>- in raw counts<BR>
+<B>epoch</B>- yyyy.xxxxxxxx<BR>
+<B>equinox</B>- yyyy.xxxxxxxx<BR>
+<B>errcode</B>- a compact error code<BR>
+<B>errtext</B>- a human readable error message<BR>
+<B>failure</B>- boolean state true/false<BR>
+<B>filter_name</B>- Comprehensive descriptor<BR>
+<B>filter_response</B>- Filter response curve<BR>
+<B>focus</B>- in microns<BR>
+<B>force</B>- in Newtons<BR>
+<B>function</B>- F(x) - Name of function<BR>
+<B>frequency</B>- in Hz<BR>
+<B>fwhm</B>- in arcseonds / pixels<BR>
+<B>gain</B>- dimensionless multiplier<BR>
+<B>ha</B>- Hour angle in hh:mm:ss.sss<BR>
+<B>index</B>- integer enumerator<BR>
+<B>interface</B>- Standard name<BR>
+<B>interlock</B>- boolean state true/false<BR>
+<B>interpolator</B>- Name of function<BR>
+<B>interval</B>- integer value<BR>
+<B>ip4addr-</B>an IP4 address<BR>
+<B>ip6addr</B>- an IP6 address<BR>
+<B>jogspeed</B>- arcsec per sec<BR>
+<B>load_cell</B>- pressure in psi<BR>
+<B>load_limit</B>- in psi<BR>
+<B>load_range</B>- in psi<BR>
+<B>lvdt</B>- load cell reading, raw data<BR>
+<B>macaddr</B>- a network device MAC address<BR>
+<B>maximum</B>- any numeric type<BR>
+<B>md5sum</B>- software check value<BR>
+<B>memory</B>- in kb, Mb, Gb<BR>
+<B>minimum</B>- any numeric type<BR>
+<B>model</B>- name of model (mathematical)<BR>
+<B>moving</B>- boolean state true/false<BR>
+<B>motion_profile</B>- vector tracking state of a moving device<BR>
+<B>motor_ratio</B>- dimensionless multiplier<BR>
+<B>motor_steps</B>- steps per revolution<BR>
+<B>name</B>- Descriptive<BR>
+<B>offset</B>- in arcseconds<BR>
+<B>parclock</B>- ccd parallel clockin<BR>
+<B>pager</B>- a pager number<BR>
+<B>period</B>- in seconds<BR>
+<B>permission</B>- software access credentials (r/w/e/d/c etc)<BR>
+<B>phone</B>- a telephone number<BR>
+<B>position</B>- Descriptive, may be numerical<BR>
+<B>power</B>- boolean state true/false<BR>
+<B>pressure</B>- in psi<BR>
+<B>ra</B>- Right Ascension in hh:mm:ss.sss<BR>
+<B>regulated</B>- boolean state true/false<BR>
+<B>resolution</B>- in milli/micro/nano meters<BR>
+<B>revision</B>- Software/Hardware code<BR>
+<B>retries</B>- retry count, number of attempts allowed<BR>
+<B>retry</B>- boolean state true/false<BR>
+<B>scale</B>- dimensionless multiplier<BR>
+<B>serclock</B>- ccd serial clocking<BR>
+<B>severity</B>- a severity indication for a warning/error condition<BR>
+<B>simulator</B>- boolean state true/false<BR>
+<B>speed</B>- in meter/second<BR>
+<B>state</B>- Descriptive (may be limited to a set)<BR>
+<B>status</B>- Descriptive (may be limited to a set)<BR>
+<B>stepper</B>- stepper motor count<BR>
+<B>stepper_accel</B>- acceleration in steps/sec/sec<BR>
+<B>stepper_power</B>- current in amps<BR>
+<B>stepper_speed</B>- steps/second<BR>
+<B>storage_capacity</B>- in kb/Mb/Gb/Tb<BR>
+<B>success</B>- boolean state true/false<BR>
+<B>temperature</B>- in degrees C/K<BR>
+<B>threshold</B>- dimensionless numeric<BR>
+<B>tolerance</B>- dimensionless numeric<BR>
+<B>torque</B>-<BR>
+<B>track</B>- boolean state true/false<BR>
+<B>update</B>- boolean state true/false<BR>
+<B>uri</B>- universal resource identifier<BR>
+<B>username</B>- login credential<BR>
+<B>vacuum</B>- in tor (?)<BR>
+<B>velocity</B>- in meters/second<BR>
+<B>voltage</B>- in volts, milli/micro<BR>
+<B>wavelength</B>- in Ang.,<BR>
+<B>width</B>- dimensionless numeric<BR>
+<B>x</B>- dimensionless numeric<BR>
+<B>y</B>- dimensionless numeric<BR>
+<B>z</B>- dimensionless numeric<BR>
+<B>zn</B>- zernicke polynomial coefficients<BR>
+<B>zd</B>- zenith distance - in degrees<BR>
+</UL><P>
+
+<H2>Actions</H2><P>
+Every subsystem supports a set of commands which can be
+issued by clients. Each command includes one of the 
+following actions, and may optionally include a set of action
+specific operators to refine the request.
+<P><UL>
+<B>abort</B>- immediate cessation of a specific command<BR>
+<B>ack</B>- acknowlege receipt of external command<BR>
+<B>adjust</B>- modify numeric parameter<BR>
+<B>arm</B>- prepare a mechanism for motion<BR>
+<B>backup</B>- save subsystem state<BR>
+<B>begin</B>- start a cyclical activity<BR>
+<B>busy</B>- an action state<BR>
+<B>cancel</B>- cancel a command before it executes<BR>
+<B>capture</B>- initiate data capture<BR>
+<B>center</B>- move a mechanism to mid-range<BR>
+<B>clear</B>- cancel all queued commands<BR>
+<B>close</B>- close a mechanism (cover, shutter etc)<BR>
+<B>continue</B>- resume a paused command<BR>
+<B>delete</B>- remove a queued command<BR>
+<B>disable</B>- accept no more commands (except enable)<BR>
+<B>disarm</B>- cancel an arming command<BR>
+<B>disengage</B>- unlock a mechanism<BR>
+<B>done</B>- an action state<BR>
+<B>dump</B>- dump memory<BR>
+<B>enable</B>- enable regular commanding<BR>
+<B>end</B>- terminate a cyclical operation<BR>
+<B>engage</B>- lock a mechanism<BR>
+<B>erase</B>- clear memory<BR>
+<B>error</B>- an action state<BR>
+<B>execute</B>- execute a queued command<BR>
+<B>failed</B>- an action state<BR>
+<B>free</B>- free allocated buffers<BR>
+<B>go</B>- initiate a prepared motion<BR>
+<B>index</B>- move to an index mark<BR>
+<B>initialize</B>- prepare a mechanism for use<BR>
+<B>insert</B>- move component into operational location<BR>
+<B>install</B>- software update<BR>
+<B>kill</B>- immediately power down a component<BR>
+<B>mark</B>- remember current location<BR>
+<B>maximize</B>- maximize a tunable parameter<BR>
+<B>minimize</B>- minimize a tunable parameter<BR>
+<B>move</B>- generic motion command<BR>
+<B>off</B>- generic state command<BR>
+<B>on</B>- generic state command<BR>
+<B>open</B>- open a mechanism (cover, shutter etc)<BR>
+<B>pause</B>- temporarily pause queued commands<BR>
+<B>query</B>- inquire command status<BR>
+<B>quit</B>- exit from a series of queued commands (loop)<BR>
+<B>reboot</B>- restart a computer/embedded system<BR>
+<B>remove</B>- remove a command from a queue<BR>
+<B>reset</B>- generic state command<BR>
+<B>restart</B>- generic state command<BR>
+<B>restore</B>- recover memory contents<BR>
+<B>resume</B>- resume a paused command queue<BR>
+<B>save</B>- snapshot subsystem state<BR>
+<B>select</B>- generic state command<BR>
+<B>send</B>- transmit data packet<BR>
+<B>set</B>- generic state command<BR>
+<B>show</B>- generic state command<BR>
+<B>start</B>- generic state command<BR>
+<B>status</B>- inquire component status<BR>
+<B>stop</B>- generic state command<BR>
+<B>suspend</B>- interrupt a command (may be resumed)<BR>
+<B>trigger</B>- launch a previously armed operation<BR>
+</UL><P>
+
+<H2>Units</H2><P>
+<P><UL>
+<B>amps</B>- amperes of electrical current (SI unit)<BR>
+<B>angstroms</B>- wavelength 1A = 0.1nanometers<BR>
+<B>arcsecs</B>- 1/3600 of a degree<BR>
+<B>btus</B>- British thermal unit of energy<BR>
+<B>centimeters</B><BR>
+<B>century</B><BR>
+<B>coulombs</B>- amount of charge displaced by a 1amp current in 1 second<BR>
+<B>counts</B><BR>
+<B>cycles</B>- no of repeats of an operation<BR>
+<B>days</B><BR>
+<B>degrees</B>- in Centigrade or Kelvin<BR>
+<B>dynes</B>- unit of force , 1dyne = 10 micronewtons (cgs unit)<BR>
+<B>gauss</B>- magnetic field of 1 maxwell per sq centimeter (cgs unit)<BR>
+<B>gb</B>- Gigabytes 1024^3 for memory (1e9 bytes otherwise)<BR>
+<B>grams</B><BR>
+<B>hertz</B><BR>
+<B>hours</B><BR>
+<B>joules</B>- unit of force/energy , 1joule = 1 Newton-meter<BR>
+<B>kilograms</B><BR>
+<B>kilometers</B><BR>
+<B>mb</B>- Megabytes 1024^2 for memory (1e6 otherwise)<BR>
+<B>mbps</B>- Megabits per second<BR>
+<B>meters</B><BR>
+<B>microns</B><BR>
+<B>microradians</B><BR>
+<B>milliarcseconds</B><BR>
+<B>millimeters</B><BR>
+<B>minutes</B><BR>
+<B>months</B><BR>
+<B>newtons</B>- 1N= force required to acc 1kg mass at a rate of 1m/s/s<BR>
+<B>ohms</B>- unit of electrical resistance<BR>
+<B>pascals</B>- 1 pascal = 1 newton per square meter or one Joule per cubic meter.<BR>
+<B>radians</B><BR>
+<B>rpm</B>- revolutions per minute<BR>
+<B>seconds</B><BR>
+<B>steps</B>- of a stepper motor<BR>
+<B>volts</B>- 1V = one joule of energy per coulomb of charge (SI derived)<BR>
+<B>watts</B>- 1W = one joule of energy per second (SI derived)<BR>
+<B>years</B><BR>
+</UL><P>

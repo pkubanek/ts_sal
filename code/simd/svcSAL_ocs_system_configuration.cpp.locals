@@ -1,0 +1,3 @@
+	svcLONG	stationid;
+	char	[128];
+	char	[128];

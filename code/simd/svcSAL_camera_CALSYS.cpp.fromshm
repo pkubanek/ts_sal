@@ -1,0 +1,4 @@
+		for (unsigned int count=0; count<1025; count++) {
+			d.profile[count] = camera_CALSYS_ref->profile[count];
+		}
+		camera_CALSYS_ref->syncO = 1;

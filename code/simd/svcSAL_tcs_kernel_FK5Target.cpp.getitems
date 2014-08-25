@@ -1,0 +1,9 @@
+		result = salHandle->getSample(SAL__SLOWPOLL);
+		result = salHandle->getitem(SAL_IID_tcs_kernel_FK5Target_dec, dec);
+		result = salHandle->getitem(SAL_IID_tcs_kernel_FK5Target_epoc, epoc);
+		result = salHandle->getitem(SAL_IID_tcs_kernel_FK5Target_equinox, equinox);
+		result = salHandle->getitem(SAL_IID_tcs_kernel_FK5Target_parallax, parallax);
+		result = salHandle->getitem(SAL_IID_tcs_kernel_FK5Target_pmDec, pmDec);
+		result = salHandle->getitem(SAL_IID_tcs_kernel_FK5Target_pmRA, pmRA);
+		result = salHandle->getitem(SAL_IID_tcs_kernel_FK5Target_ra, ra);
+		result = salHandle->getitem(SAL_IID_tcs_kernel_FK5Target_rv, rv);

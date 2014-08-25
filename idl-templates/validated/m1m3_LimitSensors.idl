@@ -1,9 +1,9 @@
 struct m1m3_LimitSensors {
   string<32> private_revCode;  //private
-  long       private_sndStamp; //private
-  long       private_rcvStamp; //private
+  double     private_sndStamp; //private
+  double     private_rcvStamp; //private
   long       private_seqNum;   //private
   long       private_origin;   //private
-  unsigned short liftoff[64];	//	none : none : Liftoff switches
-  unsigned short limit[64];	//	none : none : Limit switches
+  short	liftoff[64];
+  short	limit[64];
 };

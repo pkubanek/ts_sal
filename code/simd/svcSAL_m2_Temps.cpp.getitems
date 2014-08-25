@@ -1,0 +1,4 @@
+		result = salHandle->getSample(SAL__SLOWPOLL);
+		result = salHandle->getitem(SAL_IID_m2_Temps_Health, Health, 16);
+		result = salHandle->getitem(SAL_IID_m2_Temps_Raw_, Raw_, 16);
+		result = salHandle->getitem(SAL_IID_m2_Temps_Calibrated, Calibrated, 16);

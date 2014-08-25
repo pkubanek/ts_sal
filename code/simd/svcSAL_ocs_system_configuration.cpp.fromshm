@@ -1,0 +1,4 @@
+		d.stationid = ocs_system_configuration_ref->stationid;
+		strncpy(d.device,ocs_system_configuration_ref->device,128);
+		strncpy(d.subssystem,ocs_system_configuration_ref->subssystem,128);
+		ocs_system_configuration_ref->syncO = 1;

@@ -1,0 +1,13 @@
+		for (unsigned int count=0; count<11; count++) {
+			camera_TC_zone6_ref->status[count] = samples[i].status[count];
+		}
+		for (unsigned int count=0; count<11; count++) {
+			camera_TC_zone6_ref->flow_rate[count] = samples[i].flow_rate[count];
+		}
+		for (unsigned int count=0; count<11; count++) {
+			camera_TC_zone6_ref->setpoint[count] = samples[i].setpoint[count];
+		}
+		for (unsigned int count=0; count<11; count++) {
+			camera_TC_zone6_ref->temperature[count] = samples[i].temperature[count];
+		}
+		camera_TC_zone6_ref->syncI++;

@@ -1,0 +1,47 @@
+K 25
+svn:wc:ra_dav:version-url
+V 47
+/svn/!svn/ver/169/trunk/src/hpp/dds/core/detail
+END
+corefwd.hpp
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/svn/!svn/ver/169/trunk/src/hpp/dds/core/detail/corefwd.hpp
+END
+conformance.hpp
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/svn/!svn/ver/123/trunk/src/hpp/dds/core/detail/conformance.hpp
+END
+Entity.hpp
+K 25
+svn:wc:ra_dav:version-url
+V 58
+/svn/!svn/ver/128/trunk/src/hpp/dds/core/detail/Entity.hpp
+END
+inttypes.hpp
+K 25
+svn:wc:ra_dav:version-url
+V 60
+/svn/!svn/ver/152/trunk/src/hpp/dds/core/detail/inttypes.hpp
+END
+InstanceHandle.hpp
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/!svn/ver/128/trunk/src/hpp/dds/core/detail/InstanceHandle.hpp
+END
+ref_traits.hpp
+K 25
+svn:wc:ra_dav:version-url
+V 62
+/svn/!svn/ver/128/trunk/src/hpp/dds/core/detail/ref_traits.hpp
+END
+macros.hpp
+K 25
+svn:wc:ra_dav:version-url
+V 58
+/svn/!svn/ver/128/trunk/src/hpp/dds/core/detail/macros.hpp
+END

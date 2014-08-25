@@ -1,0 +1,5 @@
+	svcLONG	opid;
+	svcLONG	stationid;
+	char	[32];
+	char	[128];
+	char	[32];

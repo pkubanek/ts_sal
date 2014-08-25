@@ -1,0 +1,9 @@
+struct Purge_acceleration {
+  string<32> private_revCode;  //private
+  double     private_sndStamp; //private
+  double     private_rcvStamp; //private
+  long       private_seqNum;   //private
+  long       private_origin;   //private
+  float	Accelerometer[6];	// 0.017 | m/s2 | Accelerometers |  | Camera body | 6 |  4,320  |  17,280 
+};
+#pragma keylist Purge_acceleration

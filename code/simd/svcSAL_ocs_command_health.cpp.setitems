@@ -1,0 +1,3 @@
+		result = salHandle->setitem(SAL_IID_ocs_command_health_device, device);
+		result = salHandle->setitem(SAL_IID_ocs_command_health_subsystem, subsystem);
+		result = salHandle->putSample();

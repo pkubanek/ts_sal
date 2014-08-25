@@ -301,8 +301,8 @@ proc parsemakefile { subsys } {
 
 
 set basedir .
-set scriptdir /opt/lsstsal/scripts
-set includedir /opt/lsstsal/scripts/include
+set scriptdir /usr/local/scripts/tcl
+set includedir /usr/local/scripts/include
 source $scriptdir/managetypes.tcl
 
 

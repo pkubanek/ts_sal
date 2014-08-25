@@ -1,0 +1,3 @@
+		result = salHandle->setitem(SAL_IID_mount_Az_Raw, Raw, 17);
+		result = salHandle->setitem(SAL_IID_mount_Az_Calibrated, Calibrated, 33);
+		result = salHandle->putSample();

@@ -1,0 +1,17 @@
+K 25
+svn:wc:ra_dav:version-url
+V 50
+/svn/!svn/ver/128/trunk/src/hpp/dds/pub/qos/detail
+END
+DataWriterQos.hpp
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/!svn/ver/128/trunk/src/hpp/dds/pub/qos/detail/DataWriterQos.hpp
+END
+PublisherQos.hpp
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/svn/!svn/ver/128/trunk/src/hpp/dds/pub/qos/detail/PublisherQos.hpp
+END

@@ -1,0 +1,16 @@
+		for (unsigned int count=0; count<26; count++) {
+			d.status[count] = camera_TC_zone1_ref->status[count];
+		}
+		for (unsigned int count=0; count<26; count++) {
+			d.cold_plate[count] = camera_TC_zone1_ref->cold_plate[count];
+		}
+		for (unsigned int count=0; count<26; count++) {
+			d.flow_rate[count] = camera_TC_zone1_ref->flow_rate[count];
+		}
+		for (unsigned int count=0; count<26; count++) {
+			d.setpoint[count] = camera_TC_zone1_ref->setpoint[count];
+		}
+		for (unsigned int count=0; count<26; count++) {
+			d.temperature[count] = camera_TC_zone1_ref->temperature[count];
+		}
+		camera_TC_zone1_ref->syncO = 1;

@@ -1,0 +1,3 @@
+		result = salHandle->setitem(SAL_IID_m1m3_LUT_algorithm, algorithm);
+		result = salHandle->setitem(SAL_IID_m1m3_LUT_param, param, 33);
+		result = salHandle->putSample();

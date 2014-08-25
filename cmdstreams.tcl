@@ -1,6 +1,6 @@
 #!/usr/bin/tclsh
 
-set scriptdir /opt/lsstsal/scripts
+set scriptdir $env(SAL_DIR)
 
 source $scriptdir/datastream_desc.tcl
 source $scriptdir/camera-subsysdesc.tcl

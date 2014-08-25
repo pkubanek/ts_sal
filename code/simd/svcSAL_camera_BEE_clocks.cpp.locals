@@ -1,0 +1,10 @@
+	svcLONG	parallel_1A[202];
+	svcLONG	parallel_1B[202];
+	svcLONG	parallel_2A[202];
+	svcLONG	parallel_2B[202];
+	svcLONG	serial_1A[202];
+	svcLONG	serial_1B[202];
+	svcLONG	serial_2A[202];
+	svcLONG	serial_2B[202];
+	svcLONG	serial_3A[202];
+	svcLONG	serial_3B[202];

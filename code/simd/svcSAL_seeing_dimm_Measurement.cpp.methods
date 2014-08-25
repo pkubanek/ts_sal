@@ -1,0 +1,514 @@
+
+	svcRTN salseeing_dimm_Measurement::getItem ( svcIID itemId , svcLONG &value )
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    switch (itemId) {
+
+                 case SAL_IID_seeing_dimm_Measurement_flux :
+                      value = data.flux;
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_seeing_dimm_Measurement_hrnum :
+                      value = data.hrnum;
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_seeing_dimm_Measurement_numlines :
+                      value = data.numlines;
+                      result = SAL__OK;
+                      break;
+
+	    }
+	    return result;
+	}
+	
+
+
+	svcRTN salseeing_dimm_Measurement::setItem ( svcIID itemId , svcLONG &value )
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    switch (itemId) {
+
+                 case SAL_IID_seeing_dimm_Measurement_flux :
+                      data.flux = value;
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_seeing_dimm_Measurement_hrnum :
+                      data.hrnum = value;
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_seeing_dimm_Measurement_numlines :
+                      data.numlines = value;
+                      result = SAL__OK;
+                      break;
+
+	    }
+	    return result;
+	}
+	
+
+
+       svcRTN salseeing_dimm_Measurement::setItemStr ( svcIID itemId , svcCHAR *textValue)
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    
+	    switch (itemid) {
+
+                 case SAL_IID_seeing_dimm_Measurement_flux :
+                      sscanf(textValue,"%ld",&data.flux);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_seeing_dimm_Measurement_hrnum :
+                      sscanf(textValue,"%ld",&data.hrnum);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_seeing_dimm_Measurement_numlines :
+                      sscanf(textValue,"%ld",&data.numlines);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_seeing_dimm_Measurement_exposure :
+                      sscanf(textValue,"%lf",&data.exposure);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_seeing_dimm_Measurement_scintleft :
+                      sscanf(textValue,"%lf",&data.scintleft);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_seeing_dimm_Measurement_scintright :
+                      sscanf(textValue,"%lf",&data.scintright);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_seeing_dimm_Measurement_seeing_corr :
+                      sscanf(textValue,"%lf",&data.seeing_corr);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_seeing_dimm_Measurement_strehlleft :
+                      sscanf(textValue,"%lf",&data.strehlleft);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_seeing_dimm_Measurement_strehlright :
+                      sscanf(textValue,"%lf",&data.strehlright);
+                      result = SAL__OK;
+                      break;
+
+	    }
+	    return result;
+	}
+
+       svcRTN salseeing_dimm_Measurement::getItemStr ( svcIID itemId , svcCHAR *textValue)
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    
+	    switch (itemid) {
+
+                 case SAL_IID_seeing_dimm_Measurement_flux :
+                      sprintf(textValue,"%ld",data.flux);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_seeing_dimm_Measurement_hrnum :
+                      sprintf(textValue,"%ld",data.hrnum);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_seeing_dimm_Measurement_numlines :
+                      sprintf(textValue,"%ld",data.numlines);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_seeing_dimm_Measurement_exposure :
+                      sprintf(textValue,"%lf",data.exposure);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_seeing_dimm_Measurement_scintleft :
+                      sprintf(textValue,"%lf",data.scintleft);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_seeing_dimm_Measurement_scintright :
+                      sprintf(textValue,"%lf",data.scintright);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_seeing_dimm_Measurement_seeing_corr :
+                      sprintf(textValue,"%lf",data.seeing_corr);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_seeing_dimm_Measurement_strehlleft :
+                      sprintf(textValue,"%lf",data.strehlleft);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_seeing_dimm_Measurement_strehlright :
+                      sprintf(textValue,"%lf",data.strehlright);
+                      result = SAL__OK;
+                      break;
+
+	    }
+	    return result;
+	}
+
+	svcRTN salseeing_dimm_Measurement::getItem ( svcIID itemId , svcFLT &value )
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    switch (itemId) {
+
+                 case SAL_IID_seeing_dimm_Measurement_exposure :
+                      value = data.exposure;
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_seeing_dimm_Measurement_scintleft :
+                      value = data.scintleft;
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_seeing_dimm_Measurement_scintright :
+                      value = data.scintright;
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_seeing_dimm_Measurement_seeing_corr :
+                      value = data.seeing_corr;
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_seeing_dimm_Measurement_strehlleft :
+                      value = data.strehlleft;
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_seeing_dimm_Measurement_strehlright :
+                      value = data.strehlright;
+                      result = SAL__OK;
+                      break;
+
+	    }
+	    return result;
+	}
+	
+
+
+	svcRTN salseeing_dimm_Measurement::setItem ( svcIID itemId , svcFLT &value )
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    switch (itemId) {
+
+                 case SAL_IID_seeing_dimm_Measurement_exposure :
+                      data.exposure = value;
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_seeing_dimm_Measurement_scintleft :
+                      data.scintleft = value;
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_seeing_dimm_Measurement_scintright :
+                      data.scintright = value;
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_seeing_dimm_Measurement_seeing_corr :
+                      data.seeing_corr = value;
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_seeing_dimm_Measurement_strehlleft :
+                      data.strehlleft = value;
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_seeing_dimm_Measurement_strehlright :
+                      data.strehlright = value;
+                      result = SAL__OK;
+                      break;
+
+	    }
+	    return result;
+	}
+	
+
+
+       svcRTN salseeing_dimm_Measurement::setItemStr ( svcIID itemId , svcCHAR *textValue)
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    
+	    switch (itemid) {
+
+                 case SAL_IID_seeing_dimm_Measurement_flux :
+                      sscanf(textValue,"%ld",&data.flux);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_seeing_dimm_Measurement_hrnum :
+                      sscanf(textValue,"%ld",&data.hrnum);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_seeing_dimm_Measurement_numlines :
+                      sscanf(textValue,"%ld",&data.numlines);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_seeing_dimm_Measurement_exposure :
+                      sscanf(textValue,"%lf",&data.exposure);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_seeing_dimm_Measurement_scintleft :
+                      sscanf(textValue,"%lf",&data.scintleft);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_seeing_dimm_Measurement_scintright :
+                      sscanf(textValue,"%lf",&data.scintright);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_seeing_dimm_Measurement_seeing_corr :
+                      sscanf(textValue,"%lf",&data.seeing_corr);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_seeing_dimm_Measurement_strehlleft :
+                      sscanf(textValue,"%lf",&data.strehlleft);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_seeing_dimm_Measurement_strehlright :
+                      sscanf(textValue,"%lf",&data.strehlright);
+                      result = SAL__OK;
+                      break;
+
+	    }
+	    return result;
+	}
+
+       svcRTN salseeing_dimm_Measurement::getItemStr ( svcIID itemId , svcCHAR *textValue)
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    
+	    switch (itemid) {
+
+                 case SAL_IID_seeing_dimm_Measurement_flux :
+                      sprintf(textValue,"%ld",data.flux);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_seeing_dimm_Measurement_hrnum :
+                      sprintf(textValue,"%ld",data.hrnum);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_seeing_dimm_Measurement_numlines :
+                      sprintf(textValue,"%ld",data.numlines);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_seeing_dimm_Measurement_exposure :
+                      sprintf(textValue,"%lf",data.exposure);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_seeing_dimm_Measurement_scintleft :
+                      sprintf(textValue,"%lf",data.scintleft);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_seeing_dimm_Measurement_scintright :
+                      sprintf(textValue,"%lf",data.scintright);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_seeing_dimm_Measurement_seeing_corr :
+                      sprintf(textValue,"%lf",data.seeing_corr);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_seeing_dimm_Measurement_strehlleft :
+                      sprintf(textValue,"%lf",data.strehlleft);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_seeing_dimm_Measurement_strehlright :
+                      sprintf(textValue,"%lf",data.strehlright);
+                      result = SAL__OK;
+                      break;
+
+	    }
+	    return result;
+	}
+
+	svcRTN salseeing_dimm_Measurement::getItem ( svcIID itemId , (svcCHAR *)value )
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    switch (itemId) {
+	    
+
+
+                 case SAL_IID_seeing_dimm_Measurement_utdate :
+                      strncpy(value, data.utdate, 16);
+                      result = SAL__OK;
+                      break;
+
+
+                 case SAL_IID_seeing_dimm_Measurement_uttime :
+                      strncpy(value, data.uttime, 16);
+                      result = SAL__OK;
+                      break;
+
+
+	    }
+	    return result;
+	}
+	
+
+
+	svcRTN salseeing_dimm_Measurement::setItem ( svcIID itemId , (svcCHAR *)value )
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    switch (itemId) {
+	    
+
+
+                 case SAL_IID_seeing_dimm_Measurement_utdate :
+                      strncpy(data.utdate, value, 16);
+                      result = SAL__OK;
+                      break;
+
+
+                 case SAL_IID_seeing_dimm_Measurement_uttime :
+                      strncpy(data.uttime, value, 16);
+                      result = SAL__OK;
+                      break;
+
+
+	    }
+	    return result;
+	}
+	
+
+
+       svcRTN salseeing_dimm_Measurement::setItemStr ( svcIID itemId , svcCHAR *textValue)
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    
+	    switch (itemid) {
+
+                 case SAL_IID_seeing_dimm_Measurement_flux :
+                      sscanf(textValue,"%ld",&data.flux);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_seeing_dimm_Measurement_hrnum :
+                      sscanf(textValue,"%ld",&data.hrnum);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_seeing_dimm_Measurement_numlines :
+                      sscanf(textValue,"%ld",&data.numlines);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_seeing_dimm_Measurement_exposure :
+                      sscanf(textValue,"%lf",&data.exposure);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_seeing_dimm_Measurement_scintleft :
+                      sscanf(textValue,"%lf",&data.scintleft);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_seeing_dimm_Measurement_scintright :
+                      sscanf(textValue,"%lf",&data.scintright);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_seeing_dimm_Measurement_seeing_corr :
+                      sscanf(textValue,"%lf",&data.seeing_corr);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_seeing_dimm_Measurement_strehlleft :
+                      sscanf(textValue,"%lf",&data.strehlleft);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_seeing_dimm_Measurement_strehlright :
+                      sscanf(textValue,"%lf",&data.strehlright);
+                      result = SAL__OK;
+                      break;
+
+	    }
+	    return result;
+	}
+
+       svcRTN salseeing_dimm_Measurement::getItemStr ( svcIID itemId , svcCHAR *textValue)
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    
+	    switch (itemid) {
+
+                 case SAL_IID_seeing_dimm_Measurement_flux :
+                      sprintf(textValue,"%ld",data.flux);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_seeing_dimm_Measurement_hrnum :
+                      sprintf(textValue,"%ld",data.hrnum);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_seeing_dimm_Measurement_numlines :
+                      sprintf(textValue,"%ld",data.numlines);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_seeing_dimm_Measurement_exposure :
+                      sprintf(textValue,"%lf",data.exposure);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_seeing_dimm_Measurement_scintleft :
+                      sprintf(textValue,"%lf",data.scintleft);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_seeing_dimm_Measurement_scintright :
+                      sprintf(textValue,"%lf",data.scintright);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_seeing_dimm_Measurement_seeing_corr :
+                      sprintf(textValue,"%lf",data.seeing_corr);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_seeing_dimm_Measurement_strehlleft :
+                      sprintf(textValue,"%lf",data.strehlleft);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_seeing_dimm_Measurement_strehlright :
+                      sprintf(textValue,"%lf",data.strehlright);
+                      result = SAL__OK;
+                      break;
+
+	    }
+	    return result;
+	}

@@ -18,9 +18,9 @@ global FormData
 }
 
 
-source /opt/lsstsal/scripts/GetPostedData.tcl
-source /opt/lsstsal/scripts/simulatedb.tcl
-source /opt/lsstsal/scripts/streamutils.tcl
+source /usr/local/scripts/tcl/GetPostedData.tcl
+source /usr/local/scripts/tcl/simulatedb.tcl
+source /usr/local/scripts/tcl/streamutils.tcl
 
 if { [info exists FormData(DEBUG)] == 0 } {set FormData(DEBUG) 0}
 set FormData(DEBUG) 1

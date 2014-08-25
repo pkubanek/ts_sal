@@ -1,0 +1,7 @@
+		for (unsigned int count=0; count<17; count++) {
+			mount_Rotator_ref->Raw[count] = samples[i].Raw[count];
+		}
+		for (unsigned int count=0; count<33; count++) {
+			mount_Rotator_ref->Calibrated[count] = samples[i].Calibrated[count];
+		}
+		mount_Rotator_ref->syncI++;

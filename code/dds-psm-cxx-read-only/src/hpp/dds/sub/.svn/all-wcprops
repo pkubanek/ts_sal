@@ -1,0 +1,89 @@
+K 25
+svn:wc:ra_dav:version-url
+V 39
+/svn/!svn/ver/164/trunk/src/hpp/dds/sub
+END
+CoherentAccess.hpp
+K 25
+svn:wc:ra_dav:version-url
+V 58
+/svn/!svn/ver/140/trunk/src/hpp/dds/sub/CoherentAccess.hpp
+END
+parent.hpp
+K 25
+svn:wc:ra_dav:version-url
+V 50
+/svn/!svn/ver/119/trunk/src/hpp/dds/sub/parent.hpp
+END
+SubscriberListener.hpp
+K 25
+svn:wc:ra_dav:version-url
+V 62
+/svn/!svn/ver/128/trunk/src/hpp/dds/sub/SubscriberListener.hpp
+END
+subfwd.hpp
+K 25
+svn:wc:ra_dav:version-url
+V 50
+/svn/!svn/ver/159/trunk/src/hpp/dds/sub/subfwd.hpp
+END
+AnyDataReaderListener.hpp
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/!svn/ver/128/trunk/src/hpp/dds/sub/AnyDataReaderListener.hpp
+END
+DataReader.hpp
+K 25
+svn:wc:ra_dav:version-url
+V 54
+/svn/!svn/ver/159/trunk/src/hpp/dds/sub/DataReader.hpp
+END
+sub_module.hpp
+K 25
+svn:wc:ra_dav:version-url
+V 54
+/svn/!svn/ver/159/trunk/src/hpp/dds/sub/sub_module.hpp
+END
+find.hpp
+K 25
+svn:wc:ra_dav:version-url
+V 48
+/svn/!svn/ver/142/trunk/src/hpp/dds/sub/find.hpp
+END
+Sample.hpp
+K 25
+svn:wc:ra_dav:version-url
+V 50
+/svn/!svn/ver/128/trunk/src/hpp/dds/sub/Sample.hpp
+END
+DataReaderListener.hpp
+K 25
+svn:wc:ra_dav:version-url
+V 62
+/svn/!svn/ver/142/trunk/src/hpp/dds/sub/DataReaderListener.hpp
+END
+Subscriber.hpp
+K 25
+svn:wc:ra_dav:version-url
+V 53
+/svn/!svn/ver/93/trunk/src/hpp/dds/sub/Subscriber.hpp
+END
+AnyDataReader.hpp
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/svn/!svn/ver/129/trunk/src/hpp/dds/sub/AnyDataReader.hpp
+END
+discovery.hpp
+K 25
+svn:wc:ra_dav:version-url
+V 53
+/svn/!svn/ver/128/trunk/src/hpp/dds/sub/discovery.hpp
+END
+ReaderQuery.hpp
+K 25
+svn:wc:ra_dav:version-url
+V 55
+/svn/!svn/ver/159/trunk/src/hpp/dds/sub/ReaderQuery.hpp
+END

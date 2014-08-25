@@ -43,6 +43,7 @@ is show, and is linked to a more detailed table.<P>
 set top ""
 set maj system
 set msum(system) 0
+catch {unset freq}
 
 while { [gets $fin rec] > -1 } {
    set s [split $rec "<>:"]
@@ -54,7 +55,7 @@ while { [gets $fin rec] > -1 } {
         set maj [string trim [lindex [split $top .] 0]]
         set msum($maj) 0
      }
-     set sum($top) 0
+     set sum($top) 64
      set bsum($top) 0
      set sour($top) 1
    }
@@ -66,23 +67,26 @@ while { [gets $fin rec] > -1 } {
       set sour($top) [string trim [lindex [lindex $s 6] 0]]
    }
    if { [string trim [lindex $s 5]] == "Item / type / count" } {
-      gets $fin r2
-      set s2 "$rec $r2"
+#      gets $fin r2
+      set s2 $rec
       set s [split $s2 "<>:"]
       set it [split [string trim [lindex $s 6]] /]
       set ty [string trim [lindex $it 1]]
       set n [string trim [lindex $it 2]]
-      set nf [expr [string trim [lindex $it 2]] * $freq($top) * $sour($top)]
+      if { $n == "" } {set n 1 ; set strn [lindex $s 7]}
+      set nf [expr $n * $freq($top) * $sour($top)]
       switch $ty {
             string -
-            String { set sum($top) [expr $sum($top) + 128.*$nf] } 
+            String { set sum($top) [expr $sum($top) + $strn.*$nf] } 
             float  -
-            Float  { set sum($top) [expr $sum($top) + 8.*$nf] } 
+            Float  { set sum($top) [expr $sum($top) + 4.*$nf] } 
+            double  -
+            Double  { set sum($top) [expr $sum($top) + 8.*$nf] } 
             int    -
             long   -
             Int    { set sum($top) [expr $sum($top) + 4.*$nf] } 
             short  -
-            Short  { set sum($top) [expr $sum($top) + 1.*$nf] } 
+            Short  { set sum($top) [expr $sum($top) + 2.*$nf] } 
             byte   -
             Byte   { set sum($top) [expr $sum($top) + 1.*$nf] } 
             default {puts stdout "Unsupported type - $ty"}
@@ -135,9 +139,10 @@ produce large image/vector datasets (BLOBs) are shown here.<P>
 <TR BGCOLOR=Yellow><B><TD>Subsystem</TD><TD>Bytes/Sec</TD><TD>Mbps</TD><TD>MB per Day</TD></B></TR>"
 set bgt 0
 foreach s [lsort [array names BLOBS]] {
+    set sdot [join [split $s _] .]
     set bpp [expr [string trim [lindex $BLOBS($s) 1] bit] / 8]
     set siz [split [lindex $BLOBS($s) 0] x]
-    set bbytes [expr $bpp*$sour($s)*$freq($s)*[lindex $siz 0]*[lindex $siz 1]*[lindex $siz 2]]
+    set bbytes [expr $bpp*$sour($sdot)*$freq($sdot)*[lindex $siz 0]*[lindex $siz 1]*[lindex $siz 2]]
     set bsum($s) $bbytes
     logsum $fo4 $s $bsum($s)
     set bgt [expr $bgt + $bsum($s)]
@@ -203,7 +208,7 @@ blogsum $fo6 "Total for all Subsystems" $gt
 puts $fo6 "</TABLE><P></BODY></HTML>"
 close $fo6
 
-set fout [open stream_frequencies.tcl w]
+set fout [open bandwidth/stream_frequencies.tcl w]
 foreach t [lsort [array names freq]] {
   set s [join [split $t .] _]
   puts $fout "set FREQUENCY($s) $freq($t)"

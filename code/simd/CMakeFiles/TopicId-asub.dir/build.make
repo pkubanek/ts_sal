@@ -32,10 +32,10 @@ CMAKE_COMMAND = /usr/bin/cmake
 RM = /usr/bin/cmake -E remove -f
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /opt/simd-cxx-v0.9/demo/TopicId
+CMAKE_SOURCE_DIR = SAL_WORK_DIR
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /opt/simd-cxx-v0.9/demo/TopicId
+CMAKE_BINARY_DIR = SAL_WORK_DIR
 
 # Include any dependencies generated for this target.
 include CMakeFiles/TopicId-asub.dir/depend.make
@@ -48,17 +48,17 @@ include CMakeFiles/TopicId-asub.dir/flags.make
 
 CMakeFiles/TopicId-asub.dir/TopicId-asub.cpp.o: CMakeFiles/TopicId-asub.dir/flags.make
 CMakeFiles/TopicId-asub.dir/TopicId-asub.cpp.o: TopicId-asub.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /opt/simd-cxx-v0.9/demo/TopicId/CMakeFiles $(CMAKE_PROGRESS_1)
+	$(CMAKE_COMMAND) -E cmake_progress_report SAL_WORK_DIR/CMakeFiles $(CMAKE_PROGRESS_1)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/TopicId-asub.dir/TopicId-asub.cpp.o"
-	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/TopicId-asub.dir/TopicId-asub.cpp.o -c /opt/simd-cxx-v0.9/demo/TopicId/TopicId-asub.cpp
+	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/TopicId-asub.dir/TopicId-asub.cpp.o -c SAL_WORK_DIR/TopicId-asub.cpp
 
 CMakeFiles/TopicId-asub.dir/TopicId-asub.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/TopicId-asub.dir/TopicId-asub.cpp.i"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -E /opt/simd-cxx-v0.9/demo/TopicId/TopicId-asub.cpp > CMakeFiles/TopicId-asub.dir/TopicId-asub.cpp.i
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -E SAL_WORK_DIR/TopicId-asub.cpp > CMakeFiles/TopicId-asub.dir/TopicId-asub.cpp.i
 
 CMakeFiles/TopicId-asub.dir/TopicId-asub.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/TopicId-asub.dir/TopicId-asub.cpp.s"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -S /opt/simd-cxx-v0.9/demo/TopicId/TopicId-asub.cpp -o CMakeFiles/TopicId-asub.dir/TopicId-asub.cpp.s
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -S SAL_WORK_DIR/TopicId-asub.cpp -o CMakeFiles/TopicId-asub.dir/TopicId-asub.cpp.s
 
 CMakeFiles/TopicId-asub.dir/TopicId-asub.cpp.o.requires:
 .PHONY : CMakeFiles/TopicId-asub.dir/TopicId-asub.cpp.o.requires
@@ -78,22 +78,22 @@ TopicId__asub_OBJECTS = \
 TopicId__asub_EXTERNAL_OBJECTS =
 
 TopicId-asub: CMakeFiles/TopicId-asub.dir/TopicId-asub.cpp.o
-TopicId-asub: /opt/OpenSplice/HDE/x86.linux2.6/lib/libdcpsgapi.so
-TopicId-asub: /opt/OpenSplice/HDE/x86.linux2.6/lib/libdcpssacpp.so
-TopicId-asub: /opt/OpenSplice/HDE/x86.linux2.6/lib/libddsdatabase.so
-TopicId-asub: /opt/OpenSplice/HDE/x86.linux2.6/lib/libddsos.so
+TopicId-asub: OSPL_HDE/lib/libdcpsgapi.so
+TopicId-asub: OSPL_HDE/lib/libdcpssacpp.so
+TopicId-asub: OSPL_HDE/lib/libddsdatabase.so
+TopicId-asub: OSPL_HDE/lib/libddsos.so
 TopicId-asub: /usr/lib/libboost_thread-mt.so
 TopicId-asub: /usr/lib/libboost_program_options-mt.so
 TopicId-asub: /usr/lib/libboost_system-mt.so
 TopicId-asub: libdatamodel.a
-TopicId-asub: /opt/OpenSplice/HDE/x86.linux2.6/lib/libdcpsgapi.so
-TopicId-asub: /opt/OpenSplice/HDE/x86.linux2.6/lib/libdcpssacpp.so
-TopicId-asub: /opt/OpenSplice/HDE/x86.linux2.6/lib/libddsdatabase.so
-TopicId-asub: /opt/OpenSplice/HDE/x86.linux2.6/lib/libddsos.so
+TopicId-asub: OSPL_HDE/lib/libdcpsgapi.so
+TopicId-asub: OSPL_HDE/lib/libdcpssacpp.so
+TopicId-asub: OSPL_HDE/lib/libddsdatabase.so
+TopicId-asub: OSPL_HDE/lib/libddsos.so
 TopicId-asub: /usr/lib/libboost_thread-mt.so
 TopicId-asub: /usr/lib/libboost_program_options-mt.so
 TopicId-asub: /usr/lib/libboost_system-mt.so
-TopicId-asub: /opt/simd/lib/libSimD.so
+TopicId-asub: SIMD_BASE_DIR/lib/libSimD.so
 TopicId-asub: CMakeFiles/TopicId-asub.dir/build.make
 TopicId-asub: CMakeFiles/TopicId-asub.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --red --bold "Linking CXX executable TopicId-asub"
@@ -111,6 +111,6 @@ CMakeFiles/TopicId-asub.dir/clean:
 .PHONY : CMakeFiles/TopicId-asub.dir/clean
 
 CMakeFiles/TopicId-asub.dir/depend:
-	cd /opt/simd-cxx-v0.9/demo/TopicId && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /opt/simd-cxx-v0.9/demo/TopicId /opt/simd-cxx-v0.9/demo/TopicId /opt/simd-cxx-v0.9/demo/TopicId /opt/simd-cxx-v0.9/demo/TopicId /opt/simd-cxx-v0.9/demo/TopicId/CMakeFiles/TopicId-asub.dir/DependInfo.cmake --color=$(COLOR)
+	cd SAL_WORK_DIR && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" SAL_WORK_DIR SAL_WORK_DIR SAL_WORK_DIR SAL_WORK_DIR SAL_WORK_DIR/CMakeFiles/TopicId-asub.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/TopicId-asub.dir/depend
 

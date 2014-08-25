@@ -1,0 +1,16 @@
+	svcLONG	Marked;
+	svcFLT	Casspa;
+	svcFLT	Dec;
+	svcFLT	Fl;
+	svcFLT	Humid;
+	svcFLT	Pitch;
+	svcFLT	Press;
+	svcFLT	Ra;
+	svcFLT	Rcorr;
+	svcFLT	Roll;
+	svcFLT	Temp;
+	svcFLT	Tlr;
+	svcFLT	Wavel;
+	svcFLT	Xr;
+	svcFLT	Yr;
+	svcFLT	Aux[4];

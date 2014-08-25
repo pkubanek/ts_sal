@@ -1,0 +1,8 @@
+		enclosure_response_ref->repeat = samples[i].repeat;
+		enclosure_response_ref->submits = samples[i].submits;
+		enclosure_response_ref->cmdID = samples[i].cmdID;
+		enclosure_response_ref->timeout = samples[i].timeout;
+		strncpy(enclosure_response_ref->ack,samples[i].ack,16);
+		strncpy(enclosure_response_ref->error,samples[i].error,16);
+		strncpy(enclosure_response_ref->result,samples[i].result,64);
+		enclosure_response_ref->syncI++;

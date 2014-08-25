@@ -31,9 +31,9 @@ global FormData
 }
 
 
-source /opt/lsstsal/scripts/GetPostedData.tcl
-source /opt/lsstsal/scripts/streamdesc.tcl
-source /opt/lsstsal/scripts/streamutils.tcl
+source /usr/local/scripts/tcl/GetPostedData.tcl
+source /usr/local/scripts/tcl/streamdesc.tcl
+source /usr/local/scripts/tcl/streamutils.tcl
 set streamdir  /var/www/html/streams/
 
 if { [info exists FormData(DEBUG)] == 0 } {set FormData(DEBUG) 0}

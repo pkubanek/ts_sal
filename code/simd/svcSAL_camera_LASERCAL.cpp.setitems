@@ -1,0 +1,2 @@
+		result = salHandle->setitem(SAL_IID_camera_LASERCAL_positions, positions, 11);
+		result = salHandle->putSample();

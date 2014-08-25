@@ -1,0 +1,5 @@
+		result = salHandle->setItem(SAL_IID_camera_TC_zone2_status, status, 26);
+		result = salHandle->setItem(SAL_IID_camera_TC_zone2_cold_plate, cold_plate, 26);
+		result = salHandle->setItem(SAL_IID_camera_TC_zone2_setpoint, setpoint, 26);
+		result = salHandle->setItem(SAL_IID_camera_TC_zone2_temperature, temperature, 26);
+		result = salHandle->putSample();

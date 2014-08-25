@@ -1,0 +1,8 @@
+		d.repeat = skycam_response_ref->repeat;
+		d.submits = skycam_response_ref->submits;
+		d.cmdID = skycam_response_ref->cmdID;
+		d.timeout = skycam_response_ref->timeout;
+		strncpy(d.ack,skycam_response_ref->ack,16);
+		strncpy(d.error,skycam_response_ref->error,16);
+		strncpy(d.result,skycam_response_ref->result,64);
+		skycam_response_ref->syncO = 1;

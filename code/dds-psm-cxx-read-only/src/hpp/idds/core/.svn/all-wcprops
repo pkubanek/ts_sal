@@ -1,0 +1,71 @@
+K 25
+svn:wc:ra_dav:version-url
+V 41
+/svn/!svn/ver/138/trunk/src/hpp/idds/core
+END
+corefwd.hpp
+K 25
+svn:wc:ra_dav:version-url
+V 53
+/svn/!svn/ver/138/trunk/src/hpp/idds/core/corefwd.hpp
+END
+FunctorHolder.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/svn/!svn/ver/130/trunk/src/hpp/idds/core/FunctorHolder.cpp
+END
+EntityImpl.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 56
+/svn/!svn/ver/129/trunk/src/hpp/idds/core/EntityImpl.cpp
+END
+GuardConditionImpl.hpp
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/!svn/ver/111/trunk/src/hpp/idds/core/GuardConditionImpl.hpp
+END
+InstanceHandleImpl.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/!svn/ver/130/trunk/src/hpp/idds/core/InstanceHandleImpl.cpp
+END
+FunctorHolder.hpp
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/svn/!svn/ver/128/trunk/src/hpp/idds/core/FunctorHolder.hpp
+END
+EntityImpl.hpp
+K 25
+svn:wc:ra_dav:version-url
+V 56
+/svn/!svn/ver/128/trunk/src/hpp/idds/core/EntityImpl.hpp
+END
+InstanceHandleImpl.hpp
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/!svn/ver/128/trunk/src/hpp/idds/core/InstanceHandleImpl.hpp
+END
+ConditionImpl.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/svn/!svn/ver/130/trunk/src/hpp/idds/core/ConditionImpl.cpp
+END
+StatusImpl.hpp
+K 25
+svn:wc:ra_dav:version-url
+V 56
+/svn/!svn/ver/128/trunk/src/hpp/idds/core/StatusImpl.hpp
+END
+ConditionImpl.hpp
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/svn/!svn/ver/103/trunk/src/hpp/idds/core/ConditionImpl.hpp
+END

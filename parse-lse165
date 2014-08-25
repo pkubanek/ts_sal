@@ -1,0 +1,241 @@
+#!/usr/bin/tclsh
+#
+# Save-as .xhtml from OpenOffice calc then use this script
+# to generate .idl
+#
+
+source /opt/lsstsal/scripts/xml/SALTopicTemplateXML.tcl
+
+
+proc parsetable { n it } {
+global TABS
+   set row 0
+   set col 0
+   set s [split $it "<>"]
+   set ignore 1
+   foreach i $s { 
+      if { [string range $i 0 7] == "tr class" } {
+         incr row 1 ; set col 0 ; set ignore 1
+         foreach j "1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24" {set TABS($n,$row,$j) ""}
+      }
+      if { [string range $i 0 2] == "td " } {incr col 1 ; set ignore 1}
+#      if { $i == "" || $i == "p" || $i =="/p" || $i == "br/" || $i == "/colgroup"} {set ignore 1}
+#      if { $i == "/tr" || $i == "/td"} {set ignore 1}
+      if { $i == "/span" || [string range $i 0 4] =="span " || [string range $i 0 3]== "col " } {set ignore 1}
+#      if { [string length $i] == 1} { set ignore 1}
+#      if { $i == "colgroup" || [string range $i 0 5] == "table " } { set ignore 1}
+      if { $i == "/p" } {set ignore 1}
+      if { $ignore == 0 } {
+         puts stdout "$row,$col = $i"
+         set TABS($n,$row,$col) "[set TABS($n,$row,$col)]$i"
+      }
+      if { $i == "p" } {set ignore 0}
+      if { [string range $i 0 14] == "span class=\"T1\"" } {set ignore 0}
+      if { [string range $i 0 14] == "span class=\"T5\"" } {set ignore 0}
+    }
+}
+
+proc showtab { n r } {
+global TABS
+  foreach i "1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16"  {
+     puts stdout "$r,$i = $TABS($n,$r,$i)"
+  }
+}
+
+
+set fin [open LSE-165.xhtml.html r]
+set fout [open perline w]
+set work 0
+set tstring ""
+while { [gets $fin rec] > -1 } {
+  set all [split $rec " "]
+  foreach i $all {
+     if { [string range [string reverse $i] 0 5] == "elbat<" } {
+        incr work 1
+        if { $work > 3 } { 
+           puts $fout "$tstring </td></tr></table>"
+           parsetable $work $tstring
+           puts stdout "finished table $work"
+        }
+        set tstring "<table"
+     } else {
+        if { $work > 2 } {
+           set tstring "$tstring $i"
+        }
+     }
+  }
+}
+close $fin 
+close $fout
+
+set TYPE(2) "short"
+set TYPE(4) "long"
+set TYPE(6) "long"
+foreach u "Volt Volts Pa lps Amp Watts Hz seconds m/s m/s2 Kelvin Celcius Degrees Radian" {
+  set UTYPE($u) float
+}
+
+set n 4
+while { $n <= $work } {
+   puts stdout "Table : $TABS($n,1,1)"
+   set subsystem $TABS($n,1,1)
+   catch {unset XMLTLM}
+   catch {unset XMLTOPICS}
+   set row 3
+   while { $row < 999 }  {
+      if { [info exists TABS($n,$row,2)] } {
+         if { [string length $TABS($n,$row,2)] > 0 } {
+            set scol 1
+            if { [string length $TABS($n,$row,1)] == 0} {set scol 2}
+            if { [lindex [split $TABS($n,$row,1) _] 0] == "camera" } {set scol 1}
+            if { [lindex [split $TABS($n,$row,1) _] 0] == "Camera" } {set scol 1}
+            if { [lindex [split $TABS($n,$row,2) _] 0] == "camera" } {set scol 2}
+            if { [lindex [split $TABS($n,$row,2) _] 0] == "Camera" } {set scol 2}
+            if { [lindex [split $TABS($n,$row,1) _] 0] == " camera" } {set scol 1}
+            if { [lindex [split $TABS($n,$row,1) _] 0] == " Camera" } {set scol 1}
+            if { [lindex [split $TABS($n,$row,2) _] 0] == " camera" } {set scol 2}
+            if { [lindex [split $TABS($n,$row,2) _] 0] == " Camera" } {set scol 2}
+            set topic [string trim $TABS($n,$row,$scol) " 	"]
+            set spl [split $topic _]
+            set topic [string tolower [lindex $spl 0]]_[join [lrange $spl 1 end] _]
+            if { [string is space [string range $topic 0 0]] } {
+               set topic [string range $topic 1 end]
+            }
+            set topic [string trim $topic]
+            set shrttopic [string range $topic 7 end]
+            if { [info exists F($topic)] == 0 } {
+               puts stdout "Topic : \"$topic\""
+               set F($topic) [open $topic.idl w]
+               puts $F($topic) "struct $topic \{
+  string<32> private_revCode;  //private
+  double     private_sndStamp; //private
+  double     private_rcvStamp; //private
+  long       private_seqNum;   //private
+  long       private_origin;   //private"
+            }
+            set item $TABS($n,$row,[expr $scol+1])
+            set ikey "[set topic]_[set item]"
+            set XMLTLM($ikey,EFDB_Name) $item
+            set XMLTOPICS($ikey) 1
+            set desc $TABS($n,$row,[expr $scol+2])
+            catch {
+              set freq 0.054
+              set freq $TABS($n,$row,[expr $scol+3])
+            }
+            set PUBS($topic) $TABS($n,$row,[expr $scol+4])
+            set count $TABS($n,$row,[expr $scol+5])
+            if { $count == "??" } {set count 1}
+            set size $TABS($n,$row,[expr $scol+6])
+            if { $size == "??" } {set size 4}
+            set type $TABS($n,$row,[expr $scol+7])
+            set unit $TABS($n,$row,[expr $scol+8])
+            if { [string range $type 0 5] == "string" } {
+               set type "string<[string range $type 6 end]>" 
+            } else {
+               if { $count > 1 } { set item "$item\[$count\]" }
+            }
+            if { $type == "??" } {set type long}
+            set conv  $TABS($n,$row,[expr $scol+9])
+            set loca  $TABS($n,$row,[expr $scol+10])
+            set cnts  $TABS($n,$row,[expr $scol+11])
+            set inst  $TABS($n,$row,[expr $scol+12])
+            set byts  $TABS($n,$row,[expr $scol+13])
+            set XMLTLM($ikey,EFDB_Topic) $topic
+            set XMLTLM($ikey,Description) $desc
+            set XMLTLM($ikey,Frequency) $freq
+            set XMLTLM($ikey,Publishers) $PUBS($topic)
+            set XMLTLM($ikey,Values_per_Publisher) $count
+            set XMLTLM($ikey,Size_in_bytes) $size
+            set XMLTLM($ikey,IDL_Type) $type
+            set XMLTLM($ikey,Units) $unit
+            set XMLTLM($ikey,Conversion) $conv
+            set XMLTLM($ikey,Sensor_location) $loca
+            set XMLTLM($ikey,Count) $cnts
+            set XMLTLM($ikey,Instances_per_night) $inst 
+            set XMLTLM($ikey,Bytes_per_night) $byts
+            if { [string trim $TABS($n,$row,[expr $scol+15])] != "" } {
+               set XMLTLM($ikey,Needed_by_DM) $TABS($n,$row,[expr $scol+15])
+               set XMLTLM($ikey,Needed_by_Camera) $TABS($n,$row,[expr $scol+16])
+               set XMLTLM($ikey,Needed_by_OCS) $TABS($n,$row,[expr $scol+17])
+               set XMLTLM($ikey,Needed_by_TCS) $TABS($n,$row,[expr $scol+18])
+               set XMLTLM($ikey,Needed_by_EPO) $TABS($n,$row,[expr $scol+19])
+            }
+            if { [string trim $TABS($n,$row,[expr $scol+21])] != "" } {
+               set XMLTLM($ikey,Explanation) $TABS($n,$row,[expr $scol+21])
+            }
+            puts stdout "  $type	$item;	// $freq | $unit | $desc | $conv | $loca | $cnts | $inst | $byts"
+            puts $F($topic) "  $type	$item;	// $freq | $unit | $desc | $conv | $loca | $cnts | $inst | $byts"
+         }
+      }
+      incr row 1
+   }
+   foreach t [array names F] { 
+      if { $PUBS($t) > 1 } {
+         puts $F($t) "  unsigned short	REB_ID;	// 0.054 | none | Raft Electronics Board ID | none | Cryostat"
+      }
+      puts $F($t) "\};"
+      puts $F($t) "#pragma keylist $t "
+      close $F($t)
+   }
+   unset F
+   writeXMLsubsys xml [lindex $subsystem 0]
+   incr n 1
+}
+
+
+foreach component "CCC Cluster Cold Cryo Filter GAS GDS MPM PCMS Prot Purge Shutter SAS SDS WAS WDS" {
+  catch {
+   set parts [lsort [glob *$component*.idl]]
+   set fout [open validated/sal/sal_camera_$component.idl w]
+   puts $fout "module camera"
+   puts $fout "\{"
+   foreach i $parts {
+     set fin [open $i r]
+     while { [gets $fin rec] > -1 } {
+         puts $fout "	$rec"
+     }
+     close $fin
+   }
+   puts $fout "\};"
+   close $fout
+   puts stdout "Done validated/sal/sal_camera_$component"
+  }
+}
+
+cd validated
+
+#Run in idl-templates/validated
+#
+foreach ssys "auxscope calibration dm enclosure environment lasercal m1m3 m2 mount network ocs power scheduler seeing skycam system tcs" {
+  set parts [lsort [glob *$ssys*.idl]]
+  set fout [open sal/sal_$ssys.idl w]
+  puts $fout "module $ssys"
+  puts $fout "\{"
+  foreach i $parts {
+    puts stdout "Processing $i"
+    set doneprag 0
+    set shrt [join [lrange [split [file rootname $i] _] 1 end] _]
+    set fin [open $i r]
+    gets $fin rec
+    puts $fout "	struct $shrt \{"
+    while { [gets $fin rec] > -1 } {
+         if { [string range $rec 0 6] == "#pragma"} {
+            puts $fout "	#pragma keylist $shrt"
+            set doneprag 1
+         } else {
+            puts $fout "	$rec"
+         }
+    }
+    close $fin
+    if { $doneprag == 0 } {
+       puts $fout "	#pragma keylist $shrt"
+    }
+  }
+  puts $fout "\};"
+  close $fout
+  puts stdout "Finished validated/sal/$ssys"
+}
+
+
+
+

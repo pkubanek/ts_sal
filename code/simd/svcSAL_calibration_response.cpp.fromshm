@@ -1,0 +1,8 @@
+		d.repeat = calibration_response_ref->repeat;
+		d.submits = calibration_response_ref->submits;
+		d.cmdID = calibration_response_ref->cmdID;
+		d.timeout = calibration_response_ref->timeout;
+		strncpy(d.ack,calibration_response_ref->ack,16);
+		strncpy(d.error,calibration_response_ref->error,16);
+		strncpy(d.result,calibration_response_ref->result,64);
+		calibration_response_ref->syncO = 1;

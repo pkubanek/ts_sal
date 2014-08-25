@@ -1,0 +1,35 @@
+K 25
+svn:wc:ra_dav:version-url
+V 52
+/svn/!svn/ver/135/trunk/src/hpp/dds/core/cond/detail
+END
+GuardCondition.hpp
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svn/!svn/ver/111/trunk/src/hpp/dds/core/cond/detail/GuardCondition.hpp
+END
+parent.hpp
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/svn/!svn/ver/135/trunk/src/hpp/dds/core/cond/detail/parent.hpp
+END
+StatusCondition.hpp
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/!svn/ver/128/trunk/src/hpp/dds/core/cond/detail/StatusCondition.hpp
+END
+WaitSet.hpp
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/svn/!svn/ver/84/trunk/src/hpp/dds/core/cond/detail/WaitSet.hpp
+END
+Condition.hpp
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/!svn/ver/84/trunk/src/hpp/dds/core/cond/detail/Condition.hpp
+END

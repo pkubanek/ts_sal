@@ -1,0 +1,12 @@
+		result = salHandle->setitem(SAL_IID_seeing_dimm_Measurement_flux, flux);
+		result = salHandle->setitem(SAL_IID_seeing_dimm_Measurement_hrnum, hrnum);
+		result = salHandle->setitem(SAL_IID_seeing_dimm_Measurement_numlines, numlines);
+		result = salHandle->setitem(SAL_IID_seeing_dimm_Measurement_exposure, exposure);
+		result = salHandle->setitem(SAL_IID_seeing_dimm_Measurement_scintleft, scintleft);
+		result = salHandle->setitem(SAL_IID_seeing_dimm_Measurement_scintright, scintright);
+		result = salHandle->setitem(SAL_IID_seeing_dimm_Measurement_seeing_corr, seeing_corr);
+		result = salHandle->setitem(SAL_IID_seeing_dimm_Measurement_strehlleft, strehlleft);
+		result = salHandle->setitem(SAL_IID_seeing_dimm_Measurement_strehlright, strehlright);
+		result = salHandle->setitem(SAL_IID_seeing_dimm_Measurement_utdate, utdate);
+		result = salHandle->setitem(SAL_IID_seeing_dimm_Measurement_uttime, uttime);
+		result = salHandle->putSample();

@@ -1,0 +1,6 @@
+		d.cmdID = power_command_ref->cmdID;
+		strncpy(d.device,power_command_ref->device,16);
+		strncpy(d.modifiers,power_command_ref->modifiers,128);
+		strncpy(d.operation,power_command_ref->operation,16);
+		strncpy(d.value,power_command_ref->value,16);
+		power_command_ref->syncO = 1;

@@ -1,0 +1,326 @@
+
+	svcRTN salocs_staticanalysis::getItem ( svcIID itemId , svcLONG &value )
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    switch (itemId) {
+
+                 case SAL_IID_ocs_staticanalysis_action :
+                      value = data.action;
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_ocs_staticanalysis_result :
+                      value = data.result;
+                      result = SAL__OK;
+                      break;
+
+	    }
+	    return result;
+	}
+	
+
+
+	svcRTN salocs_staticanalysis::setItem ( svcIID itemId , svcLONG &value )
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    switch (itemId) {
+
+                 case SAL_IID_ocs_staticanalysis_action :
+                      data.action = value;
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_ocs_staticanalysis_result :
+                      data.result = value;
+                      result = SAL__OK;
+                      break;
+
+	    }
+	    return result;
+	}
+	
+
+
+       svcRTN salocs_staticanalysis::setItemStr ( svcIID itemId , svcCHAR *textValue)
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    
+	    switch (itemid) {
+
+                 case SAL_IID_ocs_staticanalysis_action :
+                      sscanf(textValue,"%ld",&data.action);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_ocs_staticanalysis_result :
+                      sscanf(textValue,"%ld",&data.result);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_ocs_staticanalysis_end :
+                      sscanf(textValue,"%lf",&data.end);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_ocs_staticanalysis_start :
+                      sscanf(textValue,"%lf",&data.start);
+                      result = SAL__OK;
+                      break;
+
+	    }
+	    return result;
+	}
+
+       svcRTN salocs_staticanalysis::getItemStr ( svcIID itemId , svcCHAR *textValue)
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    
+	    switch (itemid) {
+
+                 case SAL_IID_ocs_staticanalysis_action :
+                      sprintf(textValue,"%ld",data.action);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_ocs_staticanalysis_result :
+                      sprintf(textValue,"%ld",data.result);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_ocs_staticanalysis_end :
+                      sprintf(textValue,"%lf",data.end);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_ocs_staticanalysis_start :
+                      sprintf(textValue,"%lf",data.start);
+                      result = SAL__OK;
+                      break;
+
+	    }
+	    return result;
+	}
+
+	svcRTN salocs_staticanalysis::getItem ( svcIID itemId , svcFLT &value )
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    switch (itemId) {
+
+                 case SAL_IID_ocs_staticanalysis_end :
+                      value = data.end;
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_ocs_staticanalysis_start :
+                      value = data.start;
+                      result = SAL__OK;
+                      break;
+
+	    }
+	    return result;
+	}
+	
+
+
+	svcRTN salocs_staticanalysis::setItem ( svcIID itemId , svcFLT &value )
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    switch (itemId) {
+
+                 case SAL_IID_ocs_staticanalysis_end :
+                      data.end = value;
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_ocs_staticanalysis_start :
+                      data.start = value;
+                      result = SAL__OK;
+                      break;
+
+	    }
+	    return result;
+	}
+	
+
+
+       svcRTN salocs_staticanalysis::setItemStr ( svcIID itemId , svcCHAR *textValue)
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    
+	    switch (itemid) {
+
+                 case SAL_IID_ocs_staticanalysis_action :
+                      sscanf(textValue,"%ld",&data.action);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_ocs_staticanalysis_result :
+                      sscanf(textValue,"%ld",&data.result);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_ocs_staticanalysis_end :
+                      sscanf(textValue,"%lf",&data.end);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_ocs_staticanalysis_start :
+                      sscanf(textValue,"%lf",&data.start);
+                      result = SAL__OK;
+                      break;
+
+	    }
+	    return result;
+	}
+
+       svcRTN salocs_staticanalysis::getItemStr ( svcIID itemId , svcCHAR *textValue)
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    
+	    switch (itemid) {
+
+                 case SAL_IID_ocs_staticanalysis_action :
+                      sprintf(textValue,"%ld",data.action);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_ocs_staticanalysis_result :
+                      sprintf(textValue,"%ld",data.result);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_ocs_staticanalysis_end :
+                      sprintf(textValue,"%lf",data.end);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_ocs_staticanalysis_start :
+                      sprintf(textValue,"%lf",data.start);
+                      result = SAL__OK;
+                      break;
+
+	    }
+	    return result;
+	}
+
+	svcRTN salocs_staticanalysis::getItem ( svcIID itemId , (svcCHAR *)value )
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    switch (itemId) {
+	    
+
+
+                 case SAL_IID_ocs_staticanalysis_actuuid :
+                      strncpy(value, data.actuuid, 32);
+                      result = SAL__OK;
+                      break;
+
+
+                 case SAL_IID_ocs_staticanalysis_part :
+                      strncpy(value, data.part, 128);
+                      result = SAL__OK;
+                      break;
+
+
+                 case SAL_IID_ocs_staticanalysis_subsystem :
+                      strncpy(value, data.subsystem, 128);
+                      result = SAL__OK;
+                      break;
+
+
+	    }
+	    return result;
+	}
+	
+
+
+	svcRTN salocs_staticanalysis::setItem ( svcIID itemId , (svcCHAR *)value )
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    switch (itemId) {
+	    
+
+
+                 case SAL_IID_ocs_staticanalysis_actuuid :
+                      strncpy(data.actuuid, value, 32);
+                      result = SAL__OK;
+                      break;
+
+
+                 case SAL_IID_ocs_staticanalysis_part :
+                      strncpy(data.part, value, 128);
+                      result = SAL__OK;
+                      break;
+
+
+                 case SAL_IID_ocs_staticanalysis_subsystem :
+                      strncpy(data.subsystem, value, 128);
+                      result = SAL__OK;
+                      break;
+
+
+	    }
+	    return result;
+	}
+	
+
+
+       svcRTN salocs_staticanalysis::setItemStr ( svcIID itemId , svcCHAR *textValue)
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    
+	    switch (itemid) {
+
+                 case SAL_IID_ocs_staticanalysis_action :
+                      sscanf(textValue,"%ld",&data.action);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_ocs_staticanalysis_result :
+                      sscanf(textValue,"%ld",&data.result);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_ocs_staticanalysis_end :
+                      sscanf(textValue,"%lf",&data.end);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_ocs_staticanalysis_start :
+                      sscanf(textValue,"%lf",&data.start);
+                      result = SAL__OK;
+                      break;
+
+	    }
+	    return result;
+	}
+
+       svcRTN salocs_staticanalysis::getItemStr ( svcIID itemId , svcCHAR *textValue)
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    
+	    switch (itemid) {
+
+                 case SAL_IID_ocs_staticanalysis_action :
+                      sprintf(textValue,"%ld",data.action);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_ocs_staticanalysis_result :
+                      sprintf(textValue,"%ld",data.result);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_ocs_staticanalysis_end :
+                      sprintf(textValue,"%lf",data.end);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_ocs_staticanalysis_start :
+                      sprintf(textValue,"%lf",data.start);
+                      result = SAL__OK;
+                      break;
+
+	    }
+	    return result;
+	}

@@ -1,4 +1,4 @@
-# Install script for directory: /opt/simd-cxx-v0.9/demo/TopicId
+# Install script for directory: SAL_WORK_DIR
 
 # Set the install prefix
 IF(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -38,7 +38,7 @@ ELSE(CMAKE_INSTALL_COMPONENT)
   SET(CMAKE_INSTALL_MANIFEST "install_manifest.txt")
 ENDIF(CMAKE_INSTALL_COMPONENT)
 
-FILE(WRITE "/opt/simd-cxx-v0.9/demo/TopicId/${CMAKE_INSTALL_MANIFEST}" "")
+FILE(WRITE "SAL_WORK_DIR/${CMAKE_INSTALL_MANIFEST}" "")
 FOREACH(file ${CMAKE_INSTALL_MANIFEST_FILES})
-  FILE(APPEND "/opt/simd-cxx-v0.9/demo/TopicId/${CMAKE_INSTALL_MANIFEST}" "${file}\n")
+  FILE(APPEND "SAL_WORK_DIR/${CMAKE_INSTALL_MANIFEST}" "${file}\n")
 ENDFOREACH(file)

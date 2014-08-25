@@ -1,0 +1,10 @@
+		for (unsigned int count=0; count<51; count++) {
+			m2_Surface_ref->Status[count] = samples[i].Status[count];
+		}
+		for (unsigned int count=0; count<201; count++) {
+			m2_Surface_ref->Raw[count] = samples[i].Raw[count];
+		}
+		for (unsigned int count=0; count<201; count++) {
+			m2_Surface_ref->Calibrated[count] = samples[i].Calibrated[count];
+		}
+		m2_Surface_ref->syncI++;

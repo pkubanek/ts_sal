@@ -1,0 +1,3 @@
+		result = salHandle->getSample(SAL__SLOWPOLL);
+		result = salHandle->getitem(SAL_IID_power_UPSs_Raw, Raw, 17);
+		result = salHandle->getitem(SAL_IID_power_UPSs_Calibrated, Calibrated, 33);

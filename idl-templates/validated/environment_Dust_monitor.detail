@@ -1,0 +1,2 @@
+environment.Dust.monitor.Raw 16 long 0.1
+environment.Dust.monitor.Calibrated 32 float 0.1

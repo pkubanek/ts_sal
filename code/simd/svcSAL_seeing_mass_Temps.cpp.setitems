@@ -1,0 +1,4 @@
+		result = salHandle->setitem(SAL_IID_seeing_mass_Temps_Health, Health, 16);
+		result = salHandle->setitem(SAL_IID_seeing_mass_Temps_Raw, Raw, 16);
+		result = salHandle->setitem(SAL_IID_seeing_mass_Temps_Calibrated, Calibrated, 16);
+		result = salHandle->putSample();

@@ -1,0 +1,9 @@
+struct _Shutter_Position {
+  string<32> private_revCode;  //private
+  double     private_sndStamp; //private
+  double     private_rcvStamp; //private
+  long       private_seqNum;   //private
+  long       private_origin;   //private
+  short	Blade_home[2];	// 0.054 | none | A and/or B at home? | none | Camera body | 2 |  4,670  |  9,341 
+};
+#pragma keylist _Shutter_Position

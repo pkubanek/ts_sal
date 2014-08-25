@@ -1,0 +1,10 @@
+		for (unsigned int count=0; count<17; count++) {
+			m1m3_Metrology_ref->status[count] = samples[i].status[count];
+		}
+		for (unsigned int count=0; count<17; count++) {
+			m1m3_Metrology_ref->distance[count] = samples[i].distance[count];
+		}
+		for (unsigned int count=0; count<17; count++) {
+			m1m3_Metrology_ref->error[count] = samples[i].error[count];
+		}
+		m1m3_Metrology_ref->syncI++;

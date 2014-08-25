@@ -1,0 +1,832 @@
+
+	svcRTN saltcs_kernel_Site::getItem ( svcIID itemId , svcFLT &value )
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    switch (itemId) {
+
+                 case SAL_IID_tcs_kernel_Site_Daz :
+                      value = data.Daz;
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_Site_Diurab :
+                      value = data.Diurab;
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_Site_Elong :
+                      value = data.Elong;
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_Site_Lat :
+                      value = data.Lat;
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_Site_Refa :
+                      value = data.Refa;
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_Site_Refb :
+                      value = data.Refb;
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_Site_St0 :
+                      value = data.St0;
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_Site_T0 :
+                      value = data.T0;
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_Site_Tt0 :
+                      value = data.Tt0;
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_Site_Ttj :
+                      value = data.Ttj;
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_Site_Ttmtai :
+                      value = data.Ttmtai;
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_Site_Uau :
+                      value = data.Uau;
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_Site_Ukm :
+                      value = data.Ukm;
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_Site_Vau :
+                      value = data.Vau;
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_Site_Vkm :
+                      value = data.Vkm;
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_Site_delat :
+                      value = data.delat;
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_Site_delut :
+                      value = data.delut;
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_Site_elongm :
+                      value = data.elongm;
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_Site_hm :
+                      value = data.hm;
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_Site_latm :
+                      value = data.latm;
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_Site_tai :
+                      value = data.tai;
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_Site_ttmtat :
+                      value = data.ttmtat;
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_Site_xpm :
+                      value = data.xpm;
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_Site_ypm :
+                      value = data.ypm;
+                      result = SAL__OK;
+                      break;
+
+	    }
+	    return result;
+	}
+	
+
+
+	svcRTN saltcs_kernel_Site::setItem ( svcIID itemId , svcFLT &value )
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    switch (itemId) {
+
+                 case SAL_IID_tcs_kernel_Site_Daz :
+                      data.Daz = value;
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_Site_Diurab :
+                      data.Diurab = value;
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_Site_Elong :
+                      data.Elong = value;
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_Site_Lat :
+                      data.Lat = value;
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_Site_Refa :
+                      data.Refa = value;
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_Site_Refb :
+                      data.Refb = value;
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_Site_St0 :
+                      data.St0 = value;
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_Site_T0 :
+                      data.T0 = value;
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_Site_Tt0 :
+                      data.Tt0 = value;
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_Site_Ttj :
+                      data.Ttj = value;
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_Site_Ttmtai :
+                      data.Ttmtai = value;
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_Site_Uau :
+                      data.Uau = value;
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_Site_Ukm :
+                      data.Ukm = value;
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_Site_Vau :
+                      data.Vau = value;
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_Site_Vkm :
+                      data.Vkm = value;
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_Site_delat :
+                      data.delat = value;
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_Site_delut :
+                      data.delut = value;
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_Site_elongm :
+                      data.elongm = value;
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_Site_hm :
+                      data.hm = value;
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_Site_latm :
+                      data.latm = value;
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_Site_tai :
+                      data.tai = value;
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_Site_ttmtat :
+                      data.ttmtat = value;
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_Site_xpm :
+                      data.xpm = value;
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_Site_ypm :
+                      data.ypm = value;
+                      result = SAL__OK;
+                      break;
+
+	    }
+	    return result;
+	}
+	
+
+
+       svcRTN saltcs_kernel_Site::setItemStr ( svcIID itemId , svcCHAR *textValue)
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    
+	    switch (itemid) {
+
+                 case SAL_IID_tcs_kernel_Site_Daz :
+                      sscanf(textValue,"%lf",&data.Daz);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_Site_Diurab :
+                      sscanf(textValue,"%lf",&data.Diurab);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_Site_Elong :
+                      sscanf(textValue,"%lf",&data.Elong);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_Site_Lat :
+                      sscanf(textValue,"%lf",&data.Lat);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_Site_Refa :
+                      sscanf(textValue,"%lf",&data.Refa);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_Site_Refb :
+                      sscanf(textValue,"%lf",&data.Refb);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_Site_St0 :
+                      sscanf(textValue,"%lf",&data.St0);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_Site_T0 :
+                      sscanf(textValue,"%lf",&data.T0);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_Site_Tt0 :
+                      sscanf(textValue,"%lf",&data.Tt0);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_Site_Ttj :
+                      sscanf(textValue,"%lf",&data.Ttj);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_Site_Ttmtai :
+                      sscanf(textValue,"%lf",&data.Ttmtai);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_Site_Uau :
+                      sscanf(textValue,"%lf",&data.Uau);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_Site_Ukm :
+                      sscanf(textValue,"%lf",&data.Ukm);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_Site_Vau :
+                      sscanf(textValue,"%lf",&data.Vau);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_Site_Vkm :
+                      sscanf(textValue,"%lf",&data.Vkm);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_Site_delat :
+                      sscanf(textValue,"%lf",&data.delat);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_Site_delut :
+                      sscanf(textValue,"%lf",&data.delut);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_Site_elongm :
+                      sscanf(textValue,"%lf",&data.elongm);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_Site_hm :
+                      sscanf(textValue,"%lf",&data.hm);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_Site_latm :
+                      sscanf(textValue,"%lf",&data.latm);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_Site_tai :
+                      sscanf(textValue,"%lf",&data.tai);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_Site_ttmtat :
+                      sscanf(textValue,"%lf",&data.ttmtat);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_Site_xpm :
+                      sscanf(textValue,"%lf",&data.xpm);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_Site_ypm :
+                      sscanf(textValue,"%lf",&data.ypm);
+                      result = SAL__OK;
+                      break;
+
+	    }
+	    return result;
+	}
+
+       svcRTN saltcs_kernel_Site::getItemStr ( svcIID itemId , svcCHAR *textValue)
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    
+	    switch (itemid) {
+
+                 case SAL_IID_tcs_kernel_Site_Daz :
+                      sprintf(textValue,"%lf",data.Daz);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_Site_Diurab :
+                      sprintf(textValue,"%lf",data.Diurab);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_Site_Elong :
+                      sprintf(textValue,"%lf",data.Elong);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_Site_Lat :
+                      sprintf(textValue,"%lf",data.Lat);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_Site_Refa :
+                      sprintf(textValue,"%lf",data.Refa);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_Site_Refb :
+                      sprintf(textValue,"%lf",data.Refb);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_Site_St0 :
+                      sprintf(textValue,"%lf",data.St0);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_Site_T0 :
+                      sprintf(textValue,"%lf",data.T0);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_Site_Tt0 :
+                      sprintf(textValue,"%lf",data.Tt0);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_Site_Ttj :
+                      sprintf(textValue,"%lf",data.Ttj);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_Site_Ttmtai :
+                      sprintf(textValue,"%lf",data.Ttmtai);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_Site_Uau :
+                      sprintf(textValue,"%lf",data.Uau);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_Site_Ukm :
+                      sprintf(textValue,"%lf",data.Ukm);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_Site_Vau :
+                      sprintf(textValue,"%lf",data.Vau);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_Site_Vkm :
+                      sprintf(textValue,"%lf",data.Vkm);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_Site_delat :
+                      sprintf(textValue,"%lf",data.delat);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_Site_delut :
+                      sprintf(textValue,"%lf",data.delut);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_Site_elongm :
+                      sprintf(textValue,"%lf",data.elongm);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_Site_hm :
+                      sprintf(textValue,"%lf",data.hm);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_Site_latm :
+                      sprintf(textValue,"%lf",data.latm);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_Site_tai :
+                      sprintf(textValue,"%lf",data.tai);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_Site_ttmtat :
+                      sprintf(textValue,"%lf",data.ttmtat);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_Site_xpm :
+                      sprintf(textValue,"%lf",data.xpm);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_Site_ypm :
+                      sprintf(textValue,"%lf",data.ypm);
+                      result = SAL__OK;
+                      break;
+
+	    }
+	    return result;
+	}
+
+	svcRTN saltcs_kernel_Site::getItem ( svcIID itemId , svcFLT &value, svcUINT size)
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    switch (itemId) {
+
+                 case SAL_IID_tcs_kernel_Site_Amprms :
+                      if { size > 22 } {return SAL__INDEX_OUT_OF_RANGE;}
+                      for (unsigned int count=0; count<size; count++) {
+                        value[count] = data.Amprms[count];
+                      }
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_Site_Aoprms :
+                      if { size > 16 } {return SAL__INDEX_OUT_OF_RANGE;}
+                      for (unsigned int count=0; count<size; count++) {
+                        value[count] = data.Aoprms[count];
+                      }
+                      result = SAL__OK;
+                      break;
+
+	    }
+	    return result;
+	}
+
+ 	svcRTN saltcs_kernel_Site::setItem ( svcIID itemId , svcFLT &value , svcUINT size)
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    switch (itemId) {
+
+                 case SAL_IID_tcs_kernel_Site_Amprms :
+                      if { size > 22 } {return SAL__INDEX_OUT_OF_RANGE;}
+                      for (unsigned int count=0; count<size; count++) {
+                        data.Amprms[count] = value[count];
+                      }
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_Site_Aoprms :
+                      if { size > 16 } {return SAL__INDEX_OUT_OF_RANGE;}
+                      for (unsigned int count=0; count<size; count++) {
+                        data.Aoprms[count] = value[count];
+                      }
+                      result = SAL__OK;
+                      break;
+
+	    }
+	    return result;
+	}
+
+       svcRTN saltcs_kernel_Site::setItemStr ( svcIID itemId , svcCHAR *textValue)
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    
+	    switch (itemid) {
+
+                 case SAL_IID_tcs_kernel_Site_Daz :
+                      sscanf(textValue,"%lf",&data.Daz);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_Site_Diurab :
+                      sscanf(textValue,"%lf",&data.Diurab);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_Site_Elong :
+                      sscanf(textValue,"%lf",&data.Elong);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_Site_Lat :
+                      sscanf(textValue,"%lf",&data.Lat);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_Site_Refa :
+                      sscanf(textValue,"%lf",&data.Refa);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_Site_Refb :
+                      sscanf(textValue,"%lf",&data.Refb);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_Site_St0 :
+                      sscanf(textValue,"%lf",&data.St0);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_Site_T0 :
+                      sscanf(textValue,"%lf",&data.T0);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_Site_Tt0 :
+                      sscanf(textValue,"%lf",&data.Tt0);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_Site_Ttj :
+                      sscanf(textValue,"%lf",&data.Ttj);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_Site_Ttmtai :
+                      sscanf(textValue,"%lf",&data.Ttmtai);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_Site_Uau :
+                      sscanf(textValue,"%lf",&data.Uau);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_Site_Ukm :
+                      sscanf(textValue,"%lf",&data.Ukm);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_Site_Vau :
+                      sscanf(textValue,"%lf",&data.Vau);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_Site_Vkm :
+                      sscanf(textValue,"%lf",&data.Vkm);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_Site_delat :
+                      sscanf(textValue,"%lf",&data.delat);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_Site_delut :
+                      sscanf(textValue,"%lf",&data.delut);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_Site_elongm :
+                      sscanf(textValue,"%lf",&data.elongm);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_Site_hm :
+                      sscanf(textValue,"%lf",&data.hm);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_Site_latm :
+                      sscanf(textValue,"%lf",&data.latm);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_Site_tai :
+                      sscanf(textValue,"%lf",&data.tai);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_Site_ttmtat :
+                      sscanf(textValue,"%lf",&data.ttmtat);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_Site_xpm :
+                      sscanf(textValue,"%lf",&data.xpm);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_Site_ypm :
+                      sscanf(textValue,"%lf",&data.ypm);
+                      result = SAL__OK;
+                      break;
+
+	    }
+	    return result;
+	}
+
+       svcRTN saltcs_kernel_Site::getItemStr ( svcIID itemId , svcCHAR *textValue)
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    
+	    switch (itemid) {
+
+                 case SAL_IID_tcs_kernel_Site_Daz :
+                      sprintf(textValue,"%lf",data.Daz);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_Site_Diurab :
+                      sprintf(textValue,"%lf",data.Diurab);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_Site_Elong :
+                      sprintf(textValue,"%lf",data.Elong);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_Site_Lat :
+                      sprintf(textValue,"%lf",data.Lat);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_Site_Refa :
+                      sprintf(textValue,"%lf",data.Refa);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_Site_Refb :
+                      sprintf(textValue,"%lf",data.Refb);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_Site_St0 :
+                      sprintf(textValue,"%lf",data.St0);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_Site_T0 :
+                      sprintf(textValue,"%lf",data.T0);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_Site_Tt0 :
+                      sprintf(textValue,"%lf",data.Tt0);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_Site_Ttj :
+                      sprintf(textValue,"%lf",data.Ttj);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_Site_Ttmtai :
+                      sprintf(textValue,"%lf",data.Ttmtai);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_Site_Uau :
+                      sprintf(textValue,"%lf",data.Uau);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_Site_Ukm :
+                      sprintf(textValue,"%lf",data.Ukm);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_Site_Vau :
+                      sprintf(textValue,"%lf",data.Vau);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_Site_Vkm :
+                      sprintf(textValue,"%lf",data.Vkm);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_Site_delat :
+                      sprintf(textValue,"%lf",data.delat);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_Site_delut :
+                      sprintf(textValue,"%lf",data.delut);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_Site_elongm :
+                      sprintf(textValue,"%lf",data.elongm);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_Site_hm :
+                      sprintf(textValue,"%lf",data.hm);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_Site_latm :
+                      sprintf(textValue,"%lf",data.latm);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_Site_tai :
+                      sprintf(textValue,"%lf",data.tai);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_Site_ttmtat :
+                      sprintf(textValue,"%lf",data.ttmtat);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_Site_xpm :
+                      sprintf(textValue,"%lf",data.xpm);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_Site_ypm :
+                      sprintf(textValue,"%lf",data.ypm);
+                      result = SAL__OK;
+                      break;
+
+	    }
+	    return result;
+	}

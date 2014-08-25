@@ -1,0 +1,3 @@
+		result = salHandle->setitem(SAL_IID_scheduler_Application_Status, Status);
+		result = salHandle->setitem(SAL_IID_scheduler_Application_data, data, 201);
+		result = salHandle->putSample();

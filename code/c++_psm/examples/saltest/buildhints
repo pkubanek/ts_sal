@@ -1,0 +1,37 @@
+cp -r $OSPL_HOME/include/dcps/C++/isocpp/org/opensplice/* include/foo/bar/.
+cp -r $OSPL_HOME/include/dcps/C++/isocpp/dds/* include/foo/bar/.
+
+ls -l ../../src/hpp/foo/bar -l
+core ->   /opt/OpenSpliceDDS/./HDE/x86.linux2.6/include/dcps/C++/isocpp/org/opensplice/core
+domain -> /opt/OpenSpliceDDS/./HDE/x86.linux2.6/include/dcps/C++/isocpp/dds/domain
+pub ->    /opt/OpenSpliceDDS/./HDE/x86.linux2.6/include/dcps/C++/isocpp/dds/pub
+sub ->    /opt/OpenSpliceDDS/./HDE/x86.linux2.6/include/dcps/C++/isocpp/dds/sub
+topic ->  /opt/OpenSpliceDDS/./HDE/x86.linux2.6/include/dcps/C++/isocpp/dds/topic
+
+
+idlpp -S -l isocpp -d gen SALTopic.idl
+idlpp -S -l c      -d gen SALTopic.idl
+idlpp -S -l cpp    -d gen SALTopic.idl
+idlpp -S -l java   -d gen SALTopic.idl
+g++ -c telemetry_main.cpp \
+                          -I$OSPL_HOME/include/dcps/C++/isocpp \
+                          -I$OSPL_HOME/include/dcps/C++/SACPP \
+                          -I$OSPL_HOME/include/sys \
+                          -I$OSPL_HOME/include -I./include -I.
+g++ -c telemetry_util.cpp \
+                          -I$OSPL_HOME/include/dcps/C++/isocpp \
+                          -I$OSPL_HOME/include/dcps/C++/SACPP \
+                          -I$OSPL_HOME/include/sys \
+                          -I$OSPL_HOME/include -I./include -I.
+
+g++ -c telemetry_mainT.cpp \
+                          -I$OSPL_HOME/include/dcps/C++/isocpp \
+                          -I$OSPL_HOME/include/dcps/C++/SACPP \
+                          -I$OSPL_HOME/include/sys \
+                          -I$OSPL_HOME/include -I./include -I.
+g++ -c telemetry_utilT.cpp \
+                          -I$OSPL_HOME/include/dcps/C++/isocpp \
+                          -I$OSPL_HOME/include/dcps/C++/SACPP \
+                          -I$OSPL_HOME/include/sys \
+                          -I$OSPL_HOME/include -I./include -I.
+

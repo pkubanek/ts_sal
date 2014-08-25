@@ -1,0 +1,102 @@
+<HTML><HEAD><TITLE>Stream definition editor - ocs.scheduler.progress</TITLE></HEAD>
+<BODY BGCOLOR=White><H1>
+<IMG SRC="../LSST_logo.gif" ALIGN=CENTER>
+<IMG SRC="../dde.gif" ALIGN=CENTER><P><HR><P>
+<H1>Stream ocs.scheduler.progress</H1><P>
+<H2>Description</H2><P>TBD
+<H2>Update frequency</H2>
+This telemetry stream publishes a new record every 1000 seconds
+<H2>Publishers</H2>
+Only one instance of this stream is published.
+<P><HR><H2>Topic Definition</H2><P>
+<FORM action="/cgi-bin/streamdef" method="post">
+<INPUT NAME="streamid" TYPE="HIDDEN" VALUE="ocs_scheduler_progress">
+<TABLE BORDER=3 CELLPADDING=5 BGCOLOR=LightBlue  WIDTH=600>
+<TR BGCOLOR=Yellow><B><TD>Name</TD><TD>Type</TD><TD>Size</TD><TD>Units</TD>
+<TD>Range</TD><TD>Comment</TD><TD>Delete</TD></B></TR>
+<TR><TD><INPUT NAME="id48" VALUE="taskid"></TD>
+<TD><select name="type48">
+<option value="byte">byte
+                          <option value="short">short
+                          <option value="int">int
+                          <option value="long" selected>long
+                          <option value="float">float
+                          <option value="string">string
+                          </select></TD>
+<TD><INPUT NAME="siz48" VALUE="32"></TD>
+<TD><select name="unit48">
+<option value="none" selected>none
+<option value="amp">amp
+<option value="degC">degC
+<option value="kelvin">kelvin
+<option value="meter">meter
+<option value="second">second
+<option value="volt">volt
+<option value="watt">watt
+</select></TD>
+<TD><INPUT NAME="range48" VALUE=""></TD>
+<TD><INPUT NAME="help48" VALUE=""></TD>
+<TD><INPUT TYPE="checkbox" NAME="delete_48" VALUE="yes"></TD></TR>
+<TR><TD><INPUT NAME="id49" VALUE="priority"></TD>
+<TD><select name="type49">
+<option value="byte">byte
+                          <option value="short">short
+                          <option value="int">int
+                          <option value="long" selected>long
+                          <option value="float">float
+                          <option value="string">string
+                          </select></TD>
+<TD><INPUT NAME="siz49" VALUE="32"></TD>
+<TD><select name="unit49">
+<option value="none" selected>none
+<option value="amp">amp
+<option value="degC">degC
+<option value="kelvin">kelvin
+<option value="meter">meter
+<option value="second">second
+<option value="volt">volt
+<option value="watt">watt
+</select></TD>
+<TD><INPUT NAME="range49" VALUE=""></TD>
+<TD><INPUT NAME="help49" VALUE=""></TD>
+<TD><INPUT TYPE="checkbox" NAME="delete_49" VALUE="yes"></TD></TR>
+<TR><TD><INPUT NAME="id50" VALUE="completion"></TD>
+<TD><select name="type50">
+<TD><INPUT NAME="siz50" VALUE="32"></TD>
+<TD><select name="unit50">
+<option value="none" selected>none
+<option value="amp">amp
+<option value="degC">degC
+<option value="kelvin">kelvin
+<option value="meter">meter
+<option value="second">second
+<option value="volt">volt
+<option value="watt">watt
+</select></TD>
+<TD><INPUT NAME="range50" VALUE=""></TD>
+<TD><INPUT NAME="help50" VALUE=""></TD>
+<TD><INPUT TYPE="checkbox" NAME="delete_50" VALUE="yes"></TD></TR>
+<TR><TD><INPUT NAME="id51" VALUE="projection"></TD>
+<TD><select name="type51">
+<option value="byte">byte
+                          <option value="short">short
+                          <option value="int">int
+                          <option value="long" selected>long
+                          <option value="float">float
+                          <option value="string">string
+                          </select></TD>
+<TD><INPUT NAME="siz51" VALUE="32"></TD>
+<TD><select name="unit51">
+<option value="none" selected>none
+<option value="amp">amp
+<option value="degC">degC
+<option value="kelvin">kelvin
+<option value="meter">meter
+<option value="second">second
+<option value="volt">volt
+<option value="watt">watt
+</select></TD>
+<TD><INPUT NAME="range51" VALUE=""></TD>
+<TD><INPUT NAME="help51" VALUE=""></TD>
+<TD><INPUT TYPE="checkbox" NAME="delete_51" VALUE="yes"></TD></TR>
+</TABLE><P>Click here to update: <input type="submit" value="Submit" name="update"></FORM><P></BODY></HTML>

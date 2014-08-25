@@ -1,0 +1,3 @@
+		result = salHandle->setitem(SAL_IID_tcs_kernel_DawdleFilter_Bypass, Bypass);
+		result = salHandle->setitem(SAL_IID_tcs_kernel_DawdleFilter_T, T);
+		result = salHandle->putSample();

@@ -1,0 +1,5 @@
+		strncpy(d.Status,scheduler_Application_ref->Status,50);
+		for (unsigned int count=0; count<201; count++) {
+			d.data[count] = scheduler_Application_ref->data[count];
+		}
+		scheduler_Application_ref->syncO = 1;

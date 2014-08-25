@@ -1,2 +1,0 @@
-set COMMENT(m2.LimitSensors.liftoff) "Liftoff switches"
-set COMMENT(m2.LimitSensors.limit) "Limit switches"

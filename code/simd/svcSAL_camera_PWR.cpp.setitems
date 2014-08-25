@@ -1,0 +1,3 @@
+		result = salHandle->setitem(SAL_IID_camera_PWR_current, current, 26);
+		result = salHandle->setitem(SAL_IID_camera_PWR_supply_voltage, supply_voltage, 26);
+		result = salHandle->putSample();

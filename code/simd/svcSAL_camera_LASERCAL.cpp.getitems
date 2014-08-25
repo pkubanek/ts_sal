@@ -1,0 +1,2 @@
+		result = salHandle->getSample(SAL__SLOWPOLL);
+		result = salHandle->getitem(SAL_IID_camera_LASERCAL_positions, positions, 11);

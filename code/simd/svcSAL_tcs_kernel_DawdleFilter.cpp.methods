@@ -1,0 +1,144 @@
+
+	svcRTN saltcs_kernel_DawdleFilter::getItem ( svcIID itemId , svcLONG &value )
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    switch (itemId) {
+
+                 case SAL_IID_tcs_kernel_DawdleFilter_Bypass :
+                      value = data.Bypass;
+                      result = SAL__OK;
+                      break;
+
+	    }
+	    return result;
+	}
+	
+
+
+	svcRTN saltcs_kernel_DawdleFilter::setItem ( svcIID itemId , svcLONG &value )
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    switch (itemId) {
+
+                 case SAL_IID_tcs_kernel_DawdleFilter_Bypass :
+                      data.Bypass = value;
+                      result = SAL__OK;
+                      break;
+
+	    }
+	    return result;
+	}
+	
+
+
+       svcRTN saltcs_kernel_DawdleFilter::setItemStr ( svcIID itemId , svcCHAR *textValue)
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    
+	    switch (itemid) {
+
+                 case SAL_IID_tcs_kernel_DawdleFilter_Bypass :
+                      sscanf(textValue,"%ld",&data.Bypass);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_DawdleFilter_T :
+                      sscanf(textValue,"%lf",&data.T);
+                      result = SAL__OK;
+                      break;
+
+	    }
+	    return result;
+	}
+
+       svcRTN saltcs_kernel_DawdleFilter::getItemStr ( svcIID itemId , svcCHAR *textValue)
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    
+	    switch (itemid) {
+
+                 case SAL_IID_tcs_kernel_DawdleFilter_Bypass :
+                      sprintf(textValue,"%ld",data.Bypass);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_DawdleFilter_T :
+                      sprintf(textValue,"%lf",data.T);
+                      result = SAL__OK;
+                      break;
+
+	    }
+	    return result;
+	}
+
+	svcRTN saltcs_kernel_DawdleFilter::getItem ( svcIID itemId , svcFLT &value )
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    switch (itemId) {
+
+                 case SAL_IID_tcs_kernel_DawdleFilter_T :
+                      value = data.T;
+                      result = SAL__OK;
+                      break;
+
+	    }
+	    return result;
+	}
+	
+
+
+	svcRTN saltcs_kernel_DawdleFilter::setItem ( svcIID itemId , svcFLT &value )
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    switch (itemId) {
+
+                 case SAL_IID_tcs_kernel_DawdleFilter_T :
+                      data.T = value;
+                      result = SAL__OK;
+                      break;
+
+	    }
+	    return result;
+	}
+	
+
+
+       svcRTN saltcs_kernel_DawdleFilter::setItemStr ( svcIID itemId , svcCHAR *textValue)
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    
+	    switch (itemid) {
+
+                 case SAL_IID_tcs_kernel_DawdleFilter_Bypass :
+                      sscanf(textValue,"%ld",&data.Bypass);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_DawdleFilter_T :
+                      sscanf(textValue,"%lf",&data.T);
+                      result = SAL__OK;
+                      break;
+
+	    }
+	    return result;
+	}
+
+       svcRTN saltcs_kernel_DawdleFilter::getItemStr ( svcIID itemId , svcCHAR *textValue)
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    
+	    switch (itemid) {
+
+                 case SAL_IID_tcs_kernel_DawdleFilter_Bypass :
+                      sprintf(textValue,"%ld",data.Bypass);
+                      result = SAL__OK;
+                      break;
+
+                 case SAL_IID_tcs_kernel_DawdleFilter_T :
+                      sprintf(textValue,"%lf",data.T);
+                      result = SAL__OK;
+                      break;
+
+	    }
+	    return result;
+	}

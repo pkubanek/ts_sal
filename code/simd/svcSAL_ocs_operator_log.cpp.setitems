@@ -1,0 +1,6 @@
+		result = salHandle->setitem(SAL_IID_ocs_operator_log_opid, opid);
+		result = salHandle->setitem(SAL_IID_ocs_operator_log_stationid, stationid);
+		result = salHandle->setitem(SAL_IID_ocs_operator_log_device, device);
+		result = salHandle->setitem(SAL_IID_ocs_operator_log_event, event);
+		result = salHandle->setitem(SAL_IID_ocs_operator_log_subsystem, subsystem);
+		result = salHandle->putSample();

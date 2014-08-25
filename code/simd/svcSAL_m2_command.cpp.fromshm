@@ -1,0 +1,6 @@
+		d.cmdID = m2_command_ref->cmdID;
+		strncpy(d.device,m2_command_ref->device,16);
+		strncpy(d.modifiers,m2_command_ref->modifiers,128);
+		strncpy(d.operation,m2_command_ref->operation,16);
+		strncpy(d.value,m2_command_ref->value,16);
+		m2_command_ref->syncO = 1;

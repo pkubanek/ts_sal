@@ -1,0 +1,21 @@
+module org {
+  module lsst {
+    module sal {
+      struct SALTopic_responseType {
+	  string<32> private_revCode;  //private
+	  long       private_sndStamp; //private
+	  long       private_rcvStamp; //private
+	  long       private_seqNum;   //private
+	  long       private_origin;   //private
+	  long       private_cmdID;    //private
+          string<32> status;
+	  long       timeout;
+	  long       repeat;
+          long       submits;
+      };
+#pragma keylist SALTopic_responseType
+    };
+  };
+};
+
+

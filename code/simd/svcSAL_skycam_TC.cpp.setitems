@@ -1,0 +1,3 @@
+		result = salHandle->setitem(SAL_IID_skycam_TC_Raw, Raw, 17);
+		result = salHandle->setitem(SAL_IID_skycam_TC_Calibrated, Calibrated, 17);
+		result = salHandle->putSample();

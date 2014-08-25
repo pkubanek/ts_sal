@@ -1,0 +1,10 @@
+		for (unsigned int count=0; count<5; count++) {
+			d.Demand[count] = auxscope_Application_ref->Demand[count];
+		}
+		for (unsigned int count=0; count<5; count++) {
+			d.Error[count] = auxscope_Application_ref->Error[count];
+		}
+		for (unsigned int count=0; count<5; count++) {
+			d.Position[count] = auxscope_Application_ref->Position[count];
+		}
+		auxscope_Application_ref->syncO = 1;

@@ -1,0 +1,8 @@
+		result = salHandle->getSample(SAL__SLOWPOLL);
+		result = salHandle->getitem(SAL_IID_ocs_staticanalysis_action, action);
+		result = salHandle->getitem(SAL_IID_ocs_staticanalysis_result, result);
+		result = salHandle->getitem(SAL_IID_ocs_staticanalysis_end, end);
+		result = salHandle->getitem(SAL_IID_ocs_staticanalysis_start, start);
+		result = salHandle->getitem(SAL_IID_ocs_staticanalysis_actuuid, actuuid);
+		result = salHandle->getitem(SAL_IID_ocs_staticanalysis_part, part);
+		result = salHandle->getitem(SAL_IID_ocs_staticanalysis_subsystem, subsystem);

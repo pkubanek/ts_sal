@@ -1,0 +1,1019 @@
+
+	    case SAL_IID_auxscope_Application :
+	    	salTopic = (auxscope_Application *)new auxscope_Application();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_auxscope_Camera :
+	    	salTopic = (auxscope_Camera *)new auxscope_Camera();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_auxscope_Electrical :
+	    	salTopic = (auxscope_Electrical *)new auxscope_Electrical();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_auxscope_Metrology :
+	    	salTopic = (auxscope_Metrology *)new auxscope_Metrology();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_auxscope_Spectrometer :
+	    	salTopic = (auxscope_Spectrometer *)new auxscope_Spectrometer();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_auxscope_TC :
+	    	salTopic = (auxscope_TC *)new auxscope_TC();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_auxscope_TCS :
+	    	salTopic = (auxscope_TCS *)new auxscope_TCS();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_auxscope_command :
+	    	salTopic = (auxscope_command *)new auxscope_command();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_auxscope_response :
+	    	salTopic = (auxscope_response *)new auxscope_response();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_calibration_Application :
+	    	salTopic = (calibration_Application *)new calibration_Application();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_calibration_Electrical :
+	    	salTopic = (calibration_Electrical *)new calibration_Electrical();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_calibration_Metrology :
+	    	salTopic = (calibration_Metrology *)new calibration_Metrology();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_calibration_TC :
+	    	salTopic = (calibration_TC *)new calibration_TC();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_calibration_command :
+	    	salTopic = (calibration_command *)new calibration_command();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_calibration_response :
+	    	salTopic = (calibration_response *)new calibration_response();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_camera_BEE_biases :
+	    	salTopic = (camera_BEE_biases *)new camera_BEE_biases();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_camera_BEE_clocks :
+	    	salTopic = (camera_BEE_clocks *)new camera_BEE_clocks();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_camera_BEE_thermal :
+	    	salTopic = (camera_BEE_thermal *)new camera_BEE_thermal();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_camera_CALSYS :
+	    	salTopic = (camera_CALSYS *)new camera_CALSYS();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_camera_CCS :
+	    	salTopic = (camera_CCS *)new camera_CCS();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_camera_FCS :
+	    	salTopic = (camera_FCS *)new camera_FCS();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_camera_GAS :
+	    	salTopic = (camera_GAS *)new camera_GAS();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_camera_LASERCAL :
+	    	salTopic = (camera_LASERCAL *)new camera_LASERCAL();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_camera_PWR :
+	    	salTopic = (camera_PWR *)new camera_PWR();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_camera_QA_measured :
+	    	salTopic = (camera_QA_measured *)new camera_QA_measured();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_camera_SCS :
+	    	salTopic = (camera_SCS *)new camera_SCS();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_camera_SDS_amplifiers :
+	    	salTopic = (camera_SDS_amplifiers *)new camera_SDS_amplifiers();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_camera_SDS_status :
+	    	salTopic = (camera_SDS_status *)new camera_SDS_status();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_camera_TCM :
+	    	salTopic = (camera_TCM *)new camera_TCM();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_camera_TC_control :
+	    	salTopic = (camera_TC_control *)new camera_TC_control();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_camera_TC_zone1 :
+	    	salTopic = (camera_TC_zone1 *)new camera_TC_zone1();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_camera_TC_zone2 :
+	    	salTopic = (camera_TC_zone2 *)new camera_TC_zone2();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_camera_TC_zone3 :
+	    	salTopic = (camera_TC_zone3 *)new camera_TC_zone3();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_camera_TC_zone4 :
+	    	salTopic = (camera_TC_zone4 *)new camera_TC_zone4();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_camera_TC_zone5 :
+	    	salTopic = (camera_TC_zone5 *)new camera_TC_zone5();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_camera_TC_zone6 :
+	    	salTopic = (camera_TC_zone6 *)new camera_TC_zone6();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_camera_UTIL :
+	    	salTopic = (camera_UTIL *)new camera_UTIL();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_camera_VCS :
+	    	salTopic = (camera_VCS *)new camera_VCS();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_camera_WDS_wfsRaft :
+	    	salTopic = (camera_WDS_wfsRaft *)new camera_WDS_wfsRaft();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_camera_WTCM :
+	    	salTopic = (camera_WTCM *)new camera_WTCM();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_dm_derived_dataquality :
+	    	salTopic = (dm_derived_dataquality *)new dm_derived_dataquality();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_dm_derived_psf :
+	    	salTopic = (dm_derived_psf *)new dm_derived_psf();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_dm_pointing_wcs :
+	    	salTopic = (dm_pointing_wcs *)new dm_pointing_wcs();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_dm_raw_dataquality :
+	    	salTopic = (dm_raw_dataquality *)new dm_raw_dataquality();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_enclosure_Application :
+	    	salTopic = (enclosure_Application *)new enclosure_Application();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_enclosure_Azimuth :
+	    	salTopic = (enclosure_Azimuth *)new enclosure_Azimuth();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_enclosure_Electrical :
+	    	salTopic = (enclosure_Electrical *)new enclosure_Electrical();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_enclosure_Metrology :
+	    	salTopic = (enclosure_Metrology *)new enclosure_Metrology();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_enclosure_Shutter :
+	    	salTopic = (enclosure_Shutter *)new enclosure_Shutter();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_enclosure_TC :
+	    	salTopic = (enclosure_TC *)new enclosure_TC();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_enclosure_Thermal_control :
+	    	salTopic = (enclosure_Thermal_control *)new enclosure_Thermal_control();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_enclosure_Vents :
+	    	salTopic = (enclosure_Vents *)new enclosure_Vents();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_enclosure_command :
+	    	salTopic = (enclosure_command *)new enclosure_command();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_enclosure_response :
+	    	salTopic = (enclosure_response *)new enclosure_response();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_environment_Dust_monitor :
+	    	salTopic = (environment_Dust_monitor *)new environment_Dust_monitor();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_environment_Electrical :
+	    	salTopic = (environment_Electrical *)new environment_Electrical();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_environment_Lightning_detector :
+	    	salTopic = (environment_Lightning_detector *)new environment_Lightning_detector();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_environment_Seismometer :
+	    	salTopic = (environment_Seismometer *)new environment_Seismometer();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_environment_TC :
+	    	salTopic = (environment_TC *)new environment_TC();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_environment_Video_cameras :
+	    	salTopic = (environment_Video_cameras *)new environment_Video_cameras();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_environment_Weather :
+	    	salTopic = (environment_Weather *)new environment_Weather();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_environment_command :
+	    	salTopic = (environment_command *)new environment_command();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_environment_response :
+	    	salTopic = (environment_response *)new environment_response();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_lasercal_Application :
+	    	salTopic = (lasercal_Application *)new lasercal_Application();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_lasercal_Electrical :
+	    	salTopic = (lasercal_Electrical *)new lasercal_Electrical();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_lasercal_TC :
+	    	salTopic = (lasercal_TC *)new lasercal_TC();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_lasercal_command :
+	    	salTopic = (lasercal_command *)new lasercal_command();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_lasercal_response :
+	    	salTopic = (lasercal_response *)new lasercal_response();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_m1m3_ActuatorSample :
+	    	salTopic = (m1m3_ActuatorSample *)new m1m3_ActuatorSample();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_m1m3_Actuators :
+	    	salTopic = (m1m3_Actuators *)new m1m3_Actuators();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_m1m3_Application :
+	    	salTopic = (m1m3_Application *)new m1m3_Application();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_m1m3_Electrical :
+	    	salTopic = (m1m3_Electrical *)new m1m3_Electrical();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_m1m3_LUT :
+	    	salTopic = (m1m3_LUT *)new m1m3_LUT();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_m1m3_LimitSensors :
+	    	salTopic = (m1m3_LimitSensors *)new m1m3_LimitSensors();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_m1m3_Metrology :
+	    	salTopic = (m1m3_Metrology *)new m1m3_Metrology();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_m1m3_Support :
+	    	salTopic = (m1m3_Support *)new m1m3_Support();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_m1m3_Supports :
+	    	salTopic = (m1m3_Supports *)new m1m3_Supports();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_m1m3_Surface :
+	    	salTopic = (m1m3_Surface *)new m1m3_Surface();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_m1m3_TC :
+	    	salTopic = (m1m3_TC *)new m1m3_TC();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_m1m3_command :
+	    	salTopic = (m1m3_command *)new m1m3_command();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_m1m3_response :
+	    	salTopic = (m1m3_response *)new m1m3_response();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_m2_Actuators :
+	    	salTopic = (m2_Actuators *)new m2_Actuators();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_m2_Application :
+	    	salTopic = (m2_Application *)new m2_Application();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_m2_Electrical :
+	    	salTopic = (m2_Electrical *)new m2_Electrical();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_m2_Hexapod :
+	    	salTopic = (m2_Hexapod *)new m2_Hexapod();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_m2_LimitSensors :
+	    	salTopic = (m2_LimitSensors *)new m2_LimitSensors();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_m2_Metrology :
+	    	salTopic = (m2_Metrology *)new m2_Metrology();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_m2_Surface :
+	    	salTopic = (m2_Surface *)new m2_Surface();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_m2_TC :
+	    	salTopic = (m2_TC *)new m2_TC();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_m2_Temps :
+	    	salTopic = (m2_Temps *)new m2_Temps();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_m2_actuators :
+	    	salTopic = (m2_actuators *)new m2_actuators();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_m2_command :
+	    	salTopic = (m2_command *)new m2_command();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_m2_response :
+	    	salTopic = (m2_response *)new m2_response();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_mount_Alt :
+	    	salTopic = (mount_Alt *)new mount_Alt();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_mount_Application :
+	    	salTopic = (mount_Application *)new mount_Application();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_mount_Az :
+	    	salTopic = (mount_Az *)new mount_Az();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_mount_Electrical :
+	    	salTopic = (mount_Electrical *)new mount_Electrical();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_mount_Metrology :
+	    	salTopic = (mount_Metrology *)new mount_Metrology();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_mount_Rotator :
+	    	salTopic = (mount_Rotator *)new mount_Rotator();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_mount_TC :
+	    	salTopic = (mount_TC *)new mount_TC();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_mount_command :
+	    	salTopic = (mount_command *)new mount_command();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_mount_response :
+	    	salTopic = (mount_response *)new mount_response();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_network_Application :
+	    	salTopic = (network_Application *)new network_Application();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_network_command :
+	    	salTopic = (network_command *)new network_command();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_network_response :
+	    	salTopic = (network_response *)new network_response();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_ocs_activity_planning :
+	    	salTopic = (ocs_activity_planning *)new ocs_activity_planning();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_ocs_activity_record :
+	    	salTopic = (ocs_activity_record *)new ocs_activity_record();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_ocs_command_health :
+	    	salTopic = (ocs_command_health *)new ocs_command_health();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_ocs_command_permit :
+	    	salTopic = (ocs_command_permit *)new ocs_command_permit();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_ocs_database_state :
+	    	salTopic = (ocs_database_state *)new ocs_database_state();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_ocs_operator_log :
+	    	salTopic = (ocs_operator_log *)new ocs_operator_log();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_ocs_pointing_wcs :
+	    	salTopic = (ocs_pointing_wcs *)new ocs_pointing_wcs();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_ocs_scheduler_econstraints :
+	    	salTopic = (ocs_scheduler_econstraints *)new ocs_scheduler_econstraints();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_ocs_scheduler_iconstraints :
+	    	salTopic = (ocs_scheduler_iconstraints *)new ocs_scheduler_iconstraints();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_ocs_scheduler_parameters :
+	    	salTopic = (ocs_scheduler_parameters *)new ocs_scheduler_parameters();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_ocs_scheduler_program :
+	    	salTopic = (ocs_scheduler_program *)new ocs_scheduler_program();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_ocs_scheduler_progress :
+	    	salTopic = (ocs_scheduler_progress *)new ocs_scheduler_progress();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_ocs_scheduler_targets :
+	    	salTopic = (ocs_scheduler_targets *)new ocs_scheduler_targets();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_ocs_staticanalysis :
+	    	salTopic = (ocs_staticanalysis *)new ocs_staticanalysis();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_ocs_system :
+	    	salTopic = (ocs_system *)new ocs_system();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_ocs_system_accesscontrol :
+	    	salTopic = (ocs_system_accesscontrol *)new ocs_system_accesscontrol();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_ocs_system_configuration :
+	    	salTopic = (ocs_system_configuration *)new ocs_system_configuration();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_ocs_system_networking :
+	    	salTopic = (ocs_system_networking *)new ocs_system_networking();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_power_Electrical :
+	    	salTopic = (power_Electrical *)new power_Electrical();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_power_TC :
+	    	salTopic = (power_TC *)new power_TC();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_power_UPSs :
+	    	salTopic = (power_UPSs *)new power_UPSs();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_power_command :
+	    	salTopic = (power_command *)new power_command();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_power_response :
+	    	salTopic = (power_response *)new power_response();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_scheduler_Application :
+	    	salTopic = (scheduler_Application *)new scheduler_Application();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_scheduler_command :
+	    	salTopic = (scheduler_command *)new scheduler_command();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_scheduler_response :
+	    	salTopic = (scheduler_response *)new scheduler_response();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_seeing_dimm_Application :
+	    	salTopic = (seeing_dimm_Application *)new seeing_dimm_Application();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_seeing_dimm_Electrical :
+	    	salTopic = (seeing_dimm_Electrical *)new seeing_dimm_Electrical();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_seeing_dimm_Measurement :
+	    	salTopic = (seeing_dimm_Measurement *)new seeing_dimm_Measurement();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_seeing_dimm_Metrology :
+	    	salTopic = (seeing_dimm_Metrology *)new seeing_dimm_Metrology();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_seeing_dimm_TC :
+	    	salTopic = (seeing_dimm_TC *)new seeing_dimm_TC();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_seeing_dimm_Temps :
+	    	salTopic = (seeing_dimm_Temps *)new seeing_dimm_Temps();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_seeing_dimm_command :
+	    	salTopic = (seeing_dimm_command *)new seeing_dimm_command();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_seeing_dimm_response :
+	    	salTopic = (seeing_dimm_response *)new seeing_dimm_response();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_seeing_mass_Application :
+	    	salTopic = (seeing_mass_Application *)new seeing_mass_Application();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_seeing_mass_Electrical :
+	    	salTopic = (seeing_mass_Electrical *)new seeing_mass_Electrical();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_seeing_mass_Metrology :
+	    	salTopic = (seeing_mass_Metrology *)new seeing_mass_Metrology();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_seeing_mass_TC :
+	    	salTopic = (seeing_mass_TC *)new seeing_mass_TC();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_seeing_mass_Temps :
+	    	salTopic = (seeing_mass_Temps *)new seeing_mass_Temps();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_seeing_mass_command :
+	    	salTopic = (seeing_mass_command *)new seeing_mass_command();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_seeing_mass_response :
+	    	salTopic = (seeing_mass_response *)new seeing_mass_response();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_skycam_Application :
+	    	salTopic = (skycam_Application *)new skycam_Application();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_skycam_Electrical :
+	    	salTopic = (skycam_Electrical *)new skycam_Electrical();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_skycam_Metrology :
+	    	salTopic = (skycam_Metrology *)new skycam_Metrology();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_skycam_TC :
+	    	salTopic = (skycam_TC *)new skycam_TC();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_skycam_command :
+	    	salTopic = (skycam_command *)new skycam_command();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_skycam_response :
+	    	salTopic = (skycam_response *)new skycam_response();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_system_Command_history :
+	    	salTopic = (system_Command_history *)new system_Command_history();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_system_Computer_status :
+	    	salTopic = (system_Computer_status *)new system_Computer_status();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_system_Hardware_revision_history :
+	    	salTopic = (system_Hardware_revision_history *)new system_Hardware_revision_history();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_system_Software_revision_history :
+	    	salTopic = (system_Software_revision_history *)new system_Software_revision_history();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_tcs_command :
+	    	salTopic = (tcs_command *)new tcs_command();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_tcs_kernel_DawdleFilter :
+	    	salTopic = (tcs_kernel_DawdleFilter *)new tcs_kernel_DawdleFilter();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_tcs_kernel_FK5Target :
+	    	salTopic = (tcs_kernel_FK5Target *)new tcs_kernel_FK5Target();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_tcs_kernel_OpticsVt :
+	    	salTopic = (tcs_kernel_OpticsVt *)new tcs_kernel_OpticsVt();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_tcs_kernel_PointingControl :
+	    	salTopic = (tcs_kernel_PointingControl *)new tcs_kernel_PointingControl();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_tcs_kernel_PointingLog :
+	    	salTopic = (tcs_kernel_PointingLog *)new tcs_kernel_PointingLog();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_tcs_kernel_PointingModel :
+	    	salTopic = (tcs_kernel_PointingModel *)new tcs_kernel_PointingModel();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_tcs_kernel_Site :
+	    	salTopic = (tcs_kernel_Site *)new tcs_kernel_Site();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_tcs_kernel_Target :
+	    	salTopic = (tcs_kernel_Target *)new tcs_kernel_Target();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_tcs_kernel_TimeKeeper :
+	    	salTopic = (tcs_kernel_TimeKeeper *)new tcs_kernel_TimeKeeper();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_tcs_kernel_TrackRefSys :
+	    	salTopic = (tcs_kernel_TrackRefSys *)new tcs_kernel_TrackRefSys();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_tcs_kernel_TrackingTarget :
+	    	salTopic = (tcs_kernel_TrackingTarget *)new tcs_kernel_TrackingTarget();
+		result = SAL__OK;
+		break;
+
+
+	    case SAL_IID_tcs_response :
+	    	salTopic = (tcs_response *)new tcs_response();
+		result = SAL__OK;
+		break;
+
+
+	    default :
+		result = SAL__NOT_DEFINED;
+		break;
+

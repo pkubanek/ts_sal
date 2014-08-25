@@ -1,0 +1,80 @@
+10
+
+dir
+176
+http://dds-psm-cxx.googlecode.com/svn/trunk/src/hpp/dds
+http://dds-psm-cxx.googlecode.com/svn
+
+
+
+2010-11-09T00:29:20.811711Z
+171
+rick.warren@rti.com
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ec2be7f8-a7c2-9de5-7cc6-e91d56c54cb2
+
+dds.hpp
+file
+
+
+
+
+2011-04-15T16:27:27.000000Z
+ad25991c9e7938c9a76253f7b1b62f55
+2010-11-08T21:19:27.192496Z
+160
+angelo.corsaro
+has-props
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+1241
+
+pub
+dir
+
+domain
+dir
+
+core
+dir
+
+sub
+dir
+
+xtypes
+dir
+
+topic
+dir
+

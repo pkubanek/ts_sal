@@ -1,0 +1,40 @@
+module network
+{
+	struct Application {
+	  string<32> private_revCode;  //private
+	  double     private_sndStamp; //private
+	  double     private_rcvStamp; //private
+	  long       private_seqNum;   //private
+	  long       private_origin;   //private
+	  long	Data[63];
+	  string<128>	Status_1;
+	  string<128>	Status_2;
+	  string<128>	Status_3;
+	  string<128>	Status_4;
+	  string<128>	Status_5;
+	  string<128>	Status_6;
+	  string<128>	Status_7;
+	  string<128>	Status_8;
+	  string<128>	Status_9;
+	  string<128>	Status_10;
+	  string<128>	Status_11;
+	  string<128>	Status_12;
+	  string<128>	Status_13;
+	  string<128>	Status_14;
+	  string<128>	Status_15;
+	#pragma keylist Application
+	};
+	struct system_networking {
+	  string<32> private_revCode;  //private
+	  double     private_sndStamp; //private
+	  double     private_rcvStamp; //private
+	  long       private_seqNum;   //private
+	  long       private_origin;   //private
+	  string<128>	subsystem;
+	  string<32>	mac;
+	  long	ip[4];
+	  long	rx[6];
+	  long	tx[6];
+	#pragma keylist system_networking
+	};
+};

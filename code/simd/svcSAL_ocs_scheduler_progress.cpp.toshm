@@ -1,0 +1,13 @@
+		for (unsigned int count=0; count<33; count++) {
+			ocs_scheduler_progress_ref->priority[count] = samples[i].priority[count];
+		}
+		for (unsigned int count=0; count<33; count++) {
+			ocs_scheduler_progress_ref->projection[count] = samples[i].projection[count];
+		}
+		for (unsigned int count=0; count<33; count++) {
+			ocs_scheduler_progress_ref->taskid[count] = samples[i].taskid[count];
+		}
+		for (unsigned int count=0; count<33; count++) {
+			ocs_scheduler_progress_ref->completion[count] = samples[i].completion[count];
+		}
+		ocs_scheduler_progress_ref->syncI++;

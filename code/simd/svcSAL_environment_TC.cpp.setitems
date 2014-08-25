@@ -1,0 +1,3 @@
+		result = salHandle->setitem(SAL_IID_environment_TC_Raw, Raw, 65);
+		result = salHandle->setitem(SAL_IID_environment_TC_Calibrated, Calibrated, 65);
+		result = salHandle->putSample();

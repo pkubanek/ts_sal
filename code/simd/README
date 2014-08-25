@@ -1,5 +1,5 @@
-PUB/SUB DEMO
------------
+PING DEMO
+---------
 
 This is a simple TopicId application that other than demonstrating the
 use of SIMD has also been used to demonstrate interoberabilty between

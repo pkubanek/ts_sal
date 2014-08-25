@@ -1,0 +1,166 @@
+
+	svcRTN salnetwork_command::getItem ( svcIID itemId , svcLONG &value )
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    switch (itemId) {
+
+                 case SAL_IID_network_command_cmdID :
+                      value = data.cmdID;
+                      result = SAL__OK;
+                      break;
+
+	    }
+	    return result;
+	}
+	
+
+
+	svcRTN salnetwork_command::setItem ( svcIID itemId , svcLONG &value )
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    switch (itemId) {
+
+                 case SAL_IID_network_command_cmdID :
+                      data.cmdID = value;
+                      result = SAL__OK;
+                      break;
+
+	    }
+	    return result;
+	}
+	
+
+
+       svcRTN salnetwork_command::setItemStr ( svcIID itemId , svcCHAR *textValue)
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    
+	    switch (itemid) {
+
+                 case SAL_IID_network_command_cmdID :
+                      sscanf(textValue,"%ld",&data.cmdID);
+                      result = SAL__OK;
+                      break;
+
+	    }
+	    return result;
+	}
+
+       svcRTN salnetwork_command::getItemStr ( svcIID itemId , svcCHAR *textValue)
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    
+	    switch (itemid) {
+
+                 case SAL_IID_network_command_cmdID :
+                      sprintf(textValue,"%ld",data.cmdID);
+                      result = SAL__OK;
+                      break;
+
+	    }
+	    return result;
+	}
+
+	svcRTN salnetwork_command::getItem ( svcIID itemId , (svcCHAR *)value )
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    switch (itemId) {
+	    
+
+
+                 case SAL_IID_network_command_device :
+                      strncpy(value, data.device, 16);
+                      result = SAL__OK;
+                      break;
+
+
+                 case SAL_IID_network_command_modifiers :
+                      strncpy(value, data.modifiers, 128);
+                      result = SAL__OK;
+                      break;
+
+
+                 case SAL_IID_network_command_operation :
+                      strncpy(value, data.operation, 16);
+                      result = SAL__OK;
+                      break;
+
+
+                 case SAL_IID_network_command_value :
+                      strncpy(value, data.value, 16);
+                      result = SAL__OK;
+                      break;
+
+
+	    }
+	    return result;
+	}
+	
+
+
+	svcRTN salnetwork_command::setItem ( svcIID itemId , (svcCHAR *)value )
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    switch (itemId) {
+	    
+
+
+                 case SAL_IID_network_command_device :
+                      strncpy(data.device, value, 16);
+                      result = SAL__OK;
+                      break;
+
+
+                 case SAL_IID_network_command_modifiers :
+                      strncpy(data.modifiers, value, 128);
+                      result = SAL__OK;
+                      break;
+
+
+                 case SAL_IID_network_command_operation :
+                      strncpy(data.operation, value, 16);
+                      result = SAL__OK;
+                      break;
+
+
+                 case SAL_IID_network_command_value :
+                      strncpy(data.value, value, 16);
+                      result = SAL__OK;
+                      break;
+
+
+	    }
+	    return result;
+	}
+	
+
+
+       svcRTN salnetwork_command::setItemStr ( svcIID itemId , svcCHAR *textValue)
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    
+	    switch (itemid) {
+
+                 case SAL_IID_network_command_cmdID :
+                      sscanf(textValue,"%ld",&data.cmdID);
+                      result = SAL__OK;
+                      break;
+
+	    }
+	    return result;
+	}
+
+       svcRTN salnetwork_command::getItemStr ( svcIID itemId , svcCHAR *textValue)
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    
+	    switch (itemid) {
+
+                 case SAL_IID_network_command_cmdID :
+                      sprintf(textValue,"%ld",data.cmdID);
+                      result = SAL__OK;
+                      break;
+
+	    }
+	    return result;
+	}

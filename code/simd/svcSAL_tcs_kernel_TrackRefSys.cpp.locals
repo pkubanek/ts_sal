@@ -1,0 +1,15 @@
+	svcFLT	cst;
+	svcFLT	diurab;
+	svcFLT	hm;
+	svcFLT	humid;
+	svcFLT	press;
+	svcFLT	refa;
+	svcFLT	refb;
+	svcFLT	sst;
+	svcFLT	tdbj;
+	svcFLT	temp;
+	svcFLT	tlat;
+	svcFLT	tlr;
+	svcFLT	wavel;
+	svcFLT	ae2mt[10];
+	svcFLT	amprms[22];

@@ -1,0 +1,6 @@
+		d.opid = ocs_operator_log_ref->opid;
+		d.stationid = ocs_operator_log_ref->stationid;
+		strncpy(d.device,ocs_operator_log_ref->device,32);
+		strncpy(d.event,ocs_operator_log_ref->event,128);
+		strncpy(d.subsystem,ocs_operator_log_ref->subsystem,32);
+		ocs_operator_log_ref->syncO = 1;

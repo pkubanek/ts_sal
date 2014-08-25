@@ -1,0 +1,106 @@
+
+	svcRTN salocs_scheduler_parameters::getItem ( svcIID itemId , (svcCHAR *)value )
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    switch (itemId) {
+	    
+
+
+                 case SAL_IID_ocs_scheduler_parameters_algorithm :
+                      strncpy(value, data.algorithm, 32);
+                      result = SAL__OK;
+                      break;
+
+
+                 case SAL_IID_ocs_scheduler_parameters_p1 :
+                      strncpy(value, data.p1, 32);
+                      result = SAL__OK;
+                      break;
+
+
+                 case SAL_IID_ocs_scheduler_parameters_p2 :
+                      strncpy(value, data.p2, 32);
+                      result = SAL__OK;
+                      break;
+
+
+                 case SAL_IID_ocs_scheduler_parameters_p3 :
+                      strncpy(value, data.p3, 32);
+                      result = SAL__OK;
+                      break;
+
+
+                 case SAL_IID_ocs_scheduler_parameters_p4 :
+                      strncpy(value, data.p4, 32);
+                      result = SAL__OK;
+                      break;
+
+
+	    }
+	    return result;
+	}
+	
+
+
+	svcRTN salocs_scheduler_parameters::setItem ( svcIID itemId , (svcCHAR *)value )
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    switch (itemId) {
+	    
+
+
+                 case SAL_IID_ocs_scheduler_parameters_algorithm :
+                      strncpy(data.algorithm, value, 32);
+                      result = SAL__OK;
+                      break;
+
+
+                 case SAL_IID_ocs_scheduler_parameters_p1 :
+                      strncpy(data.p1, value, 32);
+                      result = SAL__OK;
+                      break;
+
+
+                 case SAL_IID_ocs_scheduler_parameters_p2 :
+                      strncpy(data.p2, value, 32);
+                      result = SAL__OK;
+                      break;
+
+
+                 case SAL_IID_ocs_scheduler_parameters_p3 :
+                      strncpy(data.p3, value, 32);
+                      result = SAL__OK;
+                      break;
+
+
+                 case SAL_IID_ocs_scheduler_parameters_p4 :
+                      strncpy(data.p4, value, 32);
+                      result = SAL__OK;
+                      break;
+
+
+	    }
+	    return result;
+	}
+	
+
+
+       svcRTN salocs_scheduler_parameters::setItemStr ( svcIID itemId , svcCHAR *textValue)
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    
+	    switch (itemid) {
+
+	    }
+	    return result;
+	}
+
+       svcRTN salocs_scheduler_parameters::getItemStr ( svcIID itemId , svcCHAR *textValue)
+	{
+	    svcRTN result = SAL__NOT_DEFINED;
+	    
+	    switch (itemid) {
+
+	    }
+	    return result;
+	}

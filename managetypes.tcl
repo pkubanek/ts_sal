@@ -292,6 +292,11 @@ set TYPESUBS(int32)  long
 set TYPESUBS(long)   long
 set TYPESUBS(float)  float
 set TYPESUBS(double) double
+set TYPESUBS(unsignedint)    long
+set TYPESUBS(unsignedshort)  short
+set TYPESUBS(unsignedint16)  short
+set TYPESUBS(unsignedint32)  long
+set TYPESUBS(unsignedlong)   long
 
 set TYPESIZE(string) 1
 set TYPESIZE(char)   1
@@ -305,6 +310,11 @@ set TYPESIZE(long)   4
 set TYPESIZE(float)  4
 set TYPESIZE(double) 8
 set TYPESIZE(int64)  8
+set TYPESIZE(unsignedshort)  2
+set TYPESIZE(unsignedint16)  2
+set TYPESIZE(unsignedint)    4
+set TYPESIZE(unsignedint32)  4
+set TYPESIZE(unsignedlong)   4
 
 set TYPEFORMAT(byte)   "%d"
 set TYPEFORMAT(octet)  "%d"
@@ -316,6 +326,11 @@ set TYPEFORMAT(long)   "%ld"
 set TYPEFORMAT(float)  "%f"
 set TYPEFORMAT(double) "%lf"
 set TYPEFORMAT(int64)  "%ld"
+set TYPEFORMAT(unsignedshort)  "%d"
+set TYPEFORMAT(unsignedint16)  "%d"
+set TYPEFORMAT(unsignedint)    "%d"
+set TYPEFORMAT(unsignedint32)  "%d"
+set TYPEFORMAT(unsignedlong)   "%ld"
 
 
 

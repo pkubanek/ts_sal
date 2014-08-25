@@ -1,0 +1,6 @@
+		d.cmdID = mount_command_ref->cmdID;
+		strncpy(d.device,mount_command_ref->device,16);
+		strncpy(d.modifiers,mount_command_ref->modifiers,128);
+		strncpy(d.operation,mount_command_ref->operation,16);
+		strncpy(d.value,mount_command_ref->value,16);
+		mount_command_ref->syncO = 1;

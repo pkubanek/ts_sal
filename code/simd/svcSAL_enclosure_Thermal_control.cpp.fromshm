@@ -1,0 +1,7 @@
+		for (unsigned int count=0; count<17; count++) {
+			d.Raw[count] = enclosure_Thermal_control_ref->Raw[count];
+		}
+		for (unsigned int count=0; count<33; count++) {
+			d.Calibrated[count] = enclosure_Thermal_control_ref->Calibrated[count];
+		}
+		enclosure_Thermal_control_ref->syncO = 1;
