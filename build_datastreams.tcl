@@ -9,18 +9,20 @@ source $scriptdir/unitsdesc.tcl
 source $scriptdir/qosdesc.tcl
 
 
-set fin [open datastreams.detail r]
+set fin [open .salwork/datastreams.detail r]
 while { [gets $fin rec] > -1 } {
-   set s [split [lindex $rec 0] .]
-   set SYSTEMS([lindex $s 0]) 1
-   set topic [join [lrange $s 0 [expr [llength $s]-2]] .]
-   lappend T($topic) [lindex $s end]
-   set PROPS($topic,[lindex $s end]) [lrange $rec 1 end]
+   set s [split [lindex $rec 1] .]
+   if { [lindex $s 1] != "command" &&  [lindex $s 1] != "response" } {
+     set SYSTEMS([lindex $s 0]) 1
+     set topic [join [lrange $s 0 [expr [llength $s]-2]] .]
+     lappend T($topic) [lindex $s end]
+     set PROPS($topic,[lindex $s end]) [lrange $rec 2 end]
+   }
 }
 close $fin
 
-set VERSION 1.6
-set RELEASE "Aug 2008"
+set VERSION 2.0
+set RELEASE "Oct 2013"
 set AUTHOR "D. Mills (NOAO), dmills@noao.edu"
 
 set fout [open datastreams.html w]
@@ -66,13 +68,13 @@ interactions between any 2 (or more) of the subsystems<BR>described.</P>
 </P>"
 
 set subs [lsort [array names T]]
-set flst [open datastreams_desc.names w]
+set flst [open .salwork/datastreams_desc.names w]
 foreach s $subs {
   puts $flst $s
 }
 close $flst
 
-set fin [open datastreams_desc.pubsub r]
+set fin [open .salwork/datastreams_desc.pubsub r]
 while { [gets $fin rec] > -1 } {
   set PUBS([lindex $rec 0]) [lindex $rec 1]
   set SUBS([lindex $rec 0]) [lindex $rec 2]
@@ -99,6 +101,8 @@ foreach s $subs {
         puts stdout "No SDESC for $s"
      }
   }
+  if { [info exists PUBS($s)] == 0 } {puts stdout "No PUBS for $s"; set PUBS($s) 1}
+  if { [info exists SUBS($s)] == 0 } {puts stdout "No SUBS for $s"; set SUBS($s) 2}
   set items [lsort $T($s)]
   set freq [lindex $PROPS($s,[lindex $T($s) 0]) 2]
   puts $fout "<UL>

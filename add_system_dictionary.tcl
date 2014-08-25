@@ -1,4 +1,8 @@
 
+set SYSDIC(systems) "auxscope calibration camera dm enclosure environment lasercal m1m3 m2 mount network operations power scheduler seeing skycam system tcs"
+foreach s $SYSDIC(systems) {set SYSDIC($s,type) system}
+
+set SYSDIC(datatypes) "byte short int long float string int64 double ubyte ushort uint ulong"
 
 set TSYSDIC(subsystems) "<H2>Appendix A - System Dictionary</H2><P>
 <H2>Contents : </H2>
@@ -25,97 +29,149 @@ are completed to increasing levels of detail.
 <H2>Systems and Subsystems</H2><P>"
 
 set SYSDIC(subsystems) "auxscope - Auxiliary telescope
-auxscope.camera - Imaging system
-auxscope.enclosure - Dome and vents
-auxscope.environment - Environmental monitoring
-auxscope.optics - Mirror support system
-auxscope.mount - Alt/az/rotr control
-auxscope.power - Power conditioning and monitoring
-auxscope.spectroscope - Spectroscopic instruments
-auxscope.tcs - Pointing and control system
+auxscope.Application - Derived metadata
+auxscope.Electrical - Electrical system monitoring
+auxscope.Metrology - Positional information
+auxscope.TC - Thermal monitoring
+auxscope.Camera - Imaging system
+auxscope.Enclosure - Dome and vents
+auxscope.Environment - Environmental monitoring
+auxscope.Optics - Mirror support system
+auxscope.Mount - Alt/az/rotr control
+auxscope.Power - Power conditioning and monitoring
+auxscope.Spectrometer - Spectroscopic instruments
+auxscope.TCS - Pointing and control system
 calibration - Calibration subsystem
+calibration.Application - Derived metadata
+calibration.Electrical - Electrical system monitoring
+calibration.Metrology - Positional information
+calibration.TC - Thermal monitoring
 calibration.imager - Test/Commissioning camera
 calibration.sources - Vis/IR calibration devices
 calibration.mirror - Calibration source selection
 camera - Camera sub-systems (* items not confirmed)
 camera.BEE - Back-end electronics
-camera.CAL - Calibration system
+camera.CALSYS - Calibration system
+camera.CCC - Camera control system
 camera.CCS - Camera control system
-camera.CVR - Lens protection system*
+camera.Cluster - Camera control system
+camera.Prot - Lens protection system*
 camera.FCS - Filter control system
+camera.Filter - Filter control system
 camera.FEE - Front-end electronics
-camera.GAS - Guider acquisition
-camera.GS - Guide sensors
-camera.OPT - Lens monitoring and metrology*
+camera.PCMS - Front-end electronics
+camera.FEE - Front-end electronics
+camera.PWR - Power supplies
+camera.Power - Power supplies
+camera.GDS - Guide sensors
+camera.LASERCAL - Lens monitoring and metrology*
+camera.QA - Data quality
 camera.RAS - Raft Alignment system
 camera.RNA - Raft controller
 camera.SAS - Science Array
-camera.SCU - Shutter controller
-camera.T1S - Temperature management, focal plane
-camera.T2S - Temperature management, BEE cold plate
-camera.T3U - Temperature management, Camera body
+camera.SDS - Science Data System
+camera.SCS - Shutter controller
+camera.Shutter - Shutter controller
+camera.TC - Temperature management
+camera.Cold - Temperature management, BEE cold plate
+camera.Cryo - Temperature management, Camera body
 camera.T4U - Temperature management, Utility trunk
 camera.T5S - Temperature management, cooling
 camera.T6U - Temperature management, transport
 camera.TCM - Timing and control module
 camera.TC - Thermal control
+camera.Purge - Vacuum control
 camera.VCS - Vacuum control
-camera.WDS - Wavefront data acquisition
+camera.UTIL - Utility trunk
+camera.WAS - Wavefront data acquisition
+camera.WDS - Wavefront data system
 camera.WFS - Wavefront sensing system
 camera.WTCM - Wavefront sensors timing control
 camera.XCAL - Sensor calibration system*
 dm - Data management subsystems
+dm.derived - Derived data quality
 dm.ALERT - Alert events
 dm.DB - Database statistics
 dm.DQR - Raw data quality assessments
 dm.DQS - Science data quality assessments
+dm.pointing - Astrometry calibrations
 dm.WCS - Astrometry calibrations
+dm.raw - Raw metrics
 dm.PIPE - Pipeline statuses
 enclosure - Dome mechanisms
-enclosure.dome_az - Dome rotation
-enclosure.crane - Camera handling system
-enclosure.environment - Dome environmental sensing
-enclosure.liftplatform - Mirror handling system
-enclosure.shutter - Dome aperture control
-enclosure.vents - Dome vents and air-flow management
+enclosure.Application - Derived metadata
+enclosure.Electrical - Electrical system monitoring
+enclosure.Metrology - Positional information
+enclosure.Azimuth - Dome rotation
+enclosure.Crane - Camera handling system
+enclosure.Environment - Dome environmental sensing
+enclosure.Liftplatform - Mirror handling system
+enclosure.Shutter - Dome aperture control
+enclosure.TC - Temperature control systems
+enclosure.Vents - Dome vents and air-flow management
 environment - Environmental monitoring
-environment.dust_monitor - Particulate monitoring
-environment.lightning - Electrical disturbance monitoring
-environment.seismic - Earthquake monitoring
-environment.thermal - Temperature control systems
-environment.weather - Local weather sensing
+environment.Dust - Particulate monitoring
+environment.Electrical - Electrical system monitoring
+environment.Lightning - Electrical disturbance monitoring
+environment.Seismometer - Earthquake monitoring
+environment.TC - Temperature control systems
+environment.Weather - Local weather sensing
+environment.Video - Local video cameras
 lasercal - Laser calibration system
+lasercal.Application - Derived metadata
+lasercal.Electrical - Electrical system monitoring
+lasercal.TC - Temperature control systems
 m1m3 - Primary/Tertiary mirror
-m1m3.actuators - Figure control systems
-m1m3.electrical - Power monitoring
-m1m3.metrology - Position monitoring/control
-m1m3.support - Mirror/Mount interface
-m1m3.surface - Figure monitoring
+m1m3.Application - Derived metadata
+m1m3.Actuators - Figure control systems
+m1m3.ActuatorSample - Figure control systems
+m1m3.Electrical - Power monitoring
+m1m3.LimitSensors - Position monitoring/control
+m1m3.LUT - Look-up tables
+m1m3.Metrology - Position monitoring/control
+m1m3.Supports - Mirror/Mount interface
+m1m3.Surface - Figure monitoring
 m1m3.TC - Thermal monitoring/control
 m2 - Secondary mirror
-m2.actuators - Figure control systems
-m2.electrical - Power monitoring
-m2.metrology - Position monitoring/control
-m2.support - Mirror/Mount interface
-m2.surface - Figure monitoring
+m2.Application - Derived metadata
+m2.Actuators - Figure control systems
+m2.Electrical - Power monitoring
+m2.Hexapod - Hexapod monitoring
+m2.LimitSensors - Position monitoring/control
+m2.LUT - Look-up tables
+m2.Metrology - Position monitoring/control
+m2.Supports - Mirror/Mount interface
+m2.Surface - Figure monitoring
 m2.TC - Thermal monitoring/control
+m2.Temps - Thermal monitoring/control
 mount - Telescope mount
-mount.azimuth - Azimuth axis monitoring/control
-mount.altitude - Altitude axis monitoring/control
-mount.balance - Balance tuning mechanisms
-mount.hexapod - Camera mount monitoring/control
-mount.metrology - Configuration/Position/Velocity monitoring
-mount.mirror_cover - Mirror covers
-mount.power - Monitoring/control of power management
-mount.services - Monitoring/control of N2/Vac/Coolant etc
+mount.Az - Azimuth axis monitoring/control
+mount.Alt - Altitude axis monitoring/control
+mount.Balance - Balance tuning mechanisms
+mount.Hexapod - Camera mount monitoring/control
+mount.Rotator - Camera mount monitoring/control
+mount.Metrology - Configuration/Position/Velocity monitoring
+mount.Application - Derived metadata
+mount.Electrical - Electrical system monitoring
+mount.Mirror_cover - Mirror covers
+mount.Power - Monitoring/control of power management
+mount.Services - Monitoring/control of N2/Vac/Coolant etc
 mount.TC - Thermal monitoring/control
 network - Computer network hardware
-network.camera - Camera specific
-network.external - Links off-mountain
-network.noncritical - Non mission critical
-network.science - Science data networks
-network.telescope - On-site telescope and site
+network.Application - Derived metadata
+network.Camera - Camera specific
+network.External - Links off-mountain
+network.Noncritical - Non mission critical
+network.Science - Science data networks
+network.Telescope - On-site telescope and site
 ocs - observatory control system
+ocs.activity - observatory operational modes
+ocs.database - observatory facility database
+ocs.operator - Operator interfaces management
+ocs.pointing - Telescope pointing
+ocs.scheduler - observatory scheduling
+ocs.staticanalysis - Debugging information
+ocs.system - system overview
 operations - Operator interfaces management
 operations.main - Main telescope control
 operations.base - Base control room
@@ -124,33 +180,58 @@ operations.enclosure - Dome floor
 operations.mirrorlab - Mirror Lab and coating
 operations.remote - WAN access
 power - Power supply systems
-power.noncritical - Other power systems
-power.main - Main power monitoring/control , mission critical
-power.UPS - Uninterruptible power supplies
+power.Electrical - Electrical monitoring
+power.Noncritical - Other power systems
+power.Main - Main power monitoring/control , mission critical
+power.TC - Thermal monitoring/control
+power.UPSs - Uninterruptible power supplies
 scheduler - Observation scheduling subsystem
-seeing_dimm - DIMM Seeing monitor system
-seeing_dimm.imager - Sensor configuration and readout
-seeing_dimm.policy - Configuration and operations
-seeing_dimm.status - Summary data
-seeing_dimm.telescope - Telescope mount control
-seeing_mass - MASS Seeing monitor system
-seeing_mass.imager - Sensor configuration and readout
-seeing_mass.policy - Configuration and operations
-seeing_mass.status - Summary data
-seeing_mass.telescope - Telescope mount control
+scheduler.Application - Derived metadata
+seeing.dimm - DIMM Seeing monitor system
+seeing.dimm.Application - Derived metadata
+seeing.dimm.Electrical - Electrical system monitoring
+seeing.dimm.Metrology - Positional information
+seeing.dimm.TC - Thermal monitoring
+seeing.dimm.Imager - Sensor configuration and readout
+seeing.dimm.Policy - Configuration and operations
+seeing.dimm.Status - Summary data
+seeing.dimm.Telescope - Telescope mount control
+seeing.mass - MASS Seeing monitor system
+seeing.mass - DIMM Seeing monitor system
+seeing.mass.Application - Derived metadata
+seeing.mass.Electrical - Electrical system monitoring
+seeing.mass.Metrology - Positional information
+seeing.mass.TC - Thermal monitoring
+seeing.mass.Imager - Sensor configuration and readout
+seeing.mass.Policy - Configuration and operations
+seeing.mass.Status - Summary data
+seeing.mass.Telescope - Telescope mount control
 skycam - All-sky monitoring cameras
-skycam.imager - Sensor configuration and readout
-skycam.policy - Configuration and operations
-skycam.status - Summary data
+skycam.Application - Derived methistory
+
+adata
+skycam.Electrical - Electrical system monitoring
+skycam.Metrology - Positional information
+skycam.TC - Thermal monitoring
+skycam.Imager - Sensor configuration and readout
+skycam.Policy - Configuration and operations
+skycam.Status - Summary data
 system - System configuration/history/status interfaces
-system.command_history - Comprehensive command log
-system.computer_resources - Per-computer status
-system.hardware_revisions - Modification logs
-system.software_revisions - Modification logs
+system.Command  - Comprehensive command log
+system.Computer - Per-computer status
+system.Hardware - Modification logs
+system.Software - Modification logs
 tcs - Telescope control system
 tcs.kernel - Telescope pointing kernel
 tcs.mount - Mount interface
 tcs.optics - Active optics interface"
+
+foreach i [split $SYSDIC(subsystems) "\n" ] {
+   set t [split $i "-"]
+   set ss [string trim [lindex $t 0]]
+   set title [string trim [lindex $t 1]]
+   set SYSDIC($ss,title) $title
+}
 
 set TSYSDIC(devices) "<P><HR><P>
 <H2>Devices</H2><P>	

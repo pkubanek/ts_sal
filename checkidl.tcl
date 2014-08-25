@@ -122,6 +122,14 @@ global NEWSIZES FREQUENCY PUBLISHERS
   puts stdout "\n[format %-20s Total]	size=[format %6d $btotal]	rate=[format %6d [expr int($stotal)]] Bytes/sec [expr int($dtotal)] Mb/day" 
 }
 
+proc getfrequency { hid } {
+global FREQUENCY
+   set subsys [lindex [split $hid "._"] 0]
+   if { [info exists FREQUENCY($subsys)] }  { return $FREQUENCY($subsys) }
+   return 0.054
+}
+
+
 
 proc checkidl { f } {
 global NEWTOPICS NEWSIZES NEWCONSTS
@@ -259,7 +267,9 @@ global XMLTOPICS XMLTLM
              doitem $eid $fhtm $id $type $siz "$units" "$range" "$comments" 
              puts stdout  "doitem $eid $fhtm $id $type $siz |$units |$range  |$comments "
              if { $freq != "" && $freq != "tbd" } {set FREQUENCY($hid) $freq }
-             if { [info exists FREQUENCY($hid)] == 0 } {set FREQUENCY($hid) 0.054}
+             if { [info exists FREQUENCY($hid)] == 0 } {
+                 set FREQUENCY($hid) [getfrequency $hid]
+             }
              puts $fdet "$hid.$id $siz $type $FREQUENCY($hid)"
              lappend tnames $id
              incr iinum 1

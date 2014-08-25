@@ -66,7 +66,8 @@ proc replacelvcode { topiclist op fid } {
                  foreach t $topiclist {
                     puts $fid "
 extern int LVcomm_get_i[set t](int fd);
-extern int LVcomm_send_e[set t](int fd);extern int LVcomm_close_[set t](int fd);"
+extern int LVcomm_send_e[set t](int fd);
+extern int LVcomm_close_[set t](int fd);"
                     set fpi [open ../shmem-[set t]/[set t]_lvprostub.txt r]
                     gets $fpi rec ; puts $fid "extern $rec"
                     gets $fpi rec ; puts $fid "extern $rec"
@@ -670,7 +671,7 @@ exec mkdir -p  $basedir/shmem-$basename
 #puts stdout "basedoir = $basedir"
 #puts stdout "sublist = $sublist"
 
-puts stdout "<HTML><HEAD><TITLE>Software Abstraction Layer API generator</TITLE></HEAD>
+puts stdout "<HTML><HEAD><TITLE>Service Abstraction Layer API generator</TITLE></HEAD>
 <BODY BGCOLOR=White><H1>
 <IMG SRC=\"/LSST_logo.gif\" ALIGN=CENTER>
 <IMG SRC=\"/salg.gif\" ALIGN=CENTER><P><HR><P>

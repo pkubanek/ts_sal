@@ -1,70 +1,52 @@
-proc doitem { i fid name type n {unit none} {range none} {help "No comment"} } {
-   puts $fid "<TR><TD><INPUT NAME=\"id$i\" VALUE=\"$name\"></TD>
+proc doitem { i fid name n type {unit none} {range none} {help "No comment"} } {
+   set iname [getitemname $name]
+   puts $fid "<TR><TD><INPUT NAME=\"id$i\" VALUE=\"$iname\"></TD>
 <TD><select name=\"type$i\">"
-   switch [string tolower $type] {
-      byte   { puts $fid "<option value=\"byte\" selected>byte
-                          <option value=\"short\">short
-                          <option value=\"int\">int
-                           <option value=\"long\">long
-                          <option value=\"float\">float
-                          <option value=\"string\">string
-                          </select></TD>"
-             }
-      short   { puts $fid "<option value=\"byte\">byte
-                          <option value=\"short\" selected>short
-                          <option value=\"int\">int
-                          <option value=\"long\">long
-                          <option value=\"float\">float
-                          <option value=\"string\">string
-                          </select></TD>"
-             }
-      int   { puts $fid "<option value=\"byte\">byte
-                          <option value=\"short\">short
-                          <option value=\"int\" selected>int
-                           <option value=\"long\">long
-                         <option value=\"float\">float
-                          <option value=\"string\">string
-                          </select></TD>"
-             }
-      long   { puts $fid "<option value=\"byte\">byte
-                          <option value=\"short\">short
-                          <option value=\"int\">int
-                          <option value=\"long\" selected>long
-                          <option value=\"float\">float
-                          <option value=\"string\">string
-                          </select></TD>"
-             }
-      longlong   { puts $fid "<option value=\"byte\">byte
-                          <option value=\"short\">short
-                          <option value=\"int\">int
-                          <option value=\"long\" selected>long
-                          <option value=\"float\">float
-                          <option value=\"string\">string
-                          </select></TD>"
-             }
-      float   { puts $fid "<option value=\"byte\">byte
-                          <option value=\"short\">short
-                          <option value=\"int\">int
-                          <option value=\"long\">long
-                          <option value=\"float\" selected>float
-                          <option value=\"string\">string
-                          </select></TD>"
-             }
-      string  { puts $fid "<option value=\"byte\">byte
-                          <option value=\"short\">short
-                          <option value=\"int\">int
-                          <option value=\"long\">long
-                          <option value=\"float\">float
-                          <option value=\"string\" selected>string
-                          </select></TD>"
-             }
-   }
+   set ctype [lindex [split $type "<>"] 0]
+##puts stdout "doitem $i $fid $name $n $ctype $unit $range"
+   dotypeselect $fid $ctype
+   puts $fid "</select>"
    puts $fid "<TD><INPUT NAME=\"siz$i\" VALUE=\"$n\"></TD>"
    dounit $fid $i $unit
    puts $fid "<TD><INPUT NAME=\"range$i\" VALUE=\"$range\"></TD>
 <TD><INPUT NAME=\"help$i\" VALUE=\"$help\"></TD>
 <TD><INPUT TYPE=\"checkbox\" NAME=\"delete_$i\" VALUE=\"yes\"></TD></TR>"
 }
+
+proc dotypeselect { fid choice } {
+global SYSDIC
+   foreach t $SYSDIC(datatypes) {
+     if { $t == $choice } {
+       puts $fid "<option value=\"$t\" SELECTED>$t</option>"
+     } else {
+       puts $fid "<option value=\"$t\">$t</option>"
+     }
+   }
+}
+
+
+proc getitemname { name } {
+  set spl [split $name "._-"]
+  set id [join [lrange $spl 2 end] _]
+  return $id
+}
+
+
+proc liststreams { {subsys all} } {
+global SAL_WORK_DIR
+   set fs [open $SAL_WORK_DIR/.salwork/datastreams.names r]
+   while { [gets $fs rec] > -1 } {
+      set spl [split $rec "_"]
+      if { $subsys == "all" || $subsys == [lindex $spl 0] } {
+        if { [lindex $spl 1] != "command" &&  [lindex $spl 1] != "response" } {
+          set s [join [lrange $spl 0 1] "_"]
+          set sname($s) 1
+        }
+      }
+   } 
+   return [lsort [array names sname]]  
+}
+
 
 proc dounit { fid id u} {
 global UDESC
@@ -80,12 +62,19 @@ global UDESC
   puts $fid "</select></TD>"
 }
 
-proc dogen { fid id } {
-   puts $fid "<TR><TD>$id</TD>
-<TD><INPUT TYPE=\"checkbox\" NAME=\"sub_$id\" VALUE=\"yes\">
-<TD><INPUT TYPE=\"checkbox\" NAME=\"pub_$id\" VALUE=\"yes\">
-<TD><INPUT TYPE=\"checkbox\" NAME=\"issue_$id\" VALUE=\"yes\">
+proc dogen { fid id {cmd yes} } {
+   if { $cmd } {
+      puts $fid "<TR><TD><A HREF=\"sal-generator-$id.html\">$id</A></TD>"
+   } else {
+      set uid [join [split $id .] "_"]
+      puts $fid "<TR><TD><A HREF=\"$id/$uid-streamdef.html\">$id</A></TD>"
+   }
+   puts $fid "<TD><INPUT TYPE=\"checkbox\" NAME=\"sub_$id\" VALUE=\"yes\">
+<TD><INPUT TYPE=\"checkbox\" NAME=\"pub_$id\" VALUE=\"yes\">"
+   if { $cmd } {
+      puts $fid "<TD><INPUT TYPE=\"checkbox\" NAME=\"issue_$id\" VALUE=\"yes\">
 <TD><INPUT TYPE=\"checkbox\" NAME=\"proc_$id\" VALUE=\"yes\">"
+   }
 }
 
 
