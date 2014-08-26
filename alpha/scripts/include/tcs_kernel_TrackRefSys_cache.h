@@ -1,0 +1,25 @@
+typedef struct tcs_kernel_TrackRefSys_cache {
+  int cppDummy;
+  int syncI;
+  char private_revCode[32];
+  long private_sndStamp;
+  long private_rcvStamp;
+  long private_seqNum;
+  long private_origin;
+  float tdbj;
+  float amprms[21];
+  float ae2mt[9];
+  float hm;
+  float tlat;
+  float diurab;
+  float refa;
+  float refb;
+  float temp;
+  float press;
+  float humid;
+  float tlr;
+  float wavel;
+  float sst;
+  float cst;
+  int syncO;
+} tcs_kernel_TrackRefSys_cache;
