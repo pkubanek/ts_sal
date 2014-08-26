@@ -1,6 +1,7 @@
 typedef struct environment_Weather_cache {
   int cppDummy;
   int syncI;
+  int syncO;
   char private_revCode[32];
   long private_sndStamp;
   long private_rcvStamp;
@@ -8,6 +9,4 @@ typedef struct environment_Weather_cache {
   long private_origin;
   long Raw[128];
   float Calibrated[256];
-  char Status[128];
-  int syncO;
 } environment_Weather_cache;

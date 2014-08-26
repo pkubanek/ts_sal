@@ -103,32 +103,27 @@ if { [info exists JUSTTESTING] } {
 set scriptdir /usr/local/scripts/tcl
  
 source $scriptdir/ndds_version.tcl
+source $scriptdir/streamutils.tcl
 
 
-set basedir /home/shared/lsst/tests/api/streams
+set basedir $WORKING
 cd $basedir
-
 source $scriptdir/managetypes.tcl
 source $basedir/stream_frequencies.tcl 
 
-if { [info exists FormData(GenerateALL)] } {
-  set all [glob $subsys*.idl]
-  set topiclist ""
-  foreach t [lsort $all] {
-    lappend topiclist [file rootname $t]
-  }
-} else {
   set publist ""
   set sublist ""
   foreach t [array names ISSU] {
      set s [lindex [split $t ._] 0]
      set PUBS([set s]_command)  1
      set SUBS([set s]_response) 1
+     set PUBS(system_Command_history) 1
   }
   foreach t [array names PROC] {
      set s [lindex [split $t ._] 0]
      set SUBS([set s]_command)  1
      set PUBS([set s]_response) 1
+     set PUBS(system_Command_history) 1
   }
 #  foreach t [array names PUBS] {
 #     set id [join [split $t .] _]
@@ -137,20 +132,25 @@ if { [info exists FormData(GenerateALL)] } {
 #  foreach t [array names SUBS] {
 #     set sublist "$sublist $id"
 #  }
-}
+   set publist [array names PUBS]
+   set sublist [array names SUBS]
 
-set publist [array names PUBS]
-set sublist [array names SUBS]
+#printformdata
+#puts stdout "ISSU [array names ISSU]<P>"
+#puts stdout "PROC [array names PROC]<P>"
+#puts stdout "PUBS [array names PUBS]<P>"
+#puts stdout "SUBS [array names SUBS]<P>"
+#puts stdout "publist $publist<P>"
+#puts stdout "sublist $sublist<P>"
 
 set subsys [lindex [split [lindex "$sublist $publist" 0] _.] 0]
-set basename [lindex [split $subsys _.] 0]
+set basename [genericname "$sublist $publist"]
 source $basedir/revCodes.tcl
 exec rm -fr  $basedir/shmem-$basename
 exec mkdir -p  $basedir/shmem-$basename
 
 #printformdata
-#puts stdout "basedoir = $basedir"
-#puts stdout "sublist = $sublist"
+#puts stdout "basedir = $basedir"
 
 puts stdout "<HTML><HEAD><TITLE>Software Abstraction Layer API generator</TITLE></HEAD>
 <BODY BGCOLOR=White><H1>
@@ -164,13 +164,13 @@ flush stdout
 puts stdout "<PRE>"
 catch {unset DONE}
 
-foreach t "$sublist $publist" {
+foreach t [lsort "$sublist $publist"] {
   if { [info exists DONE($t)] == 0 } {
     puts stdout "Processing $t"
     if { [info exists FormData(mw_ndds)] } {
-      catch {exec $scriptdir/genshmem.tcl $t +dds} result
+      catch {exec $scriptdir/genshmem.tcl $t $basedir +dds} result
     } else {
-      catch {exec $scriptdir/genshmem.tcl $t} result
+      catch {exec $scriptdir/genshmem.tcl $t $basedir} result
     }
     puts stdout "$result"
     set res [glob ./shmem-$t/*]
@@ -180,6 +180,7 @@ foreach t "$sublist $publist" {
     set DONE($t) 1
   }
 }
+
 
 puts stdout "Building shmem interfaces"
 puts stdout "Processing $sublist $publist"
@@ -202,8 +203,14 @@ if { [info exists FormData(mw_activemq)] } {
 if { [info exists FormData(langlv)] } {
   source $scriptdir/genshmem-labview.tcl
   dolvgen $sublist $publist
- }
+}
 
+catch {unset DONE}
+puts stdout "Building code in $workdir"
+
+source $scriptdir/genshmtclpersubsys.tcl
+source $scriptdir/accesspersubsystem.tcl
+ 
 set code [glob $scriptdir/code/*.c]
 foreach f $code { exec cp $f . }
 exec cp $scriptdir/code/version.mak .
@@ -211,10 +218,10 @@ exec cp $scriptdir/code/makefile.sal .
 exec cp $scriptdir/code/makefile.saltcl .
 exec cp /usr/local/scripts/include/svcSAL.h .
 
-source $scriptdir/genshmtclpersubsys.tcl
+###source $scriptdir/genshmtclpersubsys.tcl
 puts stdout "</PRE><P><HR><P><H1>Compilation phase</H1><P><PRE>"
 
-source $scriptdir/accesspersubsystem.tcl
+###source $scriptdir/accesspersubsystem.tcl
 set res [ catch { exec $scriptdir/ddsmake -f makefile.sal } op]
 puts stdout "$op"
 set res [ catch { exec $scriptdir/ddsmake -f makefile.saltcl } op]
@@ -243,9 +250,10 @@ if { [info exists FormData(mw_ice)] } {
 if { [info exists FormData(langlv)] } {
   set res [ catch { exec $scriptdir/lvmake } op]
   puts stdout "$op"
-  exec mv libserialSAL_linux.so ../lsstsal.$SALVERSION/lib/libSAL_LV_$basename.so
 }
 
+set res [ catch { exec $scriptdir/sourcelibraries $basename} op]
+puts stdout "$op"
 
 puts stdout "</PRE><P><HR><P><H1>Generating distribution</H1><P>"
 

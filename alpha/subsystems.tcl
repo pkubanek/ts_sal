@@ -39,8 +39,8 @@ foreach s $STREAMS {
   set id1 [calcshmid [set s]]
   puts $fcid "
   if (strcmp(\"$s\",subsys) == 0 ) \{
-     *streamid = 0x$id1;
-     *size = sizeof([set s]_cache);
+     streamid = 0x$id1;
+     size = sizeof(struct [set s]_cache);
   \}"
 }
 
@@ -50,15 +50,15 @@ foreach s $COMMANDABLE {
   lappend CSTREAMS [set s]_command
   puts $fcid "
   if (strcmp(\"[set s]_command\",subsys) == 0 ) \{
-     *streamid = 0x$id1;
-     *size = sizeof(svcSAL_command);
+     streamid = 0x$id1;
+     size = sizeof(struct svcSAL_command);
   \}"
   set id1 [calcshmid [set s]_response]
   lappend CSTREAMS [set s]_response
   puts $fcid "
   if (strcmp(\"[set s]_response\",subsys) == 0 ) \{
-     *streamid = 0x$id1;
-     *size = sizeof(svcSAL_response);
+     streamid = 0x$id1;
+     size = sizeof(struct svcSAL_response);
   \}"
 }
 puts $fcid "
@@ -109,16 +109,16 @@ foreach s "$STREAMS $CSTREAMS" {
      [set s]_cache *[set s]_ref;
      [set s]_ref  = ([set s]_cache *) svcSAL_handle\[handle\].ref;
      if (strcmp(operation,\"read\") == 0 ) \{
-        *sndStamp = [set s]_ref->private_sndStamp; 
-        *rcvStamp = [set s]_ref->private_rcvStamp; 
-        *seqNum = [set s]_ref->private_seqNum; 
-        *origin = [set s]_ref->private_origin; 
+        sndStamp = [set s]_ref->private_sndStamp; 
+        rcvStamp = [set s]_ref->private_rcvStamp; 
+        seqNum = [set s]_ref->private_seqNum; 
+        origin = [set s]_ref->private_origin; 
      \}
      if (strcmp(operation,\"write\") == 0 ) \{
-        [set s]_ref->private_sndStamp = *sndStamp; 
-        [set s]_ref->private_rcvStamp = *rcvStamp; 
-        [set s]_ref->private_seqNum = *seqNum; 
-        [set s]_ref->private_origin = *origin; 
+        [set s]_ref->private_sndStamp = sndStamp; 
+        [set s]_ref->private_rcvStamp = rcvStamp; 
+        [set s]_ref->private_seqNum = seqNum; 
+        [set s]_ref->private_origin = origin; 
      \}
      if (strcmp(operation,\"verify\") == 0 ) \{
         if ( strcmp(revCode,\"$rev\") != 0 ) { return SAL__ILLEGAL_REVCODE; }

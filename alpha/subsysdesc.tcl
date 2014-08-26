@@ -240,10 +240,6 @@ set DESC(enclosure.Vents) "
 <P>This subsystem maintains high level information pertaining to the<BR>dome
 vents positioning demand and performance, wind loading<BR>etc. "
 
-set DESC(enclosure.Thermal_control) "
-<P>This subsystem maintains high level information pertaining to<BR>the
-control and monitoring of the thermal environment<BR>inside the dome."
-
 
 
 set DESC(auxscope.TC) "
@@ -438,7 +434,6 @@ set SID(enclosure.Metrology) 8.3
 set SID(enclosure.Azimuth) 8.4
 set SID(enclosure.Shutter) 8.5
 set SID(enclosure.Vents) 8.6
-set SID(enclosure.Thermal_control) 8.7
 
 set SID(auxscope) 9
 set SID(auxscope.TC) 9.1

@@ -258,10 +258,6 @@ set SDESC(enclosure.Vents) "
 <P>This topic records high level information pertaining to the<BR>dome
 vents positioning demand and performance, wind loading<BR>etc. "
 
-set SDESC(enclosure.Thermal_control) "
-<P>This topic records high level information pertaining to<BR>the
-control and monitoring of the thermal environment<BR>inside the dome."
-
 set SDESC(scheduler.Application) "
 <P>Application specific information produced by the scheduler
 subsystem. "

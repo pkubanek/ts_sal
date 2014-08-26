@@ -1,6 +1,7 @@
 typedef struct camera_SDS_amplifiers_cache {
   int cppDummy;
   int syncI;
+  int syncO;
   char private_revCode[32];
   long private_sndStamp;
   long private_rcvStamp;
@@ -13,5 +14,4 @@ typedef struct camera_SDS_amplifiers_cache {
   float voltage2[132];
   float voltage3[132];
   float voltage4[132];
-  int syncO;
 } camera_SDS_amplifiers_cache;

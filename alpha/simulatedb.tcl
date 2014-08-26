@@ -196,14 +196,15 @@ set KEYRANGE(ccdID) 201
 set KEYRANGE(raftID) 25
 set KEYRANGE(ampID) 132
 
+source /usr/local/scripts/tcl/streamutils.tcl
 
-set recdef [glob /home/shared/lsst/tests/api/streams/*.sqlwrt]
+set recdef [glob $WORKING/*.sqlwrt]
 foreach i $recdef { 
    source $i
 }
 
-source /home/shared/lsst/tests/api/streams/revCodes.tcl
-source /home/shared/lsst/tests/api/streams/datastreams.freqs
+source $WORKING/revCodes.tcl
+source $WORKING/datastreams.freqs
 
 
 foreach s [array names FREQUENCY] {

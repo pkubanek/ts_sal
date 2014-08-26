@@ -1,3 +1,4 @@
+set SDESC(camera.Dewar.Cooler) ""
 set DESC(tcs) "The main purpose of the Telescope Control System (TCS) software is to accept the target position of a celestial object, which can be given in a variety of coordinate systems, and calculate mount, rotator and optical surface positions, so that the target is imaged perfectly at a given point in the focal plane. Furthermore, the TCS is characterized by the need to integrate a number of heterogeneous subsystems, which exhibit complex interactions. These interactions, although not hard realtime bounded, need a high level of synchronization.
 <P>
 The Telescope Control System (TCS) is the central coordination facility for the delivery of high quality field images to the camera. It is responsible for the precise pointing and tracking calculations necessary to observe a certain field. The TCS does not itself operate any mechanical component; rather it delegates this responsibility to the various telescope subsystems and manages them according to the observation requests.
@@ -213,12 +214,6 @@ set DESC(enclosure.Vents) "
 <P>This subsystem maintains high level information pertaining to the<BR>dome
 vents positioning demand and performance, wind loading<BR>etc. "
 
-set DESC(enclosure.Thermal_control) "
-<P>This subsystem maintains high level information pertaining to<BR>the
-control and monitoring of the thermal environment<BR>inside the dome."
-
-
-
 set DESC(auxscope.TC) "
 <P>Temperature monitoring  for sensors located in the
 Auxillary Telescope subsystem.<BR>Raw sensor readings, calibrated
@@ -257,37 +252,37 @@ set DESC(lasercal.Electrical) "
 subsystem.<BR>Raw data, calibrated voltages, calibrated current,
 device power status. "
 
-set DESC(seeing_dimm) "The MASS/DIMM is a robotic instrument that continually tracks reference stars to measure the Star Scintillation and image
+set DESC(seeing.dimm) "The MASS/DIMM is a robotic instrument that continually tracks reference stars to measure the Star Scintillation and image
 motion to evaluate the current atmospheric conditions."
 
 
-set DESC(seeing_dimm.TC) "
+set DESC(seeing.dimm.TC) "
 <P>Temperature monitoring  for sensors located in the DIMM
 subsystem.<BR>Raw sensor readings, calibrated temperatures,
 time series statistics, sensor health. "
 
-set DESC(seeing_dimm.Electrical) "
+set DESC(seeing.dimm.Electrical) "
 <P>Electrical monitoring  for devices located in the DIMM
 subsystem.<BR>Raw data, calibrated voltages, calibrated current,
 device power status. "
 
-set DESC(seeing_dimm.Metrology) "
+set DESC(seeing.dimm.Metrology) "
 <P>Position control  for sensors located in the DIMM
 subsystem.<BR>Raw sensor readings, calibrated positions, limit
 switches, status bits. "
 
 
-set DESC(seeing_mass.TC) "
+set DESC(seeing.mass.TC) "
 <P>Temperature monitoring  for sensors located in the MASS
 subsystem.<BR>Raw sensor readings, calibrated temperatures,
 time series statistics, sensor health. "
 
-set DESC(seeing_mass.Electrical) "
+set DESC(seeing.mass.Electrical) "
 <P>Electrical monitoring  for devices located in the MASS
 subsystem.<BR>Raw data, calibrated voltages, calibrated current,
 device power status. "
 
-set DESC(seeing_mass.Metrology) "
+set DESC(seeing.mass.Metrology) "
 <P>Position control  for sensors located in the MASS
 subsystem.<BR>Raw sensor readings, calibrated positions, limit
 switches, status bits. "
@@ -326,19 +321,19 @@ set DESC(environment.Weather) "
 <P>This subsystem maintains weather data, both current predictions and
 actual<BR>measurements. "
 
-set DESC(environment.Dust_monitor) "
+set DESC(environment.Dust.monitor) "
 <P>This subsystem maintains information from the Dust Monitor
 subsystem.<BR>Both low level mechanical status , and calculated
 result data<BR>are included. "
 
-set DESC(environment.Lightning_detector) "
+set DESC(environment.Lightning.detector) "
 <P>This subsystem maintains data from the Lightning detection subsystem<BR>and
 current predictive data. "
 
 set DESC(environment.Seismometer) "
 <P>This subsystem maintains data from the Siesmometer subsystem.</P>"
 
-set DESC(environment.Video_cameras) "
+set DESC(environment.Video.cameras) "
 <P>This subsystem maintains system status for the video monitoring<BR>systems. The video system is a distributed network of addressable cameras located throughout the facility to give the operators
 visual feedback of activity in and around the facility.
 "
@@ -347,13 +342,13 @@ set DESC(OCS) "
 <P>Observatory Control System is reponsible for issuing command and 
 monitoring the performance of all telescope subsystems"
 
-set DESC(camera.Dewar_Cooler) ""
-set DESC(seeing_dimm.TC) ""
-set DESC(seeing_dimm.Electrical) ""
-set DESC(seeing_dimm.Metrology) ""
-set DESC(seeing_mass.TC) ""
-set DESC(seeing_mass.Electrical) ""
-set DESC(seeing_mass.Metrology) ""
+set DESC(camera.Dewar.Cooler) ""
+set DESC(seeing.dimm.TC) ""
+set DESC(seeing.dimm.Electrical) ""
+set DESC(seeing.dimm.Metrology) ""
+set DESC(seeing.mass.TC) ""
+set DESC(seeing.mass.Electrical) ""
+set DESC(seeing.mass.Metrology) ""
 
 set SID(OCS) 1.0
 set SID(camera) 15
@@ -362,10 +357,10 @@ set SID(camera.TC) 15.1
 set SID(camera.Electrical) 15.2
 set SID(camera.Metrology) 15.3
 set SID(camera.RNA) 15.4
-set SID(camera.Science_sensor_metadata) 15.5
-set SID(camera.Wavefront_sensors) 15.6
-set SID(camera.Guide_sensors) 15.7
-set SID(camera.Dewar_CoolerHeater) 15.8
+set SID(camera.Science.sensor.metadata) 15.5
+set SID(camera.Wavefront.sensors) 15.6
+set SID(camera.Guide.sensors) 15.7
+set SID(camera.Dewar.CoolerHeater) 15.8
 set SID(camera.Vacuum) 15.9
 set SID(camera.Filters) 15.10
 set SID(camera.Shutter) 15.11
@@ -418,7 +413,6 @@ set SID(enclosure.Metrology) 8.3
 set SID(enclosure.Azimuth) 8.4
 set SID(enclosure.Shutter) 8.5
 set SID(enclosure.Vents) 8.6
-set SID(enclosure.Thermal_control) 8.7
 
 set SID(auxscope) 9
 set SID(auxscope.TC) 9.1
@@ -432,15 +426,15 @@ set SID(lasercal) 10
 set SID(lasercal.TC) 10.1
 set SID(lasercal.Electrical) 10.2
 
-set SID(seeing_dimm) 11
-set SID(seeing_dimm.TC) 11.1
-set SID(seeing_dimm.Electrical) 11.2
-set SID(seeing_dimm.Metrology) 11.3
+set SID(seeing.dimm) 11
+set SID(seeing.dimm.TC) 11.1
+set SID(seeing.dimm.Electrical) 11.2
+set SID(seeing.dimm.Metrology) 11.3
 
-set SID(seeing_mass) 12
-set SID(seeing_mass.TC) 12.1
-set SID(seeing_mass.Electrical) 12.2
-set SID(seeing_mass.Metrology) 12.3
+set SID(seeing.mass) 12
+set SID(seeing.mass.TC) 12.1
+set SID(seeing.mass.Electrical) 12.2
+set SID(seeing.mass.Metrology) 12.3
 
 set SID(skycam) 13
 set SID(skycam.TC) 13.1
@@ -451,21 +445,21 @@ set SID(environment) 14
 set SID(environment.TC) 14.1
 set SID(environment.Electrical) 14.2
 set SID(environment.Weather) 14.3
-set SID(environment.Dust_monitor) 14.4
-set SID(environment.Lightning_detector) 14.5
+set SID(environment.Dust.monitor) 14.4
+set SID(environment.Lightning.detector) 14.5
 set SID(environment.Seismometer) 14.6
-set SID(environment.Video_cameras) 14.7
+set SID(environment.Video.cameras) 14.7
 
-set SID(camera.Dewar_Cooler) ""
-set SID(seeing_dimm) 11
-set SID(seeing_dimm.TC) 11.1
-set SID(seeing_dimm.Electrical) 11.2
-set SID(seeing_dimm.Metrology) 11.3
+set SID(camera.Dewar.Cooler) ""
+set SID(seeing.dimm) 11
+set SID(seeing.dimm.TC) 11.1
+set SID(seeing.dimm.Electrical) 11.2
+set SID(seeing.dimm.Metrology) 11.3
 
-set SID(seeing_mass) 12
-set SID(seeing_mass.TC) 12.1
-set SID(seeing_mass.Electrical) 12.2
-set SID(seeing_mass.Metrology) 12.3
+set SID(seeing.mass) 12
+set SID(seeing.mass.TC) 12.1
+set SID(seeing.mass.Electrical) 12.2
+set SID(seeing.mass.Metrology) 12.3
 
 set DOCO(ocs) Document-869
 set DOCO(standards-sw) "ESA 1991, Software Engineering Standards, ESA PSS-05-0, Issue 2, European Space Agency"
@@ -592,7 +586,7 @@ set DESC(mount.instrumentAssembly) ""
 
 set DESC(power) "Power supply and distribution systems"
 
-set DESC(seeing_dimm) "Seeing canmera, differential image motion monitor<P>
+set DESC(seeing.dimm) "Seeing canmera, differential image motion monitor<P>
 The first DIMM was developed by M. Sarazin and F. Roddier (Sarazin, M., Roddier, F., The ESO differential image motion monitor, 1990, Astron. Astrophy. 227, 294). Refer to this paper for more complete information, especially on the theory.
 <P>
 Image quality through a telescope is directly related to the statistics of the perturbations of the incoming wavefront. The DIMM method consists of measuring wavefront slope differences over 2 small pupils some distance apart. Because it is a differential method, the technique is inherently insensitive to tracking errors and wind shake. In practice, starlight goes through 2 small circular subapertures, cut in a mask placed at the entrance of a small telescope. One of the subapertures contains a prism in order to create a second image of the star on the detector. The dual star images obtained exhibit a relative motion in the image plane that represents the local wavefront tilts, which can be expressed in terms of an absolute seeing scale 
@@ -606,7 +600,7 @@ Statistical errors: it decreases with the square root of the sampling (number of
 Exposure time: the error caused by the finite exposure time is minimized by using very short exposures that can freeze the motion of the atmosphere in most conditions. We implemented the 5ms to 10ms (the minimum CCD frame transfer time is 1ms) interleaving technique and calculate (and log) the extrapolated seeing for a virtual integration time of 0ms (we know from ESO that 5ms is freezing the image motion 99% of the time in Chilean sites)."
 
 
-set DESC(seeing_mass) "Seeing camera, Multi aperture turbulence measurement<BR>
+set DESC(seeing.mass) "Seeing camera, Multi aperture turbulence measurement<BR>
 Multi Aperture Scintillation Sensing (MASS). By correlating scintillation patterns in different annular pupils in a telescope the altitude and strength of turbulent motions in the atmosphere, where the scintillation originates, can be deduced. 
 <P>
 When stellar light passes through a turbulent layer and propagates down, its intensity fluctuates. Spatial scale of these variations depends on the distance to the layer. This dependence is used to separate the contributions from different layers by means of four concentric ring apertures that work as a matched spatial filter. Turbulence profile is derived from the statistical processing of the series of photon counts with 1 ms sampling.
@@ -627,22 +621,22 @@ Pixels can be binned together to improve the noise statistics, but only until th
 
 
 
-set SDESC(system.Computer_status) "
+set SDESC(system.Computer.status) "
 <P>This topic consists of computer system status information.
 <BR>Variables such cpu, memory, disk usage, cpu temp, fan
 speeds<BR>uptime, logins, process count, etc. Every computer will
 generate<BR>such a topic, permitting overall system visualization. "
 
-set SDESC(system.Software_revision_history) "
+set SDESC(system.Software.revision.history) "
 <P>This topic is used to record software revisions so that the
 <BR>current installed complement of any machine will be readily
 available. "
 
-set SDESC(system.Hardware_revision_history) "
+set SDESC(system.Hardware.revision.history) "
 <P>This topic is used to record hardware updates, repairs, <BR>swap-outs
 etc. "
 
-set SDESC(system.Command_history) "
+set SDESC(system.Command.history) "
 <P>This topic is used to record the complete command history<BR>of
 all subsystems in a coherent manner. "
 
@@ -669,22 +663,22 @@ set SDESC(camera.RNA) "
 <P>This topic records data from each RNA unit. This will
 include<BR>performance characteristics, health checks, statuses etc. "
 
-set SDESC(camera.Science_sensor_metadata) "
+set SDESC(camera.Science.sensor.metadata) "
 <P>This topic records the science ccd metadata. Items such as<BR>chip
 voltages, biasaes, health, per-chip temps etc. "
 
-set SDESC(camera.Wavefront_sensors) "
+set SDESC(camera.Wavefront.sensors) "
 <P>This topic records metadata concerning the state of the<BR>wavefront
 sensors, and the results of the processing of<BR>images. Items such
 as chip voltages, health, per-chip temps<BR>bad pixel/line/column
 counts, image pair counts, zernike results<BR>and so on. "
 
-set SDESC(camera.Guide_sensors) "
+set SDESC(camera.Guide.sensors) "
 <P>This topic records metadata concerning the state of the<BR>guide
 regions, and the results of the processing of<BR>the subimages. Items
 such as bax pixel counts, H/V profiles<BR>profile fit results etc. "
 
-set SDESC(camera.Dewar_CoolerHeater) "
+set SDESC(camera.Dewar.CoolerHeater) "
 <P>This topic records application level data for the dewar<BR>heating
 and cooling systems. Target and actual statuses<BR>health , limits,
 etc. "
@@ -891,10 +885,6 @@ set SDESC(enclosure.Vents) "
 <P>This topic records high level information pertaining to the<BR>dome
 vents positioning demand and performance, wind loading<BR>etc. "
 
-set SDESC(enclosure.Thermal_control) "
-<P>This topic records high level information pertaining to<BR>the
-control and monitoring of the thermal environment<BR>inside the dome."
-
 set SDESC(scheduler.Application) "
 <P>Application specific information produced by the scheduler
 subsystem. "
@@ -948,42 +938,46 @@ set SDESC(lasercal.Application) "
 <P>Application specific information derived from sensors in the
 laser<BR>calibration subsystem. "
 
-set SDESC(seeing_dimm.TC) "
+set SDESC(seeing.dimm.TC) "
 <P>Temperature sensing information for sensors located in the DIMM
 subsystem.<BR>Raw sensor readings, calibrated temperatures,
 time-series statistics, sensor health. "
 
-set SDESC(seeing_dimm.Electrical) "
+set SDESC(seeing.dimm.Electrical) "
 <P>Electrical parameters for devices located in the DIMM
 subsystem.<BR>Raw data, calibrated voltages, calibrated current,
 device power status. "
 
-set SDESC(seeing_dimm.Metrology) "
+set SDESC(seeing.dimm.Metrology) "
 <P>Position sensing information for sensors located in the DIMM
 subsystem.<BR>Raw sensor readings, calibrated positions, limit
 switches, status bits. "
 
-set SDESC(seeing_dimm.Application) "
+set SDESC(seeing.dimm.Application) "
 <P>Application specific information derived from sensors in the DIMM
 subsystem.<BR>Raw and processed subimages, derived atmospheric
 parameters etc. "
 
-set SDESC(seeing_mass.TC) "
+set SDESC(seeing.dimm.Measurement) "
+<P>Per meausrement specific information derived from sensors in the DIMM
+subsystem.<BR>"
+
+set SDESC(seeing.mass.TC) "
 <P>Temperature sensing information for sensors located in the MASS
 subsystem.<BR>Raw sensor readings, calibrated temperatures,
 time-series statistics, sensor health. "
 
-set SDESC(seeing_mass.Electrical) "
+set SDESC(seeing.mass.Electrical) "
 <P>Electrical parameters for devices located in the MASS
 subsystem.<BR>Raw data, calibrated voltages, calibrated current,
 device power status. "
 
-set SDESC(seeing_mass.Metrology) "
+set SDESC(seeing.mass.Metrology) "
 <P>Position sensing information for sensors located in the MASS
 subsystem.<BR>Raw sensor readings, calibrated positions, limit
 switches, status bits. "
 
-set SDESC(seeing_mass.Application) "
+set SDESC(seeing.mass.Application) "
 <P>Application specific information derived from sensors in the MASS
 subsystem.<BR>Raw and processed images, derived atmospheric
 parameters etc. "
@@ -1022,19 +1016,19 @@ set SDESC(environment.Weather) "
 <P>This topic records weather data, both current predictions and
 actual<BR>measurements. "
 
-set SDESC(environment.Dust_monitor) "
+set SDESC(environment.Dust.monitor) "
 <P>This topic records information from the Dust Monitor
 subsystem.<BR>Both low level mechanical status , and calculated
 result data<BR>are included. "
 
-set SDESC(environment.Lightning_detector) "
+set SDESC(environment.Lightning.detector) "
 <P>This topic records data from the Lightning detection subsystem<BR>and
 current predictive data. "
 
 set SDESC(environment.Seismometer) "
 <P>This topic records data from the Siesmometer subsystem.</P>"
 
-set SDESC(environment.Video_cameras) "
+set SDESC(environment.Video.cameras) "
 <P>This topic records system status for the video monitoring<BR>systems."
 
 
@@ -1044,15 +1038,6 @@ remote networking components (switches, gateways, VPN, bulk data
 transport etc). "
 
 
-set SDESC(camera.Dewar_Cooler) ""
-set SDESC(seeing_dimm.TC) ""
-set SDESC(seeing_dimm.Electrical) ""
-set SDESC(seeing_dimm.Metrology) ""
-set SDESC(seeing_dimm.Application) "" 
-set SDESC(seeing_mass.TC) ""
-set SDESC(seeing_mass.Electrical) ""
-set SDESC(seeing_mass.Metrology) ""
-set SDESC(seeing_mass.Application) "" 
 set GLOSSARY(SAS) "Science Array System"
 set GLOSSARY(SDS) "Science Data Acquisition System"
 set GLOSSARY(WFS) "Wave-front Sensing System"
@@ -1279,15 +1264,15 @@ set DESC(camera.TC.T4U) "This unit monitors and controls temperature in the Exte
 
 set DESC(camera.BEE) "The camera Back-End Electronics module"
 
-set DESC(system.Computer_status) "This subsystem records the status of
+set DESC(system.Computer.status) "This subsystem records the status of
 every computer hardware item"
 
-set DESC(system.Software_revision_history) "This item records all software revisions
+set DESC(system.Software.revision.history) "This item records all software revisions
 made to items inthe system"
 
-set DESC(system.Hardware_revision_history) "This item records all hardware revisions made to items in the system"
+set DESC(system.Hardware.revision.history) "This item records all hardware revisions made to items in the system"
 
-set DESC(system.Command_history) "This item records all commands and their
+set DESC(system.Command.history) "This item records all commands and their
 responses."
 
 set DESC(m1m3.Application) "This subsystem generates application level items calculated from subsystem raw data"
@@ -1299,8 +1284,9 @@ set DESC(scheduler.Application) "This subsystem generates application level item
 set DESC(operations.Application) "This subsystem generates application level items calculated from subsystem raw data"
 set DESC(auxscope.Application) "This subsystem generates application level items calculated from subsystem raw data"
 set DESC(lasercal.Application) "This subsystem generates application level items calculated from subsystem raw data"
-set DESC(seeing_dimm.Application) "This subsystem generates application level items calculated from subsystem raw data"
-set DESC(seeing_mass.Application) "This subsystem generates application level items calculated from subsystem raw data"
+set DESC(seeing.dimm.Application) "This subsystem generates application level items calculated from subsystem raw data"
+set DESC(seeing.dimm.Measurement) "This subsystem generates per measurement items calculated from subsystem raw data"
+set DESC(seeing.mass.Application) "This subsystem generates application level items calculated from subsystem raw data"
 set DESC(skycam.Application) "This subsystem generates application level items calculated from subsystem raw data"
 set DESC(network.Application) "This subsystem generates application level items calculated from subsystem raw data"
 
@@ -1321,8 +1307,8 @@ set BLOBS(camera.WDS.wfsRaft) "100x100x8 32bit analysis images"
 set BLOBS(camera.GAS)  "64x64x1 16bit images"
 set BLOBS(auxscope.Spectrometer) "4096x2048x1 16bit images"
 set BLOBS(auxscope.Camera) "4096x4096x1 16bit images"
-set BLOBS(seeing_dimm.Application) "64x64x4 16bit images"
-set BLOBS(seeing_mass.Application) "64x64x4 16bit images"
+set BLOBS(seeing.dimm.Application) "64x64x4 16bit images"
+set BLOBS(seeing.mass.Application) "64x64x4 16bit images"
 set BLOBS(skycam.Application) "1024x1024x4 16bit images"
-set BLOBS(environment.Lightning_detector) "1024x1024x1 8bit history image"
-set BLOBS(environment.Video_cameras) "640x480x16 8bit images"
+set BLOBS(environment.Lightning.detector) "1024x1024x1 8bit history image"
+set BLOBS(environment.Video.cameras) "640x480x16 8bit images"

@@ -37,6 +37,8 @@ typedef char 		svcCHAR;
 
 #define SAL__TOO_MANY_HANDLES     -5
 #define SAL__NOT_DEFINED          -6
+
+// Timeout return codes
 #define SAL__TIMEOUT              -7
 #define SAL__SIGNAL_INTERRUPT     -8
 
@@ -51,8 +53,8 @@ typedef char 		svcCHAR;
 #define SAL__SYNC_READ  6
 
 // generateAlert types
-#define SAL__WARN_ALERT 1
-#define SAL__ERROR_ALERT 2
+#define SAL__WARN_ALERT   1
+#define SAL__ERROR_ALERT  2
 #define SAL__ABORT_ALERT -1
 
 // issueCommand return codes
@@ -74,6 +76,7 @@ typedef struct svcSAL_command
 {
     int     cppDummy;
     int     syncI;
+    int     syncO;
     char    private_revCode[32];
     int     private_sndStamp;
     int     private_rcvStamp;
@@ -85,13 +88,13 @@ typedef struct svcSAL_command
     char    action[16];
     char    value[16];
     char    modifiers[128];
-    int     syncO;
 } svcSAL_command;
  
 typedef struct svcSAL_response
 {
     int      cppDummy;
     int      syncI;
+    int      syncO;
     char     private_revCode[32];
     int      private_sndStamp;
     int      private_rcvStamp;
@@ -104,12 +107,12 @@ typedef struct svcSAL_response
     short    repeat;
     short    submits;
     char     result[64];
-    int      syncO;
 } svcSAL_response;
 
 typedef struct svcSAL_tlmhdr_cache {
     int      cppDummy;
     int      syncI;
+    int      syncO;
     char     private_revCode[32];
     int      private_sndStamp;
     int      private_rcvStamp;
@@ -124,14 +127,17 @@ typedef struct svcSAL_cachehandle {
     svcSAL_tlmhdr_cache      *ref;
 } svcSAL_cachehandle;
 
-svcSAL_cachehandle svcSAL_handle[SAL__MAX_HANDLES];
+/* svcSAL_cachehandle svcSAL_handle[SAL__MAX_HANDLES]; */
 
 
 #define SAL__COMMAND_SIZE sizeof(svcSAL_command)
 #define SAL__RESPONSE_SIZE sizeof(svcSAL_response)
-    
-int (*commandCallback)(char *subsystem, svcSAL_command *shmcmd_ref, svcSAL_response *shmresp_ref ) = NULL;
-int (*datastreamCallback)(char *subsystem, int *shmdata_ref ) = NULL;
+
+/*     
+  int (*commandCallback)(char *subsystem, svcSAL_command *shmcmd_ref, svcSAL_response *shmresp_ref ) = NULL;
+  int (*datastreamCallback)(char *subsystem, int *shmdata_ref ) = NULL;
+*/
+
 
 int svcSAL_initialize ();
 int svcSAL_connect ( char *name );

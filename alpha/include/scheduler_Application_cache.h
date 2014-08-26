@@ -1,6 +1,7 @@
 typedef struct scheduler_Application_cache {
   int cppDummy;
   int syncI;
+  int syncO;
   char private_revCode[32];
   long private_sndStamp;
   long private_rcvStamp;
@@ -8,5 +9,4 @@ typedef struct scheduler_Application_cache {
   long private_origin;
   char Status[50];
   float data[200];
-  int syncO;
 } scheduler_Application_cache;

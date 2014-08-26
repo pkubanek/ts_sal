@@ -19,8 +19,8 @@ while { [gets $fin rec] > -1 } {
 }
 close $fin
 
-set VERSION 1.6
-set RELEASE "Aug 2008"
+set VERSION 1.7
+set RELEASE "May 2009"
 set AUTHOR "D. Mills (NOAO), dmills@noao.edu"
 
 set fout [open datastreams.html w]
@@ -79,6 +79,16 @@ while { [gets $fin rec] > -1 } {
 }
 close $fin 
 
+foreach s $subs {
+  if { [info exists PUBS($s)] == 0 } {
+     puts stdout "No entry in datastreams_desc.pubsub for $s"
+     set PUBS($s) 1
+  }
+  if { [info exists SUBS($s)] == 0 } {
+     puts stdout "No entry in datastreams_desc.pubsub for $s"
+     set SUBS($s) 2
+  }
+}
 
 foreach s $subs {
   set p [lindex [split $s .] 0]

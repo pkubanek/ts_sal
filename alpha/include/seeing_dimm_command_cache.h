@@ -1,6 +1,7 @@
 typedef struct seeing_dimm_command_cache {
   int cppDummy;
   int syncI;
+  int syncO;
   char private_revCode[32];
   long private_sndStamp;
   long private_rcvStamp;
@@ -11,5 +12,4 @@ typedef struct seeing_dimm_command_cache {
   char operation[16];
   char value[16];
   char modifiers[128];
-  int syncO;
 } seeing_dimm_command_cache;

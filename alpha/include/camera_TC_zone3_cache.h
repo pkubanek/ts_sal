@@ -1,6 +1,7 @@
 typedef struct camera_TC_zone3_cache {
   int cppDummy;
   int syncI;
+  int syncO;
   char private_revCode[32];
   long private_sndStamp;
   long private_rcvStamp;
@@ -9,5 +10,4 @@ typedef struct camera_TC_zone3_cache {
   float temperature[50];
   float setpoint[50];
   long status[50];
-  int syncO;
 } camera_TC_zone3_cache;

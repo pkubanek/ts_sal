@@ -3,9 +3,9 @@
 #
 
 BASENAME = serialSAL
-MACHINE = lv
-V = 1
-MV = 0
+
+include version.mak
+
 SHAREDLIB = lib$(BASENAME)_$(MACHINE).so
 DESTDIR  = /usr/lib
 

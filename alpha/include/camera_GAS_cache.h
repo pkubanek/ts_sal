@@ -1,6 +1,7 @@
 typedef struct camera_GAS_cache {
   int cppDummy;
   int syncI;
+  int syncO;
   char private_revCode[32];
   long private_sndStamp;
   long private_rcvStamp;
@@ -12,5 +13,4 @@ typedef struct camera_GAS_cache {
   float sampleData_01[25];
   float sampleData_10[25];
   float sampleData_11[25];
-  int syncO;
 } camera_GAS_cache;

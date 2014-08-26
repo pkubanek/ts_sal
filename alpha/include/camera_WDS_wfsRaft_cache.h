@@ -1,6 +1,7 @@
 typedef struct camera_WDS_wfsRaft_cache {
   int cppDummy;
   int syncI;
+  int syncO;
   char private_revCode[32];
   long private_sndStamp;
   long private_rcvStamp;
@@ -14,5 +15,4 @@ typedef struct camera_WDS_wfsRaft_cache {
   char avgOutsideImage[128];
   char CalcImage1[128];
   char CalcImage2[128];
-  int syncO;
 } camera_WDS_wfsRaft_cache;

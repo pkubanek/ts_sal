@@ -32,22 +32,30 @@ puts $fcid "
 #include \"svcSAL.h\"
 #include \"svcSAL_caches.h\"
 
-int svcSAL_shmProperties ( char *subsys, int *streamid, int *size ) \{
+int svcSAL_shmProperties ( char *subsys, char *attribute ) \{
 
-  *streamid = 0;
-  *size = 0;
+  int streamid = 0;
+  int streamsize = 0;
 "
 foreach s $STREAMS {
   set id1 [calcshmid [set s]]
   puts $fcid "
   if (strcmp(\"$s\",subsys) == 0 ) \{
-     *streamid = 0x$id1;
-     *size = sizeof(struct [set s]_cache);
+     streamid = 0x$id1;
+     streamsize = sizeof(struct [set s]_cache);
   \}"
 }
 
 puts $fcid "
-  if (*streamid == 0) \{
+
+  if (strcmp(\"id\",attribute) == 0) \{
+     return streamid;
+  \}
+  if (strcmp(\"size\",attribute) == 0) \{
+     return streamsize;
+  \}
+
+  if (streamid == 0) \{
      return SAL__ERR;
   \}
   return SAL__OK;
@@ -92,6 +100,7 @@ foreach s "$STREAMS" {
   puts $finc "#include \"[set s]_cache.h\""
   puts $fcid "
   if (strcmp(\"$s\",svcSAL_handle\[handle\].streamname) == 0 ) \{
+     char *evar;
      [set s]_cache *[set s]_ref;
      [set s]_ref  = ([set s]_cache *) svcSAL_handle\[handle\].ref;
      if (strcmp(operation,\"read\") == 0 ) \{
@@ -108,6 +117,16 @@ foreach s "$STREAMS" {
      \}
      if (strcmp(operation,\"verify\") == 0 ) \{
         if ( strcmp(revCode,\"$rev\") != 0 ) { return SAL__ILLEGAL_REVCODE; }
+     \}
+     if (strcmp(operation,\"init\") == 0 ) \{
+        [set s]_ref->private_sndStamp = svcSAL_timestamp(); 
+        [set s]_ref->private_rcvStamp = 0; 
+        [set s]_ref->private_seqNum = 0; 
+        evar = getenv(\"SAL_ORIGIN\");
+        if ( evar != NULL) \{
+           [set s]_ref->private_origin = atoi(evar);
+        \}
+        strcpy([set s]_ref->private_revCode,\"$rec\");
      \}
      return SAL__OK;
   \}"
@@ -152,6 +171,9 @@ puts $fcid "
    return SAL__OK;
 \}
 "
+
+close $fcid
+
 set fcid [open svcSAL_accessSync.c w]
 puts $fcid "
 

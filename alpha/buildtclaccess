@@ -1,0 +1,12 @@
+#!/bin/sh
+
+mkdir -p buildtclaccess
+cp */*_cache.h buildtclaccess/.
+cp */shm_tcl_*.c buildtclaccess/.
+cp */shmrd_tcl_*.c buildtclaccess/.
+
+cd buildtclaccess
+/usr/local/scripts/tcl/genshmtclpersubsys.tcl
+
+echo "Created svcSAL_tclAccess.h/.c for all streams"
+

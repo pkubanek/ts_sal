@@ -28,17 +28,6 @@ global scriptdir SALVERSION
    }
    close $fin
    close $fout
-   set fmak [open lvmake w]
-   puts $fmak "#!/bin/sh
-
-echo "Compiling LabView SAL interface"
-make -f makefile.lvsal
-ar r ../lsstsal.$SALVERSION/lib/libsvcSAL.a svcSAL_*.h svcSAL_*.c
-ar r libSAL_$SALVERSION_$subsys.a *$subsys*.h *$subsys*.c *$subsys*.cpp
-rm -f $subsys*.h *$subsys*.c *$subsys*.cpp *$subsys*.txt
-rm -fr Static Shared
-"
-   close $fmak
 }
 
 proc replacelvcode { topiclist op fid } {
@@ -46,7 +35,6 @@ proc replacelvcode { topiclist op fid } {
      includes {
                puts $fid "#include \"svcSAL.h\""
                foreach t $topiclist {
-                 puts $fid "#include \"[set t].h\""
                  puts $fid "#include \"[set t]_cache.h\""
                }
      }
@@ -66,15 +54,16 @@ extern int LVcomm_send_e[set t](int fd);extern int LVcomm_close_[set t](int fd)
                     set fpi [open ../shmem-[set t]/[set t]_lvprostub.txt r]
                     gets $fpi rec
                     puts $fid [string trim $rec " ;"]
-                    puts $fid "\{\n	it ilen;"
+                    puts $fid "\{\n	int ilen=0;"
                     set fpro [open ../shmem-[set t]/[set t]_lvgetstub.txt r]
                     puts $fid "
 	[set t]_cache *[set t]_ref;
-	[set t]_ref = LV_serial\[fd\].shm_ptr;"
+	[set t]_ref = ([set t]_cache *)LV_serial\[fd\].shm_ptr;
+	ilen = 0;"
                     while { [gets $fpro rec] > -1 } {
                        puts $fid $rec
                     }
-                    puts $fid "	[set t]_ref->syncI = 0;\nreturn(0);\n\}\n\n"
+                    puts $fid "	[set t]_ref->syncI = 0;\n	return(0);\n\}\n\n"
                     close $fpro
                     gets $fpi rec
                     puts $fid [string trim $rec " ;"]
@@ -82,11 +71,11 @@ extern int LVcomm_send_e[set t](int fd);extern int LVcomm_close_[set t](int fd)
                     set fpro [open ../shmem-[set t]/[set t]_lvputstub.txt r]
                     puts $fid "
 	[set t]_cache *[set t]_ref;
-	[set t]_ref = LV_serial\[fd\].shm_ptr;"
+	[set t]_ref = ([set t]_cache *)LV_serial\[fd\].shm_ptr;"
                     while { [gets $fpro rec] > -1 } {
                        puts $fid $rec
                     }
-                    puts $fid "	[set t]_ref->syncO = 1;\nreturn(0);\n\}\n\n"
+                    puts $fid "	[set t]_ref->syncO = 1;\n	return(0);\n\}\n\n"
                     close $fpro
                     puts $fid "
 int LVcomm_get_i[set t](int fd)
@@ -102,7 +91,7 @@ int LVcomm_send_e[set t](int fd)
 \}
 int LVcomm_close_[set t](int fd)
 \{
-	LV_serial\[fd\].handle = -1;
+	LV_serial\[fd\].shm_ptr = NULL;
 	sem_post(&(LV_serial\[fd\].sem_read));
 	sem_post(&(LV_serial\[fd\].sem_write));
 	return(0);

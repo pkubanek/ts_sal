@@ -1,6 +1,7 @@
 typedef struct camera_UTIL_cache {
   int cppDummy;
   int syncI;
+  int syncO;
   char private_revCode[32];
   long private_sndStamp;
   long private_rcvStamp;
@@ -10,5 +11,4 @@ typedef struct camera_UTIL_cache {
   float temperature[10];
   float setpoint[10];
   long status[10];
-  int syncO;
 } camera_UTIL_cache;

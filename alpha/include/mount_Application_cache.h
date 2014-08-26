@@ -1,6 +1,7 @@
 typedef struct mount_Application_cache {
   int cppDummy;
   int syncI;
+  int syncO;
   char private_revCode[32];
   long private_sndStamp;
   long private_rcvStamp;
@@ -10,5 +11,4 @@ typedef struct mount_Application_cache {
   float Position[4];
   float Error[4];
   char Status[16];
-  int syncO;
 } mount_Application_cache;

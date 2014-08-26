@@ -222,7 +222,12 @@ global PUBLISHERS FREQUENCY KEYINDEX
 
 proc checkall { } {
   set all [glob *.idl]
-  foreach i $all { checkidl $i ; puts stdout "Checked $i" }
+  foreach i $all {
+     set type [lindex [split [file rootname $i] _] end]
+     if { $type != "command" && $type != "response" } {
+       checkidl $i ; puts stdout "Checked $i"
+     }
+  }
 }
 
 

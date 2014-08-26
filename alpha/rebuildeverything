@@ -1,0 +1,40 @@
+
+Pre-requisites : *.idl in streams/
+Entries for each stream in stream_frequencies.tcl
+cd /home/shared/lsst/tests/api/streams
+tclsh
+source stream_frequencies.tcl
+source /usr/local/scripts/tcl/checkidl.tcl
+checkall
+cat validated/*.detail > datastreams.detail
+/usr/local/scripts/tcl/buildallshmem.tcl
+/usr/local/scripts/tcl/genhtml.tcl
+/usr/local/scripts/tcl/gensimhtml.tcl
+/usr/local/scripts/tcl/gendbhtml.tcl
+/usr/local/scripts/tcl/build_datastreams.tcl
+ 
+set SUBS "auxscope calibration camera enclosure environment lasercal m1m3 m2 mount power seeing_dimm seeing_mass skycam"
+
+foreach sys $SUBS {
+   puts stdout "Processing $sys"
+   catch {
+      exec /usr/local/scripts/tcl/salmanual.tcl $sys
+   } result
+   puts stdout $result
+}
+
+rm -fr allstreams/*
+cp shmem-*/*_cache.h allstreams/.
+cp shmem-*/shm_tcl_*.c allstreams/.
+cp shmem-*/shmrd_tcl_*.c allstreams/.
+cp *.idl allstreams/.
+cd allstreams
+cp /usr/local/scripts/tcl/code/*.c .
+cp /usr/local/scripts/tcl/code/version.mak .
+cp /usr/local/scripts/tcl/code/makefile.sal .
+cp /usr/local/scripts/tcl/code/makefile.saltcl .
+cp /usr/local/scripts/include/svcSAL.h .
+/usr/local/scripts/tcl/genshmtclpersubsys.tcl
+/usr/local/scripts/tcl/accesspersubsystem.tcl
+
+

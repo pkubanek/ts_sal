@@ -20,6 +20,7 @@ global FormData
 
 source /usr/local/scripts/tcl/GetPostedData.tcl
 source /usr/local/scripts/tcl/simulatedb.tcl
+source /usr/local/scripts/tcl/streamutils.tcl
 
 if { [info exists FormData(DEBUG)] == 0 } {set FormData(DEBUG) 0}
 set FormData(DEBUG) 1
@@ -50,7 +51,7 @@ while { $n < $FormData(dbsim_numstreams) } {
    set subsys [join [lrange [split $i _] 0 1] _]
    puts stdout "Processing $i<BR>"
    if { $FormData(dbsim_type) == "sql" || $FormData(dbsim_type) == "db"} {
-     exec cp /home/shared/lsst/tests/api/streams/$i.sqldef /tmp/facilitydb-mysql/$i-createtable.sql
+     exec cp $WORKING/$i.sqldef /tmp/facilitydb-mysql/$i-createtable.sql
      set fout [open /tmp/facilitydb-mysql/$i.sql w]
      simulateperiod $fout $i $start $end $DELTASECS($subsys)
      close $fout

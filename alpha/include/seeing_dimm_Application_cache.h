@@ -1,14 +1,21 @@
 typedef struct seeing_dimm_Application_cache {
   int cppDummy;
   int syncI;
+  int syncO;
   char private_revCode[32];
   long private_sndStamp;
   long private_rcvStamp;
   long private_seqNum;
   long private_origin;
-  long Raw[16];
-  float Calibrated[32];
-  float Error[4];
-  char Status[16];
-  int syncO;
+  char utdate[16];
+  char uttime[16];
+  long hrnum;
+  char starname[16];
+  float airmass;
+  long scanlines;
+  float seeing_corr;
+  float seeing_corr2;
+  float seeing_corr6;
+  long flux;
+  float delta;
 } seeing_dimm_Application_cache;

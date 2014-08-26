@@ -15,7 +15,9 @@ proc dosim { fid id nid } {
 
 
 set scriptdir /usr/local/scripts/tcl
-set MSYS [lsort [split [exec cat /home/shared/lsst/tests/api/streams/datastreams.names] \n]]]
+source $scriptdir/streamutils.tcl
+
+set MSYS [lsort [split [exec cat $WORKING/datastreams.names] \n]]]
 foreach id $MSYS {
    set SYS([lindex [split $id _] 0]) 1
 }

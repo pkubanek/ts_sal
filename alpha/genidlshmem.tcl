@@ -9,7 +9,7 @@
 # Step 5 : make ; touch Shared/*.o ; make to lib libshm.so
 #
 
-proc doitem { fid fo2 name type } {
+proc olddoitem { fid fo2 name type } {
 global ITEMLIST
    switch $type {
        string -
@@ -87,8 +87,8 @@ global ITEMLIST
    }
 }
 
-set defdir /home/shared/lsst/tests/api/streams/
-set defdir ./
+source /usr/local/scripts/tcl/streamutils.tcl
+set defdir $WORKING
 set last ""
 set hasindex 0
 set ITEMLIST ""
@@ -145,7 +145,7 @@ while { [gets $fin rec] > -1 } {
       set nd [lindex $rec 1]
       nditem $fout $fo2 [lindex [lindex $d end] 0] [lindex $rec 2] $nd
    } else {
-      doitem $fout $fo2 [lindex [lindex $d end] 0] [lindex $rec 2]
+      olddoitem $fout $fo2 [lindex [lindex $d end] 0] [lindex $rec 2]
    }
    puts stdout "Added [lindex [lindex $d end] 0] to $topic"
 }

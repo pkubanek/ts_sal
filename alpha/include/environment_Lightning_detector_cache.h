@@ -1,6 +1,7 @@
 typedef struct environment_Lightning_detector_cache {
   int cppDummy;
   int syncI;
+  int syncO;
   char private_revCode[32];
   long private_sndStamp;
   long private_rcvStamp;
@@ -8,6 +9,4 @@ typedef struct environment_Lightning_detector_cache {
   long private_origin;
   long Raw[16];
   float Calibrated[32];
-  char Status[16];
-  int syncO;
 } environment_Lightning_detector_cache;

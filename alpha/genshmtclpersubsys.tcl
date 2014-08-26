@@ -21,7 +21,12 @@ int updateVariables(Tcl_Interp *interp, char *subsysid, int *shmdata_ref)
 \{
     char *text;
     char newName\[64\];
-    int iterator;"
+    int iterator;
+
+    text=NULL;
+    strcpy(newName,\"UNUSED\");
+    iterator=0;
+"
 set incs [glob shm_tcl_*.c]
 foreach f $incs {
    if { [file size $f] != 0 } {
@@ -30,7 +35,7 @@ foreach f $incs {
          puts $ftcl $rec
       }
       close $fcp
-      puts stdout "Added $f to shm_tcl.c"
+      puts stdout "Added $f to svcSAL_tclAccess.c"
    }
 }
 
@@ -65,7 +70,7 @@ foreach f $incs {
          puts $ftcl $rec
       }
       close $fcp
-      puts stdout "Added $f to shm_tcl.c"
+      puts stdout "Added $f to svcSAL_tclAccess..c"
    }
 }
 

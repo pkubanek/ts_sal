@@ -13,13 +13,19 @@ foreach f $incs {
    }
 }
 puts $ftcl "#include \"tcl.h\"
+#include <string.h>
 #include \"shm_tcl.h\"
 
 int updateVariables(Tcl_Interp *interp, char *subsysid, int *shmdata_ref)
 \{
     char *text;
     char newName\[64\];
-    int iterator;"
+    int iterator;
+
+    text=NULL;
+    strcpy(newName,\"UNUSED\");
+    iterator=0;
+"
 set incs [glob shmem-*/shm_tcl_*.c]
 foreach f $incs {
    if { [file size $f] != 0 } {
@@ -39,7 +45,7 @@ puts $ftcl "
 
 int readVariables(Tcl_Interp *interp, char *subsysid, int *shmdata_ref)
 \{
-    char *text;"
+"
 set incs [glob shmem-*/shmrd_tcl_*.c]
 foreach f $incs {
   set subsys [string range [file rootname [file tail $f]] 10 end]

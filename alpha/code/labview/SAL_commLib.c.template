@@ -75,14 +75,14 @@ int comm_open_port (int np, char *subsystem)
 	pthread_t new_thread;
 	pthread_attr_t attr;  
         int status;
-        svcSAL_tlmhdr_cache *handle=NULL;
+        svcSAL_cachehandle *handle=NULL;
 		
         status = svcSAL_connect1 (subsystem, handle);
         if ( status == 0 ) {
            return -1;
         }
 	
-        LV_serial[np].shm_ptr = handle->ref;
+        LV_serial[np].shm_ptr = (svcSAL_tlmhdr_cache *)handle->ref;
 	strcpy(LV_serial[np].streamname,subsystem);
 
 			/* generate the threads	*/

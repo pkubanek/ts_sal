@@ -1,12 +1,12 @@
 #!/usr/bin/tclsh
 
-set fin [open /home/shared/lsst/tests/api/streams/datastreams.detail r]
+set fin [open $WORKING/datastreams.detail r]
 while { [gets $fin rec] > -1 } {
   set s [join [lrange [split [lindex $rec 0] .] 0 1] _]
   set f($s) [lindex $rec 3]
 }
 close $fin
-set fout [open /home/shared/lsst/tests/api/streams/datastreams.freqs w]
+set fout [open $WORKING/datastreams.freqs w]
 foreach i [lsort [array names f]] {
   puts $fout "set FREQUENCY($i) $f($i)"
 }

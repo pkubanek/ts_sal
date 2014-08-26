@@ -19,6 +19,8 @@ global FormData
 
 
 source /usr/local/scripts/tcl/GetPostedData.tcl
+source /usr/local/scripts/tcl/versioning.tcl
+source /usr/local/scripts/tcl/streamutils.tcl
 
 if { [info exists FormData(DEBUG)] == 0 } {set FormData(DEBUG) 0}
 set FormData(DEBUG) 1
@@ -62,17 +64,17 @@ ssh -l saluser $host tar xzf ndds-javaruntime.tar.gz"
    if { $host == "localhost" } {
      puts $fout "#Install programs for $i simulation
 echo \"Installing programs for $i simulation on $host\"
-cp -r /home/shared/lsst/tests/api/streams/shmem-$i/* /home/saluser/simulations/$FormData(dbsim_simid)/."
+cp -r $WORKING/shmem-$i/* /home/saluser/simulations/$FormData(dbsim_simid)/."
    } else {
      puts $fout "#Install programs for $i simulation
 echo \"Installing programs for $i simulation on $host\"
-scp -r /home/shared/lsst/tests/api/streams/shmem-$i/* saluser@$host:simulations/$FormData(dbsim_simid)/."
+scp -r $WORKING/shmem-$i/* saluser@$host:simulations/$FormData(dbsim_simid)/."
    }
  }
  incr n 1
 }
 
-puts $fout ". /home/saluser/lsstsal.1.0/setupenv"
+puts $fout ". /home/saluser/lsstsal.$SALVERSION/setupenv"
 set n 1
 while { $n < $FormData(dbsim_numstreams) } {
  if { [info exists FormData(dbsim_tlm$n)] } {

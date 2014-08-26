@@ -1,6 +1,7 @@
 typedef struct tcs_kernel_PointingLog_cache {
   int cppDummy;
   int syncI;
+  int syncO;
   char private_revCode[32];
   long private_sndStamp;
   long private_rcvStamp;
@@ -22,5 +23,4 @@ typedef struct tcs_kernel_PointingLog_cache {
   float Rcorr;
   float Aux[3];
   long Marked;
-  int syncO;
 } tcs_kernel_PointingLog_cache;

@@ -1,6 +1,8 @@
+#define camera_response_revCode "c1f30e2266d6e5d2c6d8780b2a7e87d3"
 typedef struct camera_response_cache {
   int cppDummy;
   int syncI;
+  int syncO;
   char private_revCode[32];
   long private_sndStamp;
   long private_rcvStamp;
@@ -13,5 +15,4 @@ typedef struct camera_response_cache {
   short repeat;
   short submits;
   char result[64];
-  int syncO;
 } camera_response_cache;

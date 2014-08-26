@@ -14,7 +14,11 @@ extern int readVariables(Tcl_Interp *interp, char *subsysid, int *shmdata_ref);
 int svcSAL_writeshm (ClientData dummy, Tcl_Interp *interp, int argc, char *argv[]);
 int svcSAL_readshm  (ClientData dummy, Tcl_Interp *interp, int argc, char *argv[]);
 int svcSAL_sendcommand (ClientData dummy, Tcl_Interp *interp, int argc, char *argv[]);
-int svcSAL_sendresponse  (ClientData dummy, Tcl_Interp *interp, int argc, char *argv[]);
+int svcSAL_sendresponse (ClientData dummy, Tcl_Interp *interp, int argc, char *argv[]);
+int svcSAL_processcommand (ClientData dummy, Tcl_Interp *interp, int argc, char *argv[]);
+int svcSAL_processresponse (ClientData dummy, Tcl_Interp *interp, int argc, char *argv[]);
+int svcSAL_tcl_commandCallback (Tcl_Interp *interp,char *subsystem, svcSAL_command *shmcmd_ref, svcSAL_response *shmresp_ref );
+int svcSAL_tcl_responseCallback (Tcl_Interp *interp,char *subsystem, svcSAL_command *shmcmd_ref, svcSAL_response *shmresp_ref );
 
 
 
@@ -26,6 +30,8 @@ int shmAppInit(Tcl_Interp *interp)
     Tcl_CreateCommand ( interp, "readshm", (Tcl_CmdProc *) svcSAL_readshm,  NULL,NULL);
     Tcl_CreateCommand ( interp, "sendcmd", (Tcl_CmdProc *) svcSAL_sendcommand, NULL,NULL);
     Tcl_CreateCommand ( interp, "sendack", (Tcl_CmdProc *) svcSAL_sendresponse,  NULL,NULL);
+    Tcl_CreateCommand ( interp, "processcmd", (Tcl_CmdProc *) svcSAL_processcommand,  NULL,NULL);
+    Tcl_CreateCommand ( interp, "processack", (Tcl_CmdProc *) svcSAL_processresponse,  NULL,NULL);
     svcSAL_initialize();
 
     return TCL_OK;
@@ -34,6 +40,7 @@ int shmAppInit(Tcl_Interp *interp)
 int svcSAL_writeshm  (ClientData dummy, Tcl_Interp *interp, int argc, char *argv[])
 {
     int salHandle;
+    long ts;
     char topic[128];
     svcSAL_tlmhdr_cache *shmdata_ref;
 
@@ -50,6 +57,8 @@ int svcSAL_writeshm  (ClientData dummy, Tcl_Interp *interp, int argc, char *argv
     }
 
     shmdata_ref  = (svcSAL_tlmhdr_cache *) svcSAL_handle[salHandle].ref;
+    ts = svcSAL_timestamp();
+    shmdata_ref->private_sndStamp = ts;
     updateVariables(interp, topic, (int *)shmdata_ref);
 
     return TCL_OK;
@@ -100,6 +109,7 @@ int svcSAL_sendcommand  (ClientData dummy, Tcl_Interp *interp, int argc, char *a
     strcpy(device,argv[2]);
     if (argc > 3) {
       strcpy(property,argv[3]);
+ 
     }
     if (argc > 4) {
       strcpy(action,argv[4]);
@@ -112,32 +122,33 @@ int svcSAL_sendcommand  (ClientData dummy, Tcl_Interp *interp, int argc, char *a
     }
 
     salHandle = svcSAL_connect (topic);
-    if ( salHandle == 0 ) {
+    if ( salHandle <= 0 ) {
       return(TCL_ERROR);
     }
     shmdata_ref  = (svcSAL_command *) svcSAL_handle[salHandle].ref;
 
-    strcpy(shmdata_ref->device,device);
+    strcpy((char *)shmdata_ref->device,device);
     if (argc > 5) {
       strcpy(shmdata_ref->property,property);
     } else {
-      strcpy(shmdata_ref->property,NULL);
+      strcpy(shmdata_ref->property,"                ");
     }
     if (argc > 6) {
       strcpy(shmdata_ref->action,action);
     } else {
-      strcpy(shmdata_ref->action,NULL);
+      strcpy(shmdata_ref->action,"                ");
     }
     if (argc > 7) {
       strcpy(shmdata_ref->value,value);
     } else {
-      strcpy(shmdata_ref->value,NULL);
+      strcpy(shmdata_ref->value,"                ");
     }
     if (argc > 8) {
       strcpy(shmdata_ref->modifiers,modifiers);
     } else {
-      strcpy(shmdata_ref->modifiers,NULL);
+      strcpy(shmdata_ref->modifiers,"                ");
     }
+    shmdata_ref->private_sndStamp = svcSAL_timestamp();
     shmdata_ref->cmdID++;
     shmdata_ref->syncO = 1;
     return TCL_OK;
@@ -172,19 +183,31 @@ int svcSAL_sendresponse  (ClientData dummy, Tcl_Interp *interp, int argc, char *
 
     if ( strcmp(type,"ack") == 0 ) {
        strcpy(shmdata_ref->ack,value);
+    } else {
+       strcpy(shmdata_ref->ack,"                ");
     }
     if ( strcmp(type,"error") == 0 ) {
        strcpy(shmdata_ref->error,value);
+    } else {
+       strcpy(shmdata_ref->error,"                ");
     }
     if ( strcmp(type,"result") == 0 ) {
        strcpy(shmdata_ref->result,value);
+    } else {
+       strcpy(shmdata_ref->result,"                ");
     }
     if ( strcmp(type,"timeout") == 0 ) {
        sscanf(value,"%d",&shmdata_ref->timeout);
+    } else {
+       shmdata_ref->timeout = 0;
     }
     if ( strcmp(type,"repeat") == 0 ) {
        sscanf(value,"%d",&shmdata_ref->repeat);
+    } else {
+       shmdata_ref->repeat = 0;
     }
+
+    shmdata_ref->private_sndStamp = svcSAL_timestamp();
     shmdata_ref->cmdID = cmdID;
     shmdata_ref->syncO = 1;
     return TCL_OK;
@@ -192,6 +215,103 @@ int svcSAL_sendresponse  (ClientData dummy, Tcl_Interp *interp, int argc, char *
 
 
 
+int svcSAL_tcl_commandCallback (Tcl_Interp *interp,char *subsystem, svcSAL_command *shmcmd_ref, svcSAL_response *shmresp_ref ) {
+   char cmdbuffer[1024];
+   
+   sprintf(cmdbuffer,"ProcessCmd %s %d",subsystem,shmcmd_ref->cmdID);
+   printf("%s command received : %d %s.%s %s %s\n",subsystem,
+             shmcmd_ref->cmdID,
+             shmcmd_ref->device,
+             shmcmd_ref->property,
+             shmcmd_ref->action,
+             shmcmd_ref->value,
+             shmcmd_ref->modifiers);
+   strcpy(shmresp_ref->ack,"Received");
+   Tcl_Eval(interp,cmdbuffer);
+   return SAL__OK;
+}
+
+
+int svcSAL_tcl_responseCallback (Tcl_Interp *interp,char *subsystem, svcSAL_command *shmcmd_ref, svcSAL_response *shmresp_ref ) {
+   char cmdbuffer[1024];
+   
+   sprintf(cmdbuffer,"ProcessAck %s %d",subsystem,shmresp_ref->cmdID);
+   printf("%s command received : %d %s %s %d %d\n",subsystem,
+             shmresp_ref->cmdID,
+             shmresp_ref->ack,
+             shmresp_ref->error,
+             shmresp_ref->result,
+             shmresp_ref->timeout,
+             shmresp_ref->repeat);
+   Tcl_Eval(interp,cmdbuffer);
+   return SAL__OK;
+}
+
+
+
+int svcSAL_processcommand  (ClientData dummy, Tcl_Interp *interp, int argc, char *argv[])
+{
+    int  salHandle;
+    char subsystem[128];
+    int  cmdID;
+    int  timeout;
+    int  status;
+    svcSAL_command  *shmcmd_ref;
+    svcSAL_response *shmresp_ref;
+ 
+   /* Check number of arguments provided and return an error if necessary */
+   if (argc < 3) {
+      Tcl_AppendResult(interp, "wrong # args: should be \"",argv[0]," subsystem timeout\"", (char *)NULL);
+      return TCL_ERROR;
+   }
+
+   sscanf(argv[1],"%d",&timeout);
+
+   status = svcSAL_receiveCommand (subsystem, timeout, 
+                           svcSAL_tcl_commandCallback(interp,subsystem,
+                                                     (svcSAL_command *)&shmcmd_ref,
+                                                     (svcSAL_response *)&shmresp_ref) );
+
+   if (status != SAL__OK) {
+      Tcl_AppendResult(interp,svcSAL_errortext(status),(char *)NULL);
+      return TCL_ERROR;
+   }
+
+   return TCL_OK;
+}
+
+
+
+int svcSAL_processresponse  (ClientData dummy, Tcl_Interp *interp, int argc, char *argv[])
+{
+    int  salHandle;
+    char subsystem[128];
+    int  cmdID;
+    int  timeout;
+    int  status;
+    svcSAL_command  *shmcmd_ref;
+    svcSAL_response *shmresp_ref;
+ 
+   /* Check number of arguments provided and return an error if necessary */
+   if (argc < 3) {
+      Tcl_AppendResult(interp, "wrong # args: should be \"",argv[0]," subsystem timeout\"", (char *)NULL);
+      return TCL_ERROR;
+   }
+
+   sscanf(argv[1],"%d",&timeout);
+
+   status = svcSAL_receiveResponse (subsystem, timeout, 
+                           svcSAL_tcl_responseCallback(interp,subsystem,
+                                                     (svcSAL_command *)&shmcmd_ref,
+                                                     (svcSAL_response *)&shmresp_ref) );
+
+   if (status != SAL__OK) {
+      Tcl_AppendResult(interp,svcSAL_errortext(status),(char *)NULL);
+      return TCL_ERROR;
+   }
+
+   return TCL_OK;
+}
 
 
 

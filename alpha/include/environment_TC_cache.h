@@ -1,6 +1,7 @@
 typedef struct environment_TC_cache {
   int cppDummy;
   int syncI;
+  int syncO;
   char private_revCode[32];
   long private_sndStamp;
   long private_rcvStamp;
@@ -8,6 +9,4 @@ typedef struct environment_TC_cache {
   long private_origin;
   long Raw[64];
   float Calibrated[64];
-  char Health[64];
-  int syncO;
 } environment_TC_cache;

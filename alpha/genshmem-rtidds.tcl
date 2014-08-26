@@ -334,7 +334,7 @@ proc parsesub { topiclist } {
 global scriptdir
 global NDDS_VERSION NDDSPUBLOOPSIZE
   set fin  [open $scriptdir/code/subsystem_subscriber.c.template r]
-  set basename [lindex [split [lindex $topiclist 0] _] 0]
+  set basename [genericname "$topiclist"]
   set fout [open [set basename]_shmem_subscriber.c w]
   while { [gets $fin rec] > -1 } {
            if { [string range $rec 0 8] == "###INSERT" } {
@@ -351,7 +351,7 @@ proc parsepub { topiclist } {
 global scriptdir
 global NDDS_VERSION NDDSPUBLOOPSIZE
   set fin  [open $scriptdir/code/subsystem_publisher.c.template r]
-  set basename [lindex [split [lindex $topiclist 0] _] 0]
+  set basename [genericname "$topiclist"]
   set fout [open [set basename]_shmem_publisher.c w]
   while { [gets $fin rec] > -1 } {
            if { [string range $rec 0 8] == "###INSERT" } {
@@ -366,7 +366,7 @@ global NDDS_VERSION NDDSPUBLOOPSIZE
 
 proc parsemakefile { sublist publist } {
 global LVERSION
-  set basename [lindex [split [lindex "$sublist $publist" 0] _] 0]
+  set basename [genericname "$sublist $publist"]
   set mf [lindex [glob makefile*$LVERSION] 0]
   set fin [open $mf r]
   set fout [open makefile w]
@@ -412,4 +412,5 @@ global LVERSION
   close $fin 
   close $fout
 }
+
 

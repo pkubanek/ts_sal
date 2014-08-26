@@ -13,7 +13,7 @@ CC = gcc
 # CFLAGS = -O2 -Wall -g -I./ -I/home/LVSAL/rtai/rtai-1.6/include
 CFLAGS = -O2 -Wall -g -I./
 LD = ld
-LDFLAGS =  -L../lsstsal.$(V).$(MV)/lib -lshmSAL_linux -lm -lc -lrt -lpthread
+LDFLAGS =  -L. -lshmSAL_linux -lm -lc -lrt -lpthread
 # INCS = -I/home/LVSAL/rtai/rtai-1.6/include
 
 CFILES = SAL_commLib.c

@@ -1,6 +1,7 @@
 typedef struct network_Application_cache {
   int cppDummy;
   int syncI;
+  int syncO;
   char private_revCode[32];
   long private_sndStamp;
   long private_rcvStamp;
@@ -8,5 +9,4 @@ typedef struct network_Application_cache {
   long private_origin;
   long Data[64];
   char Status[16];
-  int syncO;
 } network_Application_cache;

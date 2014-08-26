@@ -1,6 +1,7 @@
 typedef struct camera_SCS_cache {
   int cppDummy;
   int syncI;
+  int syncO;
   char private_revCode[32];
   long private_sndStamp;
   long private_rcvStamp;
@@ -10,5 +11,4 @@ typedef struct camera_SCS_cache {
   float close_profile[1024];
   char algorithm[32];
   long flags;
-  int syncO;
 } camera_SCS_cache;

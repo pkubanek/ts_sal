@@ -110,6 +110,7 @@ global TYPESIZE TYPEFORMAT
               }
         }
         tcltocache { 
+            if { [string range $name 0 7] != "private_" } {
               switch $ltyp {
                     char   { return "       text = (char *)Tcl_GetVar2(interp, \"SHM[set subsys]\", \"$name\", TCL_GLOBAL_ONLY);
        strcpy([set subsys]_ref->$name,text);" 
@@ -133,6 +134,7 @@ global TYPESIZE TYPEFORMAT
                               return $result;
                            }
               }
+           }
         }
         tcltest { 
               switch $ltyp {
@@ -270,9 +272,9 @@ proc testtransferdata { } {
    }
 }
 
-proc lvtypebuilder { base op name type } {
+proc lvtypebuilder { base op name type size } {
    set t [string tolower $type]
-   if { $t == "char" } {
+   if { $t == "char" || $size > 1 } {
       return "$base LStrHandle $name,"
    }
    if { $op == "get" } {

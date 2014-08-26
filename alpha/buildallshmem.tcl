@@ -9,7 +9,7 @@ set all [lsort [glob *.idl]]
 foreach i $all {
   puts stdout "Building DDS libs/apps for $i"
   set subsys [file rootname $i]
-  exec $scriptdir/genshmem.tcl $subsys
+  exec $scriptdir/genshmem.tcl $subsys .
   cd $whereami
 }
 set timer [expr [clock seconds] - $start]

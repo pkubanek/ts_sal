@@ -42,6 +42,7 @@ global VPROPS
   gets $fin rec
   gets $fin rec
   gets $fin rec
+  gets $fin rec
   while { [gets $fin rec] > -1 } {
      set v [string trim [lindex $rec 1] ";"]
      if { $v != "syncO" } {
@@ -88,6 +89,7 @@ global VPROPS
         if ( recvMapMessage != NULL ) \{
 "
   set fin [open [set subsys]_cache.h r]
+  gets $fin rec
   gets $fin rec
   gets $fin rec
   gets $fin rec
@@ -159,6 +161,7 @@ int main(int argc, char *argv\[\])
   set fin [open [set subsys]_cache.h r]
   gets $fin rec
   gets $fin rec
+  gets $fin rec
   while { [gets $fin rec] > -1 } {
      set v [string trim [lindex $rec 1] ";"]
      if { $v != "syncO" } {
@@ -197,6 +200,7 @@ global LVERSION
        [set subsys]_ref = ([set subsys]_cache *)shmdata_ref;
 "
   set fin [open [set subsys]_cache.h r]
+  gets $fin rec
   gets $fin rec
   gets $fin rec
   while { [gets $fin rec] > -1 } {

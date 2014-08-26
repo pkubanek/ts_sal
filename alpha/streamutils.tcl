@@ -98,7 +98,28 @@ proc sqlpreamble { fid id } {
   private_rcvStamp int,
   private_seqNum int,
   private_origin int,"
- }
+}
+
+proc genericname { topics } {
+  foreach i $topics {
+    set id [lindex [split $i _] 0]
+    set d($id) 1
+  }
+  if { [llength [array names d]] > 1 } {
+    return SHMSAL
+  }
+  return $id
+}
+
+
+
+set WORKING /home/shared/lsst/tests/api/streams
+if { [info exists FormData(workingDir)] } {
+   set WORKING $FormData(workingDir)
+}
+if { [info exists env(workingDir)] } {
+   set WORKING $env(workingDir)
+}
 
 
 

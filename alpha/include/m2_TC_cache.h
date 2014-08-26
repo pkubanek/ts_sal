@@ -1,6 +1,7 @@
 typedef struct m2_TC_cache {
   int cppDummy;
   int syncI;
+  int syncO;
   char private_revCode[32];
   long private_sndStamp;
   long private_rcvStamp;
@@ -8,6 +9,4 @@ typedef struct m2_TC_cache {
   long private_origin;
   long Raw[16];
   float Calibrated[16];
-  char Health[16];
-  int syncO;
 } m2_TC_cache;

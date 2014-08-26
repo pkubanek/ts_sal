@@ -1,6 +1,7 @@
 typedef struct tcs_kernel_Site_cache {
   int cppDummy;
   int syncI;
+  int syncO;
   char private_revCode[32];
   long private_sndStamp;
   long private_rcvStamp;
@@ -34,5 +35,4 @@ typedef struct tcs_kernel_Site_cache {
   float Refa;
   float Refb;
   float Daz;
-  int syncO;
 } tcs_kernel_Site_cache;

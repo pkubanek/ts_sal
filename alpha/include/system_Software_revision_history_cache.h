@@ -1,6 +1,7 @@
 typedef struct system_Software_revision_history_cache {
   int cppDummy;
   int syncI;
+  int syncO;
   char private_revCode[32];
   long private_sndStamp;
   long private_rcvStamp;
@@ -9,5 +10,4 @@ typedef struct system_Software_revision_history_cache {
   char Module[32];
   char Notes[32];
   long Version[3];
-  int syncO;
 } system_Software_revision_history_cache;

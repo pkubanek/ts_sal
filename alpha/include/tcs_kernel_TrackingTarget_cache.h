@@ -1,6 +1,7 @@
 typedef struct tcs_kernel_TrackingTarget_cache {
   int cppDummy;
   int syncI;
+  int syncO;
   char private_revCode[32];
   long private_sndStamp;
   long private_rcvStamp;
@@ -11,5 +12,4 @@ typedef struct tcs_kernel_TrackingTarget_cache {
   float T0;
   float VelocityX;
   float VelocityY;
-  int syncO;
 } tcs_kernel_TrackingTarget_cache;

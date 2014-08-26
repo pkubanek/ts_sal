@@ -1,6 +1,7 @@
 typedef struct tcs_kernel_TrackRefSys_cache {
   int cppDummy;
   int syncI;
+  int syncO;
   char private_revCode[32];
   long private_sndStamp;
   long private_rcvStamp;
@@ -21,5 +22,4 @@ typedef struct tcs_kernel_TrackRefSys_cache {
   float wavel;
   float sst;
   float cst;
-  int syncO;
 } tcs_kernel_TrackRefSys_cache;

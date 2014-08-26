@@ -1,6 +1,7 @@
 typedef struct tcs_kernel_FK5Target_cache {
   int cppDummy;
   int syncI;
+  int syncO;
   char private_revCode[32];
   long private_sndStamp;
   long private_rcvStamp;
@@ -14,5 +15,4 @@ typedef struct tcs_kernel_FK5Target_cache {
   float pmDec;
   float parallax;
   float rv;
-  int syncO;
 } tcs_kernel_FK5Target_cache;

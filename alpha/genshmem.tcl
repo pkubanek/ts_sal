@@ -5,6 +5,8 @@
 set REQUIRES(idl) 1
 
 set subsys [lindex $argv 0]
+set FormData(workingDir) [lindex $argv 1]
+
 puts stdout "Generating code for subsystem $argv"
 
 proc doddsgen { subsys } {
@@ -51,7 +53,9 @@ global VPROPS TYPESIZE
   gets $fin rec
   gets $fin rec
   gets $fin rec
+  gets $fin rec
   while { [gets $fin rec] > -1 } {
+   if { [string range $rec 0 0] != "\}" } {
      set v [string trim [lindex $rec 1] ";"]
      if { [llength [split $v "\[\]"]] > 1 } {
         set l [lindex [split $v "\[\]"] 1]
@@ -62,6 +66,7 @@ global VPROPS TYPESIZE
      if { $v != "syncO" } {
        puts $fid "	[transferdata $subsys $v [lindex $rec 0] $l ddsfromcache]"
      }
+   }
   }
   puts $fid "
         printf(\"Writing [set subsys], count %d\\n\", count);
@@ -110,7 +115,9 @@ global VPROPS TYPESIZE
   gets $fin rec
   gets $fin rec
   gets $fin rec
+  gets $fin rec
   while { [gets $fin rec] > -1 } {
+   if { [string range $rec 0 0] != "\}" } {
      set v [string trim [lindex $rec 1] ";"]
      if { [llength [split $v "\[\]"]] > 1 } {
         set l [lindex [split $v "\[\]"] 1]
@@ -123,8 +130,8 @@ global VPROPS TYPESIZE
        puts $fget "		[transferdata $subsys $v [lindex $rec 0] $l ddstocache [set subsys]_]"
        puts $flvget "	[transferdata $subsys $v [lindex $rec 0] $l lvfromcache]"
        puts $flvput "	[transferdata $subsys $v [lindex $rec 0] $l lvtocache]"
-       set lvproput [lvtypebuilder $lvproput put $v [lindex $rec 0]]
-       set lvproget [lvtypebuilder $lvproget get $v [lindex $rec 0]]
+       set lvproput [lvtypebuilder $lvproput put $v [lindex $rec 0] $l]
+       set lvproget [lvtypebuilder $lvproget get $v [lindex $rec 0] $l]
      } else {
        puts $fput "
         printf(\"Writing [set subsys], count %d\\n\", [set subsys]_count);
@@ -138,6 +145,7 @@ global VPROPS TYPESIZE
         [set subsys]_ref->syncO = 0;"
        gets $fin rec
      }
+   }
   }
   close $fput
   close $fget
@@ -187,7 +195,7 @@ int main(int argc, char *argv\[\])
 \{
    int icount=0;
    int icurrent;
-   int iterator;
+   int iterator=0;
    [set subsys]_cache *[set subsys]_ref;
    int salHandle;
    int sample_count = 0; /* infinite loop */
@@ -213,7 +221,9 @@ int main(int argc, char *argv\[\])
   set fin [open [set subsys]_cache.h r]
   gets $fin rec
   gets $fin rec
+  gets $fin rec
   while { [gets $fin rec] > -1 } {
+   if { [string range $rec 0 0] != "\}" } {
      set v [string trim [lindex $rec 1] ";"]
      if { $v != "syncO" } {
        set v [lindex [split $v "\[\]"] 0]
@@ -221,6 +231,7 @@ int main(int argc, char *argv\[\])
      } else {
        gets $fin rec
      }
+   }
   }
   puts $fout "	[set subsys]_ref->syncO = 1;
 	icurrent++;
@@ -238,7 +249,7 @@ global LVERSION SALVERSION VPROPS
   set fout [open shm_tcl_[set subsys].c w]
   set fo2  [open shmrd_tcl_[set subsys].c w]
   set ftst [open connect_[set subsys].tcl w]
-  puts $ftst "load ../lsstsal.$SALVERSION/lib/libshmSALtcl.so"
+  puts $ftst "load \$SAL_LIBRARY/libshmSALtcl.so"
   puts $fout "
     if (strcmp(subsysid,\"$subsys\") == 0) \{
        [set subsys]_cache *[set subsys]_ref;
@@ -248,16 +259,23 @@ global LVERSION SALVERSION VPROPS
     char newValue\[128\];
     char newName\[64\];
     int  iterator;
+    int ichk;
     [set subsys]_cache *[set subsys]_ref;
     [set subsys]_ref = ([set subsys]_cache *)shmdata_ref;
-    int ichk;
+
     ichk=strlen(subsysid);
+    strcpy(newValue,\"UNUSED\");
+    strcpy(newName,\"UNUSED\");
+    iterator=0;
+
     if ( [set subsys]_ref->syncI ) \{
 "
   set fin [open [set subsys]_cache.h r]
   gets $fin rec
   gets $fin rec
+  gets $fin rec
   while { [gets $fin rec] > -1 } {
+   if { [string range $rec 0 0] != "\}" } {
      set v [string trim [lindex $rec 1] ";"]
      if { $v != "syncO" } {
        set v [lindex [split $v "\[\]"] 0]
@@ -267,6 +285,7 @@ global LVERSION SALVERSION VPROPS
      } else {
        gets $fin rec
      }
+   }
   }
   puts $fout "      [set subsys]_ref->syncO = 1;
     \}"
@@ -341,22 +360,28 @@ set scriptdir /usr/local/scripts/tcl
 set includedir /usr/local/scripts/include
 source $scriptdir/managetypes.tcl
 source $scriptdir/ndds_version.tcl
+source $scriptdir/streamutils.tcl
+source $scriptdir/versioning.tcl
 
 
-set basedir /home/shared/lsst/tests/api/streams
-
+set basedir $WORKING
+cd $basedir
+puts stdout "basedir = $basedir"
 source revCodes.tcl
 set workdir $basedir/shmem-$subsys
 exec mkdir -p $workdir
 exec cp $subsys.idl $workdir/.
 set fin [open $subsys.idl r]
 set fout [open $workdir/[set subsys]_cache.h w]
-set TOPICPROPS($subsys) "  int syncI;"
-set TOPICPROPS(bytesize) 4
+set TOPICPROPS($subsys) "  int syncI;\n  int syncO;"
+set TOPICPROPS(bytesize) 8
 set VPROPS(syncI) 1
+set VPROPS(syncO) 1
+puts $fout "#define [set subsys]_revCode \"$REVCODE([set subsys])\""
 puts $fout "typedef struct [set subsys]_cache \{"
 puts $fout "  int cppDummy;"
 puts $fout "  int syncI;"
+puts $fout "  int syncO;"
 gets $fin rec
 while { [gets $fin rec] > -1 } {
   if { $rec != "" } {
@@ -390,13 +415,10 @@ while { [gets $fin rec] > -1 } {
    }
  }
 }
-puts $fout "  int syncO;"
 puts $fout "\} [set subsys]_cache;"
 close $fin
 close $fout
 
-set TOPICPROPS($subsys) "$TOPICPROPS($subsys)\n  int syncO;"
-incr TOPICPROPS(bytesize) 4
 exec cp $workdir/[set subsys]_cache.h $includedir/.
 
 puts stdout "Processing topic $subsys"
@@ -405,7 +427,7 @@ source $scriptdir/genericshmem.cpp.tcl
 source $scriptdir/genericshclient.cpp.tcl
 cd $workdir
 generatestubs $subsys
-if { [lindex $argv 1] == "+dds" } {doddsgen $subsys}
+if { [lindex $argv 2] == "+dds" } {doddsgen $subsys}
 shcoder $subsys
 generatetcllib $subsys
 

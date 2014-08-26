@@ -1,0 +1,21 @@
+typedef struct seeing_dimm_Measurement_cache {
+  int cppDummy;
+  int syncI;
+  int syncO;
+  char private_revCode[32];
+  long private_sndStamp;
+  long private_rcvStamp;
+  long private_seqNum;
+  long private_origin;
+  long hrnum;
+  char utdate[16];
+  char uttime[16];
+  float exposure;
+  long numlines;
+  float seeing_corr;
+  long flux;
+  float scintleft;
+  float scintright;
+  float strehlleft;
+  float strehlright;
+} seeing_dimm_Measurement_cache;
