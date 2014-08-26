@@ -1,12 +1,28 @@
 #!/usr/bin/tclsh
-set subsys $argv
-puts stdout "Generating code for subsystem $argv"
 
-proc doddsgen { topiclist } {
-   parsepub $topiclist
-   generatetester $topiclist
-   parsemakefile $topiclist
+proc doddsgen { sublist publist } {
+global scriptdir
+puts stdout "doddsgen sublist = $sublist"
+   parsesub $sublist
+puts stdout "doddsgen publist = $publist"
+   parsepub $publist
+   parsemakefile  $sublist $publist
 }
+
+proc doortegen { sublist publist } {
+  puts stdout "<P><HR><H2>ORTE code generation not available yet</H2><HR><P>"
+}
+
+
+proc doicegen { sublist publist } {
+  puts stdout "<P><HR><H2>ICE code generation not available yet</H2><HR><P>"
+}
+
+
+proc doamqgen { sublist publist } {
+  puts stdout "<P><HR><H2>ActiveMQ code generation not available yet</H2><HR><P>"
+}
+
 
 proc calcshmid { subsys } {
   set fout [open /tmp/subsys.tmp w]
@@ -17,28 +33,31 @@ proc calcshmid { subsys } {
 }
 
 
-proc addshmemcode { topiclist fid } {
+proc addshmempub { topiclist fid } {
 global VPROPS
   foreach subsys $topiclist {
     puts $fid "
-   int [set subsys]_shmsize;
-   int lshmid_[set subsys];
-   int [set subsys]_shmid = 0x[calcshmid $subsys];
+   int [set subsys]_salHandle;
+   svcSAL_cachehandle svcSAL_handle_[set subsys];
    [set subsys]_cache *[set subsys]_ref;"
   }
   foreach subsys $topiclist {
     puts $fid "
-   [set subsys]_shmsize = sizeof(struct [set subsys]_cache);
-   lshmid_[set subsys] = shmget([set subsys]_shmid, [set subsys]_shmsize , IPC_CREAT|0666);
-   [set subsys]_ref  = ([set subsys]_cache *) shmat(lshmid_[set subsys], NULL, 0);"
+    [set subsys]_salHandle = svcSAL_connect1 (\"[set subsys]\", &svcSAL_handle_[set subsys] );
+   if ( [set subsys]_salHandle != SAL__OK ) \{
+      return(SAL__NOT_DEFINED);
+   \}
+   [set subsys]_ref  = ([set subsys]_cache *) svcSAL_handle_[set subsys].ref;
+
+"
   }
   puts $fid "
 	while (1) \{
-		nanosleep(10000);"
+		svcSAL_sleep(1000);"
   foreach subsys $topiclist {
     puts $fid "
 		if ([set subsys]_ref->syncO == 1) \{
-			count++;"
+			[set subsys]_count++;"
      set fin [open ../shmem-[set subsys]/[set subsys]_putstub.txt r]
      while { [gets $fin rec] > -1 } {
        puts $fid $rec
@@ -49,8 +68,10 @@ global VPROPS
   puts $fid "	\}"
 }
 
-proc shcoder { subsys } {
+
+proc shcoder { topiclist } {
 global SHC TOPICPROPS
+ foreach subsys $topiclist {
   set fcod [open shmem_[set subsys].h w]
   puts $fcod $SHC(genericshmem.h)
   close $fcod
@@ -61,332 +82,175 @@ global SHC TOPICPROPS
   puts $fcod $SHC(genericshclient.cpp)
   close $fcod
   exec g++ -shared -g shmem_[set subsys]_server.cpp -o libshm_[set subsys]_server.so -lstdc++
-  exec gcc -g test_shmem_[set subsys].cpp -o shm_test1 -lpthread -L. -lshm_[set subsys]_server
+  exec gcc -g test_shmem_[set subsys].cpp -o test_[set subsys] -lpthread -L. -lshm_[set subsys]_server
+ }
 }
 
 
-proc generatetester { subsys } {
-  set fout [open [set subsys]_shmem_tester.c w]
-  puts $fout "
-/*
-  WARNING: THIS FILE IS AUTO-GENERATED. DO NOT MODIFY.
 
-  This file was generated from [set subsys].idl using \"genshmem\".
-  The genshmem tool is part of the LSST SAL middleware stack
-*/
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <sys/shm.h>
-#include \"[set subsys]_cache.h\"
 
-int main(int argc, char *argv\[\])
-\{
-   int [set subsys]_shmsize;
-   int lshmid;
-   int icount=0;
-   int [set subsys]_shmid = 0x[calcshmid $subsys];
-   [set subsys]_cache *[set subsys]_ref;
-   [set subsys]_shmsize = sizeof(struct [set subsys]_cache);
-   lshmid = shmget([set subsys]_shmid, [set subsys]_shmsize , IPC_CREAT|0666);
-   [set subsys]_ref  = ([set subsys]_cache *) shmat(lshmid, NULL, 0);
+if { [info exists JUSTTESTING] } {
+  set PUBS(camera_BEE_biases) "yes"
+  set PUBS(camera_BEE_clocks) "yes"
+  set PUBS(camera_BEE_thermal) "yes"
+  set PROC(camera_BEE_biases) "yes"
+  set PROC(camera_BEE_clocks) "yes"
+  set PROC(camera_BEE_thermal) "yes"
+  set SUBS(camera_CCS) "yes"
+}
+
+set scriptdir /usr/local/scripts/tcl
  
-"
-  set fin [open [set subsys]_cache.h r]
-  gets $fin rec
-  gets $fin rec
-  while { [gets $fin rec] > -1 } {
-     set v [string trim [lindex $rec 1] ";"]
-     if { $v != "syncO" } {
-       switch [lindex $rec 0] {
-         byte -
-         short -
-         int - 
-         long -
-         float - 
-         double { puts $fout "   [set subsys]_ref->$v++;" }
-         char { set cv [lindex [split $v "\[\]"] 0]
-                puts $fout "   icount++;
-   sprintf([set subsys]_ref->$cv,\"string %d\",icount);" }
-       }
-     }
+source $scriptdir/ndds_version.tcl
+
+
+set basedir /home/shared/lsst/tests/api/streams
+cd $basedir
+
+source $scriptdir/managetypes.tcl
+source $basedir/stream_frequencies.tcl 
+
+if { [info exists FormData(GenerateALL)] } {
+  set all [glob $subsys*.idl]
+  set topiclist ""
+  foreach t [lsort $all] {
+    lappend topiclist [file rootname $t]
   }
-  puts $fout "   [set subsys]_ref->syncO = 1;
-   return(0);
-\}
-"  
-  close $fout
-}
-
-  
-proc generatetcllib { subsys } {
-global LVERSION
-  set fout [open shm_tcl_[set subsys].c w]
-  set ftst [open test_[set subsys].tcl w]
-  puts $ftst "set SHM[set subsys](shmid) 0x[calcshmid $subsys]"
-  set sval [lindex [exec grep "size_t [set subsys]_shmsize =" shmem_[set subsys]_server.cpp] 3]
-  puts $ftst "set SHM[set subsys](shmsize) [string trim $sval ";"]"
-  puts $ftst "load /home/shared/lsst/lib/libshm.so"
-  puts $fout "
-    if (strcmp(subsysid,\"$subsys\") == 0) {
-       [set subsys]_cache *[set subsys]_ref;
-       [set subsys]_ref = ([set subsys]_cache *)shmdata_ref;
-"
-  set fin [open [set subsys]_cache.h r]
-  gets $fin rec
-  gets $fin rec
-  while { [gets $fin rec] > -1 } {
-     set v [string trim [lindex $rec 1] ";"]
-     if { $v != "syncO" } {
-       set v [lindex [split $v "\[\]"] 0]
-       switch [lindex $rec 0] {
-         byte - 
-         short - 
-         int  { puts $fout "
-      text = Tcl_GetVar2(interp, \"SHM[set subsys]\", \"$v\", TCL_GLOBAL_ONLY);
-      sscanf(text,\"%d\", &[set subsys]_ref->$v);"
-                puts $ftst "set SHM[set subsys]($v) 1"
-              }
-         long { puts $fout "
-      text = Tcl_GetVar2(interp, \"SHM[set subsys]\", \"$v\", TCL_GLOBAL_ONLY);
-      sscanf(text,\"%ld\", &[set subsys]_ref->$v);"
-                puts $ftst "set SHM[set subsys]($v) 1.2"
-              }
-         float { puts $fout "
-      text = Tcl_GetVar2(interp, \"SHM[set subsys]\", \"$v\", TCL_GLOBAL_ONLY);
-      sscanf(text,\"%f\", &[set subsys]_ref->$v);"
-                puts $ftst "set SHM[set subsys]($v) 1.23"
-              }
-         double { puts $fout "
-      text = Tcl_GetVar2(interp, \"SHM[set subsys]\", \"$v\", TCL_GLOBAL_ONLY);
-      sscanf(text,\"%lf\", &[set subsys]_ref->$v);"
-                puts $ftst "set SHM[set subsys]($v) 1.234"
-              }
-         char { puts $fout "
-      text = Tcl_GetVar2(interp, \"SHM[set subsys]\", \"$v\", TCL_GLOBAL_ONLY);
-      strcpy([set subsys]_ref->$v,text);"
-                puts $ftst "set SHM[set subsys]($v) \"test $v\""
-             }
-       }
-     }
+} else {
+  set publist ""
+  set sublist ""
+  foreach t [array names ISSU] {
+     set s [lindex [split $t ._] 0]
+     set PUBS([set s]_command)  1
+     set SUBS([set s]_response) 1
   }
-    puts $fout "      [set subsys]_ref->syncO = 1;
-    }"
-  close $fout
-  close $ftst
-  set ftst [open test_singleshot.tcl w]
-  puts $ftst "#!/usr/bin/tclsh
-
-source /home/shared/lsst/tests/shmem/shmem-[set subsys]/test_[set subsys].tcl 
-set id \$SHM[set subsys](shmid)
-set size \$SHM[set subsys](shmsize)
-writeshm [set subsys] \$id \$size
-
-"
-  close $ftst
-  exec chmod 755 test_singleshot.tcl
-  set ftst [open startpubsub w]
-  puts $ftst "#!/bin/sh
-xterm -e /home/shared/lsst/tests/shmem/shmem-[set subsys]/objs/$LVERSION/[set subsys]_shmem_publisher &
-xterm -e /home/shared/lsst/tests/shmem/shmem-[set subsys]/objs/$LVERSION/[set subsys]_subscriber &
-echo \"Use /home/shared/lsst/tests/shmem/shmem-[set subsys]/test_singleshot.tcl to test\"
-"
-  close $ftst
-  exec chmod 755 startpubsub
-}
-
-proc replaceshmemcode { topiclist op fid } {
-  switch $op {
-        includes {
-           puts $fid "#include <sys/shm.h>"
-           foreach t $topiclist {
-             puts $fid "#include \"[set subsys].h\""
-             puts $fid "#include \"[set subsys]Support.h\""
-             puts $fid "#include \"[set subsys]_cache.h\""
-           }
-        }
-        finalize {
-           foreach t $topiclist {
- 	     puts $fid "    [set  t]TypeSupport_finalize();"
-           } 
-        }
-        tidyup {
-           foreach t $topiclist {
-             puts $fid "
-    [set t]_retcode = [set t]DataWriter_unregister_instance(
-        [set t]_writer, [set t]_instance, &[set t]_instance_handle);
-    if ([set t]_retcode != DDS_RETCODE_OK) {
-        printf(\"[set t] unregister instance error %d\\n\", [set t]_retcode);
-    \}
-    /* Delete data sample */
-    [set t]_retcode = [set t]TypeSupport_delete_data_ex(instance, DDS_BOOLEAN_TRUE);
-    if ([set t]_retcode != DDS_RETCODE_OK) {
-        printf(\[set t\]TypeSupport_delete_data error %d\\n\", [set t]_retcode);
-    \}"
-           } 
-        }
-        variables {
-           foreach t $topiclist {
-             puts $fid "
-    DDS_Topic *[set t]topic = NULL;
-    DDS_DataWriter *[set t]_DDSwriter = NULL;
-    [set t]DataWriter *[set t]_writer = NULL;
-    [set t] *[set t]_instance = NULL;
-    DDS_ReturnCode_t [set t]_retcode;
-    DDS_InstanceHandle_t [set t]_instance_handle = DDS_HANDLE_NIL;
-    const char *[set t]_type_name = NULL;
-    int [set t]_count = 0;  
-    struct DDS_Duration_t [set t]_send_period = \{1,0\};"
-          } 
-        }
-        registertypes {
-           foreach t $topiclist {
-              puts $fid "
-    [set t]_type_name = [set t]_TypeSupport_get_type_name();
-    [set t]_retcode = [set t]_TypeSupport_register_type(
-        participant, [set t]_type_name);
-    if ([set t]_retcode != DDS_RETCODE_OK) {
-        printf(\"[set t] register_type error %d\\n\", [set t]_retcode);
-        publisher_shutdown(participant);
-        return -1;
-    \}"
-           } 
-        }
-        createtopics {
-           foreach t $topiclist {
-             puts $fid "
-     [set t]topic = DDS_DomainParticipant_create_topic(
-        participant, "Example [set t]",
-        [set t]type_name, &DDS_TOPIC_QOS_DEFAULT, NULL /* listener */,
-        DDS_STATUS_MASK_NONE);
-    if ([set t]topic == NULL) \{
-        printf(\"[set t] create_topic error\\n\");
-        publisher_shutdown(participant);
-        return -1;
-    \}"
-          } 
-        }
-        createwriters {
-           foreach t $topiclist {
-             puts $fid "
-    [set t]_DDSwriter = DDS_Publisher_create_datawriter(
-        publisher, [set t]_topic,
-        &DDS_DATAWRITER_QOS_DEFAULT, NULL /* listener */, DDS_STATUS_MASK_NONE);
-    if ([set t]_DDSwriter == NULL) \{
-        printf(\"[set t ] create_datawriter error\\n\");
-        publisher_shutdown(participant);
-        return -1;
-    \}
-    [set t]_writer = [set t]DataWriter_narrow([set t]_DDSwriter);
-    if ([set t]_writer == NULL) \{
-        printf(\"[set t] DataWriter narrow error\\n\");
-        publisher_shutdown(participant);
-        return -1;
-    \}"
-           } 
-        }
-        finalize {
-           foreach t $topiclist {
-             pts $fid "
-    [set t]_instance = [set t]TypeSupport_create_data_ex(DDS_BOOLEAN_TRUE);
-    if ([set t]_instance == NULL) \{
-        printf(\"[set t]TypeSupport_create_data error\\n\");
-        publisher_shutdown(participant);
-        return -1;
-    \}
-    /* For data type that has key, if the same instance is going to be
-       written multiple times, initialize the key here
-       and register the keyed instance prior to writing */
-    /*
-    [set t]_instance_handle = [set t]DataWriter_register_instance(
-        [set t]_writer, [set t]_instance);
-    */"
-           } 
-        }
+  foreach t [array names PROC] {
+     set s [lindex [split $t ._] 0]
+     set SUBS([set s]_command)  1
+     set PUBS([set s]_response) 1
   }
+#  foreach t [array names PUBS] {
+#     set id [join [split $t .] _]
+#     set publist "$publist $id"
+#  }
+#  foreach t [array names SUBS] {
+#     set sublist "$sublist $id"
+#  }
 }
 
+set publist [array names PUBS]
+set sublist [array names SUBS]
 
-proc parsepub { topiclist } {
-global scriptdir
-global NDDS_VERSION NDDSPUBLOOPSIZE
-  set fin  [open $scriptdir/subsystem_publisher.c.template r]
-  set basename [lindex [split [lindex $topiclist 0] _] 0]
-  set fout [open [set basename]_shmem_publisher.c w]
-  while { [gets $fin rec] > -1 } {
-    if { [string trim $rec] == "/* Main loop */" } {
-           addshmemcode $subsys $fout
-           set i $NDDSPUBLOOPSIZE($NDDS_VERSION)
-           while { $i > 0 } {gets $fin rec ; incr i -1}
-    } else {
-           if { [string range $rec 0 8] == "###INSERT" } {
-              replaceshmemcode $topiclist [lindex $rec 1] $fout
-           } else {
-              puts $fout $rec
-           }
-    }
-  }
-  close $fin
-  close $fout
-}
-
-proc parsemakefile { subsys } {
-  set mf [glob makefile*i86Linux2.6gcc3.4.3]
-  set fin [open $mf r]
-  set fout [open makefile w]
-  while { [gets $fin rec] > -1 } {
-    if { [string range $rec 0 3] != "EXEC" } {
-       puts $fout $rec
-    } else {
-       puts $fout "EXEC          = [set subsys]_subscriber \\
-		[set subsys]_publisher \\
-		[set subsys]_shmem_publisher \\
-		[set subsys]_shmem_tester"
-    }
-  }
-  close $fin 
-  close $fout
-}
-
-
-
-set TYPESUBS(string) char
-set TYPESUBS(int)    long
-set TYPESUBS(short)  short
-set TYPESUBS(long)   long
-set TYPESUBS(byte)   byte
-set TYPESUBS(float)  float
-set TYPESUBS(double) double
-
-set TYPESIZE(string) 1
-set TYPESIZE(int)    4
-set TYPESIZE(long)   4
-set TYPESIZE(short)  2
-set TYPESIZE(char)   1
-set TYPESIZE(byte)   1
-set TYPESIZE(float)  4
-set TYPESIZE(double) 8
-
-set NDDS_VERSION 4.2e
-set NDDSPUBLOOPSIZE(4.2e) 17
-set LVERSION i86Linux2.6gcc3.4.3
-set basedir .
-
-set all [glob $subsys*.idl]
-set topiclist ""
-foreach t [lsort $all] {
-  lappend topiclist [file rootname $t]
-}
-
-set basename [lindex [split $subsys _] 0]
+set subsys [lindex [split [lindex "$sublist $publist" 0] _.] 0]
+set basename [lindex [split $subsys _.] 0]
 source $basedir/revCodes.tcl
+exec rm -fr  $basedir/shmem-$basename
+exec mkdir -p  $basedir/shmem-$basename
+
+#printformdata
+#puts stdout "basedoir = $basedir"
+#puts stdout "sublist = $sublist"
+
+puts stdout "<HTML><HEAD><TITLE>Software Abstraction Layer API generator</TITLE></HEAD>
+<BODY BGCOLOR=White><H1>
+<IMG SRC=\"/LSST_logo.gif\" ALIGN=CENTER>
+<IMG SRC=\"/salg.gif\" ALIGN=CENTER><P><HR><P>
+<H1>Code generation phase</H1>
+<P><HR><P>"
+
+flush stdout
+
+puts stdout "<PRE>"
+catch {unset DONE}
+
+foreach t "$sublist $publist" {
+  if { [info exists DONE($t)] == 0 } {
+    puts stdout "Processing $t"
+    if { [info exists FormData(mw_ndds)] } {
+      catch {exec $scriptdir/genshmem.tcl $t +dds} result
+    } else {
+      catch {exec $scriptdir/genshmem.tcl $t} result
+    }
+    puts stdout "$result"
+    set res [glob ./shmem-$t/*]
+    foreach f $res { exec cp $f ./shmem-$basename/. }
+    puts stdout "Done $t\n"
+    flush stdout
+    set DONE($t) 1
+  }
+}
+
+puts stdout "Building shmem interfaces"
+puts stdout "Processing $sublist $publist"
 set workdir $basedir/shmem-$basename
-exec mkdir -p $workdir
-
-
-puts stdout "Processing $subsys"
 cd $workdir
-doddsgen $topiclist
-shcoder $subsys
-generatetcllib $subsys
+source $scriptdir/genshmem-rtidds.tcl
+doddsgen "$sublist" "$publist"
+if { [info exists FormData(mw_orte)] } {
+  source $scriptdir/genshmem-orte.tcl
+  doortegen $sublist $publist
+}
+if { [info exists FormData(mw_ice)] } {
+  source $scriptdir/genshmem-ice.tcl
+  doicegen $sublist $publist
+}
+if { [info exists FormData(mw_activemq)] } {
+  source $scriptdir/genshmem-activemq.tcl
+  doamqgen $sublist $publist
+}
+if { [info exists FormData(langlv)] } {
+  source $scriptdir/genshmem-labview.tcl
+  dolvgen $sublist $publist
+ }
+
+set code [glob $scriptdir/code/*.c]
+foreach f $code { exec cp $f . }
+exec cp $scriptdir/code/version.mak .
+exec cp $scriptdir/code/makefile.sal .
+exec cp $scriptdir/code/makefile.saltcl .
+exec cp /usr/local/scripts/include/svcSAL.h .
+
+source $scriptdir/genshmtclpersubsys.tcl
+puts stdout "</PRE><P><HR><P><H1>Compilation phase</H1><P><PRE>"
+
+source $scriptdir/accesspersubsystem.tcl
+set res [ catch { exec $scriptdir/ddsmake -f makefile.sal } op]
+puts stdout "$op"
+set res [ catch { exec $scriptdir/ddsmake -f makefile.saltcl } op]
+exec ln -sf libshmSALtcl_linux.so.$SALVERSION libshmSALtcl.so
+puts stdout "$op"
+if { [info exists FormData(mw_ndds)] } {
+  set res [ catch { exec $scriptdir/ddsmake } op]
+  puts stdout "$op"
+}
+
+if { [info exists FormData(mw_orte)] } {
+  set res [ catch { exec $scriptdir/ortemake } op]
+  puts stdout "$op"
+}
+
+if { [info exists FormData(mw_activemq)] } {
+  set res [ catch { exec $scriptdir/activemqmake } op]
+  puts stdout "$op"
+}
+
+if { [info exists FormData(mw_ice)] } {
+  set res [ catch { exec $scriptdir/icemake } op]
+  puts stdout "$op"
+}
+
+if { [info exists FormData(langlv)] } {
+  set res [ catch { exec $scriptdir/lvmake } op]
+  puts stdout "$op"
+  exec mv libserialSAL_linux.so ../lsstsal.$SALVERSION/lib/libSAL_LV_$basename.so
+}
+
+
+puts stdout "</PRE><P><HR><P><H1>Generating distribution</H1><P>"
+
+
+
+
+
 

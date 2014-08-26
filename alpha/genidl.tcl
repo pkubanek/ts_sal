@@ -53,17 +53,17 @@ while { [gets $fin rec] > -1 } {
       set fo2  [open $id/$cid.sqldef w]
       puts $fout "struct [join [split $topic .] _] \{
   string<32>  private_revCode; //private
-  integer private_sndStamp; //private
-  integer private_rcvStamp; //private
-  integer private_seqNum; //private
-  integer private_origin; //private"
+  long private_sndStamp; //private
+  long private_rcvStamp; //private
+  long private_seqNum; //private
+  long private_origin; //private"
       puts $fo2  "CREATE TABLE $topic \{"
       puts $fo2  "  date_time date time NOT NULL,
   private_revCode char(32),
-  private_sndStamp int,
-  private_rcvStamp int,
-  private_seqNum int,
-  private_origin int,"
+  private_sndStamp long,
+  private_rcvStamp long,
+  private_seqNum long,
+  private_origin long,"
    }
    if { [lindex $rec 1] > 1 && [string range [lindex $rec 2] 0 5] != "String"} {
       set i 1

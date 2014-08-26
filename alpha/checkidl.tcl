@@ -1,6 +1,10 @@
 proc noncoding { r } {
-global NEWCONSTS
+global NEWCONSTS KEYINDEX
   set r [string trim $r "\{\}"]
+  if { [string range $r 0 5] == "#index" } {
+     set KEYINDEX [lindex $r 1]
+     return 1
+  }
   if { [string trim $r] == "" || [string range $r 0 0] == "#" || [string range $r 0 1] == "//"} {
      return 1
   }
@@ -42,12 +46,13 @@ global NEWSIZES FREQUENCY PUBLISHERS
 proc checkidl { f } {
 global NEWTOPICS NEWSIZES NEWCONSTS
 global DESC SDESC IDLTYPES IDLSIZES
-global PUBLISHERS FREQUENCY
+global PUBLISHERS FREQUENCY KEYINDEX
   set fin [open $f r]
   set fout [open validated/$f w]
   set id [file rootname $f]
   set hid [join [split $id _] .]
   set NONCODING 0
+  set KEYINDEX ""
   set finds 0
   set eid 0
   while { [gets $fin rec] > -1 } {
@@ -130,6 +135,7 @@ global PUBLISHERS FREQUENCY
 <TD>Range</TD><TD>Comment</TD><TD>Delete</TD></B></TR>"
               set fout [open validated/$nt.idl w]
               set fdet [open validated/$nt.detail w]
+              if { $KEYINDEX != "" } {puts $fdet "#index $KEYINDEX"; set KEYINDEX ""}
               set fcmt [open validated/$nt.comments w]
               puts $fout "struct $nt \{
   string<32> private_revCode;  //private
@@ -150,7 +156,7 @@ global PUBLISHERS FREQUENCY
            set u 0
            if { [string trim [lindex $rec 0]] == "unsigned" } {
               set u 1
-              set rec [string range $rec 11 end]
+              set rec "[string range $rec 11 end]"
            }
            set type [string tolower [lindex [split [string trim [lindex $rec 0]] "<"] 0]]
            if { [lsearch $IDLTYPES $type] < 0 } {
@@ -189,7 +195,11 @@ global PUBLISHERS FREQUENCY
              set comments [string trim [lrange $meta 2 end] " \{\}"]
 #             puts stdout "$nt - $u $item $type $siz $units $range $comments"
              incr NEWSIZES($hid) $siz
-             puts $fout $rec
+             if { $u } {
+               puts $fout "  unsigned $rec"
+             } else {
+               puts $fout $rec
+             }
              incr eid 1
              doitem $eid $fhtm $item $type $nof "$units" "$range" "$comments" 
 #            puts stdout  "doitem $eid $fhtm $item $type $nof |$units |$range  |$comments "

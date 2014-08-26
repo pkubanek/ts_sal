@@ -129,7 +129,7 @@ global stagingdir salcodedir
 proc genndds { pub sub s } {
 global NDDSCOMPILER stagingdir
    puts stdout "Subsystem $s : pub=$pub sub=$sub"
-   catch {exec rtiddsgen -language C++ -example $NDDSCOMPILER $s.idl -replace} result
+   catch {exec rtiddsgen -replace -language C++ -example $NDDSCOMPILER $s.idl -replace} result
    set flist "[set s].h $s.idl $s.cxx [set s]Support.h [set s]Support.cxx [set s]Plugin.h [set s]Plugin.cxx"
    if { $pub } {
      set fpout [open $stagingdir/[set s]_publisher.cxx w]

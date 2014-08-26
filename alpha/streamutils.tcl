@@ -84,10 +84,10 @@ proc dogen { fid id } {
 proc idlpreamble { fid id } {
   puts $fid "struct [join [split $id .] _] \{
   string<32>	private_revCode; //private
-  integer	private_sndStamp; //private
-  integer	private_rcvStamp; //private
-  integer	private_seqNum; //private
-  integer	private_origin; //private" 
+  long		private_sndStamp; //private
+  long		private_rcvStamp; //private
+  long		private_seqNum; //private
+  long		private_origin; //private" 
 }
 
 proc sqlpreamble { fid id } {

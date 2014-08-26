@@ -45,7 +45,7 @@ modification history
 #include <stdio.h>
 #include <stdlib.h>
 #include "ndds/ndds_c.h"
-###REPLACE includes
+###INSERT includes
 
 /* Delete all entities */
 static int publisher_shutdown(
@@ -134,20 +134,9 @@ static int publisher_main(int domainId, int sample_count)
 
 /* Main Loop */
 
-###INSERT tidyup 
-/*
-    retcode = tcs_kernel_TrackRefSysDataWriter_unregister_instance(
-        tcs_kernel_TrackRefSys_writer, instance, &instance_handle);
-    if (retcode != DDS_RETCODE_OK) {
-        printf("unregister instance error %d\n", retcode);
-    }
-*/
+###INSERT fromshmem
 
-    /* Delete data sample */
-    retcode = tcs_kernel_TrackRefSysTypeSupport_delete_data_ex(instance, DDS_BOOLEAN_TRUE);
-    if (retcode != DDS_RETCODE_OK) {
-        printf("tcs_kernel_TrackRefSysTypeSupport_delete_data error %d\n", retcode);
-    }
+###INSERT tidyup 
 
     /* Cleanup and delete delete all entities */         
     return publisher_shutdown(participant);

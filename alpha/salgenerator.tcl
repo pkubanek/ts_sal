@@ -10,24 +10,26 @@ global env FormData
   }
 }
 
+proc makestreamid { name } {
+  return [join [split $name .] _]
+}
+
 
 source /usr/local/scripts/tcl/GetPostedData.tcl
-source /usr/local/scripts/tcl/streamdesc.tcl
+source /usr/local/scripts/tcl/versioning.tcl
+source /usr/local/scripts/tcl/datastream_desc.tcl
+source /usr/local/scripts/tcl/camera-subsysdesc.tcl
 
 GetPostedData
 puts stdout "Content-type: text/html\n\n"
-if { $FormData(DEBUG) == 1 } {
+if { [info exists FormData(DEBUG)] } {
   puts stdout "<HTML><HEAD></HEAD><BODY>"
   printformdata
 }
 
-set STREAMS [array names SDESC]
-set SUBS ""
-set PUBS ""
-set ISSU ""
-set PROC ""
+set STREAMS "[array names SDESC] [array names DESC]"
 
-if { $JUSTTESTING } {
+if { [info exists JUSTTESTING] } {
    set FormData(sub_system.Computer_status) yes
    set FormData(pub_system.Computer_status) yes
    set FormData(issue_system.Computer_status) yes
@@ -38,11 +40,16 @@ if { $JUSTTESTING } {
 
 
 foreach s $STREAMS {
-  if { [info exists FormData(sub_$s)] }   {lappend SUBS $s}
-  if { [info exists FormData(pub_$s)] }   {lappend PUBS $s}
-  if { [info exists FormData(issue_$s)] } {lappend ISSU $s}
-  if { [info exists FormData(proc_$s)] }  {lappend PROC $s}     
+  if { [info exists FormData(sub_$s)] }   {set TSUBS($s) yes}
+  if { [info exists FormData(pub_$s)] }   {set TPUBS($s) yes}
+  if { [info exists FormData(issue_$s)] } {set TISSU($s) yes}
+  if { [info exists FormData(proc_$s)] }  {set TPROC($s) yes}     
 }
+
+foreach i [array names TSUBS] {set SUBS([makestreamid $i]) yes}
+foreach i [array names TPUBS] {set PUBS([makestreamid $i]) yes}
+foreach i [array names TISSU] {set ISSU([makestreamid $i]) yes}
+foreach i [array names TPROC] {set PROC([makestreamid $i]) yes}
 
 if { [info exists FormData(langc)] }    {source /usr/local/scripts/tcl/salgenerator-c.tcl}
 if { [info exists FormData(langjava)] } {source /usr/local/scripts/tcl/salgenerator-java.tcl}
@@ -53,3 +60,6 @@ if { [info exists FormData(langxml)] }  {source /usr/local/scripts/tcl/salgenera
 
 
 puts stdout "</BODY></HTML>"
+
+
+

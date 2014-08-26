@@ -33,7 +33,7 @@ global VPROPS
 
    while ([set subsys]_ref->syncO > -1 ) \{
      while ([set subsys]_ref->syncO == 0) \{
-        nanosleep(10000);  
+        svcSAL_sleep(1);  
      \}
 
      count++;
@@ -300,24 +300,10 @@ proc parsemakefile { subsys } {
 
 
 
-set TYPESUBS(string) char
-set TYPESUBS(int)    long
-set TYPESUBS(short)  short
-set TYPESUBS(long)   long
-set TYPESUBS(byte)   byte
-set TYPESUBS(float)  float
-set TYPESUBS(double) double
-
-set TYPESIZE(string) 1
-set TYPESIZE(int)    4
-set TYPESIZE(long)   4
-set TYPESIZE(short)  2
-set TYPESIZE(char)   1
-set TYPESIZE(byte)   1
-set TYPESIZE(float)  4
-set TYPESIZE(double) 8
-
 set basedir .
+set scriptdir /usr/local/scripts/tcl
+set includedir /usr/local/scripts/include
+source $scriptdir/managetypes.tcl
 
 
 source $basedir/revCodes.tcl
@@ -331,8 +317,7 @@ set TOPICPROPS(bytesize) 4
 puts $fout "typedef struct [set subsys]_cache \{"
 puts $fout "  int cppDummy;"
 puts $fout "  int syncI;"
-gets $fin rec ; gets $fin rec ;gets $fin rec
-gets $fin rec ; gets $fin rec ;gets $fin rec
+gets $fin rec
 while { [gets $fin rec] > -1 } {
    if { $rec != "\};" } {
      if { [llength [split [lindex $rec 0] "<>"]] > 1 } {

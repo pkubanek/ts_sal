@@ -13,23 +13,23 @@ foreach i $all {
   set topic [set subsys]_command
   set fout [open $topic.idl w]
   idlpreamble $fout [set subsys]_command
-  puts $fout "  long		cmdID,
-  string<16>	device,
-  string<16>	operation,
-  string<16>	value,
-  string<128>	modifiers
+  puts $fout "  long		cmdID;
+  string<16>	device;
+  string<16>	operation;
+  string<16>	value;
+  string<128>	modifiers;
 \};"
   close $fout
-  set topic [set subsys]_reponse
+  set topic [set subsys]_response
   set fout [open $topic.idl w]
   idlpreamble $fout [set subsys]_response
-  puts $fout "  long		cmdID,
-  string<16>	ack,
-  string<16>	error,
-  long		timeout,
-  short		repeat,
-  short		submits,
-  string<64>	result
+  puts $fout "  long		cmdID;
+  string<16>	ack;
+  string<16>	error;
+  long		timeout;
+  short		repeat;
+  short		submits;
+  string<64>	result;
 \};"
   close $fout
 }

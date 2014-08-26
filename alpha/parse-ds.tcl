@@ -203,3 +203,11 @@ blogsum $fo6 "Total for all Subsystems" $gt
 puts $fo6 "</TABLE><P></BODY></HTML>"
 close $fo6
 
+set fout [open stream_frequencies.tcl w]
+foreach t [lsort [array names freq]] {
+  set s [join [split $t .] _]
+  puts $fout "set FREQUENCY($s) $freq($t)"
+}
+close $fout
+
+
