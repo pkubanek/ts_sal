@@ -1,4 +1,0 @@
-#!/bin/sh
-
-echo "Compiling LabView SAL interface"
-make -f makefile.lvsal

@@ -1,8 +1,0 @@
-#!/bin/sh
-
-echo "Archiving sources"
-ar r libsvcSAL.a svcSAL_*.h svcSAL_*.c
-ar r libSAL_1.0_$1.a *.h *.c *.cpp
-rm -f *.txt
-rm -fr Static Shared
-
