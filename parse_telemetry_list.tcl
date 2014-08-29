@@ -5,9 +5,9 @@ set SAL_WORK_DIR $env(SAL_WORK_DIR)
 source $SAL_DIR/add_system_dictionary.tcl
 source $SAL_DIR/add_private_idl.tcl
 
+set subsys [lindex $argv 0]
 exec mkdir -p $SAL_WORK_DIR/html/[set subsys]
 
-set subsys [lindex $argv 0]
 set all [lsort [glob [set subsys]*.idl]]
 set fout [open $SAL_WORK_DIR/html/telemetry_[set subsys].html w]
 puts stdout "Generating html Telemetry table $subsys"
@@ -25,7 +25,9 @@ puts $fout "<TABLE BORDER=3 CELLPADDING=5 BGCOLOR=LightBlue WIDTH=700>
       if { [llength [split $rec "/"]] > 1 } {
          set cmt [lindex [split $rec "/"] 2]
       }
-      puts $fout "<TR><B><TD>[file rootname $i]</TD><TD>$name</TD><TD>$type</TD><TD>$cmt</TD></B></TR>"
+      if { [lindex [split $name "_"] 0] != "private" } {
+        puts $fout "<TR><B><TD>[file rootname $i]</TD><TD>$name</TD><TD>$type</TD><TD>$cmt</TD></B></TR>"
+      }
    }
  }
  close $fin
