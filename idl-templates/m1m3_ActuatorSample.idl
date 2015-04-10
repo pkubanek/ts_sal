@@ -1,9 +1,4 @@
 struct m1m3_ActuatorSample {
-  string<32> private_revCode; //private
-  double private_sndStamp; //private
-  double private_rcvStamp; //private
-  long private_seqNum; //private
-  long private_origin; //private
   short actuatorID;
   long setpoint[100];
   long position[100];

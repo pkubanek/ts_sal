@@ -1,9 +1,4 @@
 struct camera_Purge {
-  float	Accelerometer[6];	// 0.017 | m/s2 | Accelerometers |  | Camera body | 6 | 4,320  | 17,280 
-  float	Heater_current;		// 0.017 | Amp | Heater settings |  | Camera body | ?? | ?? | ??
-  float	Heaters;		// 0.017 | Amp | Heaters |  | Camera body | ?? | ?? | ??
-  float	Trunk_Flow_meter;	// 0.017 | lps | Flow meters |  | Utility trunk | ?? | ?? | ??
-  float	Body_Flow_meter;	// 0.017 | lps | Flow meters |  | Camera body | ?? | ?? | ??
   long	Microphone;		// 0.017 | none | Microphone |  | Camera body | 1 | 720  | ??
   float	Blower_setting;		// 0.017 | Hz | Blower speed setting |  | Camera body | 1 | 720  | 2,880 
   float	Blower_speed;		// 0.017 | Hz | Blower speed |  | Camera body | 1 | 720  | 2,880 

@@ -11,5 +11,5 @@ CREATE TABLE environment_Weather_items (
   comment char(128),
   PRIMARY KEY (num)
 );
-INSERT INTO environment_Weather_items VALUES (1,"Raw","long",128,"",0.054,"","","");
-INSERT INTO environment_Weather_items VALUES (2,"Calibrated","float",256,"",0.054,"","","");
+INSERT INTO environment_Weather_items VALUES (1,"Raw","long",128,"",1,"","","");
+INSERT INTO environment_Weather_items VALUES (2,"Calibrated","float",256,"",1,"","","");

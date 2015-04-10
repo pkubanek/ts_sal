@@ -65,7 +65,7 @@ int SALDataController(int timeout)
   /* Remove the DataWriters etc */
   cmd.salShutdown();
 
-  return 0;
+  return status;
 }
 
 

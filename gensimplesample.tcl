@@ -17,11 +17,15 @@ global SAL_WORK_DIR
    exec mkdir -p $SAL_WORK_DIR/[set base]/isocpp/src
    exec mkdir -p $SAL_WORK_DIR/[set base]_[set name]/java/standalone
    exec touch $SAL_WORK_DIR/[set base]/java/src/.depend.Makefile.saj_[set base]_cmdctl
-   exec touch $SAL_WORK_DIR/[set base]_[set name]/java/standalone/.depend.Makefile.saj_[set base]_pub
-   exec touch $SAL_WORK_DIR/[set base]_[set name]/java/standalone/.depend.Makefile.saj_[set base]_sub
-   exec touch $SAL_WORK_DIR/[set base]_[set name]/cpp/standalone/.depend.Makefile.sacpp_[set base]_pub
-   exec touch $SAL_WORK_DIR/[set base]_[set name]/cpp/standalone/.depend.Makefile.sacpp_[set base]_sub
-   exec touch $SAL_WORK_DIR/[set base]/cpp/src/.depend.Makefile.sacpp_[set name]_cmd
+   exec touch $SAL_WORK_DIR/[set base]/java/src/.depend.Makefile.saj_[set base]_event
+   exec touch $SAL_WORK_DIR/[set base]_[set name]/java/standalone/.depend.Makefile.saj_[set base]_[set name]_pub
+   exec touch $SAL_WORK_DIR/[set base]_[set name]/java/standalone/.depend.Makefile.saj_[set base]_[set name]_sub
+   exec touch $SAL_WORK_DIR/[set base]_[set name]/cpp/standalone/.depend.Makefile.sacpp_[set base]_[set name]_pub
+   exec touch $SAL_WORK_DIR/[set base]_[set name]/cpp/standalone/.depend.Makefile.sacpp_[set base]_[set name]_sub
+   exec touch $SAL_WORK_DIR/[set base]/cpp/src/.depend.Makefile.sacpp_[set base]_cmd
+   exec touch $SAL_WORK_DIR/[set base]/cpp/src/.depend.Makefile.sacpp_[set base]_event
+   exec touch $SAL_WORK_DIR/[set base]/cpp/src/.depend.Makefile.sacpp_[set base]_testcommands
+   exec touch $SAL_WORK_DIR/[set base]/cpp/src/.depend.Makefile.sacpp_[set base]_testevents
 ###   exec mkdir -p $SAL_WORK_DIR/SAL_[set base]/cpp/src
    exec ln -sf $SAL_WORK_DIR/idl-templates/validated/sal/sal_$base.idl $SAL_WORK_DIR/$base/cpp/.
    exec ln -sf $SAL_WORK_DIR/idl-templates/validated/sal/sal_$base.idl $SAL_WORK_DIR/$base/isocpp/.
@@ -39,8 +43,8 @@ global SAL_DIR SAL_WORK_DIR SYSDIC VPROPS
    exec mkdir -p $SAL_WORK_DIR/[set subsys]/cpp/src
    set fhdr [open $SAL_WORK_DIR/[set subsys]/cpp/src/SAL_[set subsys]C.h w]
    puts $fhdr "
-#ifndef _SAL_hexapodC_
-#define _SAL_hexapodC_
+#ifndef _SAL_[set subsys]C_
+#define _SAL_[set subsys]C_
 
 #include <string>
 
@@ -51,26 +55,34 @@ using namespace std;
    puts $fout "module $subsys
 \{"
    foreach i $all {
+      puts stdout "Adding $i to sal_$subsys.idl"
       set fin [open $i r]
       gets $fin rec
       set name [join [lrange [split [file rootname [file tail $i]] _] 1 end] _]
+      set VPROPS(iscommand) 0
+      if { [string range $name 0 7] == "command_" } {set VPROPS(iscommand) 1}
       set fcod1 [open $SAL_WORK_DIR/include/SAL_[set subsys]_[set name]Cget.tmp w]
       set fcod2 [open $SAL_WORK_DIR/include/SAL_[set subsys]_[set name]Cput.tmp w]
       set fcod3 [open $SAL_WORK_DIR/include/SAL_[set subsys]_[set name]Csub.tmp w]
       set fcod4 [open $SAL_WORK_DIR/include/SAL_[set subsys]_[set name]Cpub.tmp w]
+      set fcod5 [open $SAL_WORK_DIR/include/SAL_[set subsys]_[set name]Cargs.tmp w]
+      set fcod6 [open $SAL_WORK_DIR/include/SAL_[set subsys]_[set name]Cout.tmp w]
       puts $fout "	struct $name \{"
       puts $fhdr "struct [set subsys]_[set name]C
 \{"
       puts $fbst "   bp::class_<[set subsys]_[set name]C>(\"[set subsys]_[set name]C\")"
-      puts $fbst2 "  .def(
-      \"get[set name]\" ,  &::SAL_[set subsys]::getSample[set name] )
+      if {[string range $name 0 7] != "command_" && [string range $name 0 8] != "logevent_"}  {
+        puts $fbst2 "  .def(
+        \"getSample_[set name]\" ,  &::SAL_[set subsys]::getSample_[set name] )
   .def(
-      \"put[set name]\" ,  &::SAL_[set subsys]::putSample[set name] )"
+      \"putSample_[set name]\" ,  &::SAL_[set subsys]::putSample_[set name] )"
+      }
       if { [info exists SYSDIC($subsys,keyedID)] } {
           puts $fout "	  short [set subsys]ID;"
       }
+      set argidx 1
       while { [gets $fin rec] > -1 } {
-         if { [string range $rec 0 6] == "#pragma" } {
+         if { [lindex $rec 0] == "#pragma" } {
             if { [info exists SYSDIC($subsys,keyedID)] } {
                puts $fout "	#pragma keylist $name [set subsys]ID"
             } else {
@@ -87,12 +99,18 @@ using namespace std;
             puts $fout "	$rec"
             if { [string range [lindex $rec 1] 0 7] != "private_" && [llength $rec] > 1 } {
                puts $fhdr [typeidltoc $rec]
-               updatecfragments $fcod1 $fcod2 $fcod3 $fcod4
+               set VPROPS(idx) $argidx
+               updatecfragments $fcod1 $fcod2 $fcod3 $fcod4 $fcod5 $fcod6
                set vname $VPROPS(name)
                if { $VPROPS(array) } {
                   puts $fbst "      .add_property(\"$vname\", make_array(&[set subsys]_[set name]C::$vname))"
                } else {
                   puts $fbst "      .def_readwrite(\"$vname\", &[set subsys]_[set name]C::$vname)"
+               }
+               if { $VPROPS(array) } {
+                 incr argidx $VPROPS(dim)
+               } else {
+                 incr argidx 1
                }
             }
          }
@@ -102,6 +120,8 @@ using namespace std;
       close $fcod2
       close $fcod3
       close $fcod4
+      close $fcod5
+      close $fcod6
    }
    if { [info exists SYSDIC($subsys,keyedID)] } {
        genkeyedidl $fout $subsys
@@ -185,24 +205,48 @@ struct [set subsys]_logeventC
    return $SAL_WORK_DIR/idl-templates/validated/sal/sal_$subsys.idl
 }
 
-proc updatecfragments { fcod1 fcod2 fcod3 fcod4 } {
+proc updatecfragments { fcod1 fcod2 fcod3 fcod4 fcod5 fcod6 } {
 global VPROPS
+   set idx $VPROPS(idx)
+   if { $VPROPS(iscommand) } {set idx [expr $idx - 4]}
    if { $VPROPS(array) } {
-      puts $fcod1 "    for (iseq=0;iseq<$VPROPS(dim);iseq++) \{data->$VPROPS(name)\[iseq\] = Instances\[j\].$VPROPS(name)\[iseq\];\}"
-      puts $fcod2 "    for (iseq=0;iseq<$VPROPS(dim);iseq++) \{Instance.$VPROPS(name)\[iseq\] = data->$VPROPS(name)\[iseq\];\}"
+      puts $fcod1 "    for (int iseq=0;iseq<$VPROPS(dim);iseq++) \{data->$VPROPS(name)\[iseq\] = Instances\[j\].$VPROPS(name)\[iseq\];\}"
+      puts $fcod2 "    for (int iseq=0;iseq<$VPROPS(dim);iseq++) \{Instance.$VPROPS(name)\[iseq\] = data->$VPROPS(name)\[iseq\];\}"
       puts $fcod3 "       cout << \"    $VPROPS(name) : \" << SALInstance.$VPROPS(name)\[0\] << endl;"
-      puts $fcod4 "    for (i=0;i<$VPROPS(dim);i++)\{myData.$VPROPS(name)\[i\] = i+iseq;\}"
+      puts $fcod4 "    for (int i=0;i<$VPROPS(dim);i++)\{myData.$VPROPS(name)\[i\] = i+iseq;\}"
+      puts $fcod6 "       cout << \"    $VPROPS(name) : \" << data->$VPROPS(name) << endl;"
+      set idlim [expr $idx + $VPROPS(dim)]
+      while { $idx < $idlim } {
+
+        if { $VPROPS(int) }  {
+           puts $fcod5 "    sscanf(argv\[$idx\], \"%d\", &myData.$VPROPS(name));"
+        } else {
+           puts $fcod5 "    sscanf(argv\[$idx\], \"%f\", &myData.$VPROPS(name));"
+        }
+        incr idx 1
+      }
    } else {
       if { $VPROPS(string) } {
-         puts $fcod1 "    data->$VPROPS(name) = Instances\[j\].$VPROPS(name);"
+#         puts $fcod1 "    data->$VPROPS(name) = Instances\[j\].$VPROPS(name);"
+#         puts $fcod2 "    Instance.$VPROPS(name) = DDS::string_dup(data->$VPROPS(name).c_str());"
+         puts $fcod1 "    data->$VPROPS(name)=Instances\[j\].$VPROPS(name).m_ptr;"
          puts $fcod2 "    Instance.$VPROPS(name) = DDS::string_dup(data->$VPROPS(name).c_str());"
          puts $fcod3 "    cout << \"    $VPROPS(name) : \" << SALInstance.$VPROPS(name) << endl;"
-         puts $fcod4 "    myData.$VPROPS(name) = \"LSST TEST STRING\";"
+         puts $fcod4 "    myData.$VPROPS(name)=\"LSST\";"
+         puts $fcod5 "    myData.$VPROPS(name)=argv\[$idx\];"
+         puts $fcod6 "    cout << \"    $VPROPS(name) : \" << data->$VPROPS(name) << endl;"
       } else {
          puts $fcod1 "    data->$VPROPS(name) = Instances\[j\].$VPROPS(name);"
-         puts $fcod1 "    Instances\[j\].$VPROPS(name) = data->$VPROPS(name);"
+         puts $fcod2 "    Instance.$VPROPS(name) = data->$VPROPS(name);"
          puts $fcod3 "    cout << \"    $VPROPS(name) : \" << SALInstance.$VPROPS(name) << endl;"
-         puts $fcod4 "    myData.$VPROPS(name) = 1";
+         puts $fcod6 "    cout << \"    $VPROPS(name) : \" << data->$VPROPS(name) << endl;"
+         if { $VPROPS(int) } {
+            puts $fcod4 "    myData.$VPROPS(name) = 1;";
+            puts $fcod5 "    sscanf(argv\[$idx\], \"%d\", &myData.$VPROPS(name));"
+         } else {
+            puts $fcod4 "    myData.$VPROPS(name) = 1.0;";
+            puts $fcod5 "    sscanf(argv\[$idx\], \"%f\", &myData.$VPROPS(name));"
+         }
       }
    }
 }
@@ -294,6 +338,13 @@ global SAL_DIR SAL_WORK_DIR SYSDIC
         if { [info exists SYSDIC($base,keyedID)] } {
           puts $frep "perl -pi -w -e 's/#-DSAL_SUBSYSTEM/-DSAL_SUBSYSTEM/g;' [set base]/cpp/src/Makefile.sacpp_[set base]_cmd"
         }
+        exec cp $SAL_DIR/code/templates/Makefile.sacpp_SAL_testcommands.template [set base]/cpp/src/Makefile.sacpp_[set base]_testcommands
+        puts $frep "perl -pi -w -e 's/_SAL_/_[set base]_/g;' [set base]/cpp/src/Makefile.sacpp_[set base]_testcommands"
+        puts $frep "perl -pi -w -e 's/SALSubsys/[set base]/g;' [set base]/cpp/src/Makefile.sacpp_[set base]_testcommands"
+        puts $frep "perl -pi -w -e 's/SALData/[set base]/g;' [set base]/cpp/src/Makefile.sacpp_[set base]_testcommands"
+        if { [info exists SYSDIC($base,keyedID)] } {
+          puts $frep "perl -pi -w -e 's/#-DSAL_SUBSYSTEM/-DSAL_SUBSYSTEM/g;' [set base]/cpp/src/Makefile.sacpp_[set base]_testcommands"
+        }
         modpubsubexamples $id
         puts $frep "perl -pi -w -e 's/SALTopic/[set name]/g;' [set id]/cpp/src/[set id]DataPublisher.cpp"
         puts $frep "perl -pi -w -e 's/SALNAMESTRING/[set base]_[set name]/g;' [set id]/cpp/src/[set id]DataPublisher.cpp"
@@ -307,6 +358,13 @@ global SAL_DIR SAL_WORK_DIR SYSDIC
         puts $frep "perl -pi -w -e 's/SALData/[set base]/g;' [set base]/cpp/src/Makefile.sacpp_[set base]_event"
         if { [info exists SYSDIC($base,keyedID)] } {
           puts $frep "perl -pi -w -e 's/#-DSAL_SUBSYSTEM/-DSAL_SUBSYSTEM/g;' [set base]/cpp/src/Makefile.sacpp_[set base]_event"
+        }
+        exec cp $SAL_DIR/code/templates/Makefile.sacpp_SAL_testevents.template [set base]/cpp/src/Makefile.sacpp_[set base]_testevents
+        puts $frep "perl -pi -w -e 's/_SAL_/_[set base]_/g;' [set base]/cpp/src/Makefile.sacpp_[set base]_testevents"
+        puts $frep "perl -pi -w -e 's/SALSubsys/[set base]/g;' [set base]/cpp/src/Makefile.sacpp_[set base]_testevents"
+        puts $frep "perl -pi -w -e 's/SALData/[set base]/g;' [set base]/cpp/src/Makefile.sacpp_[set base]_testevents"
+        if { [info exists SYSDIC($base,keyedID)] } {
+          puts $frep "perl -pi -w -e 's/#-DSAL_SUBSYSTEM/-DSAL_SUBSYSTEM/g;' [set base]/cpp/src/Makefile.sacpp_[set base]_testevents"
         }
         exec cp $SAL_DIR/code/templates/SALDataCommander.cpp.template [set base]/cpp/src/[set base]Commander.cpp
         puts $frep "perl -pi -w -e 's/SALTopic/[set base]\:\:[set name]/g;' [set base]/cpp/src/[set base]Commander.cpp"
@@ -474,14 +532,14 @@ puts stdout "done salidlgen $base $lang"
       if { $lang == "cpp" } { 
          set incfiles [glob [set base]/cpp/*.h]
          puts stdout "Updating include files : $incfiles"
-         catch { foreach i $incfiles {  exec cp $i /opt/lsstsal/include/. } }
-         exec cp [set base]/cpp/libsacpp_[set base]_types.so /opt/lsstsal/lib/.
+         catch { foreach i $incfiles {  exec cp $i $SAL_DIR/include/. } }
+         exec cp [set base]/cpp/libsacpp_[set base]_types.so $SAL_DIR/../lib/.
          exec ln -sf $SAL_WORK_DIR/[set base]/cpp/src/SAL_[set base].cpp $SAL_WORK_DIR/[set id]/cpp/src/.
          exec ln -sf $SAL_WORK_DIR/[set base]/cpp/src/SAL_[set base].h $SAL_WORK_DIR/[set id]/cpp/src/.
          salcpptestgen $base $id
       }
       if { $lang == "java" } {
-         exec cp [set base]/java/saj_[set base]_types.jar /opt/lsstsal/lib/.
+         exec cp [set base]/java/saj_[set base]_types.jar $SAL_DIR/../lib/.
          saljavaclassgen $base $id
       }
       if { $lang == "python" } {
@@ -525,9 +583,9 @@ global SAL_WORK_DIR OPTIONS
    if { $lang == "python" } {set lang cpp}
    cd $SAL_WORK_DIR/$base/$lang
    puts stdout "Generating $lang type support for $base"
-   if { $lang == "cpp" }     {catch { set result [exec make -f Makefile.sacpp_[set base]_types] } bad}
-   if { $lang == "isocpp" }  {catch { set result [exec make -f Makefile.ISO_Cxx_[set base]_Typesupport] } bad}
-   if { $lang == "java"}     {catch { set result [exec make -f Makefile.saj_[set base]_types] } bad}
+   if { $lang == "cpp" }     {catch { set result [exec make -f Makefile.sacpp_[set base]_types] } bad; puts stdout $bad}
+   if { $lang == "isocpp" }  {catch { set result [exec make -f Makefile.ISO_Cxx_[set base]_Typesupport] } bad; puts stdout $bad}
+   if { $lang == "java"}     {catch { set result [exec make -f Makefile.saj_[set base]_types] } bad; puts stdout $bad}
    puts stdout "idl : $result"
    cd $SAL_WORK_DIR
 }
@@ -547,13 +605,21 @@ proc saljavaclassgen { base id } {
 global SAL_WORK_DIR OPTIONS
    cd $SAL_WORK_DIR/$id/java/standalone
    catch { set result [exec make -f Makefile.saj_[set id]_pub] } bad
+   catch {puts stdout "result = $result"}
+   catch {puts stdout "$bad"}
    puts stdout "javac : Done Publisher"
    catch { set result [exec make -f Makefile.saj_[set id]_sub] } bad
+   catch {puts stdout "result = $result"}
+   catch {puts stdout "$bad"}
    puts stdout "javac : Done Subscriber"
    cd $SAL_WORK_DIR/$base/java/src
    catch { set result [exec make -f Makefile.saj_[set base]_cmdctl] } bad
+   catch {puts stdout "result = $result"}
+   catch {puts stdout "$bad"}
    puts stdout "javac : Done Commander/Controller"
    catch { set result [exec make -f Makefile.saj_[set base]_event] } bad
+   catch {puts stdout "result = $result"}
+   catch {puts stdout "$bad"}
    puts stdout "javac : Done Event/Logger"
    cd $SAL_WORK_DIR
 }
@@ -563,15 +629,27 @@ global SAL_WORK_DIR OPTIONS
    puts stdout "Generating cpp test programs for $id"
    cd $SAL_WORK_DIR/$id/cpp/standalone
    catch { set result [exec make -f Makefile.sacpp_[set id]_sub] } bad
-   puts stdout "cpp : Done Subscriber"
    catch {puts stdout "result = $result"}
-   catch {puts stdout "bad = $bad"}
+   catch {puts stdout "$bad"}
+   puts stdout "cpp : Done Subscriber"
    catch { set result [exec make -f Makefile.sacpp_[set id]_pub] } bad
+   catch {puts stdout "result = $result"}
+   catch {puts stdout "$bad"}
    puts stdout "cpp : Done Publisher"
    cd $SAL_WORK_DIR/$base/cpp/src
    catch { exec make -f Makefile.sacpp_[set base]_cmd } bad
+   catch {puts stdout "result = $result"}
+   catch {puts stdout "$bad"}
+   catch { exec make -f Makefile.sacpp_[set base]_testcommands } bad
+   catch {puts stdout "result = $result"}
+   catch {puts stdout "$bad"}
    puts stdout "cpp : Done Commander"
    catch { exec make -f Makefile.sacpp_[set base]_event } bad
+   catch {puts stdout "result = $result"}
+   catch {puts stdout "$bad"}
+   catch { exec make -f Makefile.sacpp_[set base]_testevents } bad
+   catch {puts stdout "result = $result"}
+   catch {puts stdout "$bad"}
    puts stdout "cpp : Done Event/Logger"
    cd $SAL_WORK_DIR
 }

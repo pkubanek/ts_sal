@@ -97,33 +97,33 @@ set DESC(m1m3.Surface) "
 surface properties (figure, stresses, temps etc). "
 
 
-set DESC(m2.TC) "
-<P>Temperature monitoring  for sensors located in the m2
+set DESC(m2ms.TC) "
+<P>Temperature monitoring  for sensors located in the m2ms
 subsystem.<BR>Raw sensor readings, calibrated temperatures,
 time series statistics, sensor health. "
 
-set DESC(m2.Electrical) "
-<P>Electrical monitoring  for devices located in the m2 subsystem.<BR>Raw
+set DESC(m2ms.Electrical) "
+<P>Electrical monitoring  for devices located in the m2ms subsystem.<BR>Raw
 data, calibrated voltages, calibrated current, device power status. "
 
-set DESC(m2.Metrology) "
-<P>Position control  for sensors located in the m2
+set DESC(m2ms.Metrology) "
+<P>Position control  for sensors located in the m2ms
 subsystem.<BR>Raw sensor readings, calibrated positions, limit
 switches, status bits. "
 
 
-set DESC(m2.Hexapod) "
+set DESC(m2ms.Hexapod) "
 <P>This subsystem maintains application level data concerning the<BR>requested
 and actual state of the haxapod support system. "
 
-set DESC(m2.Actuators) "
+set DESC(m2ms.Actuators) "
 <P>This subsystem maintains information on a per actuator basis<BR>persuant
-to the low level behaviour of the components of<BR>the m2 support
+to the low level behaviour of the components of<BR>the m2ms support
 system. "
 
-set DESC(m2.Surface) "
+set DESC(m2ms.Surface) "
 <P>This subsystem maintains data pertaining to the requested and<BR>measured
-m2 surface properties (figure, stresses, temps etc). "
+m2ms surface properties (figure, stresses, temps etc). "
 
 set DESC(mount.TC) "
 <P>Temperature monitoring  for sensors located in the mount
@@ -385,13 +385,13 @@ set SID(m3.Support) 3.4
 set SID(m3.Actuators) 3.5
 set SID(m3.Surface) 3.6
 
-set SID(m2) 4
-set SID(m2.TC) 4.1
-set SID(m2.Electrical) 4.2
-set SID(m2.Metrology) 4.3
-set SID(m2.Hexapod) 4.4
-set SID(m2.Actuators) 4.5
-set SID(m2.Surface) 4.6
+set SID(m2ms) 4
+set SID(m2ms.TC) 4.1
+set SID(m2ms.Electrical) 4.2
+set SID(m2ms.Metrology) 4.3
+set SID(m2ms.Hexapod) 4.4
+set SID(m2ms.Actuators) 4.5
+set SID(m2ms.Surface) 4.6
 
 set SID(mount) 5
 set SID(mount.TC) 5.1
@@ -470,7 +470,7 @@ set SID(seeing_mass.Metrology) 12.3
 set DOCO(ocs) Document-869
 set DOCO(standards-sw) "ESA 1991, Software Engineering Standards, ESA PSS-05-0, Issue 2, European Space Agency"
 set DOCO(m1) Document-3167
-set DOCO(m2) Document-3167
+set DOCO(m2ms) Document-3167
 set DOCO(m3) Document-3167
 set DOCO(enclosure) Document-341,Document-342,Document-2389
 
@@ -530,7 +530,7 @@ primary benefits from this due to a relatively soft
 astigmatic bending mode attributable to the large center
 hole. This correction, while desirable, is not necessary."
 
-set DESC(m2) "Secondary mirror system
+set DESC(m2ms) "Secondary mirror system
 <P>This mirror is
 designed to be made from an existing 350 mm thick Zerodur blank. It is a bit thinner than would be needed to provide a
 completely passive support (one that would never need to have the surface figure measured and corrected by adjusting
@@ -763,36 +763,36 @@ set SDESC(m3.Surface) "
 <P>This topic records data pertaining to the requested and<BR>measured
 m3 surface properties (figure, stresses, temps etc). "
 
-set SDESC(m2.TC) "
-<P>Temperature sensing information for sensors located in the m2
+set SDESC(m2ms.TC) "
+<P>Temperature sensing information for sensors located in the m2ms
 subsystem.<BR>Raw sensor readings, calibrated temperatures,
 time-series statistics, sensor health. "
 
-set SDESC(m2.Electrical) "
-<P>Electrical parameters for devices located in the m2 subsystem.<BR>Raw
+set SDESC(m2ms.Electrical) "
+<P>Electrical parameters for devices located in the m2ms subsystem.<BR>Raw
 data, calibrated voltages, calibrated current, device power status. "
 
-set SDESC(m2.Metrology) "
-<P>Position sensing information for sensors located in the m2
+set SDESC(m2ms.Metrology) "
+<P>Position sensing information for sensors located in the m2ms
 subsystem.<BR>Raw sensor readings, calibrated positions, limit
 switches, status bits. "
 
-set SDESC(m2.Application) "
-<P>Application specific information derived from sensors in the m2
+set SDESC(m2ms.Application) "
+<P>Application specific information derived from sensors in the m2ms
 subsystem. "
 
-set SDESC(m2.Hexapod) "
+set SDESC(m2ms.Hexapod) "
 <P>This topic records application level data concerning the<BR>requested
 and actual state of the haxapod support system. "
 
-set SDESC(m2.Actuators) "
+set SDESC(m2ms.Actuators) "
 <P>This topic records information on a per-actuator basis<BR>persuant
-to the low level behaviour of the components of<BR>the m2 support
+to the low level behaviour of the components of<BR>the m2ms support
 system. "
 
-set SDESC(m2.Surface) "
+set SDESC(m2ms.Surface) "
 <P>This topic records data pertaining to the requested and<BR>measured
-m2 surface properties (figure, stresses, temps etc). "
+m2ms surface properties (figure, stresses, temps etc). "
 
 set SDESC(mount.TC) "
 <P>Temperature sensing information for sensors located in the mount
@@ -1291,7 +1291,7 @@ set DESC(system.Command_history) "This item records all commands and their
 responses."
 
 set DESC(m1m3.Application) "This subsystem generates application level items calculated from subsystem raw data"
-set DESC(m2.Application) "This subsystem generates application level items calculated from subsystem raw data"
+set DESC(m2ms.Application) "This subsystem generates application level items calculated from subsystem raw data"
 set DESC(mount.Application) "This subsystem generates application level items calculated from subsystem raw data"
 set DESC(calibration.Application) "This subsystem generates application level items calculated from subsystem raw data"
 set DESC(enclosure.Application) "This subsystem generates application level items calculated from subsystem raw data"

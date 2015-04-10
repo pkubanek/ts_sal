@@ -11,8 +11,5 @@ CREATE TABLE ocs_system_accesscontrol_items (
   comment char(128),
   PRIMARY KEY (num)
 );
-INSERT INTO ocs_system_accesscontrol_items VALUES (1,"subssystem","string",128,"",0.054,"","","");
-INSERT INTO ocs_system_accesscontrol_items VALUES (2,"device","string",128,"",0.054,"","","");
-INSERT INTO ocs_system_accesscontrol_items VALUES (3,"bystation","string",500,"",0.054,"","","");
-INSERT INTO ocs_system_accesscontrol_items VALUES (4,"byoperator","string",500,"",0.054,"","","");
-INSERT INTO ocs_system_accesscontrol_items VALUES (5,"bypolicy","string",500,"",0.054,"","","");
+INSERT INTO ocs_system_accesscontrol_items VALUES (1,"accept","long",128,"",0.054,"","","");
+INSERT INTO ocs_system_accesscontrol_items VALUES (2,"deny","long",128,"",0.054,"","","");

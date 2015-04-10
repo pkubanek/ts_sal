@@ -268,10 +268,11 @@ global XMLTOPICS XMLTLM
              incr eid 1
              doitem $eid $fhtm $id $type $siz "$units" "$range" "$comments" 
              puts stdout  "doitem $eid $fhtm $id $type $siz |$units |$range  |$comments "
-             if { $freq != "" && $freq != "tbd" } {set FREQUENCY($hid) $freq }
+             if { $freq != "" && $freq != "tbd" && $freq != "none" } {set FREQUENCY($hid) $freq }
              if { [info exists FREQUENCY($hid)] == 0 } {
                  set FREQUENCY($hid) [getfrequency $hid]
              }
+             if { $FREQUENCY($hid) < 0.001 } {set FREQUENCY($hid) 0.001}
              puts $fdet "$hid.$id $siz $type $FREQUENCY($hid)"
              lappend tnames $id
              incr iinum 1

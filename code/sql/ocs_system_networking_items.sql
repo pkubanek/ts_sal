@@ -11,8 +11,6 @@ CREATE TABLE ocs_system_networking_items (
   comment char(128),
   PRIMARY KEY (num)
 );
-INSERT INTO ocs_system_networking_items VALUES (1,"subsystem","string",128,"",0.054,"","","");
-INSERT INTO ocs_system_networking_items VALUES (2,"mac","string",32,"",0.054,"","","");
-INSERT INTO ocs_system_networking_items VALUES (3,"ip","long",4,"",0.054,"","","");
-INSERT INTO ocs_system_networking_items VALUES (4,"rx","long",6,"",0.054,"","","");
-INSERT INTO ocs_system_networking_items VALUES (5,"tx","long",6,"",0.054,"","","");
+INSERT INTO ocs_system_networking_items VALUES (1,"ip","long",4,"",1,"","","");
+INSERT INTO ocs_system_networking_items VALUES (2,"rx","long",6,"",1,"","","");
+INSERT INTO ocs_system_networking_items VALUES (3,"tx","long",6,"",1,"","","");

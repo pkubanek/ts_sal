@@ -10,12 +10,54 @@
   #include "SAL_defines.h"
   #include "ccpp_dds_dcps.h"
 // INSERT TYPE INCLUDES
-
   #include "CheckStatus.h"
   #include "SAL_SALDataC.h"
 
   using namespace std;
   using namespace DDS;
+
+#define SAL__ACTORS_MAXCOUNT	128
+#define SAL__ACTORS_NAMESIZE	128
+
+  struct salActor {
+      char 			baseName[SAL__ACTORS_NAMESIZE];
+      char 			topicName[SAL__ACTORS_NAMESIZE];
+      DDS::String_var 		sFilter;
+      DDS::String_var 		typeName;
+      DDS::String_var 		typeName2;
+      Topic_var 		topic;
+      Topic_var 		topic2;
+      DataReader_var 		reader;
+      DataReader_var 		reader2;
+      ContentFilteredTopic_var  filteredtopic;
+      ContentFilteredTopic_var  filteredtopic2;
+      DataWriter_var 		writer;
+      DataWriter_var 		writer2;
+      Publisher_var 		publisher;
+      Subscriber_var 		subscriber;
+ 
+      /* QosPolicy holders */
+      TopicQos 			reliable_topic_qos;
+      TopicQos 			reliable_topic_qos2;
+      PublisherQos 		pub_qos;
+      SubscriberQos 		sub_qos;
+      DataReaderQos 		dr_qos;
+      DataWriterQos 		dw_qos;
+      bool			isActive;
+      bool 			isReader;
+      bool 			isWriter;
+      bool 			isCommand;
+      bool 			isEventReader;
+      bool 			isEventWriter;
+      bool 			isProcessor;
+      int 			debugLevel;
+      int 			sndSeqNum;
+      int                       cmdSeqNum;
+      int 			rcvSeqNum;
+      int 			rcvOrigin;
+      long long 		sndStamp[2];
+      long long			rcvStamp[2];
+  };
 
   class SAL_SALData
   {
@@ -36,7 +78,6 @@
       /* QosPolicy holders */
       TopicQos reliable_topic_qos;
       TopicQos reliable_topic_qos2;
-      TopicQos setting_topic_qos;
       PublisherQos pub_qos;
       DataWriterQos dw_qos;
       SubscriberQos sub_qos;
@@ -56,10 +97,13 @@
       bool hasProcessor;
       int subsystemID;
       int debugLevel;
+      int cmdSeqNum;
       int sndSeqNum;
       int rcvSeqNum;
       int rcvOrigin;
       salU64  origin;
+
+      salActor sal[SAL__ACTORS_MAXCOUNT];
 
     public:
 
@@ -70,12 +114,10 @@
 #endif
 
 // INSERT TYPE SUPPORT      
-      void salTypeSupport(char *topicName);
-      void salTelemetryPub(char *topicName);
-      void salTelemetrySub(char *topicName);
+      salReturn salTypeSupport(char *topicName);
+      salReturn salTelemetryPub(char *topicName);
+      salReturn salTelemetrySub(char *topicName);
 
-
-//      void salEvent(char *topicName);
 //      template <class T1, class T2>
 //      void putSample(T1 data, T2 writer);
 //      template <class T1, class T2, class T3>
@@ -91,13 +133,14 @@
 #else
       void salInitialize();
 #endif
-      void salCommand();
-      void salProcessor();
+      salReturn salCommand();
+      salReturn salProcessor();
       int issueCommand( SALData::command data);
       int issueCommandC( SALData_commandC *data);
-      salReturn ackCommand( int cmdSeqNum, salLONG  ack, salLONG error, char *result );
       salReturn acceptCommand( SALData::commandSeq data);
       int acceptCommandC( SALData_commandC *data);
+// INSERT CMDALIAS SUPPORT  for issueCommandC and acceptCommandC, acceptAnyCommand   
+      salReturn ackCommand( int cmdSeqNum, salLONG  ack, salLONG error, char *result );
       salReturn checkCommand( int cmdSeqNum );
       salReturn cancelCommand( int cmdSeqNum );
       salReturn abortCommand( int cmdSeqNum );
@@ -113,7 +156,7 @@
       salReturn logEvent( char *message, int priority );      
       salReturn getEvent(SALData::logeventSeq data);
       int getEventC(SALData_logeventC *data);
-
+// INSERT EVENTALIAS SUPPORT for getEventC and logEventC , getAnyEvent
 
       void createParticipant(const char *partitiontName);
       void deleteParticipant();
@@ -121,14 +164,10 @@
       void registerType2(TypeSupport *ts);
       void createTopic(char *topicName);
       void createTopic2(char *topicName);
-     void createContentFilteredTopic(const char *topicName, const char *filter,
-        const StringSeq &expr);
-     void createContentFilteredTopic2(const char *topicName, const char *filter,
-        const StringSeq &expr);
-
-
-
-
+      void createContentFilteredTopic(const char *topicName, const char *filter,
+                                      const StringSeq &expr);
+      void createContentFilteredTopic2(const char *topicName, const char *filter,
+                                       const StringSeq &expr);
       void createPublisher();
       void deletePublisher();
       void deleteTopics();
@@ -150,6 +189,41 @@
       Subscriber_ptr getSubscriber();
       Topic_ptr getTopic();
       DomainParticipant_ptr getParticipant();
+
+      void initSalActors();
+      salReturn salTelemetryPub(int actorIdx);
+      salReturn salTelemetrySub(int actorIdx);
+      salReturn salEvent(char *topicName);
+      int getActorIndex(char *topic);
+      salReturn salTypeSupport(int actorIdx);
+      salReturn salCommand(char *cmdAlias);
+      salReturn salProcessor(char *cmdAlias);
+      void registerType(int actorIdx,TypeSupport *ts);
+      void registerType2(int actorIdx,TypeSupport *ts);
+      void createTopic(int actorIdx);
+      void createTopic2(int actorIdx);
+      void createTopic(int actorIdx, char *topicName);
+      void createTopic2(int actorIdx, char *topicName);
+      void createContentFilteredTopic(int actorIdx,const char *topicName, const char *filter,const StringSeq &expr);
+      void createContentFilteredTopic2(int actorIdx,const char *topicName, const char *filter,const StringSeq &expr);
+      void createPublisher(int actorIdx);
+      void createWriter(int actorIdx);
+      void createWriter(int actorIdx,bool autodispose_unregistered_instances);
+      void createWriter2(int actorIdx);
+      void createWriter2(int actorIdx,bool autodispose_unregistered_instances);
+      void createSubscriber(int actorIdx);
+      void createReader(int actorIdx,bool filtered);
+      void createReader2(int actorIdx,bool filtered);
+      DataReader_ptr getReader(int actorIdx);
+      DataWriter_ptr getWriter(int actorIdx);
+      DataReader_ptr getReader2(int actorIdx);
+      DataWriter_ptr getWriter2(int actorIdx);
+      Publisher_ptr  getPublisher(int actorIdx);
+      Subscriber_ptr getSubscriber(int actorIdx);
+      Topic_ptr      getTopic(int actorIdx);
+      Topic_ptr      getTopic2(int actorIdx);
+
+
       ~SAL_SALData();
   };
 

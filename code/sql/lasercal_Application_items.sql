@@ -14,4 +14,3 @@ CREATE TABLE lasercal_Application_items (
 INSERT INTO lasercal_Application_items VALUES (1,"Demand","float",4,"",0.054,"","","");
 INSERT INTO lasercal_Application_items VALUES (2,"Position","float",4,"",0.054,"","","");
 INSERT INTO lasercal_Application_items VALUES (3,"Error","float",4,"",0.054,"","","");
-INSERT INTO lasercal_Application_items VALUES (4,"Status","string",16,"",0.054,"","","");

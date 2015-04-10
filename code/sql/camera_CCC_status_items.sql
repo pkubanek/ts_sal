@@ -11,5 +11,5 @@ CREATE TABLE camera_CCC_status_items (
   comment char(128),
   PRIMARY KEY (num)
 );
-INSERT INTO camera_CCC_status_items VALUES (1,"Image_Status","long",20,"none",0.054,"none","Control room","CCS status during image");
-INSERT INTO camera_CCC_status_items VALUES (2,"CCS_Status","long",20,"none",0.017,"none","Control room","Periodic or on-demand status");
+INSERT INTO camera_CCC_status_items VALUES (1,"Image_Status","long",20,"",11,"","","");
+INSERT INTO camera_CCC_status_items VALUES (2,"CCS_Status","long",20,"",11,"","","");

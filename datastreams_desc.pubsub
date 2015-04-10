@@ -35,14 +35,14 @@ camera.WTCM 4 2
 camera.CALSYS 1 2
 camera.UTIL 1 2
 camera.LASERCAL 1 2
-enclosure.Application 1 2
-enclosure.Azimuth 1 2
-enclosure.Electrical 1 2
-enclosure.Metrology 1 2
-enclosure.Shutter 1 2
-enclosure.TC 1 2 1 2
-enclosure.Thermal_control 1 2
-enclosure.Vents 1 2
+dome.Application 1 2
+dome.Azimuth 1 2
+dome.Electrical 1 2
+dome.Metrology 1 2
+dome.Shutter 1 2
+dome.TC 1 2 1 2
+dome.Thermal_control 1 2
+dome.Vents 1 2
 environment.Dust_monitor 1 2
 environment.Electrical 1 2
 environment.Lightning_detector 1 2

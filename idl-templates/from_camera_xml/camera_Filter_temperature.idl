@@ -1,0 +1,12 @@
+struct camera_Filter_temperature {
+  string<32> private_revCode;  //private
+  double     private_sndStamp; //private
+  double     private_rcvStamp; //private
+  long       private_seqNum;   //private
+  long       private_origin;   //private
+  float	Latch_temperature[10];	// 2.31E-04 | Celsius | Carousel: 10 latch temperatures | none | Camera body | 10 | 100  | 400 
+  float	Carousel_temperature;	// 2.31E-04 | Celsius | Carousel: Motor temperature | none | Camera body | 1 | 10  | 40 
+  float	Clamp_temperature[5];	// 2.31E-04 | Celsius | Auto: Clamp temperatures | none | Camera body | 5 | 50  | 200 
+  float	Auto_temperature;	// 2.31E-04 | Celsius | Auto: Motor temperature | none | Camera body | 1 | 10  | 40 
+};
+#pragma keylist camera_Filter_temperature 

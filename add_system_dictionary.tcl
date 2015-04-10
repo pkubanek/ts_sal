@@ -1,11 +1,11 @@
 
-set SYSDIC(systems) "auxscope calibration camera dm enclosure environment hexapod lasercal m1m3 m2 mount network operations power rotator scheduler seeing skycam system tcs"
+set SYSDIC(systems) "auxscope calibration camera dm  dome enclosure environment hexapod lasercal m1m3 m2ms mount network operations power rotator scheduler seeing skycam system tcs"
 foreach s $SYSDIC(systems) {set SYSDIC($s,type) system}
 
 set SYSDIC(datatypes) "byte short int long float string int64 double ubyte ushort uint ulong"
 set SYSDIC(hexapod,keyedID) 1
 
-set SYSDIC(hexapod,1) "m2hexapod"
+set SYSDIC(hexapod,1) "m2mshexapod"
 set SYSDIC(hexapod,2) "camerahexapod"
 
 set TSYSDIC(subsystems) "<H2>Appendix A - System Dictionary</H2><P>
@@ -59,6 +59,7 @@ camera.CALSYS - Calibration system
 camera.CCC - Camera control system
 camera.CCS - Camera control system
 camera.Cluster - Camera control system
+camera.GAS - Camera Guider acquisition system
 camera.Prot - Lens protection system*
 camera.FCS - Filter control system
 camera.Filter - Filter control system
@@ -102,6 +103,28 @@ dm.pointing - Astrometry calibrations
 dm.WCS - Astrometry calibrations
 dm.raw - Raw metrics
 dm.PIPE - Pipeline statuses
+dome - Dome mechanisms
+dome.Application - Derived metadata
+dome.Electrical - Electrical system monitoring
+dome.Metrology - Positional information
+dome.Azimuth - Dome rotation
+dome.Bogies - Dome trucks
+dome.CapacitorBank - Capacitor bank
+dome.Crane - Camera handling system
+dome.Environment - Dome environmental sensing
+dome.Liftplatform - Mirror handling system
+dome.Screen - Calibration screen
+dome.Shutter - Dome aperture control
+dome.TC - Temperature control systems
+dome.Louvers - Dome vents and air-flow management
+environment - Environmental monitoring
+environment.Dust - Particulate monitoring
+environment.Electrical - Electrical system monitoring
+environment.Lightning - Electrical disturbance monitoring
+environment.Seismometer - Earthquake monitoring
+environment.TC - Temperature control systems
+environment.Weather - Local weather sensing
+environment.Video - Local video cameras
 enclosure - Dome mechanisms
 enclosure.Application - Derived metadata
 enclosure.Electrical - Electrical system monitoring
@@ -139,22 +162,24 @@ m1m3.ActuatorSample - Figure control systems
 m1m3.Electrical - Power monitoring
 m1m3.LimitSensors - Position monitoring/control
 m1m3.LUT - Look-up tables
+m1m3.LimitSensors - Limit sensors
 m1m3.Metrology - Position monitoring/control
+m1m3.Support - Mirror/Mount interface
 m1m3.Supports - Mirror/Mount interface
 m1m3.Surface - Figure monitoring
 m1m3.TC - Thermal monitoring/control
-m2 - Secondary mirror
-m2.Application - Derived metadata
-m2.Actuators - Figure control systems
-m2.Electrical - Power monitoring
-m2.Hexapod - Hexapod monitoring
-m2.LimitSensors - Position monitoring/control
-m2.LUT - Look-up tables
-m2.Metrology - Position monitoring/control
-m2.Supports - Mirror/Mount interface
-m2.Surface - Figure monitoring
-m2.TC - Thermal monitoring/control
-m2.Temps - Thermal monitoring/control
+m2ms - Secondary mirror
+m2ms.Application - Derived metadata
+m2ms.Actuators - Figure control systems
+m2ms.Electrical - Power monitoring
+m2ms.Hexapod - Hexapod monitoring
+m2ms.LimitSensors - Position monitoring/control
+m2ms.LUT - Look-up tables
+m2ms.Metrology - Position monitoring/control
+m2ms.Supports - Mirror/Mount interface
+m2ms.Surface - Figure monitoring
+m2ms.TC - Thermal monitoring/control
+m2ms.Temps - Thermal monitoring/control
 mount - Telescope mount
 mount.Az - Azimuth axis monitoring/control
 mount.Alt - Altitude axis monitoring/control
@@ -196,6 +221,7 @@ power.Noncritical - Other power systems
 power.Main - Main power monitoring/control , mission critical
 power.TC - Thermal monitoring/control
 power.UPSs - Uninterruptible power supplies
+rotator - Camera rotator system
 scheduler - Observation scheduling subsystem
 scheduler.Application - Derived metadata
 seeing.dimm - DIMM Seeing monitor system

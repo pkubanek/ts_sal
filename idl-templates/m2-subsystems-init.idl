@@ -1,46 +1,41 @@
-const M2NUMACT=72
-const FREQUENCY=1.0
-const PUBLISHERS=1
-
-struct m2_actuators {
-  long targetpos[M2NUMACT];	//	none : none : Stepper Motor target position
-  long stepcnt[M2NUMACT];	//	none : none : Stepper Motor actual position
-  float force[M2NUMACT];	//	none : none : Measured force
+const M2MSNUMACT=72
+  long stepcnt[M2MSNUMACT];	//	none : none : Stepper Motor actual position
+  float force[M2MSNUMACT];	//	none : none : Measured force
 };
 
 
-struct m2_LimitSensors {
+struct m2ms_LimitSensors {
   unsigned short liftoff[64];	//	none : none : Liftoff switches
   unsigned short limit[64];	//	none : none : Limit switches
 };
 
 
-struct m2_Hexapod {
+struct m2ms_Hexapod {
   long targetpos[16];		//	none : none : Target position
   long error[16];		//	none : none : Error
   unsigned short status[16];	//	none : none : Status bits
 };
 
-struct m2_Electrical {
+struct m2ms_Electrical {
   long voltage[16];		//	none : none : Voltage
   long error[16];		//	none : none : Error
   unsigned short status[16];	//	none : none : Status bits
 };
 
-struct m2_TC {
+struct m2ms_TC {
   float setpoint[16];		//	none : none : Setpoint temp
   float temperature[16];	//	none : none : Measured temp
   float error[16];		//	none : none : Error
   unsigned short status[16];	//	none : none : Status bits
 }
 
-struct m2_Metrology {
+struct m2ms_Metrology {
   long distance[16];		//	none : none : Measured distance
   long error[16];		//	none : none : Error
   unsigned short status[16];	//	none : none : Status bits
 };
 
-struct m2_Application {
+struct m2ms_Application {
   float demand[6];		//	none : none : Target configuration
   float position[6];		//	none : none : Current value
   float error[6];		//	none : none : Target configuration

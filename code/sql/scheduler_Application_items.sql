@@ -11,5 +11,4 @@ CREATE TABLE scheduler_Application_items (
   comment char(128),
   PRIMARY KEY (num)
 );
-INSERT INTO scheduler_Application_items VALUES (1,"Status","string",50,"",0.054,"","","");
-INSERT INTO scheduler_Application_items VALUES (2,"data","float",200,"",0.054,"","","");
+INSERT INTO scheduler_Application_items VALUES (1,"data","float",200,"",0.054,"","","");

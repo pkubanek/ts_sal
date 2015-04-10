@@ -1,9 +1,4 @@
 struct auxscope_Application {
-  float Demand[4];
-  float Position[4];
-  float Error[4];
-  string<16> Status;
-};
 
 
 

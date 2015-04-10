@@ -11,5 +11,4 @@ CREATE TABLE m1m3_LUT_items (
   comment char(128),
   PRIMARY KEY (num)
 );
-INSERT INTO m1m3_LUT_items VALUES (1,"algorithm","string",32,"",0.054,"","","");
-INSERT INTO m1m3_LUT_items VALUES (2,"param","float",32,"",0.054,"","","");
+INSERT INTO m1m3_LUT_items VALUES (1,"param","float",32,"",0.054,"","","");

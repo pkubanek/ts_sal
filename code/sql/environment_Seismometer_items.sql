@@ -11,5 +11,5 @@ CREATE TABLE environment_Seismometer_items (
   comment char(128),
   PRIMARY KEY (num)
 );
-INSERT INTO environment_Seismometer_items VALUES (1,"Raw","long",16,"",0.054,"","","");
-INSERT INTO environment_Seismometer_items VALUES (2,"Calibrated","float",32,"",0.054,"","","");
+INSERT INTO environment_Seismometer_items VALUES (1,"Raw","long",16,"",10,"","","");
+INSERT INTO environment_Seismometer_items VALUES (2,"Calibrated","float",32,"",10,"","","");

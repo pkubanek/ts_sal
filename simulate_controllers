@@ -1,0 +1,19 @@
+#!/usr/bin/tclsh
+
+set base $env(SAL_WORK_DIR)
+set xy 50
+foreach i $argv {
+   set simctrl $base/$i/cpp/src/sacpp_[set i]_ctrl
+   if { [info exists env(LSST_[string toupper [set i]]_SIMULATOR] } {
+      set simctrl $env(LSST_[string toupper [set i]]_SIMULATOR)
+   }
+   if { [file exists $simctrl] } {
+     puts stdout "Starting controller simulator for subsystem $i using $simctrl"
+     exec gnome-terminal --geometry +$xy+$xy -e $simctrl &
+     incr xy 50 
+   } else {
+     puts stdout "No simulator available for subsystem $i"
+  }
+}
+
+

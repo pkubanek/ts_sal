@@ -281,8 +281,8 @@ writeshm [set subsys]
   exec chmod 755 test_[set subsys].tcl connect_[set subsys].tcl
   set ftst [open startpubsub-[set subsys] w]
   puts $ftst "#!/bin/sh
-xterm -e ../ospl-[set subsys]/[set subsys]_shmpub &
-xterm -e ../ospl-[set subsys]/[set subsys]_shmsub &
+gnome-terminal -e ../ospl-[set subsys]/[set subsys]_shmpub &
+gnome-terminal -e ../ospl-[set subsys]/[set subsys]_shmsub &
 echo \"Use ./test_[set subsys].tcl to test\"
 "
   close $ftst

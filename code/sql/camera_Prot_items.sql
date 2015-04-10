@@ -11,4 +11,4 @@ CREATE TABLE camera_Prot_items (
   comment char(128),
   PRIMARY KEY (num)
 );
-INSERT INTO camera_Prot_items VALUES (1,"Status","long",2,"Volts",0.010,"none","Control room","xxx");
+INSERT INTO camera_Prot_items VALUES (1,"Status","long",2,"",11,"","","");

@@ -1,9 +1,4 @@
 struct seeing_mass_Application {
-  float Demand[2];
-  float Position[2];
-  float Error[2];
-  string<128> Status[15];
-};
 
 
 

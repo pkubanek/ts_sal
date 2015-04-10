@@ -82,21 +82,34 @@ global TYPESUBS VPROPS
    set u ""
    set VPROPS(array) 0
    set VPROPS(string) 0
+   set VPROPS(int) 0
+   set VPROPS(double) 00
    set VPROPS(name) ""
+   if { [lindex $rec 0] == "string" } {
+      set VPROPS(string) 1
+      set VPROPS(dim) 32
+      set name [string trim [lindex $rec 1] ";"]
+      set VPROPS(name) $name
+      set res "  std::string	$name;[join [lrange $rec 2 end]]"
+      return $res
+   }
    if { [lindex $rec 0] == "unsigned" } {set u "unsigned"; set rec [join [lrange $rec 1 end] " "]}
    if { [llength [split $rec "<"]] > 1 } {
       set s [lindex [split $rec "<>"] 1]
       set VPROPS(dim) $s
-      set res "  char	lindex $rec 1]\[$s\]   [join [lrange $rec 2 end]]"
+      set name [string trim [lindex $rec 1] ";"]
+      set res "  std::string	$name;[join [lrange $rec 2 end]]"
       set VPROPS(name) [string trim [join [lrange $rec 1 end]] ";"]
       set VPROPS(string) 1
    } else {
-      if { [llength [split $rec "\["]] > 1 } {
-        set s [lindex [split $rec "\[\]"] 1]
-        set n [lindex [lindex [split $rec "\[\]"] 0] 1]
+      if { [lindex $rec 0] != "float" && [lindex $rec 0] != "double" } {set VPROPS(int) 1}
+      if { [lindex $rec 0] == "double" } {set VPROPS(double) 1 }
+      if { [llength [split $rec "\[("]] > 1 } {
+        set s [lindex [split $rec "\[\]()"] 1]
+        set n [lindex [lindex [split $rec "\[\]()"] 0] 1]
         set VPROPS(name) $n
         set VPROPS(array) 1
-        set VPROPS(dim) $s
+        set VPROPS(dim) [string trim $s "\\"]
         set res "  [set u] $TYPESUBS([lindex $rec 0]) $n\[$s\];"
       } else {
         set res " [set u] $TYPESUBS([lindex $rec 0]) [join [lrange $rec 1 end]]"
@@ -314,6 +327,7 @@ proc lvtypebuilder { base op name type size } {
 
 set TYPESUBS(string) char
 set TYPESUBS(byte)   char
+set TYPESUBS(char)   char
 set TYPESUBS(octet)  char
 set TYPESUBS(int)    long
 set TYPESUBS(short)  short
@@ -322,6 +336,8 @@ set TYPESUBS(int32)  long
 set TYPESUBS(long)   long
 set TYPESUBS(float)  float
 set TYPESUBS(double) double
+set TYPESUBS(bool)   int
+set TYPESUBS(boolean) int
 set TYPESUBS(unsignedint)    long
 set TYPESUBS(unsignedshort)  short
 set TYPESUBS(unsignedint16)  short
@@ -340,6 +356,8 @@ set TYPESIZE(long)   4
 set TYPESIZE(float)  4
 set TYPESIZE(double) 8
 set TYPESIZE(int64)  8
+set TYPESIZE(bool)   4
+set TYPESIZE(boolean) 4
 set TYPESIZE(unsignedshort)  2
 set TYPESIZE(unsignedint16)  2
 set TYPESIZE(unsignedint)    4
@@ -352,6 +370,8 @@ set TYPEFORMAT(short)  "%d"
 set TYPEFORMAT(int16)  "%d"
 set TYPEFORMAT(int)    "%d"
 set TYPEFORMAT(int32)  "%d"
+set TYPEFORMAT(bool)   "%d"
+set TYPEFORMAT(boolean) "%d"
 set TYPEFORMAT(long)   "%ld"
 set TYPEFORMAT(float)  "%f"
 set TYPEFORMAT(double) "%lf"

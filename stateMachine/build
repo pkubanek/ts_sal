@@ -1,0 +1,12 @@
+#!/bin/sh
+
+export JAVA_HOME=/usr/lib/jvm/java-7-openjdk-i386
+export PATH=/usr/lib/jvm/java-7-openjdk-i386/bin:${PATH}
+java  -jar ../smc/bin/Smc.jar -java   -d java   salLifecycle.sm
+java  -jar ../smc/bin/Smc.jar -c++    -d cpp    salLifecycle-cpp.sm
+java  -jar ../smc/bin/Smc.jar -python -d python salLifecycle.sm
+java  -jar ../smc/bin/Smc.jar -tcl    -d tcl    salLifecycle.sm
+java  -jar ../smc/bin/Smc.jar -table salLifecycle.sm
+java  -jar ../smc/bin/Smc.jar -graph salLifecycle.sm
+doxygen ./Doxyfile
+

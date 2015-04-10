@@ -27,17 +27,15 @@ int SALTelemetryPublisher(char *topic_name)
 {
   os_time delay_1s = { 1, 0 };
   SALNAMESTRINGC myData;
-  long i,iseq;
+  long iseq;
 
   // Publish Events
   //create Topic
 #ifdef SAL_SUBSYSTEM_ID_IS_KEYED
   int SALDataID = 1;
   SAL_SALData mgr = SAL_SALData(SALDataID);
-//  cmd.salInitialize(SALDataID);
 #else
   SAL_SALData mgr = SAL_SALData();
-//  cmd.salInitialize();
 #endif
 
   mgr.salTelemetryPub(topic_name);
@@ -45,7 +43,7 @@ int SALTelemetryPublisher(char *topic_name)
   while (1) {
 // INSERT_SAL_PUBC
     iseq++;
-    mgr.putSampleSALTopic(&myData);
+    mgr.putSample_SALTopic(&myData);
     os_nanoSleep(delay_1s);
   }
 

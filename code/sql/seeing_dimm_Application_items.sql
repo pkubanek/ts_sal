@@ -14,4 +14,3 @@ CREATE TABLE seeing_dimm_Application_items (
 INSERT INTO seeing_dimm_Application_items VALUES (1,"Raw","long",16,"",0.054,"","","");
 INSERT INTO seeing_dimm_Application_items VALUES (2,"Calibrated","float",32,"",0.054,"","","");
 INSERT INTO seeing_dimm_Application_items VALUES (3,"Error","float",4,"",0.054,"","","");
-INSERT INTO seeing_dimm_Application_items VALUES (4,"Status","string",16,"",0.054,"","","");

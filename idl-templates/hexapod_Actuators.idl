@@ -1,4 +1,1 @@
 struct hexapod_Actuators {
-  long Raw[18];
-  float Calibrated[18];
-};

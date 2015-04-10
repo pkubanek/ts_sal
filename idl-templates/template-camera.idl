@@ -1,9 +1,4 @@
 const NUMCCD=201
-const FREQUENCY=0.1
-const PUBLISHERS=1
-
-struct camera_BEE_clocks {
-  long	serial_1A[NUMCCD];	#	none |	none |	Serial clock voltage 1A raw value
   long	serial_2A[NUMCCD];	#	none |	none |	Serial clock voltage 2A raw value
   long	serial_3A[NUMCCD];	#	none |	none |	Serial clock voltage 3A raw value
   long	serial_1B[NUMCCD];	#	none |	none |	Serial clock voltage 1B raw value

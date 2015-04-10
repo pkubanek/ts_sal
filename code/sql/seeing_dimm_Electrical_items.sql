@@ -13,4 +13,3 @@ CREATE TABLE seeing_dimm_Electrical_items (
 );
 INSERT INTO seeing_dimm_Electrical_items VALUES (1,"Raw","long",16,"",0.054,"","","");
 INSERT INTO seeing_dimm_Electrical_items VALUES (2,"Calibrated","float",31,"",0.054,"","","");
-INSERT INTO seeing_dimm_Electrical_items VALUES (3,"Status","octet",15,"",0.054,"","","");

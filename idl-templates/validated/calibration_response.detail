@@ -1,4 +1,0 @@
-calibration.response.cmdID 1 long 0.1
-calibration.response.timeout 1 long 0.1
-calibration.response.repeat 1 short 0.1
-calibration.response.submits 1 short 0.1

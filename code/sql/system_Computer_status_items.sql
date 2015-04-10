@@ -11,5 +11,5 @@ CREATE TABLE system_Computer_status_items (
   comment char(128),
   PRIMARY KEY (num)
 );
-INSERT INTO system_Computer_status_items VALUES (1,"Raw","long",16,"",0.054,"","","");
-INSERT INTO system_Computer_status_items VALUES (2,"Calibrated","float",32,"",0.054,"","","");
+INSERT INTO system_Computer_status_items VALUES (1,"Raw","long",16,"",1,"","","");
+INSERT INTO system_Computer_status_items VALUES (2,"Calibrated","float",32,"",1,"","","");

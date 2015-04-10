@@ -1,0 +1,6 @@
+struct hexapod_TC {
+  float setpoint[16];
+  float temperature[16];
+  float error[16];
+  short status[16];
+};

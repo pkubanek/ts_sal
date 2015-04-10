@@ -11,5 +11,5 @@ CREATE TABLE m1m3_Support_items (
   comment char(128),
   PRIMARY KEY (num)
 );
-INSERT INTO m1m3_Support_items VALUES (1,"Raw","long",16,"",0.054,"","","");
-INSERT INTO m1m3_Support_items VALUES (2,"Calibrated","float",32,"",0.054,"","","");
+INSERT INTO m1m3_Support_items VALUES (1,"Raw","long",16,"",20,"","","");
+INSERT INTO m1m3_Support_items VALUES (2,"Calibrated","float",32,"",20,"","","");

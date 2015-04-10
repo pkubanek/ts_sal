@@ -12,7 +12,3 @@ CREATE TABLE m1m3_command_items (
   PRIMARY KEY (num)
 );
 INSERT INTO m1m3_command_items VALUES (1,"cmdID","long",1,"",0.054,"","","");
-INSERT INTO m1m3_command_items VALUES (2,"device","string",16,"",0.054,"","","");
-INSERT INTO m1m3_command_items VALUES (3,"operation","string",16,"",0.054,"","","");
-INSERT INTO m1m3_command_items VALUES (4,"value","string",16,"",0.054,"","","");
-INSERT INTO m1m3_command_items VALUES (5,"modifiers","string",128,"",0.054,"","","");

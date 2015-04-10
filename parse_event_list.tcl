@@ -8,6 +8,7 @@ source $SAL_DIR/add_private_idl.tcl
 
 set subsys [lindex $argv 0]
 set fin [open $SAL_WORK_DIR/event_list_$subsys r]
+puts stdout "Parsing event list for $subsys"
 
 
 while { [gets $fin rec] > -1 } {
@@ -21,21 +22,21 @@ while { [gets $fin rec] > -1 } {
           set EVTS($subsys,$alias) $cmd                 
           lappend ALIASES $alias            
        } else {
-          lappend EVTS($subsys,$alias,param) [string trim $rec]
+          set x [string trim $rec]
+          set y [join [split $x "\[" ] "("]
+          set z [join [split $y "\]" ] ")"]
+          lappend EVTS($subsys,$alias,param) $z
        }
   }
 }
 close $fin
 
 puts stdout "Generating logevent IDL for $subsys"
-puts stdout "**************NOT CURRENTLY USED****************"
-set fidl [open $SAL_WORK_DIR/logevent_[set subsys].idl w]
 foreach i [lsort $ALIASES] {
+   set fidl [open $SAL_WORK_DIR/idl-templates/validated/[set subsys]_logevent_$i.idl w]
    puts $fidl "   struct logevent_$i \{"
    add_private_idl $fidl "      "
-   if { [info exists SYSDIC($subsys,keyedID)] } {
-       puts $fidl "      short [set subsys]ID;"
-   }
+   puts $fidl "      long priority;"
    if { [info exists EVTS($subsys,$i,param)] } {
      foreach p $EVTS($subsys,$i,param) {
          puts $fidl "      $p;"
@@ -43,16 +44,17 @@ foreach i [lsort $ALIASES] {
    }
    puts $fidl "   \};"
    if { [info exists SYSDIC($subsys,keyedID)] } {
-      puts $fidl "   #pragma keylist logevent_$i [set subsys]ID"
+      puts $fidl "   #pragma keylist logevent_$i [set subsys]ID" 
    } else {
       puts $fidl "   #pragma keylist logevent_$i"
    }
+   close $fidl
 }
-close $fidl
 
 puts stdout "Generating log event command gui input"        
 set fout [open $SAL_WORK_DIR/idl-templates/validated/[set subsys]_evtdef.tcl w]
 puts $fout "set ALIASES \"$ALIASES\""
+puts $fout "set EVENT_ALIASES([set subsys]) \"$ALIASES\""
 foreach c [array names EVTS] {
    puts $fout "set EVTS($c) \"$EVTS($c)\""
 }

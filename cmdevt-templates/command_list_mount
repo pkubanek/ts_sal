@@ -1,0 +1,20 @@
+###
+###  This file defines Commands for the mount subsystem
+###  It is processed by salgenerator parser to produce corresponding idl
+###
+###-------------------------------------------------------------------------------------------
+###  COMMANDS
+###-------------------------------------------------------------------------------------------
+#type	  device 	property 	action	value+modifiers	| alias		| frequency
+#
+command  target 	position 	              		| moveToTarget  | 20
+						string  azimuth
+						string  elevation
+command  configure						| configure
+						string  spec_id
+command	 wrap		position				| moveCamWrap
+						double angle
+command  mirrorCover	position				| moveMirrorCover
+						string position
+command  all		test					| test
+						string spec_id

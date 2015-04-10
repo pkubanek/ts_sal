@@ -41,10 +41,17 @@ foreach i [lsort $ALIASES] {
    place .timev$i -x 300 -y $my
    incr my 30
 }
-button .done -text "Exit commander" -width 44 -bg orange -command exit
+button .done -text "Exit commander" -width 44 -bg orange -command doexit
 place .done -x 10 -y $my
 incr my 40
 wm geometry . 400x$my
+
+proc doexit { } {
+global LISTENER
+  exec kill -9 $LISTENER
+  exit
+}
+
 
 proc runcommand { alias } {
 global CMDS SUBSYS PARS TIMEOUT SAL_WORK_DIR
@@ -66,19 +73,20 @@ global CMDS SUBSYS PARS TIMEOUT SAL_WORK_DIR
    }
    if { $ready } {
      catch {.cmd$alias configure -bg orange}
-     exec gnome-terminal -e "$SAL_WORK_DIR/$SUBSYS/cpp/src/sacpp_[set SUBSYS]_cmd $TIMEOUT($alias) \"$device\" \"$property\" \"$action\" \"$value\" \"$modifiers\""
+     exec xterm -e "$SAL_WORK_DIR/$SUBSYS/cpp/src/sacpp_[set SUBSYS]_cmd $TIMEOUT($alias) \"$device\" \"$property\" \"$action\" \"$value\" \"$modifiers\""
      .cmd$alias configure -bg green
    } else { 
      set it [tk_dialog .d "Missing parameter" "All parameters must have a value" {} -1 "OK"]
    } 
 }
 
-if { [lindex [exec ospl list] end] != "running" } {
-   puts stdout "Starting OSPL daemon"
-   exec ospl start
-   exec sleep 5
-}
+#if { [lindex [exec ospl list] end] != "running" } {
+#   puts stdout "Starting OSPL daemon"
+#   exec ospl start
+#   exec sleep 5
+#}
 puts stdout "Starting $SUBSYS controller simulation"
-exec gnome-terminal -t "$SUBSYS controller simulator" -e $SAL_WORK_DIR/$SUBSYS/cpp/src/sacpp_[set SUBSYS]_ctrl 1 &
+set LISTENER [exec xterm -T "$SUBSYS controller simulator" -e $SAL_WORK_DIR/$SUBSYS/cpp/src/sacpp_[set SUBSYS]_ctrl 1 &]
+
 
 

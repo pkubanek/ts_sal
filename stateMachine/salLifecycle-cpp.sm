@@ -1,0 +1,47 @@
+%header header
+%class salLifecycle
+
+%start MainMap::Off
+
+%map MainMap
+%%
+Off
+{
+	ocsBoot		STANDBY 	{ boot(); }
+}
+STANDBY
+{
+	ocsQuit	 	Off    		{ quit(); }
+	ocsConfigure 	CONFIGURING 	{ configureAck(); }
+}
+CONFIGURING
+{ 
+	ocsAbandon	STANDBY		{ abandon(); }
+	ocsConfigure	DISABLED	{ configureDone(); }
+        configureError	ERROR		{ configureFailed(); }
+}
+DISABLED 
+{ 
+	ocsEnable	ENABLED		{ enableAck(); }
+	ocsUnConfigure	STANDBY		{ unConfigureAck(); }
+        disableError    ERROR		{ disableFailed() ; }
+}
+ENABLED
+{
+	ocsEnable	ENABLED		{ enableDone(); }
+	ocsStop		ENABLED		{ stopDone(); }
+	ocsAbort	ERROR		{ enableFailed(); }
+	ocsDisable	DISABLED	{ disableDone(); }
+        ocsSetValue	ENABLED		{ setValue(par,val); }
+	enableError	ERROR		{ enableFailed(); }
+}
+ERROR
+{
+	ocsReset	STANDBY		{ reset(); }
+}
+%%
+
+
+
+
+

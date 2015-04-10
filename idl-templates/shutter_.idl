@@ -1,9 +1,0 @@
-struct shutter_ {
-  string<32> private_revCode;  //private
-  double     private_sndStamp; //private
-  double     private_rcvStamp; //private
-  long       private_seqNum;   //private
-  long       private_origin;   //private
-  4	 camera_Shutter_time;	// Open Hall probe readings | float | Open_profile | seconds | none | Camera body | 24 |  56,043 
-};
-#pragma keylist shutter_ 

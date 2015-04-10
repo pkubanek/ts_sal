@@ -139,36 +139,36 @@ set SDESC(m3.Surface) "
 <P>This topic records data pertaining to the requested and<BR>measured
 m3 surface properties (figure, stresses, temps etc). "
 
-set SDESC(m2.Temps) "
-<P>Temperature sensing information for sensors located in the m2
+set SDESC(m2ms.Temps) "
+<P>Temperature sensing information for sensors located in the m2ms
 subsystem.<BR>Raw sensor readings, calibrated temperatures,
 time-series statistics, sensor health. "
 
-set SDESC(m2.Electrical) "
-<P>Electrical parameters for devices located in the m2 subsystem.<BR>Raw
+set SDESC(m2ms.Electrical) "
+<P>Electrical parameters for devices located in the m2ms subsystem.<BR>Raw
 data, calibrated voltages, calibrated current, device power status. "
 
-set SDESC(m2.Metrology) "
-<P>Position sensing information for sensors located in the m2
+set SDESC(m2ms.Metrology) "
+<P>Position sensing information for sensors located in the m2ms
 subsystem.<BR>Raw sensor readings, calibrated positions, limit
 switches, status bits. "
 
-set SDESC(m2.Application) "
-<P>Application specific information derived from sensors in the m2
+set SDESC(m2ms.Application) "
+<P>Application specific information derived from sensors in the m2ms
 subsystem. "
 
-set SDESC(m2.Hexapod) "
+set SDESC(m2ms.Hexapod) "
 <P>This topic records application level data concerning the<BR>requested
 and actual state of the haxapod support system. "
 
-set SDESC(m2.Actuators) "
+set SDESC(m2ms.Actuators) "
 <P>This topic records information on a per-actuator basis<BR>persuant
-to the low level behaviour of the components of<BR>the m2 support
+to the low level behaviour of the components of<BR>the m2ms support
 system. "
 
-set SDESC(m2.Surface) "
+set SDESC(m2ms.Surface) "
 <P>This topic records data pertaining to the requested and<BR>measured
-m2 surface properties (figure, stresses, temps etc). "
+m2ms surface properties (figure, stresses, temps etc). "
 
 set SDESC(mount.Temps) "
 <P>Temperature sensing information for sensors located in the mount

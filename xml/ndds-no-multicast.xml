@@ -1,0 +1,42 @@
+<dds xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     xsi:noNamespaceSchemaLocation="Z:/dom/apps_rti/Foo/RTI/ndds.4.5f/resource/qos_profiles_4.5f/schema/rti_dds_qos_profiles.xsd"
+     version="4.5f">
+  <qos_library name="ExampleLibrary">
+    <qos_profile name="NoMulticastProfile" is_default_qos="true">
+      <participant_qos>
+        <discovery>
+          <!-- disable the reception multicast for discovery  -->
+          <multicast_receive_addresses/>
+          <!-- Configure the destinatons of disovery announcements. Do not list any multicast addresses -->
+          <!--This is the list of transports destinations where the participant will announce its presence -->
+          <initial_peers>
+            <!-- use shared memory for participants the same computer -->
+            <element>builtin.shmem://</element>
+            <!-- also use IP loopback for  participants the same computer -->
+            <element>builtin.udpv4://127.0.0.1</element>
+            <!-- list here the IP addresses of all computers where thetre may be participants -->
+            <!-- THIS IS ONLY AN EXAMPLE. YOU MUST ADJUST TO MATCH YOUR CONFIGURATION -->
+            <element>builtin.udpv4://192.168.1.1</element>
+            <element>builtin.udpv4://192.168.1.2</element>            
+            <!-- You can also use machine names here -->
+            <element>builtin.udpv4://mypeer1.acme.com</element>
+            <element>builtin.udpv4://mypeer2.acme.com</element>
+          </initial_peers>
+        </discovery>
+  
+        <!-- disable the use of multicast at the UDP transport level -->
+        <!-- see http://community.rti.com/docs/html/api_cpp/group__NDDS__Transport__UDPv4__Plugin.html -->
+        <property>
+          <value>
+            <element>
+              <name>dds.transport.UDPv4.builtin.multicast_enable</name>
+              <value>0</value>
+           </element>
+          </value>
+        </property>
+      </participant_qos>
+    </qos_profile>
+  </qos_library>
+</dds>
+
+

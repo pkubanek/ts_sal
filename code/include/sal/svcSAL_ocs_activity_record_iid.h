@@ -1,10 +1,7 @@
 
 #if !defined(SAL_ocs_activity_record_IID__INCLUDED_)
 #define SAL_ocs_activity_record_IID__INCLUDED_
-#define SAL_IID_ocs_activity_record_type 12850369		// type string 128
-#define SAL_IID_ocs_activity_record_subsystem 12850370		// subsystem string 128
-#define SAL_IID_ocs_activity_record_part 12850371		// part string 128
-#define SAL_IID_ocs_activity_record_supervid 12850372		// supervid string 128
-#define SAL_IID_ocs_activity_record_uuid 12850373		// uuid string 32
+#define SAL_IID_ocs_activity_record_activity_code 8184579		// activity_code long 1
+#define SAL_IID_ocs_activity_record_result_code 8184580		// result_code long 1
 #endif
 

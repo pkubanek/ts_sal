@@ -11,6 +11,5 @@ CREATE TABLE m2_Actuators_items (
   comment char(128),
   PRIMARY KEY (num)
 );
-INSERT INTO m2_Actuators_items VALUES (1,"Raw","long",15,"",0.054,"","","");
-INSERT INTO m2_Actuators_items VALUES (2,"Calibrated","float",31,"",0.054,"","","");
-INSERT INTO m2_Actuators_items VALUES (3,"Status","octet",15,"",0.054,"","","");
+INSERT INTO m2_Actuators_items VALUES (1,"Raw","long",15,"",20,"","","");
+INSERT INTO m2_Actuators_items VALUES (2,"Calibrated","float",31,"",20,"","","");

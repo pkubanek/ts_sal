@@ -1,9 +1,4 @@
 struct network_Application {
-  long Data[63];
-  string<128> Status_1;
-  string<128> Status_2;
-  string<128> Status_3;
-  string<128> Status_4;
   string<128> Status_5;
   string<128> Status_6;
   string<128> Status_7;

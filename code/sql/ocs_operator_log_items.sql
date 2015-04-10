@@ -11,8 +11,5 @@ CREATE TABLE ocs_operator_log_items (
   comment char(128),
   PRIMARY KEY (num)
 );
-INSERT INTO ocs_operator_log_items VALUES (1,"opid","long",1,"",0.054,"","","");
-INSERT INTO ocs_operator_log_items VALUES (2,"stationid","long",1,"",0.054,"","","");
-INSERT INTO ocs_operator_log_items VALUES (3,"subsystem","string",32,"",0.054,"","","");
-INSERT INTO ocs_operator_log_items VALUES (4,"device","string",32,"",0.054,"","","");
-INSERT INTO ocs_operator_log_items VALUES (5,"event","string",128,"",0.054,"","","");
+INSERT INTO ocs_operator_log_items VALUES (1,"opid","long",1,"",20,"","","");
+INSERT INTO ocs_operator_log_items VALUES (2,"stationid","long",1,"",20,"","","");

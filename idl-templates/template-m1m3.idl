@@ -1,9 +1,4 @@
 struct m1m3_ActuatorSample {
-  short actuatorID;
-  long setpoint[100];
-  long position[100];
-  long error[100];
-  long status[100];
 };
 
 

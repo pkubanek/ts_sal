@@ -124,17 +124,17 @@ set DESC(m1m3.Surface) "
 <P>This subsystem maintains data pertaining to the requested and<BR>measured
 m3 surface properties (figure, stresses, temps etc). "
 
-set DESC(m2.TC) "
-<P>Temperature monitoring  for sensors located in the m2
+set DESC(m2ms.TC) "
+<P>Temperature monitoring  for sensors located in the m2ms
 subsystem.<BR>Raw sensor readings, calibrated temperatures,
 time series statistics, sensor health. "
 
-set DESC(m2.Electrical) "
-<P>Electrical monitoring  for devices located in the m2 subsystem.<BR>Raw
+set DESC(m2ms.Electrical) "
+<P>Electrical monitoring  for devices located in the m2ms subsystem.<BR>Raw
 data, calibrated voltages, calibrated current, device power status. "
 
-set DESC(m2.Metrology) "
-<P>Position control  for sensors located in the m2
+set DESC(m2ms.Metrology) "
+<P>Position control  for sensors located in the m2ms
 subsystem.<BR>Raw sensor readings, calibrated positions, limit
 switches, status bits. "
 
@@ -164,14 +164,17 @@ set DESC(hexapod.Application) "
 <P>This subsystem maintains application level data concerning the<BR>requested
 and actual state of the hexapod support system. "
 
-set DESC(m2.Actuators) "
+set DESC(m2ms.Actuators) "
 <P>This subsystem maintains information on a per actuator basis<BR>persuant
-to the low level behaviour of the components of<BR>the m2 support
+to the low level behaviour of the components of<BR>the m2ms support
 system. "
 
-set DESC(m2.Surface) "
+set DESC(m2ms.Surface) "
 <P>This subsystem maintains data pertaining to the requested and<BR>measured
-m2 surface properties (figure, stresses, temps etc). "
+m2ms surface properties (figure, stresses, temps etc). "
+
+
+
 
 set DESC(mount.TC) "
 <P>Temperature monitoring  for sensors located in the mount
@@ -200,6 +203,37 @@ axis requested and actual position and status. "
 set DESC(mount.Rotator) "
 <P>This subsystem maintains application level information about
 the<BR>instrument rotator requested and actual position and status." 
+
+
+set DESC(mount.az.track) ""
+set DESC(mount.az.platform) ""
+set DESC(mount.az.drives) ""
+set DESC(mount.el.drives) ""
+set DESC(mount.az.encoder) ""
+set DESC(mount.el.encoder) ""
+set DESC(mount.az.brakes) ""
+set DESC(mount.el.brakes) ""
+set DESC(mount.az.cablewrap) ""
+set DESC(mount.el.cablewrap) ""
+set DESC(mount.az.hsb) ""
+set DESC(mount.el.hsb) ""
+set DESC(mount.az.limits) ""
+set DESC(mount.el.limits) ""
+set DESC(mount.oss.pumps) ""
+set DESC(mount.oss.thermal) ""
+set DESC(mount.cs.control) ""
+set DESC(mount.cs.power) ""
+set DESC(mount.power.main) ""
+set DESC(mount.az.power) ""
+set DESC(mount.el.power) ""
+set DESC(mount.capbanks) ""
+set DESC(mount.balance) ""
+set DESC(mount.util.air) ""
+set DESC(mount.util.cooling) ""
+set DESC(mount.util.oil) ""
+set DESC(mount.cam.cablewrap) ""
+set DESC(mount.mirrorcover) ""
+
 
 set DESC(power.TC) "
 <P>Temperature monitoring  for sensors located in the power
@@ -426,13 +460,13 @@ set SID(m1m3.Support) 2.4
 set SID(m1m3.Actuators) 2.5
 set SID(m1m3.Surface) 2.6
 
-set SID(m2) 4
-set SID(m2.TC) 4.1
-set SID(m2.Electrical) 4.2
-set SID(m2.Metrology) 4.3
-set SID(m2.Hexapod) 4.4
-set SID(m2.Actuators) 4.5
-set SID(m2.Surface) 4.6
+set SID(m2ms) 4
+set SID(m2ms.TC) 4.1
+set SID(m2ms.Electrical) 4.2
+set SID(m2ms.Metrology) 4.3
+set SID(m2ms.Hexapod) 4.4
+set SID(m2ms.Actuators) 4.5
+set SID(m2ms.Surface) 4.6
 
 set SID(mount) 5
 set SID(mount.TC) 5.1
@@ -523,7 +557,7 @@ set SID(heaxpod.TC) 14.6
 set DOCO(ocs) Document-869
 set DOCO(standards-sw) "ESA 1991, Software Engineering Standards, ESA PSS-05-0, Issue 2, European Space Agency"
 set DOCO(m1) Document-3167
-set DOCO(m2) Document-3167
+set DOCO(m2ms) Document-3167
 set DOCO(m3) Document-3167
 set DOCO(enclosure) Document-341,Document-342,Document-2389
 
@@ -583,7 +617,7 @@ primary benefits from this due to a relatively soft
 astigmatic bending mode attributable to the large center
 hole. This correction, while desirable, is not necessary."
 
-set DESC(m2) "Secondary mirror system
+set DESC(m2ms) "Secondary mirror system
 <P>This mirror is
 designed to be made from an existing 350 mm thick Zerodur blank. It is a bit thinner than would be needed to provide a
 completely passive support (one that would never need to have the surface figure measured and corrected by adjusting

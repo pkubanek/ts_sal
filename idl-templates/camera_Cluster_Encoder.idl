@@ -1,9 +1,4 @@
 struct camera_Cluster_Encoder {
-  string<32> private_revCode;  //private
-  double     private_sndStamp; //private
-  double     private_rcvStamp; //private
-  long       private_seqNum;   //private
-  long       private_origin;   //private
   float	Image_mean[3216];	// 0.054 | none | Mean of image pixels (1/amp) | none | Control room | 3216 | 7,509,795  | 30,039,178 
   float	Image_SD[3216];	// 0.054 | none | StDev of image pixels (1/amp) | none | Control room | 3216 | 7,509,795  | 30,039,178 
   float	Overscan_mean[3216];	// 0.054 | none | Mean of overscan pixels (1/amp) | none | Control room | 3216 | 7,509,795  | 30,039,178 

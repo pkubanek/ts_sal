@@ -1,7 +1,7 @@
 #include "SAL_hexapod.h"
 #include "shmem_hexapod_Actuators.h"
 
-int tcl_getActuators ( Tcl_Interp *interp) {
+int tcl_gethexapod_Actuators ( Tcl_Interp *interp) {
     char newValue[128];
     char newName[128];
     int  iterator;
@@ -29,7 +29,7 @@ int tcl_getActuators ( Tcl_Interp *interp) {
 }
 
 
-int tcl_putActuators ( Tcl_Interp *interp) {
+int tcl_puthexapod_Actuators ( Tcl_Interp *interp) {
     char newName[128];
     int  iterator;
     SALTopicC data;
@@ -53,7 +53,7 @@ int tcl_putActuators ( Tcl_Interp *interp) {
 
 
 
-int tcl_shmgetActuators ( Tcl_Interp *interp, int *shmdata_ref) {
+int tcl_shmgethexapod_Actuators ( Tcl_Interp *interp, int *shmdata_ref) {
     char newValue[128];
     char newName[128];
     int  iterator;
@@ -73,6 +73,8 @@ int tcl_shmgetActuators ( Tcl_Interp *interp, int *shmdata_ref) {
           sprintf(newName,\"SALTopic.[set iname](%d)\",iterator);
 	  Tcl_SetVar(interp, newName, newValue,  TCL_GLOBAL_ONLY);
       \}
+//  string
+   strncpy(data->[ldata.[set iname],newValue,[set isize]);
 //
 
   } else {
@@ -84,7 +86,7 @@ int tcl_shmgetActuators ( Tcl_Interp *interp, int *shmdata_ref) {
 
 
 // add copy from shm to local copy before put!!
-int tcl_putActuators ( Tcl_Interp *interp, int *shmdata_ref) {
+int tcl_puthexapod_Actuators ( Tcl_Interp *interp, int *shmdata_ref) {
     char newName[128];
     int  iterator;
     SALTopicC ldata;
@@ -95,6 +97,7 @@ int tcl_putActuators ( Tcl_Interp *interp, int *shmdata_ref) {
 // double
     text = (char *)Tcl_GetVar(interp, \"SALTopic.[set iname]\", TCL_GLOBAL_ONLY);
     sscanf(text,\"%[set iformat]\", &data->[set iname]);
+    ldata.[set iname] = data->[set iname];
 // array
    for (iterator=0;iterator<[set isize];iterator++) {
         sprintf(newName,\"SALTopic.[set iname](%d)\",iterator);
@@ -102,22 +105,32 @@ int tcl_putActuators ( Tcl_Interp *interp, int *shmdata_ref) {
         sscanf(text,\"%[set iformat]\", &data->[set iname]\[iterator\]);
         ldata.[set iname]\[iterator\] = data->[set iname]\[iterator\]);
    \}
-//
+//  string
+   strncpy(data->[set iname],ldata.[set iname],[set isize]);
 
-   status = putSampleActuators(&data);
+   status = putSampleActuators(&ldata);
    return TCL_OK;
 }
 
+#ifdef SAL_SUBSYSTEM_ID_IS_KEYED
+int tcl_SAL_hexapod (Tcl_Interp *interp, int aKey) {
+   SAL_hexapod *result;
+   result = new SAL_hexapod(aKey);
+   return result;
+}
+#else 
 int tcl_SAL_hexapod (Tcl_Interp *interp) {
    SAL_hexapod *result;
    result = new SAL_hexapod();
    return result;
 }
+#endif
 
-int tcl_shmActuators (Tcl_Interp *interp) {
+
+int tcl_shmhexapod_Actuators (Tcl_Interp *interp) {
    int status;
    if ( hexapod_Actuators_m_shared_mem == NULL) {
-      status = shmActuators();
+      status = shmhexapod_Actuators();
    } else {
       return TCL_OK;
    }
@@ -126,7 +139,7 @@ int tcl_shmActuators (Tcl_Interp *interp) {
 
 
 #put this in SALDDS.cpp interface
-SAL_hexapod::shmActuators () {
+SAL_hexapod::shmhexapod_Actuators () {
 
        time_t cTime;
        key_t key = 0xabc3;

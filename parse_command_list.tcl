@@ -23,8 +23,8 @@ while { [gets $fin rec] > -1 } {
           lappend ALIASES $alias            
        } else {
           set x [string trim $rec]
-          set y [join [split $x "\[" ] "\\\["]
-          set z [join [split $y "\]" ] "\\\]"]
+          set y [join [split $x "\[" ] "("]
+          set z [join [split $y "\]" ] ")"]
           lappend CMDS($subsys,$alias,param) $z
        }
   }
@@ -32,17 +32,22 @@ while { [gets $fin rec] > -1 } {
 close $fin
 
 puts stdout "Generating command IDL for $subsys"
-puts stdout "**************NOT CURRENTLY USED****************"
-set fidl [open $SAL_WORK_DIR/command_[set subsys].idl w]
 foreach i [lsort $ALIASES] {
+   set fidl [open $SAL_WORK_DIR/idl-templates/validated/[set subsys]_command_$i.idl w]
    puts $fidl "   struct command_$i \{"
    add_private_idl $fidl "      "
-   if { [info exists SYSDIC($subsys,keyedID)] } {
-       puts $fidl "      short [set subsys]ID;"
-   }
+   puts $fidl "      string<32>	device;"
+   puts $fidl "      string<32>	property;"
+   puts $fidl "      string<32>	action;"
+   puts $fidl "      string<32>	value;"
    if { [info exists CMDS($subsys,$i,param)] } {
      foreach p $CMDS($subsys,$i,param) {
-         puts $fidl "      $p;"
+         if { [llength [split $p "()"]] > 1 } {
+            set xp [split $p "()"]
+            puts $fidl "     [lindex $xp 0]  \[[lindex $xp 1]\];"
+         } else {
+           puts $fidl "      $p;"
+         }
      }
    }
    puts $fidl "   \};"
@@ -51,12 +56,13 @@ foreach i [lsort $ALIASES] {
    } else {
       puts $fidl "   #pragma keylist command_$i"
    }
+   close $fidl
 }
-close $fidl
 
 puts stdout "Generating test command gui input"        
 set fout [open $SAL_WORK_DIR/idl-templates/validated/[set subsys]_cmddef.tcl w]
 puts $fout "set ALIASES \"$ALIASES\""
+puts $fout "set CMD_ALIASES([set subsys]) \"$ALIASES\""
 foreach c [array names CMDS] {
    puts $fout "set CMDS($c) \"$CMDS($c)\""
 }

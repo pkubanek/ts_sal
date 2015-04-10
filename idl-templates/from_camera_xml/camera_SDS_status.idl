@@ -1,0 +1,10 @@
+struct camera_SDS_status {
+  string<32> private_revCode;  //private
+  double     private_sndStamp; //private
+  double     private_rcvStamp; //private
+  long       private_seqNum;   //private
+  long       private_origin;   //private
+  long	flag[20];	// 0.054 | none | Error flags[ | none | Science and corner rafts | 1260 | 2,942,270  | 11,769,081 
+  unsigned short	REB_ID;	// 0.054 | none | Raft Electronics Board ID | none | Cryostat
+};
+#pragma keylist camera_SDS_status 

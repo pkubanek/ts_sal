@@ -1,0 +1,1430 @@
+<refentry>
+<refmeta>
+<refentrytitle><phrase id="API-enum-SubscriptionMode">enum SubscriptionMode</phrase></refentrytitle>
+</refmeta>
+<refnamediv>
+ <refname>enum SubscriptionMode</refname>
+ <refpurpose>
+   mode of subscription
+ </refpurpose>
+</refnamediv>
+<refsynopsisdiv>
+ <title>Synopsis</title>
+  <programlisting>
+enum SubscriptionMode {
+  PULLED,
+  IMMEDIATE
+};  </programlisting>
+</refsynopsisdiv>
+<refsect1>
+ <title>Constants</title>
+  <variablelist>
+    <varlistentry>      <term>PULLED</term>
+      <listitem><para>
+ polled
+      </para></listitem>
+    </varlistentry>
+    <varlistentry>      <term>IMMEDIATE</term>
+      <listitem><para>
+ using callback function 
+      </para></listitem>
+    </varlistentry>
+  </variablelist>
+</refsect1>
+<refsect1>
+ <title>Description</title>
+ <para>
+   Specifies whether user application will poll for data or whether a callback function will be called by ORTE middleware when new data will be available.
+ </para>
+</refsect1>
+</refentry>
+
+<refentry>
+<refmeta>
+<refentrytitle><phrase id="API-enum-SubscriptionType">enum SubscriptionType</phrase></refentrytitle>
+</refmeta>
+<refnamediv>
+ <refname>enum SubscriptionType</refname>
+ <refpurpose>
+      type of subcsription
+ </refpurpose>
+</refnamediv>
+<refsynopsisdiv>
+ <title>Synopsis</title>
+  <programlisting>
+enum SubscriptionType {
+  BEST_EFFORTS,
+  STRICT_RELIABLE
+};  </programlisting>
+</refsynopsisdiv>
+<refsect1>
+ <title>Constants</title>
+  <variablelist>
+    <varlistentry>      <term>BEST_EFFORTS</term>
+      <listitem><para>
+    best effort subscription
+      </para></listitem>
+    </varlistentry>
+    <varlistentry>      <term>STRICT_RELIABLE</term>
+      <listitem><para>
+    strict reliable subscription.
+      </para></listitem>
+    </varlistentry>
+  </variablelist>
+</refsect1>
+<refsect1>
+ <title>Description</title>
+ <para>
+   Specifies which mode will be used for this subscription.
+ </para>
+</refsect1>
+</refentry>
+
+<refentry>
+<refmeta>
+<refentrytitle><phrase id="API-enum-ORTERecvStatus">enum ORTERecvStatus</phrase></refentrytitle>
+</refmeta>
+<refnamediv>
+ <refname>enum ORTERecvStatus</refname>
+ <refpurpose>
+      status of a subscription
+ </refpurpose>
+</refnamediv>
+<refsynopsisdiv>
+ <title>Synopsis</title>
+  <programlisting>
+enum ORTERecvStatus {
+  NEW_DATA,
+  DEADLINE
+};  </programlisting>
+</refsynopsisdiv>
+<refsect1>
+ <title>Constants</title>
+  <variablelist>
+    <varlistentry>      <term>NEW_DATA</term>
+      <listitem><para>
+    new data has arrived
+      </para></listitem>
+    </varlistentry>
+    <varlistentry>      <term>DEADLINE</term>
+      <listitem><para>
+    deadline has occurred 
+      </para></listitem>
+    </varlistentry>
+  </variablelist>
+</refsect1>
+<refsect1>
+ <title>Description</title>
+ <para>
+   Specifies which event has occurred in the subscription object.
+ </para>
+</refsect1>
+</refentry>
+
+<refentry>
+<refmeta>
+<refentrytitle><phrase id="API-enum-ORTESendStatus">enum ORTESendStatus</phrase></refentrytitle>
+</refmeta>
+<refnamediv>
+ <refname>enum ORTESendStatus</refname>
+ <refpurpose>
+      status of a publication
+ </refpurpose>
+</refnamediv>
+<refsynopsisdiv>
+ <title>Synopsis</title>
+  <programlisting>
+enum ORTESendStatus {
+  NEED_DATA,
+  CQL
+};  </programlisting>
+</refsynopsisdiv>
+<refsect1>
+ <title>Constants</title>
+  <variablelist>
+    <varlistentry>      <term>NEED_DATA</term>
+      <listitem><para>
+    need new data (set when callback function specified for publciation is beeing called)
+      </para></listitem>
+    </varlistentry>
+    <varlistentry>      <term>CQL</term>
+      <listitem><para>
+    transmit queue has been filled up to critical level.
+      </para></listitem>
+    </varlistentry>
+  </variablelist>
+</refsect1>
+<refsect1>
+ <title>Description</title>
+ <para>
+   Specifies which event has occurred in the publication object. Critical level of transmit queue is specified as one of publication properties (ORTEPublProp.criticalQueueLevel).
+ </para>
+</refsect1>
+</refentry>
+
+<refentry>
+<refmeta>
+<refentrytitle><phrase id="API-struct-ORTEIFProp">struct ORTEIFProp</phrase></refentrytitle>
+</refmeta>
+<refnamediv>
+ <refname>struct ORTEIFProp</refname>
+ <refpurpose>
+      interface flags 
+ </refpurpose>
+</refnamediv>
+<refsynopsisdiv>
+ <title>Synopsis</title>
+  <programlisting>
+struct ORTEIFProp {
+  int32_t ifFlags;
+  IPAddress ipAddress;
+};  </programlisting>
+</refsynopsisdiv>
+ <refsect1>
+  <title>Members</title>
+  <variablelist>
+    <varlistentry>      <term>ifFlags</term>
+      <listitem><para>
+    flags
+      </para></listitem>
+    </varlistentry>
+    <varlistentry>      <term>ipAddress</term>
+      <listitem><para>
+    IP address
+      </para></listitem>
+    </varlistentry>
+  </variablelist>
+ </refsect1>
+<refsect1>
+ <title>Description</title>
+ <para>
+   Flags for network interface.
+ </para>
+</refsect1>
+</refentry>
+
+<refentry>
+<refmeta>
+<refentrytitle><phrase id="API-struct-ORTEMulticastProp">struct ORTEMulticastProp</phrase></refentrytitle>
+</refmeta>
+<refnamediv>
+ <refname>struct ORTEMulticastProp</refname>
+ <refpurpose>
+      properties for ORTE multicast (not supported yet)
+ </refpurpose>
+</refnamediv>
+<refsynopsisdiv>
+ <title>Synopsis</title>
+  <programlisting>
+struct ORTEMulticastProp {
+  Boolean enabled;
+  unsigned char  ttl;
+  Boolean loopBackEnabled;
+  IPAddress ipAddress;
+};  </programlisting>
+</refsynopsisdiv>
+ <refsect1>
+  <title>Members</title>
+  <variablelist>
+    <varlistentry>      <term>enabled</term>
+      <listitem><para>
+    ORTE_TRUE if multicast enabled otherwise ORTE_FALSE
+      </para></listitem>
+    </varlistentry>
+    <varlistentry>      <term>ttl</term>
+      <listitem><para>
+    time-to-live (TTL) for sent datagrams
+      </para></listitem>
+    </varlistentry>
+    <varlistentry>      <term>loopBackEnabled</term>
+      <listitem><para>
+    ORTE_TRUE if data should be received by sender itself otherwise ORTE_FALSE
+      </para></listitem>
+    </varlistentry>
+    <varlistentry>      <term>ipAddress</term>
+      <listitem><para>
+    desired multicast IP address 
+      </para></listitem>
+    </varlistentry>
+  </variablelist>
+ </refsect1>
+<refsect1>
+ <title>Description</title>
+ <para>
+   Properties for ORTE multicast subsystem which is not fully supported yet. Multicast IP address is assigned by the ORTE middleware itself.
+ </para>
+</refsect1>
+</refentry>
+
+<refentry>
+<refmeta>
+<refentrytitle><phrase id="API-struct-ORTEGetMaxSizeParam">struct ORTEGetMaxSizeParam</phrase></refentrytitle>
+</refmeta>
+<refnamediv>
+ <refname>struct ORTEGetMaxSizeParam</refname>
+ <refpurpose>
+      parameters for function ORTETypeGetMaxSize
+ </refpurpose>
+</refnamediv>
+<refsynopsisdiv>
+ <title>Synopsis</title>
+  <programlisting>
+struct ORTEGetMaxSizeParam {
+  CDR_Endianness host_endian;
+  CDR_Endianness data_endian;
+  CORBA_octet * data;
+  unsigned int max_size;
+  int recv_size;
+  int csize;
+};  </programlisting>
+</refsynopsisdiv>
+ <refsect1>
+  <title>Members</title>
+  <variablelist>
+    <varlistentry>      <term>host_endian</term>
+      <listitem><para>
+    
+      </para></listitem>
+    </varlistentry>
+    <varlistentry>      <term>data_endian</term>
+      <listitem><para>
+    
+      </para></listitem>
+    </varlistentry>
+    <varlistentry>      <term>data</term>
+      <listitem><para>
+    
+      </para></listitem>
+    </varlistentry>
+    <varlistentry>      <term>max_size</term>
+      <listitem><para>
+    
+      </para></listitem>
+    </varlistentry>
+    <varlistentry>      <term>recv_size</term>
+      <listitem><para>
+    
+      </para></listitem>
+    </varlistentry>
+    <varlistentry>      <term>csize</term>
+      <listitem><para>
+      </para></listitem>
+    </varlistentry>
+  </variablelist>
+ </refsect1>
+<refsect1>
+ <title>Description</title>
+ <para>
+   It used to determine maximal size of intermal buffer for incomming data
+ </para>
+</refsect1>
+</refentry>
+
+<refentry>
+<refmeta>
+<refentrytitle><phrase id="API-struct-ORTETypeRegister">struct ORTETypeRegister</phrase></refentrytitle>
+</refmeta>
+<refnamediv>
+ <refname>struct ORTETypeRegister</refname>
+ <refpurpose>
+      registered data type
+ </refpurpose>
+</refnamediv>
+<refsynopsisdiv>
+ <title>Synopsis</title>
+  <programlisting>
+struct ORTETypeRegister {
+  const char             * typeName;
+  ORTETypeSerialize serialize;
+  ORTETypeDeserialize deserialize;
+  ORTETypeGetMaxSize getMaxSize;
+  unsigned int   maxSize;
+};  </programlisting>
+</refsynopsisdiv>
+ <refsect1>
+  <title>Members</title>
+  <variablelist>
+    <varlistentry>      <term>typeName</term>
+      <listitem><para>
+    name of data type 
+      </para></listitem>
+    </varlistentry>
+    <varlistentry>      <term>serialize</term>
+      <listitem><para>
+    pointer to serialization function
+      </para></listitem>
+    </varlistentry>
+    <varlistentry>      <term>deserialize</term>
+      <listitem><para>
+    pointer to deserialization function
+      </para></listitem>
+    </varlistentry>
+    <varlistentry>      <term>getMaxSize</term>
+      <listitem><para>
+    pointer to function given maximal data length
+      </para></listitem>
+    </varlistentry>
+    <varlistentry>      <term>maxSize</term>
+      <listitem><para>
+    maximal size of ser./deser. data
+      </para></listitem>
+    </varlistentry>
+  </variablelist>
+ </refsect1>
+<refsect1>
+ <title>Description</title>
+ <para>
+   Contains description of registered data type. See <parameter>ORTETypeRegisterAdd</parameter> function for details.
+ </para>
+</refsect1>
+</refentry>
+
+<refentry>
+<refmeta>
+<refentrytitle><phrase id="API-struct-ORTEDomainBaseProp">struct ORTEDomainBaseProp</phrase></refentrytitle>
+</refmeta>
+<refnamediv>
+ <refname>struct ORTEDomainBaseProp</refname>
+ <refpurpose>
+      base properties of a domain
+ </refpurpose>
+</refnamediv>
+<refsynopsisdiv>
+ <title>Synopsis</title>
+  <programlisting>
+struct ORTEDomainBaseProp {
+  unsigned int   registrationMgrRetries;
+  NtpTime registrationMgrPeriod;
+  unsigned int   registrationAppRetries;
+  NtpTime registrationAppPeriod;
+  NtpTime expirationTime;
+  NtpTime refreshPeriod;
+  NtpTime purgeTime;
+  NtpTime repeatAnnounceTime;
+  NtpTime repeatActiveQueryTime;
+  NtpTime delayResponceTimeACKMin;
+  NtpTime delayResponceTimeACKMax;
+  unsigned int           HBMaxRetries;
+  unsigned int           ACKMaxRetries;
+  NtpTime maxBlockTime;
+};  </programlisting>
+</refsynopsisdiv>
+ <refsect1>
+  <title>Members</title>
+  <variablelist>
+    <varlistentry>      <term>registrationMgrRetries</term>
+      <listitem><para>
+    a manager which want to start communication have to register to other manager. This parametr
+   is used for specify maximal repetition retries of registration process when it fail.
+      </para></listitem>
+    </varlistentry>
+    <varlistentry>      <term>registrationMgrPeriod</term>
+      <listitem><para>
+    an application which want to start communication have to register to a manager. This parametr
+   is used for specify maximal repetition retries of registration process when it fail.
+      </para></listitem>
+    </varlistentry>
+    <varlistentry>      <term>registrationAppRetries</term>
+      <listitem><para>
+    same like registrationMgrRetries parameter, but is used for an application
+      </para></listitem>
+    </varlistentry>
+    <varlistentry>      <term>registrationAppPeriod</term>
+      <listitem><para>
+    repetition time for registration process
+      </para></listitem>
+    </varlistentry>
+    <varlistentry>      <term>expirationTime</term>
+      <listitem><para>
+    specifies how long is this application taken as alive in other applications/managers (default 180s)
+      </para></listitem>
+    </varlistentry>
+    <varlistentry>      <term>refreshPeriod</term>
+      <listitem><para>
+    how often an application refresh itself to its manager or manager to other managers (default 60s)
+      </para></listitem>
+    </varlistentry>
+    <varlistentry>      <term>purgeTime</term>
+      <listitem><para>
+    how often the local database should be cleaned from invalid (expired) objects (default 60s)
+      </para></listitem>
+    </varlistentry>
+    <varlistentry>      <term>repeatAnnounceTime</term>
+      <listitem><para>
+    This is the period with which the CSTWriter will announce its existence and/or the availability of new CSChanges to the CSTReader. This period determines how quickly the protocol recovers when an announcement of data is lost.
+      </para></listitem>
+    </varlistentry>
+    <varlistentry>      <term>repeatActiveQueryTime</term>
+      <listitem><para>
+    ???
+      </para></listitem>
+    </varlistentry>
+    <varlistentry>      <term>delayResponceTimeACKMin</term>
+      <listitem><para>
+    minimum time the CSTWriter waits before responding to an incoming message.
+      </para></listitem>
+    </varlistentry>
+    <varlistentry>      <term>delayResponceTimeACKMax</term>
+      <listitem><para>
+    maximum time the CSTWriter waits before responding to an incoming message.
+      </para></listitem>
+    </varlistentry>
+    <varlistentry>      <term>HBMaxRetries</term>
+      <listitem><para>
+    how many times a HB message is retransmitted if no response has been received until timeout
+      </para></listitem>
+    </varlistentry>
+    <varlistentry>      <term>ACKMaxRetries</term>
+      <listitem><para>
+    how many times an ACK message is retransmitted if no response has been received until timeout
+      </para></listitem>
+    </varlistentry>
+    <varlistentry>      <term>maxBlockTime</term>
+      <listitem><para>
+    timeout for send functions if sending queue is full (default 30s)
+      </para></listitem>
+    </varlistentry>
+  </variablelist>
+ </refsect1>
+</refentry>
+
+<refentry>
+<refmeta>
+<refentrytitle><phrase id="API-struct-ORTEDomainWireProp">struct ORTEDomainWireProp</phrase></refentrytitle>
+</refmeta>
+<refnamediv>
+ <refname>struct ORTEDomainWireProp</refname>
+ <refpurpose>
+      wire properties of a message
+ </refpurpose>
+</refnamediv>
+<refsynopsisdiv>
+ <title>Synopsis</title>
+  <programlisting>
+struct ORTEDomainWireProp {
+  unsigned int           metaBytesPerPacket;
+  unsigned int           metaBytesPerFastPacket;
+  unsigned int           metabitsPerACKBitmap;
+};  </programlisting>
+</refsynopsisdiv>
+ <refsect1>
+  <title>Members</title>
+  <variablelist>
+    <varlistentry>      <term>metaBytesPerPacket</term>
+      <listitem><para>
+    maximum number of bytes in single frame (default 1500B)
+      </para></listitem>
+    </varlistentry>
+    <varlistentry>      <term>metaBytesPerFastPacket</term>
+      <listitem><para>
+    maximum number of bytes in single frame if transmitting queue has reached <parameter>criticalQueueLevel</parameter> level (see <parameter>ORTEPublProp</parameter> struct)
+      </para></listitem>
+    </varlistentry>
+    <varlistentry>      <term>metabitsPerACKBitmap</term>
+      <listitem><para>
+    not supported yet (default 32)
+      </para></listitem>
+    </varlistentry>
+  </variablelist>
+ </refsect1>
+</refentry>
+
+<refentry>
+<refmeta>
+<refentrytitle><phrase id="API-struct-ORTEPublProp">struct ORTEPublProp</phrase></refentrytitle>
+</refmeta>
+<refnamediv>
+ <refname>struct ORTEPublProp</refname>
+ <refpurpose>
+      properties of a publication
+ </refpurpose>
+</refnamediv>
+<refsynopsisdiv>
+ <title>Synopsis</title>
+  <programlisting>
+struct ORTEPublProp {
+  PathName topic;
+  TypeName typeName;
+  TypeChecksum typeChecksum;
+  Boolean expectsAck;
+  NtpTime persistence;
+  uint32_t reliabilityOffered;
+  uint32_t sendQueueSize;
+  int32_t strength;
+  uint32_t criticalQueueLevel;
+  NtpTime HBNornalRate;
+  NtpTime HBCQLRate;
+  unsigned int           HBMaxRetries;
+  NtpTime maxBlockTime;
+};  </programlisting>
+</refsynopsisdiv>
+ <refsect1>
+  <title>Members</title>
+  <variablelist>
+    <varlistentry>      <term>topic</term>
+      <listitem><para>
+    the name of the information in the Network that is published or subscribed to
+      </para></listitem>
+    </varlistentry>
+    <varlistentry>      <term>typeName</term>
+      <listitem><para>
+    the name of the type of this data 
+      </para></listitem>
+    </varlistentry>
+    <varlistentry>      <term>typeChecksum</term>
+      <listitem><para>
+    a checksum that identifies the CDR-representation of the data
+      </para></listitem>
+    </varlistentry>
+    <varlistentry>      <term>expectsAck</term>
+      <listitem><para>
+    indicates wherther publication expects to receive ACKs to its messages
+      </para></listitem>
+    </varlistentry>
+    <varlistentry>      <term>persistence</term>
+      <listitem><para>
+    indicates how long the issue is valid
+      </para></listitem>
+    </varlistentry>
+    <varlistentry>      <term>reliabilityOffered</term>
+      <listitem><para>
+    reliability policy as offered by the publication
+      </para></listitem>
+    </varlistentry>
+    <varlistentry>      <term>sendQueueSize</term>
+      <listitem><para>
+    size of transmitting queue
+      </para></listitem>
+    </varlistentry>
+    <varlistentry>      <term>strength</term>
+      <listitem><para>
+    precedence of the issue sent by the publication
+      </para></listitem>
+    </varlistentry>
+    <varlistentry>      <term>criticalQueueLevel</term>
+      <listitem><para>
+    treshold for transmitting queue content length indicating the queue can became full immediately 
+      </para></listitem>
+    </varlistentry>
+    <varlistentry>      <term>HBNornalRate</term>
+      <listitem><para>
+    how often send HBs to subscription objects
+      </para></listitem>
+    </varlistentry>
+    <varlistentry>      <term>HBCQLRate</term>
+      <listitem><para>
+    how often send HBs to subscription objects if transmittiong queue has reached <parameter>criticalQueueLevel</parameter>
+      </para></listitem>
+    </varlistentry>
+    <varlistentry>      <term>HBMaxRetries</term>
+      <listitem><para>
+    how many times retransmit HBs if no replay from target object has not been received
+      </para></listitem>
+    </varlistentry>
+    <varlistentry>      <term>maxBlockTime</term>
+      <listitem><para>
+    unsupported
+      </para></listitem>
+    </varlistentry>
+  </variablelist>
+ </refsect1>
+</refentry>
+
+<refentry>
+<refmeta>
+<refentrytitle><phrase id="API-struct-ORTESubsProp">struct ORTESubsProp</phrase></refentrytitle>
+</refmeta>
+<refnamediv>
+ <refname>struct ORTESubsProp</refname>
+ <refpurpose>
+      properties of a subscription
+ </refpurpose>
+</refnamediv>
+<refsynopsisdiv>
+ <title>Synopsis</title>
+  <programlisting>
+struct ORTESubsProp {
+  PathName topic;
+  TypeName typeName;
+  TypeChecksum typeChecksum;
+  NtpTime minimumSeparation;
+  uint32_t recvQueueSize;
+  uint32_t reliabilityRequested;
+  //additional parametersNtpTime                deadline;
+  uint32_t mode;
+  IPAddress multicast;
+};  </programlisting>
+</refsynopsisdiv>
+ <refsect1>
+  <title>Members</title>
+  <variablelist>
+    <varlistentry>      <term>topic</term>
+      <listitem><para>
+    the name of the information in the Network that is published or subscribed to
+      </para></listitem>
+    </varlistentry>
+    <varlistentry>      <term>typeName</term>
+      <listitem><para>
+    the name of the type of this data
+      </para></listitem>
+    </varlistentry>
+    <varlistentry>      <term>typeChecksum</term>
+      <listitem><para>
+    a checksum that identifies the CDR-representation of the data
+      </para></listitem>
+    </varlistentry>
+    <varlistentry>      <term>minimumSeparation</term>
+      <listitem><para>
+    minimum time between two consecutive issues received by the subscription
+      </para></listitem>
+    </varlistentry>
+    <varlistentry>      <term>recvQueueSize</term>
+      <listitem><para>
+    size of receiving queue
+      </para></listitem>
+    </varlistentry>
+    <varlistentry>      <term>reliabilityRequested</term>
+      <listitem><para>
+    reliability policy requested by the subscription
+      </para></listitem>
+    </varlistentry>
+    <varlistentry>      <term>deadline</term>
+      <listitem><para>
+    deadline for subscription, a callback function  (see <parameter>ORTESubscriptionCreate</parameter>) will be called if no data were received within this period of time
+      </para></listitem>
+    </varlistentry>
+    <varlistentry>      <term>mode</term>
+      <listitem><para>
+    mode of subscription (strict reliable/best effort), see <parameter>SubscriptionType</parameter> enum for values
+      </para></listitem>
+    </varlistentry>
+    <varlistentry>      <term>multicast</term>
+      <listitem><para>
+    registered multicast IP address(read only)
+      </para></listitem>
+    </varlistentry>
+  </variablelist>
+ </refsect1>
+</refentry>
+
+<refentry>
+<refmeta>
+<refentrytitle><phrase id="API-struct-ORTEAppInfo">struct ORTEAppInfo</phrase></refentrytitle>
+</refmeta>
+<refnamediv>
+ <refname>struct ORTEAppInfo</refname>
+ <refpurpose>
+      
+ </refpurpose>
+</refnamediv>
+<refsynopsisdiv>
+ <title>Synopsis</title>
+  <programlisting>
+struct ORTEAppInfo {
+  HostId hostId;
+  AppId appId;
+  IPAddress * unicastIPAddressList;
+  unsigned char          unicastIPAddressCount;
+  IPAddress * metatrafficMulticastIPAddressList;
+  unsigned char          metatrafficMulticastIPAddressCount;
+  Port metatrafficUnicastPort;
+  Port userdataUnicastPort;
+  VendorId vendorId;
+  ProtocolVersion protocolVersion;
+};  </programlisting>
+</refsynopsisdiv>
+ <refsect1>
+  <title>Members</title>
+  <variablelist>
+    <varlistentry>      <term>hostId</term>
+      <listitem><para>
+    hostId of application
+      </para></listitem>
+    </varlistentry>
+    <varlistentry>      <term>appId</term>
+      <listitem><para>
+    appId of application
+      </para></listitem>
+    </varlistentry>
+    <varlistentry>      <term>unicastIPAddressList</term>
+      <listitem><para>
+    unicast IP addresses of the host on which the application runs (there can be multiple addresses on a multi-NIC host)
+      </para></listitem>
+    </varlistentry>
+    <varlistentry>      <term>unicastIPAddressCount</term>
+      <listitem><para>
+    number of IPaddresses in <parameter>unicastIPAddressList</parameter>
+      </para></listitem>
+    </varlistentry>
+    <varlistentry>      <term>metatrafficMulticastIPAddressList</term>
+      <listitem><para>
+    for the purposes of meta-traffic, an application can also accept Messages on this set of multicast addresses
+      </para></listitem>
+    </varlistentry>
+    <varlistentry>      <term>metatrafficMulticastIPAddressCount</term>
+      <listitem><para>
+    number of IPaddresses in <parameter>metatrafficMulticastIPAddressList</parameter>
+      </para></listitem>
+    </varlistentry>
+    <varlistentry>      <term>metatrafficUnicastPort</term>
+      <listitem><para>
+    UDP port used for metatraffic communication
+      </para></listitem>
+    </varlistentry>
+    <varlistentry>      <term>userdataUnicastPort</term>
+      <listitem><para>
+    UDP port used for metatraffic communication
+      </para></listitem>
+    </varlistentry>
+    <varlistentry>      <term>vendorId</term>
+      <listitem><para>
+    identifies the vendor of the middleware implementing the RTPS protocol and allows this vendor to add specific extensions to the protocol
+      </para></listitem>
+    </varlistentry>
+    <varlistentry>      <term>protocolVersion</term>
+      <listitem><para>
+    describes the protocol version
+      </para></listitem>
+    </varlistentry>
+  </variablelist>
+ </refsect1>
+</refentry>
+
+<refentry>
+<refmeta>
+<refentrytitle><phrase id="API-struct-ORTEPubInfo">struct ORTEPubInfo</phrase></refentrytitle>
+</refmeta>
+<refnamediv>
+ <refname>struct ORTEPubInfo</refname>
+ <refpurpose>
+     information about publication
+ </refpurpose>
+</refnamediv>
+<refsynopsisdiv>
+ <title>Synopsis</title>
+  <programlisting>
+struct ORTEPubInfo {
+  const char            * topic;
+  const char            * type;
+  ObjectId objectId;
+};  </programlisting>
+</refsynopsisdiv>
+ <refsect1>
+  <title>Members</title>
+  <variablelist>
+    <varlistentry>      <term>topic</term>
+      <listitem><para>
+    the name of the information in the Network that is published or subscribed to
+      </para></listitem>
+    </varlistentry>
+    <varlistentry>      <term>type</term>
+      <listitem><para>
+    the name of the type of this data
+      </para></listitem>
+    </varlistentry>
+    <varlistentry>      <term>objectId</term>
+      <listitem><para>
+    object providing this publication
+      </para></listitem>
+    </varlistentry>
+  </variablelist>
+ </refsect1>
+</refentry>
+
+<refentry>
+<refmeta>
+<refentrytitle><phrase id="API-struct-ORTESubInfo">struct ORTESubInfo</phrase></refentrytitle>
+</refmeta>
+<refnamediv>
+ <refname>struct ORTESubInfo</refname>
+ <refpurpose>
+      information about subscription
+ </refpurpose>
+</refnamediv>
+<refsynopsisdiv>
+ <title>Synopsis</title>
+  <programlisting>
+struct ORTESubInfo {
+  const char            * topic;
+  const char            * type;
+  ObjectId objectId;
+};  </programlisting>
+</refsynopsisdiv>
+ <refsect1>
+  <title>Members</title>
+  <variablelist>
+    <varlistentry>      <term>topic</term>
+      <listitem><para>
+    the name of the information in the Network that is published or subscribed to
+      </para></listitem>
+    </varlistentry>
+    <varlistentry>      <term>type</term>
+      <listitem><para>
+    the name of the type of this data
+      </para></listitem>
+    </varlistentry>
+    <varlistentry>      <term>objectId</term>
+      <listitem><para>
+    object with this subscription 
+      </para></listitem>
+    </varlistentry>
+  </variablelist>
+ </refsect1>
+</refentry>
+
+<refentry>
+<refmeta>
+<refentrytitle><phrase id="API-struct-ORTEPublStatus">struct ORTEPublStatus</phrase></refentrytitle>
+</refmeta>
+<refnamediv>
+ <refname>struct ORTEPublStatus</refname>
+ <refpurpose>
+      status of a publication
+ </refpurpose>
+</refnamediv>
+<refsynopsisdiv>
+ <title>Synopsis</title>
+  <programlisting>
+struct ORTEPublStatus {
+  unsigned int           strict;
+  unsigned int           bestEffort;
+  unsigned int           issues;
+};  </programlisting>
+</refsynopsisdiv>
+ <refsect1>
+  <title>Members</title>
+  <variablelist>
+    <varlistentry>      <term>strict</term>
+      <listitem><para>
+    count of unreliable subscription (strict) connected on responsible subscription
+      </para></listitem>
+    </varlistentry>
+    <varlistentry>      <term>bestEffort</term>
+      <listitem><para>
+    count of reliable subscription (best effort) connected on responsible subscription
+      </para></listitem>
+    </varlistentry>
+    <varlistentry>      <term>issues</term>
+      <listitem><para>
+    number of messages in transmitting queue
+      </para></listitem>
+    </varlistentry>
+  </variablelist>
+ </refsect1>
+</refentry>
+
+<refentry>
+<refmeta>
+<refentrytitle><phrase id="API-struct-ORTESubsStatus">struct ORTESubsStatus</phrase></refentrytitle>
+</refmeta>
+<refnamediv>
+ <refname>struct ORTESubsStatus</refname>
+ <refpurpose>
+      status of a subscription
+ </refpurpose>
+</refnamediv>
+<refsynopsisdiv>
+ <title>Synopsis</title>
+  <programlisting>
+struct ORTESubsStatus {
+  unsigned int           strict;
+  unsigned int           bestEffort;
+  unsigned int           issues;
+};  </programlisting>
+</refsynopsisdiv>
+ <refsect1>
+  <title>Members</title>
+  <variablelist>
+    <varlistentry>      <term>strict</term>
+      <listitem><para>
+    count of unreliable publications (strict) connected to responsible subscription
+      </para></listitem>
+    </varlistentry>
+    <varlistentry>      <term>bestEffort</term>
+      <listitem><para>
+    count of reliable publications (best effort) connected to responsible subscription
+      </para></listitem>
+    </varlistentry>
+    <varlistentry>      <term>issues</term>
+      <listitem><para>
+    number of messages in receiving queue
+      </para></listitem>
+    </varlistentry>
+  </variablelist>
+ </refsect1>
+</refentry>
+
+<refentry>
+<refmeta>
+<refentrytitle><phrase id="API-struct-ORTERecvInfo">struct ORTERecvInfo</phrase></refentrytitle>
+</refmeta>
+<refnamediv>
+ <refname>struct ORTERecvInfo</refname>
+ <refpurpose>
+      description of received data
+ </refpurpose>
+</refnamediv>
+<refsynopsisdiv>
+ <title>Synopsis</title>
+  <programlisting>
+struct ORTERecvInfo {
+  ORTERecvStatus status;
+  const char            * topic;
+  const char            * type;
+  GUID_RTPS senderGUID;
+  NtpTime localTimeReceived;
+  NtpTime remoteTimePublished;
+  SequenceNumber sn;
+};  </programlisting>
+</refsynopsisdiv>
+ <refsect1>
+  <title>Members</title>
+  <variablelist>
+    <varlistentry>      <term>status</term>
+      <listitem><para>
+    status of this event
+      </para></listitem>
+    </varlistentry>
+    <varlistentry>      <term>topic</term>
+      <listitem><para>
+    the name of the information
+      </para></listitem>
+    </varlistentry>
+    <varlistentry>      <term>type</term>
+      <listitem><para>
+    the name of the type of this data
+      </para></listitem>
+    </varlistentry>
+    <varlistentry>      <term>senderGUID</term>
+      <listitem><para>
+    GUID of object who sent this information
+      </para></listitem>
+    </varlistentry>
+    <varlistentry>      <term>localTimeReceived</term>
+      <listitem><para>
+    local timestamp when data were received
+      </para></listitem>
+    </varlistentry>
+    <varlistentry>      <term>remoteTimePublished</term>
+      <listitem><para>
+    remote timestam when data were published
+      </para></listitem>
+    </varlistentry>
+    <varlistentry>      <term>sn</term>
+      <listitem><para>
+    sequencial number of data 
+      </para></listitem>
+    </varlistentry>
+  </variablelist>
+ </refsect1>
+</refentry>
+
+<refentry>
+<refmeta>
+<refentrytitle><phrase id="API-struct-ORTESendInfo">struct ORTESendInfo</phrase></refentrytitle>
+</refmeta>
+<refnamediv>
+ <refname>struct ORTESendInfo</refname>
+ <refpurpose>
+      description of sending data
+ </refpurpose>
+</refnamediv>
+<refsynopsisdiv>
+ <title>Synopsis</title>
+  <programlisting>
+struct ORTESendInfo {
+  ORTESendStatus status;
+  const char            * topic;
+  const char            * type;
+  GUID_RTPS senderGUID;
+  SequenceNumber sn;
+};  </programlisting>
+</refsynopsisdiv>
+ <refsect1>
+  <title>Members</title>
+  <variablelist>
+    <varlistentry>      <term>status</term>
+      <listitem><para>
+    status of this event
+      </para></listitem>
+    </varlistentry>
+    <varlistentry>      <term>topic</term>
+      <listitem><para>
+    the name of the information
+      </para></listitem>
+    </varlistentry>
+    <varlistentry>      <term>type</term>
+      <listitem><para>
+    the name of the type of this information
+      </para></listitem>
+    </varlistentry>
+    <varlistentry>      <term>senderGUID</term>
+      <listitem><para>
+    GUID of object who sent this information
+      </para></listitem>
+    </varlistentry>
+    <varlistentry>      <term>sn</term>
+      <listitem><para>
+    sequencial number of information 
+      </para></listitem>
+    </varlistentry>
+  </variablelist>
+ </refsect1>
+</refentry>
+
+<refentry>
+<refmeta>
+<refentrytitle><phrase id="API-struct-ORTEPublicationSendParam">struct ORTEPublicationSendParam</phrase></refentrytitle>
+</refmeta>
+<refnamediv>
+ <refname>struct ORTEPublicationSendParam</refname>
+ <refpurpose>
+      description of sending data
+ </refpurpose>
+</refnamediv>
+<refsynopsisdiv>
+ <title>Synopsis</title>
+  <programlisting>
+struct ORTEPublicationSendParam {
+  void * instance;
+  int data_endian;
+};  </programlisting>
+</refsynopsisdiv>
+ <refsect1>
+  <title>Members</title>
+  <variablelist>
+    <varlistentry>      <term>instance</term>
+      <listitem><para>
+    pointer to new data instance
+      </para></listitem>
+    </varlistentry>
+    <varlistentry>      <term>data_endian</term>
+      <listitem><para>
+    endianing of sending data (BIG | LITTLE)
+      </para></listitem>
+    </varlistentry>
+  </variablelist>
+ </refsect1>
+</refentry>
+
+<refentry>
+<refmeta>
+<refentrytitle><phrase id="API-struct-ORTEDomainAppEvents">struct ORTEDomainAppEvents</phrase></refentrytitle>
+</refmeta>
+<refnamediv>
+ <refname>struct ORTEDomainAppEvents</refname>
+ <refpurpose>
+      Domain event handlers of an application
+ </refpurpose>
+</refnamediv>
+<refsynopsisdiv>
+ <title>Synopsis</title>
+  <programlisting>
+struct ORTEDomainAppEvents {
+  ORTEOnRegFail onRegFail;
+  void * onRegFailParam;
+  ORTEOnMgrNew onMgrNew;
+  void * onMgrNewParam;
+  ORTEOnMgrDelete onMgrDelete;
+  void * onMgrDeleteParam;
+  ORTEOnAppRemoteNew onAppRemoteNew;
+  void * onAppRemoteNewParam;
+  ORTEOnAppDelete onAppDelete;
+  void * onAppDeleteParam;
+  ORTEOnPubRemote onPubRemoteNew;
+  void * onPubRemoteNewParam;
+  ORTEOnPubRemote onPubRemoteChanged;
+  void * onPubRemoteChangedParam;
+  ORTEOnPubDelete onPubDelete;
+  void * onPubDeleteParam;
+  ORTEOnSubRemote onSubRemoteNew;
+  void * onSubRemoteNewParam;
+  ORTEOnSubRemote onSubRemoteChanged;
+  void * onSubRemoteChangedParam;
+  ORTEOnSubDelete onSubDelete;
+  void * onSubDeleteParam;
+};  </programlisting>
+</refsynopsisdiv>
+ <refsect1>
+  <title>Members</title>
+  <variablelist>
+    <varlistentry>      <term>onRegFail</term>
+      <listitem><para>
+    registration protocol has been failed
+      </para></listitem>
+    </varlistentry>
+    <varlistentry>      <term>onRegFailParam</term>
+      <listitem><para>
+    user parameters for <parameter>onRegFail</parameter> handler
+      </para></listitem>
+    </varlistentry>
+    <varlistentry>      <term>onMgrNew</term>
+      <listitem><para>
+    new manager has been created
+      </para></listitem>
+    </varlistentry>
+    <varlistentry>      <term>onMgrNewParam</term>
+      <listitem><para>
+    user parameters for <parameter>onMgrNew</parameter> handler
+      </para></listitem>
+    </varlistentry>
+    <varlistentry>      <term>onMgrDelete</term>
+      <listitem><para>
+    manager has been deleted
+      </para></listitem>
+    </varlistentry>
+    <varlistentry>      <term>onMgrDeleteParam</term>
+      <listitem><para>
+    user parameters for <parameter>onMgrDelete</parameter> handler
+      </para></listitem>
+    </varlistentry>
+    <varlistentry>      <term>onAppRemoteNew</term>
+      <listitem><para>
+    new remote application has been registered
+      </para></listitem>
+    </varlistentry>
+    <varlistentry>      <term>onAppRemoteNewParam</term>
+      <listitem><para>
+    user parameters for <parameter>onAppRemoteNew</parameter> handler
+      </para></listitem>
+    </varlistentry>
+    <varlistentry>      <term>onAppDelete</term>
+      <listitem><para>
+    an application has been removed
+      </para></listitem>
+    </varlistentry>
+    <varlistentry>      <term>onAppDeleteParam</term>
+      <listitem><para>
+    user parameters for <parameter>onAppDelete</parameter> handler
+      </para></listitem>
+    </varlistentry>
+    <varlistentry>      <term>onPubRemoteNew</term>
+      <listitem><para>
+    new remote publication has been registered
+      </para></listitem>
+    </varlistentry>
+    <varlistentry>      <term>onPubRemoteNewParam</term>
+      <listitem><para>
+    user parameters for <parameter>onPubRemoteNew</parameter> handler
+      </para></listitem>
+    </varlistentry>
+    <varlistentry>      <term>onPubRemoteChanged</term>
+      <listitem><para>
+    a remote publication's parameters has been changed
+      </para></listitem>
+    </varlistentry>
+    <varlistentry>      <term>onPubRemoteChangedParam</term>
+      <listitem><para>
+    user parameters for <parameter>onPubRemoteChanged</parameter> handler
+      </para></listitem>
+    </varlistentry>
+    <varlistentry>      <term>onPubDelete</term>
+      <listitem><para>
+    a publication has been deleted
+      </para></listitem>
+    </varlistentry>
+    <varlistentry>      <term>onPubDeleteParam</term>
+      <listitem><para>
+    user parameters for <parameter>onPubDelete</parameter> handler
+      </para></listitem>
+    </varlistentry>
+    <varlistentry>      <term>onSubRemoteNew</term>
+      <listitem><para>
+    a new remote subscription has been registered
+      </para></listitem>
+    </varlistentry>
+    <varlistentry>      <term>onSubRemoteNewParam</term>
+      <listitem><para>
+    user parameters for <parameter>onSubRemoteNew</parameter> handler
+      </para></listitem>
+    </varlistentry>
+    <varlistentry>      <term>onSubRemoteChanged</term>
+      <listitem><para>
+    a remote subscription's parameters has been changed
+      </para></listitem>
+    </varlistentry>
+    <varlistentry>      <term>onSubRemoteChangedParam</term>
+      <listitem><para>
+    user parameters for <parameter>onSubRemoteChanged</parameter> handler
+      </para></listitem>
+    </varlistentry>
+    <varlistentry>      <term>onSubDelete</term>
+      <listitem><para>
+    a publication has been deleted
+      </para></listitem>
+    </varlistentry>
+    <varlistentry>      <term>onSubDeleteParam</term>
+      <listitem><para>
+    user parameters for <parameter>onSubDelete</parameter> handler
+      </para></listitem>
+    </varlistentry>
+  </variablelist>
+ </refsect1>
+<refsect1>
+ <title>Description</title>
+ <para>
+   Prototypes of events handler fucntions can be found in file typedefs_api.h.
+ </para>
+</refsect1>
+</refentry>
+
+<refentry>
+<refmeta>
+<refentrytitle><phrase id="API-struct-ORTETasksProp">struct ORTETasksProp</phrase></refentrytitle>
+</refmeta>
+<refnamediv>
+ <refname>struct ORTETasksProp</refname>
+ <refpurpose>
+      ORTE task properties, not supported 
+ </refpurpose>
+</refnamediv>
+<refsynopsisdiv>
+ <title>Synopsis</title>
+  <programlisting>
+struct ORTETasksProp {
+  Boolean realTimeEnabled;
+  int smtStackSize;
+  int smtPriority;
+  int rmtStackSize;
+  int rmtPriority;
+};  </programlisting>
+</refsynopsisdiv>
+ <refsect1>
+  <title>Members</title>
+  <variablelist>
+    <varlistentry>      <term>realTimeEnabled</term>
+      <listitem><para>
+    not supported
+      </para></listitem>
+    </varlistentry>
+    <varlistentry>      <term>smtStackSize</term>
+      <listitem><para>
+    not supported
+      </para></listitem>
+    </varlistentry>
+    <varlistentry>      <term>smtPriority</term>
+      <listitem><para>
+    not supported
+      </para></listitem>
+    </varlistentry>
+    <varlistentry>      <term>rmtStackSize</term>
+      <listitem><para>
+    not supported
+      </para></listitem>
+    </varlistentry>
+    <varlistentry>      <term>rmtPriority</term>
+      <listitem><para>
+    not supported 
+      </para></listitem>
+    </varlistentry>
+  </variablelist>
+ </refsect1>
+</refentry>
+
+<refentry>
+<refmeta>
+<refentrytitle><phrase id="API-struct-ORTEDomainProp">struct ORTEDomainProp</phrase></refentrytitle>
+</refmeta>
+<refnamediv>
+ <refname>struct ORTEDomainProp</refname>
+ <refpurpose>
+      domain properties 
+ </refpurpose>
+</refnamediv>
+<refsynopsisdiv>
+ <title>Synopsis</title>
+  <programlisting>
+struct ORTEDomainProp {
+  ORTETasksProp tasksProp;
+  ORTEIFProp * IFProp;
+  //interface propertiesunsigned char          IFCount;
+  //count of interfacesORTEDomainBaseProp     baseProp;
+  ORTEDomainWireProp wireProp;
+  ORTEMulticastProp multicast;
+  //multicast properiesORTEPublProp           publPropDefault;
+  //default properties for a Publ/SubORTESubsProp           subsPropDefault;
+  char * mgrs;
+  //managerschar * keys;
+  //keysIPAddress appLocalManager;
+  //applicationschar * version;
+  //string product versionint                    recvBuffSize;
+  int sendBuffSize;
+};  </programlisting>
+</refsynopsisdiv>
+ <refsect1>
+  <title>Members</title>
+  <variablelist>
+    <varlistentry>      <term>tasksProp</term>
+      <listitem><para>
+    task properties
+      </para></listitem>
+    </varlistentry>
+    <varlistentry>      <term>IFProp</term>
+      <listitem><para>
+    properties of network interfaces
+      </para></listitem>
+    </varlistentry>
+    <varlistentry>      <term>IFCount</term>
+      <listitem><para>
+    number of network interfaces	       
+      </para></listitem>
+    </varlistentry>
+    <varlistentry>      <term>baseProp</term>
+      <listitem><para>
+    base properties (see <parameter>ORTEDomainBaseProp</parameter> for details)
+      </para></listitem>
+    </varlistentry>
+    <varlistentry>      <term>wireProp</term>
+      <listitem><para>
+    wire properties (see <parameter>ORTEDomainWireProp</parameter> for details)
+      </para></listitem>
+    </varlistentry>
+    <varlistentry>      <term>multicast</term>
+      <listitem><para>
+    multicast properties (see <parameter>ORTEMulticastProp</parameter> for details)	       
+      </para></listitem>
+    </varlistentry>
+    <varlistentry>      <term>publPropDefault</term>
+      <listitem><para>
+    default properties of publiciations (see <parameter>ORTEPublProp</parameter> for details)      
+      </para></listitem>
+    </varlistentry>
+    <varlistentry>      <term>subsPropDefault</term>
+      <listitem><para>
+    default properties of subscriptions (see <parameter>ORTESubsProp</parameter> for details)
+      </para></listitem>
+    </varlistentry>
+    <varlistentry>      <term>mgrs</term>
+      <listitem><para>
+    list of known managers 	       
+      </para></listitem>
+    </varlistentry>
+    <varlistentry>      <term>keys</term>
+      <listitem><para>
+    access keys for managers 	       
+      </para></listitem>
+    </varlistentry>
+    <varlistentry>      <term>appLocalManager</term>
+      <listitem><para>
+    IP address of local manager (default localhost)      
+      </para></listitem>
+    </varlistentry>
+    <varlistentry>      <term>version</term>
+      <listitem><para>
+    string product version	       
+      </para></listitem>
+    </varlistentry>
+    <varlistentry>      <term>recvBuffSize</term>
+      <listitem><para>
+    receiving queue length
+      </para></listitem>
+    </varlistentry>
+    <varlistentry>      <term>sendBuffSize</term>
+      <listitem><para>
+    transmitting queue length	    
+      </para></listitem>
+    </varlistentry>
+  </variablelist>
+ </refsect1>
+</refentry>
+

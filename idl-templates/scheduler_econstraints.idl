@@ -1,0 +1,3 @@
+struct scheduler_econstraints {
+  long codes[32];
+};

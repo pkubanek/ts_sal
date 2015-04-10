@@ -1,9 +1,4 @@
 struct ocs_activity_planning {
-  string<128> type;
-  string<128> subsystem;
-  string<128> part;
-  string<128> supervid;
-  string<32> uuid;
 };
 
 

@@ -365,9 +365,14 @@ BOOST_PYTHON_MODULE(SALPY_SALData){
             , (::salReturn ( ::SAL_SALData::* )( int ) )( &::SAL_SALData::abortCommand )
             , ( bp::arg("cmdSeqNum") ) )    
         .def( 
+            "issueCommand"
+            , (int ( ::SAL_SALData::* )( ::SALData_commandC ) )( &::SAL_SALData::issueCommandC )
+            , ( bp::arg("data") ) )    
+        .def( 
             "acceptCommand"
             , (::salReturn ( ::SAL_SALData::* )( ::SALData_commandC ) )( &::SAL_SALData::acceptCommandC )
             , ( bp::arg("data") ) )    
+// INSERT CMDALIAS SUPPORT  for issueCommand and acceptCommand  
         .def( 
             "ackCommand"
             , (::salReturn ( ::SAL_SALData::* )( int,::salLONG,::salLONG,char * ) )( &::SAL_SALData::ackCommand )
@@ -388,10 +393,6 @@ BOOST_PYTHON_MODULE(SALPY_SALData){
             , (int ( ::SAL_SALData::* )( int ) )( &::SAL_SALData::getDebugLevel )
             , ( bp::arg("level") ) )    
         .def( 
-            "getEvent"
-            , (::salReturn ( ::SAL_SALData::* )( ::SALData_logeventC ) )( &::SAL_SALData::getEvent )
-            , ( bp::arg("data") ) )    
-        .def( 
             "getOrigin"
             , (int ( ::SAL_SALData::* )(  ) )( &::SAL_SALData::getOrigin ) )    
         .def( 
@@ -403,20 +404,18 @@ BOOST_PYTHON_MODULE(SALPY_SALData){
             , (::salReturn ( ::SAL_SALData::* )( ::SALData_ackcmdC ) )( &::SAL_SALData::getResponse )
             , ( bp::arg("data") ) )   
         .def( 
-            "issueCommand"
-            , (int ( ::SAL_SALData::* )( ::SALData_commandC ) )( &::SAL_SALData::issueCommandC )
-            , ( bp::arg("data") ) )    
-        .def( 
             "logError"
             , (void ( ::SAL_SALData::* )( ::salReturn ) )( &::SAL_SALData::logError )
             , ( bp::arg("status") ) )    
+// INSERT EVENTALIAS SUPPORT 
+        .def( 
+            "getEvent"
+            , (::salReturn ( ::SAL_SALData::* )( ::SALData_logeventC ) )( &::SAL_SALData::getEvent )
+            , ( bp::arg("data") ) )    
         .def( 
             "logEvent"
             , (::salReturn ( ::SAL_SALData::* )( char *,int ) )( &::SAL_SALData::logEvent )
             , ( bp::arg("message"), bp::arg("priority") ) )    
-        .def( 
-            "salCommand"
-            , (void ( ::SAL_SALData::* )(  ) )( &::SAL_SALData::salCommand ) )
 #ifdef SAL_SUBSYSTEM_ID_IS_KEYED
         .def( 
             "salInitialize"
@@ -428,22 +427,33 @@ BOOST_PYTHON_MODULE(SALPY_SALData){
             , (void ( ::SAL_SALData::* )(  ) )( &::SAL_SALData::salInitialize ) )
 #endif
         .def( 
+            "salCommand"
+            , (::salReturn ( ::SAL_SALData::* )(  ) )( &::SAL_SALData::salCommand ) )
+        .def( 
             "salProcessor"
-            , (void ( ::SAL_SALData::* )(  ) )( &::SAL_SALData::salProcessor ) )
+            , (::salReturn ( ::SAL_SALData::* )(  ) )( &::SAL_SALData::salProcessor ) )
+        .def( 
+            "salCommand"
+            , (salReturn ( ::SAL_SALData::* )( char * ) )( &::SAL_SALData::salCommand )
+            , ( bp::arg("cmdAlias") ) )    
+        .def( 
+            "salProcessor"
+            , (::salReturn ( ::SAL_SALData::* )( char * ) )( &::SAL_SALData::salProcessor )
+            , ( bp::arg("cmdAlias") ) )    
         .def( 
             "salShutdown"
             , (void ( ::SAL_SALData::* )(  ) )( &::SAL_SALData::salShutdown ) )    
         .def( 
             "salTelemetryPub"
-            , (void ( ::SAL_SALData::* )( char * ) )( &::SAL_SALData::salTelemetryPub )
+            , (::salReturn ( ::SAL_SALData::* )( char * ) )( &::SAL_SALData::salTelemetryPub )
             , ( bp::arg("topicName") ) )    
         .def( 
             "salTelemetrySub"
-            , (void ( ::SAL_SALData::* )( char * ) )( &::SAL_SALData::salTelemetrySub )
+            , (::salReturn ( ::SAL_SALData::* )( char * ) )( &::SAL_SALData::salTelemetrySub )
             , ( bp::arg("topicName") ) )    
         .def( 
             "salTypeSupport"
-            , (void ( ::SAL_SALData::* )( char * ) )( &::SAL_SALData::salTypeSupport )
+            , (::salReturn ( ::SAL_SALData::* )( char * ) )( &::SAL_SALData::salTypeSupport )
             , ( bp::arg("topicName") ) )    
         .def( 
             "setDebugLevel"

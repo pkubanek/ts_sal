@@ -1,9 +1,4 @@
 #
-#  SAL test topic to excercise all permitted data types
-#
-
-struct SALTOPIC {
-  short			test_i16;		//|	microns ; -1000,1000 ; Test signed short
   long			test_l32;		//|	microns ; -1000,1000 ; Test signed 32 bit int
   longlong		test_i64;		//|	microns ; -1000,1000 ; Test signed 64 bit int
   unsigned short	test_u16;		//|	microns ; -1000,1000 ; Test unsigned short

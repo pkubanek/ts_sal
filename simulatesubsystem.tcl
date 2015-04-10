@@ -82,9 +82,9 @@ while { $n < $FormData(dbsim_numstreams) } {
    set subsys [join [lrange [split $i _] 0 1] _]
    set host $FormData(dbsim_host$n)
    if { $host == "localhost" } {
-     puts $fout "xterm -e /home/saluser/simulations/$FormData(dbsim_simid)/startpub-$i &"
+     puts $fout "gnome-terminal -e /home/saluser/simulations/$FormData(dbsim_simid)/startpub-$i &"
    } else {
-     puts $fout "xterm -e ssh -l saluser $host simulations/$FormData(dbsim_simid)/startpub-$i &"
+     puts $fout "gnome-terminal -e ssh -l saluser $host simulations/$FormData(dbsim_simid)/startpub-$i &"
    }
  }
  if { [info exists FormData(dbsim_cmd$n)] } {
@@ -94,9 +94,9 @@ while { $n < $FormData(dbsim_numstreams) } {
 }
 foreach h [array names cmds] {
    if { $host == "localhost" } {
-     puts $fout "xterm -e /home/saluser/simulations/$FormData(dbsim_simid)/startsub-[set subsys]_response &"
+     puts $fout "gnome-terminal -e /home/saluser/simulations/$FormData(dbsim_simid)/startsub-[set subsys]_response &"
    } else {
-     puts $fout "xterm -e ssh -l saluser $host simulations/$FormData(dbsim_simid)/startsub-[set subsys]_response &"
+     puts $fout "gnome-terminal -e ssh -l saluser $host simulations/$FormData(dbsim_simid)/startsub-[set subsys]_response &"
    }
 }
 
@@ -110,7 +110,7 @@ on the SAL Virtual Machine.<P>
 The script, <B>runsimulation.sh</B>, will copy the appropriate<BR>
 runtime environments and executables to the hosts involved.<P>
 The simulation processes will then be launched. Each process<BR>
-runs in an xterm. The simulation desktop runs in a 
+runs in an terminal. The simulation desktop runs in a 
 <A HREF=\"http://www.realvnc.com\">VNC</A><BR>
 session. The session can be accessed using a standard VNC<BR>
 viewer application , or from the web browser (click the link below).<P>
@@ -121,7 +121,7 @@ To access the VNC session start your local viewer like this<P>
 
 The vnc password is \"saluser\"<P>
 Once you are connected to the VNC desktop , select the<BR>
-xterm and type <P>
+terminal window and type <P>
 <PRE>
   cd simulations/test
   ./runsimulation.sh

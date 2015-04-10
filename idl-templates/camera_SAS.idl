@@ -1,9 +1,4 @@
 struct camera_SAS {
-  long	FPGACheckSum[6];	// 2.31E-05 | none | FPGA Configuration checksum (2/CCD) | none | Science rafts | 378 | 378  | 1,512 
-  float	Board_current[4];	// 0.054 | Volt | Electronics board currents (4/board) | none | Science rafts | 252 | 588,454  | 2,353,816 
-  long	CABAC_MUX[12];		// 0.054 | none | CABAC/ASPIC V &amp; T  (2 at a time, MUXed) | none | Science rafts | 756 | 1,765,362  | 7,061,449 
-  short	CCD_ID[3];		// 2.31E-05 | none | CCD ID ( ITL only) | none | Science rafts | 189 | 189  | 378 
-  short	Board_ID;		// 2.31E-05 | none | Board ID | none | Science rafts | 63 | 63  | 126 
   long	CCD_temp[3];		// 0.054 | Kelvin | CCD temperatures | none | Science rafts | 189 | 441,341  | 1,765,362 
   float	Board_temp[12];		// 0.054 | Kelvin | Board temps | none | Science rafts | 756 | 1,765,362  | 7,061,449 
   float	Board_voltage[4];	// 0.054 | Volt | Electronics board voltages (4/board) | none | Science rafts | 252 | 588,454  | 2,353,816 

@@ -22,7 +22,7 @@ proc blogsum { f t s {url no} } {
   puts $f "<TR><TD style=\"font-weight: bold;\"><big><big>$t</TD><TD style=\"font-weight: bold; text-align: right;\"><big><big>$perday</TD></TR>"
 }
 
-set scriptdir /opt/lsstsal/scripts
+set scriptdir $env(SAL_DIR)/scripts
 source $scriptdir/datastream_desc.tcl
 source $scriptdir/camera-subsysdesc.tcl
 

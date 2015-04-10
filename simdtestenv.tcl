@@ -9,12 +9,12 @@ set IDL_DIR idl-templates/validated
 
 set ddscmd "$DDSGEN -d ./ospl-$topic -c++ $topic.idl"
 set SAL_SUBSYSTEMS "auxscope calibration camera dm enclosure environment lasercal 
-		m1m3 m2 mount network ocs power scheduler seeing_dimm seeing_mass skycam system tcs"
+		m1m3 m2ms mount network ocs power scheduler seeing_dimm seeing_mass skycam system tcs"
 
 
 source $SAL_DIR/checkidl.tcl
 set subsystems "auxscope calibration camera dm enclosure environment lasercal 
-		m1m3 m2 mount network ocs power scheduler seeing_dimm seeing_mass skycam system tcs"
+		m1m3 m2ms mount network ocs power scheduler seeing_dimm seeing_mass skycam system tcs"
 mkdir -p validated
 foreach s $subsystems {
    checkidl template-$s.idl

@@ -1,9 +1,4 @@
 struct system_Command_history {
-  string<32> Command;
-  float Data[16];
-};
-
-
 
 
 struct system_Computer_status {

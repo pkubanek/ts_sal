@@ -1,0 +1,6 @@
+struct scheduler_interestedProposal {
+    long    subSequenceNumber;
+    long    pairNumber;
+}
+
+

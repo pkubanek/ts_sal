@@ -1,9 +1,4 @@
 struct camera_Cryo {
-  float	Heater_current[6];		// 0.010 | Amp | Cryoplate heater currents | none | Cryostat | 6 | 2,592  | 10,368 
-  float	Intake_flow[2];			// 0.010 | lps | Compressor intake  flow | none | Utility room | 2 | 864  | 3,456 
-  short	Flow_interlock[2];		// 0.010 | none | Compressor  flow interlock | none | Utility room | 2 | 864  | 1,728 
-  float	Compressor load[2];		// 0.010 | Watts | Compressor electrical load | none | Utility room | 2 | 864  | 3,456 
-  float	Intake_pressure[2];		// 0.010 | Pa | Compressor intake  pressure | none | Utility room | 2 | 864  | 3,456 
   float	Pre_expansion_pressure[2];	// 0.010 | Pa | Pre-expansion C4 pressure | none | Cryostat or utility trunk | 2 | 864  | 3,456 
   float	Post_expansion_pressure[2];	// 0.010 | Pa | Post-evaporator pressure | none | Cryostat or utility trunk | 2 | 864  | 3,456 
   float	Compressor_speed[2];		// 0.010 | Hz | Compressor speed | none | Utility room | 2 | 864  | 3,456 

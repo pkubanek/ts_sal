@@ -1,9 +1,4 @@
 struct ocs_database_state {
-  string<32> private_revCode; //private
-  double private_sndStamp; //private
-  double private_rcvStamp; //private
-  long private_seqNum; //private
-  long private_origin; //private
   long status[32];
   long recin[32];
   long recout[32];

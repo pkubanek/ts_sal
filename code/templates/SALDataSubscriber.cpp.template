@@ -35,22 +35,19 @@ int SALTelemetrySubscriber(char *topic_name)
 #ifdef SAL_SUBSYSTEM_ID_IS_KEYED
   int SALDataID = 1;
   SAL_SALData mgr = SAL_SALData(SALDataID);
-//  cmd.salInitialize(SALDataID);
 #else
   SAL_SALData mgr = SAL_SALData();
-//  cmd.salInitialize();
 #endif
 
   mgr.salTelemetrySub(topic_name);
 
   cout << "=== [Subscriber] Ready ..." << endl;
 
-  bool closed = false;
   ReturnCode_t status =  - 1;
   int count = 0;
-  while (!closed && count < 1500) // We dont want the example to run indefinitely
+  while (1)
   {
-    status = mgr.getSampleSALTopic(&SALInstance);
+    status = mgr.getSample_SALTopic(&SALInstance);
     if (status == SAL__OK) {
 // INSERT_SAL_SUBC
     }

@@ -11,6 +11,4 @@ CREATE TABLE ocs_system_configuration_items (
   comment char(128),
   PRIMARY KEY (num)
 );
-INSERT INTO ocs_system_configuration_items VALUES (1,"subssystem","string",128,"",0.054,"","","");
-INSERT INTO ocs_system_configuration_items VALUES (2,"device","string",128,"",0.054,"","","");
-INSERT INTO ocs_system_configuration_items VALUES (3,"stationid","long",1,"",0.054,"","","");
+INSERT INTO ocs_system_configuration_items VALUES (1,"stationid","long",1,"",0.054,"","","");

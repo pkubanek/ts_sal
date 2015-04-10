@@ -10,12 +10,12 @@ proc calcshmid { subsys } {
   return $id
 }
 
-set COMMANDABLE "auxscope calibration camera dm enclosure environment hexapod lasercal m1m3 m2 mount network ocs power rotator scheduler seeing_dimm seeing_mass skycam system tcs"
+set COMMANDABLE "auxscope calibration camera dm enclosure environment hexapod lasercal m1m3 m2ms mount network ocs power rotator scheduler seeing_dimm seeing_mass skycam system tcs"
 
 set FREQUENCY(enclosure)    1.0
 set FREQUENCY(environment)  1.0
 set FREQUENCY(m1m3)         1.0
-set FREQUENCY(m2)           1.0
+set FREQUENCY(m2ms)           1.0
 set FREQUENCY(mount)       10.0
 set FREQUENCY(hexapod)     10.0
 set FREQUENCY(tcs)         10.0

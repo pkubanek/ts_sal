@@ -1,0 +1,127 @@
+default_CONFIG = CONFIG_OC_ETH_ORTE=y
+default_CONFIG += CONFIG_OC_ETH_ORTE_SOLIB=n
+
+ifeq ($(OS_TARGET),win32)
+renamed_include_HEADERS = \
+../contrib/win_pthread/pthread.dll->../lib/pthread.dll
+endif #OS_TARGET
+
+INCLUDES = -I $(srcdir)/../include
+
+orte_SOURCES = \
+conv.c \
+debug.c \
+event.c \
+fnmatch.c \
+htimerNtp.c \
+objectEntry.c \
+objectEntryTimer.c \
+objectUtils.c \
+ORTEAppRecvThread.c \
+ORTEAppSendThread.c \
+ORTEDomainApp.c \
+ORTEPublication.c \
+ORTEPublicationTimer.c \
+ORTESubscription.c \
+ORTEDomain.c \
+ORTEDomainMgr.c \
+ORTEInit.c \
+ORTEThreadUtils.c \
+ORTETypeRegister.c \
+ORTEVerbosity.c \
+ORTEPattern.c \
+ORTEMisc.c \
+parameter.c \
+RTPSAck.c \
+RTPSCSTReader.c \
+RTPSCSTReaderTimer.c \
+RTPSCSTReaderProc.c \
+RTPSCSTWriter.c \
+RTPSCSTWriterTimer.c \
+RTPSGap.c \
+RTPSHeader.c \
+RTPSHeardBeat.c \
+RTPSInfoDST.c \
+RTPSInfoREPLY.c \
+RTPSInfoSRC.c \
+RTPSInfoTS.c \
+RTPSPad.c \
+RTPSUtils.c \
+RTPSVar.c \
+RTPSIssue.c \
+sock.c \
+ul_gavl.c \
+ul_gavlprim.c \
+cdr.c
+
+ifeq ($(CONFIG_OC_ETH_ORTE),y)
+lib_LIBRARIES = orte
+endif #CONFIG_OC_ETH_ORTE
+
+ifeq ($(CONFIG_OC_ETH_ORTE_SOLIB),y)
+shared_LIBRARIES = orte
+lib_LOADLIBES = pthread
+ifeq ($(OS_TARGET),win32)
+lib_LOADLIBES += ws2_32
+endif #OS_TARGET
+endif #CONFIG_OC_ETH_ORTE_SOLIB
+
+#############################################################################
+# RT-Linux version of build
+
+default_CONFIG += CONFIG_OC_ETH_ORTE_RTL=n
+
+rtlinux_INCLUDES = -I $(srcdir)/../include
+
+ortert_SOURCES = \
+conv.c \
+debug.c \
+event.c \
+fnmatch.c \
+htimerNtp.c \
+objectEntry.c \
+objectEntryTimer.c \
+objectUtils.c \
+ORTEAppRecvThread.c \
+ORTEAppSendThread.c \
+ORTEDomainApp.c \
+ORTEPublication.c \
+ORTEPublicationTimer.c \
+ORTESubscription.c \
+ORTEDomain.c \
+ORTEDomainMgr.c \
+ORTEInit.c \
+ORTEThreadUtils.c \
+ORTETypeRegister.c \
+ORTEVerbosity.c \
+ORTEPattern.c \
+ORTEMisc.c \
+parameter.c \
+RTPSAck.c \
+RTPSCSTReader.c \
+RTPSCSTReaderTimer.c \
+RTPSCSTReaderProc.c \
+RTPSCSTWriter.c \
+RTPSCSTWriterTimer.c \
+RTPSGap.c \
+RTPSHeader.c \
+RTPSHeardBeat.c \
+RTPSInfoDST.c \
+RTPSInfoREPLY.c \
+RTPSInfoSRC.c \
+RTPSInfoTS.c \
+RTPSPad.c \
+RTPSUtils.c \
+RTPSVar.c \
+RTPSIssue.c \
+sock.c \
+ul_gavl.c \
+ul_gavlprim.c \
+cdr.c
+
+ifeq ($(CONFIG_OC_ETH_ORTE_RTL),y)
+rtlinux_LIBRARIES = orte_rt
+rtlinux_MODULES = orte_rt
+orte_rt_SOURCES = $(ortert_SOURCES)
+SUBDIRS = rtl
+endif #CONFIG_OC_ETH_ORTE_RTL

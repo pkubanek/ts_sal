@@ -1,9 +1,4 @@
 struct camera_WAS {
-  long	FPGACheckSum[2];	// 2.31E-05 | none | FPGA Configuration checksum (2/CCD) | none | Corner rafts | 16 | 16  | 64 
-  float	Board_current[4];	// 0.054 | Volt | Electronics board currents (4/board) | none | Corner rafts | 32 | 74,724  | 298,897 
-  long	CABAC_MUX[4];		// 0.054 | none | CABAC/ASPIC V &amp; T  (2 at a time, MUXed) | none | Corner rafts | 32 | 74,724  | 298,897 
-  short	CCD_ID;			// 2.31E-05 | none | CCD ID ( ITL only) | none | Corner rafts | 8 | 8  | 16 
-  short	Board_ID;		// 2.31E-05 | none | Board ID | none | Corner rafts | 8 | 8  | 16 
   float	CCD_temp;		// 0.054 | Kelvin | CCD temperatures | none | Corner rafts | 8 | 18,681  | 74,724 
   float	Board_temp[12];		// 0.054 | Kelvin | Board temps | none | Corner rafts | 96 | 224,173  | 896,692 
   float	Board_voltage[4];	// 0.054 | Volt | Electronics board voltages (4/board) | none | Corner rafts | 32 | 74,724  | 298,897 

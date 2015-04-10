@@ -154,9 +154,13 @@ while { [gets $fin rec] > -1 } {
 <IMG SRC=\"../LSST_logo.gif\" ALIGN=CENTER>
 <IMG SRC=\"../dde.gif\" ALIGN=CENTER><P><HR><P>
 <H1>Stream $id</H1><P><H2>Description</H2>"
+      if { [info exists SYSDIC($id,title)] == 0 } {
+          puts stderr "***WARNING*** No entry in system dictionary for $id"
+          set SYSDIC($id,title) $id
+      }
       puts $fout "$SYSDIC($id,title)<P>"
       if { [info exists SDESC($id)] == 0 } {
-           puts stderr "No SDESC for $id"
+           puts stderr "***WARNING*** No detailed description (SDESC) for $id"
            set SDESC($id) "Detail : unknown"
       }
       puts $fout "Detail : $SDESC($id)<HR><P>"

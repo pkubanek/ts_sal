@@ -11,5 +11,5 @@ CREATE TABLE camera_Filter_items (
   comment char(128),
   PRIMARY KEY (num)
 );
-INSERT INTO camera_Filter_items VALUES (1,"Loader_telemetry","long",1,"??",0.054,"none","none","Loader");
-INSERT INTO camera_Filter_items VALUES (2,"REB_ID"," unsignedshort",1,"none",0.054,"none","Cryostat","Raft Electronics Board ID");
+INSERT INTO camera_Filter_items VALUES (1,"Loader_telemetry","long",1,"",11,"","","");
+INSERT INTO camera_Filter_items VALUES (2,"REB_ID","short",1,"",11,"","","");

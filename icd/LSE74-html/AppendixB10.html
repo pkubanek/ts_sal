@@ -1,0 +1,61 @@
+<H2>B10 mount Telemetry</H2>
+<H3>Telemetry datastream topic : mount.Alt</H3><P>
+
+<P>This subsystem maintains application level information about
+the<BR>Altitude axis requested and actual position and status. <P><UL>
+<TABLE BORDER=3 CELLPADDING=5 BGCOLOR=LightBlue WIDTH=700><TR BGCOLOR=yellow><B><TD>Item</TD><TD>Type</TD><TD>Size</TD><TD>Freq.</TD><TD>Notes</TD></B></TR>
+<TR><TD>Raw</TD><TD>16</TD><TD>mount.Alt.Raw</TD><TD>long</TD><TD>None</TD></TR>
+<TR><TD>Calibrated</TD><TD>32</TD><TD>mount.Alt.Calibrated</TD><TD>float</TD><TD>None</TD></TR>
+</TABLE></UL><P>
+<H3>Telemetry datastream topic : mount.Application</H3><P>
+This subsystem generates application level items calculated from subsystem raw data<P><UL>
+<TABLE BORDER=3 CELLPADDING=5 BGCOLOR=LightBlue WIDTH=700><TR BGCOLOR=yellow><B><TD>Item</TD><TD>Type</TD><TD>Size</TD><TD>Freq.</TD><TD>Notes</TD></B></TR>
+<TR><TD>Demand</TD><TD>4</TD><TD>mount.Application.Demand</TD><TD>float</TD><TD>None</TD></TR>
+<TR><TD>Position</TD><TD>4</TD><TD>mount.Application.Position</TD><TD>float</TD><TD>None</TD></TR>
+<TR><TD>Error</TD><TD>4</TD><TD>mount.Application.Error</TD><TD>float</TD><TD>None</TD></TR>
+<TR><TD>Status</TD><TD>16</TD><TD>mount.Application.Status</TD><TD>string<16></TD><TD>None</TD></TR>
+</TABLE></UL><P>
+<H3>Telemetry datastream topic : mount.Az</H3><P>
+
+<P>This subsystem maintains application level information about the<BR>Azimuth
+axis requested and actual position and status. <P><UL>
+<TABLE BORDER=3 CELLPADDING=5 BGCOLOR=LightBlue WIDTH=700><TR BGCOLOR=yellow><B><TD>Item</TD><TD>Type</TD><TD>Size</TD><TD>Freq.</TD><TD>Notes</TD></B></TR>
+<TR><TD>Raw</TD><TD>16</TD><TD>mount.Az.Raw</TD><TD>long</TD><TD>None</TD></TR>
+<TR><TD>Calibrated</TD><TD>32</TD><TD>mount.Az.Calibrated</TD><TD>float</TD><TD>None</TD></TR>
+</TABLE></UL><P>
+<H3>Telemetry datastream topic : mount.Electrical</H3><P>
+
+<P>Electrical monitoring  for devices located in the mount
+subsystem.<BR>Raw data, calibrated voltages, calibrated current,
+device power status. <P><UL>
+<TABLE BORDER=3 CELLPADDING=5 BGCOLOR=LightBlue WIDTH=700><TR BGCOLOR=yellow><B><TD>Item</TD><TD>Type</TD><TD>Size</TD><TD>Freq.</TD><TD>Notes</TD></B></TR>
+<TR><TD>Raw</TD><TD>16</TD><TD>mount.Electrical.Raw</TD><TD>long</TD><TD>None</TD></TR>
+<TR><TD>Calibrated</TD><TD>32</TD><TD>mount.Electrical.Calibrated</TD><TD>float</TD><TD>None</TD></TR>
+</TABLE></UL><P>
+<H3>Telemetry datastream topic : mount.Metrology</H3><P>
+
+<P>Position control  for sensors located in the mount
+subsystem.<BR>Raw sensor readings, calibrated positions, limit
+switches, status bits. <P><UL>
+<TABLE BORDER=3 CELLPADDING=5 BGCOLOR=LightBlue WIDTH=700><TR BGCOLOR=yellow><B><TD>Item</TD><TD>Type</TD><TD>Size</TD><TD>Freq.</TD><TD>Notes</TD></B></TR>
+<TR><TD>Raw</TD><TD>16</TD><TD>mount.Metrology.Raw</TD><TD>long</TD><TD>None</TD></TR>
+<TR><TD>Calibrated</TD><TD>16</TD><TD>mount.Metrology.Calibrated</TD><TD>float</TD><TD>None</TD></TR>
+</TABLE></UL><P>
+<H3>Telemetry datastream topic : mount.Rotator</H3><P>
+
+<P>This subsystem maintains application level information about
+the<BR>instrument rotator requested and actual position and status.<P><UL>
+<TABLE BORDER=3 CELLPADDING=5 BGCOLOR=LightBlue WIDTH=700><TR BGCOLOR=yellow><B><TD>Item</TD><TD>Type</TD><TD>Size</TD><TD>Freq.</TD><TD>Notes</TD></B></TR>
+<TR><TD>Raw</TD><TD>16</TD><TD>mount.Rotator.Raw</TD><TD>long</TD><TD>None</TD></TR>
+<TR><TD>Calibrated</TD><TD>32</TD><TD>mount.Rotator.Calibrated</TD><TD>float</TD><TD>None</TD></TR>
+</TABLE></UL><P>
+<H3>Telemetry datastream topic : mount.TC</H3><P>
+
+<P>Temperature monitoring  for sensors located in the mount
+subsystem.<BR>Raw sensor readings, calibrated temperatures,
+time series statistics, sensor health. <P><UL>
+<TABLE BORDER=3 CELLPADDING=5 BGCOLOR=LightBlue WIDTH=700><TR BGCOLOR=yellow><B><TD>Item</TD><TD>Type</TD><TD>Size</TD><TD>Freq.</TD><TD>Notes</TD></B></TR>
+<TR><TD>Raw</TD><TD>16</TD><TD>mount.TC.Raw</TD><TD>long</TD><TD>None</TD></TR>
+<TR><TD>Calibrated</TD><TD>16</TD><TD>mount.TC.Calibrated</TD><TD>float</TD><TD>None</TD></TR>
+</TABLE></UL><P>
+

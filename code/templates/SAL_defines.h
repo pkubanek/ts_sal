@@ -48,6 +48,7 @@ typedef int	        salReturn;
 // Generic return codes
 #define SAL__OK   		 0
 #define SAL__ERR 		-1
+#define SAL__ERROR		-1
 #define SAL__ILLEGAL_REVCODE 	-2
 #define SAL__TOO_MANY_HANDLES   -3
 #define SAL__NOT_DEFINED        -4

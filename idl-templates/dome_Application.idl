@@ -1,9 +1,4 @@
 struct dome_Application {
-  float azTarget;
-  float azPosition;
-  float azError;
-  float elevTarget;
-  float elevPosition;
   float elevError;
   float scrTarget;
   float scrPosition;

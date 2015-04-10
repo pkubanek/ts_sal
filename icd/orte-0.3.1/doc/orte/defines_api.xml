@@ -1,0 +1,739 @@
+<refentry>
+<refmeta>
+<refentrytitle><phrase id="API-SeqNumberCmp">SeqNumberCmp</phrase></refentrytitle>
+</refmeta>
+<refnamediv>
+ <refname>SeqNumberCmp</refname>
+ <refpurpose>
+   comparison of two sequence numbers
+ </refpurpose>
+</refnamediv>
+<refsynopsisdiv>
+ <title>Synopsis</title>
+  <funcsynopsis><funcprototype>
+   <funcdef> <function>SeqNumberCmp </function></funcdef>
+   <paramdef> <parameter>sn1</parameter></paramdef>
+   <paramdef> <parameter>sn2</parameter></paramdef>
+  </funcprototype></funcsynopsis>
+</refsynopsisdiv>
+<refsect1>
+ <title>Arguments</title>
+ <variablelist>
+  <varlistentry>
+   <term><parameter>sn1</parameter></term>
+   <listitem>
+    <para>
+      source sequential number 1
+    </para>
+   </listitem>
+  </varlistentry>
+  <varlistentry>
+   <term><parameter>sn2</parameter></term>
+   <listitem>
+    <para>
+      source sequential number 2
+    </para>
+   </listitem>
+  </varlistentry>
+ </variablelist>
+</refsect1>
+<refsect1>
+ <title>Return</title>
+ <para>
+     1 if sn1 &gt; sn2
+   -1 if sn1 &lt; sn2
+   0 if sn1 = sn2
+ </para>
+</refsect1>
+</refentry>
+
+<refentry>
+<refmeta>
+<refentrytitle><phrase id="API-SeqNumberInc">SeqNumberInc</phrase></refentrytitle>
+</refmeta>
+<refnamediv>
+ <refname>SeqNumberInc</refname>
+ <refpurpose>
+      incrementation of a sequence number
+ </refpurpose>
+</refnamediv>
+<refsynopsisdiv>
+ <title>Synopsis</title>
+  <funcsynopsis><funcprototype>
+   <funcdef> <function>SeqNumberInc </function></funcdef>
+   <paramdef> <parameter>res</parameter></paramdef>
+   <paramdef> <parameter>sn</parameter></paramdef>
+  </funcprototype></funcsynopsis>
+</refsynopsisdiv>
+<refsect1>
+ <title>Arguments</title>
+ <variablelist>
+  <varlistentry>
+   <term><parameter>res</parameter></term>
+   <listitem>
+    <para>
+      result
+    </para>
+   </listitem>
+  </varlistentry>
+  <varlistentry>
+   <term><parameter>sn</parameter></term>
+   <listitem>
+    <para>
+      sequential number to be incremented
+    </para>
+   </listitem>
+  </varlistentry>
+ </variablelist>
+</refsect1>
+<refsect1>
+ <title>Description</title>
+ <para>
+   res = sn + 1
+ </para>
+</refsect1>
+</refentry>
+
+<refentry>
+<refmeta>
+<refentrytitle><phrase id="API-SeqNumberAdd">SeqNumberAdd</phrase></refentrytitle>
+</refmeta>
+<refnamediv>
+ <refname>SeqNumberAdd</refname>
+ <refpurpose>
+      addition of two sequential numbers
+ </refpurpose>
+</refnamediv>
+<refsynopsisdiv>
+ <title>Synopsis</title>
+  <funcsynopsis><funcprototype>
+   <funcdef> <function>SeqNumberAdd </function></funcdef>
+   <paramdef> <parameter>res</parameter></paramdef>
+   <paramdef> <parameter>sn1</parameter></paramdef>
+   <paramdef> <parameter>sn2</parameter></paramdef>
+  </funcprototype></funcsynopsis>
+</refsynopsisdiv>
+<refsect1>
+ <title>Arguments</title>
+ <variablelist>
+  <varlistentry>
+   <term><parameter>res</parameter></term>
+   <listitem>
+    <para>
+      result
+    </para>
+   </listitem>
+  </varlistentry>
+  <varlistentry>
+   <term><parameter>sn1</parameter></term>
+   <listitem>
+    <para>
+      source sequential number 1
+    </para>
+   </listitem>
+  </varlistentry>
+  <varlistentry>
+   <term><parameter>sn2</parameter></term>
+   <listitem>
+    <para>
+      source sequential number 2
+    </para>
+   </listitem>
+  </varlistentry>
+ </variablelist>
+</refsect1>
+<refsect1>
+ <title>Description</title>
+ <para>
+   res = sn1 + sn2
+ </para>
+</refsect1>
+</refentry>
+
+<refentry>
+<refmeta>
+<refentrytitle><phrase id="API-SeqNumberDec">SeqNumberDec</phrase></refentrytitle>
+</refmeta>
+<refnamediv>
+ <refname>SeqNumberDec</refname>
+ <refpurpose>
+      decrementation of a sequence number
+ </refpurpose>
+</refnamediv>
+<refsynopsisdiv>
+ <title>Synopsis</title>
+  <funcsynopsis><funcprototype>
+   <funcdef> <function>SeqNumberDec </function></funcdef>
+   <paramdef> <parameter>res</parameter></paramdef>
+   <paramdef> <parameter>sn</parameter></paramdef>
+  </funcprototype></funcsynopsis>
+</refsynopsisdiv>
+<refsect1>
+ <title>Arguments</title>
+ <variablelist>
+  <varlistentry>
+   <term><parameter>res</parameter></term>
+   <listitem>
+    <para>
+      result
+    </para>
+   </listitem>
+  </varlistentry>
+  <varlistentry>
+   <term><parameter>sn</parameter></term>
+   <listitem>
+    <para>
+      sequential number to be decremented
+    </para>
+   </listitem>
+  </varlistentry>
+ </variablelist>
+</refsect1>
+<refsect1>
+ <title>Description</title>
+ <para>
+   res = sn - 1
+ </para>
+</refsect1>
+</refentry>
+
+<refentry>
+<refmeta>
+<refentrytitle><phrase id="API-SeqNumberSub">SeqNumberSub</phrase></refentrytitle>
+</refmeta>
+<refnamediv>
+ <refname>SeqNumberSub</refname>
+ <refpurpose>
+      substraction of two sequential numbers
+ </refpurpose>
+</refnamediv>
+<refsynopsisdiv>
+ <title>Synopsis</title>
+  <funcsynopsis><funcprototype>
+   <funcdef> <function>SeqNumberSub </function></funcdef>
+   <paramdef> <parameter>res</parameter></paramdef>
+   <paramdef> <parameter>sn1</parameter></paramdef>
+   <paramdef> <parameter>sn2</parameter></paramdef>
+  </funcprototype></funcsynopsis>
+</refsynopsisdiv>
+<refsect1>
+ <title>Arguments</title>
+ <variablelist>
+  <varlistentry>
+   <term><parameter>res</parameter></term>
+   <listitem>
+    <para>
+      result
+    </para>
+   </listitem>
+  </varlistentry>
+  <varlistentry>
+   <term><parameter>sn1</parameter></term>
+   <listitem>
+    <para>
+      source sequential number 1
+    </para>
+   </listitem>
+  </varlistentry>
+  <varlistentry>
+   <term><parameter>sn2</parameter></term>
+   <listitem>
+    <para>
+      source sequential number 2
+    </para>
+   </listitem>
+  </varlistentry>
+ </variablelist>
+</refsect1>
+<refsect1>
+ <title>Description</title>
+ <para>
+   res = sn1 - sn2
+ </para>
+</refsect1>
+</refentry>
+
+<refentry>
+<refmeta>
+<refentrytitle><phrase id="API-NtpTimeCmp">NtpTimeCmp</phrase></refentrytitle>
+</refmeta>
+<refnamediv>
+ <refname>NtpTimeCmp</refname>
+ <refpurpose>
+      comparation of two NtpTimes
+ </refpurpose>
+</refnamediv>
+<refsynopsisdiv>
+ <title>Synopsis</title>
+  <funcsynopsis><funcprototype>
+   <funcdef> <function>NtpTimeCmp </function></funcdef>
+   <paramdef> <parameter>time1</parameter></paramdef>
+   <paramdef> <parameter>time2</parameter></paramdef>
+  </funcprototype></funcsynopsis>
+</refsynopsisdiv>
+<refsect1>
+ <title>Arguments</title>
+ <variablelist>
+  <varlistentry>
+   <term><parameter>time1</parameter></term>
+   <listitem>
+    <para>
+      source time 1
+    </para>
+   </listitem>
+  </varlistentry>
+  <varlistentry>
+   <term><parameter>time2</parameter></term>
+   <listitem>
+    <para>
+      source time 2
+    </para>
+   </listitem>
+  </varlistentry>
+ </variablelist>
+</refsect1>
+<refsect1>
+ <title>Return value</title>
+ <para>
+   1 if time 1 &gt; time 2 
+   -1 if time 1 &lt; time 2
+   0 if time 1 = time 2
+ </para>
+</refsect1>
+</refentry>
+
+<refentry>
+<refmeta>
+<refentrytitle><phrase id="API-NtpTimeAdd">NtpTimeAdd</phrase></refentrytitle>
+</refmeta>
+<refnamediv>
+ <refname>NtpTimeAdd</refname>
+ <refpurpose>
+      addition of two NtpTimes
+ </refpurpose>
+</refnamediv>
+<refsynopsisdiv>
+ <title>Synopsis</title>
+  <funcsynopsis><funcprototype>
+   <funcdef> <function>NtpTimeAdd </function></funcdef>
+   <paramdef> <parameter>res</parameter></paramdef>
+   <paramdef> <parameter>time1</parameter></paramdef>
+   <paramdef> <parameter>time2</parameter></paramdef>
+  </funcprototype></funcsynopsis>
+</refsynopsisdiv>
+<refsect1>
+ <title>Arguments</title>
+ <variablelist>
+  <varlistentry>
+   <term><parameter>res</parameter></term>
+   <listitem>
+    <para>
+      result
+    </para>
+   </listitem>
+  </varlistentry>
+  <varlistentry>
+   <term><parameter>time1</parameter></term>
+   <listitem>
+    <para>
+      source time 1
+    </para>
+   </listitem>
+  </varlistentry>
+  <varlistentry>
+   <term><parameter>time2</parameter></term>
+   <listitem>
+    <para>
+      source time 2
+    </para>
+   </listitem>
+  </varlistentry>
+ </variablelist>
+</refsect1>
+<refsect1>
+ <title>Description</title>
+ <para>
+   res = time1 + time2
+ </para>
+</refsect1>
+</refentry>
+
+<refentry>
+<refmeta>
+<refentrytitle><phrase id="API-NtpTimeSub">NtpTimeSub</phrase></refentrytitle>
+</refmeta>
+<refnamediv>
+ <refname>NtpTimeSub</refname>
+ <refpurpose>
+      substraction of two NtpTimes
+ </refpurpose>
+</refnamediv>
+<refsynopsisdiv>
+ <title>Synopsis</title>
+  <funcsynopsis><funcprototype>
+   <funcdef> <function>NtpTimeSub </function></funcdef>
+   <paramdef> <parameter>res</parameter></paramdef>
+   <paramdef> <parameter>time1</parameter></paramdef>
+   <paramdef> <parameter>time2</parameter></paramdef>
+  </funcprototype></funcsynopsis>
+</refsynopsisdiv>
+<refsect1>
+ <title>Arguments</title>
+ <variablelist>
+  <varlistentry>
+   <term><parameter>res</parameter></term>
+   <listitem>
+    <para>
+      result
+    </para>
+   </listitem>
+  </varlistentry>
+  <varlistentry>
+   <term><parameter>time1</parameter></term>
+   <listitem>
+    <para>
+      source time 1
+    </para>
+   </listitem>
+  </varlistentry>
+  <varlistentry>
+   <term><parameter>time2</parameter></term>
+   <listitem>
+    <para>
+      source time 2
+    </para>
+   </listitem>
+  </varlistentry>
+ </variablelist>
+</refsect1>
+<refsect1>
+ <title>Description</title>
+ <para>
+   res = time1 - time2
+ </para>
+</refsect1>
+</refentry>
+
+<refentry>
+<refmeta>
+<refentrytitle><phrase id="API-NtpTimeAssembFromMs">NtpTimeAssembFromMs</phrase></refentrytitle>
+</refmeta>
+<refnamediv>
+ <refname>NtpTimeAssembFromMs</refname>
+ <refpurpose>
+      converts seconds and miliseconds to NtpTime
+ </refpurpose>
+</refnamediv>
+<refsynopsisdiv>
+ <title>Synopsis</title>
+  <funcsynopsis><funcprototype>
+   <funcdef> <function>NtpTimeAssembFromMs </function></funcdef>
+   <paramdef> <parameter>time</parameter></paramdef>
+   <paramdef> <parameter>s</parameter></paramdef>
+   <paramdef> <parameter>msec</parameter></paramdef>
+  </funcprototype></funcsynopsis>
+</refsynopsisdiv>
+<refsect1>
+ <title>Arguments</title>
+ <variablelist>
+  <varlistentry>
+   <term><parameter>time</parameter></term>
+   <listitem>
+    <para>
+      time given in NtpTime structure
+    </para>
+   </listitem>
+  </varlistentry>
+  <varlistentry>
+   <term><parameter>s</parameter></term>
+   <listitem>
+    <para>
+      seconds portion of given time
+    </para>
+   </listitem>
+  </varlistentry>
+  <varlistentry>
+   <term><parameter>msec</parameter></term>
+   <listitem>
+    <para>
+      miliseconds portion of given time
+    </para>
+   </listitem>
+  </varlistentry>
+ </variablelist>
+</refsect1>
+</refentry>
+
+<refentry>
+<refmeta>
+<refentrytitle><phrase id="API-NtpTimeDisAssembToMs">NtpTimeDisAssembToMs</phrase></refentrytitle>
+</refmeta>
+<refnamediv>
+ <refname>NtpTimeDisAssembToMs</refname>
+ <refpurpose>
+      converts NtpTime to seconds and miliseconds
+ </refpurpose>
+</refnamediv>
+<refsynopsisdiv>
+ <title>Synopsis</title>
+  <funcsynopsis><funcprototype>
+   <funcdef> <function>NtpTimeDisAssembToMs </function></funcdef>
+   <paramdef> <parameter>s</parameter></paramdef>
+   <paramdef> <parameter>msec</parameter></paramdef>
+   <paramdef> <parameter>time</parameter></paramdef>
+  </funcprototype></funcsynopsis>
+</refsynopsisdiv>
+<refsect1>
+ <title>Arguments</title>
+ <variablelist>
+  <varlistentry>
+   <term><parameter>s</parameter></term>
+   <listitem>
+    <para>
+      seconds portion of given time
+    </para>
+   </listitem>
+  </varlistentry>
+  <varlistentry>
+   <term><parameter>msec</parameter></term>
+   <listitem>
+    <para>
+      miliseconds portion of given time
+    </para>
+   </listitem>
+  </varlistentry>
+  <varlistentry>
+   <term><parameter>time</parameter></term>
+   <listitem>
+    <para>
+      time given in NtpTime structure
+    </para>
+   </listitem>
+  </varlistentry>
+ </variablelist>
+</refsect1>
+</refentry>
+
+<refentry>
+<refmeta>
+<refentrytitle><phrase id="API-NtpTimeAssembFromUs">NtpTimeAssembFromUs</phrase></refentrytitle>
+</refmeta>
+<refnamediv>
+ <refname>NtpTimeAssembFromUs</refname>
+ <refpurpose>
+      converts seconds and useconds to NtpTime
+ </refpurpose>
+</refnamediv>
+<refsynopsisdiv>
+ <title>Synopsis</title>
+  <funcsynopsis><funcprototype>
+   <funcdef> <function>NtpTimeAssembFromUs </function></funcdef>
+   <paramdef> <parameter>time</parameter></paramdef>
+   <paramdef> <parameter>s</parameter></paramdef>
+   <paramdef> <parameter>usec</parameter></paramdef>
+  </funcprototype></funcsynopsis>
+</refsynopsisdiv>
+<refsect1>
+ <title>Arguments</title>
+ <variablelist>
+  <varlistentry>
+   <term><parameter>time</parameter></term>
+   <listitem>
+    <para>
+      time given in NtpTime structure
+    </para>
+   </listitem>
+  </varlistentry>
+  <varlistentry>
+   <term><parameter>s</parameter></term>
+   <listitem>
+    <para>
+      seconds portion of given time
+    </para>
+   </listitem>
+  </varlistentry>
+  <varlistentry>
+   <term><parameter>usec</parameter></term>
+   <listitem>
+    <para>
+      microseconds portion of given time
+    </para>
+   </listitem>
+  </varlistentry>
+ </variablelist>
+</refsect1>
+</refentry>
+
+<refentry>
+<refmeta>
+<refentrytitle><phrase id="API-NtpTimeDisAssembToUs">NtpTimeDisAssembToUs</phrase></refentrytitle>
+</refmeta>
+<refnamediv>
+ <refname>NtpTimeDisAssembToUs</refname>
+ <refpurpose>
+      converts NtpTime to seconds and useconds
+ </refpurpose>
+</refnamediv>
+<refsynopsisdiv>
+ <title>Synopsis</title>
+  <funcsynopsis><funcprototype>
+   <funcdef> <function>NtpTimeDisAssembToUs </function></funcdef>
+   <paramdef> <parameter>s</parameter></paramdef>
+   <paramdef> <parameter>usec</parameter></paramdef>
+   <paramdef> <parameter>time</parameter></paramdef>
+  </funcprototype></funcsynopsis>
+</refsynopsisdiv>
+<refsect1>
+ <title>Arguments</title>
+ <variablelist>
+  <varlistentry>
+   <term><parameter>s</parameter></term>
+   <listitem>
+    <para>
+      seconds portion of given time
+    </para>
+   </listitem>
+  </varlistentry>
+  <varlistentry>
+   <term><parameter>usec</parameter></term>
+   <listitem>
+    <para>
+      microseconds portion of given time
+    </para>
+   </listitem>
+  </varlistentry>
+  <varlistentry>
+   <term><parameter>time</parameter></term>
+   <listitem>
+    <para>
+      time given in NtpTime structure
+    </para>
+   </listitem>
+  </varlistentry>
+ </variablelist>
+</refsect1>
+</refentry>
+
+<refentry>
+<refmeta>
+<refentrytitle><phrase id="API-Domain2Port">Domain2Port</phrase></refentrytitle>
+</refmeta>
+<refnamediv>
+ <refname>Domain2Port</refname>
+ <refpurpose>
+      converts Domain value to IP Port value
+ </refpurpose>
+</refnamediv>
+<refsynopsisdiv>
+ <title>Synopsis</title>
+  <funcsynopsis><funcprototype>
+   <funcdef> <function>Domain2Port </function></funcdef>
+   <paramdef> <parameter>d</parameter></paramdef>
+   <paramdef> <parameter>p</parameter></paramdef>
+  </funcprototype></funcsynopsis>
+</refsynopsisdiv>
+<refsect1>
+ <title>Arguments</title>
+ <variablelist>
+  <varlistentry>
+   <term><parameter>d</parameter></term>
+   <listitem>
+    <para>
+      domain
+    </para>
+   </listitem>
+  </varlistentry>
+  <varlistentry>
+   <term><parameter>p</parameter></term>
+   <listitem>
+    <para>
+      port
+    </para>
+   </listitem>
+  </varlistentry>
+ </variablelist>
+</refsect1>
+</refentry>
+
+<refentry>
+<refmeta>
+<refentrytitle><phrase id="API-Domain2PortMulticastUserdata">Domain2PortMulticastUserdata</phrase></refentrytitle>
+</refmeta>
+<refnamediv>
+ <refname>Domain2PortMulticastUserdata</refname>
+ <refpurpose>
+      converts Domain value to userdata IP Port value
+ </refpurpose>
+</refnamediv>
+<refsynopsisdiv>
+ <title>Synopsis</title>
+  <funcsynopsis><funcprototype>
+   <funcdef> <function>Domain2PortMulticastUserdata </function></funcdef>
+   <paramdef> <parameter>d</parameter></paramdef>
+   <paramdef> <parameter>p</parameter></paramdef>
+  </funcprototype></funcsynopsis>
+</refsynopsisdiv>
+<refsect1>
+ <title>Arguments</title>
+ <variablelist>
+  <varlistentry>
+   <term><parameter>d</parameter></term>
+   <listitem>
+    <para>
+      domain
+    </para>
+   </listitem>
+  </varlistentry>
+  <varlistentry>
+   <term><parameter>p</parameter></term>
+   <listitem>
+    <para>
+      port
+    </para>
+   </listitem>
+  </varlistentry>
+ </variablelist>
+</refsect1>
+</refentry>
+
+<refentry>
+<refmeta>
+<refentrytitle><phrase id="API-Domain2PortMulticastMetatraffic">Domain2PortMulticastMetatraffic</phrase></refentrytitle>
+</refmeta>
+<refnamediv>
+ <refname>Domain2PortMulticastMetatraffic</refname>
+ <refpurpose>
+      converts Domain value to metatraffic IP Port value
+ </refpurpose>
+</refnamediv>
+<refsynopsisdiv>
+ <title>Synopsis</title>
+  <funcsynopsis><funcprototype>
+   <funcdef> <function>Domain2PortMulticastMetatraffic </function></funcdef>
+   <paramdef> <parameter>d</parameter></paramdef>
+   <paramdef> <parameter>p</parameter></paramdef>
+  </funcprototype></funcsynopsis>
+</refsynopsisdiv>
+<refsect1>
+ <title>Arguments</title>
+ <variablelist>
+  <varlistentry>
+   <term><parameter>d</parameter></term>
+   <listitem>
+    <para>
+      domain
+    </para>
+   </listitem>
+  </varlistentry>
+  <varlistentry>
+   <term><parameter>p</parameter></term>
+   <listitem>
+    <para>
+      port
+    </para>
+   </listitem>
+  </varlistentry>
+ </variablelist>
+</refsect1>
+</refentry>
+

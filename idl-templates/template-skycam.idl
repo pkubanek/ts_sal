@@ -1,9 +1,4 @@
 struct skycam_Application {
-  float Sky_parms[32];
-  string<4096> Catalog;
-  float Data[64];
-  float Error[4];
-  string<16> Status;
 };
 
 

@@ -12,7 +12,5 @@ CREATE TABLE skycam_Application_items (
   PRIMARY KEY (num)
 );
 INSERT INTO skycam_Application_items VALUES (1,"Sky_parms","float",32,"",0.054,"","","");
-INSERT INTO skycam_Application_items VALUES (2,"Catalog","string",4096,"",0.054,"","","");
-INSERT INTO skycam_Application_items VALUES (3,"Data","float",64,"",0.054,"","","");
-INSERT INTO skycam_Application_items VALUES (4,"Error","float",4,"",0.054,"","","");
-INSERT INTO skycam_Application_items VALUES (5,"Status","string",16,"",0.054,"","","");
+INSERT INTO skycam_Application_items VALUES (2,"Data","float",64,"",0.054,"","","");
+INSERT INTO skycam_Application_items VALUES (3,"Error","float",4,"",0.054,"","","");

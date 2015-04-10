@@ -11,6 +11,4 @@ CREATE TABLE ocs_scheduler_iconstraints_items (
   comment char(128),
   PRIMARY KEY (num)
 );
-INSERT INTO ocs_scheduler_iconstraints_items VALUES (1,"type","string",32,"",0.054,"","","");
-INSERT INTO ocs_scheduler_iconstraints_items VALUES (2,"minval","string",32,"",0.054,"","","");
-INSERT INTO ocs_scheduler_iconstraints_items VALUES (3,"maxval","string",32,"",0.054,"","","");
+INSERT INTO ocs_scheduler_iconstraints_items VALUES (1,"codes","long",32,"",0.054,"","","");

@@ -1,9 +1,4 @@
 struct m2_Actuators {
-  long Raw[15];
-  float Calibrated[31];
-  byte Status[15];
-};
-
 
 
 

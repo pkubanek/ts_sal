@@ -108,8 +108,9 @@ while { [gets $fin rec] > -1 } {
    set topic [lindex $rec 0]
    if { $id != $last  } {
       if { $last != "" } {puts $fsum $last}
-      catch { puts $fout "\};"
-              close $fout
+      catch { 
+###puts $fout "\};"
+###              close $fout
               if { [info exists keyindex($last)] } {
                 puts $fo2 "  PRIMARY KEY (date_time,$keyindex($last))"
               } else {
@@ -121,16 +122,16 @@ while { [gets $fin rec] > -1 } {
               close $fo3
             }
       set last $id
-      set fout [open $id.idl w]
+###      set fout [open $id.idl w]
       set fo2  [open $id.sqldef w]
       set fo3  [open $id.sqlwrt w]
-      puts $fout "struct $topic \{
-  string<32> private_revCode; //private
-  double private_sndStamp; //private
-  double private_rcvStamp; //private
-  long private_seqNum; //private
-  long private_origin; //private
-  long private_host; //private"
+###      puts $fout "struct $topic \{
+###  string<32> private_revCode; //private
+###  double private_sndStamp; //private
+###  double private_rcvStamp; //private
+###  long private_seqNum; //private
+###  long private_origin; //private
+###  long private_host; //private"
       puts $fo2  "DROP TABLE IF EXISTS $topic;"
       puts $fo2  "CREATE TABLE $topic ("
       puts $fo2  "  date_time timestamp NOT NULL,
@@ -147,16 +148,16 @@ while { [gets $fin rec] > -1 } {
    if { [lindex $rec 2] > 1 } {
       set nd [lindex $rec 2]
 #puts stdout "nditem $fout $fo2 $name $type $nd"
-      nditem $fout $fo2 $name $type $nd
+      nditem stdout $fo2 $name $type $nd
    } else {
 #puts stdout "olddoitem $fout $fo2 $name $type"
-      olddoitem $fout $fo2 $name $type
+      olddoitem stdout $fo2 $name $type
    }
    puts stdout "Added $name to $topic"
 }
 
-puts $fout "\};"
-close $fout
+###puts $fout "\};"
+###close $fout
 if { [info exists keyindex($last)] } {
  puts $fo2 "  PRIMARY KEY (date_time,$keyindex($last))"
 } else {

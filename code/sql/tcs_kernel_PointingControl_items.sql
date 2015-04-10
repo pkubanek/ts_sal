@@ -11,9 +11,7 @@ CREATE TABLE tcs_kernel_PointingControl_items (
   comment char(128),
   PRIMARY KEY (num)
 );
-INSERT INTO tcs_kernel_PointingControl_items VALUES (1,"RollFilter","string",32,"",0.054,"","","");
-INSERT INTO tcs_kernel_PointingControl_items VALUES (2,"PitchFilter","string",32,"",0.054,"","","");
-INSERT INTO tcs_kernel_PointingControl_items VALUES (3,"AGuide","float",1,"",0.054,"","","");
-INSERT INTO tcs_kernel_PointingControl_items VALUES (4,"BGuide","float",1,"",0.054,"","","");
-INSERT INTO tcs_kernel_PointingControl_items VALUES (5,"ALocal","float",1,"",0.054,"","","");
-INSERT INTO tcs_kernel_PointingControl_items VALUES (6,"BLocal","float",1,"",0.054,"","","");
+INSERT INTO tcs_kernel_PointingControl_items VALUES (1,"AGuide","float",1,"",0.054,"","","");
+INSERT INTO tcs_kernel_PointingControl_items VALUES (2,"BGuide","float",1,"",0.054,"","","");
+INSERT INTO tcs_kernel_PointingControl_items VALUES (3,"ALocal","float",1,"",0.054,"","","");
+INSERT INTO tcs_kernel_PointingControl_items VALUES (4,"BLocal","float",1,"",0.054,"","","");

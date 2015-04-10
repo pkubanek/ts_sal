@@ -9,7 +9,7 @@ set subsys [lindex $argv 0]
 exec mkdir -p $SAL_WORK_DIR/html/[set subsys]
 
 set all [lsort [glob [set subsys]*.idl]]
-set fout [open $SAL_WORK_DIR/html/telemetry_[set subsys].html w]
+set fout [open $SAL_WORK_DIR/html/[set subsys]/telemetry_[set subsys].html w]
 puts stdout "Generating html Telemetry table $subsys"
 foreach i $all {
  set fin [open $i r]

@@ -1,0 +1,9 @@
+struct camera_Filter_angle {
+  string<32> private_revCode;  //private
+  double     private_sndStamp; //private
+  double     private_rcvStamp; //private
+  long       private_seqNum;   //private
+  long       private_origin;   //private
+  float	Inclinometer[2];	// 2.31E-04 | Degrees | FCS: inclinometer [2?] | none | Camera body | 2 | 20  | 80 
+};
+#pragma keylist camera_Filter_angle 

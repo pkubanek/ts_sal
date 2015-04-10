@@ -11,5 +11,5 @@ CREATE TABLE m1m3_Surface_items (
   comment char(128),
   PRIMARY KEY (num)
 );
-INSERT INTO m1m3_Surface_items VALUES (1,"Raw","long",1024,"",0.054,"","","");
-INSERT INTO m1m3_Surface_items VALUES (2,"Calibrated","float",1024,"",0.054,"","","");
+INSERT INTO m1m3_Surface_items VALUES (1,"Raw","long",1024,"",20,"","","");
+INSERT INTO m1m3_Surface_items VALUES (2,"Calibrated","float",1024,"",20,"","","");

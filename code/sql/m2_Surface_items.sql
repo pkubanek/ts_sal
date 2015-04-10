@@ -11,6 +11,5 @@ CREATE TABLE m2_Surface_items (
   comment char(128),
   PRIMARY KEY (num)
 );
-INSERT INTO m2_Surface_items VALUES (1,"Raw","long",200,"",0.054,"","","");
-INSERT INTO m2_Surface_items VALUES (2,"Calibrated","float",200,"",0.054,"","","");
-INSERT INTO m2_Surface_items VALUES (3,"Status","octet",50,"",0.054,"","","");
+INSERT INTO m2_Surface_items VALUES (1,"Raw","long",200,"",20,"","","");
+INSERT INTO m2_Surface_items VALUES (2,"Calibrated","float",200,"",20,"","","");

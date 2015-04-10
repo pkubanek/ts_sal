@@ -1,5 +1,1 @@
 struct hexapod_Application {
-  float Demand[6];
-  float Position[6];
-  float Error[6];
-};

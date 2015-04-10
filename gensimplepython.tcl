@@ -17,6 +17,12 @@ global SAL_DIR SAL_WORK_DIR SYSDIC VPROPS
         while { [gets $fin2 r2] > -1 } { puts $fout $r2}
         close $fin2
      }
+     if { [string range $rec 0 25] == "// INSERT CMDALIAS SUPPORT" } {
+        gencmdaliascode $subsys python $fout
+     }
+     if { [string range $rec 0 27] == "// INSERT EVENTALIAS SUPPORT" } {
+        geneventaliascode $subsys python $fout
+     }
   }
   close $fin
   close $fout

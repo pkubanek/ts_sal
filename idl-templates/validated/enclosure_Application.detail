@@ -1,4 +1,0 @@
-enclosure.Application.Demand 4 float 0.1
-enclosure.Application.Position 4 float 0.1
-enclosure.Application.Error 4 float 0.1
-enclosure.Application.Status 16 string<16> 0.1

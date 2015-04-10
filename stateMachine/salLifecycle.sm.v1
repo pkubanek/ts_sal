@@ -1,0 +1,60 @@
+
+%class salLifecycle
+
+%start MainMap::Off
+
+%map MainMap
+%%
+Off
+{
+	online 		STANDBY 	{ boot(); }
+}
+STANDBY
+{
+	quit	 	Off    		{ quit(); }
+	configure 	CONFIGURING 	{ configureAck(); }
+}
+CONFIGURING
+{ 
+	abandon		STANDBY		{ abandon(); }
+	configure	DISABLED	{ configureDone(); }
+}
+DISABLED { 
+	enable		ENABLING	{ enableAck(); }
+	release		RELEASING	{ releaseAck(); }
+}
+ENABLING
+{
+	enable		ENABLED		{ enableDone(); }
+	abort		ERROR		{ enableError(); }
+	disable		DISABLED	{ abandon(); }
+}
+ENABLED
+{
+	enable		ENABLED		{ enableDone(); }
+	stop		ENABLED		{ stopDone(); }
+	abort		ERROR		{ enableError(); }
+	disable		DISABLED	{ abandon(); }
+}
+DISABLING
+{
+	disable		DISABLING	{ disableDone(); }
+	abort		ERROR		{ disableError(); }
+	abandon		ENABLED		{ abandon(); }
+}
+ERROR
+{
+	reset		STANDBY		{ reset(); }
+}
+RELEASING
+{
+	release		STANDBY		{ releaseDone(); }
+	abort		ERROR		{ releaseError(); }
+	abandon		DISABLED	{ abandon(); }
+}
+%%
+
+
+
+
+

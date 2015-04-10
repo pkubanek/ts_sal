@@ -11,9 +11,12 @@ CREATE TABLE camera_GAS_items (
   comment char(128),
   PRIMARY KEY (num)
 );
-INSERT INTO camera_GAS_items VALUES (1,"algorithm","string",32,"",0.054,"","","");
-INSERT INTO camera_GAS_items VALUES (2,"parameters","float",10,"",0.054,"","","");
-INSERT INTO camera_GAS_items VALUES (3,"sampleData_00","float",25,"",0.054,"","","");
-INSERT INTO camera_GAS_items VALUES (4,"sampleData_01","float",25,"",0.054,"","","");
-INSERT INTO camera_GAS_items VALUES (5,"sampleData_10","float",25,"",0.054,"","","");
-INSERT INTO camera_GAS_items VALUES (6,"sampleData_11","float",25,"",0.054,"","","");
+INSERT INTO camera_GAS_items VALUES (1,"FPGACheckSum","long",2,"",11,"","","");
+INSERT INTO camera_GAS_items VALUES (2,"Board_current","float",4,"",11,"","","");
+INSERT INTO camera_GAS_items VALUES (3,"CABAC_MUX","long",4,"",11,"","","");
+INSERT INTO camera_GAS_items VALUES (4,"CCD_ID","short",1,"",11,"","","");
+INSERT INTO camera_GAS_items VALUES (5,"Board_ID","short",1,"",11,"","","");
+INSERT INTO camera_GAS_items VALUES (6,"CCD_temp","float",1,"",11,"","","");
+INSERT INTO camera_GAS_items VALUES (7,"Board_temp","float",12,"",11,"","","");
+INSERT INTO camera_GAS_items VALUES (8,"Board_voltage","float",4,"",11,"","","");
+INSERT INTO camera_GAS_items VALUES (9,"REB_ID","short",1,"",11,"","","");

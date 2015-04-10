@@ -4,17 +4,24 @@
 # and generate salTypeSupport routine
 #  
 
+source $env(SAL_DIR)/geneventaliascode.tcl
+source $env(SAL_DIR)/gencmdaliascode.tcl
+
+
 proc insertcfragments { fout base name } {
 global SAL_WORK_DIR
    if { $name == "command" || $name == "ackcmd" || $name == "logevent" } {return}
    puts $fout "
-salReturn SAL_[set base]::putSample[set name]([set base]_[set name]C *data)
+salReturn SAL_[set base]::putSample_[set name]([set base]_[set name]C *data)
 \{
-  DataWriter_var dwriter = getWriter();
-  [set base]::[set name]DataWriter_var SALWriter = [set base]::[set name]DataWriter::_narrow(dwriter
-.in());
+  int actorIdx = SAL__[set base]_[set name]_ACTOR;
+  if ( sal\[actorIdx\].isWriter == false ) \{
+    createWriter(actorIdx);
+    sal\[actorIdx\].isWriter = true;
+  \}
+  DataWriter_var dwriter = getWriter(actorIdx);
+  [set base]::[set name]DataWriter_var SALWriter = [set base]::[set name]DataWriter::_narrow(dwriter.in());
   [set base]::[set name] Instance;
-  long iseq;
 
   Instance.private_revCode = DDS::string_dup(\"LSST TEST REVCODE\");
   Instance.private_sndStamp = 1;
@@ -46,19 +53,23 @@ salReturn SAL_[set base]::putSample[set name]([set base]_[set name]C *data)
   return status;
 \}
 
-salReturn SAL_[set base]::getSample[set name]([set base]_[set name]C *data)
+salReturn SAL_[set base]::getSample_[set name]([set base]_[set name]C *data)
 \{
   [set base]::[set name]Seq Instances;
-  SampleInfoSeq infoSeq;
+  SampleInfoSeq info;
   ReturnCode_t status =  - 1;
   salReturn istatus = -1;
-  long iseq;
 
-  DataReader_var dreader = getReader();
+  int actorIdx = SAL__[set base]_[set name]_ACTOR;
+  if ( sal\[actorIdx\].isReader == false ) \{
+    createReader(actorIdx);
+    sal\[actorIdx\].isReader = true;
+  \}
+  DataReader_var dreader = getReader(actorIdx);
   [set base]::[set name]DataReader_var SALReader = [set base]::[set name]DataReader::_narrow(dreader
 .in());
   checkHandle(SALReader.in(), \"[set base]::[set name]DataReader::_narrow\");
-  status = SALReader->take(Instances, infoSeq, LENGTH_UNLIMITED, ANY_SAMPLE_STATE, ANY_VIEW_STATE, ANY_INSTANCE_STATE);
+  status = SALReader->take(Instances, info, LENGTH_UNLIMITED, ANY_SAMPLE_STATE, ANY_VIEW_STATE, ANY_INSTANCE_STATE);
   checkStatus(status, \"[set base]::[set name]DataReader::take\");
   istatus = SAL__NO_UPDATES;
   for (DDS::ULong j = 0; j < Instances.length(); j++)
@@ -79,7 +90,7 @@ salReturn SAL_[set base]::getSample[set name]([set base]_[set name]C *data)
 
     istatus = SAL__OK;
   \}
-  status = SALReader->return_loan(Instances, infoSeq);
+  status = SALReader->return_loan(Instances, info);
   checkStatus(status, \"[set base]::[set name]DataReader::return_loan\");
   return istatus;
 \}
@@ -123,10 +134,64 @@ global SYSDIC
    }
 }
 
+proc addActorIndexesCPP { idlfile base fout } {
+   set ptypes [lsort [split [exec grep pragma $idlfile] \n]]
+   set idx 0
+   foreach j $ptypes {
+      set name [lindex $j 2]
+      puts $fout "#define SAL__[set base]_[set name]_ACTOR		$idx"
+      incr idx 1 
+   }
+   puts $fout "
+void SAL_SALData::initSalActors ()
+\{
+    for (int i=0; i<SAL__ACTORS_MAXCOUNT;i++) \{
+      sal\[i\].isReader = false;
+      sal\[i\].isWriter = false;
+      sal\[i\].isCommand = false;
+      sal\[i\].isEventReader = false;
+      sal\[i\].isProcessor = false;
+      sal\[i\].isEventReader = false;
+      sal\[i\].isEventWriter = false;
+      sal\[i\].isActive = false;
+    \}
+"
+   set idx 0
+   foreach j $ptypes {
+      set name [lindex $j 2]
+      puts $fout "    strcpy(sal\[$idx\].topicName,\"[set base]_[set name]\");"
+      incr idx 1 
+   }  
+  puts $fout "
+\}"
+}
+
+proc addActorIndexesJava { idlfile base fout } {
+   set ptypes [lsort [split [exec grep pragma $idlfile] \n]]
+   set idx 0
+   foreach j $ptypes {
+      set name [lindex $j 2]
+      puts $fout "	public static final int SAL__[set base]_[set name]_ACTOR = $idx;"
+      incr idx 1 
+   }
+   puts $fout "
+	public void SAL_SALData::initSalActors ()
+	\{
+"
+   set idx 0
+   foreach j $ptypes {
+      set name [lindex $j 2]
+      puts $fout "		sal\[$idx\]=new salActor();" 
+      puts $fout "		sal\[$idx\].topicName=\"[set base]_[set name]\";"
+      incr idx 1 
+   }  
+  puts $fout "
+	\}"
+}
 
 
 proc addSALDDStypes { idlfile id lang base } {
-global SAL_DIR SYSDIC
+global SAL_DIR SAL_WORK_DIR SYSDIC
  set atypes $idlfile
  if { $lang == "java" } {
   set fin [open $SAL_DIR/code/templates/SALDDS.java.template r]
@@ -140,7 +205,8 @@ global SAL_DIR SYSDIC
          processifdefregion $fin $fout $base
      }
      if { [string range $rec 0 21] == "// INSERT TYPE SUPPORT" } {
-        puts $fout "        public void salTypeSupport(String topicName) \{
+        addActorIndexesJava $idlfile $base $fout
+        puts $fout "        public int salTypeSupport(String topicName) \{
 		String\[\] parts = topicName.split(\"_\");"
         foreach i $atypes {
            set base [lindex [exec grep module $i] 1]
@@ -153,11 +219,32 @@ global SAL_DIR SYSDIC
                     if ( \"[set base]_$name\".equals(topicName) ) \{
 			[set name]TypeSupport [set name]TS = new [set name]TypeSupport();
 			registerType([set name]TS);
+                        return SAL__OK;
 		    \}"
            }
            puts $fout "	 \}"
         }
-        puts $fout "\}"
+        puts $fout "
+  return SAL__ERR;
+\}"
+        puts $fout "        public int salTypeSupport(int actorIdx) \{"
+        foreach i $atypes {
+           set base [lindex [exec grep module $i] 1]
+           set ptypes [split [exec grep pragma $i] \n]
+           foreach j $ptypes {
+               set name [lindex $j 2]
+               puts stdout "	for $base $name"
+               puts $fout "
+                    if ( actorIdx == static SAL__[set base]_[set name]_ACTOR ) \{
+			[set name]TypeSupport [set name]TS = new [set name]TypeSupport();
+			registerType(actorIdx,[set name]TS);
+                        return SAL__OK;
+		    \}"
+           }
+        }
+        puts $fout "
+  return SAL__ERR;
+\}"
         foreach i $atypes {
            set base [lindex [exec grep module $i] 1]
            set ptypes [split [exec grep pragma $i] \n]
@@ -210,11 +297,11 @@ puts $fout "
 				System.out.println(\"=== \[getSample $name \] message received :\");
 				System.out.println(\"    revCode  : \"
 						+ SALInstance.value\[i\].private_revCode);
-                   last = i;
+                   last = i+1;
 		\}
 	  \}
           if (last > 0) \{
-            data = SALInstance.value\[last\];
+            data = SALInstance.value\[last-1\];
           \}
           status = SALReader.return_loan (SALInstance, infoSeq);
 	  return last;
@@ -222,6 +309,8 @@ puts $fout "
 
            }
         }
+        gencmdaliascode $base java $fout
+        geneventaliascode $base java $fout
      } else {
         if { [string range $rec 0 5] != "#ifdef" } {
           puts $fout $rec
@@ -251,7 +340,8 @@ puts $fout "
   set fout [open [set base]/cpp/src/SAL_[set base].cpp w]
   while { [gets $fin rec] > -1 } {
      if { [string range $rec 0 21] == "// INSERT TYPE SUPPORT" } {
-        puts $fout " void SAL_[set base]::salTypeSupport(char *topicName) 
+        addActorIndexesCPP $idlfile $base $fout
+        puts $fout " salReturn SAL_[set base]::salTypeSupport(char *topicName) 
 \{"
         foreach i $atypes {
            set base [lindex [exec grep module $i] 1]
@@ -264,11 +354,31 @@ puts $fout "
        if ( strcmp(\"[set base]_[set name]\",topicName) == 0) \{
 	  [set base]::[set name]TypeSupport_var mt = new [set base]::[set name]TypeSupport();
 	  registerType(mt.in());
+          return SAL__OK;
        \}"
            }
            puts $fout "  \}"
         }
-        puts $fout "\}"
+        puts $fout "  return SAL__ERR;
+\}"
+        puts $fout " salReturn SAL_[set base]::salTypeSupport(int actorIdx) 
+\{"
+        foreach i $atypes {
+           set base [lindex [exec grep module $i] 1]
+           set ptypes [split [exec grep pragma $i] \n]
+           foreach j $ptypes {
+               set name [lindex $j 2]
+               puts stdout "	for $base $name"
+               puts $fout "
+       if ( actorIdx == SAL__[set base]_[set name]_ACTOR ) \{
+	  [set base]::[set name]TypeSupport_var mt = new [set base]::[set name]TypeSupport();
+	  registerType(actorIdx,mt.in());
+          return SAL__OK;
+       \}"
+           }
+        }
+        puts $fout "  return SAL__ERR;
+\}"
         foreach i $atypes {
            set base [lindex [exec grep module $i] 1]
            set ptypes [split [exec grep pragma $i] \n]
@@ -319,12 +429,16 @@ salReturn SAL_[set base]::getSample([set base]::[set name]Seq data)
                puts $fouth "
       salReturn putSample([set base]::[set name] data);
       salReturn getSample([set base]::[set name]Seq data);
-      salReturn putSample[set name]([set base]_[set name]C *data);
-      salReturn getSample[set name]([set base]_[set name]C *data);
+      salReturn putSample_[set name]([set base]_[set name]C *data);
+      salReturn getSample_[set name]([set base]_[set name]C *data);
 "
                insertcfragments $fout $base $name
            }
         }
+        gencmdaliascode $base include $fouth
+        gencmdaliascode $base cpp $fout
+        geneventaliascode $base include $fouth
+        geneventaliascode $base cpp $fout
      } else {
         if { $rec == "using namespace SALData;" } {
           puts $fout "using namespace [set base];"

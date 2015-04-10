@@ -11,6 +11,4 @@ CREATE TABLE system_Software_revision_history_items (
   comment char(128),
   PRIMARY KEY (num)
 );
-INSERT INTO system_Software_revision_history_items VALUES (1,"PackageName","string",32,"",0.054,"","","");
-INSERT INTO system_Software_revision_history_items VALUES (2,"Notes","string",32,"",0.054,"","","");
-INSERT INTO system_Software_revision_history_items VALUES (3,"Version","long",3,"",0.054,"","","");
+INSERT INTO system_Software_revision_history_items VALUES (1,"Version","long",3,"",0.054,"","","");

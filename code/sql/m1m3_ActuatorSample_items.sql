@@ -11,8 +11,8 @@ CREATE TABLE m1m3_ActuatorSample_items (
   comment char(128),
   PRIMARY KEY (num)
 );
-INSERT INTO m1m3_ActuatorSample_items VALUES (1,"actuatorID","short",1,"",0.054,"","","");
-INSERT INTO m1m3_ActuatorSample_items VALUES (2,"setpoint","long",100,"",0.054,"","","");
-INSERT INTO m1m3_ActuatorSample_items VALUES (3,"position","long",100,"",0.054,"","","");
-INSERT INTO m1m3_ActuatorSample_items VALUES (4,"error","long",100,"",0.054,"","","");
-INSERT INTO m1m3_ActuatorSample_items VALUES (5,"status","long",100,"",0.054,"","","");
+INSERT INTO m1m3_ActuatorSample_items VALUES (1,"actuatorID","short",1,"",20,"","","");
+INSERT INTO m1m3_ActuatorSample_items VALUES (2,"setpoint","long",100,"",20,"","","");
+INSERT INTO m1m3_ActuatorSample_items VALUES (3,"position","long",100,"",20,"","","");
+INSERT INTO m1m3_ActuatorSample_items VALUES (4,"error","long",100,"",20,"","","");
+INSERT INTO m1m3_ActuatorSample_items VALUES (5,"status","long",100,"",20,"","","");

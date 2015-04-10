@@ -68,8 +68,22 @@ public class SAL_SALData {
         private int rcvOrigin;
         private short subsystemID;
         private long origin;
+       
+        sal[] arr = new salActor[SAL__ACTORS_MAXCOUNT];
 
 // INSERT TYPE SUPPORT      
+
+        public int getActorIndex (String topicName) {
+          for (int i=0; i<SAL__ACTORS_MAXCOUNT;i++) {
+             if ( topicName.length() == sal[i].topicName.length() )  {
+                if ( topicName.equals(sal[i].topicName) )  {
+                   return i;
+                }
+             }
+          }
+          return SAL__ERROR;
+        }
+
 
 
         public void salTelemetryPub(String topicName) {
@@ -90,8 +104,29 @@ public class SAL_SALData {
 		// create DataWriter
 		createWriter(false);
 		hasWriter = true;
-
         }
+
+
+        public void salTelemetryPub(int actorIdx) {
+		String partitionName = "LSST";
+
+		// create Domain Participant
+		createParticipant(partitionName);
+
+		// create Type
+		salTypeSupport(actorIdx);
+
+		// create Topic
+		createTopic(actorIdx);
+
+		// create Publisher
+		createPublisher(actorIdx);
+
+		// create DataWriter
+		createWriter(actorIdx,false);
+		sal[actorIdx].isWriter = true;
+        }
+
 
         public void salTelemetrySub(String topicName) {
 		String partitionName = "LSST";
@@ -121,6 +156,39 @@ public class SAL_SALData {
 		createReader(false);
 #endif
 	}
+
+
+
+        public void salTelemetrySub(int actorIdx) {
+		String partitionName = "LSST";
+		// create Domain Participant
+		createParticipant(partitionName);
+
+		// create Type
+		salTypeSupport(actorIdx);
+		// create Type
+
+		// create Topic
+		createTopic(actorIdx);
+
+		// create Subscriber
+		createSubscriber(actorIdx);
+
+		// create DataReader
+#ifdef SAL_SUBSYSTEM_ID_IS_KEYED
+  		// Filter expr
+                String expr[] = new String[0];
+                String sFilter = "SALDataID = " + subsystemID;
+    		createContentFilteredTopic(actorIdx,"filteredtopic", sFilter, expr);
+
+		// create DataReader
+ 		createReader(actorIdx,true);
+#else
+		createReader(actorIdx,false);
+#endif
+	}
+
+
 
 	public void logError(int status) 
 	{
@@ -313,6 +381,7 @@ public class SAL_SALData {
 	     return status;
 	}
 
+// INSERT CMDALIAS SUPPORT  for issueCommand and acceptCommand  
 
 
 	public int checkCommand( int cmdSeqNum )
@@ -369,6 +438,8 @@ public class SAL_SALData {
 
         public static final int SAL__SLOWPOLL= 		   1;
         public static final int SAL__OK = 		   0;
+        public static final int SAL__ERR = 		  -1;
+        public static final int SAL__ERROR = 		  -1;
         public static final int SAL__NO_UPDATES = 	-100;
         public static final int SAL__LOG_ROUTINES = 	   1;
         public static final int SAL__CMD_ACK =      	 300;
@@ -380,6 +451,8 @@ public class SAL_SALData {
         public static final int SAL__CMD_FAILED =   	-302;
         public static final int SAL__CMD_ABORTED =  	-303;
         public static final int SAL__CMD_TIMEOUT =  	-304;
+
+        public static final int SAL__ACTORS_MAXCOUNT =  128;
         
 	public int waitForCompletion( int cmdSeqNum , int timeout )
 	{
@@ -482,6 +555,7 @@ public class SAL_SALData {
 	   return status;
 	}
 
+// INSERT EVENTALIAS SUPPORT
 
 
 
@@ -570,7 +644,57 @@ public class SAL_SALData {
 #endif
 	  hasReader = true;
 	  hasCommand = true;
-}
+	}
+
+
+	public void salCommand(String cmdAlias)
+	{
+          int actorIdx = getActorIndex(cmdAlias);
+	  String stopic1="keyedCommand";
+	  String stopic2="keyedResponse";
+	  String sresponse="SALData_ackcmd";
+
+	  // create domain participant
+	  createParticipant("LSST");
+
+	  //create Publisher
+	  createPublisher(actorIdx);
+	  createSubscriber(actorIdx);
+
+	  //create types
+	  salTypeSupport(actorIdx);
+	  ackcmdTypeSupport mtr = new ackcmdTypeSupport();
+	  registerType2(actorIdx,mtr);
+
+	  //create Topics
+#ifdef SAL_SUBSYSTEM_ID_IS_KEYED
+	  createTopic(actorIdx,stopic1);
+	  createTopic2(actorIdx,stopic2);
+#else
+	  createTopic(actorIdx,cmdAlias);
+	  createTopic2(actorIdx,sresponse);
+#endif
+	
+	  //create a reader for responses
+#ifdef SAL_SUBSYSTEM_ID_IS_KEYED
+  	  // Filter expr
+          String expr[] = new String[0];
+          String sFilter = "SALDataID = " + subsystemID;
+    	  createContentFilteredTopic2(actorIdx,"filteredResponse", sFilter, expr);
+
+	  // create DataReader
+ 	  createReader2(actorIdx,true);
+#else
+	  createReader2(actorIdx,false);
+#endif
+	  sal[actorIdx].isReader = true;
+	  boolean autodispose_unregistered_instances = false;
+	  createWriter(actorIdx,autodispose_unregistered_instances);
+	  sal[actorIdx].isWriter = true;
+	  sal[actorIdx].isCommand = true;
+	}
+
+
 
 	public void salProcessor()
 	{
@@ -618,33 +742,76 @@ public class SAL_SALData {
 	}
 
 
+	public void salProcessor(String cmdAlias)
+	{
+          int actorIdx = getActorIndex(cmdAlias);
+	  String stopic1="keyedCommand";
+	  String stopic2="keyedResponse";
+	  String sresponse="SALData_ackcmd";
+
+	  // create domain participant
+	  createParticipant("LSST");
+
+	  //create Publisher
+	  createPublisher(actorIdx);
+	  createSubscriber(actorIdx);
+
+	  //create types
+	  salTypeSupport(actorIdx);
+	  ackcmdTypeSupport mtr = new ackcmdTypeSupport();
+	  registerType2(actorIdx,mtr);
+
+	  //create Topics
+#ifdef SAL_SUBSYSTEM_ID_IS_KEYED
+	  createTopic(actorIdx,stopic1);
+	  createTopic2(actorIdx,stopic2);
+#else
+	  createTopic(actorIdx,cmdAlias);
+	  createTopic2(actorIdx,sresponse);
+#endif
+
+	  //create a reader for commands
+#ifdef SAL_SUBSYSTEM_ID_IS_KEYED
+  	  // Filter expr
+          String expr[] = new String[0];
+          String sFilter = "SALDataID = " + subsystemID;
+    	  createContentFilteredTopic(actorIdx,"filteredCommand", sFilter, expr);
+ 	  createReader(actorIdx,true);
+#else
+	  createReader(actorIdx,false);
+#endif
+	  boolean autodispose_unregistered_instances = false;
+	  createWriter2(actorIdx,autodispose_unregistered_instances);
+	  sal[actorIdx].isWriter = true;
+	  sal[actorIdx].isProcessor = true;
+	}
+
 	public void salShutdown()
 	{
-	  if ( hasReader ) {
-             deleteReaders();
-	     deleteSubscriber();     
-	  }
-	  if ( hasWriter ) { 
-	     deleteWriters();
-	     deletePublisher();
-	  }
+          deleteReaders();
+	  deleteSubscriber();     
+	  deleteWriters();
+	  deletePublisher();
 	  deleteTopics();
 	  deleteParticipant();
 	}
 
-	public void salEvent(String topicName)
+	public int salEvent(String topicName)
 	{
+                int actorIdx = getActorIndex(topicName);
+                if ( actorIdx < 0) {return SAL__ERROR;}
+
 		String partitionName = "LSST";
 
 		// create Domain Participant
 		createParticipant(partitionName);
 
 		// create Type
-		logeventTypeSupport logeventTS = new logeventTypeSupport();
-		registerType(logeventTS);
+		salTypeSupport(actorIdx);
 
 		// create Topic
-		createTopic(topicName);
+		createTopic(actorIdx);
+                return SAL__OK;
 	}
 
 	public void createParticipant(String partitionName) {
@@ -673,6 +840,20 @@ public class SAL_SALData {
 		int status = ts.register_type(participant, typeName2);
 		checkStatus(status, "register_type");
 	}
+
+	public void registerType(int actorIdx, TypeSupportImpl ts) {
+		sal[actorIdx].typeName = ts.get_type_name();
+		int status = ts.register_type(participant, sal[actorIdx].typeName);
+		checkStatus(status, "register_type");
+	}
+
+	public void registerType2(int actorIdx,TypeSupportImpl ts) {
+		sal[actorIdx].typeName2 = ts.get_type_name();
+		int status = ts.register_type(participant, sal[actorIdx].typeName2);
+		checkStatus(status, "register_type");
+	}
+
+
 
 	public void createTopic(String topicName) {
 		int status = -1;
@@ -703,6 +884,67 @@ public class SAL_SALData {
 		checkHandle(topic2, "DomainParticipant.create_topic");
 	}
 
+
+	public void createTopic(int actorIdx) {
+		int status = -1;
+		participant.get_default_topic_qos(sal[actorIdx].topicQos);
+		sal[actorIdx].topicQos.value.reliability.kind = ReliabilityQosPolicyKind.RELIABLE_RELIABILITY_QOS;
+		sal[actorIdx].topicQos.value.durability.kind = DurabilityQosPolicyKind.TRANSIENT_DURABILITY_QOS;
+		status = participant.set_default_topic_qos(sal[actorIdx].topicQos.value);
+		checkStatus(status,
+				"DomainParticipant.set_default_topic_qos");
+		System.out.println("=== [createTopic] : topicName " + sal[actorIdx].topicName + " type = " + sal[actorIdx].typeName);
+		sal[actorIdx].topic = participant.create_topic(sal[actorIdx].topicName, sal[actorIdx].typeName, sal[actorIdx].topicQos.value,
+				null, STATUS_MASK_NONE.value);
+		checkHandle(sal[actorIdx].topic, "DomainParticipant.create_topic");
+	}
+
+	public void createTopic2(int actorIdx) {
+		int status = -1;
+		participant.get_default_topic_qos(sal[actorIdx].topicQos);
+		sal[actorIdx].topicQos.value.reliability.kind = ReliabilityQosPolicyKind.RELIABLE_RELIABILITY_QOS;
+		sal[actorIdx].topicQos.value.durability.kind = DurabilityQosPolicyKind.TRANSIENT_DURABILITY_QOS;
+		status = participant.set_default_topic_qos(sal[actorIdx].topicQos.value);
+		checkStatus(status,
+				"DomainParticipant.set_default_topic_qos");
+		System.out.println("=== [createTopic2] : topicName " + sal[actorIdx].topicName + " type = " + sal[actorIdx].typeName2);
+
+		sal[actorIdx].topic2 = participant.create_topic(sal[actorIdx].topicName, sal[actorIdx].typeName2, sal[actorIdx].topicQos.value,
+				null, STATUS_MASK_NONE.value);
+		checkHandle(sal[actorIdx].topic2, "DomainParticipant.create_topic");
+	}
+
+	public void createTopic(int actorIdx, String topicName) {
+		int status = -1;
+		participant.get_default_topic_qos(sal[actorIdx].topicQos);
+		sal[actorIdx].topicQos.value.reliability.kind = ReliabilityQosPolicyKind.RELIABLE_RELIABILITY_QOS;
+		sal[actorIdx].topicQos.value.durability.kind = DurabilityQosPolicyKind.TRANSIENT_DURABILITY_QOS;
+		status = participant.set_default_topic_qos(sal[actorIdx].topicQos.value);
+		checkStatus(status,
+				"DomainParticipant.set_default_topic_qos");
+		System.out.println("=== [createTopic] : topicName " + sal[actorIdx].topicName + " type = " + sal[actorIdx].typeName);
+		sal[actorIdx].topic = participant.create_topic(topicName, sal[actorIdx].typeName, sal[actorIdx].topicQos.value,
+				null, STATUS_MASK_NONE.value);
+		checkHandle(sal[actorIdx].topic, "DomainParticipant.create_topic");
+	}
+
+	public void createTopic2(int actorIdx, String topicName) {
+		int status = -1;
+		participant.get_default_topic_qos(sal[actorIdx].topicQos);
+		sal[actorIdx].topicQos.value.reliability.kind = ReliabilityQosPolicyKind.RELIABLE_RELIABILITY_QOS;
+		sal[actorIdx].topicQos.value.durability.kind = DurabilityQosPolicyKind.TRANSIENT_DURABILITY_QOS;
+		status = participant.set_default_topic_qos(sal[actorIdx].topicQos.value);
+		checkStatus(status,
+				"DomainParticipant.set_default_topic_qos");
+		System.out.println("=== [createTopic2] : topicName " + sal[actorIdx].topicName + " type = " + sal[actorIdx].typeName2);
+
+		sal[actorIdx].topic2 = participant.create_topic(topicName, sal[actorIdx].typeName2, sal[actorIdx].topicQos.value,
+				null, STATUS_MASK_NONE.value);
+		checkHandle(sal[actorIdx].topic2, "DomainParticipant.create_topic");
+	}
+
+
+
         public void  createContentFilteredTopic( String topicName, String filter, String[] expr)
 	{
 	  filteredtopic = participant.create_contentfilteredtopic(topicName,topic, filter, expr);
@@ -714,6 +956,22 @@ public class SAL_SALData {
 	  filteredtopic2 = participant.create_contentfilteredtopic(topicName,topic2, filter, expr);
 	  checkHandle(filteredtopic2, "DomainParticipant::create_contentfilteredtopic");
 	}
+
+
+
+        public void  createContentFilteredTopic(int actorIdx, String topicName, String filter, String[] expr)
+	{
+	  sal[actorIdx].filteredtopic = participant.create_contentfilteredtopic(sal[actorIdx].topicName,sal[actorIdx].topic, filter, expr);
+	  checkHandle(sal[actorIdx].filteredtopic, "DomainParticipant::create_contentfilteredtopic");
+	}
+
+        public void  createContentFilteredTopic2(int actorIdx,  String topicName, String filter, String[] expr)
+	{
+	  sal[actorIdx].filteredtopic2 = participant.create_contentfilteredtopic(sal[actorIdx].topicName,sal[actorIdx].topic2, filter, expr);
+	  checkHandle(sal[actorIdx].filteredtopic2, "DomainParticipant::create_contentfilteredtopic");
+	}
+
+
 
 	public void deleteTopics() {
             if (filteredtopic != null) {
@@ -732,6 +990,26 @@ public class SAL_SALData {
 		int status = participant.delete_topic(topic2);
 		checkStatus(status, "DDS.DomainParticipant.delete_topic");
             }
+            for (int i=0;  i<SAL__ACTORS_MAXCOUNT; i++) {
+             if (sal[i] != null_) {
+              if (sal[i].filteredtopic != null) {
+  		  int status = participant.delete_contentfilteredtopic(sal[i].filteredtopic);
+  		  checkStatus(status, "DDS.DomainParticipant.delete_contentfilteredtopic");
+              }
+              if (sal[i].filteredtopic2 != null) {
+		  int status = participant.delete_contentfilteredtopic(sal[i].filteredtopic2);
+		  checkStatus(status, "DDS.DomainParticipant.delete_contentfilteredtopic");
+              }
+              if (sal[i].topic != null) {
+		  int status = participant.delete_topic(sal[i].topic);
+		  checkStatus(status, "DDS.DomainParticipant.delete_topic");
+              }
+              if (sal[i].topic2 != null) {
+		  int status = participant.delete_topic(sal[i].topic2);
+		  checkStatus(status, "DDS.DomainParticipant.delete_topic");
+              }
+             }
+            }
 	}
 
 
@@ -748,8 +1026,32 @@ public class SAL_SALData {
 				"DomainParticipant.create_publisher");
 	}
 
+
+	public void createPublisher(int actorIdx) {
+		int status = participant.get_default_publisher_qos(sal[actorIdx].pubQos);
+		checkStatus(status,
+				"DomainParticipant.get_default_publisher_qos");
+
+		sal[actorIdx].pubQos.value.partition.name = new String[1];
+		sal[actorIdx].pubQos.value.partition.name[0] = partitionName;
+		sal[actorIdx].publisher = participant.create_publisher(sal[actorIdx].pubQos.value, null,
+				STATUS_MASK_NONE.value);
+		checkHandle(sal[actorIdx].publisher,
+				"DomainParticipant.create_publisher");
+	}
+
+
 	public void deletePublisher() {
+            if (publisher != null) {
 		participant.delete_publisher(publisher);
+            }
+            for (int i=0;  i<SAL__ACTORS_MAXCOUNT; i++) {
+                   if (sal[i] != null_) {
+                      if (sal[i].publisher != null) {
+		         participant.delete_publisher(sal[i].publisher);
+                      }
+                   }
+            }
 	}
 
 	public void deleteReaders() {
@@ -758,6 +1060,16 @@ public class SAL_SALData {
             }
             if (reader2 != null) {
 		subscriber.delete_datareader(reader2);
+            }
+            for (int i=0;  i<SAL__ACTORS_MAXCOUNT; i++) {
+               if (sal[i] != null_) {
+                 if (reader != null) {
+	   	   subscriber.delete_datareader(sal[i].reader);
+                 }
+                 if (reader2 != null) {
+		   subscriber.delete_datareader(sal[i].reader2);
+                 }
+               }
             }
 	}
 
@@ -768,7 +1080,20 @@ public class SAL_SALData {
             if (writer2 != null) {
 		publisher.delete_datawriter(writer2);
             }
+            for (int i=0;  i<SAL__ACTORS_MAXCOUNT; i++) {
+               if (sal[i] != null_) {
+                 if (writer != null) {
+		   publisher.delete_datawriter(sal[i].writer);
+                 }
+                 if (writer2 != null) {
+		   publisher.delete_datawriter(sal[i].writer2);
+                 }
+               }
+            }
 	}
+
+
+
 	public void createWriter(boolean autodispose) {
 		publisher.get_default_datawriter_qos(WQosH);
 		publisher.copy_from_topic_qos(WQosH, topicQos.value);
@@ -786,6 +1111,24 @@ public class SAL_SALData {
 	}
 
 
+	public void createWriter(int actorIdx, boolean autodispose) {
+		sal[actorIdx].publisher.get_default_datawriter_qos(sal[actorIdx].WQosH);
+		sal[actorIdx].publisher.copy_from_topic_qos(sal[actorIdx].WQosH, sal[actorIdx].topicQos.value);
+		sal[actorIdx].WQosH.value.writer_data_lifecycle.autodispose_unregistered_instances = autodispose;
+		sal[actorIdx].writer = sal[actorIdx].publisher.create_datawriter(sal[actorIdx].topic, sal[actorIdx].WQosH.value, null,STATUS_MASK_NONE.value);
+		checkHandle(sal[actorIdx].writer, "Publisher.create_datawriter");
+	}
+        
+	public void createWriter2(int actorIdx, boolean autodispose) {
+		sal[actorIdx].publisher.get_default_datawriter_qos(sal[actorIdx].WQosH);
+		sal[actorIdx].publisher.copy_from_topic_qos(sal[actorIdx].WQosH, sal[actorIdx].topicQos.value);
+		sal[actorIdx].WQosH.value.writer_data_lifecycle.autodispose_unregistered_instances = autodispose;
+		sal[actorIdx].writer2 = publisher.create_datawriter(sal[actorIdx].topic2, sal[actorIdx].WQosH.value, null,STATUS_MASK_NONE.value);
+		checkHandle(sal[actorIdx].writer2, "Publisher.create_datawriter");
+	}
+
+
+
 	public void createSubscriber() {
 		int status = participant.get_default_subscriber_qos(subQos);
 		checkStatus(status,
@@ -799,9 +1142,36 @@ public class SAL_SALData {
 				"DomainParticipant.create_subscriber");
 	}
 
-	public void deleteSubscriber() {
-		participant.delete_subscriber(subscriber);
+
+	public void createSubscriber(int actorIdx) {
+		int status = participant.get_default_subscriber_qos(sal[actorIdx].subQos);
+		checkStatus(status,
+				"DomainParticipant.get_default_subscriber_qos");
+
+		sal[actorIdx].subQos.value.partition.name = new String[1];
+		sal[actorIdx].subQos.value.partition.name[0] = partitionName;
+		sal[actorIdx].subscriber = participant.create_subscriber(sal[actorIdx].subQos.value, null,
+				STATUS_MASK_NONE.value);
+		checkHandle(sal[actorIdx].subscriber,
+				"DomainParticipant.create_subscriber");
 	}
+
+
+
+	public void deleteSubscriber() {
+                if (subscriber != null) {
+  		   participant.delete_subscriber(subscriber);
+                }
+                for (int i=0;  i<SAL__ACTORS_MAXCOUNT; i++) {
+                   if (sal[i] != null_) {
+                      if (sal[i].subscriber != null) {
+		         participant.delete_subscriber(sal[i].subscriber);
+                      }
+                   }
+                }
+	}
+
+
 
 	public void createReader(boolean filtered) {
 	  if (filtered) {
@@ -825,6 +1195,28 @@ public class SAL_SALData {
 	  checkHandle(reader2, "Subscriber.create_datareader");
 	}
 
+
+	public void createReader(int actorIdx, boolean filtered) {
+	  if (filtered) {
+	  	 sal[actorIdx].reader = sal[actorIdx].subscriber.create_datareader(sal[actorIdx].filteredtopic,
+		   	 DATAREADER_QOS_USE_TOPIC_QOS.value, null, STATUS_MASK_NONE.value);
+	  } else {
+		sal[actorIdx].reader = sal[actorIdx].subscriber.create_datareader(sal[actorIdx].topic,
+			DATAREADER_QOS_USE_TOPIC_QOS.value, null, STATUS_MASK_NONE.value);
+	  }
+	  checkHandle(sal[actorIdx].reader, "Subscriber.create_datareader");
+	}
+
+	public void createReader2(int actorIdx,boolean filtered) {
+	  if (filtered) {
+	  	 sal[actorIdx].reader2 = sal[actorIdx].subscriber.create_datareader(sal[actorIdx].filteredtopic2,
+		   	 DATAREADER_QOS_USE_TOPIC_QOS.value, null, STATUS_MASK_NONE.value);
+	  } else {
+		sal[actorIdx].reader2 = sal[actorIdx].subscriber.create_datareader(sal[actorIdx].topic2,
+			DATAREADER_QOS_USE_TOPIC_QOS.value, null, STATUS_MASK_NONE.value);
+	  }
+	  checkHandle(sal[actorIdx].reader2, "Subscriber.create_datareader");
+	}
 
 	public DataReader getReader() {
 		return reader;
@@ -852,6 +1244,44 @@ public class SAL_SALData {
 
 	public Topic getTopic() {
 		return topic;
+	}
+
+	public Topic getTopic2() {
+		return topic2;
+	}
+
+
+
+	public DataReader getReader(int actorIdx) {
+		return reader;
+	}
+
+	public DataReader getReader2(int actorIdx) {
+		return sal[actorIdx].reader2;
+	}
+
+	public DataWriter getWriter(int actorIdx) {
+		return sal[actorIdx].writer;
+	}
+
+	public DataWriter getWriter2(int actorIdx) {
+		return sal[actorIdx].writer2;
+	}
+
+	public Publisher getPublisher(int actorIdx) {
+		return sal[actorIdx].publisher;
+	}
+
+	public Subscriber getSubscriber(int actorIdx) {
+		return sal[actorIdx].subscriber;
+	}
+
+	public Topic getTopic(int actorIdx) {
+		return sal[actorIdx].topic;
+	}
+
+	public Topic getTopic2(int actorIdx) {
+		return sal[actorIdx].topic2;
 	}
 
 	public DomainParticipant getParticipant() {

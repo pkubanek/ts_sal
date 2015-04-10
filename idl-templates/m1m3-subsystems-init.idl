@@ -1,9 +1,4 @@
 const M1M3NUMACT=120
-const FREQUENCY=1.0
-const PUBLISHERS=1
-
-struct m1m3_Supports {
-  long targetpos[6];		//	none : none : Stepper Motor target position
   long stepcnt[6];		//	none : none : Stepper Motor actual position
   float force[6];		//	none : none : Measured force
 };

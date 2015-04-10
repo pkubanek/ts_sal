@@ -13,4 +13,3 @@ CREATE TABLE seeing_mass_Temps_items (
 );
 INSERT INTO seeing_mass_Temps_items VALUES (1,"Raw","long",15,"",0.054,"","","");
 INSERT INTO seeing_mass_Temps_items VALUES (2,"Calibrated","float",15,"",0.054,"","","");
-INSERT INTO seeing_mass_Temps_items VALUES (3,"Health","octet",15,"",0.054,"","","");

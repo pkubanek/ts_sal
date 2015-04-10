@@ -1,4 +1,0 @@
-lasercal.response.cmdID 1 long 0.1
-lasercal.response.timeout 1 long 0.1
-lasercal.response.repeat 1 short 0.1
-lasercal.response.submits 1 short 0.1

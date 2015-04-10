@@ -1,0 +1,156 @@
+<H2>hexapod Commands</H2><P><UL>
+<TABLE BORDER=3 CELLPADDING=5 BGCOLOR=LightBlue  WIDTH=800>
+<TR BGCOLOR=Yellow><B><TD>Command Alias</TD><TD>Device</TD><TD>Property
+</TD><TD>Action</TD><TD>Parameter</TD></B></TR>
+<TR><TD>hexapod<BR>acceleration</TD><TD>drive </TD><TD>acceleration </TD><TD> -</TD><TD> 
+double	xmin<BR>
+double	xmax<BR>
+double	ymin<BR>
+double	ymax<BR>
+double	zmin<BR>
+double	zmax<BR>
+double	umin<BR>
+double	umax<BR>
+double	vmin<BR>
+double	vmax<BR>
+double	wmin<BR>
+double	wmax<BR>
+</TD></TR>
+<TR><TD>hexapod<BR>home</TD><TD>target </TD><TD>position </TD><TD> home</TD><TD> 
+n/a
+<TR><TD>hexapod<BR>limits</TD><TD>actuators </TD><TD>limits </TD><TD> -</TD><TD> 
+long	xmin<BR>
+long 	xmax<BR>
+long	ymin<BR>
+long 	ymax<BR>
+long	zmin<BR>
+long 	zmax<BR>
+long	umin<BR>
+long 	umax<BR>
+long	vmin<BR>
+long 	vmax<BR>
+long	wwmin<BR>
+long 	wmax<BR>
+</TD></TR>
+<TR><TD>hexapod<BR>lut</TD><TD>target </TD><TD>lut </TD><TD> -</TD><TD> 
+double	xlut\[90\]<BR>
+double	ylut\[90\]<BR>
+double	zlut\[90\]<BR>
+double	ulut\[90\]<BR>
+double	vlut\[90\]<BR>
+double	wlut\[90\]<BR>
+</TD></TR>
+<TR><TD>hexapod<BR>move</TD><TD>target </TD><TD>position </TD><TD> -</TD><TD> 
+double	angle<BR>
+</TD></TR>
+<TR><TD>hexapod<BR>offset</TD><TD>actuators </TD><TD>position </TD><TD> offset</TD><TD> 
+double	x<BR>
+double	y<BR>
+double	z<BR>
+double	u<BR>
+double	v<BR>
+double	w<BR>
+bool	sync<BR>
+</TD></TR>
+<TR><TD>hexapod<BR>pivot</TD><TD>actuators </TD><TD>pivot </TD><TD> -</TD><TD> 
+double	x<BR>
+double	y<BR>
+double	z<BR>
+</TD></TR>
+<TR><TD>hexapod<BR>position</TD><TD>actuators </TD><TD>position </TD><TD> absolute</TD><TD> 
+double	x<BR>
+double	y<BR>
+double	z<BR>
+double	u<BR>
+double	v<BR>
+double	w<BR>
+bool	sync<BR>
+</TD></TR>
+<TR><TD>hexapod<BR>stop</TD><TD>stop </TD><TD>- </TD><TD> -</TD><TD> 
+n/a
+<TR><TD>hexapod<BR>velocity</TD><TD>drive </TD><TD>velocity </TD><TD> -</TD><TD> 
+double	xmin<BR>
+double	xmax<BR>
+double	ymin<BR>
+double	ymax<BR>
+double	zmin<BR>
+double	zmax<BR>
+double	umin<BR>
+double	umax<BR>
+double	vmin<BR>
+double	vmax<BR>
+double	wmin<BR>
+double	wmax<BR>
+</TD></TR>
+</TABLE></UL><P>
+
+<H2>hexapod Logevents</H2><P><UL>
+<TABLE BORDER=3 CELLPADDING=5 BGCOLOR=LightBlue  WIDTH=800>
+<TR BGCOLOR=Yellow><B><TD>Command Alias</TD><TD>Activity</TD><TD>Event
+</TD><TD>Parameter(s)</TD></B></TR>
+<TR><TD>hexapod<BR>error</TD><TD>move </TD><TD>error </TD><TD> 
+n/a
+<TR><TD>hexapod<BR>interlock</TD><TD>interlock </TD><TD>- </TD><TD> 
+string  detail<BR>
+</TD></TR>
+<TR><TD>hexapod<BR>limit</TD><TD>limit </TD><TD>direction </TD><TD> 
+string	axis<BR>
+string	limit<BR>
+string	type<BR>
+</TD></TR>
+<TR><TD>hexapod<BR>slewOK</TD><TD>move </TD><TD>done </TD><TD> 
+n/a
+<TR><TD>hexapod<BR>temp</TD><TD>temp </TD><TD>- </TD><TD> 
+string  axis<BR>
+string  device<BR>
+long    severity<BR>
+</TD></TR>
+<TR><TD>hexapod<BR>trackLost</TD><TD>track </TD><TD>lost </TD><TD> 
+n/a
+<TR><TD>hexapod<BR>tracking</TD><TD>track </TD><TD>lock </TD><TD> 
+n/a
+</TABLE></UL><P>
+
+<H3>hexapod_Actuators Telemetry Stream</H3><P><UL>
+<TABLE BORDER=3 CELLPADDING=5 BGCOLOR=LightBlue WIDTH=700>
+<TR BGCOLOR=Yellow><B><TD>Stream name</TD><TD>Item</TD><TD>Type</TD><TD>Comment</TD></B></TR>
+<TR><B><TD>hexapod_Actuators</TD><TD>Raw[18]</TD><TD>long</TD><TD>-</TD></B></TR>
+<TR><B><TD>hexapod_Actuators</TD><TD>Calibrated[18]</TD><TD>float</TD><TD>-</TD></B></TR>
+</TABLE></UL><P></BODY></HTML>
+<H3>hexapod_Application Telemetry Stream</H3><P><UL>
+<TABLE BORDER=3 CELLPADDING=5 BGCOLOR=LightBlue WIDTH=700>
+<TR BGCOLOR=Yellow><B><TD>Stream name</TD><TD>Item</TD><TD>Type</TD><TD>Comment</TD></B></TR>
+<TR><B><TD>hexapod_Application</TD><TD>Demand[6]</TD><TD>float</TD><TD>-</TD></B></TR>
+<TR><B><TD>hexapod_Application</TD><TD>Position[6]</TD><TD>float</TD><TD>-</TD></B></TR>
+<TR><B><TD>hexapod_Application</TD><TD>Error[6]</TD><TD>float</TD><TD>-</TD></B></TR>
+</TABLE></UL><P></BODY></HTML>
+<H3>hexapod_Electrical Telemetry Stream</H3><P><UL>
+<TABLE BORDER=3 CELLPADDING=5 BGCOLOR=LightBlue WIDTH=700>
+<TR BGCOLOR=Yellow><B><TD>Stream name</TD><TD>Item</TD><TD>Type</TD><TD>Comment</TD></B></TR>
+<TR><B><TD>hexapod_Electrical</TD><TD>voltage[16]</TD><TD>long</TD><TD>-</TD></B></TR>
+<TR><B><TD>hexapod_Electrical</TD><TD>error[16]</TD><TD>long</TD><TD>-</TD></B></TR>
+<TR><B><TD>hexapod_Electrical</TD><TD>status[16]</TD><TD>short</TD><TD>-</TD></B></TR>
+</TABLE></UL><P></BODY></HTML>
+<H3>hexapod_LimitSensors Telemetry Stream</H3><P><UL>
+<TABLE BORDER=3 CELLPADDING=5 BGCOLOR=LightBlue WIDTH=700>
+<TR BGCOLOR=Yellow><B><TD>Stream name</TD><TD>Item</TD><TD>Type</TD><TD>Comment</TD></B></TR>
+<TR><B><TD>hexapod_LimitSensors</TD><TD>liftoff[18]</TD><TD>short</TD><TD>-</TD></B></TR>
+<TR><B><TD>hexapod_LimitSensors</TD><TD>limit[18]</TD><TD>short</TD><TD>-</TD></B></TR>
+</TABLE></UL><P></BODY></HTML>
+<H3>hexapod_Metrology Telemetry Stream</H3><P><UL>
+<TABLE BORDER=3 CELLPADDING=5 BGCOLOR=LightBlue WIDTH=700>
+<TR BGCOLOR=Yellow><B><TD>Stream name</TD><TD>Item</TD><TD>Type</TD><TD>Comment</TD></B></TR>
+<TR><B><TD>hexapod_Metrology</TD><TD>distance[18]</TD><TD>long</TD><TD>-</TD></B></TR>
+<TR><B><TD>hexapod_Metrology</TD><TD>error[18]</TD><TD>long</TD><TD>-</TD></B></TR>
+<TR><B><TD>hexapod_Metrology</TD><TD>status[18]</TD><TD>short</TD><TD>-</TD></B></TR>
+</TABLE></UL><P></BODY></HTML>
+<H3>hexapod_TC Telemetry Stream</H3><P><UL>
+<TABLE BORDER=3 CELLPADDING=5 BGCOLOR=LightBlue WIDTH=700>
+<TR BGCOLOR=Yellow><B><TD>Stream name</TD><TD>Item</TD><TD>Type</TD><TD>Comment</TD></B></TR>
+<TR><B><TD>hexapod_TC</TD><TD>setpoint[16]</TD><TD>float</TD><TD>-</TD></B></TR>
+<TR><B><TD>hexapod_TC</TD><TD>temperature[16]</TD><TD>float</TD><TD>-</TD></B></TR>
+<TR><B><TD>hexapod_TC</TD><TD>error[16]</TD><TD>float</TD><TD>-</TD></B></TR>
+<TR><B><TD>hexapod_TC</TD><TD>status[16]</TD><TD>short</TD><TD>-</TD></B></TR>
+</TABLE></UL><P></BODY></HTML>
+
+

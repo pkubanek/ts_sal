@@ -11,5 +11,4 @@ CREATE TABLE system_Command_history_items (
   comment char(128),
   PRIMARY KEY (num)
 );
-INSERT INTO system_Command_history_items VALUES (1,"Command","string",32,"",0.054,"","","");
-INSERT INTO system_Command_history_items VALUES (2,"Data","float",16,"",0.054,"","","");
+INSERT INTO system_Command_history_items VALUES (1,"Data","float",16,"",100,"","","");

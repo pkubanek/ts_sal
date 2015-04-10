@@ -1,0 +1,1255 @@
+========================================================================================
+Report      : INFO
+Date        : Wed Apr 01 07:42:54 MST 2015
+Description : u_domainNew:Database allocated on heap
+Node        : triangle
+Process     : sacpp_dome_cmd <21958>
+Thread      : spliced b70f2b40
+Internals   : V6.4.140320OSS/24b1387/24b1387/user::u_domain::u_domainNew/u_domain.c/706/0/1427899374.887739407
+========================================================================================
+Report      : INFO
+Date        : Wed Apr 01 07:42:54 MST 2015
+Description : ---------------------------------------------------------------
+              -- The service is using the following configuration settings --
+              ---------------------------------------------------------------
+              Domain (id)          : ospl_sp_ddsi (0)
+              Storage              : 10240 Kbytes
+              Storage threshold    : 1024 Kbytes
+              Storage address      : Not available
+              Locking              : default
+              Memory mode          : Heap memory
+              Builtin topics       : true
+              Priority inheritance : false
+Node        : triangle
+Process     : sacpp_dome_cmd <21958>
+Thread      : spliced b70f2b40
+Internals   : V6.4.140320OSS/24b1387/24b1387/The OpenSplice domain service/u_domain.c/827/0/1427899374.926659071
+========================================================================================
+Report      : INFO
+Date        : Wed Apr 01 07:42:54 MST 2015
+Description : ++++++++++++++++++++++++++++++++++++++++++++++++
+              ++ The service 'splicedaemon' is now operational. 
+              ++++++++++++++++++++++++++++++++++++++++++++++++
+Node        : triangle
+Process     : sacpp_dome_cmd <21958>
+Thread      : spliced b70f2b40
+Internals   : V6.4.140320OSS/24b1387/24b1387/v_serviceChangeState/v_service.c/329/0/1427899374.927469232
+========================================================================================
+Report      : INFO
+Date        : Wed Apr 01 07:42:54 MST 2015
+Description : SOAP service is reachable via port 44604
+Node        : triangle
+Process     : sacpp_dome_cmd <21958>
+Thread      : cmsoap b5effb40
+Internals   : V6.4.140320OSS/24b1387/24b1387/CM SOAP Service/cms_service.c/410/0/1427899374.999541185
+========================================================================================
+Report      : INFO
+Date        : Wed Apr 01 07:42:54 MST 2015
+Description : ++++++++++++++++++++++++++++++++++++++++++++++++
+              ++ The service 'cmsoap' is now operational. 
+              ++++++++++++++++++++++++++++++++++++++++++++++++
+Node        : triangle
+Process     : sacpp_dome_cmd <21958>
+Thread      : cmsoap b5effb40
+Internals   : V6.4.140320OSS/24b1387/24b1387/v_serviceChangeState/v_service.c/329/0/1427899374.999870538
+========================================================================================
+Report      : WARNING
+Date        : Wed Apr 01 07:42:55 MST 2015
+Description : using network interface eth0 (140.252.32.121) selected arbitrarily from: eth0, vmnet1, vmnet8
+
+Node        : triangle
+Process     : sacpp_dome_cmd <21958>
+Thread      : ddsi2 b5c70b40
+Internals   : V6.4.140320OSS/24b1387/24b1387/ddsi2/q_nwif.c/668/0/1427899375.070319875
+========================================================================================
+Report      : INFO
+Date        : Wed Apr 01 07:42:55 MST 2015
+Description : ++++++++++++++++++++++++++++++++++++++++++++++++
+              ++ The service 'ddsi2' is now operational. 
+              ++++++++++++++++++++++++++++++++++++++++++++++++
+Node        : triangle
+Process     : sacpp_dome_cmd <21958>
+Thread      : ddsi2 b5c70b40
+Internals   : V6.4.140320OSS/24b1387/24b1387/v_serviceChangeState/v_service.c/329/0/1427899375.075993450
+========================================================================================
+Report      : INFO
+Date        : Wed Apr 01 07:42:55 MST 2015
+Description : The durability service can by identified by ID: 1398572393
+Node        : triangle
+Process     : sacpp_dome_cmd <21958>
+Thread      : durability b5dfeb40
+Internals   : V6.4.140320OSS/24b1387/24b1387/DurabilityService/d_durability.c/476/0/1427899375.157188920
+========================================================================================
+Report      : INFO
+Date        : Wed Apr 01 07:46:52 MST 2015
+Description : u_domainNew:Database allocated on heap
+Node        : triangle
+Process     : sacpp_dome_cmd <22416>
+Thread      : spliced b710ab40
+Internals   : V6.4.140320OSS/24b1387/24b1387/user::u_domain::u_domainNew/u_domain.c/706/0/1427899612.875362983
+========================================================================================
+Report      : INFO
+Date        : Wed Apr 01 07:46:52 MST 2015
+Description : ---------------------------------------------------------------
+              -- The service is using the following configuration settings --
+              ---------------------------------------------------------------
+              Domain (id)          : ospl_sp_ddsi (0)
+              Storage              : 10240 Kbytes
+              Storage threshold    : 1024 Kbytes
+              Storage address      : Not available
+              Locking              : default
+              Memory mode          : Heap memory
+              Builtin topics       : true
+              Priority inheritance : false
+Node        : triangle
+Process     : sacpp_dome_cmd <22416>
+Thread      : spliced b710ab40
+Internals   : V6.4.140320OSS/24b1387/24b1387/The OpenSplice domain service/u_domain.c/827/0/1427899612.899632600
+========================================================================================
+Report      : INFO
+Date        : Wed Apr 01 07:46:52 MST 2015
+Description : ++++++++++++++++++++++++++++++++++++++++++++++++
+              ++ The service 'splicedaemon' is now operational. 
+              ++++++++++++++++++++++++++++++++++++++++++++++++
+Node        : triangle
+Process     : sacpp_dome_cmd <22416>
+Thread      : spliced b710ab40
+Internals   : V6.4.140320OSS/24b1387/24b1387/v_serviceChangeState/v_service.c/329/0/1427899612.900478004
+========================================================================================
+Report      : INFO
+Date        : Wed Apr 01 07:46:52 MST 2015
+Description : SOAP service is reachable via port 36200
+Node        : triangle
+Process     : sacpp_dome_cmd <22416>
+Thread      : cmsoap b5f7eb40
+Internals   : V6.4.140320OSS/24b1387/24b1387/CM SOAP Service/cms_service.c/410/0/1427899612.901385343
+========================================================================================
+Report      : INFO
+Date        : Wed Apr 01 07:46:52 MST 2015
+Description : ++++++++++++++++++++++++++++++++++++++++++++++++
+              ++ The service 'cmsoap' is now operational. 
+              ++++++++++++++++++++++++++++++++++++++++++++++++
+Node        : triangle
+Process     : sacpp_dome_cmd <22416>
+Thread      : cmsoap b5f7eb40
+Internals   : V6.4.140320OSS/24b1387/24b1387/v_serviceChangeState/v_service.c/329/0/1427899612.901681880
+========================================================================================
+Report      : WARNING
+Date        : Wed Apr 01 07:46:52 MST 2015
+Description : using network interface eth0 (140.252.32.121) selected arbitrarily from: eth0, vmnet1, vmnet8
+
+Node        : triangle
+Process     : sacpp_dome_cmd <22416>
+Thread      : ddsi2 b5d11b40
+Internals   : V6.4.140320OSS/24b1387/24b1387/ddsi2/q_nwif.c/668/0/1427899612.903388097
+========================================================================================
+Report      : INFO
+Date        : Wed Apr 01 07:46:52 MST 2015
+Description : ++++++++++++++++++++++++++++++++++++++++++++++++
+              ++ The service 'ddsi2' is now operational. 
+              ++++++++++++++++++++++++++++++++++++++++++++++++
+Node        : triangle
+Process     : sacpp_dome_cmd <22416>
+Thread      : ddsi2 b5d11b40
+Internals   : V6.4.140320OSS/24b1387/24b1387/v_serviceChangeState/v_service.c/329/0/1427899612.908138115
+========================================================================================
+Report      : INFO
+Date        : Wed Apr 01 07:46:53 MST 2015
+Description : The durability service can by identified by ID: 2120881544
+Node        : triangle
+Process     : sacpp_dome_cmd <22416>
+Thread      : durability b5e7db40
+Internals   : V6.4.140320OSS/24b1387/24b1387/DurabilityService/d_durability.c/476/0/1427899613.016544483
+========================================================================================
+Report      : INFO
+Date        : Wed Apr 01 07:47:00 MST 2015
+Description : ++++++++++++++++++++++++++++++++++++++++++++++++
+              ++ The service 'durability' is now operational. 
+              ++++++++++++++++++++++++++++++++++++++++++++++++
+Node        : triangle
+Process     : sacpp_dome_cmd <22416>
+Thread      : durability b5e7db40
+Internals   : V6.4.140320OSS/24b1387/24b1387/v_serviceChangeState/v_service.c/329/0/1427899620.026104345
+========================================================================================
+Report      : INFO
+Date        : Wed Apr 01 07:48:20 MST 2015
+Description : u_domainNew:Database allocated on heap
+Node        : triangle
+Process     : sacpp_dome_cmd <22495>
+Thread      : spliced b71c3b40
+Internals   : V6.4.140320OSS/24b1387/24b1387/user::u_domain::u_domainNew/u_domain.c/706/0/1427899700.400667232
+========================================================================================
+Report      : INFO
+Date        : Wed Apr 01 07:48:20 MST 2015
+Description : ---------------------------------------------------------------
+              -- The service is using the following configuration settings --
+              ---------------------------------------------------------------
+              Domain (id)          : ospl_sp_ddsi (0)
+              Storage              : 10240 Kbytes
+              Storage threshold    : 1024 Kbytes
+              Storage address      : Not available
+              Locking              : default
+              Memory mode          : Heap memory
+              Builtin topics       : true
+              Priority inheritance : false
+Node        : triangle
+Process     : sacpp_dome_cmd <22495>
+Thread      : spliced b71c3b40
+Internals   : V6.4.140320OSS/24b1387/24b1387/The OpenSplice domain service/u_domain.c/827/0/1427899700.410733450
+========================================================================================
+Report      : INFO
+Date        : Wed Apr 01 07:48:20 MST 2015
+Description : ++++++++++++++++++++++++++++++++++++++++++++++++
+              ++ The service 'splicedaemon' is now operational. 
+              ++++++++++++++++++++++++++++++++++++++++++++++++
+Node        : triangle
+Process     : sacpp_dome_cmd <22495>
+Thread      : spliced b71c3b40
+Internals   : V6.4.140320OSS/24b1387/24b1387/v_serviceChangeState/v_service.c/329/0/1427899700.411591887
+========================================================================================
+Report      : INFO
+Date        : Wed Apr 01 07:48:20 MST 2015
+Description : SOAP service is reachable via port 43004
+Node        : triangle
+Process     : sacpp_dome_cmd <22495>
+Thread      : cmsoap b5f7eb40
+Internals   : V6.4.140320OSS/24b1387/24b1387/CM SOAP Service/cms_service.c/410/0/1427899700.413500949
+========================================================================================
+Report      : INFO
+Date        : Wed Apr 01 07:48:20 MST 2015
+Description : ++++++++++++++++++++++++++++++++++++++++++++++++
+              ++ The service 'cmsoap' is now operational. 
+              ++++++++++++++++++++++++++++++++++++++++++++++++
+Node        : triangle
+Process     : sacpp_dome_cmd <22495>
+Thread      : cmsoap b5f7eb40
+Internals   : V6.4.140320OSS/24b1387/24b1387/v_serviceChangeState/v_service.c/329/0/1427899700.415048501
+========================================================================================
+Report      : WARNING
+Date        : Wed Apr 01 07:48:20 MST 2015
+Description : using network interface eth0 (140.252.32.121) selected arbitrarily from: eth0, vmnet1, vmnet8
+
+Node        : triangle
+Process     : sacpp_dome_cmd <22495>
+Thread      : ddsi2 b5d7cb40
+Internals   : V6.4.140320OSS/24b1387/24b1387/ddsi2/q_nwif.c/668/0/1427899700.416057991
+========================================================================================
+Report      : INFO
+Date        : Wed Apr 01 07:48:20 MST 2015
+Description : ++++++++++++++++++++++++++++++++++++++++++++++++
+              ++ The service 'ddsi2' is now operational. 
+              ++++++++++++++++++++++++++++++++++++++++++++++++
+Node        : triangle
+Process     : sacpp_dome_cmd <22495>
+Thread      : ddsi2 b5d7cb40
+Internals   : V6.4.140320OSS/24b1387/24b1387/v_serviceChangeState/v_service.c/329/0/1427899700.420463250
+========================================================================================
+Report      : INFO
+Date        : Wed Apr 01 07:48:20 MST 2015
+Description : The durability service can by identified by ID: 1089423073
+Node        : triangle
+Process     : sacpp_dome_cmd <22495>
+Thread      : durability b5e7db40
+Internals   : V6.4.140320OSS/24b1387/24b1387/DurabilityService/d_durability.c/476/0/1427899700.425059786
+========================================================================================
+Report      : INFO
+Date        : Wed Apr 01 07:48:27 MST 2015
+Description : ++++++++++++++++++++++++++++++++++++++++++++++++
+              ++ The service 'durability' is now operational. 
+              ++++++++++++++++++++++++++++++++++++++++++++++++
+Node        : triangle
+Process     : sacpp_dome_cmd <22495>
+Thread      : durability b5e7db40
+Internals   : V6.4.140320OSS/24b1387/24b1387/v_serviceChangeState/v_service.c/329/0/1427899707.429303342
+========================================================================================
+Report      : INFO
+Date        : Wed Apr 01 07:48:27 MST 2015
+Description : u_domainNew:Database allocated on heap
+Node        : triangle
+Process     : sacpp_hexapod_cmd <22550>
+Thread      : spliced b729db40
+Internals   : V6.4.140320OSS/24b1387/24b1387/user::u_domain::u_domainNew/u_domain.c/706/0/1427899707.687060500
+========================================================================================
+Report      : INFO
+Date        : Wed Apr 01 07:48:27 MST 2015
+Description : ---------------------------------------------------------------
+              -- The service is using the following configuration settings --
+              ---------------------------------------------------------------
+              Domain (id)          : ospl_sp_ddsi (0)
+              Storage              : 10240 Kbytes
+              Storage threshold    : 1024 Kbytes
+              Storage address      : Not available
+              Locking              : default
+              Memory mode          : Heap memory
+              Builtin topics       : true
+              Priority inheritance : false
+Node        : triangle
+Process     : sacpp_hexapod_cmd <22550>
+Thread      : spliced b729db40
+Internals   : V6.4.140320OSS/24b1387/24b1387/The OpenSplice domain service/u_domain.c/827/0/1427899707.694635576
+========================================================================================
+Report      : INFO
+Date        : Wed Apr 01 07:48:27 MST 2015
+Description : ++++++++++++++++++++++++++++++++++++++++++++++++
+              ++ The service 'splicedaemon' is now operational. 
+              ++++++++++++++++++++++++++++++++++++++++++++++++
+Node        : triangle
+Process     : sacpp_hexapod_cmd <22550>
+Thread      : spliced b729db40
+Internals   : V6.4.140320OSS/24b1387/24b1387/v_serviceChangeState/v_service.c/329/0/1427899707.695375419
+========================================================================================
+Report      : INFO
+Date        : Wed Apr 01 07:48:27 MST 2015
+Description : SOAP service is reachable via port 45475
+Node        : triangle
+Process     : sacpp_hexapod_cmd <22550>
+Thread      : cmsoap b607eb40
+Internals   : V6.4.140320OSS/24b1387/24b1387/CM SOAP Service/cms_service.c/410/0/1427899707.696718851
+========================================================================================
+Report      : INFO
+Date        : Wed Apr 01 07:48:27 MST 2015
+Description : ++++++++++++++++++++++++++++++++++++++++++++++++
+              ++ The service 'cmsoap' is now operational. 
+              ++++++++++++++++++++++++++++++++++++++++++++++++
+Node        : triangle
+Process     : sacpp_hexapod_cmd <22550>
+Thread      : cmsoap b607eb40
+Internals   : V6.4.140320OSS/24b1387/24b1387/v_serviceChangeState/v_service.c/329/0/1427899707.697061983
+========================================================================================
+Report      : WARNING
+Date        : Wed Apr 01 07:48:27 MST 2015
+Description : using network interface eth0 (140.252.32.121) selected arbitrarily from: eth0, vmnet1, vmnet8
+
+Node        : triangle
+Process     : sacpp_hexapod_cmd <22550>
+Thread      : ddsi2 b5e7cb40
+Internals   : V6.4.140320OSS/24b1387/24b1387/ddsi2/q_nwif.c/668/0/1427899707.697367447
+========================================================================================
+Report      : INFO
+Date        : Wed Apr 01 07:48:27 MST 2015
+Description : ++++++++++++++++++++++++++++++++++++++++++++++++
+              ++ The service 'ddsi2' is now operational. 
+              ++++++++++++++++++++++++++++++++++++++++++++++++
+Node        : triangle
+Process     : sacpp_hexapod_cmd <22550>
+Thread      : ddsi2 b5e7cb40
+Internals   : V6.4.140320OSS/24b1387/24b1387/v_serviceChangeState/v_service.c/329/0/1427899707.714029562
+========================================================================================
+Report      : INFO
+Date        : Wed Apr 01 07:48:27 MST 2015
+Description : The durability service can by identified by ID: 657568540
+Node        : triangle
+Process     : sacpp_hexapod_cmd <22550>
+Thread      : durability b5f7db40
+Internals   : V6.4.140320OSS/24b1387/24b1387/DurabilityService/d_durability.c/476/0/1427899707.908670437
+========================================================================================
+Report      : INFO
+Date        : Wed Apr 01 07:48:30 MST 2015
+Description : u_domainNew:Database allocated on heap
+Node        : triangle
+Process     : sacpp_hexapod_cmd <22604>
+Thread      : spliced b728db40
+Internals   : V6.4.140320OSS/24b1387/24b1387/user::u_domain::u_domainNew/u_domain.c/706/0/1427899710.922266754
+========================================================================================
+Report      : INFO
+Date        : Wed Apr 01 07:48:30 MST 2015
+Description : ---------------------------------------------------------------
+              -- The service is using the following configuration settings --
+              ---------------------------------------------------------------
+              Domain (id)          : ospl_sp_ddsi (0)
+              Storage              : 10240 Kbytes
+              Storage threshold    : 1024 Kbytes
+              Storage address      : Not available
+              Locking              : default
+              Memory mode          : Heap memory
+              Builtin topics       : true
+              Priority inheritance : false
+Node        : triangle
+Process     : sacpp_hexapod_cmd <22604>
+Thread      : spliced b728db40
+Internals   : V6.4.140320OSS/24b1387/24b1387/The OpenSplice domain service/u_domain.c/827/0/1427899710.930640285
+========================================================================================
+Report      : INFO
+Date        : Wed Apr 01 07:48:30 MST 2015
+Description : ++++++++++++++++++++++++++++++++++++++++++++++++
+              ++ The service 'splicedaemon' is now operational. 
+              ++++++++++++++++++++++++++++++++++++++++++++++++
+Node        : triangle
+Process     : sacpp_hexapod_cmd <22604>
+Thread      : spliced b728db40
+Internals   : V6.4.140320OSS/24b1387/24b1387/v_serviceChangeState/v_service.c/329/0/1427899710.931426057
+========================================================================================
+Report      : INFO
+Date        : Wed Apr 01 07:48:30 MST 2015
+Description : SOAP service is reachable via port 45707
+Node        : triangle
+Process     : sacpp_hexapod_cmd <22604>
+Thread      : cmsoap b5fffb40
+Internals   : V6.4.140320OSS/24b1387/24b1387/CM SOAP Service/cms_service.c/410/0/1427899710.932681503
+========================================================================================
+Report      : INFO
+Date        : Wed Apr 01 07:48:30 MST 2015
+Description : ++++++++++++++++++++++++++++++++++++++++++++++++
+              ++ The service 'cmsoap' is now operational. 
+              ++++++++++++++++++++++++++++++++++++++++++++++++
+Node        : triangle
+Process     : sacpp_hexapod_cmd <22604>
+Thread      : cmsoap b5fffb40
+Internals   : V6.4.140320OSS/24b1387/24b1387/v_serviceChangeState/v_service.c/329/0/1427899710.932977432
+========================================================================================
+Report      : WARNING
+Date        : Wed Apr 01 07:48:30 MST 2015
+Description : using network interface eth0 (140.252.32.121) selected arbitrarily from: eth0, vmnet1, vmnet8
+
+Node        : triangle
+Process     : sacpp_hexapod_cmd <22604>
+Thread      : ddsi2 b5dfdb40
+Internals   : V6.4.140320OSS/24b1387/24b1387/ddsi2/q_nwif.c/668/0/1427899710.934434883
+========================================================================================
+Report      : INFO
+Date        : Wed Apr 01 07:48:30 MST 2015
+Description : ++++++++++++++++++++++++++++++++++++++++++++++++
+              ++ The service 'ddsi2' is now operational. 
+              ++++++++++++++++++++++++++++++++++++++++++++++++
+Node        : triangle
+Process     : sacpp_hexapod_cmd <22604>
+Thread      : ddsi2 b5dfdb40
+Internals   : V6.4.140320OSS/24b1387/24b1387/v_serviceChangeState/v_service.c/329/0/1427899710.939539909
+========================================================================================
+Report      : INFO
+Date        : Wed Apr 01 07:48:30 MST 2015
+Description : The durability service can by identified by ID: 662764781
+Node        : triangle
+Process     : sacpp_hexapod_cmd <22604>
+Thread      : durability b5efeb40
+Internals   : V6.4.140320OSS/24b1387/24b1387/DurabilityService/d_durability.c/476/0/1427899710.946587944
+========================================================================================
+Report      : INFO
+Date        : Wed Apr 01 07:48:34 MST 2015
+Description : u_domainNew:Database allocated on heap
+Node        : triangle
+Process     : sacpp_camera_cmd <22659>
+Thread      : spliced b7384b40
+Internals   : V6.4.140320OSS/24b1387/24b1387/user::u_domain::u_domainNew/u_domain.c/706/0/1427899714.217881710
+========================================================================================
+Report      : INFO
+Date        : Wed Apr 01 07:48:34 MST 2015
+Description : ---------------------------------------------------------------
+              -- The service is using the following configuration settings --
+              ---------------------------------------------------------------
+              Domain (id)          : ospl_sp_ddsi (0)
+              Storage              : 10240 Kbytes
+              Storage threshold    : 1024 Kbytes
+              Storage address      : Not available
+              Locking              : default
+              Memory mode          : Heap memory
+              Builtin topics       : true
+              Priority inheritance : false
+Node        : triangle
+Process     : sacpp_camera_cmd <22659>
+Thread      : spliced b7384b40
+Internals   : V6.4.140320OSS/24b1387/24b1387/The OpenSplice domain service/u_domain.c/827/0/1427899714.227683770
+========================================================================================
+Report      : INFO
+Date        : Wed Apr 01 07:48:34 MST 2015
+Description : ++++++++++++++++++++++++++++++++++++++++++++++++
+              ++ The service 'splicedaemon' is now operational. 
+              ++++++++++++++++++++++++++++++++++++++++++++++++
+Node        : triangle
+Process     : sacpp_camera_cmd <22659>
+Thread      : spliced b7384b40
+Internals   : V6.4.140320OSS/24b1387/24b1387/v_serviceChangeState/v_service.c/329/0/1427899714.228367913
+========================================================================================
+Report      : INFO
+Date        : Wed Apr 01 07:48:34 MST 2015
+Description : SOAP service is reachable via port 48493
+Node        : triangle
+Process     : sacpp_camera_cmd <22659>
+Thread      : cmsoap b61ffb40
+Internals   : V6.4.140320OSS/24b1387/24b1387/CM SOAP Service/cms_service.c/410/0/1427899714.229425176
+========================================================================================
+Report      : INFO
+Date        : Wed Apr 01 07:48:34 MST 2015
+Description : ++++++++++++++++++++++++++++++++++++++++++++++++
+              ++ The service 'cmsoap' is now operational. 
+              ++++++++++++++++++++++++++++++++++++++++++++++++
+Node        : triangle
+Process     : sacpp_camera_cmd <22659>
+Thread      : cmsoap b61ffb40
+Internals   : V6.4.140320OSS/24b1387/24b1387/v_serviceChangeState/v_service.c/329/0/1427899714.229702466
+========================================================================================
+Report      : WARNING
+Date        : Wed Apr 01 07:48:34 MST 2015
+Description : using network interface eth0 (140.252.32.121) selected arbitrarily from: eth0, vmnet1, vmnet8
+
+Node        : triangle
+Process     : sacpp_camera_cmd <22659>
+Thread      : ddsi2 b5f92b40
+Internals   : V6.4.140320OSS/24b1387/24b1387/ddsi2/q_nwif.c/668/0/1427899714.232597378
+========================================================================================
+Report      : INFO
+Date        : Wed Apr 01 07:48:34 MST 2015
+Description : ++++++++++++++++++++++++++++++++++++++++++++++++
+              ++ The service 'ddsi2' is now operational. 
+              ++++++++++++++++++++++++++++++++++++++++++++++++
+Node        : triangle
+Process     : sacpp_camera_cmd <22659>
+Thread      : ddsi2 b5f92b40
+Internals   : V6.4.140320OSS/24b1387/24b1387/v_serviceChangeState/v_service.c/329/0/1427899714.240678387
+========================================================================================
+Report      : INFO
+Date        : Wed Apr 01 07:48:34 MST 2015
+Description : The durability service can by identified by ID: 851737207
+Node        : triangle
+Process     : sacpp_camera_cmd <22659>
+Thread      : durability b60feb40
+Internals   : V6.4.140320OSS/24b1387/24b1387/DurabilityService/d_durability.c/476/0/1427899714.647441583
+========================================================================================
+Report      : INFO
+Date        : Wed Apr 01 07:51:02 MST 2015
+Description : u_domainNew:Database allocated on heap
+Node        : triangle
+Process     : sacpp_dome_cmd <22723>
+Thread      : spliced b716cb40
+Internals   : V6.4.140320OSS/24b1387/24b1387/user::u_domain::u_domainNew/u_domain.c/706/0/1427899862.465840441
+========================================================================================
+Report      : INFO
+Date        : Wed Apr 01 07:51:02 MST 2015
+Description : ---------------------------------------------------------------
+              -- The service is using the following configuration settings --
+              ---------------------------------------------------------------
+              Domain (id)          : ospl_sp_ddsi (0)
+              Storage              : 10240 Kbytes
+              Storage threshold    : 1024 Kbytes
+              Storage address      : Not available
+              Locking              : default
+              Memory mode          : Heap memory
+              Builtin topics       : true
+              Priority inheritance : false
+Node        : triangle
+Process     : sacpp_dome_cmd <22723>
+Thread      : spliced b716cb40
+Internals   : V6.4.140320OSS/24b1387/24b1387/The OpenSplice domain service/u_domain.c/827/0/1427899862.472606201
+========================================================================================
+Report      : INFO
+Date        : Wed Apr 01 07:51:02 MST 2015
+Description : ++++++++++++++++++++++++++++++++++++++++++++++++
+              ++ The service 'splicedaemon' is now operational. 
+              ++++++++++++++++++++++++++++++++++++++++++++++++
+Node        : triangle
+Process     : sacpp_dome_cmd <22723>
+Thread      : spliced b716cb40
+Internals   : V6.4.140320OSS/24b1387/24b1387/v_serviceChangeState/v_service.c/329/0/1427899862.473286596
+========================================================================================
+Report      : INFO
+Date        : Wed Apr 01 07:51:02 MST 2015
+Description : SOAP service is reachable via port 42094
+Node        : triangle
+Process     : sacpp_dome_cmd <22723>
+Thread      : cmsoap b5f7eb40
+Internals   : V6.4.140320OSS/24b1387/24b1387/CM SOAP Service/cms_service.c/410/0/1427899862.474241243
+========================================================================================
+Report      : INFO
+Date        : Wed Apr 01 07:51:02 MST 2015
+Description : ++++++++++++++++++++++++++++++++++++++++++++++++
+              ++ The service 'cmsoap' is now operational. 
+              ++++++++++++++++++++++++++++++++++++++++++++++++
+Node        : triangle
+Process     : sacpp_dome_cmd <22723>
+Thread      : cmsoap b5f7eb40
+Internals   : V6.4.140320OSS/24b1387/24b1387/v_serviceChangeState/v_service.c/329/0/1427899862.474499264
+========================================================================================
+Report      : WARNING
+Date        : Wed Apr 01 07:51:02 MST 2015
+Description : using network interface eth0 (140.252.32.121) selected arbitrarily from: eth0, vmnet1, vmnet8
+
+Node        : triangle
+Process     : sacpp_dome_cmd <22723>
+Thread      : ddsi2 b5d11b40
+Internals   : V6.4.140320OSS/24b1387/24b1387/ddsi2/q_nwif.c/668/0/1427899862.474913015
+========================================================================================
+Report      : INFO
+Date        : Wed Apr 01 07:51:02 MST 2015
+Description : ++++++++++++++++++++++++++++++++++++++++++++++++
+              ++ The service 'ddsi2' is now operational. 
+              ++++++++++++++++++++++++++++++++++++++++++++++++
+Node        : triangle
+Process     : sacpp_dome_cmd <22723>
+Thread      : ddsi2 b5d11b40
+Internals   : V6.4.140320OSS/24b1387/24b1387/v_serviceChangeState/v_service.c/329/0/1427899862.479480935
+========================================================================================
+Report      : INFO
+Date        : Wed Apr 01 07:51:02 MST 2015
+Description : The durability service can by identified by ID: 1026080140
+Node        : triangle
+Process     : sacpp_dome_cmd <22723>
+Thread      : durability b5e7db40
+Internals   : V6.4.140320OSS/24b1387/24b1387/DurabilityService/d_durability.c/476/0/1427899862.488830798
+========================================================================================
+Report      : INFO
+Date        : Wed Apr 01 07:51:09 MST 2015
+Description : ++++++++++++++++++++++++++++++++++++++++++++++++
+              ++ The service 'durability' is now operational. 
+              ++++++++++++++++++++++++++++++++++++++++++++++++
+Node        : triangle
+Process     : sacpp_dome_cmd <22723>
+Thread      : durability b5e7db40
+Internals   : V6.4.140320OSS/24b1387/24b1387/v_serviceChangeState/v_service.c/329/0/1427899869.493206171
+========================================================================================
+Report      : INFO
+Date        : Wed Apr 01 07:51:09 MST 2015
+Description : u_domainNew:Database allocated on heap
+Node        : triangle
+Process     : sacpp_hexapod_cmd <22778>
+Thread      : spliced b723fb40
+Internals   : V6.4.140320OSS/24b1387/24b1387/user::u_domain::u_domainNew/u_domain.c/706/0/1427899869.704873400
+========================================================================================
+Report      : INFO
+Date        : Wed Apr 01 07:51:09 MST 2015
+Description : ---------------------------------------------------------------
+              -- The service is using the following configuration settings --
+              ---------------------------------------------------------------
+              Domain (id)          : ospl_sp_ddsi (0)
+              Storage              : 10240 Kbytes
+              Storage threshold    : 1024 Kbytes
+              Storage address      : Not available
+              Locking              : default
+              Memory mode          : Heap memory
+              Builtin topics       : true
+              Priority inheritance : false
+Node        : triangle
+Process     : sacpp_hexapod_cmd <22778>
+Thread      : spliced b723fb40
+Internals   : V6.4.140320OSS/24b1387/24b1387/The OpenSplice domain service/u_domain.c/827/0/1427899869.711676584
+========================================================================================
+Report      : INFO
+Date        : Wed Apr 01 07:51:09 MST 2015
+Description : ++++++++++++++++++++++++++++++++++++++++++++++++
+              ++ The service 'splicedaemon' is now operational. 
+              ++++++++++++++++++++++++++++++++++++++++++++++++
+Node        : triangle
+Process     : sacpp_hexapod_cmd <22778>
+Thread      : spliced b723fb40
+Internals   : V6.4.140320OSS/24b1387/24b1387/v_serviceChangeState/v_service.c/329/0/1427899869.712394009
+========================================================================================
+Report      : INFO
+Date        : Wed Apr 01 07:51:09 MST 2015
+Description : SOAP service is reachable via port 51422
+Node        : triangle
+Process     : sacpp_hexapod_cmd <22778>
+Thread      : cmsoap b607eb40
+Internals   : V6.4.140320OSS/24b1387/24b1387/CM SOAP Service/cms_service.c/410/0/1427899869.713647915
+========================================================================================
+Report      : INFO
+Date        : Wed Apr 01 07:51:09 MST 2015
+Description : ++++++++++++++++++++++++++++++++++++++++++++++++
+              ++ The service 'cmsoap' is now operational. 
+              ++++++++++++++++++++++++++++++++++++++++++++++++
+Node        : triangle
+Process     : sacpp_hexapod_cmd <22778>
+Thread      : cmsoap b607eb40
+Internals   : V6.4.140320OSS/24b1387/24b1387/v_serviceChangeState/v_service.c/329/0/1427899869.713980432
+========================================================================================
+Report      : WARNING
+Date        : Wed Apr 01 07:51:09 MST 2015
+Description : using network interface eth0 (140.252.32.121) selected arbitrarily from: eth0, vmnet1, vmnet8
+
+Node        : triangle
+Process     : sacpp_hexapod_cmd <22778>
+Thread      : ddsi2 b5e11b40
+Internals   : V6.4.140320OSS/24b1387/24b1387/ddsi2/q_nwif.c/668/0/1427899869.716326429
+========================================================================================
+Report      : INFO
+Date        : Wed Apr 01 07:51:09 MST 2015
+Description : ++++++++++++++++++++++++++++++++++++++++++++++++
+              ++ The service 'ddsi2' is now operational. 
+              ++++++++++++++++++++++++++++++++++++++++++++++++
+Node        : triangle
+Process     : sacpp_hexapod_cmd <22778>
+Thread      : ddsi2 b5e11b40
+Internals   : V6.4.140320OSS/24b1387/24b1387/v_serviceChangeState/v_service.c/329/0/1427899869.725875502
+========================================================================================
+Report      : INFO
+Date        : Wed Apr 01 07:51:09 MST 2015
+Description : The durability service can by identified by ID: 323070401
+Node        : triangle
+Process     : sacpp_hexapod_cmd <22778>
+Thread      : durability b5f7db40
+Internals   : V6.4.140320OSS/24b1387/24b1387/DurabilityService/d_durability.c/476/0/1427899869.734223043
+========================================================================================
+Report      : INFO
+Date        : Wed Apr 01 07:51:12 MST 2015
+Description : u_domainNew:Database allocated on heap
+Node        : triangle
+Process     : sacpp_hexapod_cmd <22833>
+Thread      : spliced b723cb40
+Internals   : V6.4.140320OSS/24b1387/24b1387/user::u_domain::u_domainNew/u_domain.c/706/0/1427899872.924609973
+========================================================================================
+Report      : INFO
+Date        : Wed Apr 01 07:51:12 MST 2015
+Description : ---------------------------------------------------------------
+              -- The service is using the following configuration settings --
+              ---------------------------------------------------------------
+              Domain (id)          : ospl_sp_ddsi (0)
+              Storage              : 10240 Kbytes
+              Storage threshold    : 1024 Kbytes
+              Storage address      : Not available
+              Locking              : default
+              Memory mode          : Heap memory
+              Builtin topics       : true
+              Priority inheritance : false
+Node        : triangle
+Process     : sacpp_hexapod_cmd <22833>
+Thread      : spliced b723cb40
+Internals   : V6.4.140320OSS/24b1387/24b1387/The OpenSplice domain service/u_domain.c/827/0/1427899872.932179181
+========================================================================================
+Report      : INFO
+Date        : Wed Apr 01 07:51:12 MST 2015
+Description : ++++++++++++++++++++++++++++++++++++++++++++++++
+              ++ The service 'splicedaemon' is now operational. 
+              ++++++++++++++++++++++++++++++++++++++++++++++++
+Node        : triangle
+Process     : sacpp_hexapod_cmd <22833>
+Thread      : spliced b723cb40
+Internals   : V6.4.140320OSS/24b1387/24b1387/v_serviceChangeState/v_service.c/329/0/1427899872.933034637
+========================================================================================
+Report      : INFO
+Date        : Wed Apr 01 07:51:12 MST 2015
+Description : SOAP service is reachable via port 43340
+Node        : triangle
+Process     : sacpp_hexapod_cmd <22833>
+Thread      : cmsoap b607eb40
+Internals   : V6.4.140320OSS/24b1387/24b1387/CM SOAP Service/cms_service.c/410/0/1427899872.934189265
+========================================================================================
+Report      : INFO
+Date        : Wed Apr 01 07:51:12 MST 2015
+Description : ++++++++++++++++++++++++++++++++++++++++++++++++
+              ++ The service 'cmsoap' is now operational. 
+              ++++++++++++++++++++++++++++++++++++++++++++++++
+Node        : triangle
+Process     : sacpp_hexapod_cmd <22833>
+Thread      : cmsoap b607eb40
+Internals   : V6.4.140320OSS/24b1387/24b1387/v_serviceChangeState/v_service.c/329/0/1427899872.934445629
+========================================================================================
+Report      : WARNING
+Date        : Wed Apr 01 07:51:12 MST 2015
+Description : using network interface eth0 (140.252.32.121) selected arbitrarily from: eth0, vmnet1, vmnet8
+
+Node        : triangle
+Process     : sacpp_hexapod_cmd <22833>
+Thread      : ddsi2 b5e11b40
+Internals   : V6.4.140320OSS/24b1387/24b1387/ddsi2/q_nwif.c/668/0/1427899872.935042484
+========================================================================================
+Report      : INFO
+Date        : Wed Apr 01 07:51:12 MST 2015
+Description : ++++++++++++++++++++++++++++++++++++++++++++++++
+              ++ The service 'ddsi2' is now operational. 
+              ++++++++++++++++++++++++++++++++++++++++++++++++
+Node        : triangle
+Process     : sacpp_hexapod_cmd <22833>
+Thread      : ddsi2 b5e11b40
+Internals   : V6.4.140320OSS/24b1387/24b1387/v_serviceChangeState/v_service.c/329/0/1427899872.939864798
+========================================================================================
+Report      : INFO
+Date        : Wed Apr 01 07:51:12 MST 2015
+Description : The durability service can by identified by ID: 869102334
+Node        : triangle
+Process     : sacpp_hexapod_cmd <22833>
+Thread      : durability b5f7db40
+Internals   : V6.4.140320OSS/24b1387/24b1387/DurabilityService/d_durability.c/476/0/1427899872.945851192
+========================================================================================
+Report      : INFO
+Date        : Wed Apr 01 07:51:16 MST 2015
+Description : u_domainNew:Database allocated on heap
+Node        : triangle
+Process     : sacpp_camera_cmd <22888>
+Thread      : spliced b72e4b40
+Internals   : V6.4.140320OSS/24b1387/24b1387/user::u_domain::u_domainNew/u_domain.c/706/0/1427899876.155811891
+========================================================================================
+Report      : INFO
+Date        : Wed Apr 01 07:51:16 MST 2015
+Description : ---------------------------------------------------------------
+              -- The service is using the following configuration settings --
+              ---------------------------------------------------------------
+              Domain (id)          : ospl_sp_ddsi (0)
+              Storage              : 10240 Kbytes
+              Storage threshold    : 1024 Kbytes
+              Storage address      : Not available
+              Locking              : default
+              Memory mode          : Heap memory
+              Builtin topics       : true
+              Priority inheritance : false
+Node        : triangle
+Process     : sacpp_camera_cmd <22888>
+Thread      : spliced b72e4b40
+Internals   : V6.4.140320OSS/24b1387/24b1387/The OpenSplice domain service/u_domain.c/827/0/1427899876.165851673
+========================================================================================
+Report      : INFO
+Date        : Wed Apr 01 07:51:16 MST 2015
+Description : ++++++++++++++++++++++++++++++++++++++++++++++++
+              ++ The service 'splicedaemon' is now operational. 
+              ++++++++++++++++++++++++++++++++++++++++++++++++
+Node        : triangle
+Process     : sacpp_camera_cmd <22888>
+Thread      : spliced b72e4b40
+Internals   : V6.4.140320OSS/24b1387/24b1387/v_serviceChangeState/v_service.c/329/0/1427899876.166866829
+========================================================================================
+Report      : INFO
+Date        : Wed Apr 01 07:51:16 MST 2015
+Description : SOAP service is reachable via port 44878
+Node        : triangle
+Process     : sacpp_camera_cmd <22888>
+Thread      : cmsoap b607eb40
+Internals   : V6.4.140320OSS/24b1387/24b1387/CM SOAP Service/cms_service.c/410/0/1427899876.168194359
+========================================================================================
+Report      : INFO
+Date        : Wed Apr 01 07:51:16 MST 2015
+Description : ++++++++++++++++++++++++++++++++++++++++++++++++
+              ++ The service 'cmsoap' is now operational. 
+              ++++++++++++++++++++++++++++++++++++++++++++++++
+Node        : triangle
+Process     : sacpp_camera_cmd <22888>
+Thread      : cmsoap b607eb40
+Internals   : V6.4.140320OSS/24b1387/24b1387/v_serviceChangeState/v_service.c/329/0/1427899876.168437741
+========================================================================================
+Report      : WARNING
+Date        : Wed Apr 01 07:51:16 MST 2015
+Description : using network interface eth0 (140.252.32.121) selected arbitrarily from: eth0, vmnet1, vmnet8
+
+Node        : triangle
+Process     : sacpp_camera_cmd <22888>
+Thread      : ddsi2 b5e7cb40
+Internals   : V6.4.140320OSS/24b1387/24b1387/ddsi2/q_nwif.c/668/0/1427899876.169241311
+========================================================================================
+Report      : INFO
+Date        : Wed Apr 01 07:51:16 MST 2015
+Description : ++++++++++++++++++++++++++++++++++++++++++++++++
+              ++ The service 'ddsi2' is now operational. 
+              ++++++++++++++++++++++++++++++++++++++++++++++++
+Node        : triangle
+Process     : sacpp_camera_cmd <22888>
+Thread      : ddsi2 b5e7cb40
+Internals   : V6.4.140320OSS/24b1387/24b1387/v_serviceChangeState/v_service.c/329/0/1427899876.175415219
+========================================================================================
+Report      : INFO
+Date        : Wed Apr 01 07:51:16 MST 2015
+Description : The durability service can by identified by ID: 1065374495
+Node        : triangle
+Process     : sacpp_camera_cmd <22888>
+Thread      : durability b5f7db40
+Internals   : V6.4.140320OSS/24b1387/24b1387/DurabilityService/d_durability.c/476/0/1427899876.180565355
+========================================================================================
+Report      : INFO
+Date        : Wed Apr 01 15:08:22 MST 2015
+Description : u_domainNew:Database allocated on heap
+Node        : triangle
+Process     : sacpp_dome_cmd <26384>
+Thread      : spliced b71d6b40
+Internals   : V6.4.140320OSS/24b1387/24b1387/user::u_domain::u_domainNew/u_domain.c/706/0/1427926102.614290393
+========================================================================================
+Report      : INFO
+Date        : Wed Apr 01 15:08:22 MST 2015
+Description : ---------------------------------------------------------------
+              -- The service is using the following configuration settings --
+              ---------------------------------------------------------------
+              Domain (id)          : ospl_sp_ddsi (0)
+              Storage              : 10240 Kbytes
+              Storage threshold    : 1024 Kbytes
+              Storage address      : Not available
+              Locking              : default
+              Memory mode          : Heap memory
+              Builtin topics       : true
+              Priority inheritance : false
+Node        : triangle
+Process     : sacpp_dome_cmd <26384>
+Thread      : spliced b71d6b40
+Internals   : V6.4.140320OSS/24b1387/24b1387/The OpenSplice domain service/u_domain.c/827/0/1427926102.621092655
+========================================================================================
+Report      : INFO
+Date        : Wed Apr 01 15:08:22 MST 2015
+Description : ++++++++++++++++++++++++++++++++++++++++++++++++
+              ++ The service 'splicedaemon' is now operational. 
+              ++++++++++++++++++++++++++++++++++++++++++++++++
+Node        : triangle
+Process     : sacpp_dome_cmd <26384>
+Thread      : spliced b71d6b40
+Internals   : V6.4.140320OSS/24b1387/24b1387/v_serviceChangeState/v_service.c/329/0/1427926102.621968651
+========================================================================================
+Report      : INFO
+Date        : Wed Apr 01 15:08:22 MST 2015
+Description : SOAP service is reachable via port 41055
+Node        : triangle
+Process     : sacpp_dome_cmd <26384>
+Thread      : cmsoap b5fffb40
+Internals   : V6.4.140320OSS/24b1387/24b1387/CM SOAP Service/cms_service.c/410/0/1427926102.623317746
+========================================================================================
+Report      : INFO
+Date        : Wed Apr 01 15:08:22 MST 2015
+Description : ++++++++++++++++++++++++++++++++++++++++++++++++
+              ++ The service 'cmsoap' is now operational. 
+              ++++++++++++++++++++++++++++++++++++++++++++++++
+Node        : triangle
+Process     : sacpp_dome_cmd <26384>
+Thread      : cmsoap b5fffb40
+Internals   : V6.4.140320OSS/24b1387/24b1387/v_serviceChangeState/v_service.c/329/0/1427926102.623644120
+========================================================================================
+Report      : WARNING
+Date        : Wed Apr 01 15:08:22 MST 2015
+Description : using network interface eth0 (140.252.32.121) selected arbitrarily from: eth0, vmnet1, vmnet8
+
+Node        : triangle
+Process     : sacpp_dome_cmd <26384>
+Thread      : ddsi2 b5d92b40
+Internals   : V6.4.140320OSS/24b1387/24b1387/ddsi2/q_nwif.c/668/0/1427926102.623865800
+========================================================================================
+Report      : INFO
+Date        : Wed Apr 01 15:08:22 MST 2015
+Description : ++++++++++++++++++++++++++++++++++++++++++++++++
+              ++ The service 'ddsi2' is now operational. 
+              ++++++++++++++++++++++++++++++++++++++++++++++++
+Node        : triangle
+Process     : sacpp_dome_cmd <26384>
+Thread      : ddsi2 b5d92b40
+Internals   : V6.4.140320OSS/24b1387/24b1387/v_serviceChangeState/v_service.c/329/0/1427926102.629709858
+========================================================================================
+Report      : INFO
+Date        : Wed Apr 01 15:08:22 MST 2015
+Description : The durability service can by identified by ID: 1151374850
+Node        : triangle
+Process     : sacpp_dome_cmd <26384>
+Thread      : durability b5efeb40
+Internals   : V6.4.140320OSS/24b1387/24b1387/DurabilityService/d_durability.c/476/0/1427926102.635419560
+========================================================================================
+Report      : INFO
+Date        : Wed Apr 01 15:08:29 MST 2015
+Description : ++++++++++++++++++++++++++++++++++++++++++++++++
+              ++ The service 'durability' is now operational. 
+              ++++++++++++++++++++++++++++++++++++++++++++++++
+Node        : triangle
+Process     : sacpp_dome_cmd <26384>
+Thread      : durability b5efeb40
+Internals   : V6.4.140320OSS/24b1387/24b1387/v_serviceChangeState/v_service.c/329/0/1427926109.639722600
+========================================================================================
+Report      : INFO
+Date        : Wed Apr 01 15:08:29 MST 2015
+Description : u_domainNew:Database allocated on heap
+Node        : triangle
+Process     : sacpp_hexapod_cmd <26440>
+Thread      : spliced b7249b40
+Internals   : V6.4.140320OSS/24b1387/24b1387/user::u_domain::u_domainNew/u_domain.c/706/0/1427926109.847088107
+========================================================================================
+Report      : INFO
+Date        : Wed Apr 01 15:08:29 MST 2015
+Description : ---------------------------------------------------------------
+              -- The service is using the following configuration settings --
+              ---------------------------------------------------------------
+              Domain (id)          : ospl_sp_ddsi (0)
+              Storage              : 10240 Kbytes
+              Storage threshold    : 1024 Kbytes
+              Storage address      : Not available
+              Locking              : default
+              Memory mode          : Heap memory
+              Builtin topics       : true
+              Priority inheritance : false
+Node        : triangle
+Process     : sacpp_hexapod_cmd <26440>
+Thread      : spliced b7249b40
+Internals   : V6.4.140320OSS/24b1387/24b1387/The OpenSplice domain service/u_domain.c/827/0/1427926109.855791506
+========================================================================================
+Report      : INFO
+Date        : Wed Apr 01 15:08:29 MST 2015
+Description : ++++++++++++++++++++++++++++++++++++++++++++++++
+              ++ The service 'splicedaemon' is now operational. 
+              ++++++++++++++++++++++++++++++++++++++++++++++++
+Node        : triangle
+Process     : sacpp_hexapod_cmd <26440>
+Thread      : spliced b7249b40
+Internals   : V6.4.140320OSS/24b1387/24b1387/v_serviceChangeState/v_service.c/329/0/1427926109.856614522
+========================================================================================
+Report      : WARNING
+Date        : Wed Apr 01 15:08:29 MST 2015
+Description : using network interface eth0 (140.252.32.121) selected arbitrarily from: eth0, vmnet1, vmnet8
+
+Node        : triangle
+Process     : sacpp_hexapod_cmd <26440>
+Thread      : ddsi2 b5e11b40
+Internals   : V6.4.140320OSS/24b1387/24b1387/ddsi2/q_nwif.c/668/0/1427926109.858888397
+========================================================================================
+Report      : INFO
+Date        : Wed Apr 01 15:08:29 MST 2015
+Description : ++++++++++++++++++++++++++++++++++++++++++++++++
+              ++ The service 'ddsi2' is now operational. 
+              ++++++++++++++++++++++++++++++++++++++++++++++++
+Node        : triangle
+Process     : sacpp_hexapod_cmd <26440>
+Thread      : ddsi2 b5e11b40
+Internals   : V6.4.140320OSS/24b1387/24b1387/v_serviceChangeState/v_service.c/329/0/1427926109.864666254
+========================================================================================
+Report      : INFO
+Date        : Wed Apr 01 15:08:29 MST 2015
+Description : SOAP service is reachable via port 50873
+Node        : triangle
+Process     : sacpp_hexapod_cmd <26440>
+Thread      : cmsoap b607eb40
+Internals   : V6.4.140320OSS/24b1387/24b1387/CM SOAP Service/cms_service.c/410/0/1427926109.865444874
+========================================================================================
+Report      : INFO
+Date        : Wed Apr 01 15:08:29 MST 2015
+Description : ++++++++++++++++++++++++++++++++++++++++++++++++
+              ++ The service 'cmsoap' is now operational. 
+              ++++++++++++++++++++++++++++++++++++++++++++++++
+Node        : triangle
+Process     : sacpp_hexapod_cmd <26440>
+Thread      : cmsoap b607eb40
+Internals   : V6.4.140320OSS/24b1387/24b1387/v_serviceChangeState/v_service.c/329/0/1427926109.865709001
+========================================================================================
+Report      : INFO
+Date        : Wed Apr 01 15:08:29 MST 2015
+Description : The durability service can by identified by ID: 316770042
+Node        : triangle
+Process     : sacpp_hexapod_cmd <26440>
+Thread      : durability b5f7db40
+Internals   : V6.4.140320OSS/24b1387/24b1387/DurabilityService/d_durability.c/476/0/1427926109.872474540
+========================================================================================
+Report      : INFO
+Date        : Wed Apr 01 15:08:33 MST 2015
+Description : u_domainNew:Database allocated on heap
+Node        : triangle
+Process     : sacpp_hexapod_cmd <26495>
+Thread      : spliced b7284b40
+Internals   : V6.4.140320OSS/24b1387/24b1387/user::u_domain::u_domainNew/u_domain.c/706/0/1427926113.087865014
+========================================================================================
+Report      : INFO
+Date        : Wed Apr 01 15:08:33 MST 2015
+Description : ---------------------------------------------------------------
+              -- The service is using the following configuration settings --
+              ---------------------------------------------------------------
+              Domain (id)          : ospl_sp_ddsi (0)
+              Storage              : 10240 Kbytes
+              Storage threshold    : 1024 Kbytes
+              Storage address      : Not available
+              Locking              : default
+              Memory mode          : Heap memory
+              Builtin topics       : true
+              Priority inheritance : false
+Node        : triangle
+Process     : sacpp_hexapod_cmd <26495>
+Thread      : spliced b7284b40
+Internals   : V6.4.140320OSS/24b1387/24b1387/The OpenSplice domain service/u_domain.c/827/0/1427926113.097861303
+========================================================================================
+Report      : INFO
+Date        : Wed Apr 01 15:08:33 MST 2015
+Description : ++++++++++++++++++++++++++++++++++++++++++++++++
+              ++ The service 'splicedaemon' is now operational. 
+              ++++++++++++++++++++++++++++++++++++++++++++++++
+Node        : triangle
+Process     : sacpp_hexapod_cmd <26495>
+Thread      : spliced b7284b40
+Internals   : V6.4.140320OSS/24b1387/24b1387/v_serviceChangeState/v_service.c/329/0/1427926113.098824684
+========================================================================================
+Report      : INFO
+Date        : Wed Apr 01 15:08:33 MST 2015
+Description : SOAP service is reachable via port 43654
+Node        : triangle
+Process     : sacpp_hexapod_cmd <26495>
+Thread      : cmsoap b60ffb40
+Internals   : V6.4.140320OSS/24b1387/24b1387/CM SOAP Service/cms_service.c/410/0/1427926113.100479212
+========================================================================================
+Report      : WARNING
+Date        : Wed Apr 01 15:08:33 MST 2015
+Description : using network interface eth0 (140.252.32.121) selected arbitrarily from: eth0, vmnet1, vmnet8
+
+Node        : triangle
+Process     : sacpp_hexapod_cmd <26495>
+Thread      : ddsi2 b5e92b40
+Internals   : V6.4.140320OSS/24b1387/24b1387/ddsi2/q_nwif.c/668/0/1427926113.102343082
+========================================================================================
+Report      : INFO
+Date        : Wed Apr 01 15:08:33 MST 2015
+Description : ++++++++++++++++++++++++++++++++++++++++++++++++
+              ++ The service 'cmsoap' is now operational. 
+              ++++++++++++++++++++++++++++++++++++++++++++++++
+Node        : triangle
+Process     : sacpp_hexapod_cmd <26495>
+Thread      : cmsoap b60ffb40
+Internals   : V6.4.140320OSS/24b1387/24b1387/v_serviceChangeState/v_service.c/329/0/1427926113.102867209
+========================================================================================
+Report      : INFO
+Date        : Wed Apr 01 15:08:33 MST 2015
+Description : ++++++++++++++++++++++++++++++++++++++++++++++++
+              ++ The service 'ddsi2' is now operational. 
+              ++++++++++++++++++++++++++++++++++++++++++++++++
+Node        : triangle
+Process     : sacpp_hexapod_cmd <26495>
+Thread      : ddsi2 b5e92b40
+Internals   : V6.4.140320OSS/24b1387/24b1387/v_serviceChangeState/v_service.c/329/0/1427926113.109262657
+========================================================================================
+Report      : INFO
+Date        : Wed Apr 01 15:08:33 MST 2015
+Description : The durability service can by identified by ID: 1267157205
+Node        : triangle
+Process     : sacpp_hexapod_cmd <26495>
+Thread      : durability b5ffeb40
+Internals   : V6.4.140320OSS/24b1387/24b1387/DurabilityService/d_durability.c/476/0/1427926113.114330890
+========================================================================================
+Report      : INFO
+Date        : Wed Apr 01 15:08:36 MST 2015
+Description : u_domainNew:Database allocated on heap
+Node        : triangle
+Process     : sacpp_camera_cmd <26550>
+Thread      : spliced b7384b40
+Internals   : V6.4.140320OSS/24b1387/24b1387/user::u_domain::u_domainNew/u_domain.c/706/0/1427926116.306901968
+========================================================================================
+Report      : INFO
+Date        : Wed Apr 01 15:08:36 MST 2015
+Description : ---------------------------------------------------------------
+              -- The service is using the following configuration settings --
+              ---------------------------------------------------------------
+              Domain (id)          : ospl_sp_ddsi (0)
+              Storage              : 10240 Kbytes
+              Storage threshold    : 1024 Kbytes
+              Storage address      : Not available
+              Locking              : default
+              Memory mode          : Heap memory
+              Builtin topics       : true
+              Priority inheritance : false
+Node        : triangle
+Process     : sacpp_camera_cmd <26550>
+Thread      : spliced b7384b40
+Internals   : V6.4.140320OSS/24b1387/24b1387/The OpenSplice domain service/u_domain.c/827/0/1427926116.316370981
+========================================================================================
+Report      : INFO
+Date        : Wed Apr 01 15:08:36 MST 2015
+Description : ++++++++++++++++++++++++++++++++++++++++++++++++
+              ++ The service 'splicedaemon' is now operational. 
+              ++++++++++++++++++++++++++++++++++++++++++++++++
+Node        : triangle
+Process     : sacpp_camera_cmd <26550>
+Thread      : spliced b7384b40
+Internals   : V6.4.140320OSS/24b1387/24b1387/v_serviceChangeState/v_service.c/329/0/1427926116.317252223
+========================================================================================
+Report      : INFO
+Date        : Wed Apr 01 15:08:36 MST 2015
+Description : SOAP service is reachable via port 38763
+Node        : triangle
+Process     : sacpp_camera_cmd <26550>
+Thread      : cmsoap b617eb40
+Internals   : V6.4.140320OSS/24b1387/24b1387/CM SOAP Service/cms_service.c/410/0/1427926116.318356306
+========================================================================================
+Report      : INFO
+Date        : Wed Apr 01 15:08:36 MST 2015
+Description : ++++++++++++++++++++++++++++++++++++++++++++++++
+              ++ The service 'cmsoap' is now operational. 
+              ++++++++++++++++++++++++++++++++++++++++++++++++
+Node        : triangle
+Process     : sacpp_camera_cmd <26550>
+Thread      : cmsoap b617eb40
+Internals   : V6.4.140320OSS/24b1387/24b1387/v_serviceChangeState/v_service.c/329/0/1427926116.318594661
+========================================================================================
+Report      : WARNING
+Date        : Wed Apr 01 15:08:36 MST 2015
+Description : using network interface eth0 (140.252.32.121) selected arbitrarily from: eth0, vmnet1, vmnet8
+
+Node        : triangle
+Process     : sacpp_camera_cmd <26550>
+Thread      : ddsi2 b5f7cb40
+Internals   : V6.4.140320OSS/24b1387/24b1387/ddsi2/q_nwif.c/668/0/1427926116.320425189
+========================================================================================
+Report      : INFO
+Date        : Wed Apr 01 15:08:36 MST 2015
+Description : ++++++++++++++++++++++++++++++++++++++++++++++++
+              ++ The service 'ddsi2' is now operational. 
+              ++++++++++++++++++++++++++++++++++++++++++++++++
+Node        : triangle
+Process     : sacpp_camera_cmd <26550>
+Thread      : ddsi2 b5f7cb40
+Internals   : V6.4.140320OSS/24b1387/24b1387/v_serviceChangeState/v_service.c/329/0/1427926116.325459111
+========================================================================================
+Report      : INFO
+Date        : Wed Apr 01 15:08:36 MST 2015
+Description : The durability service can by identified by ID: 866563132
+Node        : triangle
+Process     : sacpp_camera_cmd <26550>
+Thread      : durability b607db40
+Internals   : V6.4.140320OSS/24b1387/24b1387/DurabilityService/d_durability.c/476/0/1427926116.332399960
+========================================================================================
+Report      : INFO
+Date        : Wed Apr 01 15:08:44 MST 2015
+Description : u_domainNew:Database allocated on heap
+Node        : triangle
+Process     : sacpp_camera_cmd <26605>
+Thread      : spliced b72f3b40
+Internals   : V6.4.140320OSS/24b1387/24b1387/user::u_domain::u_domainNew/u_domain.c/706/0/1427926124.526865601
+========================================================================================
+Report      : INFO
+Date        : Wed Apr 01 15:08:44 MST 2015
+Description : ---------------------------------------------------------------
+              -- The service is using the following configuration settings --
+              ---------------------------------------------------------------
+              Domain (id)          : ospl_sp_ddsi (0)
+              Storage              : 10240 Kbytes
+              Storage threshold    : 1024 Kbytes
+              Storage address      : Not available
+              Locking              : default
+              Memory mode          : Heap memory
+              Builtin topics       : true
+              Priority inheritance : false
+Node        : triangle
+Process     : sacpp_camera_cmd <26605>
+Thread      : spliced b72f3b40
+Internals   : V6.4.140320OSS/24b1387/24b1387/The OpenSplice domain service/u_domain.c/827/0/1427926124.533637026
+========================================================================================
+Report      : INFO
+Date        : Wed Apr 01 15:08:44 MST 2015
+Description : ++++++++++++++++++++++++++++++++++++++++++++++++
+              ++ The service 'splicedaemon' is now operational. 
+              ++++++++++++++++++++++++++++++++++++++++++++++++
+Node        : triangle
+Process     : sacpp_camera_cmd <26605>
+Thread      : spliced b72f3b40
+Internals   : V6.4.140320OSS/24b1387/24b1387/v_serviceChangeState/v_service.c/329/0/1427926124.534292488
+========================================================================================
+Report      : INFO
+Date        : Wed Apr 01 15:08:44 MST 2015
+Description : SOAP service is reachable via port 32913
+Node        : triangle
+Process     : sacpp_camera_cmd <26605>
+Thread      : cmsoap b60ffb40
+Internals   : V6.4.140320OSS/24b1387/24b1387/CM SOAP Service/cms_service.c/410/0/1427926124.535414688
+========================================================================================
+Report      : INFO
+Date        : Wed Apr 01 15:08:44 MST 2015
+Description : ++++++++++++++++++++++++++++++++++++++++++++++++
+              ++ The service 'cmsoap' is now operational. 
+              ++++++++++++++++++++++++++++++++++++++++++++++++
+Node        : triangle
+Process     : sacpp_camera_cmd <26605>
+Thread      : cmsoap b60ffb40
+Internals   : V6.4.140320OSS/24b1387/24b1387/v_serviceChangeState/v_service.c/329/0/1427926124.535701304
+========================================================================================
+Report      : WARNING
+Date        : Wed Apr 01 15:08:44 MST 2015
+Description : using network interface eth0 (140.252.32.121) selected arbitrarily from: eth0, vmnet1, vmnet8
+
+Node        : triangle
+Process     : sacpp_camera_cmd <26605>
+Thread      : ddsi2 b5efdb40
+Internals   : V6.4.140320OSS/24b1387/24b1387/ddsi2/q_nwif.c/668/0/1427926124.536691425
+========================================================================================
+Report      : INFO
+Date        : Wed Apr 01 15:08:44 MST 2015
+Description : ++++++++++++++++++++++++++++++++++++++++++++++++
+              ++ The service 'ddsi2' is now operational. 
+              ++++++++++++++++++++++++++++++++++++++++++++++++
+Node        : triangle
+Process     : sacpp_camera_cmd <26605>
+Thread      : ddsi2 b5efdb40
+Internals   : V6.4.140320OSS/24b1387/24b1387/v_serviceChangeState/v_service.c/329/0/1427926124.541952952
+========================================================================================
+Report      : INFO
+Date        : Wed Apr 01 15:08:44 MST 2015
+Description : The durability service can by identified by ID: 1567247186
+Node        : triangle
+Process     : sacpp_camera_cmd <26605>
+Thread      : durability b5ffeb40
+Internals   : V6.4.140320OSS/24b1387/24b1387/DurabilityService/d_durability.c/476/0/1427926124.552205698

@@ -11,8 +11,11 @@ SAL_SALData::SAL_SALData(int aKey)
    hasWriter = false;
    hasCommand = false;
    hasProcessor = false;
+   hasEventReader = false;
+   hasEventWriter = false;
    subsystemID = aKey;
    debugLevel = 1;
+   initSalActors();
 }
 #else
 SAL_SALData::SAL_SALData()
@@ -21,9 +24,11 @@ SAL_SALData::SAL_SALData()
    hasWriter = false;
    hasCommand = false;
    hasEventReader = false;
+   hasEventWriter = false;
    hasProcessor = false;
    subsystemID = 0;
    debugLevel = 1;
+   initSalActors();
 }
 #endif
 
@@ -34,8 +39,11 @@ void SAL_SALData::salInitialize(int aKey)
    hasWriter = false;
    hasCommand = false;
    hasProcessor = false;
+   hasEventReader = false;
+   hasEventWriter = false;
    subsystemID = aKey;
    debugLevel = 1;
+   initSalActors();
 }
 #else
 void SAL_SALData::salInitialize()
@@ -45,76 +53,123 @@ void SAL_SALData::salInitialize()
    hasCommand = false;
    hasEventReader = false;
    hasProcessor = false;
+   hasEventReader = false;
+   hasEventWriter = false;
    subsystemID = 0;
    debugLevel = 1;
+   initSalActors();
 }
 #endif
 
+
+int SAL_SALData::getActorIndex (char *topicName)
+{
+  for (int i=0; i<SAL__ACTORS_MAXCOUNT;i++) {
+     if ( strlen(topicName) == strlen(sal[i].topicName) )  {
+       if ( strcmp(topicName,sal[i].topicName) == 0 )  {
+          return i;
+       }
+     }
+  }
+  return SAL__ERROR;
+}
+
+
 // INSERT TYPE SUPPORT      
 
-void SAL_SALData::salTelemetryPub(char *topicName)
+salReturn SAL_SALData::salTelemetryPub(char *topicName)
+{
+  int actorIdx = -1;
+  int status = 0;
+
+  actorIdx = getActorIndex(topicName);
+  if (actorIdx > -1) {
+     status = salTelemetryPub(actorIdx);
+  } else {
+     status = SAL__ERROR;
+  }
+  return status;
+}
+
+salReturn SAL_SALData::salTelemetrySub(char *topicName)
+{
+  int actorIdx = -1;
+  int status = 0;
+
+  actorIdx = getActorIndex(topicName);
+  if (actorIdx > -1) {
+     status = salTelemetrySub(actorIdx);
+  } else {
+     status = SAL__ERROR;
+  }
+  return status;
+}
+ 
+
+salReturn SAL_SALData::salTelemetryPub(int actorIdx)
 {
   // create domain participant
   createParticipant("LSST");
 
   //create type
-  salTypeSupport(topicName);
+  salTypeSupport(actorIdx);
 
   //create Topic
-  createTopic(topicName);
+  createTopic(actorIdx);
 
   //create Publisher
-  createPublisher();
+  createPublisher(actorIdx);
 
   // create DataWriter :
   // If autodispose_unregistered_instances is set to true (default value),
   // you will have to start the subscriber before the publisher
   bool autodispose_unregistered_instances = false;
-  createWriter(autodispose_unregistered_instances);
-  DataWriter_var dwriter = getWriter();
-  hasWriter = true;
-
+  createWriter(actorIdx,autodispose_unregistered_instances);
+  DataWriter_var dwriter = getWriter(actorIdx);
+  sal[actorIdx].isWriter = true;
+  return SAL__OK;
 }
 
-void SAL_SALData::salTelemetrySub(char *topicName)
+
+
+       
+salReturn SAL_SALData::salTelemetrySub(int actorIdx)
 {
-  // create domain participant
-  createParticipant("LSST");
+   // create domain participant
+   createParticipant("LSST");
 
-  //create type
-  salTypeSupport(topicName);
+   //create type
+   salTypeSupport(actorIdx);
 
-  //create Topic
-  createTopic(topicName);
+   //create Topic
+   createTopic(actorIdx);
 
-  //create Subscriber
-  createSubscriber();
+   //create Subscriber
+   createSubscriber(actorIdx);
 
 #ifdef SAL_SUBSYSTEM_ID_IS_KEYED
-  // Filter expr
+   // Filter expr
    char buf[64];
    sprintf(buf, "SALDataID = %d", subsystemID);
    DDS::String_var sFilter = DDS::string_dup(buf);
    // Filter expr
    StringSeq sSeqExpr;
    sSeqExpr.length(0);
-  // create topic
-  char ftopicName[128];
-  sprintf(ftopicName,"%s_%s","filtered",topicName);
-  createContentFilteredTopic(ftopicName, sFilter.in(), sSeqExpr);
- // create DataReader
-  createReader(true);
+   // create topic
+   char ftopicName[128];
+   sprintf(ftopicName,"%s_%s","filtered",sal[actorIdx].topicName);
+   createContentFilteredTopic(actorIdx,ftopicName, sFilter.in(), sSeqExpr);
+   // create DataReader
+   createReader(actorIdx,true);
 #else
- // create DataReader
-  createReader(false);
+   createReader(actorIdx,false);
 #endif
-
-//  DataReader_var dreader = getReader();
-  hasReader = true;
-//  return DataReader::_duplicate(dreader.in());
-
+   sal[actorIdx].isReader = true;
+   return SAL__OK;
 }
-       
+
+
+
 void SAL_SALData::logError(salReturn status) 
 {
    cout << "=== ERROR return value = " << status << endl; 
@@ -225,43 +280,6 @@ int SAL_SALData::issueCommandC( SALData_commandC *data )
       }
   }
   return (sndSeqNum-1);
-}
-
-
-salReturn SAL_SALData::ackCommand( int cmdId, salLONG ack, salLONG error, char *result )
-{
-   ReturnCode_t istatus = -1;
-   InstanceHandle_t ackHandle = DDS::HANDLE_NIL;
-
-   SALData::ackcmd ackdata;
-   DataWriter_var dwriter = getWriter2();
-   SALData::ackcmdDataWriter_var SALWriter = SALData::ackcmdDataWriter::_narrow(dwriter.in());
-
-   ackdata.private_origin = rcvOrigin;
-   ackdata.private_seqNum = rcvSeqNum;
-   ackdata.error = error;
-   ackdata.ack = ack;
-   ackdata.result = DDS::string_dup(result);
-#ifdef SAL_SUBSYSTEM_ID_IS_KEYED
-   ackdata.SALDataID = subsystemID;
-#endif
-   if (debugLevel > 0) {
-      cout << "=== [ackCommand] acknowledging a command with :" << endl;
-      cout << "    seqNum   : " << ackdata.private_seqNum << endl;
-      cout << "    ack      : " << ackdata.ack << endl;
-      cout << "    error    : " << ackdata.error << endl;
-      cout << "    result   : " << ackdata.result << endl;
-   }
-#ifdef SAL_SUBSYSTEM_ID_IS_KEYED
-   ackHandle = SALWriter->register_instance(ackdata);
-   ackdata.SALDataID = subsystemID;
-#endif
-   istatus = SALWriter->write(ackdata, ackHandle);
-   checkStatus(istatus, "SALData::ackcmdDataWriter::return_loan");
-#ifdef SAL_SUBSYSTEM_ID_IS_KEYED
-    SALWriter->unregister_instance(ackdata, ackHandle);
-#endif
-   return SAL__OK;
 }
 
 
@@ -401,6 +419,48 @@ int SAL_SALData::acceptCommandC( SALData_commandC *data )
   }
   return status;
 }
+
+
+// INSERT CMDALIAS SUPPORT  for issueCommandC and acceptCommandC, acceptAnyCommand   
+
+
+
+salReturn SAL_SALData::ackCommand( int cmdId, salLONG ack, salLONG error, char *result )
+{
+   ReturnCode_t istatus = -1;
+   InstanceHandle_t ackHandle = DDS::HANDLE_NIL;
+
+   SALData::ackcmd ackdata;
+   DataWriter_var dwriter = getWriter2();
+   SALData::ackcmdDataWriter_var SALWriter = SALData::ackcmdDataWriter::_narrow(dwriter.in());
+
+   ackdata.private_origin = rcvOrigin;
+   ackdata.private_seqNum = rcvSeqNum;
+   ackdata.error = error;
+   ackdata.ack = ack;
+   ackdata.result = DDS::string_dup(result);
+#ifdef SAL_SUBSYSTEM_ID_IS_KEYED
+   ackdata.SALDataID = subsystemID;
+#endif
+   if (debugLevel > 0) {
+      cout << "=== [ackCommand] acknowledging a command with :" << endl;
+      cout << "    seqNum   : " << ackdata.private_seqNum << endl;
+      cout << "    ack      : " << ackdata.ack << endl;
+      cout << "    error    : " << ackdata.error << endl;
+      cout << "    result   : " << ackdata.result << endl;
+   }
+#ifdef SAL_SUBSYSTEM_ID_IS_KEYED
+   ackHandle = SALWriter->register_instance(ackdata);
+   ackdata.SALDataID = subsystemID;
+#endif
+   istatus = SALWriter->write(ackdata, ackHandle);
+   checkStatus(istatus, "SALData::ackcmdDataWriter::return_loan");
+#ifdef SAL_SUBSYSTEM_ID_IS_KEYED
+    SALWriter->unregister_instance(ackdata, ackHandle);
+#endif
+   return SAL__OK;
+}
+
 
 salReturn SAL_SALData::checkCommand( int cmdSeqNum )
 {
@@ -665,7 +725,8 @@ int SAL_SALData::getEventC(SALData_logeventC *cdata)
        cout << "=== [getEvent] reading a message containing :" << endl;
        cout << "    revCode  : " << data[0].private_revCode << endl;
      }
-     cdata->message = data[0].message;
+     SALData::logevent *SALInstance = &(data[0]);
+     cdata->message=SALInstance->message.m_ptr;
      status = SALReader->return_loan(data, info);
      checkStatus(status, "SALData::logeventDataReader::return_loan");
      status = SAL__OK;
@@ -703,9 +764,9 @@ salReturn SAL_SALData::logEvent( char *message, int priority )
   return status;
 }
 
+// INSERT EVENTALIAS SUPPORT
 
-
-void SAL_SALData::salCommand()
+salReturn SAL_SALData::salCommand()
 {
   string stopic1="keyedCommand";
   string stopic2="keyedResponse";
@@ -752,9 +813,65 @@ void SAL_SALData::salCommand()
 #endif
   hasReader = true;
   hasCommand = true;
+  return SAL__OK;
 }
 
-void SAL_SALData::salProcessor()
+
+salReturn SAL_SALData::salCommand(char *cmdAlias)
+{
+  time_t sTime;
+  int actorIdx = getActorIndex(cmdAlias);
+  if (actorIdx < 0) {return SAL__ERROR;}
+  string stopic1="keyedCommand";
+  string stopic2="keyedResponse";
+  string response="SALData_ackcmd";
+
+  // create domain participant
+  createParticipant("LSST");
+
+  //create Publisher
+  createPublisher(actorIdx);
+  createSubscriber(actorIdx);
+
+  //create types
+  salTypeSupport(actorIdx);
+  SALResponseTypeSupport_var mtr = new SALResponseTypeSupport();
+  registerType2(actorIdx,mtr.in());
+
+  //create Topics
+#ifdef SAL_SUBSYSTEM_ID_IS_KEYED
+  createTopic(actorIdx,const_cast<char*>(stopic1.c_str()));
+  createTopic2(actorIdx,const_cast<char*>(stopic2.c_str()));
+#else
+  createTopic(actorIdx,cmdAlias);
+  createTopic2(actorIdx,const_cast<char*>(response.c_str()));
+#endif
+
+  //create a reader for responses
+#ifdef SAL_SUBSYSTEM_ID_IS_KEYED
+  // Filter expr
+   char buf[64];
+   sprintf(buf, "SALDataID = %d", subsystemID);
+   DDS::String_var sFilter = DDS::string_dup(buf);
+   // Filter expr
+   StringSeq sSeqExpr;
+   sSeqExpr.length(0);
+  // create topic
+  createContentFilteredTopic2(actorIdx,"filteredResponse", sFilter.in(), sSeqExpr);
+ // create DataReader
+  createReader2(actorIdx,true);
+#else
+  createReader2(actorIdx,false);
+#endif
+  sal[actorIdx].isReader = true;
+  createWriter(actorIdx);
+  sal[actorIdx].isCommand = true;
+  sal[actorIdx].isWriter = true;
+  sal[actorIdx].sndSeqNum = time(&sTime);
+  return SAL__OK;
+}
+
+salReturn SAL_SALData::salProcessor()
 {
   string stopic1="keyedCommand";
   string stopic2="keyedResponse";
@@ -803,34 +920,89 @@ void SAL_SALData::salProcessor()
   createWriter2(autodispose_unregistered_instances);
   hasWriter = true;
   hasProcessor = true;
+  return SAL__OK;
 }
 
-/*  DEPRECATED
-void SAL_SALData::salEvent(char *topicName)
+
+salReturn SAL_SALData::salProcessor(char *cmdAlias)
 {
+  int actorIdx = getActorIndex(cmdAlias);
+  if (actorIdx < 0) {return SAL__ERROR;}
+  string stopic1="keyedCommand";
+  string stopic2="keyedResponse";
+  string response="SALData_ackcmd";
+
+  // create domain participant
+  createParticipant("LSST");
+
+  //create Publisher
+  createPublisher(actorIdx);
+  createSubscriber(actorIdx);
+
+  //create types
+  salTypeSupport(actorIdx);
+  SALResponseTypeSupport_var mtr = new SALResponseTypeSupport();
+  registerType2(actorIdx,mtr.in());
+
+  //create Topics
+#ifdef SAL_SUBSYSTEM_ID_IS_KEYED
+  createTopic(actorIdx,const_cast<char*>(stopic1.c_str()));
+  createTopic2(actorIdx,const_cast<char*>(stopic2.c_str()));
+#else
+  createTopic(actorIdx,cmdAlias);
+  createTopic2(actorIdx,const_cast<char*>(response.c_str()));
+#endif
+
+  //create a reader for commands
+#ifdef SAL_SUBSYSTEM_ID_IS_KEYED
+  // Filter expr
+   char buf[64];
+   sprintf(buf, "SALDataID = %d", subsystemID);
+   DDS::String_var sFilter = DDS::string_dup(buf);
+   // Filter expr
+  StringSeq sSeqExpr;
+  sSeqExpr.length(0);
+  // create topic
+  createContentFilteredTopic(actorIdx,"filteredCommand", sFilter.in(), sSeqExpr);
+ // create DataReader
+  createReader(actorIdx,true);
+#else
+  createReader(actorIdx,false);
+#endif
+  bool autodispose_unregistered_instances = false;
+  createWriter2(actorIdx,autodispose_unregistered_instances);
+  sal[actorIdx].isWriter = true;
+  sal[actorIdx].isProcessor = true;
+  return SAL__OK;
+}
+
+
+
+salReturn SAL_SALData::salEvent(char *topicName)
+{
+  int actorIdx = getActorIndex(topicName);
+
+  if ( actorIdx < 0) {return SAL__ERROR;}
+
   // create domain participant
   createParticipant("LSST");
 
   //create type
-  SALData::logeventTypeSupport_var mt = new SALData::logeventTypeSupport();
-  registerType(mt.in());
+  salTypeSupport(actorIdx);
 
   //create Topic
-  createTopic(topicName);
+  createTopic(actorIdx);
+  return SAL__OK;
 }
- */
+
 
 
 void SAL_SALData::salShutdown()
 {
-  if ( hasReader ) { 
-     deleteReader();
-     deleteSubscriber();     
-  }
-  if ( hasWriter ) {
-     deleteWriter();
-     deletePublisher();
-  }
+  deleteReader();
+  deleteSubscriber();     
+  deleteWriter();
+  deletePublisher();
   deleteTopics();
   deleteParticipant();
 }
@@ -849,8 +1021,8 @@ void SAL_SALData::createParticipant(const char *partitiontName)
 
 void SAL_SALData::deleteParticipant()
 {
-    status = dpf->delete_participant(participant.in());
-     checkStatus(status, "DDS::DomainParticipant::delete_participant ");
+   status = dpf->delete_participant(participant.in());
+   checkStatus(status, "DDS::DomainParticipant::delete_participant ");
 }
 
 void SAL_SALData::registerType(TypeSupport *ts)
@@ -866,6 +1038,21 @@ void SAL_SALData::registerType2(TypeSupport *ts)
   status = ts->register_type(participant.in(), typeName2);
   checkStatus(status, "register_type");
 }
+
+void SAL_SALData::registerType(int actorIdx,TypeSupport *ts)
+{
+  sal[actorIdx].typeName = ts->get_type_name();
+  status = ts->register_type(participant.in(), sal[actorIdx].typeName);
+  checkStatus(status, "register_type");
+}
+
+void SAL_SALData::registerType2(int actorIdx,TypeSupport *ts)
+{
+  sal[actorIdx].typeName2 = ts->get_type_name();
+  status = ts->register_type(participant.in(), sal[actorIdx].typeName2);
+  checkStatus(status, "register_type");
+}
+
 
 void SAL_SALData::createTopic(char *topicName)
 {
@@ -899,6 +1086,71 @@ void SAL_SALData::createTopic2(char *topicName)
   checkHandle(topic2.in(), "DDS::DomainParticipant::create_topic ()");
 }
 
+void SAL_SALData::createTopic(int actorIdx)
+{
+  status = participant->get_default_topic_qos(sal[actorIdx].reliable_topic_qos);
+  checkStatus(status, "DDS::DomainParticipant::get_default_topic_qos");
+  sal[actorIdx].reliable_topic_qos.reliability.kind = RELIABLE_RELIABILITY_QOS;
+  sal[actorIdx].reliable_topic_qos.durability.kind = TRANSIENT_DURABILITY_QOS;
+
+  /* Make the tailored QoS the new default. */
+  status = participant->set_default_topic_qos(sal[actorIdx].reliable_topic_qos);
+  checkStatus(status, "DDS::DomainParticipant::set_default_topic_qos");
+
+  sal[actorIdx].topic = participant->create_topic(sal[actorIdx].topicName, sal[actorIdx].typeName, sal[actorIdx].reliable_topic_qos,
+    NULL, STATUS_MASK_NONE);
+  checkHandle(sal[actorIdx].topic.in(), "DDS::DomainParticipant::create_topic ()");
+}
+
+void SAL_SALData::createTopic2(int actorIdx)
+{
+  status = participant->get_default_topic_qos(sal[actorIdx].reliable_topic_qos2);
+  checkStatus(status, "DDS::DomainParticipant::get_default_topic_qos");
+  sal[actorIdx].reliable_topic_qos2.reliability.kind = RELIABLE_RELIABILITY_QOS;
+  sal[actorIdx].reliable_topic_qos2.durability.kind = TRANSIENT_DURABILITY_QOS;
+
+  /* Make the tailored QoS the new default. */
+  status = participant->set_default_topic_qos(sal[actorIdx].reliable_topic_qos2);
+  checkStatus(status, "DDS::DomainParticipant::set_default_topic_qos");
+
+  sal[actorIdx].topic2 = participant->create_topic(sal[actorIdx].topicName, sal[actorIdx].typeName2, sal[actorIdx].reliable_topic_qos2,
+    NULL, STATUS_MASK_NONE);
+  checkHandle(sal[actorIdx].topic2.in(), "DDS::DomainParticipant::create_topic ()");
+}
+
+void SAL_SALData::createTopic(int actorIdx, char *topicName)
+{
+  status = participant->get_default_topic_qos(sal[actorIdx].reliable_topic_qos);
+  checkStatus(status, "DDS::DomainParticipant::get_default_topic_qos");
+  sal[actorIdx].reliable_topic_qos.reliability.kind = RELIABLE_RELIABILITY_QOS;
+  sal[actorIdx].reliable_topic_qos.durability.kind = TRANSIENT_DURABILITY_QOS;
+
+  /* Make the tailored QoS the new default. */
+  status = participant->set_default_topic_qos(sal[actorIdx].reliable_topic_qos);
+  checkStatus(status, "DDS::DomainParticipant::set_default_topic_qos");
+
+  sal[actorIdx].topic = participant->create_topic(topicName, sal[actorIdx].typeName, sal[actorIdx].reliable_topic_qos,
+    NULL, STATUS_MASK_NONE);
+  checkHandle(sal[actorIdx].topic.in(), "DDS::DomainParticipant::create_topic ()");
+}
+
+void SAL_SALData::createTopic2(int actorIdx, char *topicName)
+{
+  status = participant->get_default_topic_qos(sal[actorIdx].reliable_topic_qos2);
+  checkStatus(status, "DDS::DomainParticipant::get_default_topic_qos");
+  sal[actorIdx].reliable_topic_qos2.reliability.kind = RELIABLE_RELIABILITY_QOS;
+  sal[actorIdx].reliable_topic_qos2.durability.kind = TRANSIENT_DURABILITY_QOS;
+
+  /* Make the tailored QoS the new default. */
+  status = participant->set_default_topic_qos(sal[actorIdx].reliable_topic_qos2);
+  checkStatus(status, "DDS::DomainParticipant::set_default_topic_qos");
+
+  sal[actorIdx].topic2 = participant->create_topic(topicName, sal[actorIdx].typeName2, sal[actorIdx].reliable_topic_qos2,
+    NULL, STATUS_MASK_NONE);
+  checkHandle(sal[actorIdx].topic2.in(), "DDS::DomainParticipant::create_topic ()");
+}
+
+
 void SAL_SALData::createContentFilteredTopic(const char *topicName, const
   char *filter, const StringSeq &expr)
 {
@@ -917,6 +1169,21 @@ void SAL_SALData::createContentFilteredTopic2(const char *topicName, const
     "DomainParticipant::create_contentfilteredtopic");
 }
 
+void SAL_SALData::createContentFilteredTopic(int actorIdx,const char *topicName, const char *filter, const StringSeq &expr)
+{
+  sal[actorIdx].filteredtopic = participant->create_contentfilteredtopic(topicName, sal[actorIdx].topic,
+    filter, expr);
+  checkHandle(sal[actorIdx].filteredtopic.in(),
+    "DomainParticipant::create_contentfilteredtopic");
+}
+
+void SAL_SALData::createContentFilteredTopic2(int actorIdx,const char *topicName, const char *filter, const StringSeq &expr)
+{
+  sal[actorIdx].filteredtopic2 = participant->create_contentfilteredtopic(topicName, sal[actorIdx].topic2,
+    filter, expr);
+  checkHandle(sal[actorIdx].filteredtopic2.in(),
+    "DomainParticipant::create_contentfilteredtopic");
+}
 
 
 void SAL_SALData::deleteTopics()
@@ -937,6 +1204,25 @@ void SAL_SALData::deleteTopics()
     status = participant->delete_topic(topic2);
     checkStatus(status, "DDS.DomainParticipant.delete_topic");
   }
+  for (int i=0; i<SAL__ACTORS_MAXCOUNT;i++) {
+    if ( sal[i].topic != NULL) {
+      status = participant->delete_topic(sal[i].topic);
+      checkStatus(status, "DDS.DomainParticipant.delete_topic");
+    }
+    if ( sal[i].topic2 != NULL) {
+      status = participant->delete_topic(sal[i].topic2);
+      checkStatus(status, "DDS.DomainParticipant.delete_topic");
+    }
+    if ( sal[i].filteredtopic != NULL) {
+      status = participant->delete_contentfilteredtopic(sal[i].filteredtopic);
+      checkStatus(status, "DDS.DomainParticipant.delete_topic");
+    }
+    if ( sal[i].filteredtopic2 != NULL) {
+      status = participant->delete_contentfilteredtopic(sal[i].filteredtopic2);
+      checkStatus(status, "DDS.DomainParticipant.delete_topic");
+    }
+  }  
+
 }
 
 
@@ -951,10 +1237,30 @@ void SAL_SALData::createPublisher()
   checkHandle(publisher.in(), "DDS::DomainParticipant::create_publisher");
 }
 
+void SAL_SALData::createPublisher(int actorIdx)
+{
+  status = participant->get_default_publisher_qos(sal[actorIdx].pub_qos);
+  checkStatus(status, "DDS::DomainParticipant::get_default_publisher_qos");
+  sal[actorIdx].pub_qos.partition.name.length(1);
+  sal[actorIdx].pub_qos.partition.name[0] = partition;
+
+  sal[actorIdx].publisher = participant->create_publisher(sal[actorIdx].pub_qos, NULL, STATUS_MASK_NONE);
+  checkHandle(sal[actorIdx].publisher.in(), "DDS::DomainParticipant::create_publisher");
+}
+
+
 void SAL_SALData::deletePublisher()
 {
-    status = participant->delete_publisher(publisher.in());
-    checkStatus(status, "DDS::DomainParticipant::delete_publisher ");
+    if (publisher != NULL) {
+       status = participant->delete_publisher(publisher.in());
+       checkStatus(status, "DDS::DomainParticipant::delete_publisher ");
+    }
+    for (int i=0; i<SAL__ACTORS_MAXCOUNT;i++) {
+        if ( sal[i].publisher != NULL) {
+          status = participant->delete_publisher(sal[i].publisher.in());
+          checkStatus(status, "DDS::DomainParticipant::delete_publisher ");
+        }
+    }
 }
 
 
@@ -971,6 +1277,23 @@ void SAL_SALData::createWriter2()
     DATAWRITER_QOS_USE_TOPIC_QOS, NULL, STATUS_MASK_NONE);
   checkHandle(writer2, "DDS::Publisher::create_datawriter");
 }
+
+
+void SAL_SALData::createWriter(int actorIdx)
+{
+  sal[actorIdx].writer = sal[actorIdx].publisher->create_datawriter(sal[actorIdx].topic.in(),
+    DATAWRITER_QOS_USE_TOPIC_QOS, NULL, STATUS_MASK_NONE);
+  checkHandle(sal[actorIdx].writer, "DDS::Publisher::create_datawriter");
+}
+
+void SAL_SALData::createWriter2(int actorIdx)
+{
+  sal[actorIdx].writer2 = sal[actorIdx].publisher->create_datawriter(sal[actorIdx].topic2.in(),
+    DATAWRITER_QOS_USE_TOPIC_QOS, NULL, STATUS_MASK_NONE);
+  checkHandle(sal[actorIdx].writer2, "DDS::Publisher::create_datawriter");
+}
+
+
 
 void SAL_SALData::createWriter(bool autodispose_unregistered_instances)
 {
@@ -1005,6 +1328,38 @@ void SAL_SALData::createWriter2(bool autodispose_unregistered_instances)
 }
 
 
+void SAL_SALData::createWriter(int actorIdx,bool autodispose_unregistered_instances)
+{
+  status = sal[actorIdx].publisher->get_default_datawriter_qos(sal[actorIdx].dw_qos);
+  checkStatus(status, "DDS::DomainParticipant::get_default_publisher_qos");
+  status = sal[actorIdx].publisher->copy_from_topic_qos(sal[actorIdx].dw_qos, sal[actorIdx].reliable_topic_qos);
+  checkStatus(status, "DDS::Publisher::copy_from_topic_qos");
+  // Set autodispose to false so that you can start
+  // the subscriber after the publisher
+  sal[actorIdx].dw_qos.writer_data_lifecycle.autodispose_unregistered_instances =
+    autodispose_unregistered_instances;
+  sal[actorIdx].writer = sal[actorIdx].publisher->create_datawriter(sal[actorIdx].topic.in(), sal[actorIdx].dw_qos, NULL,
+    STATUS_MASK_NONE);
+  checkHandle(sal[actorIdx].writer, "DDS::Publisher::create_datawriter");
+  sal[actorIdx].isWriter = true;
+}
+
+void SAL_SALData::createWriter2(int actorIdx,bool autodispose_unregistered_instances)
+{
+  status = sal[actorIdx].publisher->get_default_datawriter_qos(sal[actorIdx].dw_qos);
+  checkStatus(status, "DDS::DomainParticipant::get_default_publisher_qos");
+  status = sal[actorIdx].publisher->copy_from_topic_qos(sal[actorIdx].dw_qos, sal[actorIdx].reliable_topic_qos);
+  checkStatus(status, "DDS::Publisher::copy_from_topic_qos");
+  // Set autodispose to false so that you can start
+  // the subscriber after the publisher
+  sal[actorIdx].dw_qos.writer_data_lifecycle.autodispose_unregistered_instances =
+    autodispose_unregistered_instances;
+  sal[actorIdx].writer2 = sal[actorIdx].publisher->create_datawriter(sal[actorIdx].topic2.in(), sal[actorIdx].dw_qos, NULL,
+    STATUS_MASK_NONE);
+  checkHandle(sal[actorIdx].writer2, "DDS::Publisher::create_datawriter");
+  sal[actorIdx].isWriter = true;
+}
+
 void SAL_SALData::deleteWriter()
 {
   if (writer != NULL) {
@@ -1014,6 +1369,16 @@ void SAL_SALData::deleteWriter()
   if (writer2 != NULL) {
     status = publisher->delete_datawriter(writer2);
     checkStatus(status, "DDS::Publisher::delete_datawriter ");
+  }
+  for (int i=0; i<SAL__ACTORS_MAXCOUNT;i++) {
+      if ( sal[i].writer != NULL) {
+        status = sal[i].publisher->delete_datawriter(sal[i].writer);
+        checkStatus(status, "DDS::Publisher::delete_datawriter ");
+      }
+      if ( sal[i].writer2 != NULL) {
+        status = sal[i].publisher->delete_datawriter(sal[i].writer2);
+        checkStatus(status, "DDS::Publisher::delete_datawriter ");
+      }
   }
 }
 
@@ -1027,10 +1392,30 @@ void SAL_SALData::createSubscriber()
   checkHandle(subscriber.in(), "DDS::DomainParticipant::create_subscriber");
 }
 
+
+void SAL_SALData::createSubscriber(int actorIdx)
+{
+  int status = participant->get_default_subscriber_qos(sal[actorIdx].sub_qos);
+  checkStatus(status, "DDS::DomainParticipant::get_default_subscriber_qos");
+  sal[actorIdx].sub_qos.partition.name.length(1);
+  sal[actorIdx].sub_qos.partition.name[0] = partition;
+  sal[actorIdx].subscriber = participant->create_subscriber(sal[actorIdx].sub_qos, NULL, STATUS_MASK_NONE);
+  checkHandle(sal[actorIdx].subscriber.in(), "DDS::DomainParticipant::create_subscriber");
+}
+
+
 void SAL_SALData::deleteSubscriber()
 {
-  status = participant->delete_subscriber(subscriber);
-  checkStatus(status, "DDS::DomainParticipant::delete_subscriber ");
+  if (subscriber != NULL) {
+     status = participant->delete_subscriber(subscriber);
+     checkStatus(status, "DDS::DomainParticipant::delete_subscriber ");
+  }
+  for (int i=0; i<SAL__ACTORS_MAXCOUNT;i++) {
+    if (sal[i].subscriber != NULL) {
+      status = participant->delete_subscriber(sal[i].subscriber);
+      checkStatus(status, "DDS::DomainParticipant::delete_subscriber ");
+    }
+  }
 }
 
 void SAL_SALData::createReader(bool filtered)
@@ -1059,6 +1444,34 @@ void SAL_SALData::createReader2(bool filtered)
   hasReader = true;
 }
 
+
+void SAL_SALData::createReader(int actorIdx,bool filtered)
+{
+  if (filtered) {
+    sal[actorIdx].reader = sal[actorIdx].subscriber->create_datareader(sal[actorIdx].filteredtopic.in(),
+    DATAREADER_QOS_USE_TOPIC_QOS, NULL, STATUS_MASK_NONE);
+  } else {
+    sal[actorIdx].reader = sal[actorIdx].subscriber->create_datareader(sal[actorIdx].topic.in(),
+    DATAREADER_QOS_USE_TOPIC_QOS, NULL, STATUS_MASK_NONE);
+  }
+  checkHandle(sal[actorIdx].reader, "DDS::Subscriber::create_datareader ()");
+  sal[actorIdx].isReader = true;
+}
+
+void SAL_SALData::createReader2(int actorIdx,bool filtered)
+{
+  if (filtered) {
+    sal[actorIdx].reader2 = sal[actorIdx].subscriber->create_datareader(sal[actorIdx].filteredtopic2.in(),
+    DATAREADER_QOS_USE_TOPIC_QOS, NULL, STATUS_MASK_NONE);
+  } else {
+    sal[actorIdx].reader2 = sal[actorIdx].subscriber->create_datareader(sal[actorIdx].topic2.in(),
+    DATAREADER_QOS_USE_TOPIC_QOS, NULL, STATUS_MASK_NONE);
+  }
+  checkHandle(sal[actorIdx].reader2, "DDS::Subscriber::create_datareader ()");
+  sal[actorIdx].isReader = true;
+}
+
+
 void SAL_SALData::deleteReader()
 {
   if (reader != NULL) {
@@ -1069,18 +1482,41 @@ void SAL_SALData::deleteReader()
     status = subscriber->delete_datareader(reader2);
     checkStatus(status, "DDS::Subscriber::delete_datareader ");
   }
+  for (int i=0; i<SAL__ACTORS_MAXCOUNT;i++) {
+    if (sal[i].reader != NULL) {
+      status = sal[i].subscriber->delete_datareader(sal[i].reader);
+      checkStatus(status, "DDS::Subscriber::delete_datareader ");
+    }
+    if (sal[i].reader2 != NULL) {
+      status = sal[i].subscriber->delete_datareader(sal[i].reader2);
+      checkStatus(status, "DDS::Subscriber::delete_datareader ");
+    }
+  }
 }
+
+
 
 DataReader_ptr SAL_SALData::getReader()
 {
   return DataReader::_duplicate(reader.in());
 }
 
-
 DataReader_ptr SAL_SALData::getReader2()
 {
   return DataReader::_duplicate(reader2.in());
 }
+
+DataReader_ptr SAL_SALData::getReader(int actorIdx)
+{
+  return DataReader::_duplicate(sal[actorIdx].reader.in());
+}
+
+DataReader_ptr SAL_SALData::getReader2(int actorIdx)
+{
+  return DataReader::_duplicate(sal[actorIdx].reader2.in());
+}
+
+
 
 DataWriter_ptr SAL_SALData::getWriter()
 {
@@ -1091,6 +1527,20 @@ DataWriter_ptr SAL_SALData::getWriter2()
 {
   return DataWriter::_duplicate(writer2.in());
 }
+
+
+DataWriter_ptr SAL_SALData::getWriter(int actorIdx)
+{
+  return DataWriter::_duplicate(sal[actorIdx].writer.in());
+}
+
+DataWriter_ptr SAL_SALData::getWriter2(int actorIdx)
+{
+  return DataWriter::_duplicate(sal[actorIdx].writer2.in());
+}
+
+
+
 Publisher_ptr SAL_SALData::getPublisher()
 {
   return Publisher::_duplicate(publisher.in());
@@ -1101,10 +1551,34 @@ Subscriber_ptr SAL_SALData::getSubscriber()
   return Subscriber::_duplicate(subscriber.in());
 }
 
+
+Publisher_ptr SAL_SALData::getPublisher(int actorIdx)
+{
+  return Publisher::_duplicate(sal[actorIdx].publisher.in());
+}
+
+Subscriber_ptr SAL_SALData::getSubscriber(int actorIdx)
+{
+  return Subscriber::_duplicate(sal[actorIdx].subscriber.in());
+}
+
+
 Topic_ptr SAL_SALData::getTopic()
 {
   return Topic::_duplicate(topic.in());
 }
+
+Topic_ptr SAL_SALData::getTopic(int actorIdx)
+{
+  return Topic::_duplicate(sal[actorIdx].topic.in());
+}
+
+Topic_ptr SAL_SALData::getTopic2(int actorIdx)
+{
+  return Topic::_duplicate(sal[actorIdx].topic2.in());
+}
+
+
 
 DomainParticipant_ptr SAL_SALData::getParticipant()
 {
@@ -1114,3 +1588,6 @@ DomainParticipant_ptr SAL_SALData::getParticipant()
 SAL_SALData::~SAL_SALData(){
 
 }
+
+
+

@@ -11,6 +11,6 @@ CREATE TABLE m1m3_Supports_items (
   comment char(128),
   PRIMARY KEY (num)
 );
-INSERT INTO m1m3_Supports_items VALUES (1,"targetpos","long",6,"",0.054,"","","");
-INSERT INTO m1m3_Supports_items VALUES (2,"stepcnt","long",6,"",0.054,"","","");
-INSERT INTO m1m3_Supports_items VALUES (3,"force","float",6,"",0.054,"","","");
+INSERT INTO m1m3_Supports_items VALUES (1,"targetpos","long",6,"",20,"","","");
+INSERT INTO m1m3_Supports_items VALUES (2,"stepcnt","long",6,"",20,"","","");
+INSERT INTO m1m3_Supports_items VALUES (3,"force","float",6,"",20,"","","");

@@ -1,0 +1,31 @@
+# Start of OMK config file
+# This file should not be altered manually
+# Overrides should be stored in file config.omk
+
+# Config for orte/include
+# Config for orte/liborte
+CONFIG_OC_ETH_ORTE=y
+CONFIG_OC_ETH_ORTE_SOLIB=n
+CONFIG_OC_ETH_ORTE_RTL=n
+# Config for orte/manager
+CONFIG_OC_ETH_ORTE_MANAGER=y
+CONFIG_OC_ETH_ORTE_MANAGER_RTL=n
+# Config for orte/examples/ping
+# Config for orte/examples/multicast
+# Config for orte/examples/spy
+# Config for orte/examples/hello
+# Config for orte/examples/reliable
+# Config for orte/examples/schneider
+# Config for orte/examples/mpo/ddso
+# Config for orte/examples/mpo
+# Config for orte/examples
+CONFIG_OC_ETH_ORTE_EXAMPLES=y
+CONFIG_OC_ETH_ORTE_EXAMPLES_RTL=n
+# Config for orte/idl-compiler
+CONFIG_OC_ETH_ORTE_IDL=n
+# Config for orte/libjorte
+CONFIG_OC_ETH_JORTE=n
+# Config for orte/java
+CONFIG_OC_JAVA_ORTE=n
+# Config for orte
+# Config for 

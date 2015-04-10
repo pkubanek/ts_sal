@@ -25,8 +25,7 @@ extern "C"
 
 int SALData_Event(char *alias, char *message)
 {
-  os_time delay_1s = { 1, 0 };
-  long iseq;
+  
   int priority = SAL__EVENT_INFO;
 
 #ifdef SAL_SUBSYSTEM_ID_IS_KEYED

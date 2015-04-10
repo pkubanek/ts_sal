@@ -13,5 +13,3 @@ CREATE TABLE seeing_mass_Metrology_items (
 );
 INSERT INTO seeing_mass_Metrology_items VALUES (1,"Raw","long",16,"",0.054,"","","");
 INSERT INTO seeing_mass_Metrology_items VALUES (2,"Calibrated","float",16,"",0.054,"","","");
-INSERT INTO seeing_mass_Metrology_items VALUES (3,"Limits","octet",63,"",0.054,"","","");
-INSERT INTO seeing_mass_Metrology_items VALUES (4,"Status","octet",63,"",0.054,"","","");

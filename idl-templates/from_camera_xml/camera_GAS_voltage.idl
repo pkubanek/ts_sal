@@ -1,0 +1,10 @@
+struct camera_GAS_voltage {
+  string<32> private_revCode;  //private
+  double     private_sndStamp; //private
+  double     private_rcvStamp; //private
+  long       private_seqNum;   //private
+  long       private_origin;   //private
+  float	Board_voltage[4];	// 0.054 | Volt | Electronics board voltages (4/board) | none | Corner rafts | 16 | 37,362  | 149,449 
+  unsigned short	REB_ID;	// 0.054 | none | Raft Electronics Board ID | none | Cryostat
+};
+#pragma keylist camera_GAS_voltage 

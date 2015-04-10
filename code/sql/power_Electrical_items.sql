@@ -11,5 +11,5 @@ CREATE TABLE power_Electrical_items (
   comment char(128),
   PRIMARY KEY (num)
 );
-INSERT INTO power_Electrical_items VALUES (1,"Raw","long",16,"",0.054,"","","");
-INSERT INTO power_Electrical_items VALUES (2,"Calibrated","float",32,"",0.054,"","","");
+INSERT INTO power_Electrical_items VALUES (1,"Raw","long",16,"",1,"","","");
+INSERT INTO power_Electrical_items VALUES (2,"Calibrated","float",32,"",1,"","","");

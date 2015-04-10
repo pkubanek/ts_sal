@@ -1,9 +1,4 @@
 struct dome_Bogies {
-  float torqueTarget[12];
-  float torqueMeasured[12];
-  float currentTarget[12];
-  float currentMeasured[12];
-  float rpmTarget[12];
   float rpmMeasured[12];
   float temperature[12];
   long  status[12];

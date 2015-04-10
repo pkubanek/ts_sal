@@ -11,5 +11,5 @@ CREATE TABLE environment_TC_items (
   comment char(128),
   PRIMARY KEY (num)
 );
-INSERT INTO environment_TC_items VALUES (1,"Raw","long",64,"",0.054,"","","");
-INSERT INTO environment_TC_items VALUES (2,"Calibrated","float",64,"",0.054,"","","");
+INSERT INTO environment_TC_items VALUES (1,"Raw","long",64,"",1,"","","");
+INSERT INTO environment_TC_items VALUES (2,"Calibrated","float",64,"",1,"","","");

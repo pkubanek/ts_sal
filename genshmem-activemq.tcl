@@ -241,7 +241,7 @@ global LVERSION
   set ftst [open test_singleshot.tcl w]
   puts $ftst "#!/usr/bin/tclsh
 
-source /home/shared/lsst/tests/shmem/shmem-[set subsys]/test_[set subsys].tcl 
+source $env(SAL_WORK_DIR)/shmem/shmem-[set subsys]/test_[set subsys].tcl 
 set id \$SHM[set subsys](shmid)
 set size \$SHM[set subsys](shmsize)
 writeshm [set subsys] \$id \$size
@@ -251,9 +251,9 @@ writeshm [set subsys] \$id \$size
   exec chmod 755 test_singleshot.tcl
   set ftst [open startpubsub w]
   puts $ftst "#!/bin/sh
-xterm -e /home/shared/lsst/tests/shmem/shmem-[set subsys]/objs/$LVERSION/[set subsys]_shmem_publisher &
-xterm -e /home/shared/lsst/tests/shmem/shmem-[set subsys]/objs/$LVERSION/[set subsys]_subscriber &
-echo \"Use /home/shared/lsst/tests/shmem/shmem-[set subsys]/test_singleshot.tcl to test\"
+gnome-terminal -e $env(SAL_WORK_DIR)/shmem/shmem-[set subsys]/objs/$LVERSION/[set subsys]_shmem_publisher &
+gnome-terminal -e $env(SAL_WORK_DIR)/shmem/shmem-[set subsys]/objs/$LVERSION/[set subsys]_subscriber &
+echo \"$env(SAL_WORK_DIR)/shmem/shmem-[set subsys]/test_singleshot.tcl to test\"
 "
   close $ftst
   exec chmod 755 startpubsub

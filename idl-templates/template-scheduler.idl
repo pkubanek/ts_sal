@@ -1,9 +1,4 @@
 struct scheduler_Application {
-  string<50> Status;
-  float data[200];
-};
-
-
 
 
 struct scheduler_command {

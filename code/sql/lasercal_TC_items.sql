@@ -11,5 +11,5 @@ CREATE TABLE lasercal_TC_items (
   comment char(128),
   PRIMARY KEY (num)
 );
-INSERT INTO lasercal_TC_items VALUES (1,"Raw","long",16,"",0.054,"","","");
-INSERT INTO lasercal_TC_items VALUES (2,"Calibrated","float",16,"",0.054,"","","");
+INSERT INTO lasercal_TC_items VALUES (1,"Raw","long",16,"",1,"","","");
+INSERT INTO lasercal_TC_items VALUES (2,"Calibrated","float",16,"",1,"","","");

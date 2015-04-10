@@ -11,5 +11,5 @@ CREATE TABLE tcs_kernel_OpticsVt_items (
   comment char(128),
   PRIMARY KEY (num)
 );
-INSERT INTO tcs_kernel_OpticsVt_items VALUES (1,"tip","float",1,"",0.054,"","","");
-INSERT INTO tcs_kernel_OpticsVt_items VALUES (2,"tilt","float",1,"",0.054,"","","");
+INSERT INTO tcs_kernel_OpticsVt_items VALUES (1,"tip","float",1,"",20,"","","");
+INSERT INTO tcs_kernel_OpticsVt_items VALUES (2,"tilt","float",1,"",20,"","","");

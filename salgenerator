@@ -19,6 +19,7 @@ if { $argc < 2 } {
 		tcl      - generate tcl interface
 		html     - generate web form interfaces
 		labview  - generate Labview low-level interface
+		maven    - generate a maven repository
 		db       - generate telemetry database table
 
                     Arguments required are
@@ -59,7 +60,7 @@ if { [file exists $SAL_WORK_DIR] == 0 } {
 
 cd $SAL_WORK_DIR
 set SAL_WORK_DIR [file normalize .]
-foreach o "validate code compile cpp isocpp java jni link tcl db icd labview python html sal shmem sim simd  verbose" {
+foreach o "validate code compile cpp isocpp java jni link maven tcl db icd labview python html sal shmem sim simd  verbose" {
   set OPTIONS($o) 0
   if { [lsearch [string tolower $argv] $o] > -1 } {
      set OPTIONS($o) 1
@@ -114,12 +115,32 @@ if { $OPTIONS(validate) } {
       stdlog "Completed $subsys validation\n\n"
   }
   set base [lindex [split $subsys "_"] 0]
+  catch { set result [exec $SAL_DIR/parse_telemetry_list.tcl $base] } bad
+  puts stdout "$result"
   if { [file exists $SAL_WORK_DIR/command_list_[set base]] } { 
      catch { set result [exec $SAL_DIR/parse_command_list.tcl $base] } bad
      puts stdout "$result"
   }
   if { [file exists $SAL_WORK_DIR/event_list_[set base]] } { 
      catch { set result [exec $SAL_DIR/parse_event_list.tcl $base] } bad
+     puts stdout "$result"
+  }
+}
+
+
+if { $OPTIONS(maven) } {
+  cd $SAL_WORK_DIR
+  source $SAL_DIR/mavenize.tcl
+  foreach subsys $TSUBSYSTEMS {
+     puts stdout "Creating maven directories sal_[set subsys]"
+     catch { set result [mavenize $subsys] } bad
+     puts stdout "$result"
+     cd sal_[set subsys]     
+     puts stdout "Running maven install"
+     catch { set result [exec mvn install] } bad
+     puts stdout "$result"
+     puts stdout "Updating local repository"
+     catch { set result [exec mvn install -DperformRelease=true -DcreateChecksum=true] } bad
      puts stdout "$result"
   }
 }
@@ -165,6 +186,16 @@ if { $OPTIONS(sal) } {
      set spl [file rootname [split $subsys _]]
      set base [lindex $spl 0]
      set name [join [lrange $spl 1 end] _]
+     if { [file exists $SAL_WORK_DIR/idl-templates/validated/[set base]_cmddef.tcl] } {
+        source $SAL_WORK_DIR/idl-templates/validated/[set base]_cmddef.tcl
+     } else {
+        stdlog "WARNING : No Command definitions found for $base"
+     }
+     if { [file exists $SAL_WORK_DIR/idl-templates/validated/[set base]_evtdef.tcl] } {
+        source $SAL_WORK_DIR/idl-templates/validated/[set base]_evtdef.tcl
+     } else {
+        stdlog "WARNING : No Event definitions found for $base"
+     }
      set idlfile [makesalidl $base]
      if { $OPTIONS(cpp) } {
        stdlog "Generating SAL CPP code for $subsys"
@@ -188,6 +219,8 @@ if { $OPTIONS(sal) } {
      }
   }
 }
+
+
 
 ### TSUBSYSTEMS is svcSAL_topicname
 if { $OPTIONS(compile) } {

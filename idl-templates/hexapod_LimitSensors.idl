@@ -1,4 +1,1 @@
 struct hexapod_LimitSensors {
-  short liftoff[18];
-  short limit[18];
-};

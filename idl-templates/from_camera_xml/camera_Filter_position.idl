@@ -1,0 +1,11 @@
+struct camera_Filter_position {
+  string<32> private_revCode;  //private
+  double     private_sndStamp; //private
+  double     private_rcvStamp; //private
+  long       private_seqNum;   //private
+  long       private_origin;   //private
+  float	Carousel_position;	// 2.31E-04 | Radian | Carousel:Position | none | Camera body | 1 | 10  | 40 
+  float	Truck_position;	// 2.31E-04 | m | Auto: Truck position | none | Camera body | 1 | 10  | 40 
+  float	Rail_position[2];	// 2.31E-04 | m | Auto: Rail position | none | Camera body | 2 | 20  | 80 
+};
+#pragma keylist camera_Filter_position 
