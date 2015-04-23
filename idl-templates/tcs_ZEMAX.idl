@@ -1,0 +1,5 @@
+struct tcs_ZEMAX {
+  string<32>  bg_algorithm;
+  double      exposure;
+  int         iterations;
+};

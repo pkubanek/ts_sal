@@ -251,7 +251,7 @@ int [set subsys]_EventLogger(char *topic_name)
   bool closed = false;
   ReturnCode_t status =  - 1;
   int count = 0;
-  while (1) // We dont want the example to run indefinitely
+  while (1)
   \{
     status = mgr.getEventC(&SALInstance);
     if (status == SAL__OK) \{

@@ -38,7 +38,7 @@ if { $argc > 2 } {
    puts stdout "Selecting $filter : filter position set $filter name=$filter"
    set status [catch {exec $cameraCommander 1 filter position set $filter name=$filter} result]
    puts stdout [cmdok $result]
-   after 90000
+   after 1000
 }
 set camhex [hexcalc camera [lindex [split $alt :] 0]]
 set m2hex  [hexcalc m2     [lindex [split $alt :] 0]]

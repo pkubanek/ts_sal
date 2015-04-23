@@ -40,7 +40,7 @@ puts stdout "Field $field"
       set dec [split [radians_to_dms [lindex $rec 29]] :]
       set alt [lindex $rec 31]
       set az  [lindex $rec 32]
-#      puts stdout "Visiting field $field $ra, $dec"
+      puts stdout "Visiting field $field $ra, $dec"
 #      puts stdout "command -> dome target position azimuth=$az elevation=$alt"
 #      puts stdout "command -> hexapod 1 actuators position absolute x=1.0 y=2.0 z=3.0 v=-1.0 w=-2.0 z=-3.0"
 #      puts stdout "command -> hexapod 2 actuators position absolute x=1.0 y=2.0 z=3.0 v=-1.0 w=-2.0 z=-3.0"
@@ -52,17 +52,17 @@ puts stdout "Field $field"
       after 10 slew TARGETS($field)
       if { $filter != $lastfilter } {
          puts stdout "Filter change required last=$lastfilter filter=$filter"
-         after 130000 "simvisits $n"
+##         after 130000 "simvisits $n"
+         set lastfilter $filter
          exec gnome-terminal --geometry 130x24 -t "Visit with filter change" -e "$env(SAL_HOME)/scripts/standardvisit_commands.tcl $az $alt $filter" &
-         return
       } else {
-         exec gnome-terminal --geometry 130x24 -t "Standard Visit" -e "$env(SAL_HOME)/scripts/standardvisit_commands.tcl $az $alt" &
+         exec gnome-terminal --geometry 130x24+30+30 -t "Standard Visit" -e "$env(SAL_HOME)/scripts/standardvisit_commands.tcl $az $alt" &
       }
 ##      after [expr int($slewtime*1000)] {puts stdout "command -> camera imager expose numimages=2 expTime=15 shutter=true guide=true wfs=true"}
       incr n 1
       set lastfilter $filter
       if { $n < $numvisits } {
-        after [expr int(($exptime+$slewtime+5) * 1000)] "simvisits $n"
+        after [expr int(($exptime+$slewtime+14) * 1000)] "simvisits $n"
       }
     } else {
       after 10 "simvisits $n"

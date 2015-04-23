@@ -300,7 +300,7 @@ global XMLTOPICS XMLTLM
              set XMLTLM($ikey,Conversion) $range
              set XMLTLM($ikey,Sensor_location) $location
              set XMLTLM($ikey,Count) $siz
-             set XMLTLM($ikey,Instances_per_night) [expr  $FREQUENCY($hid)*43200]
+             set XMLTLM($ikey,Instances_per_night) [expr int($FREQUENCY($hid)*43200)]
              set XMLTLM($ikey,Bytes_per_night) [expr int($FREQUENCY($hid)*43200*$siz*$bytesiz)]
              set XMLTLM($ikey,Explanation) "http://sal.lsst.org/SAL/Telemetry/$ikey.html"
              if { [string trim $comments] != "none" && [string trim $comments] != "" } {

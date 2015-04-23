@@ -51,6 +51,12 @@ foreach i [lsort $ALIASES] {
    close $fidl
 }
 
+puts stdout "Generating events XML"
+set EVENT_ALIASES([set subsys]) "$ALIASES"
+source $SAL_DIR/xml/SALTopicTemplateXML.tcl
+writeXMLevents $SAL_WORK_DIR/xml $subsys
+
+
 puts stdout "Generating log event command gui input"        
 set fout [open $SAL_WORK_DIR/idl-templates/validated/[set subsys]_evtdef.tcl w]
 puts $fout "set ALIASES \"$ALIASES\""

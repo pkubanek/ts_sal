@@ -125,6 +125,9 @@ if { $OPTIONS(validate) } {
      catch { set result [exec $SAL_DIR/parse_event_list.tcl $base] } bad
      puts stdout "$result"
   }
+  catch { set result [writeXMLtelemetry $base] } bad
+  puts stdout "$result"
+  
 }
 
 

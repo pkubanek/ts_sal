@@ -59,6 +59,11 @@ foreach i [lsort $ALIASES] {
    close $fidl
 }
 
+puts stdout "Generating command XML"
+set CMD_ALIASES([set subsys]) "$ALIASES"
+source $SAL_DIR/xml/SALTopicTemplateXML.tcl
+writeXMLcommands $SAL_WORK_DIR/xml $subsys
+
 puts stdout "Generating test command gui input"        
 set fout [open $SAL_WORK_DIR/idl-templates/validated/[set subsys]_cmddef.tcl w]
 puts $fout "set ALIASES \"$ALIASES\""
