@@ -244,9 +244,7 @@ seeing.mass.Policy - Configuration and operations
 seeing.mass.Status - Summary data
 seeing.mass.Telescope - Telescope mount control
 skycam - All-sky monitoring cameras
-skycam.Application - Derived methistory
-
-adata
+skycam.Application - Derived metadata
 skycam.Electrical - Electrical system monitoring
 skycam.Metrology - Positional information
 skycam.TC - Thermal monitoring
@@ -279,56 +277,64 @@ e.g.	camera.Raft.RNA5 , <BR>
 
 set SYSDIC(devices) "Actuator - Mirror support structures
 Accelerometer - Motion detector
-AC - Air conditioning unit
-Alt - Altitude axis motion
+Altitude - Altitude axis motion
 A2D - Analog-digital converter
 Application - Software component
-Az - Azimuth axis motion
+Azimuth - Azimuth axis motion
+Bogie - Dome bogie truck
 Brake - Motion damping mechanism
-Calib_Lamp - Calibration lamps
+CalibLamp - Calibration lamps
 Clamp - Motion prevention/protection mechanism
-Command_history - Software component
-Computer_status - Computer hardware components
-Dome_Az - Dome azimuth axis motion
-Dome_Shutter - Dome slit position motion
-Dust_monitor - Dust monitoring devices
+CommandHistory - Software component
+ComputerStatus - Computer hardware components
+CO2Sensor - Carbon dioxide sensor
+DomeAzimuth - Dome azimuth axis motion
+DomeShutter - Dome slit position motion
+DustMonitor - Dust monitoring devices
 Electrical - Voltage and power consumption monitors
 Fan - Air circulation mechanism
 Filter - Filter positioning devices
 Firmware - On-board flash memory device / EPROM
-Fuse_Sensor - Overcurrent sensor mechanism
+FuseSensor - Overcurrent sensor mechanism
+GPS - GPS satellite receiver
 GuideStars - Camera guide sensor devices
-Hand_Paddle - Operator hand paddle devices
+HandPaddle - Operator hand paddle devices
 Hardware_revision - Hardware component
-Hexapod - Camera mount motion
+HexapodStrut - Hexapod active component
+HumiditySensor - Humidity sensor
+HVAC - Air conditioning unit
 Image - CCD Camera or imaging sensor
-Lens_Cover - Camera lens protection mechanisms
-Lightning_detector - Lightning detection devices
-Limit_Sensor - Limit of motion detection mechanism
+LensCover - Camera lens protection mechanisms
+LightningDetector - Lightning detection devices
+LimitSensor - Limit of motion detection mechanism
+Louver - Dome louver mechanism
 Metrology - Position monitoring devices
 Mirror - Beam steering / fold mirrors
-Mirror_Cover - Mirror cover actuators and monitors
-Network_Switch - Computer network switch/router/hub
-O2_Sensor - Oxygen sensor
+MirrorCover - Mirror cover actuators and monitors
+NetworkSwitch - Computer network switch/router/hub
+O2Sensor - Oxygen sensor
+PressureSensor - Pressure sensor
 Raft - Camera sensor raft subsystems
 RNA - Camera sensor raft network adaptor
 Rotator - Camera rotator mechanism
-Science_sensor_metadata - Camera sensor performance
+SensorMetadata - Camera sensor performance
 Seismometer - Seismic activity monitor
-Servo_motor - Servo motor
+ServoMotor - Servo motor
 Shutter - Dome shutter mechanism
-Software_revision - Software component
+SkyCamera - All sky coverage camera
+SoftwareRevision - Software component
 Spectrometer - Calibration telescope spectrograph
 Status - Generic virtual device to query status
-Stepper_motor - Stepper motor
+StepperMotor - Stepper motor
 Support - Device support structures
 Surface - Mirror surface control and monitoring
-Temp - Temperature monitoring devices
+TempSensor - Temperature monitoring devices
 UPS - Power management device
+VacuumPump - Vacuum pump
 Vents - Dome vent control
-Video_camera - Video camera subsystems
+VideoCamera - Video camera subsystems
 Weather - Weather monitoring devices and services
-wfsRaft - Wavefront sensor raft
+WFSRaft - Wavefront sensor raft
 Wiper - Camera calibration source positioner"
 
 set TSYSDIC(properties) " <P><HR><P>
@@ -367,14 +373,14 @@ diq - Delivered image quality (metric TBD)
 distance - in meters , centi/milli/micro
 email - an email address
 encoder - in raw counts
-encoder_constant - in raw counts
+encoderConstant - in raw counts
 epoch - yyyy.xxxxxxxx
 equinox - yyyy.xxxxxxxx
 errcode - a compact error code
 errtext - a human readable error message
 failure - boolean state true/false
-filter_name - Comprehensive descriptor
-filter_response - Filter response curve
+filterName - Comprehensive descriptor
+filterResponse - Filter response curve
 focus - in microns
 force - in Newtons
 function - F(x) - Name of function
@@ -390,9 +396,9 @@ interval - integer value
 ip4addr- an IP4 address
 ip6addr - an IP6 address
 jogspeed - arcsec per sec
-load_cell - pressure in psi
-load_limit - in psi
-load_range - in psi
+loadCell - pressure in psi
+loadLimit - in psi
+loadRange - in psi
 lvdt - load cell reading, raw data
 macaddr - a network device MAC address
 maximum - any numeric type
@@ -401,12 +407,12 @@ memory - in kb, Mb, Gb
 minimum - any numeric type
 model - name of model (mathematical)
 moving - boolean state true/false
-motion_profile - vector tracking state of a moving device
-motor_ratio - dimensionless multiplier
-motor_steps - steps per revolution
+motionProfile - vector tracking state of a moving device
+motorRatio - dimensionless multiplier
+motorSteps - steps per revolution
 name - Descriptive
 offset - in arcseconds
-parclock - ccd parallel clockin
+paraClock - ccd parallel clocking
 pager - a pager number
 period - in seconds
 permission - software access credentials (r/w/e/d/c etc)
@@ -428,10 +434,10 @@ speed - in meter/second
 state - Descriptive (may be limited to a set)
 status - Descriptive (may be limited to a set)
 stepper - stepper motor count
-stepper_accel - acceleration in steps/sec/sec
-stepper_power - current in amps
-stepper_speed - steps/second
-storage_capacity - in kb/Mb/Gb/Tb
+stepperAccel - acceleration in steps/sec/sec
+stepperPower - current in amps
+stepperSpeed - steps/second
+storageCapacity - in kb/Mb/Gb/Tb
 success - boolean state true/false
 temperature - in degrees C/K
 threshold - dimensionless numeric
@@ -535,7 +541,7 @@ counts - dimensionless
 cycles - no of repeats of an operation
 days -time
 degrees - in Centigrade or Kelvin
-dynes - unit of force , 1dyne = 10 micronewtons (cgs unit)
+dynes - unit of force , 1 dyne = 10 micronewtons (cgs unit)
 gauss - magnetic field of 1 maxwell per sq centimeter (cgs unit)
 gb - Gigabytes 1024^3 for memory (1e9 bytes otherwise)
 gbps - Gigabits per second
@@ -578,8 +584,35 @@ global TSYSDIC SYSDIC
    }
 }
 
+proc updateSYSDICxml { } {
+global SAL_DIR SYSDIC
+  set fout [open $SAL_DIR/xml/SALSystemDictionary.xml w]
+  puts $fout "
+ <simpleType name=\"systemsEnum\">
+  <restriction base=\"string\">"
+  foreach i $SYSDIC(systems) {
+    puts $fout "   <enumeration value=\"[string trim [lindex $i 0]]\"/>"
+  }
+  puts $fout "  </restriction>
+ </simpleType>
 
+"
+  foreach category "subsystems devices properties actions units" {
+    set all [split $SYSDIC($category) "\n"]
+    puts $fout "
+ <simpleType name=\"[set category]Enum\">
+  <restriction base=\"string\">"
+    foreach i $all {
+      set cmd [string trim [lindex [split $i "-"] 1]]
+      puts $fout "   <enumeration value=\"[string trim [lindex $i 0]]\"/><!-- $cmd -->" 
+    }
+    puts $fout "  </restriction>
+ </simpleType>
 
+"
+  }
+  close $fout
+}
 
 
 
