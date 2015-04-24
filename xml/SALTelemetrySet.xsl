@@ -10,9 +10,9 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
   <h2>SAL Events</h2>
   <xsl:for-each select="SALTelemetrySet/SALTelemetry">
   <h3><xsl:value-of select="EFDB_Topic"/></h3>
+  <table border="1">
   <xsl:for-each select="item">
     <xsl:if test="position()=1">
-      <table border="1">
         <tr bgcolor="#9acd32">
         <th>Name</th>
         <th>IDL Type</th>
