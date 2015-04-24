@@ -1,5 +1,5 @@
 
-set SYSDIC(systems) "auxscope calibration camera dm  dome enclosure environment hexapod lasercal m1m3 m2ms mount network operations power rotator scheduler seeing skycam system tcs"
+set SYSDIC(systems) "auxscope calibration camera dm  dome dome environment hexapod lasercal m1m3 m2ms mount network operations power rotator scheduler seeing skycam system tcs"
 foreach s $SYSDIC(systems) {set SYSDIC($s,type) system}
 
 set SYSDIC(datatypes) "byte short int long float string int64 double ubyte ushort uint ulong"
@@ -38,7 +38,7 @@ auxscope.Electrical - Electrical system monitoring
 auxscope.Metrology - Positional information
 auxscope.TC - Thermal monitoring
 auxscope.Camera - Imaging system
-auxscope.Enclosure - Dome and vents
+auxscope.dome - Dome and vents
 auxscope.Environment - Environmental monitoring
 auxscope.Optics - Mirror support system
 auxscope.Mount - Alt/az/rotr control
@@ -125,17 +125,17 @@ environment.Seismometer - Earthquake monitoring
 environment.TC - Temperature control systems
 environment.Weather - Local weather sensing
 environment.Video - Local video cameras
-enclosure - Dome mechanisms
-enclosure.Application - Derived metadata
-enclosure.Electrical - Electrical system monitoring
-enclosure.Metrology - Positional information
-enclosure.Azimuth - Dome rotation
-enclosure.Crane - Camera handling system
-enclosure.Environment - Dome environmental sensing
-enclosure.Liftplatform - Mirror handling system
-enclosure.Shutter - Dome aperture control
-enclosure.TC - Temperature control systems
-enclosure.Vents - Dome vents and air-flow management
+dome - Dome mechanisms
+dome.Application - Derived metadata
+dome.Electrical - Electrical system monitoring
+dome.Metrology - Positional information
+dome.Azimuth - Dome rotation
+dome.Crane - Camera handling system
+dome.Environment - Dome environmental sensing
+dome.Liftplatform - Mirror handling system
+dome.Shutter - Dome aperture control
+dome.TC - Temperature control systems
+dome.Vents - Dome vents and air-flow management
 environment - Environmental monitoring
 environment.Dust - Particulate monitoring
 environment.Electrical - Electrical system monitoring
@@ -212,7 +212,7 @@ operations - Operator interfaces management
 operations.main - Main telescope control
 operations.base - Base control room
 operations.cameralab - Camera checkout area
-operations.enclosure - Dome floor
+operations.dome - Dome floor
 operations.mirrorlab - Mirror Lab and coating
 operations.remote - WAN access
 power - Power supply systems
@@ -587,6 +587,21 @@ global TSYSDIC SYSDIC
 proc updateSYSDICxml { } {
 global SAL_DIR SYSDIC
   set fout [open $SAL_DIR/xml/SALSystemDictionary.xml w]
+  puts $fout "
+ <simpleType name=\"DateIdType\">
+  <restriction base=\"string\">
+   <pattern value=\"\\d\{4\}-\\d\{2\}-\\d\{2\}T\\d\{2\}:\\d\{2\}:\\d\{2\}:\\d\{2\}.\\d\{3\}\"/>
+  </restriction>
+ </simpleType>
+ <simpleType name=\"anyURI\">                   <restriction base=\"string\"/>          </simpleType>
+ <simpleType name=\"FrequencyType\">            <restriction base=\"decimal\"/>         </simpleType>
+ <simpleType name=\"PublishersType\">           <restriction base=\"positiveInteger\"/> </simpleType>
+ <simpleType name=\"ValuesPerPublisherType\">   <restriction base=\"positiveInteger\"/> </simpleType>
+ <simpleType name=\"SizeInBytesType\">          <restriction base=\"positiveInteger\"/> </simpleType>
+ <simpleType name=\"CountType\">                <restriction base=\"positiveInteger\"/> </simpleType>
+ <simpleType name=\"InstancesPerNightType\">    <restriction base=\"positiveInteger\"/> </simpleType>
+ <simpleType name=\"BytesPerNightType\">        <restriction base=\"positiveInteger\"/> </simpleType>
+"
   puts $fout "
  <simpleType name=\"systemsEnum\">
   <restriction base=\"string\">"
