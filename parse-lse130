@@ -155,7 +155,7 @@ foreach component "CCS Cluster Cold Cryo Filter GAS GDS PCMS Prot Purge SAS SDS 
 
 #Run in idl-templates/validated
 #
-foreach ssys "auxscope calibration dm enclosure environment lasercal m1m3 m2 mount network ocs power scheduler seeing skycam system tcs" {
+foreach ssys "auxscope calibration dm dome environment hexapod lasercal m1m3 m2ms mount network ocs power rotator scheduler seeing skycam system tcs" {
   set parts [lsort [glob *$ssys*.idl]]
   set fout [open sal/sal_$ssys.idl w]
   puts $fout "module $ssys"

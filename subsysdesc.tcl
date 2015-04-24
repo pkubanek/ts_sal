@@ -266,36 +266,36 @@ calibration subsystem.<BR>Raw sensor readings, calibrated positions,
 limit switches, status bits. "
 
 
-set DESC(enclosure.TC) "
+set DESC(dome.TC) "
 <P>Temperature monitoring  for sensors located in the
-enclosure subsystem.<BR>Raw sensor readings, calibrated temperatures,
+dome subsystem.<BR>Raw sensor readings, calibrated temperatures,
 time series statistics, sensor health. "
 
-set DESC(enclosure.Electrical) "
-<P>Electrical monitoring  for devices located in the enclosure
+set DESC(dome.Electrical) "
+<P>Electrical monitoring  for devices located in the dome
 subsystem.<BR>Raw data, calibrated voltages, calibrated current,
 device power status. "
 
-set DESC(enclosure.Metrology) "
-<P>Position control  for sensors located in the enclosure
+set DESC(dome.Metrology) "
+<P>Position control  for sensors located in the dome
 subsystem.<BR>Raw sensor readings, calibrated positions, limit
 switches, status bits. "
 
 
-set DESC(enclosure.Azimuth) "
+set DESC(dome.Azimuth) "
 <P>This subsystem maintains high level information pertaining to
-the<BR>enclosure positioning demand and performance, wind
+the<BR>dome positioning demand and performance, wind
 loading<BR>etc. "
 
-set DESC(enclosure.Shutter) "
+set DESC(dome.Shutter) "
 <P>This subsystem maintains high level information pertaining to the<BR>dome
 shutter positioning demand and performance, wind loading<BR>etc. "
 
-set DESC(enclosure.Vents) "
+set DESC(dome.Vents) "
 <P>This subsystem maintains high level information pertaining to the<BR>dome
 vents positioning demand and performance, wind loading<BR>etc. "
 
-set DESC(enclosure.Thermal_control) "
+set DESC(dome.Thermal_control) "
 <P>This subsystem maintains high level information pertaining to<BR>the
 control and monitoring of the thermal environment<BR>inside the dome."
 
@@ -486,14 +486,14 @@ set SID(calibration.TC) 7.1
 set SID(calibration.Electrical) 7.2
 set SID(calibration.Metrology) 7.3
 
-set SID(enclosure) 8
-set SID(enclosure.TC) 8.1
-set SID(enclosure.Electrical) 8.2
-set SID(enclosure.Metrology) 8.3
-set SID(enclosure.Azimuth) 8.4
-set SID(enclosure.Shutter) 8.5
-set SID(enclosure.Vents) 8.6
-set SID(enclosure.Thermal_control) 8.7
+set SID(dome) 8
+set SID(dome.TC) 8.1
+set SID(dome.Electrical) 8.2
+set SID(dome.Metrology) 8.3
+set SID(dome.Azimuth) 8.4
+set SID(dome.Shutter) 8.5
+set SID(dome.Vents) 8.6
+set SID(dome.Thermal_control) 8.7
 
 set SID(auxscope) 9
 set SID(auxscope.TC) 9.1
@@ -559,13 +559,13 @@ set DOCO(standards-sw) "ESA 1991, Software Engineering Standards, ESA PSS-05-0, 
 set DOCO(m1) Document-3167
 set DOCO(m2ms) Document-3167
 set DOCO(m3) Document-3167
-set DOCO(enclosure) Document-341,Document-342,Document-2389
+set DOCO(dome) Document-341,Document-342,Document-2389
 
 set DESC(auxscope) "Auxiallary telescope, 1.5 m photometric telescope with LSST TCS"
 
 set DESC(calibration) "Calibration equipment"
 
-set DESC(enclosure) "Dome and enclosure<BR>
+set DESC(dome) "Dome and dome<BR>
 1.1.Basic Functions: The purpose of the dome is to protect the telescope and camera from adverse environmental conditions both during observing and when not in operation.  The clear optical path provided by the dome, the contribution of dome seeing to the overall error budget, and the operational parameters of the dome will be consistent with the Telescope Requirements Document (Doc # 2389)
 <P>Thermally Benign: A fundamental objective in the dome design will be maintaining a beneficial thermal environment for the seeing performance of the telescope.  Preconditioning of the telescope environment, passive ventilation, the use of materials with low thermal inertia, and other strategies will be employed for that purpose.
 <P>Special LSST Survey Requirements: As a telescope dedicated to a demanding survey program, LSST has some special characteristics that are reflected in the dome requirements:
@@ -577,7 +577,7 @@ Maintenance: In addition to its operational characteristics, the dome provides a
 <P>
 Coordination with Telescope, Optics and Instrument Design: Designs for the telescope mount, optics, and camera are ongoing.  The baseline dimensions and operational characteristics of these elements are, however, well enough understood to allow development of an appropriate dome to enclose and service these systems.  Further refinements in telescope and camera design will be incorporated into future versions of this document, and later reflected in the detailed design of the dome.
 <P>
-Coordination with the Lower Enclosure: The lower enclosure that supports the dome is a fixed building with requirements described in the Support Facility Design Requirements Document (Doc # 342). The dimensional and structural criteria for the lower enclosure are dictated by the dome.
+Coordination with the Lower dome: The lower dome that supports the dome is a fixed building with requirements described in the Support Facility Design Requirements Document (Doc # 342). The dimensional and structural criteria for the lower dome are dictated by the dome.
 <P>
 Code Compliance and Structural Loads:  All aspects of the LSST dome will comply with current editions of the International Building Code, OSHA regulations, and other applicable design and construction standards as specified by LSST.  Wind and seismic loads for dome design will be developed based on the latest available historical and regional data.
 <P>

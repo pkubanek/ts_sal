@@ -238,39 +238,39 @@ set SDESC(calibration.Application) "
 <P>Application specific information derived from sensors in the
 calibration subsystem. "
 
-set SDESC(enclosure.Temps) "
+set SDESC(dome.Temps) "
 <P>Temperature sensing information for sensors located in the
-enclosure subsystem.<BR>Raw sensor readings, calibrated temperatures,
+dome subsystem.<BR>Raw sensor readings, calibrated temperatures,
 time-series statistics, sensor health. "
 
-set SDESC(enclosure.Electrical) "
-<P>Electrical parameters for devices located in the enclosure
+set SDESC(dome.Electrical) "
+<P>Electrical parameters for devices located in the dome
 subsystem.<BR>Raw data, calibrated voltages, calibrated current,
 device power status. "
 
-set SDESC(enclosure.Metrology) "
-<P>Position sensing information for sensors located in the enclosure
+set SDESC(dome.Metrology) "
+<P>Position sensing information for sensors located in the dome
 subsystem.<BR>Raw sensor readings, calibrated positions, limit
 switches, status bits. "
 
-set SDESC(enclosure.Application) "
+set SDESC(dome.Application) "
 <P>Application specific information derived from sensors in the
-enclosure subsystem. "
+dome subsystem. "
 
-set SDESC(enclosure.Azimuth) "
+set SDESC(dome.Azimuth) "
 <P>This topic records high level information pertaining to
-the<BR>enclosure positioning demand and performance, wind
+the<BR>dome positioning demand and performance, wind
 loading<BR>etc. "
 
-set SDESC(enclosure.Shutter) "
+set SDESC(dome.Shutter) "
 <P>This topic records high level information pertaining to the<BR>dome
 shutter positioning demand and performance, wind loading<BR>etc. "
 
-set SDESC(enclosure.Vents) "
+set SDESC(dome.Vents) "
 <P>This topic records high level information pertaining to the<BR>dome
 vents positioning demand and performance, wind loading<BR>etc. "
 
-set SDESC(enclosure.Thermal_control) "
+set SDESC(dome.Thermal_control) "
 <P>This topic records high level information pertaining to<BR>the
 control and monitoring of the thermal environment<BR>inside the dome."
 
