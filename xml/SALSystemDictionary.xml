@@ -1,7 +1,6 @@
 
- <simpleType name="SystemEnum">
+ <simpleType name="systemsEnum">
   <restriction base="string">
-
    <enumeration value="auxscope"/>
    <enumeration value="calibration"/>
    <enumeration value="camera"/>
