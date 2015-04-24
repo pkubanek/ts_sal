@@ -8,49 +8,38 @@
     </xsd:documentation>
   </xsd:annotation>
 
- <xsd:element name="SALEventSet">
- <xsd:complexType>
- <xsd:sequence>
+ <xsd:element name="SALEventSet"   type="eventSetType"/>
+ <xsd:element name="SALEvent"      type="eventType"/>
+ <xsd:element name="SALEventItem"  type="eventItemType"/>
 
-  <xsd:element name="SALEvent" minOccurs="1" maxOccurs="unbounded">
-   <xsd:complexType>
-    <xsd:sequence>
+ <xsd:complexType name="eventItemType">
+          <xsd:sequence>
+              <xsd:element name="EFDB_Name"     type="xsd:string"/>
+              <xsd:element name="Description"   type="xsd:string"/>
+              <xsd:element name="IDL_Type"      type="xsd:string"/>
+              <xsd:element name="Units"         type="xsd:string"/>
+              <xsd:element name="Count"         type="xsd:positiveInteger"/>
+              <xsd:element name="Explanation"   minOccurs="0" maxOccurs="1"  type="xsd:anyURI"/>
+          </xsd:sequence>
+ </xsd:complexType>
+
+ <xsd:complexType name="eventType">
+     <xsd:sequence>
       <xsd:element   name="Subsystem"     type="xsd:string"/>
       <xsd:element   name="Version"       type="xsd:decimal"/>
       <xsd:element   name="Author"        type="xsd:string"/>
       <xsd:element   name="EFDB_Topic"    type="xsd:string"/>
       <xsd:element   name="Alias"         type="xsd:string"/>
       <xsd:element   name="Explanation"   minOccurs="0" maxOccurs="1"  type="xsd:anyURI"/>
-      <xsd:element   name="item" minOccurs="0" maxOccurs="unbounded">
-        <xsd:complexType>
-          <xsd:sequence>
-
-              <xsd:element name="EFDB_Name"     type="xsd:string"/>
-              <xsd:element name="Description"   type="xsd:string"/>
-
-              <xsd:element name="IDL_Type"        type="xsd:string"/>
-              <xsd:element name="Units"           type="xsd:string"/>
-
-              <xsd:element name="Count">
-                <xsd:simpleType>
-                  <xsd:restriction base="xsd:positiveInteger">
-                  </xsd:restriction>
-                </xsd:simpleType>
-              </xsd:element>
-
-              <xsd:element name="Explanation"      minOccurs="0" maxOccurs="1"  type="xsd:anyURI"/>
-          </xsd:sequence>
-        </xsd:complexType>
-      </xsd:element>
-   
+      <xsd:element   name="item" minOccurs="0" maxOccurs="unbounded" type="eventItemType"/>    
     </xsd:sequence>
-   </xsd:complexType>
-  </xsd:element>
-
-
- </xsd:sequence>
  </xsd:complexType>
- </xsd:element> 
+
+ <xsd:complexType name="eventSetType">
+  <xsd:sequence>
+   <xsd:element name="SALEvent" minOccurs="1" maxOccurs="unbounded" type="eventType"/>
+  </xsd:sequence>
+ </xsd:complexType>
 
  <xsd:attribute name="updateDate"    type="xsd:date"/>
 
