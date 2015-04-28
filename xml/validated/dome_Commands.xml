@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="SALCommandSet.xsl"?>
+<SALCommandSet xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="SALCommandSet.xsd">
+
+<SALCommand>
+ <Subsystem>dome</Subsystem>
+ <Version>2.4</Version>
+ <Author>salgenerator</Author>
+ <EFDB_Topic>dome_command_closeShutter</EFDB_Topic>
+ <Alias>closeShutter</Alias>
+ <Device>shutter</Device>
+ <Property>position</Property>
+ <Action>close</Action>
+ <Value></Value>
+ <Explanation>http://sal.lsst.org/SAL/Commands/dome_command_closeShutter.html</Explanation>
+</SALCommand>
+
+<SALCommand>
+ <Subsystem>dome</Subsystem>
+ <Version>2.4</Version>
+ <Author>salgenerator</Author>
+ <EFDB_Topic>dome_command_louvers</EFDB_Topic>
+ <Alias>louvers</Alias>
+ <Device>louvers</Device>
+ <Property>position</Property>
+ <Action>set</Action>
+ <Value></Value>
+ <Explanation>http://sal.lsst.org/SAL/Commands/dome_command_louvers.html</Explanation>
+    <item>
+      <EFDB_Name>angle</EFDB_Name>
+      <Description> </Description>
+      <IDL_Type>double</IDL_Type>
+      <Units> </Units>
+      <Count>72</Count>
+    </item>
+</SALCommand>
+
+<SALCommand>
+ <Subsystem>dome</Subsystem>
+ <Version>2.4</Version>
+ <Author>salgenerator</Author>
+ <EFDB_Topic>dome_command_movetoCal</EFDB_Topic>
+ <Alias>movetoCal</Alias>
+ <Device>target</Device>
+ <Property>position</Property>
+ <Action></Action>
+ <Value></Value>
+ <Explanation>http://sal.lsst.org/SAL/Commands/dome_command_movetoCal.html</Explanation>
+</SALCommand>
+
+<SALCommand>
+ <Subsystem>dome</Subsystem>
+ <Version>2.4</Version>
+ <Author>salgenerator</Author>
+ <EFDB_Topic>dome_command_openShutter</EFDB_Topic>
+ <Alias>openShutter</Alias>
+ <Device>shutter</Device>
+ <Property>position</Property>
+ <Action>open</Action>
+ <Value></Value>
+ <Explanation>http://sal.lsst.org/SAL/Commands/dome_command_openShutter.html</Explanation>
+</SALCommand>
+
+<SALCommand>
+ <Subsystem>dome</Subsystem>
+ <Version>2.4</Version>
+ <Author>salgenerator</Author>
+ <EFDB_Topic>dome_command_park</EFDB_Topic>
+ <Alias>park</Alias>
+ <Device>target</Device>
+ <Property>position</Property>
+ <Action></Action>
+ <Value></Value>
+ <Explanation>http://sal.lsst.org/SAL/Commands/dome_command_park.html</Explanation>
+</SALCommand>
+
+<SALCommand>
+ <Subsystem>dome</Subsystem>
+ <Version>2.4</Version>
+ <Author>salgenerator</Author>
+ <EFDB_Topic>dome_command_target</EFDB_Topic>
+ <Alias>target</Alias>
+ <Device>target</Device>
+ <Property>position</Property>
+ <Action></Action>
+ <Value></Value>
+ <Explanation>http://sal.lsst.org/SAL/Commands/dome_command_target.html</Explanation>
+    <item>
+      <EFDB_Name>azimuth</EFDB_Name>
+      <Description> </Description>
+      <IDL_Type>string</IDL_Type>
+      <Units> </Units>
+      <Count>1</Count>
+    </item>
+    <item>
+      <EFDB_Name>elevation</EFDB_Name>
+      <Description> </Description>
+      <IDL_Type>string</IDL_Type>
+      <Units> </Units>
+      <Count>1</Count>
+    </item>
+</SALCommand>
+
+<SALCommand>
+ <Subsystem>dome</Subsystem>
+ <Version>2.4</Version>
+ <Author>salgenerator</Author>
+ <EFDB_Topic>dome_command_test</EFDB_Topic>
+ <Alias>test</Alias>
+ <Device>test</Device>
+ <Property>any</Property>
+ <Action>any</Action>
+ <Value></Value>
+ <Explanation>http://sal.lsst.org/SAL/Commands/dome_command_test.html</Explanation>
+</SALCommand>
+
+<SALCommand>
+ <Subsystem>dome</Subsystem>
+ <Version>2.4</Version>
+ <Author>salgenerator</Author>
+ <EFDB_Topic>dome_command_track</EFDB_Topic>
+ <Alias>track</Alias>
+ <Device>track</Device>
+ <Property>mode</Property>
+ <Action>string</Action>
+ <Value>mode</Value>
+ <Explanation>http://sal.lsst.org/SAL/Commands/dome_command_track.html</Explanation>
+</SALCommand>
+</SALCommandSet>

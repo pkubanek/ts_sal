@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="SALCommandSet.xsl"?>
+<SALCommandSet xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="SALCommandSet.xsd">
+
+<SALCommand>
+ <Subsystem>tcs</Subsystem>
+ <Version>2.4</Version>
+ <Author>salgenerator</Author>
+ <EFDB_Topic>tcs_command_wepCalculate</EFDB_Topic>
+ <Alias>wepCalculate</Alias>
+ <Device>wep</Device>
+ <Property>zernikes</Property>
+ <Action>calculate</Action>
+ <Value></Value>
+ <Explanation>http://sal.lsst.org/SAL/Commands/tcs_command_wepCalculate.html</Explanation>
+    <item>
+      <EFDB_Name>uid</EFDB_Name>
+      <Description> </Description>
+      <IDL_Type>string<64></IDL_Type>
+      <Units> </Units>
+      <Count>1</Count>
+    </item>
+</SALCommand>
+
+<SALCommand>
+ <Subsystem>tcs</Subsystem>
+ <Version>2.4</Version>
+ <Author>salgenerator</Author>
+ <EFDB_Topic>tcs_command_wepSimulate</EFDB_Topic>
+ <Alias>wepSimulate</Alias>
+ <Device>wep</Device>
+ <Property>zernikes</Property>
+ <Action>simulate</Action>
+ <Value></Value>
+ <Explanation>http://sal.lsst.org/SAL/Commands/tcs_command_wepSimulate.html</Explanation>
+    <item>
+      <EFDB_Name>uid</EFDB_Name>
+      <Description> </Description>
+      <IDL_Type>string<64></IDL_Type>
+      <Units> </Units>
+      <Count>1</Count>
+    </item>
+    <item>
+      <EFDB_Name>z_arr</EFDB_Name>
+      <Description> </Description>
+      <IDL_Type>double</IDL_Type>
+      <Units> </Units>
+      <Count>18</Count>
+    </item>
+</SALCommand>
+</SALCommandSet>

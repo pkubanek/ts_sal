@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="SALCommandSet.xsl"?>
+<SALCommandSet xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="SALCommandSet.xsd">
+
+<SALCommand>
+ <Subsystem>camera</Subsystem>
+ <Version>2.4</Version>
+ <Author>salgenerator</Author>
+ <EFDB_Topic>camera_command_configure</EFDB_Topic>
+ <Alias>configure</Alias>
+ <Device>configure</Device>
+ <Property></Property>
+ <Action></Action>
+ <Value></Value>
+ <Explanation>http://sal.lsst.org/SAL/Commands/camera_command_configure.html</Explanation>
+    <item>
+      <EFDB_Name>specId</EFDB_Name>
+      <Description> </Description>
+      <IDL_Type>string</IDL_Type>
+      <Units> </Units>
+      <Count>1</Count>
+    </item>
+</SALCommand>
+
+<SALCommand>
+ <Subsystem>camera</Subsystem>
+ <Version>2.4</Version>
+ <Author>salgenerator</Author>
+ <EFDB_Topic>camera_command_filter</EFDB_Topic>
+ <Alias>filter</Alias>
+ <Device>filter</Device>
+ <Property>position</Property>
+ <Action></Action>
+ <Value></Value>
+ <Explanation>http://sal.lsst.org/SAL/Commands/camera_command_filter.html</Explanation>
+    <item>
+      <EFDB_Name>name</EFDB_Name>
+      <Description> </Description>
+      <IDL_Type>string</IDL_Type>
+      <Units> </Units>
+      <Count>1</Count>
+    </item>
+</SALCommand>
+
+<SALCommand>
+ <Subsystem>camera</Subsystem>
+ <Version>2.4</Version>
+ <Author>salgenerator</Author>
+ <EFDB_Topic>camera_command_guideStars</EFDB_Topic>
+ <Alias>guideStars</Alias>
+ <Device>guiders</Device>
+ <Property>roi</Property>
+ <Action>set</Action>
+ <Value></Value>
+ <Explanation>http://sal.lsst.org/SAL/Commands/camera_command_guideStars.html</Explanation>
+    <item>
+      <EFDB_Name>xpos</EFDB_Name>
+      <Description> </Description>
+      <IDL_Type>double</IDL_Type>
+      <Units> </Units>
+      <Count>8</Count>
+    </item>
+    <item>
+      <EFDB_Name>ypos</EFDB_Name>
+      <Description> </Description>
+      <IDL_Type>double</IDL_Type>
+      <Units> </Units>
+      <Count>8</Count>
+    </item>
+    <item>
+      <EFDB_Name>roiSize</EFDB_Name>
+      <Description> </Description>
+      <IDL_Type>int</IDL_Type>
+      <Units> </Units>
+      <Count>8</Count>
+    </item>
+</SALCommand>
+
+<SALCommand>
+ <Subsystem>camera</Subsystem>
+ <Version>2.4</Version>
+ <Author>salgenerator</Author>
+ <EFDB_Topic>camera_command_image</EFDB_Topic>
+ <Alias>image</Alias>
+ <Device>imager</Device>
+ <Property>expose</Property>
+ <Action></Action>
+ <Value></Value>
+ <Explanation>http://sal.lsst.org/SAL/Commands/camera_command_image.html</Explanation>
+    <item>
+      <EFDB_Name>numImages</EFDB_Name>
+      <Description> </Description>
+      <IDL_Type>int</IDL_Type>
+      <Units> </Units>
+      <Count>1</Count>
+    </item>
+    <item>
+      <EFDB_Name>expTime</EFDB_Name>
+      <Description> </Description>
+      <IDL_Type>double</IDL_Type>
+      <Units> </Units>
+      <Count>1</Count>
+    </item>
+    <item>
+      <EFDB_Name>shutter</EFDB_Name>
+      <Description> </Description>
+      <IDL_Type>boolean</IDL_Type>
+      <Units> </Units>
+      <Count>1</Count>
+    </item>
+    <item>
+      <EFDB_Name>guide</EFDB_Name>
+      <Description> </Description>
+      <IDL_Type>booean</IDL_Type>
+      <Units> </Units>
+      <Count>1</Count>
+    </item>
+    <item>
+      <EFDB_Name>wfs</EFDB_Name>
+      <Description> </Description>
+      <IDL_Type>boolean</IDL_Type>
+      <Units> </Units>
+      <Count>1</Count>
+    </item>
+</SALCommand>
+
+<SALCommand>
+ <Subsystem>camera</Subsystem>
+ <Version>2.4</Version>
+ <Author>salgenerator</Author>
+ <EFDB_Topic>camera_command_status</EFDB_Topic>
+ <Alias>status</Alias>
+ <Device>status</Device>
+ <Property></Property>
+ <Action></Action>
+ <Value></Value>
+ <Explanation>http://sal.lsst.org/SAL/Commands/camera_command_status.html</Explanation>
+</SALCommand>
+</SALCommandSet>
