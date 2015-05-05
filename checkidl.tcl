@@ -249,6 +249,7 @@ global XMLTOPICS XMLTLM
            }
            set vitem [validitem [lindex $rec 0] [lindex $rec 1]]
            set siz [validitem [lindex $rec 0] [lindex $rec 1] dim ]
+           if { $siz == "" }  {set siz 32}
            set type [validitem [lindex $rec 0] [lindex $rec 1] type ]
            set id [validitem [lindex $rec 0] [lindex $rec 1] id ]
            if { [lindex [split $id _] 0] == "private" } {
@@ -325,15 +326,15 @@ global SAL_DIR
    set fsql [open $SAL_DIR/code/sql/[set topic]_items.sql w]
    puts $fsql "DROP TABLE IF EXISTS [set topic]_items;
 CREATE TABLE [set topic]_items (
-  num	int,
-  item	char(32),
-  type  char(32),
-  size  int,
-  units char(32),
-  freq  float,
-  range char(32),
-  location char(32),
-  comment char(128),
+  ItemId	  smallint unsigned,
+  EFDB_Name	  varchar(32),
+  IDL_Type        varchar(32),
+  Count           smallint unsigned,
+  Units           varchar(32),
+  Frequency       float,
+  Range           varchar(32),
+  Sensor_location varchar(32),
+  Description     varchar(128),
   PRIMARY KEY (num)
 );"
   close $fsql
