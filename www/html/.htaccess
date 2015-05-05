@@ -1,0 +1,5 @@
+AuthUserFile /etc/httpd/.htpasswd
+AuthType Basic
+AuthName "SAL Code Generation Tools"
+Require valid-user
+

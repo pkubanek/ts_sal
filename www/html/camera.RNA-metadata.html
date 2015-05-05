@@ -1,0 +1,36 @@
+<HTML><HEAD><TITLE>Stream definition editor - camera.RNA</TITLE></HEAD>
+<BODY BGCOLOR=White><H1>
+<IMG SRC="LSST_logo.gif" ALIGN=CENTER>
+<IMG SRC="dde.gif" ALIGN=CENTER><P><HR><P>
+<H1>Stream camera.RNA MetaData</H1><P>
+
+<P>This topic records data from each RNA unit. This will
+include<BR>performance characteristics, health checks, statuses etc. <HR><P>
+<FORM action="http://triplet.tuc.noao.edu/cgi-bin/metadef" method="post">
+<INPUT NAME="streamid" TYPE="HIDDEN" VALUE="camera.RNA">
+<H2>Units for stream data</H2><P>
+<TABLE BORDER=3 CELLPADDING=5 BGCOLOR=LightBlue  WIDTH=600>
+<TR BGCOLOR=Yellow><B><TD>Unit</TD><TD>Definition</TD><TD>Usable</TD></B></TR>
+<TR><TD>amp</TD><TD>Amperes - electrical unit of current</TD><TD><INPUT TYPE="checkbox" NAME="allow_amp" VALUE="yes"></TD></TR>
+<TR><TD>meter</TD><TD>Metric unit of distance</TD><TD><INPUT TYPE="checkbox" NAME="allow_meter" VALUE="yes"></TD></TR>
+<TR><TD>none</TD><TD>No units</TD><TD><INPUT TYPE="checkbox" NAME="allow_none" VALUE="yes"></TD></TR>
+<TR><TD>second</TD><TD>unit of time</TD><TD><INPUT TYPE="checkbox" NAME="allow_second" VALUE="yes"></TD></TR>
+<TR><TD>volt</TD><TD>Volts - electrical unit of potential difference</TD><TD><INPUT TYPE="checkbox" NAME="allow_volt" VALUE="yes"></TD></TR>
+</TABLE><P><HR><P>
+<H2>Update Frequency</H2> <select name="freq_volt">
+<option value="0.05">20 second period
+<option value="0.1">10 second period
+<option value="0.5">2 second period
+<option value="1" selected>1 Hz
+<option value="10">10 Hz
+<option value="30">30 Hz
+<option value="100">100 Hz
+</select>
+<P><HR><P>
+<H2>Quality Of Service</H2> <select name="qos_volt">
+<option value="ontime" selected>Data arrives within period denoted by stream frequency
+<option value="latest">Most recent data takes precedence
+<option value="sync">Data always arrives in sequence, may be late
+</select><P><HR><P>
+<input type="submit" value="Update MetaData settings for stream" name="apply">
+</FORM><P><HR><P></BODY></HTML>
