@@ -11,13 +11,18 @@ global IDLRESERVED SAL_WORK_DIR SAL_DIR
       if { $tag == "SALCommand" }   {set ctype "command"}
       if { $tag == "SALEvent" }     {set ctype "event"}
       if { $tag == "EFDB_Topic" } {
-        set itemid 0
         if { $fout != "" } {
            puts $fout "\};"
            puts $fout "#pragma keylist $tname"
            close $fout
-           close $fsql
+           if { $ctype == "telemetry" } {
+             close $fsql
+           }
+           if { $itemid == 0 } {
+              exec rm $SAL_WORK_DIR/[set tname].idl
+           }
         }
+        set itemid 0
         set tname $value
         puts stdout "Translating $tname"
         set fout [open $SAL_WORK_DIR/[set tname].idl w]
@@ -65,16 +70,24 @@ global IDLRESERVED SAL_WORK_DIR SAL_DIR
                puts $fout "   $type $item ; $unit; $desc"
             }
          }
-         puts $fsql "INSERT INTO [set tname]_items VALUES ($itemid,\"$item\",\"$type\",$idim,\"$unit\",$freq,\"$range\",\"$location\",\"$desc\");"
+         if { $ctype == "telemetry" } {
+           puts $fsql "INSERT INTO [set tname]_items VALUES ($itemid,\"$item\",\"$type\",$idim,\"$unit\",$freq,\"$range\",\"$location\",\"$desc\");"
+         }
       }
    }
    if { $fout != "" } {
       puts $fout "\};"
       puts $fout "#pragma keylist $tname"
       close $fout
-      close $fsql
+      if { $ctype == "telemetry" } {
+        close $fsql
+      }
    }
    close $fin
+puts stdout "itemid for $SAL_WORK_DIR/[set tname].idl=  $itemid"
+   if { $itemid == 0 } {
+      exec rm $SAL_WORK_DIR/[set tname].idl
+   }
 }
 
 
