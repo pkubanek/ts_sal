@@ -3,13 +3,16 @@
 source $SAL_DIR/geneventtests.tcl 
 
 proc geneventaliascode { subsys lang fout } {
-global EVENT_ALIASES
+global EVENT_ALIASES EVTS
+ if { [info exists EVENT_ALIASES($subsys)] } {
   stdlog "Generate event alias support for $lang"
   if { $lang == "include" } {
      foreach i $EVENT_ALIASES($subsys) { 
-       puts $fout "
+      if { [info exists EVTS($subsys,$i,param)] } {
+         puts $fout "
       salReturn logEvent_[set i]( SALData_logevent_[set i]C *data, int priority );      
       int getEvent_[set i]( SALData_logevent_[set i]C *data );"
+      }
      }
   }
   if { $lang == "cpp" } {
@@ -30,12 +33,14 @@ global EVENT_ALIASES
      catch { set result [geneventaliasisocpp $subsys $fout] } bad
      stdlog "$result"
   }
+ }
 }
 
 
 proc geneventaliascpp { subsys fout } {
 global EVENT_ALIASES SAL_WORK_DIR
    foreach i $EVENT_ALIASES($subsys) {
+    if { [info exists EVTS($subsys,$i,param)] } {
       stdlog "	: alias = $i"
       puts $fout "
 int SAL_SALData::getEvent_[set i](SALData_logevent_[set i]C *data)
@@ -67,6 +72,9 @@ salReturn SAL_SALData::logEvent_[set i]( SALData_logevent_[set i]C *data, int pr
   return status;
 \}
 "
+    } else {
+      stdlog "Alias $i has no parameters - uses standard [set subsys]_logevent"
+    }
    }
 }
 
@@ -74,6 +82,7 @@ salReturn SAL_SALData::logEvent_[set i]( SALData_logevent_[set i]C *data, int pr
 proc geneventaliasjava { subsys fout } {
 global EVENT_ALIASES EVTS
    foreach i $EVENT_ALIASES($subsys) {
+    if { [info exists EVTS($subsys,$i,param)] } {
       stdlog "	: alias = $i"
       puts $fout "
 	public int getEvent_[set i](SALData.logevent_[set i] anEvent)
@@ -104,6 +113,9 @@ global EVENT_ALIASES EVTS
            return status;
 	\}
 "
+    } else {
+      stdlog "Alias $i has no parameters - uses standard [set subsys]_logevent"
+    }
    }
 }
 
@@ -112,6 +124,7 @@ global EVENT_ALIASES EVTS
 proc geneventaliaspython { subsys fout } {
 global EVENT_ALIASES
    foreach i $EVENT_ALIASES($subsys) {
+    if { [info exists EVTS($subsys,$i,param)] } {
       stdlog "	: alias = $i"
       puts $fout "
         .def( 
@@ -123,6 +136,9 @@ global EVENT_ALIASES
             , (::salReturn ( ::SAL_SALData::* )( ::SALData_logevent_[set i]C,int ) )( &::SAL_SALData::logEvent_[set i] )
             , ( bp::arg(\"event\"), bp::arg(\"priority\") ) )    
       "
+    } else {
+      stdlog "Alias $i has no parameters - uses standard [set subsys]_logevent"
+    }
    }
 }
 
@@ -131,7 +147,11 @@ global EVENT_ALIASES
 proc geneventaliasisocpp { subsys fout } {
 global EVENT_ALIASES
    foreach i $EVENT_ALIASES { 
+    if { [info exists EVTS($subsys,$i,param)] } {
       stdlog "	: alias = $i"
+    } else {
+      stdlog "Alias $i has no parameters - uses standard [set subsys]_command"
+    }
    }
 }
 

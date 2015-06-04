@@ -42,6 +42,10 @@ global NEWCONSTS IDLSIZES IDLRESERVED
       set v "  $type	$id\[$siz\]"
      }
    }
+   if { $type == "char" } {
+     set tid [string trim $id "0123456789\[\]"]
+     set v "  string<$siz>    $tid"
+   }
 #puts stdout "valid is $v"
    if { [lsearch $IDLRESERVED [string tolower $id]] > -1 } {errorexit "Invalid use of IDL reserved token $id"}
    if { $op == "dim" } {return $siz}
@@ -136,7 +140,7 @@ global NEWTOPICS NEWSIZES NEWCONSTS
 global DESC SDESC IDLTYPES IDLSIZES
 global PUBLISHERS FREQUENCY KEYINDEX
 global SAL_DIR TIDUSED SAL_WORK_DIR
-global XMLTOPICS XMLTLM
+global XMLTOPICS XMLTLM IDLRESERVED
   set fin [open $f r]
   set fout [open $SAL_WORK_DIR/idl-templates/validated/$f w]
   stdlog "Creating $SAL_WORK_DIR/idl-templates/validated/$f"
@@ -199,6 +203,7 @@ global XMLTOPICS XMLTLM
            set id [file rootname $sname]
            set hid [join [split $id _] .]
            set topicid [file rootname $sname]
+           if { [lsearch $IDLRESERVED [string tolower $topicid]] > -1 } {errorexit "Invalid use of IDL reserved token $topicid"}
            if { [lindex $status 0] == "OK" } {
               catch {unset tnames}
               set nt [lindex $status 1]

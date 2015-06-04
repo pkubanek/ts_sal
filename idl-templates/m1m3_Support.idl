@@ -1,4 +1,5 @@
 struct m1m3_Support {
-  long Raw[16];
-  float Calibrated[32];
+  long targetpos[6];
+  long stepcnt[6];
+  float force[6];
 };

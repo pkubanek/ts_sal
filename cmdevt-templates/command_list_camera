@@ -8,18 +8,18 @@
 #type	  device 	property 	action	value+modifiers	| alias		
 #
 command  configure 		 	              		| configure
-						string  spec_id
+						string  specId
 command  filter		position				| filter
 						string name
 command  imager 	expose	 		                | image
-						int	numImages
+						long	numImages
 						double  expTime
 						boolean shutter
-						booean  guide
+						boolean guide
 						boolean wfs
 command	 guiders	roi		set			| guideStars
 						double  xpos[8]
 						double  ypos[8]
-						int     roiSize[8]
+						long    roiSize[8]
 command  status					            	| status
 

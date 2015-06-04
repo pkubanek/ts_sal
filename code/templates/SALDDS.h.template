@@ -16,8 +16,10 @@
   using namespace std;
   using namespace DDS;
 
-#define SAL__ACTORS_MAXCOUNT	128
-#define SAL__ACTORS_NAMESIZE	128
+#ifndef _SAL_salActor_MGR_
+#define _SAL_salActor_MGR_
+  #define SAL__ACTORS_MAXCOUNT	128
+  #define SAL__ACTORS_NAMESIZE	128
 
   struct salActor {
       char 			baseName[SAL__ACTORS_NAMESIZE];
@@ -58,6 +60,7 @@
       long long 		sndStamp[2];
       long long			rcvStamp[2];
   };
+#endif
 
   class SAL_SALData
   {

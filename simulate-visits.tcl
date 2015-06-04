@@ -1,6 +1,6 @@
 #!/usr/bin/tclsh
 
-load $env(SAL_DIR)/lib/libxtcs.so
+load $env(SAL_DIR)/../lib/libxtcs.so
 set startrec 1
 set numvisits 1000
 

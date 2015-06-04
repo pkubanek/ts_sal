@@ -1,7 +1,0 @@
-struct dome_CapacitorBank {
-   float setpoint;
-   float temperature[10];
-   float charge[10];
-   float chargeRate[10];
-   long  status[10];
-}

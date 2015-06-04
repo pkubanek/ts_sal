@@ -1,6 +1,0 @@
-struct tcs_WEP {
-  double z_arr1[18];
-  double z_arr2[18];
-  double z_arr3[18];
-  double z_arr4[18];
-};

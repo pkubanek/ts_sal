@@ -1,7 +1,9 @@
 
 proc geneventtestscpp { subsys } {
-global EVENT_ALIASES SAL_WORK_DIR SYSDIC
+global EVENT_ALIASES EVTS SAL_WORK_DIR SYSDIC
+ if { [info exists EVENT_ALIASES($subsys)] } {
    foreach alias $EVENT_ALIASES($subsys) {
+    if { [info exists EVTS($subsys,$i,param)] } {
       stdlog "	: log event test send for = $alias"
       set fevt [open $SAL_WORK_DIR/$subsys/cpp/src/sacpp_[set subsys]_[set alias]_send.cpp w]
       puts $fevt "
@@ -139,6 +141,7 @@ int main (int argc, char *argv\[\])
 "
      close $fevt
    }
+  }
    puts stdout "Generating events test Makefile"
    set fin [open $SAL_WORK_DIR/$subsys/cpp/src/Makefile.sacpp_[set subsys]_testevents r]
    set fout [open /tmp/Makefile.sacpp_[set subsys]_testevents w]
@@ -148,6 +151,7 @@ int main (int argc, char *argv\[\])
          set extrasrc "		"
          set allbin "all: \$\(BIN1\) \$\(BIN2\)"
          foreach alias $EVENT_ALIASES($subsys) {
+           if { [info exists EVTS($subsys,$i,param)] } {
              incr n 1
              puts $fout "
 BIN$n           = \$(BTARGETDIR)sacpp_[set subsys]_[set alias]_send
@@ -161,6 +165,7 @@ OBJS$n          = .obj/CheckStatus.o .obj/SAL_[set subsys].o .obj/sacpp_[set sub
 "
              set extrasrc "$extrasrc sacpp_[set subsys]_[set alias]_send.cpp sacpp_[set subsys]_[set alias]_log.cpp"
              set allbin "$allbin \$\(BIN$n\)"
+           }
          }
          set nbin $n
          puts $fout "
@@ -179,6 +184,7 @@ SRC           = ../src/CheckStatus.cpp ../src/SAL_[set subsys].cpp ../src/[set s
 "
          }
          foreach alias $EVENT_ALIASES($subsys) {
+          if { [info exists EVTS($subsys,$i,param)] } {
             incr n 1
             puts $fout "
 .obj/sacpp_[set subsys]_[set alias]_send.o: ../src/sacpp_[set subsys]_[set alias]_send.cpp
@@ -188,6 +194,7 @@ SRC           = ../src/CheckStatus.cpp ../src/SAL_[set subsys].cpp ../src/[set s
 	@\$\(TESTDIRSTART\) \".obj/../src\" \$\(TESTDIREND\) \$\(MKDIR\) \".obj/../src\"
 	\$\(COMPILE.cc\) \$\(EXPORTFLAGS\) \$\(OUTPUT_OPTION\) ../src/sacpp_[set subsys]_[set alias]_log.cpp
 "
+          }
          }
       }
       puts $fout $rec
@@ -195,6 +202,7 @@ SRC           = ../src/CheckStatus.cpp ../src/SAL_[set subsys].cpp ../src/[set s
    close $fin
    close $fout
    exec mv /tmp/Makefile.sacpp_[set subsys]_testevents $SAL_WORK_DIR/$subsys/cpp/src/Makefile.sacpp_[set subsys]_testevents
+ }
 }
 
  

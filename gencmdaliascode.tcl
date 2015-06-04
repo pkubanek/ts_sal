@@ -2,16 +2,19 @@
 source $SAL_DIR/gencommandtests.tcl 
 
 proc gencmdaliascode { subsys lang fout } {
-global CMD_ALIASES
+global CMD_ALIASES CMDS
+ if { [info exists CMD_ALIASES($subsys)] } {
   stdlog "Generate command alias support for $lang"
   if { $lang == "include" } {
      foreach i $CMD_ALIASES($subsys) { 
-       puts $fout "
+       if { [info exists CMDS($subsys,$i,param)] } {
+         puts $fout "
       int issueCommand_[set i]( SALData_command_[set i]C *data);
       int acceptCommand_[set i]( SALData_command_[set i]C *data);
       salReturn waitForCompletion_[set i]( int cmdSeqNum , unsigned int timeout );
       salReturn ackCommand_[set i]( int cmdSeqNum, salLONG  ack, salLONG error, char *result );
       salReturn getResponse_[set i](SALData::ackcmdSeq data);"
+       }
      }
   }
   if { $lang == "cpp" } {
@@ -32,12 +35,14 @@ global CMD_ALIASES
      catch { set result [gencmdaliasisocpp $subsys $fout] } bad
      stdlog "$result"
   }
+ }
 }
 
 
 proc gencmdaliascpp { subsys fout } {
 global CMD_ALIASES SAL_WORK_DIR
    foreach i $CMD_ALIASES($subsys) {
+    if { [info exists CMDS($subsys,$i,param)] } {
       stdlog "	: command alias = $i"
       puts $fout "
 int SAL_SALData::issueCommand_[set i]( SALData_command_[set i]C *data )
@@ -269,15 +274,19 @@ salReturn SAL_SALData::ackCommand_[set i]( int cmdId, salLONG ack, salLONG error
    return SAL__OK;
 \}
 "
+     } else {
+      stdlog "Alias $i has no parameters - uses standard [set subsys]_command"
+     }
    }
 }
 
 
 
 proc gencmdaliasjava { subsys fout } {
-global CMD_ALIASES CMDS
+global CMD_ALIASES CMDS SYSDIC
    foreach i $CMD_ALIASES($subsys) {
-      stdlog "	: alias = $i"
+    stdlog "	: alias = $i"
+    if { [info exists CMDS($subsys,$i,param)] } {
       puts $fout "
 	public int issueCommand_[set i]( command_[set i] data )
 	\{
@@ -292,13 +301,14 @@ global CMD_ALIASES CMDS
 	  DataWriter dwriter = getWriter(actorIdx);	
 	  command_[set i]DataWriter SALWriter = command_[set i]DataWriterHelper.narrow(dwriter);
 	  data.private_revCode = \"LSST TEST COMMAND\";
-	  data.private_seqNum = sal\[actorIdx\].sndSeqNum;
-#ifdef SAL_SUBSYSTEM_ID_IS_KEYED
-	  data.SALDataID = subsystemID;
-	  cmdHandle = SALWriter.register_instance(data);
-#else
-	  SALWriter.register_instance(data);
-#endif
+	  data.private_seqNum = sal\[actorIdx\].sndSeqNum;"
+      if { [info exists SYSDIC($subsys,keyedID)] } {
+        puts $fout "	  data.SALDataID = subsystemID;
+	  cmdHandle = SALWriter.register_instance(data);"
+      } else {
+        puts $fout "	  SALWriter.register_instance(data);"
+      }
+      puts $fout "
 	  if (debugLevel > 0) \{
 	    System.out.println( \"=== \[issueCommand\] $i writing a command containing :\");
 	    System.out.println( data.device + \".\" + data.property + \".\" + data.action + \" : \" + data.value);
@@ -340,11 +350,11 @@ global CMD_ALIASES CMDS
       			System.out.println(  \"    action   : \" + aCmd.value\[0\].action);
       			System.out.println(  \"    value    : \" + aCmd.value\[0\].value);
     		    \}
-                    ackdata = new SALData.ackcmd();
-#ifdef SAL_SUBSYSTEM_ID_IS_KEYED
-	            ackdata.SALDataID = subsystemID;
-#endif
-		    ackdata.private_origin = aCmd.value\[0\].private_origin;
+                    ackdata = new SALData.ackcmd();"
+      if { [info exists SYSDIC($subsys,keyedID)] } {
+         puts $fout "	            ackdata.SALDataID = subsystemID;"
+      }
+      puts $fout "		    ackdata.private_origin = aCmd.value\[0\].private_origin;
 		    ackdata.private_seqNum = aCmd.value\[0\].private_seqNum;
 		    ackdata.error  = 0;
 		    ackdata.result = \"SAL ACK\";
@@ -353,27 +363,27 @@ global CMD_ALIASES CMDS
                     data.action    = aCmd.value\[0\].action;
                     data.value     = aCmd.value\[0\].value;"
            foreach p $CMDS($subsys,$i,param) {
-              puts $fout "                    data.$p = aCmd.value\[0\].$p;"
+              set apar [lindex [split [lindex [string trim $p "\{\}"] 1] "()"] 0] 
+              puts $fout "                    data.$apar = aCmd.value\[0\].$apar;"
            }
            puts $fout "
 		    status = aCmd.value\[0\].private_seqNum;
 		    rcvSeqNum = status;
 		    rcvOrigin = aCmd.value\[0\].private_origin;
 		    ackdata.ack = SAL__CMD_ACK;
-		    SALReader.return_loan(aCmd, info);
-#ifdef SAL_SUBSYSTEM_ID_IS_KEYED
-		    ackdata.SALDataID = subsystemID;
-		    ackHandle = SALWriter.register_instance(ackdata);
-#endif
+		    SALReader.return_loan(aCmd, info);"
+      if { [info exists SYSDIC($subsys,keyedID)] } {
+         puts $fout "		    ackdata.SALDataID = subsystemID;
+		    ackHandle = SALWriter.register_instance(ackdata);"
+      }
+      puts $fout "
 		    istatus = SALWriter.write(ackdata, ackHandle);
            	    SALWriter.dispose(ackdata, ackHandle);
 		    SALWriter.unregister_instance(ackdata, ackHandle);
 		 \}
-	       \} else \{
-	          status = 0;
-	       \}
-             \}
-	     return status;
+                \}
+	        status = 0;
+	        return status;
 	\}
 "
    puts $fout "
@@ -404,7 +414,7 @@ global CMD_ALIASES CMDS
 	   \}
 	   if (status != SAL__CMD_COMPLETE) \{
 	      if (debugLevel > 0) \{
-	         System.out.println( \"=== \[waitForCompletion\] command " + sal\[actorIdx\].cmdSeqNum +  \" timed out\");
+	         System.out.println( \"=== \[waitForCompletion\] command \" + sal\[actorIdx\].cmdSeqNum +  \" timed out\");
 	      \} 
 	      logError(status);
 	   \} else \{
@@ -433,11 +443,11 @@ global CMD_ALIASES CMDS
                      if ( debugLevel > 0) \{
 				System.out.println(\"=== \[getResponse\] message received :\");
 				System.out.println(\"    revCode  : \"
-						+ data.value[i].private_revCode);
+						+ data.value\[i\].private_revCode);
 		    \}
                     lastsample = i;
 		\}
-	 	status = data.value[lastsample].ack;
+	 	status = data.value\[lastsample\].ack;
 	  	sal\[actorIdx\].rcvSeqNum = data.value\[lastsample\].private_seqNum;
 	  	sal\[actorIdx\].rcvOrigin = data.value\[lastsample\].private_origin;
 	  \} else \{
@@ -449,7 +459,7 @@ global CMD_ALIASES CMDS
 	\}
 "
    puts $fout "
-	public int ackCommand( int cmdId, int ack, int error, String result )
+	public int ackCommand_[set i]( int cmdId, int ack, int error, String result )
 	\{
    		int istatus = -1;
    		long ackHandle = HANDLE_NIL.value;
@@ -463,29 +473,34 @@ global CMD_ALIASES CMDS
    		ackdata.private_seqNum = sal\[actorIdx\].rcvSeqNum;
    		ackdata.error = error;
    		ackdata.ack = ack;
-   		ackdata.result = result;
-#ifdef SAL_SUBSYSTEM_ID_IS_KEYED
-   		ackdata.SALDataID = subsystemID;
-#endif
+   		ackdata.result = result;"
+      if { [info exists SYSDIC($subsys,keyedID)] } {
+         puts $fout "   		ackdata.SALDataID = subsystemID;"
+      }
+      puts $fout "
    		if (debugLevel > 0) \{
       			System.out.println(  \"=== \[ackCommand\] acknowledging a command with :\" );
       			System.out.println(  \"    seqNum   : \" + ackdata.private_seqNum );
       			System.out.println(  \"    ack      : \" + ackdata.ack );
       			System.out.println(  \"    error    : \" + ackdata.error );
       			System.out.println(  \"    result   : \" + ackdata.result );
-   		\}
-#ifdef SAL_SUBSYSTEM_ID_IS_KEYED
-   		ackdata.SALDataID = subsystemID;
-   		ackHandle = SALWriter.register_instance(ackdata);
-#endif
-   		istatus = SALWriter.write(ackdata, ackHandle);
-#ifdef SAL_SUBSYSTEM_ID_IS_KEYED
-    		SALWriter.unregister_instance(ackdata, ackHandle);
-#endif
+   		\}"
+      if { [info exists SYSDIC($subsys,keyedID)] } {
+         puts $fout "   		ackdata.SALDataID = subsystemID;
+   		ackHandle = SALWriter.register_instance(ackdata);"
+      }
+      puts $fout "   		istatus = SALWriter.write(ackdata, ackHandle);"
+      if { [info exists SYSDIC($subsys,keyedID)] } {
+         puts $fout "    		SALWriter.unregister_instance(ackdata, ackHandle);"
+      }
+      puts $fout "
    		return SAL__OK;
 	\}
 "
-   }
+    } else {
+      stdlog "Alias $i has no parameters - uses standard [set subsys]_command"
+    }
+  }
 }
 
 
@@ -493,6 +508,7 @@ global CMD_ALIASES CMDS
 proc gencmdaliaspython { subsys fout } {
 global CMD_ALIASES
    foreach i $CMD_ALIASES($subsys) {
+    if { [info exists CMDS($subsys,$i,param)] } {
       stdlog "	: alias = $i"
       puts $fout "
         .def( 
@@ -512,6 +528,9 @@ global CMD_ALIASES
             , (::salReturn ( ::SAL_SALData::* )( int,int ) )( &::SAL_SALData::waitForCompletion_[set i] )
             , ( bp::arg(\"cmdSeqNum\"), bp::arg(\"timeout\") ) )
       "
+    } else {
+      stdlog "Alias $i has no parameters - uses standard [set subsys]_command"
+    }
    }
 }
 
@@ -520,7 +539,11 @@ global CMD_ALIASES
 proc gencmdaliasisocpp { subsys fout } {
 global CMD_ALIASES
    foreach i $CMD_ALIASES($subsys) { 
+    if { [info exists CMDS($subsys,$i,param)] } {
       stdlog "	: alias = $i"
+    } else {
+      stdlog "Alias $i has no parameters - uses standard [set subsys]_command"
+    }
    }
 }
 

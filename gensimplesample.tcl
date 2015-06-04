@@ -385,6 +385,7 @@ global SAL_DIR SAL_WORK_DIR SYSDIC
         }
       }
       if { $lang == "java"}  {
+        exec cp $SAL_DIR/code/templates/salActor.java [set base]/java/src/org/lsst/sal/.
         exec cp $SAL_DIR/code/templates/Makefile-java.template [set id]/java/standalone/Makefile
         puts $frep "perl -pi -w -e 's/saj_SAL_types/saj_[set base]_types/g;' [set id]/java/standalone/Makefile"
         puts $frep "perl -pi -w -e 's/_SAL_/_[set id]_/g;' [set id]/java/standalone/Makefile"
@@ -561,7 +562,7 @@ global SAL_WORK_DIR
 
 proc salfullgen { } {
 global SAL_WORK_DIR OPTIONS
-  set atypes [lsort [glob $SAL_WORK_DIR/idl-temmplates/validated/sal/*.idl]]
+  set atypes [lsort [glob $SAL_WORK_DIR/idl-templates/validated/sal/*.idl]]
   foreach i $atypes {
     set base [lindex [exec grep module $i] 1]
     set ptypes [split [exec grep pragma $i] \n]

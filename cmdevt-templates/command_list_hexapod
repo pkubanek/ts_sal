@@ -14,7 +14,7 @@ command  actuators 	position 	absolute 		| configurePosition
 						double	u
 						double	v
 						double	w
-						bool	sync
+						boolean	sync
 command  actuators 	position 	offset     		| offset
 						double	x
 						double	y
@@ -22,7 +22,7 @@ command  actuators 	position 	offset     		| offset
 						double	u
 						double	v
 						double	w
-						bool	sync
+						boolean	sync
 command  actuators 	pivot 	                		| pivot
 						double	x
 						double	y

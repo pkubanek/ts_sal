@@ -1,7 +1,9 @@
 
 proc gencommandtestscpp { subsys } {
 global CMD_ALIASES CMDS SAL_WORK_DIR SYSDIC
+ if { [info exists CMD_ALIASES($subsys)] } {
    foreach alias $CMD_ALIASES($subsys) {
+    if { [info exists CMDS($subsys,$i,param)] } {
       stdlog "	: command test send for = $alias"
       set fcmd [open $SAL_WORK_DIR/$subsys/cpp/src/sacpp_[set subsys]_[set alias]_commander.cpp w]
       puts $fcmd "
@@ -147,6 +149,7 @@ int main (int argc, char *argv\[\])
 \}
 "
      close $fcmd
+    }
    }
    puts stdout "Generating commands test Makefile"
    set fin [open $SAL_WORK_DIR/$subsys/cpp/src/Makefile.sacpp_[set subsys]_testcommands r]
@@ -157,6 +160,7 @@ int main (int argc, char *argv\[\])
          set extrasrc "		"
          set allbin "all: \$\(BIN1\) \$\(BIN2\)"
          foreach alias $CMD_ALIASES($subsys) {
+           if { [info exists CMDS($subsys,$i,param)] } {
              incr n 1
              puts $fout "
 BIN$n           = \$(BTARGETDIR)sacpp_[set subsys]_[set alias]_commander
@@ -170,6 +174,7 @@ OBJS$n          = .obj/CheckStatus.o .obj/SAL_[set subsys].o .obj/sacpp_[set sub
 "
              set extrasrc "$extrasrc sacpp_[set subsys]_[set alias]_commander.cpp sacpp_[set subsys]_[set alias]_controller.cpp"
              set allbin "$allbin \$\(BIN$n\)"
+           }
          }
          set nbin $n
          puts $fout "
@@ -188,6 +193,7 @@ SRC           = ../src/CheckStatus.cpp ../src/SAL_[set subsys].cpp $extrasrc"
 "
          }
          foreach alias $CMD_ALIASES($subsys) {
+          if { [info exists CMDS($subsys,$i,param)] } {
             incr n 1
             puts $fout "
 .obj/sacpp_[set subsys]_[set alias]_commander.o: ../src/sacpp_[set subsys]_[set alias]_commander.cpp
@@ -197,6 +203,7 @@ SRC           = ../src/CheckStatus.cpp ../src/SAL_[set subsys].cpp $extrasrc"
 	@\$\(TESTDIRSTART\) \".obj/../src\" \$\(TESTDIREND\) \$\(MKDIR\) \".obj/../src\"
 	\$\(COMPILE.cc\) \$\(EXPORTFLAGS\) \$\(OUTPUT_OPTION\) ../src/sacpp_[set subsys]_[set alias]_controller.cpp
 "
+          }
          }
       }
       puts $fout $rec
@@ -204,6 +211,7 @@ SRC           = ../src/CheckStatus.cpp ../src/SAL_[set subsys].cpp $extrasrc"
    close $fin
    close $fout
    exec mv /tmp/Makefile.sacpp_[set subsys]_testcommands $SAL_WORK_DIR/$subsys/cpp/src/Makefile.sacpp_[set subsys]_testcommands
+ }
 }
 
  

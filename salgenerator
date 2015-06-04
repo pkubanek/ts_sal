@@ -15,6 +15,7 @@ if { $argc < 2 } {
 		simd     - generate SIMD c++ code
                 sal      - generate SAL wrappers for cpp, java, isocpp, python
 		compile  - compile a c++ module
+                lib      - build a SAL shared library for a subsystem
 		java     - generate JNI interface
 		tcl      - generate tcl interface
 		html     - generate web form interfaces
@@ -60,7 +61,7 @@ if { [file exists $SAL_WORK_DIR] == 0 } {
 
 cd $SAL_WORK_DIR
 set SAL_WORK_DIR [file normalize .]
-foreach o "validate code compile cpp isocpp java jni link maven tcl db icd labview python html sal shmem sim simd  verbose" {
+foreach o "validate code compile cpp isocpp java jni lib link maven tcl db icd labview parsexml parsecommandlist parseeventlist python html sal shmem sim simd verbose" {
   set OPTIONS($o) 0
   if { [lsearch [string tolower $argv] $o] > -1 } {
      set OPTIONS($o) 1
@@ -98,6 +99,32 @@ if { $OPTIONS(html) } {
 
 
 
+if { $OPTIONS(parsexml) } {
+   source $SAL_DIR/xml/parseXML.tcl
+   foreach i $TSUBSYSTEMS { 
+      if { [file extension $i] == ".xml" } {
+         parseXMLtoidl $i
+      }
+   }
+   exit
+}
+
+
+if { $OPTIONS(parsecommandlist) } {
+puts stdout "$argv"
+   catch { set result [exec $SAL_DIR/parse_command_list.tcl [lindex $argv 1]] } bad
+   puts stdout "$result"
+   exit
+}
+
+
+if { $OPTIONS(parseeventlist) } {
+   catch { set result [exec $SAL_DIR/parse_event_list.tcl [lindex $argv 1]] } bad
+   puts stdout "$result"
+   exit
+}
+
+
 if { $OPTIONS(validate) } {
   exec mkdir -p idl-templates/validated
   source $SAL_DIR/checkidl.tcl
@@ -130,7 +157,6 @@ if { $OPTIONS(validate) } {
   
 }
 
-
 if { $OPTIONS(maven) } {
   cd $SAL_WORK_DIR
   source $SAL_DIR/mavenize.tcl
@@ -151,17 +177,20 @@ if { $OPTIONS(maven) } {
 catch {exec rmdir saltemptest}
 exec mkdir -p .salwork
 set TARGETS ""
-set matches $TSUBSYSTEMS
-foreach f $matches {
+if { $OPTIONS(lib) == 0 } {
+ set matches $TSUBSYSTEMS
+ foreach f $matches {
    if { [file exists $SAL_WORK_DIR/idl-templates/validated/$f] } {
       set TARGETS "$TARGETS [file tail $f]"
    }
-}
-if { $TARGETS == "" } {
+ }
+ if { $TARGETS == "" } {
    errorexit "No validated Interface Definition files match $TSUBSYSTEMS"
-} else {
+ } else {
    stdlog "Targets for build : $TARGETS"
+ }
 }
+
 
 
 if { $OPTIONS(simd) } {
@@ -221,6 +250,16 @@ if { $OPTIONS(sal) } {
        if { $OPTIONS(verbose) } {stdlog $result}
      }
   }
+}
+
+if { $OPTIONS(lib) } {
+   foreach s $TSUBSYSTEMS {
+     if { $s != "lib" } {
+       stdlog "Building shared library for $s subsystem"
+       catch { set result [exec $SAL_DIR/buildsharedlib $s] } bad
+       if { $OPTIONS(verbose) } {stdlog $result}
+     }
+   }
 }
 
 

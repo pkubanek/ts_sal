@@ -1,0 +1,13 @@
+#!/bin/sh
+#
+# Build a SAL shared library using specified subsystem components
+#
+cd $SAL_WORK_DIR
+echo "work dir is $SAL_WORK_DIR"
+echo "ospl home is $OSPL_HOME"
+rm -fr tmplib
+mkdir -p tmplib
+cp $1_*/cpp/standalone/.obj/CheckStatus.o tmplib/.
+cp $1_*/cpp/standalone/.obj/SAL_$1.o tmplib/.
+cp $1/cpp/.obj/* tmplib/.
+g++ -o lib/libSAL_$1.so -shared  -fPIC -L"." -L$OSPL_HOME/lib -Wl,-rpath,$OSPL_HOME/lib tmplib/*.o -l"dcpssacpp" -l"dcpsgapi" -l"ddsuser" -l"ddskernel" -l"ddsserialization" -l"ddsconfparser" -l"ddsconf" -l"ddsdatabase" -l"ddsutil" -l"ddsos" -ldl -lrt -lpthread
