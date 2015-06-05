@@ -146,6 +146,7 @@ global XMLTOPICS XMLTLM IDLRESERVED
   stdlog "Creating $SAL_WORK_DIR/idl-templates/validated/$f"
   set id [file rootname $f]
   set hid [join [split $id _] .]
+  set subsys [lindex [split $id _] 0]
   set NONCODING 0
   set KEYINDEX ""
   catch {unset XMLTOPICS}
@@ -190,10 +191,10 @@ global XMLTOPICS XMLTLM IDLRESERVED
            close $fhtm
       } else {
         if { [string range $rec 0 6] == "typedef" } {
-           return "ERROR : $rec\nOnly primitive types supported"
+           errorexit "ERROR : $rec\nOnly primitive types supported"
         }
         if { [string range $rec 0 5] == "module" } {
-           return "ERROR : $rec\nNot supported"
+           errorexit "ERROR : $rec\nNot supported"
         }
         if { [string range $rec 0 5] == "struct" } {
            incr finds 1
@@ -201,6 +202,9 @@ global XMLTOPICS XMLTLM IDLRESERVED
            set sname [lindex [string trim $rec "\{"] 1]
            set status [salsyntaxcheck topic $sname]
            set id [file rootname $sname]
+           if { $subsys != [lindex [split $id _] 0] } {
+              errorexit "ERROR : $id not valid for Subsystem $subsys"
+           }
            set hid [join [split $id _] .]
            set topicid [file rootname $sname]
            if { [lsearch $IDLRESERVED [string tolower $topicid]] > -1 } {errorexit "Invalid use of IDL reserved token $topicid"}
@@ -208,7 +212,7 @@ global XMLTOPICS XMLTLM IDLRESERVED
               catch {unset tnames}
               set nt [lindex $status 1]
               if { [info exists NEWTOPICS($nt)] } {
-                 return "ERROR : $rec\nDuplicate struct definition"
+                 return "errorexit : $rec\nDuplicate struct definition"
               }
               catch {
                  close $fout
@@ -237,11 +241,11 @@ global XMLTOPICS XMLTLM IDLRESERVED
               set NEWTOPICS($hid) 1
               set NEWSIZES($hid)  0
            } else {
-              return "ERROR : $rec\n$status"
+              errorexit "ERROR : $rec\n$status"
            }
         } else {
            if { $finds == 0 } {
-              return "ERROR : $rec\nItem precedes struct"
+              errorexit "ERROR : $rec\nItem precedes struct"
            }
            set u ""
            if { [string trim [lindex $rec 0]] == "unsigned" } {
@@ -250,7 +254,7 @@ global XMLTOPICS XMLTLM IDLRESERVED
            }
            set type [string tolower [lindex [split [string trim [lindex $rec 0]] "<"] 0]]
            if { [lsearch $IDLTYPES $type] < 0 } {
-              return "ERROR : $rec\nType $type not supported"
+              errorexit "ERROR : $rec\nType $type not supported"
            }
            set vitem [validitem [lindex $rec 0] [lindex $rec 1]]
            set siz [validitem [lindex $rec 0] [lindex $rec 1] dim ]

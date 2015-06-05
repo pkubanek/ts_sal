@@ -1,4 +1,4 @@
-struct enclosure_TC {
+struct dome_TC {
   float glycolTemperature[4];
   float boosterSpeed[4];
 };
