@@ -59,7 +59,7 @@ if { [file exists event_list_[set subsys]] == 0 } {
 }
 exec runsalgenerator $froot parseEventList $subsys
 
-exec runsalgenerator $froot [set subsys]*.idl html
+exec runsalgenerator $froot [set subsys]_*.idl html
 
 
 
