@@ -69,7 +69,7 @@ salReturn SAL_[set base]::getSample_[set name]([set base]_[set name]C *data)
   [set base]::[set name]DataReader_var SALReader = [set base]::[set name]DataReader::_narrow(dreader
 .in());
   checkHandle(SALReader.in(), \"[set base]::[set name]DataReader::_narrow\");
-  status = SALReader->take(Instances, info, LENGTH_UNLIMITED, ANY_SAMPLE_STATE, ANY_VIEW_STATE, ANY_INSTANCE_STATE);
+  status = SALReader->take(Instances, info, sal\[SAL__[set base]_[set name]_ACTOR\].maxSamples , ANY_SAMPLE_STATE, ANY_VIEW_STATE, ANY_INSTANCE_STATE);
   checkStatus(status, \"[set base]::[set name]DataReader::take\");
   istatus = SAL__NO_UPDATES;
   for (DDS::ULong j = 0; j < Instances.length(); j++)
@@ -93,6 +93,14 @@ salReturn SAL_[set base]::getSample_[set name]([set base]_[set name]C *data)
   status = SALReader->return_loan(Instances, info);
   checkStatus(status, \"[set base]::[set name]DataReader::return_loan\");
   return istatus;
+\}
+
+salReturn SAL_[set base]::getNextSample_[set name]([set base]_[set name]C *data)
+\{
+    salReturn istatus = -1;
+    sal\[SAL__[set base]_[set name]_ACTOR\].maxSamples = 1;
+    istatus = getSample_[set name](data);
+    return istatus;
 \}
 
 "
@@ -154,6 +162,7 @@ void SAL_SALData::initSalActors ()
       sal\[i\].isEventReader = false;
       sal\[i\].isEventWriter = false;
       sal\[i\].isActive = false;
+      sal\[i\].maxSamples = LENGTH_UNLIMITED;
     \}
 "
    set idx 0
@@ -175,7 +184,7 @@ proc addActorIndexesJava { idlfile base fout } {
       incr idx 1 
    }
    puts $fout "
-	public void SAL_SALData::initSalActors ()
+	public void initSalActors ()
 	\{
 "
    set idx 0
@@ -235,7 +244,7 @@ global SAL_DIR SAL_WORK_DIR SYSDIC
                set name [lindex $j 2]
                puts stdout "	for $base $name"
                puts $fout "
-                    if ( actorIdx == static SAL__[set base]_[set name]_ACTOR ) \{
+                    if ( actorIdx == SAL__[set base]_[set name]_ACTOR ) \{
 			[set name]TypeSupport [set name]TS = new [set name]TypeSupport();
 			registerType(actorIdx,[set name]TS);
                         return SAL__OK;
@@ -431,6 +440,7 @@ salReturn SAL_[set base]::getSample([set base]::[set name]Seq data)
       salReturn getSample([set base]::[set name]Seq data);
       salReturn putSample_[set name]([set base]_[set name]C *data);
       salReturn getSample_[set name]([set base]_[set name]C *data);
+      salReturn getNextSample_[set name]([set base]_[set name]C *data);
 "
                insertcfragments $fout $base $name
            }

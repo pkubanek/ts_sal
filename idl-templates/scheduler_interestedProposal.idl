@@ -1,6 +1,10 @@
 struct scheduler_interestedProposal {
     long    subSequenceNumber;
     long    pairNumber;
+    long    proposalId;
+    long    targetId;
+    double  targetProposalRankValue;
+    long    targetRankPosition;
 }
 
 

@@ -72,8 +72,11 @@ using namespace std;
 \{"
       puts $fbst "   bp::class_<[set subsys]_[set name]C>(\"[set subsys]_[set name]C\")"
       if {[string range $name 0 7] != "command_" && [string range $name 0 8] != "logevent_"}  {
-        puts $fbst2 "  .def(
+        puts $fbst2 "
+  .def(
         \"getSample_[set name]\" ,  &::SAL_[set subsys]::getSample_[set name] )
+  .def(
+        \"getNextSample_[set name]\" ,  &::SAL_[set subsys]::getNextSample_[set name] )
   .def(
       \"putSample_[set name]\" ,  &::SAL_[set subsys]::putSample_[set name] )"
       }
@@ -385,7 +388,6 @@ global SAL_DIR SAL_WORK_DIR SYSDIC
         }
       }
       if { $lang == "java"}  {
-        exec cp $SAL_DIR/code/templates/salActor.java [set base]/java/src/org/lsst/sal/.
         exec cp $SAL_DIR/code/templates/Makefile-java.template [set id]/java/standalone/Makefile
         puts $frep "perl -pi -w -e 's/saj_SAL_types/saj_[set base]_types/g;' [set id]/java/standalone/Makefile"
         puts $frep "perl -pi -w -e 's/_SAL_/_[set id]_/g;' [set id]/java/standalone/Makefile"
