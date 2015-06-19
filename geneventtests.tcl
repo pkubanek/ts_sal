@@ -1,4 +1,3 @@
-
 proc geneventtestscpp { subsys } {
 global EVENT_ALIASES EVTS SAL_WORK_DIR SYSDIC
  if { [info exists EVENT_ALIASES($subsys)] } {
@@ -16,6 +15,7 @@ global EVENT_ALIASES EVTS SAL_WORK_DIR SYSDIC
 #include <string>
 #include <sstream>
 #include <iostream>
+#include <unistd.h>
 #include \"SAL_[set subsys].h\"
 #include \"ccpp_sal_[set subsys].h\"
 #include \"os.h\"
@@ -63,7 +63,7 @@ int main (int argc, char *argv\[\])
   // generate event
   mgr.logEvent_[set alias](&myData, priority);
   cout << \"=== Event $alias generated = \" << endl;
-
+  sleep(1);
   /* Remove the DataWriters etc */
   mgr.salShutdown();
 
@@ -205,4 +205,3 @@ SRC           = ../src/CheckStatus.cpp ../src/SAL_[set subsys].cpp ../src/[set s
  }
 }
 
- 
