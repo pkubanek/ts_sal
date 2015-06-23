@@ -23,7 +23,8 @@ public class SALDataEvent {
 	    String msg=args[1] + " " + args[2];
 	    int priority=1;
 	    status = mgr.logEvent(msg,priority);
-         
+            try {Thread.sleep(1000);} catch (InterruptedException e) { e.printStackTrace(); }
+
 	    /* Remove the DataWriters etc */
 	    mgr.salShutdown();
 

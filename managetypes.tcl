@@ -83,7 +83,7 @@ global TYPESUBS VPROPS
    set VPROPS(array) 0
    set VPROPS(string) 0
    set VPROPS(int) 0
-   set VPROPS(double) 00
+   set VPROPS(double) 0
    set VPROPS(name) ""
    if { [lindex $rec 0] == "string" } {
       set VPROPS(string) 1
@@ -94,6 +94,17 @@ global TYPESUBS VPROPS
       return $res
    }
    if { [lindex $rec 0] == "unsigned" } {set u "unsigned"; set rec [join [lrange $rec 1 end] " "]}
+   if { [lindex $rec 0] == "char" } {
+      if { [llength [split $rec "\[("]] > 1 } {
+        set s [lindex [split $rec "\[\]()"] 1]
+        set name [lindex [lindex [split $rec "\[\]()"] 0] 1]
+        set VPROPS(name) $name
+        set VPROPS(string) 1
+        set VPROPS(dim) [string trim $s "\\"]
+        set res "  std::string	$name;[join [lrange $rec 2 end]]"
+        return $res
+      }
+   }
    if { [llength [split $rec "<"]] > 1 } {
       set s [lindex [split $rec "<>"] 1]
       set VPROPS(dim) $s

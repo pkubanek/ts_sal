@@ -495,12 +495,12 @@ public class SAL_SALData {
 	public int getEvent(SALData.logevent anEvent)
 	{
 	  int status =  -1;
-
-	  if (hasEventReader == false) {
+	  int actorIdx = SAL__SALData_logevent_ACTOR; 
+	  if (sal[actorIdx].isEventReader == false) {
 	     salTelemetrySub("SALData_logevent");
-	     hasEventReader = true;
+	     sal[actorIdx].isEventReader = true;
 	  }
-	  DataReader dreader = getReader();
+	  DataReader dreader = getReader(actorIdx);
 	  logeventDataReader SALReader = logeventDataReaderHelper.narrow(dreader);
           logeventSeqHolder data = new logeventSeqHolder();
   	  SampleInfoSeqHolder infoSeq = new SampleInfoSeqHolder();
@@ -529,16 +529,17 @@ public class SAL_SALData {
 	public int logEvent( String message, int priority )
 	{
 	   int status = 0;
+	   int actorIdx = SAL__SALData_logevent_ACTOR; 
 	   int istatus =  -1;
 	   logevent event;
 	   String stopic="SALData_logevent";
 	   long eventHandle = HANDLE_NIL.value;
 
-	  if (hasEventWriter == false) {
+	  if (sal[actorIdx].isEventWriter == false) {
 	    salTelemetryPub(stopic);
-	    hasEventWriter = true;	
+	    sal[actorIdx].isEventWriter = true;	
   	  }
-	  DataWriter dwriter = getWriter();
+	  DataWriter dwriter = getWriter(actorIdx);
 	  logeventDataWriter SALWriter = logeventDataWriterHelper.narrow(dwriter);
           event = new logevent();
 	  event.message = message;
