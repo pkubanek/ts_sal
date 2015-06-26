@@ -44,7 +44,7 @@ proc writeXMLtelemetry { subsys } {
 global SAL_WORK_DIR
   set fout [open $SAL_WORK_DIR/xml/[set subsys]_Telemetry.xml w]
   puts $fout "<?xml version=\"1.0\" encoding=\"UTF-8\"?>
-<?xml-stylesheet type=\"text/xsl\" href=\"SALTelemetrySet.xsl\"?>
+<?xml-stylesheet type=\"text/xsl\" href=\"http://lsst-sal.tuc.noao.edu/schema/SALTelemetrySet.xsl\"?>
 <SALTelemetrySet xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"
 	xsi:noNamespaceSchemaLocation=\"http://lsst-sal.tuc.noao.edu/schema/SALTelemetrySet.xsd\">"
   set all [glob $SAL_WORK_DIR/xml/[set subsys]_*.xml]
@@ -69,7 +69,7 @@ global CMDS CMD_ALIASES
   set fout [open $dpath/[set subsys]_Commands.xml w]
   set updatedate [exec date]
   puts $fout "<?xml version=\"1.0\" encoding=\"UTF-8\"?>
-<?xml-stylesheet type=\"text/xsl\" href=\"SALCommandSet.xsl\"?>
+<?xml-stylesheet type=\"text/xsl\" href=\"http://lsst-sal.tuc.noao.edu/schema/SALCommandSet.xsl\"?>
 <SALCommandSet xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"
 	xsi:noNamespaceSchemaLocation=\"http://lsst-sal.tuc.noao.edu/schema/SALCommandSet.xsd\">"
   foreach i [lsort $CMD_ALIASES($subsys)] {
@@ -111,7 +111,7 @@ global EVTS EVENT_ALIASES
   exec mkdir -p $dpath
   set fout [open $dpath/[set subsys]_Events.xml w]
   puts $fout "<?xml version=\"1.0\" encoding=\"UTF-8\"?>
-<?xml-stylesheet type=\"text/xsl\" href=\"SALEventSet.xsl\"?>
+<?xml-stylesheet type=\"text/xsl\" href=\"http://lsst-sal.tuc.noao.edu/schema/SALEventSet.xsl\"?>
 <SALEventSet xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"
 	xsi:noNamespaceSchemaLocation=\"http://lsst-sal.tuc.noao.edu/schema/SALEventSet.xsd\">"
   set updatedate [exec date]
