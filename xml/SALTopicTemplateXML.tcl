@@ -16,8 +16,11 @@ global XMLTLM XMLTOPICS
      puts $fout "      <item>"
      foreach j "EFDB_Name Description Frequency Publishers Values_per_Publisher Size_in_bytes IDL_Type Units Conversion Sensor_location Count Instances_per_night Bytes_per_night Needed_by_DM  Needed_by_Camera Needed_by_OCS Needed_by_TCS Needed_by_EPO" {
             if { [info exists XMLTLM($i,$j)] } {
-              puts $fout "          <$j>$XMLTLM($i,$j)</$j>"
-#              puts stdout "<$j>$XMLTLM($i,$j)</$j>"
+              if { $j == "IDL_Type" } {
+                puts $fout "          <$j>[xmlForm $XMLTLM($i,$j)]</$j>"
+              } else {
+                puts $fout "          <$j>$XMLTLM($i,$j)</$j>"
+              }
             }
      }
      puts $fout "      </item>"
@@ -27,13 +30,23 @@ global XMLTLM XMLTOPICS
   close $fout
 }
 
+proc xmlForm { str } {
+   if { [llength [split $str "<>"]] > 1 } {
+      set spl [split $str "<>"]
+      set res "[lindex $spl 0]&lt;[lindex $spl 1]&gt;"
+      return $res
+   }
+   return $str
+}
+
+
 proc writeXMLtelemetry { subsys } { 
 global SAL_WORK_DIR
   set fout [open $SAL_WORK_DIR/xml/[set subsys]_Telemetry.xml w]
   puts $fout "<?xml version=\"1.0\" encoding=\"UTF-8\"?>
 <?xml-stylesheet type=\"text/xsl\" href=\"SALTelemetrySet.xsl\"?>
 <SALTelemetrySet xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"
-	xsi:noNamespaceSchemaLocation=\"SALTelemetrySet.xsd\">"
+	xsi:noNamespaceSchemaLocation=\"http://lsst-sal.tuc.noao.edu/schema/SALTelemetrySet.xsd\">"
   set all [glob $SAL_WORK_DIR/xml/[set subsys]_*.xml]
   foreach i $all { 
      set id [lindex [split [file tail $i] "_."] 1]
@@ -58,7 +71,7 @@ global CMDS CMD_ALIASES
   puts $fout "<?xml version=\"1.0\" encoding=\"UTF-8\"?>
 <?xml-stylesheet type=\"text/xsl\" href=\"SALCommandSet.xsl\"?>
 <SALCommandSet xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"
-	xsi:noNamespaceSchemaLocation=\"SALCommandSet.xsd\">"
+	xsi:noNamespaceSchemaLocation=\"http://lsst-sal.tuc.noao.edu/schema/SALCommandSet.xsd\">"
   foreach i [lsort $CMD_ALIASES($subsys)] {
      puts $fout "
 <SALCommand>
@@ -81,7 +94,7 @@ global CMDS CMD_ALIASES
            if { $count == ""} { set count 1}
            puts $fout "      <EFDB_Name>$name</EFDB_Name>"
            puts $fout "      <Description> </Description>"
-           puts $fout "      <IDL_Type>$type</IDL_Type>"
+           puts $fout "      <IDL_Type>[xmlForm $type]</IDL_Type>"
            puts $fout "      <Units> </Units>"
            puts $fout "      <Count>$count</Count>"
            puts $fout "    </item>"
@@ -100,7 +113,7 @@ global EVTS EVENT_ALIASES
   puts $fout "<?xml version=\"1.0\" encoding=\"UTF-8\"?>
 <?xml-stylesheet type=\"text/xsl\" href=\"SALEventSet.xsl\"?>
 <SALEventSet xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"
-	xsi:noNamespaceSchemaLocation=\"SALEventSet.xsd\">"
+	xsi:noNamespaceSchemaLocation=\"http://lsst-sal.tuc.noao.edu/schema/SALEventSet.xsd\">"
   set updatedate [exec date]
   foreach i [lsort $EVENT_ALIASES($subsys)] {
      puts $fout "
@@ -127,7 +140,7 @@ global EVTS EVENT_ALIASES
            if { $count == ""} { set count 1}
            puts $fout "      <EFDB_Name>$name</EFDB_Name>"
            puts $fout "      <Description> </Description>"
-           puts $fout "      <IDL_Type>$type</IDL_Type>"
+           puts $fout "      <IDL_Type>[xmlForm $type]</IDL_Type>"
            puts $fout "      <Units> </Units>"
            puts $fout "      <Count>$count</Count>"
            puts $fout "    </item>"
