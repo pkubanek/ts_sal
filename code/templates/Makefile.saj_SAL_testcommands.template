@@ -9,7 +9,7 @@ CLASSDIR      = ../src/
 OUTPUT_OPTION = -d $(CLASSDIR)
 COMPILE.java  = $(JAVAC) $(JAVACFLAGS) -cp $(JAVACCPATH) 
 JAVACCPATH    = "$(SAL_HOME)/lib/saj_SALData_types.jar:$(CLASSDIR):$(OSPL_HOME)/jar/dcpssaj.jar:"
-MAKEFILE      = Makefile.saj_SAL_cmdctl
+MAKEFILE      = Makefile.saj_SAL_SALData_SALALIAS_test
 DEPENDENCIES  = .depend.$(MAKEFILE)
 LTARGETDIR    = ./
 CAT           = cat
@@ -21,15 +21,15 @@ MKDIR         = mkdir -p
 TESTDIRSTART  = test -d
 TESTDIREND    = ||
 TOUCH         = touch
-GENFLAGS      =  
-CLASSES       =  $(CLASSDIR)/org/lsst/sal/SAL_SALData$(CLASSEXT) $(CLASSDIR)/org/lsst/sal/salActor$(CLASSEXT) $(CLASSDIR)ErrorHandler$(CLASSEXT) $(CLASSDIR)SALDataCommander$(CLASSEXT) $(CLASSDIR)SALDataController$(CLASSEXT)
-JARCLASSES    =  org/lsst/sal/SAL_SALData$(CLASSEXT) org/lsst/sal/salActor$(CLASSEXT) ErrorHandler$(CLASSEXT) SALDataCommander$(CLASSEXT)  SALDataController$(CLASSEXT)
+GENFLAGS      = -g
+CLASSES       =  $(CLASSDIR)/org/lsst/sal/SAL_SALData$(CLASSEXT) $(CLASSDIR)/org/lsst/sal/salActor$(CLASSEXT) $(CLASSDIR)ErrorHandler$(CLASSEXT) $(CLASSDIR)SALDataCommander_SALALIAS$(CLASSEXT) $(CLASSDIR)SALDataController_SALALIAS$(CLASSEXT)
+JARCLASSES    =  org/lsst/sal/SAL_SALData$(CLASSEXT) org/lsst/sal/salActor$(CLASSEXT) ErrorHandler$(CLASSEXT) SALDataCommander_SALALIAS$(CLASSEXT)  SALDataController_SALALIAS$(CLASSEXT)
 JAREXT        = .jar
-MAINCLASS     = SALDataCommander SALDataController
-JARFILE       = $(LTARGETDIR)$(LIBPREFIX)saj_SAL_cmdctl$(LIBSUFFIX)$(JAREXT)
-MANIFEST      = saj_SAL_cmdctl.manifest
+MAINCLASS     = SALDataCommander_SALALIAS SALDataController_SALALIAS
+JARFILE       = $(LTARGETDIR)$(LIBPREFIX)saj_SAL_SALData_SALALIAS_test$(LIBSUFFIX)$(JAREXT)
+MANIFEST      = saj_SAL_SALData_SALALIAS_test.manifest
 JARFLAGS      = cvfm
-SRC           = ../src/org/lsst/sal/SAL_SALData.java ../src/org/lsst/sal/salActor.java ../src/ErrorHandler.java ../src/SALDataCommander.java ../src/SALDataController.java 
+SRC           = ../src/org/lsst/sal/SAL_SALData.java ../src/org/lsst/sal/salActor.java ../src/ErrorHandler.java ../src/SALDataCommander_SALALIAS.java ../src/SALDataController_SALALIAS.java 
 
 #----------------------------------------------------------------------------
 #       Local targets
@@ -63,13 +63,13 @@ $(CLASSDIR)ErrorHandler$(CLASSEXT): ../src/ErrorHandler.java
 	@$(TESTDIRSTART) "$(CLASSDIR)" $(TESTDIREND) $(MKDIR) "$(CLASSDIR)"
 	$(COMPILE.java) $(EXPORTFLAGS) $(OUTPUT_OPTION) ../src/ErrorHandler.java
 
-$(CLASSDIR)SALDataCommander$(CLASSEXT): ../src/SALDataCommander.java
+$(CLASSDIR)SALDataCommander_SALALIAS$(CLASSEXT): ../src/SALDataCommander_SALALIAS.java
 	@$(TESTDIRSTART) "$(CLASSDIR)" $(TESTDIREND) $(MKDIR) "$(CLASSDIR)"
-	$(COMPILE.java) $(EXPORTFLAGS) $(OUTPUT_OPTION) ../src/SALDataCommander.java
+	$(COMPILE.java) $(EXPORTFLAGS) $(OUTPUT_OPTION) ../src/SALDataCommander_SALALIAS.java
 
-$(CLASSDIR)SALDataController$(CLASSEXT): ../src/SALDataController.java
+$(CLASSDIR)SALDataController_SALALIAS$(CLASSEXT): ../src/SALDataController_SALALIAS.java
 	@$(TESTDIRSTART) "$(CLASSDIR)" $(TESTDIREND) $(MKDIR) "$(CLASSDIR)"
-	$(COMPILE.java) $(EXPORTFLAGS) $(OUTPUT_OPTION) ../src/SALDataController.java
+	$(COMPILE.java) $(EXPORTFLAGS) $(OUTPUT_OPTION) ../src/SALDataController_SALALIAS.java
 
 clean:
 	-$(RM) $(CLASSES)

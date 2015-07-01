@@ -26,6 +26,7 @@ while { [gets $fin rec] > -1 } {
           set y [join [split $x "\[" ] "("]
           set z [join [split $y "\]" ] ")"]
           lappend CMDS($subsys,$alias,param) $z
+          lappend CMDS($subsys,$alias,plist) [lindex $z 1]
        }
   }
 }
@@ -58,11 +59,6 @@ foreach i [lsort $ALIASES] {
    }
    close $fidl
 }
-
-puts stdout "Generating command XML"
-set CMD_ALIASES([set subsys]) "$ALIASES"
-source $SAL_DIR/xml/SALTopicTemplateXML.tcl
-writeXMLcommands $SAL_WORK_DIR/xml $subsys
 
 puts stdout "Generating test command gui input"        
 set fout [open $SAL_WORK_DIR/idl-templates/validated/[set subsys]_cmddef.tcl w]

@@ -62,8 +62,8 @@ set rotrate [expr $k * cos($az) / cos($alt)]
 puts stdout "Moving dome : target position set altaz azimuth=$az elevation=$alt"
 set status [catch {exec $domeCommander     5 target position set altaz "azimuth=$az elevation=$alt"} result]
 puts stdout [cmdok $result]
-puts stdout "Moving m2   : target position set altaz azimuth=$az elevation=$alt"
-set status [catch {exec $m2msCommander       5 target position set altaz "azimuth=$az elevation=$alt"} result]
+###puts stdout "Moving m2   : target position set altaz azimuth=$az elevation=$alt"
+###set status [catch {exec $m2msCommander       5 target position set altaz "azimuth=$az elevation=$alt"} result]
 puts stdout [cmdok $result]
 puts stdout "Adjusting rotator : target rotation rate set speed=$rotrate"
 set status [catch {exec $rotatorCommander       1 target rotation rate set "speed=$rotrate"} result]

@@ -28,6 +28,7 @@ import DDS.SampleInfoSeqHolder;
 
 class salActor {
 	private String baseName;
+        private String topicName;
 	private Topic topic;
         private Topic topic2;
         private ContentFilteredTopic filteredtopic;
@@ -45,12 +46,14 @@ class salActor {
 	private DataReader reader2;
 	private String typeName;
 	private String typeName2;
+        private Boolean isActive;
         private Boolean isReader;
         private Boolean isWriter;
         private Boolean isEventReader;
         private Boolean isEventWriter;
         private Boolean isProcessor;
         private Boolean isCommand;
+        private int maxSamples;
         private int debugLevel;
         private int sndSeqNum;
         private int cmdSeqNum;

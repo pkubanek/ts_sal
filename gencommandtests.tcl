@@ -3,7 +3,7 @@ proc gencommandtestscpp { subsys } {
 global CMD_ALIASES CMDS SAL_WORK_DIR SYSDIC
  if { [info exists CMD_ALIASES($subsys)] } {
    foreach alias $CMD_ALIASES($subsys) {
-    if { [info exists CMDS($subsys,$i,param)] } {
+    if { [info exists CMDS($subsys,$alias,param)] } {
       stdlog "	: command test send for = $alias"
       set fcmd [open $SAL_WORK_DIR/$subsys/cpp/src/sacpp_[set subsys]_[set alias]_commander.cpp w]
       puts $fcmd "
@@ -160,7 +160,7 @@ int main (int argc, char *argv\[\])
          set extrasrc "		"
          set allbin "all: \$\(BIN1\) \$\(BIN2\)"
          foreach alias $CMD_ALIASES($subsys) {
-           if { [info exists CMDS($subsys,$i,param)] } {
+           if { [info exists CMDS($subsys,$alias,param)] } {
              incr n 1
              puts $fout "
 BIN$n           = \$(BTARGETDIR)sacpp_[set subsys]_[set alias]_commander
@@ -193,7 +193,7 @@ SRC           = ../src/CheckStatus.cpp ../src/SAL_[set subsys].cpp $extrasrc"
 "
          }
          foreach alias $CMD_ALIASES($subsys) {
-          if { [info exists CMDS($subsys,$i,param)] } {
+          if { [info exists CMDS($subsys,$alias,param)] } {
             incr n 1
             puts $fout "
 .obj/sacpp_[set subsys]_[set alias]_commander.o: ../src/sacpp_[set subsys]_[set alias]_commander.cpp

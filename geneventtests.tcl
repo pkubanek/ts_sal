@@ -1,8 +1,9 @@
+
 proc geneventtestscpp { subsys } {
-global EVENT_ALIASES EVTS SAL_WORK_DIR SYSDIC
+global EVENT_ALIASES EVTS SAL_WORK_DIR
  if { [info exists EVENT_ALIASES($subsys)] } {
    foreach alias $EVENT_ALIASES($subsys) {
-    if { [info exists EVTS($subsys,$i,param)] } {
+     if { [info exists EVTS($subsys,$alias,param)] } {
       stdlog "	: log event test send for = $alias"
       set fevt [open $SAL_WORK_DIR/$subsys/cpp/src/sacpp_[set subsys]_[set alias]_send.cpp w]
       puts $fevt "
@@ -19,8 +20,12 @@ global EVENT_ALIASES EVTS SAL_WORK_DIR SYSDIC
 #include \"SAL_[set subsys].h\"
 #include \"ccpp_sal_[set subsys].h\"
 #include \"os.h\"
+
+#include \"example_main.h\"
+
 using namespace DDS;
 using namespace [set subsys];
+
 
 int main (int argc, char *argv\[\])
 \{ 
@@ -39,15 +44,14 @@ int main (int argc, char *argv\[\])
    }
    close $fidl
    puts $fevt "     exit(1);
-  \}"
-   if { [info exists SYSDIC($subsys,keyedID)] } {
-      puts $fcmd "
+  \}
+
+#ifdef SAL_SUBSYSTEM_ID_IS_KEYED
   int [set subsys]ID = 1;
-  SAL_[set subsys] mgr = SAL_[set subsys]([set subsys]ID);"
-   } else {
-      puts $fcmd "  SAL_[set subsys] mgr = SAL_[set subsys]();"
-   }
-   puts $fcmd "
+  SAL_[set subsys] mgr = SAL_[set subsys]([set subsys]ID);
+#else
+  SAL_[set subsys] mgr = SAL_[set subsys]();
+#endif
   mgr.salEvent(\"[set subsys]_logevent_[set alias]\");
 "
   set fin [open $SAL_WORK_DIR/include/SAL_[set subsys]_logevent_[set alias]Cargs.tmp r]
@@ -64,6 +68,7 @@ int main (int argc, char *argv\[\])
   mgr.logEvent_[set alias](&myData, priority);
   cout << \"=== Event $alias generated = \" << endl;
   sleep(1);
+
   /* Remove the DataWriters etc */
   mgr.salShutdown();
 
@@ -87,6 +92,9 @@ int main (int argc, char *argv\[\])
 #include \"SAL_[set subsys].h\"
 #include \"ccpp_sal_[set subsys].h\"
 #include \"os.h\"
+
+#include \"example_main.h\"
+
 using namespace DDS;
 using namespace [set subsys];
 
@@ -102,15 +110,13 @@ int test_[set subsys]_[set alias]_Log()
   os_time delay_10ms = \{ 0, 10000000 \};
   int status = -1;
 
-  [set subsys]_logevent_[set alias]C SALInstance;"
-   if { [info exists SYSDIC($subsys,keyedID)] } {
-      puts $fcmd "
+  [set subsys]_logevent_[set alias]C SALInstance;
+#ifdef SAL_SUBSYSTEM_ID_IS_KEYED
   int [set subsys]ID = 1;
-  SAL_[set subsys] mgr = SAL_[set subsys]([set subsys]ID);"
-   } else {
-      puts $fcmd "  SAL_[set subsys] mgr = SAL_[set subsys]();"
-   }
-   puts $fcmd "
+  SAL_[set subsys] mgr = SAL_[set subsys]([set subsys]ID);
+#else
+  SAL_[set subsys] mgr = SAL_[set subsys]();
+#endif
   mgr.salEvent(\"[set subsys]_logevent_[set alias]\");
   while (1) \{
   // receive event
@@ -134,14 +140,14 @@ int test_[set subsys]_[set alias]_Log()
   return 0;
 \}
 
-int main (int argc, char *argv\[\])
+int OSPL_MAIN (int argc, char *argv\[\])
 \{
   return test_[set subsys]_[set alias]_Log();
 \}
 "
      close $fevt
+    }
    }
-  }
    puts stdout "Generating events test Makefile"
    set fin [open $SAL_WORK_DIR/$subsys/cpp/src/Makefile.sacpp_[set subsys]_testevents r]
    set fout [open /tmp/Makefile.sacpp_[set subsys]_testevents w]
@@ -151,7 +157,7 @@ int main (int argc, char *argv\[\])
          set extrasrc "		"
          set allbin "all: \$\(BIN1\) \$\(BIN2\)"
          foreach alias $EVENT_ALIASES($subsys) {
-           if { [info exists EVTS($subsys,$i,param)] } {
+           if { [info exists EVTS($subsys,$alias,param)] } {
              incr n 1
              puts $fout "
 BIN$n           = \$(BTARGETDIR)sacpp_[set subsys]_[set alias]_send
@@ -184,7 +190,7 @@ SRC           = ../src/CheckStatus.cpp ../src/SAL_[set subsys].cpp ../src/[set s
 "
          }
          foreach alias $EVENT_ALIASES($subsys) {
-          if { [info exists EVTS($subsys,$i,param)] } {
+           if { [info exists EVTS($subsys,$alias,param)] } {
             incr n 1
             puts $fout "
 .obj/sacpp_[set subsys]_[set alias]_send.o: ../src/sacpp_[set subsys]_[set alias]_send.cpp
@@ -194,7 +200,7 @@ SRC           = ../src/CheckStatus.cpp ../src/SAL_[set subsys].cpp ../src/[set s
 	@\$\(TESTDIRSTART\) \".obj/../src\" \$\(TESTDIREND\) \$\(MKDIR\) \".obj/../src\"
 	\$\(COMPILE.cc\) \$\(EXPORTFLAGS\) \$\(OUTPUT_OPTION\) ../src/sacpp_[set subsys]_[set alias]_log.cpp
 "
-          }
+           }
          }
       }
       puts $fout $rec
@@ -205,3 +211,4 @@ SRC           = ../src/CheckStatus.cpp ../src/SAL_[set subsys].cpp ../src/[set s
  }
 }
 
+ 

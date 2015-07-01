@@ -1,5 +1,6 @@
 
 source $SAL_DIR/gencommandtests.tcl 
+source $SAL_DIR/gencommandtestsjava.tcl 
 
 proc gencmdaliascode { subsys lang fout } {
 global CMD_ALIASES CMDS
@@ -26,6 +27,8 @@ global CMD_ALIASES CMDS
   if { $lang == "java" }  {
      catch { set result [gencmdaliasjava $subsys $fout] } bad
      stdlog "$result"
+     catch { set result [gencommandtestsjava $subsys] } bad
+     stdlog "$result"
   }
   if { $lang == "python" } {
      catch { set result [gencmdaliaspython $subsys $fout] } bad
@@ -40,7 +43,7 @@ global CMD_ALIASES CMDS
 
 
 proc gencmdaliascpp { subsys fout } {
-global CMD_ALIASES SAL_WORK_DIR
+global CMD_ALIASES CMDS SAL_WORK_DIR
    foreach i $CMD_ALIASES($subsys) {
     if { [info exists CMDS($subsys,$i,param)] } {
       stdlog "	: command alias = $i"
@@ -296,7 +299,7 @@ global CMD_ALIASES CMDS SYSDIC
 	  if (sal\[actorIdx\].isCommand == false) \{
 	     salCommand(sal\[actorIdx\].topicName);
 	     sal\[actorIdx\].isCommand = true;
-	     sal\[actorIdx\].sndSeqNum = 1;
+	     sal\[actorIdx\].sndSeqNum = 123;
 	  \}
 	  DataWriter dwriter = getWriter(actorIdx);	
 	  command_[set i]DataWriter SALWriter = command_[set i]DataWriterHelper.narrow(dwriter);
@@ -377,12 +380,16 @@ global CMD_ALIASES CMDS SYSDIC
 		    ackHandle = SALWriter.register_instance(ackdata);"
       }
       puts $fout "
-		    istatus = SALWriter.write(ackdata, ackHandle);
-           	    SALWriter.dispose(ackdata, ackHandle);
-		    SALWriter.unregister_instance(ackdata, ackHandle);
+		    istatus = SALWriter.write(ackdata, ackHandle);"
+      if { [info exists SYSDIC($subsys,keyedID)] } {
+         puts $fout "
+		    SALWriter.unregister_instance(ackdata, ackHandle);"
+      }
+      puts $fout "
 		 \}
+                \} else \{
+  	           status = 0;
                 \}
-	        status = 0;
 	        return status;
 	\}
 "

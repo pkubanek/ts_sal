@@ -183,6 +183,7 @@ proc addActorIndexesJava { idlfile base fout } {
       puts $fout "	public static final int SAL__[set base]_[set name]_ACTOR = $idx;"
       incr idx 1 
    }
+   puts $fout "	public static final int SAL__ACTORS_MAXCOUNT = $idx;"
    puts $fout "
 	public void initSalActors ()
 	\{
@@ -203,6 +204,8 @@ proc addSALDDStypes { idlfile id lang base } {
 global SAL_DIR SAL_WORK_DIR SYSDIC
  set atypes $idlfile
  if { $lang == "java" } {
+  exec cp $SAL_DIR/code/templates/salActor.java [set id]/java/src/org/lsst/sal/.
+  exec cp $SAL_DIR/code/templates/salActor.java [set base]/java/src/org/lsst/sal/.
   set fin [open $SAL_DIR/code/templates/SALDDS.java.template r]
   set fout [open [set id]/java/src/org/lsst/sal/SAL_[set base].java w]
   puts stdout "Configuring [set id]/java/src/org/lsst/sal/SAL_[set base].java"
@@ -314,7 +317,34 @@ puts $fout "
           \}
           status = SALReader.return_loan (SALInstance, infoSeq);
 	  return last;
-	\}"
+	\}
+
+	public int getNextSample($name data)
+	\{
+	  int status =  -1;
+          int last = 0;
+          [set name]SeqHolder SALInstance = new [set name]SeqHolder();
+	  DataReader dreader = getReader();
+	  [set name]DataReader SALReader = [set name]DataReaderHelper.narrow(dreader);
+  	  SampleInfoSeqHolder infoSeq = new SampleInfoSeqHolder();
+	  SALReader.take(SALInstance, infoSeq, 1,
+					ANY_SAMPLE_STATE.value, ANY_VIEW_STATE.value,
+					ANY_INSTANCE_STATE.value);
+	  if (debugLevel > 0) \{
+		for (int i = 0; i < SALInstance.value.length; i++) \{
+				System.out.println(\"=== \[getNextSample $name \] message received :\");
+				System.out.println(\"    revCode  : \"
+						+ SALInstance.value\[i\].private_revCode);
+                   last = i+1;
+		\}
+	  \}
+          if (last > 0) \{
+            data = SALInstance.value\[last-1\];
+          \}
+          status = SALReader.return_loan (SALInstance, infoSeq);
+	  return last;
+	\}
+"
 
            }
         }

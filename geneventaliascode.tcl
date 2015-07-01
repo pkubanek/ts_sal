@@ -1,6 +1,7 @@
 
 
 source $SAL_DIR/geneventtests.tcl 
+source $SAL_DIR/geneventtestsjava.tcl 
 
 proc geneventaliascode { subsys lang fout } {
 global EVENT_ALIASES EVTS
@@ -24,6 +25,8 @@ global EVENT_ALIASES EVTS
   if { $lang == "java" }  {
      catch { set result [geneventaliasjava $subsys $fout] } bad
      stdlog "$result"
+     catch { set result [geneventtestsjava $subsys] } bad
+     stdlog "$result"
   }
   if { $lang == "python" } {
      catch { set result [geneventaliaspython $subsys $fout] } bad
@@ -38,7 +41,7 @@ global EVENT_ALIASES EVTS
 
 
 proc geneventaliascpp { subsys fout } {
-global EVENT_ALIASES SAL_WORK_DIR
+global EVENT_ALIASES EVTS SAL_WORK_DIR
    foreach i $EVENT_ALIASES($subsys) {
     if { [info exists EVTS($subsys,$i,param)] } {
       stdlog "	: alias = $i"
@@ -122,7 +125,7 @@ global EVENT_ALIASES EVTS
 
 
 proc geneventaliaspython { subsys fout } {
-global EVENT_ALIASES
+global EVENT_ALIASES EVTS
    foreach i $EVENT_ALIASES($subsys) {
     if { [info exists EVTS($subsys,$i,param)] } {
       stdlog "	: alias = $i"

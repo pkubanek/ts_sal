@@ -530,47 +530,47 @@ trigger - launch a previously armed operation"
 set TSYSDIC(units) "<P><HR><P>
 <H2>Units</H2><P>"
 
-set SYSDIC(units) "amps - amperes of electrical current (SI unit)
-angstroms - wavelength 1A = 0.1nanometers
-ampere - electrical current (SI unit)
-arcsecs - 1/3600 of a degree
-btus - British thermal unit of energy
-centimeters - 1/100 meter
-coulombs - amount of charge displaced by a 1amp current in 1 second
-counts - dimensionless
-cycles - no of repeats of an operation
-days -time
-degrees - in Centigrade or Kelvin
-dynes - unit of force , 1 dyne = 10 micronewtons (cgs unit)
-gauss - magnetic field of 1 maxwell per sq centimeter (cgs unit)
-gb - Gigabytes 1024^3 for memory (1e9 bytes otherwise)
-gbps - Gigabits per second
-grams - 1/1000 kilogram
-hertz - cycles per second
-hours - time
-joules - unit of force/energy , 1joule = 1 Newton-meter
-kelvin - temperature (SI unit)
-kilograms - mass (SU unit)
-kilometers - 1000 meters
-mb - Megabytes 1024^2 for memory (1e6 otherwise)
-mbps - Megabits per second
-meters - length (SI unit)
-microns - 1/1000000 meter
-microradians - ratio between the length of an arc and its radius.
-milliarcs - 1/3600000 of a degree
-millimeters - 1/000 meter
-minutes - time
-months - time
-newtons - 1N= force required to acc 1kg mass at a rate of 1m/s/s
-ohms - unit of electrical resistance
-pascals - 1 pascal = 1 newton per square meter or one Joule per cubic meter.
-radians - ratio between the length of an arc and its radius.
-rpm - revolutions per minute
-seconds - time
-steps - of a stepper motor
-volts - 1V = one joule of energy per coulomb of charge (SI derived)
-watts - 1W = one joule of energy per second (SI derived)
-years -time"
+set SYSDIC(units) "Amps - amperes of electrical current (SI unit)
+   Angstroms - wavelength 1A = 0.1 nanometers
+   arcseconds - 1/3600 of a degree
+   BTUs - British thermal unit of energy
+   centimeters - 1/100 meter
+   Coulombs - amount of charge displaced by a 1 Amp current in 1 second
+   counts - dimensionless
+   cycles - no of repeats of an operation
+   day - time
+   degrees - in Centigrade or Kelvin
+   dynes - unit of force , 1 dyne = 10 micronewtons (cgs unit)
+   Gauss - magnetic field of 1 maxwell per sq centimeter (cgs unit)
+   Gb - Gigabytes 1024^3 for memory (1e9 bytes otherwise)
+   Gbps - Gigabits per second
+   grams - 1/1000 Kilogram
+   Hertz - cycles per second
+   hours - time
+   Joules - unit of force/energy , 1 Joule = 1 Newton
+   Kelvin - temperature (SI unit)
+   Kilograms - mass (SU unit)
+   Kilometers - 1000 meters
+   Mb - Megabytes 1024^2 for memory (1e6 otherwise)
+   Mbps - Megabits per second
+   meters - length (SI unit)
+   microns - 1/1000000 meter
+   milliarcseconds - 1/3600000 of a degree
+   millimeters - 1/000 meter
+   minutes - time
+   months - time
+   Newtons - 1N = force required to acc 1 Kg mass at a rate of 1 m/s/s
+   Ohms - unit of electrical resistance
+   Pascals - 1 Pascal = 1 Newton per square meter or one Joule per cubic meter.
+   radians - ratio between the length of an arc and its radius.
+   RPM - revolutions per minute
+   seconds - time
+   steps - of a stepper motor
+   Tb - Terabytes 1024^4 for memory (1e12 bytes otherwise)
+   Volts - 1V = one Joule of energy per Coulomb of charge (SI derived)
+   Watts - 1W = one Joule of energy per second (SI derived)
+   years - time
+"
 
 proc add_system_dictionary_appendix { fout } {
 global TSYSDIC SYSDIC

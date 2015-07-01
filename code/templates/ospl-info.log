@@ -1,8 +1,0 @@
-========================================================================================
-Report      : INFO
-Date        : Wed Jul 23 15:38:16 MST 2014
-Description : Not installing a signal handler for the already ignored signal 13.
-Node        : sal.lsst-tsvm
-Process     : tclsh8.5 <17452>
-Thread      : main thread b770d6c0
-Internals   : V6.4.0/a5a8346/a1f7cf6/os_signalHandlerThread/os_signalHandler.c/793/0/1406155096.039321458
