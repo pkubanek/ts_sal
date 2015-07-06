@@ -45,6 +45,7 @@ salReturn SAL_[set base]::putSample_[set name]([set base]_[set name]C *data)
 #else
    InstanceHandle_t dataHandle = HANDLE_NIL;
 #endif
+  Instance.private_sndStamp = getCurrentTime();
   ReturnCode_t status = SALWriter->write(Instance, dataHandle);
   checkStatus(status, \"[set base]::[set name]DataWriter::write\");  
 #ifdef SAL_SUBSYSTEM_ID_IS_KEYED
@@ -74,6 +75,7 @@ salReturn SAL_[set base]::getSample_[set name]([set base]_[set name]C *data)
   istatus = SAL__NO_UPDATES;
   for (DDS::ULong j = 0; j < Instances.length(); j++)
   \{
+    rcvdTime = getCurrentTime();
     if (debugLevel > 0) \{
       cout << \"=== \[GetSample\] message received :\" << endl;
       cout << \"    revCode  : \" << Instances\[j\].private_revCode << endl;
@@ -439,6 +441,7 @@ salReturn SAL_[set base]::putSample([set base]::[set name] data)
 #else
    InstanceHandle_t dataHandle = HANDLE_NIL;
 #endif
+  data.private_sndStamp = getCurrentTime();
   ReturnCode_t status = SALWriter->write(data, dataHandle);
   checkStatus(status, \"[set base]::[set name]DataWriter::write\");  
 #ifdef SAL_SUBSYSTEM_ID_IS_KEYED
@@ -458,6 +461,7 @@ salReturn SAL_[set base]::getSample([set base]::[set name]Seq data)
   checkStatus(status, \"[set base]::[set name]DataReader::take\");
   for (DDS::ULong j = 0; j < data.length(); j++)
   \{
+    rcvdTime = getCurrentTime();
     cout << \"=== \[GetSample\] message received :\" << endl;
     cout << \"    revCode  : \" << data\[j\].private_revCode << endl;
   \}

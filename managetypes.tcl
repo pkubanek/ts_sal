@@ -83,6 +83,7 @@ global TYPESUBS VPROPS
    set VPROPS(array) 0
    set VPROPS(string) 0
    set VPROPS(int) 0
+   set VPROPS(long) 0
    set VPROPS(double) 0
    set VPROPS(name) ""
    if { [lindex $rec 0] == "string" } {
@@ -115,6 +116,7 @@ global TYPESUBS VPROPS
    } else {
       if { [lindex $rec 0] != "float" && [lindex $rec 0] != "double" } {set VPROPS(int) 1}
       if { [lindex $rec 0] == "double" } {set VPROPS(double) 1 }
+      if { [lindex $rec 0] == "long" } {set VPROPS(long) 1 }
       if { [llength [split $rec "\[("]] > 1 } {
         set s [lindex [split $rec "\[\]()"] 1]
         set n [lindex [lindex [split $rec "\[\]()"] 0] 1]
@@ -337,6 +339,7 @@ proc lvtypebuilder { base op name type size } {
 
 
 set TYPESUBS(string) char
+set TYPESUBS(String) char
 set TYPESUBS(byte)   char
 set TYPESUBS(char)   char
 set TYPESUBS(octet)  char
@@ -355,6 +358,7 @@ set TYPESUBS(unsignedint16)  short
 set TYPESUBS(unsignedint32)  long
 set TYPESUBS(unsignedlong)   long
 
+set TYPESIZE(String) 1
 set TYPESIZE(string) 1
 set TYPESIZE(char)   1
 set TYPESIZE(byte)   1

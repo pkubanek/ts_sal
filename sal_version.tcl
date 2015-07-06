@@ -1,4 +1,4 @@
-set SALVERSION 2.2.1
+set SALVERSION 2.4
 set SAL_BASE_DIR $env(SAL_DIR)/scripts
 set SAL_CMAKE_DIR $SAL_BASE_DIR/code/simd/cmake
 set SAL_SID(auxscope) 		1000

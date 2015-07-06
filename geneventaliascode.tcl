@@ -97,7 +97,7 @@ global EVENT_ALIASES EVTS
              createReader(actorIdx,false);
              sal\[actorIdx\].isEventReader = true;
           \}
-          status = getSample_logevent_[set i](data);
+          status = getSample(anEvent);
 	  return status;
 	\}
 
@@ -105,14 +105,14 @@ global EVENT_ALIASES EVTS
 	\{
 	   int status = 0;
            int actorIdx = SAL__SALData_logevent_[set i]_ACTOR;
-           data.priority=priority;
+           event.priority=priority;
            if (sal\[actorIdx\].publisher == null) \{
               createPublisher(actorIdx);
               boolean autodispose_unregistered_instances = false;
               createWriter(actorIdx,autodispose_unregistered_instances);
               sal\[actorIdx\].isEventWriter = true;
            \}
-           status = putSample_logevent_[set i](data);
+           status = putSample(event);
            return status;
 	\}
 "

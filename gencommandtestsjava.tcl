@@ -60,13 +60,29 @@ public class [set subsys]Commander_[set alias] \{
   foreach p $CMDS($subsys,$alias,param) {
        set pname [lindex $p 1]
        set ptype [lindex $p 0]
-       switch $ptype {
+       if { [llength [split $pname "()"]] > 1 } {
+        set l 0
+        set pspl [split $pname "()"]
+        set pname [lindex $pspl 0]
+        set pdim  [lindex $pspl 1]
+        while { $l < $pdim } {
+         switch $ptype {
+          boolean { puts $fcmd "  command.[set pname]\[$l\] = Boolean.valueOf(args\[$narg\]);" }
+          double  { puts $fcmd "  command.[set pname]\[$l\] = Double.valueOf(args\[$narg\]);" }
+          int     { puts $fcmd "  command.[set pname]\[$l\] = Integer.valueOf(args\[$narg\]);" }
+          long    { puts $fcmd "  command.[set pname]\[$l\] = Integer.valueOf(args\[$narg\]);" }
+         }
+         incr l 1
+        }
+       } else {
+        switch $ptype {
           boolean { puts $fcmd "  command.[set pname] = Boolean.valueOf(args\[$narg\]);" }
           double  { puts $fcmd "  command.[set pname] = Double.valueOf(args\[$narg\]);" }
           int     { puts $fcmd "  command.[set pname] = Integer.valueOf(args\[$narg\]);" }
           long    { puts $fcmd "  command.[set pname] = Integer.valueOf(args\[$narg\]);" }
           string  { puts $fcmd "  command.[set pname] = args\[$narg\];" }
        }
+      }
       incr narg 1
   }
   puts $fcmd "

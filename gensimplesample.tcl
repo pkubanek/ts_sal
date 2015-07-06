@@ -222,9 +222,17 @@ global VPROPS
       while { $idx < $idlim } {
 
         if { $VPROPS(int) }  {
-           puts $fcod5 "    sscanf(argv\[$idx\], \"%d\", &myData.$VPROPS(name));"
+           if { $VPROPS(long) } {
+              puts $fcod5 "    sscanf(argv\[$idx\], \"%ld\", &myData.$VPROPS(name));"
+           } else {
+              puts $fcod5 "    sscanf(argv\[$idx\], \"%d\", &myData.$VPROPS(name));"
+           }
         } else {
-           puts $fcod5 "    sscanf(argv\[$idx\], \"%f\", &myData.$VPROPS(name));"
+           if { $VPROPS(double) } {
+              puts $fcod5 "    sscanf(argv\[$idx\], \"%lf\", &myData.$VPROPS(name));"
+           } else {
+              puts $fcod5 "    sscanf(argv\[$idx\], \"%f\", &myData.$VPROPS(name));"
+           }
         }
         incr idx 1
       }

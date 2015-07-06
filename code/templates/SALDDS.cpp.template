@@ -1,5 +1,6 @@
 
 //#include <chrono>
+#include <sys/time.h>
 #include <time.h>
 #include "SAL_SALData.h"
 using namespace SALData;
@@ -60,6 +61,22 @@ void SAL_SALData::salInitialize()
    initSalActors();
 }
 #endif
+
+double SAL_SALData::getCurrentTime()
+{
+     struct timeval now;
+     struct timezone zone;
+     double ts;
+
+     gettimeofday(&now, &zone);
+     ts = (double)now.tv_sec + (double)now.tv_usec/1000000.;
+     return ts;
+}
+
+double SAL_SALData::getRcvdTime()
+{
+     return rcvdTime;
+}
 
 
 int SAL_SALData::getActorIndex (char *topicName)
@@ -215,6 +232,7 @@ int SAL_SALData::issueCommand( SALData::command data )
     cout << "=== [issueCommand] writing a command containing :" << endl;
     cout << " " << data.device << "." << data.property << "." << data.action << " : " << data.value << endl;
   }
+  data.private_sndStamp = getCurrentTime();
   ReturnCode_t status = SALWriter->write(data, cmdHandle);
   sndSeqNum++;
   checkStatus(status, "SALCommandDataWriter::write");  
@@ -267,7 +285,8 @@ int SAL_SALData::issueCommandC( SALData_commandC *data )
   if (debugLevel > 0) {
     cout << "=== [issueCommandC] writing a command containing :" << endl;
     cout << " " << Instance.device << "." << Instance.property << "." << Instance.action << " : " << Instance.value << endl;
-  }
+  }  
+  Instance.private_sndStamp = getCurrentTime();
   ReturnCode_t status = SALWriter->write(Instance, cmdHandle);
   sndSeqNum++;
   checkStatus(status, "SALCommandDataWriter::write");  
@@ -327,6 +346,7 @@ salReturn SAL_SALData::acceptCommand( SALData::commandSeq data )
     ackdata.result = DDS::string_dup("SAL ACK");
     status = data[0].private_seqNum;
     rcvSeqNum = status;
+    rcvdTime = getCurrentTime();
     rcvOrigin = data[0].private_origin;
     ackdata.ack = SAL__CMD_ACK;
     istatus = SALReader->return_loan(data, info);
@@ -335,6 +355,7 @@ salReturn SAL_SALData::acceptCommand( SALData::commandSeq data )
     ackHandle = SALWriter->register_instance(ackdata);
     ackdata.SALDataID = subsystemID;
 #endif
+    ackdata.private_sndStamp = getCurrentTime();
     istatus = SALWriter->write(ackdata, ackHandle);
     checkStatus(istatus, "SALData::ackcmdDataWriter::return_loan");
 #ifdef SAL_SUBSYSTEM_ID_IS_KEYED
@@ -392,6 +413,7 @@ int SAL_SALData::acceptCommandC( SALData_commandC *data )
     ackdata.error = 0;
     ackdata.result = DDS::string_dup("SAL ACK");
     status = cmd[0].private_seqNum;
+    rcvdTime = getCurrentTime();
     rcvSeqNum = status;
     rcvOrigin = cmd[0].private_origin;
     ackdata.ack = SAL__CMD_ACK;
@@ -408,6 +430,7 @@ int SAL_SALData::acceptCommandC( SALData_commandC *data )
     ackHandle = SALWriter->register_instance(ackdata);
     ackdata.SALDataID = subsystemID;
 #endif
+    ackdata.private_sndStamp = getCurrentTime();
     istatus = SALWriter->write(ackdata, ackHandle);
     checkStatus(istatus, "SALData::ackcmdDataWriter::write");
 #ifdef SAL_SUBSYSTEM_ID_IS_KEYED
@@ -453,6 +476,7 @@ salReturn SAL_SALData::ackCommand( int cmdId, salLONG ack, salLONG error, char *
    ackHandle = SALWriter->register_instance(ackdata);
    ackdata.SALDataID = subsystemID;
 #endif
+   ackdata.private_sndStamp = getCurrentTime();
    istatus = SALWriter->write(ackdata, ackHandle);
    checkStatus(istatus, "SALData::ackcmdDataWriter::return_loan");
 #ifdef SAL_SUBSYSTEM_ID_IS_KEYED
@@ -496,6 +520,7 @@ salReturn SAL_SALData::getResponse(SALData::ackcmdSeq data)
       cout << "    result   : " << data[0].result << endl;
     }
     status = data[0].ack;
+    rcvdTime = getCurrentTime();
     rcvSeqNum = data[0].private_seqNum;
     rcvOrigin = data[0].private_origin;
     istatus = SALReader->return_loan(data, info);
@@ -693,6 +718,7 @@ salReturn SAL_SALData::getEvent(SALData::logeventSeq data)
        cout << "=== [getEvent] reading a message containing :" << endl;
        cout << "    revCode  : " << data[0].private_revCode << endl;
      }
+     rcvdTime = getCurrentTime();
      status = SALReader->return_loan(data, info);
      checkStatus(status, "SALData::logeventDataReader::return_loan");
      status = SAL__OK;
@@ -727,6 +753,7 @@ int SAL_SALData::getEventC(SALData_logeventC *cdata)
        cout << "    revCode  : " << data[0].private_revCode << endl;
      }
      SALData::logevent *SALInstance = &(data[0]);
+     rcvdTime = getCurrentTime();
      cdata->message=SALInstance->message.m_ptr;
      status = SALReader->return_loan(data, info);
      checkStatus(status, "SALData::logeventDataReader::return_loan");
@@ -758,6 +785,7 @@ salReturn SAL_SALData::logEvent( char *message, int priority )
    event.SALDataID = subsystemID;
    eventHandle = SALWriter->register_instance(event);
 #endif
+  event.private_sndStamp = getCurrentTime();
   istatus = SALWriter->write(event, eventHandle);
   checkStatus(istatus, "SALData::logeventDataWriter::write");
 #ifdef SAL_SUBSYSTEM_ID_IS_KEYED

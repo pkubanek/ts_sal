@@ -52,14 +52,30 @@ public class [set subsys]Event_[set alias] \{
      foreach p $EVTS($subsys,$alias,param) {
        set pname [lindex $p 1]
        set ptype [lindex $p 0]
-       switch $ptype {
-          boolean { puts $fcmd "  event.[set pname] = Boolean.valueOf(args\[$narg\]);" }
-          double  { puts $fcmd "  event.[set pname] = Double.valueOf(args\[$narg\]);" }
-          int     { puts $fcmd "  event.[set pname] = Integer.valueOf(args\[$narg\]);" }
-          long    { puts $fcmd "  event.[set pname] = Integer.valueOf(args\[$narg\]);" }
-          string  { puts $fcmd "  event.[set pname] = args\[$narg\];" }
+       if { [llength [split $pname "()"]] > 1 } {
+        set l 0
+        set pspl [split $pname "()"]
+        set pname [lindex $pspl 0]
+        set pdim  [lindex $pspl 1]
+        while { $l < $pdim } {
+         switch $ptype {
+          boolean { puts $fcmd "  command.[set pname]\[$l\] = Boolean.valueOf(args\[$narg\]);" }
+          double  { puts $fcmd "  command.[set pname]\[$l\] = Double.valueOf(args\[$narg\]);" }
+          int     { puts $fcmd "  command.[set pname]\[$l\] = Integer.valueOf(args\[$narg\]);" }
+          long    { puts $fcmd "  command.[set pname]\[$l\] = Integer.valueOf(args\[$narg\]);" }
+         }
+         incr l 1
+        }
+       } else {
+        switch $ptype {
+          boolean { puts $fcmd "  command.[set pname] = Boolean.valueOf(args\[$narg\]);" }
+          double  { puts $fcmd "  command.[set pname] = Double.valueOf(args\[$narg\]);" }
+          int     { puts $fcmd "  command.[set pname] = Integer.valueOf(args\[$narg\]);" }
+          long    { puts $fcmd "  command.[set pname] = Integer.valueOf(args\[$narg\]);" }
+          string  { puts $fcmd "  command.[set pname] = args\[$narg\];" }
        }
-       incr narg 1
+      }
+      incr narg 1
      }
      puts $fcmd "
 	    status = mgr.logEvent_[set alias](event,priority);

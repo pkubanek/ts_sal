@@ -89,6 +89,7 @@ int SAL_SALData::issueCommand_[set i]( SALData_command_[set i]C *data )
         close $fin
         puts $fout "
   \}
+  Instance.private_sndStamp = getCurrentTime();
   ReturnCode_t status = SALWriter->write(Instance, cmdHandle);
   sal\[actorIdx\].sndSeqNum++;
   checkStatus(status, \"SALCommand_[set i]DataWriter::write\");  
@@ -145,6 +146,7 @@ int SAL_SALData::acceptCommand_[set i]( SALData_command_[set i]C *data )
     ackdata.error = 0;
     ackdata.result = DDS::string_dup(\"SAL ACK\");
     status = Instances\[0\].private_seqNum;
+    rcvdTime = getCurrentTime();
     rcvSeqNum = status;
     rcvOrigin = Instances\[0\].private_origin;
     ackdata.ack = SAL__CMD_ACK;"
@@ -160,6 +162,7 @@ int SAL_SALData::acceptCommand_[set i]( SALData_command_[set i]C *data )
     ackHandle = SALWriter->register_instance(ackdata);
     ackdata.SALDataID = subsystemID;
 #endif
+    ackdata.private_sndStamp = getCurrentTime();
     istatus = SALWriter->write(ackdata, ackHandle);
     checkStatus(istatus, \"SALData::ackcmdDataWriter::write\");
 #ifdef SAL_SUBSYSTEM_ID_IS_KEYED
@@ -228,6 +231,7 @@ salReturn SAL_SALData::getResponse_[set i](SALData::ackcmdSeq data)
       cout << \"    result   : \" << data\[0\].result << endl;
     \}
     status = data\[0\].ack;
+    rcvdTime = getCurrentTime();
     sal\[actorIdx\].rcvSeqNum = data\[0\].private_seqNum;
     sal\[actorIdx\].rcvOrigin = data\[0\].private_origin;
     istatus = SALReader->return_loan(data, info);
@@ -269,6 +273,7 @@ salReturn SAL_SALData::ackCommand_[set i]( int cmdId, salLONG ack, salLONG error
    ackHandle = SALWriter->register_instance(ackdata);
    ackdata.SALDataID = subsystemID;
 #endif
+   ackdata.private_sndStamp = getCurrentTime();
    istatus = SALWriter->write(ackdata, ackHandle);
    checkStatus(istatus, \"SALData::ackcmdDataWriter::return_loan\");
 #ifdef SAL_SUBSYSTEM_ID_IS_KEYED
