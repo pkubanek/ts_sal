@@ -522,7 +522,7 @@ public class SAL_SALData {
   	  }
 	  DataWriter dwriter = getWriter(actorIdx);
 	  logeventDataWriter SALWriter = logeventDataWriterHelper.narrow(dwriter);
-          event = new logevent();
+          event = new SALData.logevent();
 	  event.message = message;
 #ifdef SAL_SUBSYSTEM_ID_IS_KEYED
 	   event.SALDataID = subsystemID;
