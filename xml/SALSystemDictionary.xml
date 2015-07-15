@@ -516,46 +516,46 @@
 
  <simpleType name="unitsEnum">
   <restriction base="string">
-   <enumeration value="amps"/><!-- amperes of electrical current (SI unit) -->
-   <enumeration value="angstroms"/><!-- wavelength 1A = 0.1nanometers -->
-   <enumeration value="ampere"/><!-- electrical current (SI unit) -->
-   <enumeration value="arcsecs"/><!-- 1/3600 of a degree -->
-   <enumeration value="btus"/><!-- British thermal unit of energy -->
+   <enumeration value="Amps"/><!-- amperes of electrical current (SI unit) -->
+   <enumeration value="Angstroms"/><!-- wavelength 1A = 0.1nanometers -->
+   <enumeration value="arcseconds"/><!-- 1/3600 of a degree -->
+   <enumeration value="BTUs"/><!-- British thermal unit of energy -->
    <enumeration value="centimeters"/><!-- 1/100 meter -->
-   <enumeration value="coulombs"/><!-- amount of charge displaced by a 1amp current in 1 second -->
+   <enumeration value="Coulombs"/><!-- amount of charge displaced by a 1 amp current in 1 second -->
    <enumeration value="counts"/><!-- dimensionless -->
    <enumeration value="cycles"/><!-- no of repeats of an operation -->
-   <enumeration value="days"/><!-- time -->
+   <enumeration value="day"/><!-- time -->
    <enumeration value="degrees"/><!-- in Centigrade or Kelvin -->
    <enumeration value="dynes"/><!-- unit of force , 1 dyne = 10 micronewtons (cgs unit) -->
-   <enumeration value="gauss"/><!-- magnetic field of 1 maxwell per sq centimeter (cgs unit) -->
-   <enumeration value="gb"/><!-- Gigabytes 1024^3 for memory (1e9 bytes otherwise) -->
-   <enumeration value="gbps"/><!-- Gigabits per second -->
+   <enumeration value="Gauss"/><!-- magnetic field of 1 maxwell per sq centimeter (cgs unit) -->
+   <enumeration value="Gb"/><!-- Gigabytes 1024^3 for memory (1e9 bytes otherwise) -->
+   <enumeration value="Gbps"/><!-- Gigabits per second -->
    <enumeration value="grams"/><!-- 1/1000 kilogram -->
-   <enumeration value="hertz"/><!-- cycles per second -->
+   <enumeration value="Hertz"/><!-- cycles per second -->
    <enumeration value="hours"/><!-- time -->
-   <enumeration value="joules"/><!-- unit of force/energy , 1joule = 1 Newton -->
-   <enumeration value="kelvin"/><!-- temperature (SI unit) -->
-   <enumeration value="kilograms"/><!-- mass (SU unit) -->
-   <enumeration value="kilometers"/><!-- 1000 meters -->
-   <enumeration value="mb"/><!-- Megabytes 1024^2 for memory (1e6 otherwise) -->
-   <enumeration value="mbps"/><!-- Megabits per second -->
+   <enumeration value="Joules"/><!-- unit of force/energy , 1joule = 1 Newton -->
+   <enumeration value="Kelvin"/><!-- temperature (SI unit) -->
+   <enumeration value="Kilograms"/><!-- mass (SU unit) -->
+   <enumeration value="Kilometers"/><!-- 1000 meters -->
+   <enumeration value="Mb"/><!-- Megabytes 1024^2 for memory (1e6 otherwise) -->
+   <enumeration value="Mbps"/><!-- Megabits per second -->
    <enumeration value="meters"/><!-- length (SI unit) -->
    <enumeration value="microns"/><!-- 1/1000000 meter -->
    <enumeration value="microradians"/><!-- ratio between the length of an arc and its radius. -->
-   <enumeration value="milliarcs"/><!-- 1/3600000 of a degree -->
+   <enumeration value="milliarcseconds"/><!-- 1/3600000 of a degree -->
    <enumeration value="millimeters"/><!-- 1/000 meter -->
    <enumeration value="minutes"/><!-- time -->
    <enumeration value="months"/><!-- time -->
-   <enumeration value="newtons"/><!-- 1N= force required to acc 1kg mass at a rate of 1m/s/s -->
-   <enumeration value="ohms"/><!-- unit of electrical resistance -->
-   <enumeration value="pascals"/><!-- 1 pascal = 1 newton per square meter or one Joule per cubic meter. -->
+   <enumeration value="Newtons"/><!-- 1N= force required to acc 1kg mass at a rate of 1m/s/s -->
+   <enumeration value="Ohms"/><!-- unit of electrical resistance -->
+   <enumeration value="Pascals"/><!-- 1 pascal = 1 newton per square meter or one Joule per cubic meter. -->
    <enumeration value="radians"/><!-- ratio between the length of an arc and its radius. -->
-   <enumeration value="rpm"/><!-- revolutions per minute -->
+   <enumeration value="RPM"/><!-- revolutions per minute -->
    <enumeration value="seconds"/><!-- time -->
    <enumeration value="steps"/><!-- of a stepper motor -->
-   <enumeration value="volts"/><!-- 1V = one joule of energy per coulomb of charge (SI derived) -->
-   <enumeration value="watts"/><!-- 1W = one joule of energy per second (SI derived) -->
+   <enumeration value="Tb"/><!-- Terabytes 1024^4 for memory (1e12 bytes otherwise) -->
+   <enumeration value="Volts"/><!-- 1V = one joule of energy per coulomb of charge (SI derived) -->
+   <enumeration value="Watts"/><!-- 1W = one joule of energy per second (SI derived) -->
    <enumeration value="years"/><!-- time -->
   </restriction>
  </simpleType>

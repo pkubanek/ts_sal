@@ -7,7 +7,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
   <html>
   <head><title>LSST SAL Commands</title></head>
   <body>
-  <h2>SAL Events</h2>
+  <h2>SAL Commands</h2>
   <xsl:for-each select="SALCommandSet/SALCommand">
   <h3><xsl:value-of select="Alias"/> : 
 <xsl:value-of select="Device"/>-<xsl:value-of select="Property"/>-<xsl:value-of select="Action"/>

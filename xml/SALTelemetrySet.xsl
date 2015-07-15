@@ -7,7 +7,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
   <html>
   <head><title>LSST SAL Telemetry</title></head>
   <body>
-  <h2>SAL Events</h2>
+  <h2>SAL Telemetry</h2>
   <xsl:for-each select="SALTelemetrySet/SALTelemetry">
   <h3><xsl:value-of select="EFDB_Topic"/></h3>
   <table border="1">

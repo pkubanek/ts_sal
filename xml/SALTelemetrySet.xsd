@@ -38,6 +38,7 @@
               <xsd:element name="IDL_Type"        type="xsd:string">
                  <xsd:annotation><xsd:documentation>IDL type of telemetry item</xsd:documentation></xsd:annotation>
               </xsd:element>
+              <xsd:element name="IDL_Size"      type="xsd:string"/>
               <xsd:element name="Units"           type="xsd:string">
                  <xsd:annotation><xsd:documentation>Units (if known)</xsd:documentation></xsd:annotation>
               </xsd:element>
