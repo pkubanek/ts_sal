@@ -24,7 +24,11 @@ proc cmdok { result } {
 
 set az  [lindex $argv 0]
 set alt [lindex $argv 1]
-set cameraCommander   $env(SAL_WORK_DIR)/camera/cpp/src/sacpp_camera_cmd
+set cameraCommander_initImage    $env(SAL_WORK_DIR)/camera/cpp/src/sacpp_camera_initImage_commander
+set cameraCommander_setFilter    $env(SAL_WORK_DIR)/camera/cpp/src/sacpp_camera_setFilter_commander
+set cameraCommander_takeImages   $env(SAL_WORK_DIR)/camera/cpp/src/sacpp_camera_takeImages_commander
+
+
 set domeCommander     $env(SAL_WORK_DIR)/dome/cpp/src/sacpp_dome_cmd
 set hexapodCommander1 $env(SAL_WORK_DIR)/hexapod/cpp/src/sacpp_hexapod_cmd
 set hexapodCommander2 $env(SAL_WORK_DIR)/hexapod/cpp/src/sacpp_hexapod_cmd
@@ -36,7 +40,7 @@ if { $argc > 2 } {
    set filter [lindex $argv 2]
    puts stdout "Filter change required"
    puts stdout "Selecting $filter : filter position set $filter name=$filter"
-   set status [catch {exec $cameraCommander 1 filter position set $filter name=$filter} result]
+   set status [catch {exec $cameraCommander_setFilter $filter} result]
    puts stdout [cmdok $result]
    after 1000
 }
@@ -74,15 +78,15 @@ puts stdout [cmdok $result]
 puts stdout "Adjusting m2 hexapod : actuators position absolute coords x=$bx1 y=$bx2 z=$bx3 v=$bx4 w=$bx5 z=$bx6"
 set status [catch {exec $hexapodCommander2 1 actuators position absolute coords "x=$bx1 y=$bx2 z=$bx3 v=$bx4 w=$bx5 z=$bx6"} result]
 puts stdout [cmdok $result]
-puts stdout "Sending guide star ROI's : guiders roi set position xpos=1,1,1,1,1,1,1,1 ypos=2,2,2,2,2,2,2,2 roiSize=32,32,32,32,32,32,32,32"
-set status [catch {exec $cameraCommander   1 guiders roi set position "xpos=1,1,1,1,1,1,1,1 ypos=2,2,2,2,2,2,2,2 roiSize=32,32,32,32,32,32,32,32"} result]
+#puts stdout "Sending guide star ROI's : guiders roi set position xpos=1,1,1,1,1,1,1,1 ypos=2,2,2,2,2,2,2,2 roiSize=32,32,32,32,32,32,32,32"
+#set status [catch {exec $cameraCommander   1 guiders roi set position "xpos=1,1,1,1,1,1,1,1 ypos=2,2,2,2,2,2,2,2 roiSize=32,32,32,32,32,32,32,32"} result]
 puts stdout [cmdok $result]
 after 4000
-set status [catch {exec $cameraCommander   1 imager initialize observe science "initImages"} result]
+set status [catch {exec $cameraCommander_initImage 2.0"} result]
 puts stdout [cmdok $result]
 after 1000
 puts stdout "Starting science exposures : imager expose observe science numimages=2 expTime=15 shutter=true guide=true wfs=true"
-set status [catch {exec $cameraCommander   1 imager expose observe science "numImages=2 expTime=15 shutter=true guide=true wfs=true"} result]
+set status [catch {exec $cameraCommander_takeImages 2 15.0 1 1 1 1 testImageName"} result]
 puts stdout [cmdok $result]
 after 20000
 puts stdout "----- End of visit -------------------------------------------"
