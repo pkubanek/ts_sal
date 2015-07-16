@@ -1,5 +1,6 @@
 
 //#include <chrono>
+#include <sys/time.h>
 #include <time.h>
 #include "SAL_SALData.h"
 using namespace SALData;
@@ -60,6 +61,22 @@ void SAL_SALData::salInitialize()
    initSalActors();
 }
 #endif
+
+double SAL_SALData::getCurrentTime()
+{
+     struct timeval now;
+     struct timezone zone;
+     double ts;
+
+     gettimeofday(&now, &zone);
+     ts = (double)now.tv_sec + (double)now.tv_usec/1000000.;
+     return ts;
+}
+
+double SAL_SALData::getRcvdTime()
+{
+     return rcvdTime;
+}
 
 
 int SAL_SALData::getActorIndex (char *topicName)
@@ -215,6 +232,7 @@ int SAL_SALData::issueCommand( SALData::command data )
     cout << "=== [issueCommand] writing a command containing :" << endl;
     cout << " " << data.device << "." << data.property << "." << data.action << " : " << data.value << endl;
   }
+  data.private_sndStamp = getCurrentTime();
   ReturnCode_t status = SALWriter->write(data, cmdHandle);
   sndSeqNum++;
   checkStatus(status, "SALCommandDataWriter::write");  
@@ -267,7 +285,8 @@ int SAL_SALData::issueCommandC( SALData_commandC *data )
   if (debugLevel > 0) {
     cout << "=== [issueCommandC] writing a command containing :" << endl;
     cout << " " << Instance.device << "." << Instance.property << "." << Instance.action << " : " << Instance.value << endl;
-  }
+  }  
+  Instance.private_sndStamp = getCurrentTime();
   ReturnCode_t status = SALWriter->write(Instance, cmdHandle);
   sndSeqNum++;
   checkStatus(status, "SALCommandDataWriter::write");  
@@ -305,7 +324,7 @@ salReturn SAL_SALData::acceptCommand( SALData::commandSeq data )
   DataReader_var dreader = getReader();
   SALData::commandDataReader_var SALReader = SALData::commandDataReader::_narrow(dreader.in());
   checkHandle(SALReader.in(), "SALData::commandDataReader::_narrow");
-  istatus = SALReader->take(data, info, LENGTH_UNLIMITED,ANY_SAMPLE_STATE, ANY_VIEW_STATE, ANY_INSTANCE_STATE);
+  istatus = SALReader->take(data, info, 1,ANY_SAMPLE_STATE, ANY_VIEW_STATE, ANY_INSTANCE_STATE);
   checkStatus(istatus, "SALData::commandDataReader::take");
   if (info.length() > 0) {
    if (info[0].valid_data) {
@@ -327,6 +346,7 @@ salReturn SAL_SALData::acceptCommand( SALData::commandSeq data )
     ackdata.result = DDS::string_dup("SAL ACK");
     status = data[0].private_seqNum;
     rcvSeqNum = status;
+    rcvdTime = getCurrentTime();
     rcvOrigin = data[0].private_origin;
     ackdata.ack = SAL__CMD_ACK;
     istatus = SALReader->return_loan(data, info);
@@ -335,6 +355,7 @@ salReturn SAL_SALData::acceptCommand( SALData::commandSeq data )
     ackHandle = SALWriter->register_instance(ackdata);
     ackdata.SALDataID = subsystemID;
 #endif
+    ackdata.private_sndStamp = getCurrentTime();
     istatus = SALWriter->write(ackdata, ackHandle);
     checkStatus(istatus, "SALData::ackcmdDataWriter::return_loan");
 #ifdef SAL_SUBSYSTEM_ID_IS_KEYED
@@ -371,7 +392,7 @@ int SAL_SALData::acceptCommandC( SALData_commandC *data )
   DataReader_var dreader = getReader();
   SALData::commandDataReader_var SALReader = SALData::commandDataReader::_narrow(dreader.in());
   checkHandle(SALReader.in(), "SALData::commandDataReader::_narrow");
-  istatus = SALReader->take(cmd, info, LENGTH_UNLIMITED,ANY_SAMPLE_STATE, ANY_VIEW_STATE, ANY_INSTANCE_STATE);
+  istatus = SALReader->take(cmd, info, 1,ANY_SAMPLE_STATE, ANY_VIEW_STATE, ANY_INSTANCE_STATE);
   checkStatus(istatus, "SALData::commandDataReader::take");
   if (info.length() > 0) {
    if (info[0].valid_data) {
@@ -392,6 +413,7 @@ int SAL_SALData::acceptCommandC( SALData_commandC *data )
     ackdata.error = 0;
     ackdata.result = DDS::string_dup("SAL ACK");
     status = cmd[0].private_seqNum;
+    rcvdTime = getCurrentTime();
     rcvSeqNum = status;
     rcvOrigin = cmd[0].private_origin;
     ackdata.ack = SAL__CMD_ACK;
@@ -408,6 +430,7 @@ int SAL_SALData::acceptCommandC( SALData_commandC *data )
     ackHandle = SALWriter->register_instance(ackdata);
     ackdata.SALDataID = subsystemID;
 #endif
+    ackdata.private_sndStamp = getCurrentTime();
     istatus = SALWriter->write(ackdata, ackHandle);
     checkStatus(istatus, "SALData::ackcmdDataWriter::write");
 #ifdef SAL_SUBSYSTEM_ID_IS_KEYED
@@ -453,6 +476,7 @@ salReturn SAL_SALData::ackCommand( int cmdId, salLONG ack, salLONG error, char *
    ackHandle = SALWriter->register_instance(ackdata);
    ackdata.SALDataID = subsystemID;
 #endif
+   ackdata.private_sndStamp = getCurrentTime();
    istatus = SALWriter->write(ackdata, ackHandle);
    checkStatus(istatus, "SALData::ackcmdDataWriter::return_loan");
 #ifdef SAL_SUBSYSTEM_ID_IS_KEYED
@@ -483,7 +507,7 @@ salReturn SAL_SALData::getResponse(SALData::ackcmdSeq data)
   DataReader_var dreader = getReader2();
   SALData::ackcmdDataReader_var SALReader = SALData::ackcmdDataReader::_narrow(dreader.in());
   checkHandle(SALReader.in(), "SALData::ackcmdDataReader::_narrow");
-  istatus = SALReader->take(data, info, LENGTH_UNLIMITED,ANY_SAMPLE_STATE, ANY_VIEW_STATE, ANY_INSTANCE_STATE);
+  istatus = SALReader->take(data, info, 1,ANY_SAMPLE_STATE, ANY_VIEW_STATE, ANY_INSTANCE_STATE);
   rcvSeqNum = 0;
   rcvOrigin = 0;
   checkStatus(istatus, "SALData::ackcmdDataReader::take");
@@ -496,6 +520,7 @@ salReturn SAL_SALData::getResponse(SALData::ackcmdSeq data)
       cout << "    result   : " << data[0].result << endl;
     }
     status = data[0].ack;
+    rcvdTime = getCurrentTime();
     rcvSeqNum = data[0].private_seqNum;
     rcvOrigin = data[0].private_origin;
     istatus = SALReader->return_loan(data, info);
@@ -685,7 +710,7 @@ salReturn SAL_SALData::getEvent(SALData::logeventSeq data)
   DataReader_var dreader = getReader();
   SALData::logeventDataReader_var SALReader = SALData::logeventDataReader::_narrow(dreader.in());
   checkHandle(SALReader.in(), "SALData::logeventDataReader::_narrow");
-  status = SALReader->take(data, info,  LENGTH_UNLIMITED,ANY_SAMPLE_STATE, ANY_VIEW_STATE, ANY_INSTANCE_STATE);
+  status = SALReader->take(data, info,  1,ANY_SAMPLE_STATE, ANY_VIEW_STATE, ANY_INSTANCE_STATE);
   checkStatus(status, "SALData::logeventDataReader::take");
   if (info.length() > 0) {
    if (info[0].valid_data) {
@@ -693,6 +718,7 @@ salReturn SAL_SALData::getEvent(SALData::logeventSeq data)
        cout << "=== [getEvent] reading a message containing :" << endl;
        cout << "    revCode  : " << data[0].private_revCode << endl;
      }
+     rcvdTime = getCurrentTime();
      status = SALReader->return_loan(data, info);
      checkStatus(status, "SALData::logeventDataReader::return_loan");
      status = SAL__OK;
@@ -718,7 +744,7 @@ int SAL_SALData::getEventC(SALData_logeventC *cdata)
   DataReader_var dreader = getReader(actorIdx);
   SALData::logeventDataReader_var SALReader = SALData::logeventDataReader::_narrow(dreader.in());
   checkHandle(SALReader.in(), "SALData::logeventDataReader::_narrow");
-  status = SALReader->take(data, info,  LENGTH_UNLIMITED,ANY_SAMPLE_STATE, ANY_VIEW_STATE, ANY_INSTANCE_STATE);
+  status = SALReader->take(data, info,  1,ANY_SAMPLE_STATE, ANY_VIEW_STATE, ANY_INSTANCE_STATE);
   checkStatus(status, "SALData::logeventDataReader::take");
   if (info.length() > 0) {
    if (info[0].valid_data) {
@@ -727,6 +753,7 @@ int SAL_SALData::getEventC(SALData_logeventC *cdata)
        cout << "    revCode  : " << data[0].private_revCode << endl;
      }
      SALData::logevent *SALInstance = &(data[0]);
+     rcvdTime = getCurrentTime();
      cdata->message=SALInstance->message.m_ptr;
      status = SALReader->return_loan(data, info);
      checkStatus(status, "SALData::logeventDataReader::return_loan");
@@ -758,6 +785,7 @@ salReturn SAL_SALData::logEvent( char *message, int priority )
    event.SALDataID = subsystemID;
    eventHandle = SALWriter->register_instance(event);
 #endif
+  event.private_sndStamp = getCurrentTime();
   istatus = SALWriter->write(event, eventHandle);
   checkStatus(istatus, "SALData::logeventDataWriter::write");
 #ifdef SAL_SUBSYSTEM_ID_IS_KEYED
@@ -1062,6 +1090,8 @@ void SAL_SALData::createTopic(char *topicName)
   checkStatus(status, "DDS::DomainParticipant::get_default_topic_qos");
   reliable_topic_qos.reliability.kind = RELIABLE_RELIABILITY_QOS;
   reliable_topic_qos.durability.kind = TRANSIENT_DURABILITY_QOS;
+  reliable_topic_qos.history.kind = KEEP_LAST_HISTORY_QOS;
+  reliable_topic_qos.history.depth = 100000;
 
   /* Make the tailored QoS the new default. */
   status = participant->set_default_topic_qos(reliable_topic_qos);
@@ -1078,6 +1108,8 @@ void SAL_SALData::createTopic2(char *topicName)
   checkStatus(status, "DDS::DomainParticipant::get_default_topic_qos");
   reliable_topic_qos2.reliability.kind = RELIABLE_RELIABILITY_QOS;
   reliable_topic_qos2.durability.kind = TRANSIENT_DURABILITY_QOS;
+  reliable_topic_qos2.history.kind = KEEP_LAST_HISTORY_QOS;
+  reliable_topic_qos2.history.depth = 100000;
 
   /* Make the tailored QoS the new default. */
   status = participant->set_default_topic_qos(reliable_topic_qos2);
@@ -1094,6 +1126,8 @@ void SAL_SALData::createTopic(int actorIdx)
   checkStatus(status, "DDS::DomainParticipant::get_default_topic_qos");
   sal[actorIdx].reliable_topic_qos.reliability.kind = RELIABLE_RELIABILITY_QOS;
   sal[actorIdx].reliable_topic_qos.durability.kind = TRANSIENT_DURABILITY_QOS;
+  sal[actorIdx].reliable_topic_qos.history.kind = KEEP_LAST_HISTORY_QOS;
+  sal[actorIdx].reliable_topic_qos.history.depth = 100000;
 
   /* Make the tailored QoS the new default. */
   status = participant->set_default_topic_qos(sal[actorIdx].reliable_topic_qos);
@@ -1110,6 +1144,8 @@ void SAL_SALData::createTopic2(int actorIdx)
   checkStatus(status, "DDS::DomainParticipant::get_default_topic_qos");
   sal[actorIdx].reliable_topic_qos2.reliability.kind = RELIABLE_RELIABILITY_QOS;
   sal[actorIdx].reliable_topic_qos2.durability.kind = TRANSIENT_DURABILITY_QOS;
+  sal[actorIdx].reliable_topic_qos2.history.kind = KEEP_LAST_HISTORY_QOS;
+  sal[actorIdx].reliable_topic_qos2.history.depth = 100000;
 
   /* Make the tailored QoS the new default. */
   status = participant->set_default_topic_qos(sal[actorIdx].reliable_topic_qos2);
@@ -1126,6 +1162,8 @@ void SAL_SALData::createTopic(int actorIdx, char *topicName)
   checkStatus(status, "DDS::DomainParticipant::get_default_topic_qos");
   sal[actorIdx].reliable_topic_qos.reliability.kind = RELIABLE_RELIABILITY_QOS;
   sal[actorIdx].reliable_topic_qos.durability.kind = TRANSIENT_DURABILITY_QOS;
+  sal[actorIdx].reliable_topic_qos.history.kind = KEEP_LAST_HISTORY_QOS;
+  sal[actorIdx].reliable_topic_qos.history.depth = 100000;
 
   /* Make the tailored QoS the new default. */
   status = participant->set_default_topic_qos(sal[actorIdx].reliable_topic_qos);
@@ -1142,6 +1180,8 @@ void SAL_SALData::createTopic2(int actorIdx, char *topicName)
   checkStatus(status, "DDS::DomainParticipant::get_default_topic_qos");
   sal[actorIdx].reliable_topic_qos2.reliability.kind = RELIABLE_RELIABILITY_QOS;
   sal[actorIdx].reliable_topic_qos2.durability.kind = TRANSIENT_DURABILITY_QOS;
+  sal[actorIdx].reliable_topic_qos2.history.kind = KEEP_LAST_HISTORY_QOS;
+  sal[actorIdx].reliable_topic_qos2.history.depth = 100000;
 
   /* Make the tailored QoS the new default. */
   status = participant->set_default_topic_qos(sal[actorIdx].reliable_topic_qos2);
@@ -1283,6 +1323,12 @@ void SAL_SALData::createWriter2()
 
 void SAL_SALData::createWriter(int actorIdx)
 {
+  int status;
+  status = sal[actorIdx].publisher->get_default_datawriter_qos(sal[actorIdx].dw_qos);
+  checkStatus(status, "DDS::DomainParticipant::get_default_publisher_qos");
+  status = sal[actorIdx].publisher->copy_from_topic_qos(sal[actorIdx].dw_qos, sal[actorIdx].reliable_topic_qos);
+  checkStatus(status, "DDS::Publisher::copy_from_topic_qos");
+  sal[actorIdx].dw_qos.writer_data_lifecycle.autodispose_unregistered_instances = false;
   sal[actorIdx].writer = sal[actorIdx].publisher->create_datawriter(sal[actorIdx].topic.in(),
     DATAWRITER_QOS_USE_TOPIC_QOS, NULL, STATUS_MASK_NONE);
   checkHandle(sal[actorIdx].writer, "DDS::Publisher::create_datawriter");
@@ -1290,6 +1336,12 @@ void SAL_SALData::createWriter(int actorIdx)
 
 void SAL_SALData::createWriter2(int actorIdx)
 {
+  int status;
+  status = sal[actorIdx].publisher->get_default_datawriter_qos(sal[actorIdx].dw_qos);
+  checkStatus(status, "DDS::DomainParticipant::get_default_publisher_qos");
+  status = sal[actorIdx].publisher->copy_from_topic_qos(sal[actorIdx].dw_qos, sal[actorIdx].reliable_topic_qos);
+  checkStatus(status, "DDS::Publisher::copy_from_topic_qos");
+  sal[actorIdx].dw_qos.writer_data_lifecycle.autodispose_unregistered_instances = false;
   sal[actorIdx].writer2 = sal[actorIdx].publisher->create_datawriter(sal[actorIdx].topic2.in(),
     DATAWRITER_QOS_USE_TOPIC_QOS, NULL, STATUS_MASK_NONE);
   checkHandle(sal[actorIdx].writer2, "DDS::Publisher::create_datawriter");

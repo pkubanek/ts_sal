@@ -56,6 +56,7 @@ int SAL_SALData::getEvent_[set i](SALData_logevent_[set i]C *data)
      createReader(actorIdx,false);
      sal\[actorIdx\].isEventReader = true;
   \}
+  sal\[actorIdx\].maxSamples=1;
   status = getSample_logevent_[set i](data);
   return status;
 \}
@@ -97,6 +98,7 @@ global EVENT_ALIASES EVTS
              createReader(actorIdx,false);
              sal\[actorIdx\].isEventReader = true;
           \}
+          sal\[actorIdx\].maxSamples=1;
           status = getSample(anEvent);
 	  return status;
 	\}
@@ -130,14 +132,8 @@ global EVENT_ALIASES EVTS
     if { [info exists EVTS($subsys,$i,param)] } {
       stdlog "	: alias = $i"
       puts $fout "
-        .def( 
-            \"getEvent_[set i]\"
-            , (::salReturn ( ::SAL_SALData::* )( ::SALData_logevent_[set i]C ) )( &::SAL_SALData::getEvent_[set i] )
-            , ( bp::arg(\"event\") ) )    
-        .def( 
-            \"logEvent_[set i]\"
-            , (::salReturn ( ::SAL_SALData::* )( ::SALData_logevent_[set i]C,int ) )( &::SAL_SALData::logEvent_[set i] )
-            , ( bp::arg(\"event\"), bp::arg(\"priority\") ) )    
+        .def( \"getEvent_[set i]\",  &::SAL_SALData::getEvent_[set i] )
+        .def( \"logEvent_[set i]\",  &::SAL_SALData::logEvent_[set i] )
       "
     } else {
       stdlog "Alias $i has no parameters - uses standard [set subsys]_logevent"

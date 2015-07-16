@@ -28,6 +28,8 @@ import DDS.ANY_VIEW_STATE;
 import DDS.DataReader;
 import DDS.LENGTH_UNLIMITED;
 import DDS.SampleInfoSeqHolder;
+import org.lsst.sal.salActor;
+
 // INSERT SAL IMPORTS
 
 public class SAL_SALData {
@@ -69,7 +71,7 @@ public class SAL_SALData {
         private short subsystemID;
         private long origin;
        
-        sal[] arr = new salActor[SAL__ACTORS_MAXCOUNT];
+        salActor[] sal = new salActor[SAL__ACTORS_MAXCOUNT];
 
 // INSERT TYPE SUPPORT      
 
@@ -85,26 +87,33 @@ public class SAL_SALData {
         }
 
 
+	public int salTelemetryPub(String topicName)
+	{
+	  int actorIdx = -1;
+	  int status = 0;
 
-        public void salTelemetryPub(String topicName) {
-		String partitionName = "LSST";
+	  actorIdx = getActorIndex(topicName);
+	  if (actorIdx > -1) {
+	     salTelemetryPub(actorIdx);
+	  } else {
+	     status = SAL__ERROR;
+	  }
+	  return status;
+	}
 
-		// create Domain Participant
-		createParticipant(partitionName);
+	public int salTelemetrySub(String topicName)
+	{
+	  int actorIdx = -1;
+	  int status = 0;
 
-		// create Type
-		salTypeSupport(topicName);
-
-		// create Topic
-		createTopic(topicName);
-
-		// create Publisher
-		createPublisher();
-
-		// create DataWriter
-		createWriter(false);
-		hasWriter = true;
-        }
+	  actorIdx = getActorIndex(topicName);
+	  if (actorIdx > -1) {
+	     salTelemetrySub(actorIdx);
+	  } else {
+	     status = SAL__ERROR;
+	  }
+	  return status;
+	}
 
 
         public void salTelemetryPub(int actorIdx) {
@@ -127,35 +136,6 @@ public class SAL_SALData {
 		sal[actorIdx].isWriter = true;
         }
 
-
-        public void salTelemetrySub(String topicName) {
-		String partitionName = "LSST";
-		// create Domain Participant
-		createParticipant(partitionName);
-
-		// create Type
-		salTypeSupport(topicName);
-		// create Type
-
-		// create Topic
-		createTopic(topicName);
-
-		// create Subscriber
-		createSubscriber();
-
-		// create DataReader
-#ifdef SAL_SUBSYSTEM_ID_IS_KEYED
-  		// Filter expr
-                String expr[] = new String[0];
-                String sFilter = "SALDataID = " + subsystemID;
-    		createContentFilteredTopic("filteredtopic", sFilter, expr);
-
-		// create DataReader
- 		createReader(true);
-#else
-		createReader(false);
-#endif
-	}
 
 
 
@@ -221,6 +201,7 @@ public class SAL_SALData {
 		subsystemID = aKey;
 		debugLevel = 1;
                 rcvOrigin = 0;
+                initSalActors();
 	}
 #else
         public void salInitialize()
@@ -247,6 +228,7 @@ public class SAL_SALData {
 		subsystemID = 0;
 		debugLevel = 1;
                 rcvOrigin = 0;
+                initSalActors();
 	}
 #endif
 
@@ -337,7 +319,7 @@ public class SAL_SALData {
   		DataReader dreader = getReader();
   		commandDataReader SALReader = commandDataReaderHelper.narrow(dreader);
                 info = new SampleInfoSeqHolder();
-  		istatus = SALReader.take(aCmd, info, LENGTH_UNLIMITED.value,ANY_SAMPLE_STATE.value, ANY_VIEW_STATE.value, ANY_INSTANCE_STATE.value);
+  		istatus = SALReader.take(aCmd, info, 1,ANY_SAMPLE_STATE.value, ANY_VIEW_STATE.value, ANY_INSTANCE_STATE.value);
 		if (aCmd.value.length > 0) {
    		  if (info.value[0].valid_data) {
     		     if (debugLevel > 0) {
@@ -372,8 +354,9 @@ public class SAL_SALData {
 		    ackHandle = SALWriter.register_instance(ackdata);
 #endif
 		    istatus = SALWriter.write(ackdata, ackHandle);
-           	    SALWriter.dispose(ackdata, ackHandle);
+#ifdef SAL_SUBSYSTEM_ID_IS_KEYED
 		    SALWriter.unregister_instance(ackdata, ackHandle);
+#endif
 		 }
 	     } else {
 	        status = 0;
@@ -400,7 +383,7 @@ public class SAL_SALData {
 	  DataReader dreader = getReader2();
 	  ackcmdDataReader SALReader = ackcmdDataReaderHelper.narrow(dreader);
   	  SampleInfoSeqHolder infoSeq = new SampleInfoSeqHolder();
-	  SALReader.take(data, infoSeq, LENGTH_UNLIMITED.value,
+	  SALReader.take(data, infoSeq, 1,
 					ANY_SAMPLE_STATE.value, ANY_VIEW_STATE.value,
 					ANY_INSTANCE_STATE.value);
 	  if (data.value.length > 0) {
@@ -452,8 +435,6 @@ public class SAL_SALData {
         public static final int SAL__CMD_ABORTED =  	-303;
         public static final int SAL__CMD_TIMEOUT =  	-304;
 
-        public static final int SAL__ACTORS_MAXCOUNT =  128;
-        
 	public int waitForCompletion( int cmdSeqNum , int timeout )
 	{
 	   int status = 0;
@@ -504,7 +485,7 @@ public class SAL_SALData {
 	  logeventDataReader SALReader = logeventDataReaderHelper.narrow(dreader);
           logeventSeqHolder data = new logeventSeqHolder();
   	  SampleInfoSeqHolder infoSeq = new SampleInfoSeqHolder();
-	  SALReader.take(data, infoSeq, LENGTH_UNLIMITED.value,
+	  SALReader.take(data, infoSeq, 1,
 					ANY_SAMPLE_STATE.value, ANY_VIEW_STATE.value,
 					ANY_INSTANCE_STATE.value);
           if (data.value.length > 0) {
@@ -531,7 +512,7 @@ public class SAL_SALData {
 	   int status = 0;
 	   int actorIdx = SAL__SALData_logevent_ACTOR; 
 	   int istatus =  -1;
-	   logevent event;
+	   SALData.logevent event;
 	   String stopic="SALData_logevent";
 	   long eventHandle = HANDLE_NIL.value;
 
@@ -541,7 +522,7 @@ public class SAL_SALData {
   	  }
 	  DataWriter dwriter = getWriter(actorIdx);
 	  logeventDataWriter SALWriter = logeventDataWriterHelper.narrow(dwriter);
-          event = new logevent();
+          event = new SALData.logevent();
 	  event.message = message;
 #ifdef SAL_SUBSYSTEM_ID_IS_KEYED
 	   event.SALDataID = subsystemID;
@@ -693,6 +674,7 @@ public class SAL_SALData {
 	  createWriter(actorIdx,autodispose_unregistered_instances);
 	  sal[actorIdx].isWriter = true;
 	  sal[actorIdx].isCommand = true;
+          sal[actorIdx].sndSeqNum = 123;
 	}
 
 
@@ -861,6 +843,8 @@ public class SAL_SALData {
 		participant.get_default_topic_qos(topicQos);
 		topicQos.value.reliability.kind = ReliabilityQosPolicyKind.RELIABLE_RELIABILITY_QOS;
 		topicQos.value.durability.kind = DurabilityQosPolicyKind.TRANSIENT_DURABILITY_QOS;
+		topicQos.value.history.kind = HistoryQosPolicyKind.KEEP_LAST_HISTORY_QOS;
+		topicQos.value.history.depth = 100000;
 		status = participant.set_default_topic_qos(topicQos.value);
 		checkStatus(status,
 				"DomainParticipant.set_default_topic_qos");
@@ -872,15 +856,17 @@ public class SAL_SALData {
 
 	public void createTopic2(String topicName) {
 		int status = -1;
-		participant.get_default_topic_qos(topicQos);
-		topicQos.value.reliability.kind = ReliabilityQosPolicyKind.RELIABLE_RELIABILITY_QOS;
-		topicQos.value.durability.kind = DurabilityQosPolicyKind.TRANSIENT_DURABILITY_QOS;
-		status = participant.set_default_topic_qos(topicQos.value);
+		participant.get_default_topic_qos(topicQos2);
+		topicQos2.value.reliability.kind = ReliabilityQosPolicyKind.RELIABLE_RELIABILITY_QOS;
+		topicQos2.value.durability.kind = DurabilityQosPolicyKind.TRANSIENT_DURABILITY_QOS;
+		topicQos2.value.history.kind = HistoryQosPolicyKind.KEEP_LAST_HISTORY_QOS;
+		topicQos2.value.history.depth = 100000;
+		status = participant.set_default_topic_qos(topicQos2.value);
 		checkStatus(status,
 				"DomainParticipant.set_default_topic_qos");
 		System.out.println("=== [createTopic2] : topicName " + topicName + " type = " + typeName2);
 
-		topic2 = participant.create_topic(topicName, typeName2, topicQos.value,
+		topic2 = participant.create_topic(topicName, typeName2, topicQos2.value,
 				null, STATUS_MASK_NONE.value);
 		checkHandle(topic2, "DomainParticipant.create_topic");
 	}
@@ -891,6 +877,8 @@ public class SAL_SALData {
 		participant.get_default_topic_qos(sal[actorIdx].topicQos);
 		sal[actorIdx].topicQos.value.reliability.kind = ReliabilityQosPolicyKind.RELIABLE_RELIABILITY_QOS;
 		sal[actorIdx].topicQos.value.durability.kind = DurabilityQosPolicyKind.TRANSIENT_DURABILITY_QOS;
+		sal[actorIdx].topicQos.value.history.kind = HistoryQosPolicyKind.KEEP_LAST_HISTORY_QOS;
+		sal[actorIdx].topicQos.value.history.depth = 100000;
 		status = participant.set_default_topic_qos(sal[actorIdx].topicQos.value);
 		checkStatus(status,
 				"DomainParticipant.set_default_topic_qos");
@@ -902,15 +890,17 @@ public class SAL_SALData {
 
 	public void createTopic2(int actorIdx) {
 		int status = -1;
-		participant.get_default_topic_qos(sal[actorIdx].topicQos);
-		sal[actorIdx].topicQos.value.reliability.kind = ReliabilityQosPolicyKind.RELIABLE_RELIABILITY_QOS;
-		sal[actorIdx].topicQos.value.durability.kind = DurabilityQosPolicyKind.TRANSIENT_DURABILITY_QOS;
-		status = participant.set_default_topic_qos(sal[actorIdx].topicQos.value);
+		participant.get_default_topic_qos(sal[actorIdx].topicQos2);
+		sal[actorIdx].topicQos2.value.reliability.kind = ReliabilityQosPolicyKind.RELIABLE_RELIABILITY_QOS;
+		sal[actorIdx].topicQos2.value.durability.kind = DurabilityQosPolicyKind.TRANSIENT_DURABILITY_QOS;
+		sal[actorIdx].topicQos2.value.history.kind = HistoryQosPolicyKind.KEEP_LAST_HISTORY_QOS;
+		sal[actorIdx].topicQos2.value.history.depth = 100000;
+		status = participant.set_default_topic_qos(sal[actorIdx].topicQos2.value);
 		checkStatus(status,
 				"DomainParticipant.set_default_topic_qos");
 		System.out.println("=== [createTopic2] : topicName " + sal[actorIdx].topicName + " type = " + sal[actorIdx].typeName2);
 
-		sal[actorIdx].topic2 = participant.create_topic(sal[actorIdx].topicName, sal[actorIdx].typeName2, sal[actorIdx].topicQos.value,
+		sal[actorIdx].topic2 = participant.create_topic(sal[actorIdx].topicName, sal[actorIdx].typeName2, sal[actorIdx].topicQos2.value,
 				null, STATUS_MASK_NONE.value);
 		checkHandle(sal[actorIdx].topic2, "DomainParticipant.create_topic");
 	}
@@ -920,10 +910,12 @@ public class SAL_SALData {
 		participant.get_default_topic_qos(sal[actorIdx].topicQos);
 		sal[actorIdx].topicQos.value.reliability.kind = ReliabilityQosPolicyKind.RELIABLE_RELIABILITY_QOS;
 		sal[actorIdx].topicQos.value.durability.kind = DurabilityQosPolicyKind.TRANSIENT_DURABILITY_QOS;
+		sal[actorIdx].topicQos.value.history.kind = HistoryQosPolicyKind.KEEP_LAST_HISTORY_QOS;
+		sal[actorIdx].topicQos.value.history.depth = 100000;
 		status = participant.set_default_topic_qos(sal[actorIdx].topicQos.value);
 		checkStatus(status,
 				"DomainParticipant.set_default_topic_qos");
-		System.out.println("=== [createTopic] : topicName " + sal[actorIdx].topicName + " type = " + sal[actorIdx].typeName);
+		System.out.println("=== [createTopic] : topicName " + topicName + " type = " + sal[actorIdx].typeName);
 		sal[actorIdx].topic = participant.create_topic(topicName, sal[actorIdx].typeName, sal[actorIdx].topicQos.value,
 				null, STATUS_MASK_NONE.value);
 		checkHandle(sal[actorIdx].topic, "DomainParticipant.create_topic");
@@ -931,15 +923,17 @@ public class SAL_SALData {
 
 	public void createTopic2(int actorIdx, String topicName) {
 		int status = -1;
-		participant.get_default_topic_qos(sal[actorIdx].topicQos);
-		sal[actorIdx].topicQos.value.reliability.kind = ReliabilityQosPolicyKind.RELIABLE_RELIABILITY_QOS;
-		sal[actorIdx].topicQos.value.durability.kind = DurabilityQosPolicyKind.TRANSIENT_DURABILITY_QOS;
-		status = participant.set_default_topic_qos(sal[actorIdx].topicQos.value);
+		participant.get_default_topic_qos(sal[actorIdx].topicQos2);
+		sal[actorIdx].topicQos2.value.reliability.kind = ReliabilityQosPolicyKind.RELIABLE_RELIABILITY_QOS;
+		sal[actorIdx].topicQos2.value.durability.kind = DurabilityQosPolicyKind.TRANSIENT_DURABILITY_QOS;
+		sal[actorIdx].topicQos2.value.history.kind = HistoryQosPolicyKind.KEEP_LAST_HISTORY_QOS;
+		sal[actorIdx].topicQos2.value.history.depth = 100000;
+		status = participant.set_default_topic_qos(sal[actorIdx].topicQos2.value);
 		checkStatus(status,
 				"DomainParticipant.set_default_topic_qos");
-		System.out.println("=== [createTopic2] : topicName " + sal[actorIdx].topicName + " type = " + sal[actorIdx].typeName2);
+		System.out.println("=== [createTopic2] : topicName " + topicName + " type = " + sal[actorIdx].typeName2);
 
-		sal[actorIdx].topic2 = participant.create_topic(topicName, sal[actorIdx].typeName2, sal[actorIdx].topicQos.value,
+		sal[actorIdx].topic2 = participant.create_topic(topicName, sal[actorIdx].typeName2, sal[actorIdx].topicQos2.value,
 				null, STATUS_MASK_NONE.value);
 		checkHandle(sal[actorIdx].topic2, "DomainParticipant.create_topic");
 	}
@@ -992,7 +986,7 @@ public class SAL_SALData {
 		checkStatus(status, "DDS.DomainParticipant.delete_topic");
             }
             for (int i=0;  i<SAL__ACTORS_MAXCOUNT; i++) {
-             if (sal[i] != null_) {
+             if (sal[i] != null) {
               if (sal[i].filteredtopic != null) {
   		  int status = participant.delete_contentfilteredtopic(sal[i].filteredtopic);
   		  checkStatus(status, "DDS.DomainParticipant.delete_contentfilteredtopic");
@@ -1047,7 +1041,7 @@ public class SAL_SALData {
 		participant.delete_publisher(publisher);
             }
             for (int i=0;  i<SAL__ACTORS_MAXCOUNT; i++) {
-                   if (sal[i] != null_) {
+                   if (sal[i] != null) {
                       if (sal[i].publisher != null) {
 		         participant.delete_publisher(sal[i].publisher);
                       }
@@ -1063,12 +1057,12 @@ public class SAL_SALData {
 		subscriber.delete_datareader(reader2);
             }
             for (int i=0;  i<SAL__ACTORS_MAXCOUNT; i++) {
-               if (sal[i] != null_) {
-                 if (reader != null) {
-	   	   subscriber.delete_datareader(sal[i].reader);
+               if (sal[i] != null) {
+                 if (sal[i].reader != null) {
+	   	   sal[i].subscriber.delete_datareader(sal[i].reader);
                  }
-                 if (reader2 != null) {
-		   subscriber.delete_datareader(sal[i].reader2);
+                 if (sal[i].reader2 != null) {
+		   sal[i].subscriber.delete_datareader(sal[i].reader2);
                  }
                }
             }
@@ -1082,12 +1076,12 @@ public class SAL_SALData {
 		publisher.delete_datawriter(writer2);
             }
             for (int i=0;  i<SAL__ACTORS_MAXCOUNT; i++) {
-               if (sal[i] != null_) {
-                 if (writer != null) {
-		   publisher.delete_datawriter(sal[i].writer);
+               if (sal[i] != null) {
+                 if (sal[i].writer != null) {
+		   sal[i].publisher.delete_datawriter(sal[i].writer);
                  }
-                 if (writer2 != null) {
-		   publisher.delete_datawriter(sal[i].writer2);
+                 if (sal[i].writer2 != null) {
+		   sal[i].publisher.delete_datawriter(sal[i].writer2);
                  }
                }
             }
@@ -1118,14 +1112,16 @@ public class SAL_SALData {
 		sal[actorIdx].WQosH.value.writer_data_lifecycle.autodispose_unregistered_instances = autodispose;
 		sal[actorIdx].writer = sal[actorIdx].publisher.create_datawriter(sal[actorIdx].topic, sal[actorIdx].WQosH.value, null,STATUS_MASK_NONE.value);
 		checkHandle(sal[actorIdx].writer, "Publisher.create_datawriter");
+		System.out.println("=== [createwriter idx] : topic " + sal[actorIdx].topic + " writer = " + sal[actorIdx].writer);
 	}
         
 	public void createWriter2(int actorIdx, boolean autodispose) {
 		sal[actorIdx].publisher.get_default_datawriter_qos(sal[actorIdx].WQosH);
 		sal[actorIdx].publisher.copy_from_topic_qos(sal[actorIdx].WQosH, sal[actorIdx].topicQos.value);
 		sal[actorIdx].WQosH.value.writer_data_lifecycle.autodispose_unregistered_instances = autodispose;
-		sal[actorIdx].writer2 = publisher.create_datawriter(sal[actorIdx].topic2, sal[actorIdx].WQosH.value, null,STATUS_MASK_NONE.value);
+		sal[actorIdx].writer2 = sal[actorIdx].publisher.create_datawriter(sal[actorIdx].topic2, sal[actorIdx].WQosH.value, null,STATUS_MASK_NONE.value);
 		checkHandle(sal[actorIdx].writer2, "Publisher.create_datawriter");
+		System.out.println("=== [createwriter2 idx] : topic " + sal[actorIdx].topic2 + " writer = " + sal[actorIdx].writer2);
 	}
 
 
@@ -1164,7 +1160,7 @@ public class SAL_SALData {
   		   participant.delete_subscriber(subscriber);
                 }
                 for (int i=0;  i<SAL__ACTORS_MAXCOUNT; i++) {
-                   if (sal[i] != null_) {
+                   if (sal[i] != null) {
                       if (sal[i].subscriber != null) {
 		         participant.delete_subscriber(sal[i].subscriber);
                       }
@@ -1204,6 +1200,7 @@ public class SAL_SALData {
 	  } else {
 		sal[actorIdx].reader = sal[actorIdx].subscriber.create_datareader(sal[actorIdx].topic,
 			DATAREADER_QOS_USE_TOPIC_QOS.value, null, STATUS_MASK_NONE.value);
+		System.out.println("=== [createreader idx] : topic " + sal[actorIdx].topic + " reader = " + sal[actorIdx].reader);
 	  }
 	  checkHandle(sal[actorIdx].reader, "Subscriber.create_datareader");
 	}
@@ -1215,6 +1212,7 @@ public class SAL_SALData {
 	  } else {
 		sal[actorIdx].reader2 = sal[actorIdx].subscriber.create_datareader(sal[actorIdx].topic2,
 			DATAREADER_QOS_USE_TOPIC_QOS.value, null, STATUS_MASK_NONE.value);
+		System.out.println("=== [createreader2 idx] : topic " + sal[actorIdx].topic2 + " reader = " + sal[actorIdx].reader2);
 	  }
 	  checkHandle(sal[actorIdx].reader2, "Subscriber.create_datareader");
 	}
@@ -1254,7 +1252,7 @@ public class SAL_SALData {
 
 
 	public DataReader getReader(int actorIdx) {
-		return reader;
+		return sal[actorIdx].reader;
 	}
 
 	public DataReader getReader2(int actorIdx) {

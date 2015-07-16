@@ -126,7 +126,7 @@ int SAL_SALData::acceptCommand_[set i]( SALData_command_[set i]C *data )
   DataReader_var dreader = getReader(actorIdx);
   SALData::command_[set i]DataReader_var SALReader = SALData::command_[set i]DataReader::_narrow(dreader.in());
   checkHandle(SALReader.in(), \"SALData::command_[set i]DataReader::_narrow\");
-  istatus = SALReader->take(Instances, info, LENGTH_UNLIMITED,ANY_SAMPLE_STATE, ANY_VIEW_STATE, ANY_INSTANCE_STATE);
+  istatus = SALReader->take(Instances, info, 1,ANY_SAMPLE_STATE, ANY_VIEW_STATE, ANY_INSTANCE_STATE);
   checkStatus(istatus, \"SALData::command_[set i]DataReader::take\");
   if (info.length() > 0) \{
    if (info\[0\].valid_data) \{
@@ -218,7 +218,7 @@ salReturn SAL_SALData::getResponse_[set i](SALData::ackcmdSeq data)
   DataReader_var dreader = getReader2(actorIdx);
   SALData::ackcmdDataReader_var SALReader = SALData::ackcmdDataReader::_narrow(dreader.in());
   checkHandle(SALReader.in(), \"SALData::ackcmdDataReader::_narrow\");
-  istatus = SALReader->take(data, info, LENGTH_UNLIMITED,ANY_SAMPLE_STATE, ANY_VIEW_STATE, ANY_INSTANCE_STATE);
+  istatus = SALReader->take(data, info, 1,ANY_SAMPLE_STATE, ANY_VIEW_STATE, ANY_INSTANCE_STATE);
   sal\[actorIdx\].rcvSeqNum = 0;
   sal\[actorIdx\].rcvOrigin = 0;
   checkStatus(istatus, \"SALData::ackcmdDataReader::take\");
@@ -347,7 +347,7 @@ global CMD_ALIASES CMDS SYSDIC
   		DataReader dreader = getReader(actorIdx);
   		command_[set i]DataReader SALReader = command_[set i]DataReaderHelper.narrow(dreader);
                 info = new SampleInfoSeqHolder();
-  		istatus = SALReader.take(aCmd, info, LENGTH_UNLIMITED.value,ANY_SAMPLE_STATE.value, ANY_VIEW_STATE.value, ANY_INSTANCE_STATE.value);
+  		istatus = SALReader.take(aCmd, info, 1,ANY_SAMPLE_STATE.value, ANY_VIEW_STATE.value, ANY_INSTANCE_STATE.value);
 		if (aCmd.value.length > 0) \{
    		  if (info.value\[0\].valid_data) \{
     		     if (debugLevel > 0) \{
@@ -448,7 +448,7 @@ global CMD_ALIASES CMDS SYSDIC
 	  ackcmdDataReader SALReader = ackcmdDataReaderHelper.narrow(dreader);
   	  SampleInfoSeqHolder infoSeq = new SampleInfoSeqHolder();
 	  SALReader.take(data, infoSeq, LENGTH_UNLIMITED.value,
-					ANY_SAMPLE_STATE.value, ANY_VIEW_STATE.value,
+					1, ANY_VIEW_STATE.value,
 					ANY_INSTANCE_STATE.value);
 	  if (data.value.length > 0) \{
  		for (int i = 0; i < data.value.length; i++) \{
@@ -523,22 +523,10 @@ global CMD_ALIASES
     if { [info exists CMDS($subsys,$i,param)] } {
       stdlog "	: alias = $i"
       puts $fout "
-        .def( 
-            \"issueCommand_[set i]\"
-            , (int ( ::SAL_SALData::* )( ::SALData_command_[set i]C ) )( &::SAL_SALData::issueCommand_[set i] )
-            , ( bp::arg(\"data\") ) )    
-        .def( 
-            \"acceptCommand_[set i]\"
-            , (int ( ::SAL_SALData::* )( ::SALData_command_[set i]C ) )( &::SAL_SALData::acceptCommand_[set i] )
-            , ( bp::arg(\"data\") ) )    
-        .def( 
-            \"ackCommand_[set i]\"
-            , (::salReturn ( ::SAL_SALData::* )( int,::salLONG,::salLONG,char * ) )( &::SAL_SALData::ackCommand_[set i] )
-            , ( bp::arg(\"cmdSeqNum\"), bp::arg(\"ack\"), bp::arg(\"error\"), bp::arg(\"result\") ) )    
-        .def( 
-            \"waitForCompletion_[set i]\"
-            , (::salReturn ( ::SAL_SALData::* )( int,int ) )( &::SAL_SALData::waitForCompletion_[set i] )
-            , ( bp::arg(\"cmdSeqNum\"), bp::arg(\"timeout\") ) )
+        .def( \"issueCommand_[set i]\",       &::SAL_SALData::issueCommand_[set i] )
+        .def( \"acceptCommand_[set i]\",      &::SAL_SALData::acceptCommand_[set i] )
+        .def( \"ackCommand_[set i]\",         &::SAL_SALData::ackCommand_[set i] )
+        .def( \"waitForCompletion_[set i]\",  &::SAL_SALData::waitForCompletion_[set i] )
       "
     } else {
       stdlog "Alias $i has no parameters - uses standard [set subsys]_command"
