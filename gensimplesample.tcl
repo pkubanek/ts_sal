@@ -219,22 +219,24 @@ global VPROPS
       puts $fcod4 "    for (int i=0;i<$VPROPS(dim);i++)\{myData.$VPROPS(name)\[i\] = i+iseq;\}"
       puts $fcod6 "       cout << \"    $VPROPS(name) : \" << data->$VPROPS(name) << endl;"
       set idlim [expr $idx + $VPROPS(dim)]
+      set myidx 0
       while { $idx < $idlim } {
 
         if { $VPROPS(int) }  {
            if { $VPROPS(long) } {
-              puts $fcod5 "    sscanf(argv\[$idx\], \"%ld\", &myData.$VPROPS(name));"
+              puts $fcod5 "    sscanf(argv\[$idx\], \"%ld\", &myData.$VPROPS(name)\[$myidx\]);"
            } else {
-              puts $fcod5 "    sscanf(argv\[$idx\], \"%d\", &myData.$VPROPS(name));"
+              puts $fcod5 "    sscanf(argv\[$idx\], \"%d\", &myData.$VPROPS(name)\[$myidx\]);"
            }
         } else {
            if { $VPROPS(double) } {
-              puts $fcod5 "    sscanf(argv\[$idx\], \"%lf\", &myData.$VPROPS(name));"
+              puts $fcod5 "    sscanf(argv\[$idx\], \"%lf\", &myData.$VPROPS(name)\[$myidx\]);"
            } else {
-              puts $fcod5 "    sscanf(argv\[$idx\], \"%f\", &myData.$VPROPS(name));"
+              puts $fcod5 "    sscanf(argv\[$idx\], \"%f\", &myData.$VPROPS(name)\[$myidx\]);"
            }
         }
         incr idx 1
+        incr myidx 1
       }
    } else {
       if { $VPROPS(string) } {
@@ -252,11 +254,21 @@ global VPROPS
          puts $fcod3 "    cout << \"    $VPROPS(name) : \" << SALInstance.$VPROPS(name) << endl;"
          puts $fcod6 "    cout << \"    $VPROPS(name) : \" << data->$VPROPS(name) << endl;"
          if { $VPROPS(int) } {
+          if { $VPROPS(long) } {
+            puts $fcod4 "    myData.$VPROPS(name) = 1;";
+            puts $fcod5 "    sscanf(argv\[$idx\], \"%ld\", &myData.$VPROPS(name));"
+          } else {
             puts $fcod4 "    myData.$VPROPS(name) = 1;";
             puts $fcod5 "    sscanf(argv\[$idx\], \"%d\", &myData.$VPROPS(name));"
+          }
          } else {
+          if { $VPROPS(double) } {
+            puts $fcod4 "    myData.$VPROPS(name) = 1.0;";
+            puts $fcod5 "    sscanf(argv\[$idx\], \"%lf\", &myData.$VPROPS(name));"
+          } else {
             puts $fcod4 "    myData.$VPROPS(name) = 1.0;";
             puts $fcod5 "    sscanf(argv\[$idx\], \"%f\", &myData.$VPROPS(name));"
+          }
          }
       }
    }
