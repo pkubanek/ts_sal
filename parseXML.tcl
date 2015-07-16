@@ -43,13 +43,14 @@ global IDLRESERVED SAL_WORK_DIR SAL_DIR
         set item $value ; set unit ""
         incr itemid 1
         set desc "" ; set range "" ; set location ""
-        set freq 0.054
+        set freq 0.054 ; set sdim 1
         if { [lsearch $IDLRESERVED [string tolower $item]] > -1 } {
            puts stdout "Invalid use of IDL reserved token $id"
            exit 1
         }
       }
       if { $tag == "IDL_Type"}        {set type $value}
+      if { $tag == "IDL_Size"}        {set sdim $value}
       if { $tag == "Description"}     {set desc $value}
       if { $tag == "Frequency"}       {set freq $value}
       if { $tag == "Range"}           {set range $value}
@@ -58,16 +59,16 @@ global IDLRESERVED SAL_WORK_DIR SAL_DIR
       if { $tag == "Units"}           {set unit $value}
       if { $tag == "/item" } {
          if { $type == "string" } {
-            if { $idim > 1 } {
-               puts $fout "   string<[set idim]> $item ; $unit ; $desc"
+            if { $sdim > 1 } {
+               puts $fout "   string<[set idim]> $item;"
             } else {
-               puts $fout "   string $item ; $unit; $desc"
+               puts $fout "   string $item;"
             }
          } else {
             if { $idim > 1 } {
-               puts $fout "   $type $item\[[set idim]\] ; $unit ; $desc"
+               puts $fout "   $type $item\[[set idim]\];"
             } else {
-               puts $fout "   $type $item ; $unit; $desc"
+               puts $fout "   $type $item;"
             }
          }
          if { $ctype == "telemetry" } {
