@@ -4,14 +4,26 @@ proc parseXMLtoidl { fname } {
 global IDLRESERVED SAL_WORK_DIR SAL_DIR
    set fin [open $fname r]
    set fout ""
+   set ctype ""
    while { [gets $fin rec] > -1 } {
       set tag   [lindex [split $rec "<>"] 1]
       set value [lindex [split $rec "<>"] 2]
-      if { $tag == "SALTelemetry" } {set ctype "telemetry"}
-      if { $tag == "SALCommand" }   {set ctype "command"}
-      if { $tag == "SALEvent" }     {set ctype "event"}
+      if { $tag == "SALTelemetry" }    {set ctype "telemetry"}
+      if { $tag == "SALCommand" }      {set ctype "command"}
+      if { $tag == "SALEvent" }        {set ctype "event"}
+      if { $tag == "SALTelemetrySet" } {set ctype "telemetry"}
+      if { $tag == "SALCommandSet" }   {set ctype "command"}
+      if { $tag == "SALEventSet" }     {set ctype "event"}
+      if { $tag == "Alias" }           {set alias $value}
+      if { $tag == "Subsystem" }       {set subsys $value}
+      if { $tag == "/SALEvent" } {
+         set EVENT_ALIASES($subsys) [lappend EVENT_ALIASES($subsys) $alias]
+      }
+      if { $tag == "/SALCommand" } {
+         set CMD_ALIASES($subsys) [lappend CMD_ALIASES($subsys) $alias]
+      }
       if { $tag == "EFDB_Topic" } {
-        if { $fout != "" } {
+         if { $fout != "" } {
            puts $fout "\};"
            puts $fout "#pragma keylist $tname"
            close $fout
@@ -19,13 +31,13 @@ global IDLRESERVED SAL_WORK_DIR SAL_DIR
              close $fsql
            }
            if { $itemid == 0 } {
-              exec rm $SAL_WORK_DIR/[set tname].idl
+              exec rm $SAL_WORK_DIR/idl-templates/[set tname].idl
            }
         }
         set itemid 0
         set tname $value
         puts stdout "Translating $tname"
-        set fout [open $SAL_WORK_DIR/[set tname].idl w]
+        set fout [open $SAL_WORK_DIR/idl-templates/[set tname].idl w]
         puts $fout "struct $tname \{"
         add_private_idl $fout
         if { $ctype =="command" } {
@@ -60,16 +72,26 @@ global IDLRESERVED SAL_WORK_DIR SAL_DIR
       if { $tag == "/item" } {
          if { $type == "string" } {
             if { $sdim > 1 } {
-               puts $fout "   string<[set idim]> $item;"
+               set declare "   string<[set idim]> $item;"
             } else {
-               puts $fout "   string $item;"
+               set declare "   string $item;"
             }
          } else {
             if { $idim > 1 } {
-               puts $fout "   $type $item\[[set idim]\];"
+               set declare "   $type $item\[[set idim]\];"
             } else {
-               puts $fout "   $type $item;"
+               set declare "   $type $item;"
             }
+         }
+         set declare [string trim $declare " ;"]
+         puts $fout $declare
+         if { $ctype == "command" } {
+            lappend CMDS($subsys,$alias,param) "$declare"
+            lappend CMDS($subsys,$alias,plist) [lindex $declare 1]
+         }
+         if { $ctype == "event" } {
+            lappend EVTS($subsys,$alias,param) "$declare"
+            lappend EVTS($subsys,$alias,plist) [lindex $declare 1]
          }
          if { $ctype == "telemetry" } {
            puts $fsql "INSERT INTO [set tname]_items VALUES ($itemid,\"$item\",\"$type\",$idim,\"$unit\",$freq,\"$range\",\"$location\",\"$desc\");"
@@ -85,9 +107,31 @@ global IDLRESERVED SAL_WORK_DIR SAL_DIR
       }
    }
    close $fin
-puts stdout "itemid for $SAL_WORK_DIR/[set tname].idl=  $itemid"
+   puts stdout "itemid for $SAL_WORK_DIR/idl-templates/[set tname].idl=  $itemid"
    if { $itemid == 0 } {
-      exec rm $SAL_WORK_DIR/[set tname].idl
+      exec rm $SAL_WORK_DIR/idl-templates/[set tname].idl
+   }
+   if { [info exists CMD_ALIASES($subsys)] } {
+    if { $CMD_ALIASES($subsys) != "" } {
+     puts stdout "Generating test command gui input"        
+     set fout [open $SAL_WORK_DIR/idl-templates/validated/[set subsys]_cmddef.tcl w]
+     puts $fout "set CMD_ALIASES($subsys) \"$CMD_ALIASES($subsys)\""
+     foreach c [array names CMDS] {
+        puts $fout "set CMDS($c) \"$CMDS($c)\""
+     }
+     close $fout
+    }
+   }
+   if { [info exists EVENT_ALIASES($subsys)] } {
+    if { $EVENT_ALIASES($subsys) != "" } {
+     puts stdout "Generating test event gui input"        
+     set fout [open $SAL_WORK_DIR/idl-templates/validated/[set subsys]_evtdef.tcl w]
+     puts $fout "set EVENT_ALIASES($subsys) \"$EVENT_ALIASES($subsys)\""
+     foreach c [array names EVTS] {
+        puts $fout "set EVTS($c) \"$EVTS($c)\""
+     }
+     close $fout
+    }
    }
 }
 

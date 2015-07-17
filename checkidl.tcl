@@ -322,7 +322,6 @@ global XMLTOPICS XMLTLM IDLRESERVED
      }
   }
   close $fin
-  writeXMLsubsys $SAL_WORK_DIR/xml $nt topic
   if { $finds == 0 } {
      errorexit "No struct found in $f"
   }
