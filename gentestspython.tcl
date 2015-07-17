@@ -84,7 +84,7 @@ mgr.salShutdown()
 
 
 
-proc gencmdtestspython { subsys } {
+proc gencommandtestspython { subsys } {
 global CMD_ALIASES CMDS SAL_WORK_DIR SYSDIC SAL_DIR
  exec mkdir -p $SAL_WORK_DIR/$subsys/python
  if { [info exists CMD_ALIASES($subsys)] } {

@@ -228,7 +228,7 @@ global SAL_DIR SAL_WORK_DIR SYSDIC
            set ptypes [split [exec grep pragma $i] \n]
            foreach j $ptypes {
                set name [lindex $j 2]
-               puts stdout "	for $base $name"
+#               puts stdout "	for $base $name"
                puts $fout "
                     if ( \"[set base]_$name\".equals(topicName) ) \{
 			[set name]TypeSupport [set name]TS = new [set name]TypeSupport();
@@ -247,7 +247,7 @@ global SAL_DIR SAL_WORK_DIR SYSDIC
            set ptypes [split [exec grep pragma $i] \n]
            foreach j $ptypes {
                set name [lindex $j 2]
-               puts stdout "	for $base $name"
+#               puts stdout "	for $base $name"
                puts $fout "
                     if ( actorIdx == SAL__[set base]_[set name]_ACTOR ) \{
 			[set name]TypeSupport [set name]TS = new [set name]TypeSupport();
@@ -390,7 +390,7 @@ puts $fout "
            set ptypes [split [exec grep pragma $i] \n]
            foreach j $ptypes {
                set name [lindex $j 2]
-               puts stdout "	for $base $name"
+#               puts stdout "	for $base $name"
                puts $fout "
        if ( strcmp(\"[set base]_[set name]\",topicName) == 0) \{
 	  [set base]::[set name]TypeSupport_var mt = new [set base]::[set name]TypeSupport();
@@ -409,7 +409,7 @@ puts $fout "
            set ptypes [split [exec grep pragma $i] \n]
            foreach j $ptypes {
                set name [lindex $j 2]
-               puts stdout "	for $base $name"
+#               puts stdout "	for $base $name"
                puts $fout "
        if ( actorIdx == SAL__[set base]_[set name]_ACTOR ) \{
 	  [set base]::[set name]TypeSupport_var mt = new [set base]::[set name]TypeSupport();

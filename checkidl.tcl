@@ -27,7 +27,11 @@ global NEWCONSTS IDLSIZES IDLRESERVED
       if { [info exists NEWCONSTS($siz)] } {set siz $NEWCONSTS($siz)}
       set nof $siz
       set t $type
-      set v "  string<$siz>	$id"
+      if { $siz != "" } {
+        set v "  string<$siz>	$id"
+      } else {
+        set v "  string	$id"
+      }
    } else {
      set it [split $item "\[\]"]
      set t $type
@@ -141,7 +145,7 @@ global DESC SDESC IDLTYPES IDLSIZES
 global PUBLISHERS FREQUENCY KEYINDEX
 global SAL_DIR TIDUSED SAL_WORK_DIR
 global XMLTOPICS XMLTLM IDLRESERVED
-  set fin [open $f r]
+  set fin [open $SAL_WORK_DIR/idl-templates/$f r]
   set fout [open $SAL_WORK_DIR/idl-templates/validated/$f w]
   stdlog "Creating $SAL_WORK_DIR/idl-templates/validated/$f"
   set id [file rootname $f]

@@ -40,7 +40,10 @@ global IDLRESERVED SAL_WORK_DIR SAL_DIR
         set fout [open $SAL_WORK_DIR/idl-templates/[set tname].idl w]
         puts $fout "struct $tname \{"
         add_private_idl $fout
-        if { $ctype =="command" } {
+        if { $ctype == "event" } { 
+           puts $fout "   long	priority;"
+        }
+        if { $ctype == "command" } {
            puts $fout "   string<32>	device;
    string<32>	property;
    string<32>	action;
@@ -72,7 +75,7 @@ global IDLRESERVED SAL_WORK_DIR SAL_DIR
       if { $tag == "/item" } {
          if { $type == "string" } {
             if { $sdim > 1 } {
-               set declare "   string<[set idim]> $item;"
+               set declare "   string<[set sdim]> $item;"
             } else {
                set declare "   string $item;"
             }

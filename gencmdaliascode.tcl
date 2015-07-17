@@ -1,9 +1,10 @@
 
 source $SAL_DIR/gencommandtests.tcl 
 source $SAL_DIR/gencommandtestsjava.tcl 
+source $SAL_DIR/gentestspython.tcl 
 
 proc gencmdaliascode { subsys lang fout } {
-global CMD_ALIASES CMDS
+global CMD_ALIASES CMDS DONE_CMDEVT
  if { [info exists CMD_ALIASES($subsys)] } {
   stdlog "Generate command alias support for $lang"
   if { $lang == "include" } {
@@ -21,18 +22,26 @@ global CMD_ALIASES CMDS
   if { $lang == "cpp" } {
      catch { set result [gencmdaliascpp $subsys $fout] } bad
      stdlog "$result"
-     catch { set result [gencommandtestscpp $subsys] } bad
-     stdlog "$result"
+     if { $DONE_CMDEVT == 0} {
+       catch { set result [gencommandtestscpp $subsys] } bad
+       stdlog "$result"
+     }
   }
   if { $lang == "java" }  {
      catch { set result [gencmdaliasjava $subsys $fout] } bad
      stdlog "$result"
-     catch { set result [gencommandtestsjava $subsys] } bad
-     stdlog "$result"
+     if { $DONE_CMDEVT == 0} {
+       catch { set result [gencommandtestsjava $subsys] } bad
+       stdlog "$result"
+     }
   }
   if { $lang == "python" } {
      catch { set result [gencmdaliaspython $subsys $fout] } bad
      stdlog "$result"
+     if { $DONE_CMDEVT == 0} {
+       catch { set result [gencommandtestspython $subsys] } bad
+       stdlog "$result"
+     }
   }
   if { $lang == "isocpp" } {
      catch { set result [gencmdaliasisocpp $subsys $fout] } bad
@@ -283,7 +292,7 @@ salReturn SAL_SALData::ackCommand_[set i]( int cmdId, salLONG ack, salLONG error
 \}
 "
      } else {
-      stdlog "Alias $i has no parameters - uses standard [set subsys]_command"
+#      stdlog "Alias $i has no parameters - uses standard [set subsys]_command"
      }
    }
 }
@@ -510,7 +519,7 @@ global CMD_ALIASES CMDS SYSDIC
 	\}
 "
     } else {
-      stdlog "Alias $i has no parameters - uses standard [set subsys]_command"
+#      stdlog "Alias $i has no parameters - uses standard [set subsys]_command"
     }
   }
 }

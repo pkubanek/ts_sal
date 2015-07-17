@@ -7,11 +7,11 @@
 if { $argc < 2 } {
    puts stdout "SAL generator tool - Usage :
 
-	salgenerator match*.idl flag(s)
+	salgenerator subsystem flag(s)
 
    where flag(s) may be
 
-		validate - check the IDL and Command/LogEvent definitions
+		validate - check the XML Telemetry/Command/LogEvent definitions
 		simd     - generate SIMD c++ code
                 sal      - generate SAL wrappers for cpp, java, isocpp, python
                 lib      - generate shared library
@@ -98,7 +98,7 @@ if { $OPTIONS(html) } {
 }
 
 
-
+if { 0} {
 if { $OPTIONS(validate) } {
   exec mkdir -p idl-templates/validated
   source $SAL_DIR/checkidl.tcl
@@ -125,46 +125,78 @@ if { $OPTIONS(validate) } {
      puts stdout "$result"
   }
 }
+}
 
+if { $OPTIONS(validate) } {
+  exec mkdir -p $SAL_WORK_DIR/idl-templates/validated
+  source $SAL_DIR/parseXML.tcl
+  set all $TSUBSYSTEMS
+  stdlog "Processing $all"
+  foreach i $all {
+    foreach t "Telemetry Commands Events" {
+      if { [file exists [set i]_[set t].xml] } {
+        foreach d "idl-templates idl-templates/validated" {
+          set old ""
+          switch $t {
+              Telemetry { catch {set old [glob $SAL_WORK_DIR/$d/[set i]_*.idl]}
+                          foreach o $old { set v [lindex [split $o _] 1]
+                                          if { $v != "command" && $v != "logevent" } { exec rm $o }
+                                        }
+                        }
+              Commands  { catch {set old [glob $SAL_WORK_DIR/$d/[set i]_command_*.idl]}
+                          foreach o $old { exec rm $o }
+                        }
+              Events    { catch {set old [glob $SAL_WORK_DIR/$d/[set i]_logevent_*.idl]}
+                          foreach o $old { exec rm $o }
+                        }
+          }
+        }
+        parseXMLtoidl [set i]_[set t].xml
+        stdlog "Imported $i $t interface definitions"
+      }
+    }
+    stdlog "Validating $i interface IDL format definitions"
+    set new [lsort [glob $SAL_WORK_DIR/idl-templates/[set i]_*.idl]]
+    foreach n $new {
+      checkidl [file tail $n]
+    }
+    stdlog "Completed $i validation\n\n"
+  }
+}
 
 if { $OPTIONS(maven) } {
   cd $SAL_WORK_DIR
   source $SAL_DIR/mavenize.tcl
   foreach subsys $TSUBSYSTEMS {
-   if { $subsys != "maven" } {
      puts stdout "Creating maven directories maven/[set subsys]_[set SALVERSION]"
      catch { set result [mavenize $subsys] } bad
      puts stdout "$result"
-     puts stdout "Creating unit tests maven/[set subsys]_[set SALVERSION]"
+     puts stdout "Creating unit tests maven/[set subsys][set subsys]_[set SALVERSION]"
      catch { set result [mavenunittests $subsys] } bad
      puts stdout "$result"
-     cd maven/[set subsys]_[set SALVERSION]  
+     cd [set subsys]_[set SALVERSION]  
      puts stdout "Running maven install"
      catch { set result [exec mvn install] } bad
      puts stdout "$result"
      puts stdout "Updating local repository"
      catch { set result [exec mvn install -DperformRelease=true -DcreateChecksum=true] } bad
      puts stdout "$result"
-   }
   }
-  exit
 }
 
 catch {exec rmdir saltemptest}
 exec mkdir -p .salwork
 set TARGETS ""
 if { $OPTIONS(lib) == 0 } {
- set matches $TSUBSYSTEMS
- foreach f $matches {
-   if { [file exists $SAL_WORK_DIR/idl-templates/validated/$f] } {
-      set TARGETS "$TARGETS [file tail $f]"
-   }
- }
- if { $TARGETS == "" } {
+  set matches $TSUBSYSTEMS
+  foreach f [glob $SAL_WORK_DIR/idl-templates/validated/$matches*.idl] {
+     set TARGETS "$TARGETS [file tail $f]"
+  }
+  if { $TARGETS == "" } {
    errorexit "No validated Interface Definition files match $TSUBSYSTEMS"
- } else {
+  } else {
    stdlog "Targets for build : $TARGETS"
- }
+  }
 }
 
 if { $OPTIONS(simd) } {
@@ -186,23 +218,26 @@ if { $OPTIONS(simd) } {
 
 
 if { $OPTIONS(sal) } {
+  set DONE_CMDEVT 0
   cd $SAL_WORK_DIR
   source $SAL_DIR/gensimplesample.tcl
-  foreach subsys $TARGETS {
-     set spl [file rootname [split $subsys _]]
-     set base [lindex $spl 0]
-     set name [join [lrange $spl 1 end] _]
-     if { [file exists $SAL_WORK_DIR/idl-templates/validated/[set base]_cmddef.tcl] } {
+  set base [lindex [split [lindex $TARGETS 0] _] 0]
+  if { [file exists $SAL_WORK_DIR/idl-templates/validated/[set base]_cmddef.tcl] } {
         source $SAL_WORK_DIR/idl-templates/validated/[set base]_cmddef.tcl
-     } else {
+  } else {
         stdlog "WARNING : No Command definitions found for $base"
-     }
-     if { [file exists $SAL_WORK_DIR/idl-templates/validated/[set base]_evtdef.tcl] } {
+  }
+  if { [file exists $SAL_WORK_DIR/idl-templates/validated/[set base]_evtdef.tcl] } {
         source $SAL_WORK_DIR/idl-templates/validated/[set base]_evtdef.tcl
-     } else {
+  } else {
         stdlog "WARNING : No Event definitions found for $base"
-     }
-     set idlfile [makesalidl $base]
+  }
+  set idlfile [makesalidl $base]
+  foreach subsys $TARGETS {
+    set spl [file rootname [split $subsys _]]
+    set base [lindex $spl 0]
+    if { [lindex $spl 1] != "command" && [lindex $spl 1] != "logevent" } {
+     set name [join [lrange $spl 1 end] _]
      if { $OPTIONS(cpp) } {
        stdlog "Generating SAL CPP code for $subsys"
        catch { set result [makesalcode $idlfile $base $name cpp] } bad
@@ -223,6 +258,8 @@ if { $OPTIONS(sal) } {
        catch { set result [makesalcode $idlfile $base $name python] } bad
        if { $OPTIONS(verbose) } {stdlog $result}
      }
+     set DONE_CMDEVT 1
+   }
   }
 }
 

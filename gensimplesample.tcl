@@ -648,17 +648,18 @@ global SAL_WORK_DIR OPTIONS
 }
 
 proc salcpptestgen { base id } {
-global SAL_WORK_DIR OPTIONS
-   puts stdout "Generating cpp test programs for $id"
-   cd $SAL_WORK_DIR/$id/cpp/standalone
-   catch { set result [exec make -f Makefile.sacpp_[set id]_sub] } bad
-   catch {puts stdout "result = $result"}
-   catch {puts stdout "$bad"}
-   puts stdout "cpp : Done Subscriber"
-   catch { set result [exec make -f Makefile.sacpp_[set id]_pub] } bad
-   catch {puts stdout "result = $result"}
-   catch {puts stdout "$bad"}
-   puts stdout "cpp : Done Publisher"
+global SAL_WORK_DIR OPTIONS DONE_CMDEVT
+  puts stdout "Generating cpp test programs for $id"
+  cd $SAL_WORK_DIR/$id/cpp/standalone
+  catch { set result [exec make -f Makefile.sacpp_[set id]_sub] } bad
+  catch {puts stdout "result = $result"}
+  catch {puts stdout "$bad"}
+  puts stdout "cpp : Done Subscriber"
+  catch { set result [exec make -f Makefile.sacpp_[set id]_pub] } bad
+  catch {puts stdout "result = $result"}
+  catch {puts stdout "$bad"}
+  puts stdout "cpp : Done Publisher"
+  if { $DONE_CMDEVT == 0 } {
    cd $SAL_WORK_DIR/$base/cpp/src
    catch { exec make -f Makefile.sacpp_[set base]_cmd } bad
    catch {puts stdout "result = $result"}
@@ -675,6 +676,7 @@ global SAL_WORK_DIR OPTIONS
    catch {puts stdout "$bad"}
    puts stdout "cpp : Done Event/Logger"
    cd $SAL_WORK_DIR
+  }
 }
 
 source $SAL_DIR/add_system_dictionary.tcl

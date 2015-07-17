@@ -2,9 +2,10 @@
 
 source $SAL_DIR/geneventtests.tcl 
 source $SAL_DIR/geneventtestsjava.tcl 
+source $SAL_DIR/gentestspython.tcl 
 
 proc geneventaliascode { subsys lang fout } {
-global EVENT_ALIASES EVTS
+global EVENT_ALIASES EVTS DONE_CMDEVT
  if { [info exists EVENT_ALIASES($subsys)] } {
   stdlog "Generate event alias support for $lang"
   if { $lang == "include" } {
@@ -19,18 +20,26 @@ global EVENT_ALIASES EVTS
   if { $lang == "cpp" } {
      catch { set result [geneventaliascpp $subsys $fout] } bad
      stdlog "$result"
-     catch { set result [geneventtestscpp $subsys] } bad
-     stdlog "$result"
+     if { $DONE_CMDEVT == 0} {
+       catch { set result [geneventtestscpp $subsys] } bad
+       stdlog "$result"
+     }
    }
   if { $lang == "java" }  {
      catch { set result [geneventaliasjava $subsys $fout] } bad
      stdlog "$result"
-     catch { set result [geneventtestsjava $subsys] } bad
-     stdlog "$result"
+     if { $DONE_CMDEVT == 0} {
+       catch { set result [geneventtestsjava $subsys] } bad
+       stdlog "$result"
+     }
   }
   if { $lang == "python" } {
      catch { set result [geneventaliaspython $subsys $fout] } bad
      stdlog "$result"
+     if { $DONE_CMDEVT == 0} {
+       catch { set result [geneventtestspython $subsys] } bad
+       stdlog "$result"
+     }
   }
   if { $lang == "isocpp" } {
      catch { set result [geneventaliasisocpp $subsys $fout] } bad
@@ -77,7 +86,7 @@ salReturn SAL_SALData::logEvent_[set i]( SALData_logevent_[set i]C *data, int pr
 \}
 "
     } else {
-      stdlog "Alias $i has no parameters - uses standard [set subsys]_logevent"
+#      stdlog "Alias $i has no parameters - uses standard [set subsys]_logevent"
     }
    }
 }
@@ -119,7 +128,7 @@ global EVENT_ALIASES EVTS
 	\}
 "
     } else {
-      stdlog "Alias $i has no parameters - uses standard [set subsys]_logevent"
+#      stdlog "Alias $i has no parameters - uses standard [set subsys]_logevent"
     }
    }
 }
@@ -136,7 +145,7 @@ global EVENT_ALIASES EVTS
         .def( \"logEvent_[set i]\",  &::SAL_SALData::logEvent_[set i] )
       "
     } else {
-      stdlog "Alias $i has no parameters - uses standard [set subsys]_logevent"
+#      stdlog "Alias $i has no parameters - uses standard [set subsys]_logevent"
     }
    }
 }
@@ -149,7 +158,7 @@ global EVENT_ALIASES
     if { [info exists EVTS($subsys,$i,param)] } {
       stdlog "	: alias = $i"
     } else {
-      stdlog "Alias $i has no parameters - uses standard [set subsys]_command"
+#      stdlog "Alias $i has no parameters - uses standard [set subsys]_command"
     }
    }
 }
