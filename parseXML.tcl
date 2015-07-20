@@ -9,17 +9,25 @@ global IDLRESERVED SAL_WORK_DIR SAL_DIR
       set tag   [lindex [split $rec "<>"] 1]
       set value [lindex [split $rec "<>"] 2]
       if { $tag == "SALTelemetry" }    {set ctype "telemetry"}
-      if { $tag == "SALCommand" }      {set ctype "command"}
+      if { $tag == "SALCommand" }      {
+          set ctype "command"
+          set device ""; set property ""; set action "" ; set vvalue ""
+      }
       if { $tag == "SALEvent" }        {set ctype "event"}
       if { $tag == "SALTelemetrySet" } {set ctype "telemetry"}
       if { $tag == "SALCommandSet" }   {set ctype "command"}
       if { $tag == "SALEventSet" }     {set ctype "event"}
       if { $tag == "Alias" }           {set alias $value}
+      if { $tag == "Device" }          {set device $value}
+      if { $tag == "Property" }        {set property $value}
+      if { $tag == "Action" }          {set action $value}
+      if { $tag == "Value" }           {set vvalue $value}
       if { $tag == "Subsystem" }       {set subsys $value}
       if { $tag == "/SALEvent" } {
          set EVENT_ALIASES($subsys) [lappend EVENT_ALIASES($subsys) $alias]
       }
       if { $tag == "/SALCommand" } {
+         set CMDS($subsys,$alias) "$device $property $action $value"
          set CMD_ALIASES($subsys) [lappend CMD_ALIASES($subsys) $alias]
       }
       if { $tag == "EFDB_Topic" } {

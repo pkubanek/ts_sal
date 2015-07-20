@@ -141,7 +141,7 @@ if { [file exists $SAL_WORK_DIR/idl-templates/validated/[set subsys]_evtdef.tcl]
 if { [file exists $SAL_WORK_DIR/idl-templates/validated/[set subsys]_cmddef.tcl] } {
   puts stdout "Converting Commands for $subsys"
   source $SAL_WORK_DIR/idl-templates/validated/[set subsys]_cmddef.tcl
-  writeXMLevents . $subsys
+  writeXMLcommands . $subsys
 }
 
 

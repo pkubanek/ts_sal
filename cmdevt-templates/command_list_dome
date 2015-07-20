@@ -5,17 +5,21 @@
 ###-------------------------------------------------------------------------------------------
 ###  COMMANDS
 ###-------------------------------------------------------------------------------------------
-#type	  device 	property 	action	value+modifiers	| alias		| frequency
+#type	  device 	property 	action	value+modifiers	| alias
 #
-command  target 	position 	              		| target
-						string  azimuth
-						string  elevation
-command  track		mode			string  mode	| track
-command  louvers 	position 	set	                | louvers
-						double  angle[72]
-command  shutter	position	open                    | openShutter
-command  shutter	position	close                   | closeShutter
-command	 target		position				| park
-command  target		position				| movetoCal
-command  test		any		any			| test
+command  target 	position 	              		| Move
+						double  azimuth
+						double  elevation
+command  target 	velocity 	              		| Crawl
+						double  azVelocity
+						double  elVelocity
+command  track		mode					| Track
+						string  mode
+command  track		mode					| Stop
+command  louvers 	position 	set	                | Louvers
+						double  openPercent[72]
+command  shutter	position	open                    | OpenShutter
+command  shutter	position	close                   | CloseShutter
+command	 target		position				| Park
+command  target		position				| MovetoCal
 
