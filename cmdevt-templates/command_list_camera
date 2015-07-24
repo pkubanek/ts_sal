@@ -8,7 +8,7 @@
 #type	  device 	property 	action	value+modifiers	| alias		
 #
 command  configure 		 	              		| configure
-						string  specId
+						string  spec_id
 command  filter		position				| filter
 						string name
 command  imager 	expose	 		                | image
@@ -18,8 +18,8 @@ command  imager 	expose	 		                | image
 						boolean guide
 						boolean wfs
 command	 guiders	roi		set			| guideStars
-						double  xpos[8]
-						double  ypos[8]
+						long    xpos[8]
+						long    ypos[8]
 						long    roiSize[8]
 command  status					            	| status
 

@@ -10,11 +10,18 @@
 command  target 	position 	              		| moveToTarget  | 20
 						string  azimuth
 						string  elevation
+						string  cable_wrap
+command  target 	position 	              		| trackTarget  | 20
+						string  azimuth
+						string  elevation
+						double  time
+						string  cable_wrap
 command  configure						| configure
 						string  spec_id
-command	 wrap		position				| moveCamWrap
+command	 wrap		mode					| disableCamWrap
+command	 wrap		mode					| enableCamWrap
 						double angle
-command  mirrorCover	position				| moveMirrorCover
-						string position
-command  all		test					| test
-						string spec_id
+command  mirrorCover	position				| openMirrorCover
+command  mirrorCover	position				| closeMirrorCover
+command  axes		motion					| stopMount
+
