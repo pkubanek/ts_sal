@@ -12,7 +12,6 @@ if { $argc < 2 } {
    where flag(s) may be
 
 		validate - check the XML Telemetry/Command/LogEvent definitions
-		simd     - generate SIMD c++ code
                 sal      - generate SAL wrappers for cpp, java, isocpp, python
                 lib      - generate shared library
 		compile  - compile a c++ module
