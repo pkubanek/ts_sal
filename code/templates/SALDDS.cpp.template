@@ -324,7 +324,7 @@ salReturn SAL_SALData::acceptCommand( SALData::commandSeq data )
   DataReader_var dreader = getReader();
   SALData::commandDataReader_var SALReader = SALData::commandDataReader::_narrow(dreader.in());
   checkHandle(SALReader.in(), "SALData::commandDataReader::_narrow");
-  istatus = SALReader->take(data, info, LENGTH_UNLIMITED,ANY_SAMPLE_STATE, ANY_VIEW_STATE, ANY_INSTANCE_STATE);
+  istatus = SALReader->take(data, info, 1,ANY_SAMPLE_STATE, ANY_VIEW_STATE, ANY_INSTANCE_STATE);
   checkStatus(istatus, "SALData::commandDataReader::take");
   if (info.length() > 0) {
    if (info[0].valid_data) {
@@ -392,7 +392,7 @@ int SAL_SALData::acceptCommandC( SALData_commandC *data )
   DataReader_var dreader = getReader();
   SALData::commandDataReader_var SALReader = SALData::commandDataReader::_narrow(dreader.in());
   checkHandle(SALReader.in(), "SALData::commandDataReader::_narrow");
-  istatus = SALReader->take(cmd, info, LENGTH_UNLIMITED,ANY_SAMPLE_STATE, ANY_VIEW_STATE, ANY_INSTANCE_STATE);
+  istatus = SALReader->take(cmd, info, 1,ANY_SAMPLE_STATE, ANY_VIEW_STATE, ANY_INSTANCE_STATE);
   checkStatus(istatus, "SALData::commandDataReader::take");
   if (info.length() > 0) {
    if (info[0].valid_data) {
@@ -507,7 +507,7 @@ salReturn SAL_SALData::getResponse(SALData::ackcmdSeq data)
   DataReader_var dreader = getReader2();
   SALData::ackcmdDataReader_var SALReader = SALData::ackcmdDataReader::_narrow(dreader.in());
   checkHandle(SALReader.in(), "SALData::ackcmdDataReader::_narrow");
-  istatus = SALReader->take(data, info, LENGTH_UNLIMITED,ANY_SAMPLE_STATE, ANY_VIEW_STATE, ANY_INSTANCE_STATE);
+  istatus = SALReader->take(data, info, 1,ANY_SAMPLE_STATE, ANY_VIEW_STATE, ANY_INSTANCE_STATE);
   rcvSeqNum = 0;
   rcvOrigin = 0;
   checkStatus(istatus, "SALData::ackcmdDataReader::take");
@@ -710,7 +710,7 @@ salReturn SAL_SALData::getEvent(SALData::logeventSeq data)
   DataReader_var dreader = getReader();
   SALData::logeventDataReader_var SALReader = SALData::logeventDataReader::_narrow(dreader.in());
   checkHandle(SALReader.in(), "SALData::logeventDataReader::_narrow");
-  status = SALReader->take(data, info,  LENGTH_UNLIMITED,ANY_SAMPLE_STATE, ANY_VIEW_STATE, ANY_INSTANCE_STATE);
+  status = SALReader->take(data, info,  1,ANY_SAMPLE_STATE, ANY_VIEW_STATE, ANY_INSTANCE_STATE);
   checkStatus(status, "SALData::logeventDataReader::take");
   if (info.length() > 0) {
    if (info[0].valid_data) {
@@ -744,7 +744,7 @@ int SAL_SALData::getEventC(SALData_logeventC *cdata)
   DataReader_var dreader = getReader(actorIdx);
   SALData::logeventDataReader_var SALReader = SALData::logeventDataReader::_narrow(dreader.in());
   checkHandle(SALReader.in(), "SALData::logeventDataReader::_narrow");
-  status = SALReader->take(data, info,  LENGTH_UNLIMITED,ANY_SAMPLE_STATE, ANY_VIEW_STATE, ANY_INSTANCE_STATE);
+  status = SALReader->take(data, info,  1,ANY_SAMPLE_STATE, ANY_VIEW_STATE, ANY_INSTANCE_STATE);
   checkStatus(status, "SALData::logeventDataReader::take");
   if (info.length() > 0) {
    if (info[0].valid_data) {
@@ -758,6 +758,8 @@ int SAL_SALData::getEventC(SALData_logeventC *cdata)
      status = SALReader->return_loan(data, info);
      checkStatus(status, "SALData::logeventDataReader::return_loan");
      status = SAL__OK;
+   } else {
+     status = SAL__NO_UPDATES;
    }
   } else {
      status = SAL__NO_UPDATES;
@@ -1090,6 +1092,8 @@ void SAL_SALData::createTopic(char *topicName)
   checkStatus(status, "DDS::DomainParticipant::get_default_topic_qos");
   reliable_topic_qos.reliability.kind = RELIABLE_RELIABILITY_QOS;
   reliable_topic_qos.durability.kind = TRANSIENT_DURABILITY_QOS;
+  reliable_topic_qos.history.kind = KEEP_LAST_HISTORY_QOS;
+  reliable_topic_qos.history.depth = 100000;
 
   /* Make the tailored QoS the new default. */
   status = participant->set_default_topic_qos(reliable_topic_qos);
@@ -1106,6 +1110,8 @@ void SAL_SALData::createTopic2(char *topicName)
   checkStatus(status, "DDS::DomainParticipant::get_default_topic_qos");
   reliable_topic_qos2.reliability.kind = RELIABLE_RELIABILITY_QOS;
   reliable_topic_qos2.durability.kind = TRANSIENT_DURABILITY_QOS;
+  reliable_topic_qos2.history.kind = KEEP_LAST_HISTORY_QOS;
+  reliable_topic_qos2.history.depth = 100000;
 
   /* Make the tailored QoS the new default. */
   status = participant->set_default_topic_qos(reliable_topic_qos2);
@@ -1123,7 +1129,7 @@ void SAL_SALData::createTopic(int actorIdx)
   sal[actorIdx].reliable_topic_qos.reliability.kind = RELIABLE_RELIABILITY_QOS;
   sal[actorIdx].reliable_topic_qos.durability.kind = TRANSIENT_DURABILITY_QOS;
   sal[actorIdx].reliable_topic_qos.history.kind = KEEP_LAST_HISTORY_QOS;
-  sal[actorIdx].reliable_topic_qos.history.depth = 1000000;
+  sal[actorIdx].reliable_topic_qos.history.depth = 100000;
 
   /* Make the tailored QoS the new default. */
   status = participant->set_default_topic_qos(sal[actorIdx].reliable_topic_qos);
@@ -1141,7 +1147,7 @@ void SAL_SALData::createTopic2(int actorIdx)
   sal[actorIdx].reliable_topic_qos2.reliability.kind = RELIABLE_RELIABILITY_QOS;
   sal[actorIdx].reliable_topic_qos2.durability.kind = TRANSIENT_DURABILITY_QOS;
   sal[actorIdx].reliable_topic_qos2.history.kind = KEEP_LAST_HISTORY_QOS;
-  sal[actorIdx].reliable_topic_qos2.history.depth = 1000000;
+  sal[actorIdx].reliable_topic_qos2.history.depth = 100000;
 
   /* Make the tailored QoS the new default. */
   status = participant->set_default_topic_qos(sal[actorIdx].reliable_topic_qos2);
@@ -1159,7 +1165,7 @@ void SAL_SALData::createTopic(int actorIdx, char *topicName)
   sal[actorIdx].reliable_topic_qos.reliability.kind = RELIABLE_RELIABILITY_QOS;
   sal[actorIdx].reliable_topic_qos.durability.kind = TRANSIENT_DURABILITY_QOS;
   sal[actorIdx].reliable_topic_qos.history.kind = KEEP_LAST_HISTORY_QOS;
-  sal[actorIdx].reliable_topic_qos.history.depth = 1000000;
+  sal[actorIdx].reliable_topic_qos.history.depth = 100000;
 
   /* Make the tailored QoS the new default. */
   status = participant->set_default_topic_qos(sal[actorIdx].reliable_topic_qos);
@@ -1177,7 +1183,7 @@ void SAL_SALData::createTopic2(int actorIdx, char *topicName)
   sal[actorIdx].reliable_topic_qos2.reliability.kind = RELIABLE_RELIABILITY_QOS;
   sal[actorIdx].reliable_topic_qos2.durability.kind = TRANSIENT_DURABILITY_QOS;
   sal[actorIdx].reliable_topic_qos2.history.kind = KEEP_LAST_HISTORY_QOS;
-  sal[actorIdx].reliable_topic_qos2.history.depth = 1000000;
+  sal[actorIdx].reliable_topic_qos2.history.depth = 100000;
 
   /* Make the tailored QoS the new default. */
   status = participant->set_default_topic_qos(sal[actorIdx].reliable_topic_qos2);

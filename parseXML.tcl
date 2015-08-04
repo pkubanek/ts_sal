@@ -5,6 +5,7 @@ global IDLRESERVED SAL_WORK_DIR SAL_DIR
    set fin [open $fname r]
    set fout ""
    set ctype ""
+   set subsys ""
    while { [gets $fin rec] > -1 } {
       set tag   [lindex [split $rec "<>"] 1]
       set value [lindex [split $rec "<>"] 2]
@@ -17,13 +18,18 @@ global IDLRESERVED SAL_WORK_DIR SAL_DIR
       if { $tag == "SALTelemetrySet" } {set ctype "telemetry"}
       if { $tag == "SALCommandSet" }   {set ctype "command"}
       if { $tag == "SALEventSet" }     {set ctype "event"}
-      if { $tag == "Alias" }           {set alias $value}
+      if { $tag == "Alias" }           {
+          set alias $value
+          if { $ctype == "command" } {set CMDS($subsys,$alias) $alias}
+          if { $ctype == "event" }   {set EVTS($subsys,$alias) $alias}
+      }
       if { $tag == "Device" }          {set device $value}
       if { $tag == "Property" }        {set property $value}
       if { $tag == "Action" }          {set action $value}
       if { $tag == "Value" }           {set vvalue $value}
       if { $tag == "Subsystem" }       {set subsys $value}
       if { $tag == "/SALEvent" } {
+         set EVTS($subsys,$alias) $alias
          set EVENT_ALIASES($subsys) [lappend EVENT_ALIASES($subsys) $alias]
       }
       if { $tag == "/SALCommand" } {
@@ -48,9 +54,6 @@ global IDLRESERVED SAL_WORK_DIR SAL_DIR
         set fout [open $SAL_WORK_DIR/idl-templates/[set tname].idl w]
         puts $fout "struct $tname \{"
         add_private_idl $fout
-        if { $ctype == "event" } { 
-           puts $fout "   long	priority;"
-        }
         if { $ctype == "command" } {
            puts $fout "   string<32>	device;
    string<32>	property;
@@ -96,6 +99,8 @@ global IDLRESERVED SAL_WORK_DIR SAL_DIR
          }
          set declare [string trim $declare " ;"]
          puts $fout $declare
+         set ydec [join [split $declare "\[" ] "("]
+         set declare [join [split $ydec "\]" ] ")"]
          if { $ctype == "command" } {
             lappend CMDS($subsys,$alias,param) "$declare"
             lappend CMDS($subsys,$alias,plist) [lindex $declare 1]

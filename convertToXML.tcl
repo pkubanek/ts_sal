@@ -13,11 +13,13 @@ global SAL_WORK_DIR
      set id [lindex [split [file tail $i] "_."] 1]
      if { $id != "Telemetry" && $id != "Commands" && $id != "Events" } {
 puts stdout "processing $id"
+         puts $fout "<SALTelemetry>"
          set fin [open $i r]
          while { [gets $fin rec] > -1 } { 
             puts $fout $rec
          }
          close $fin
+         puts $fout "</SALTelemetry>"
      }
   }
   puts $fout "</SALTelemetrySet>"

@@ -527,7 +527,7 @@ global CMD_ALIASES CMDS SYSDIC
 
 
 proc gencmdaliaspython { subsys fout } {
-global CMD_ALIASES
+global CMD_ALIASES CMDS
    foreach i $CMD_ALIASES($subsys) {
     if { [info exists CMDS($subsys,$i,param)] } {
       stdlog "	: alias = $i"
@@ -546,7 +546,7 @@ global CMD_ALIASES
 
 
 proc gencmdaliasisocpp { subsys fout } {
-global CMD_ALIASES
+global CMD_ALIASES CMDS
    foreach i $CMD_ALIASES($subsys) { 
     if { [info exists CMDS($subsys,$i,param)] } {
       stdlog "	: alias = $i"

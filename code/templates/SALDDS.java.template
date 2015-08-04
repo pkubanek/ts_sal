@@ -319,7 +319,7 @@ public class SAL_SALData {
   		DataReader dreader = getReader();
   		commandDataReader SALReader = commandDataReaderHelper.narrow(dreader);
                 info = new SampleInfoSeqHolder();
-  		istatus = SALReader.take(aCmd, info, LENGTH_UNLIMITED.value,ANY_SAMPLE_STATE.value, ANY_VIEW_STATE.value, ANY_INSTANCE_STATE.value);
+  		istatus = SALReader.take(aCmd, info, 1,ANY_SAMPLE_STATE.value, ANY_VIEW_STATE.value, ANY_INSTANCE_STATE.value);
 		if (aCmd.value.length > 0) {
    		  if (info.value[0].valid_data) {
     		     if (debugLevel > 0) {
@@ -383,7 +383,7 @@ public class SAL_SALData {
 	  DataReader dreader = getReader2();
 	  ackcmdDataReader SALReader = ackcmdDataReaderHelper.narrow(dreader);
   	  SampleInfoSeqHolder infoSeq = new SampleInfoSeqHolder();
-	  SALReader.take(data, infoSeq, LENGTH_UNLIMITED.value,
+	  SALReader.take(data, infoSeq, 1,
 					ANY_SAMPLE_STATE.value, ANY_VIEW_STATE.value,
 					ANY_INSTANCE_STATE.value);
 	  if (data.value.length > 0) {
@@ -485,7 +485,7 @@ public class SAL_SALData {
 	  logeventDataReader SALReader = logeventDataReaderHelper.narrow(dreader);
           logeventSeqHolder data = new logeventSeqHolder();
   	  SampleInfoSeqHolder infoSeq = new SampleInfoSeqHolder();
-	  SALReader.take(data, infoSeq, LENGTH_UNLIMITED.value,
+	  SALReader.take(data, infoSeq, 1,
 					ANY_SAMPLE_STATE.value, ANY_VIEW_STATE.value,
 					ANY_INSTANCE_STATE.value);
           if (data.value.length > 0) {
@@ -502,7 +502,9 @@ public class SAL_SALData {
              } else {
                 status = SAL__NO_UPDATES;
              }
-	  }
+	  } else {
+             status = SAL__NO_UPDATES;
+          }
           SALReader.return_loan(data,infoSeq);
 	  return status;
 	}
@@ -843,6 +845,8 @@ public class SAL_SALData {
 		participant.get_default_topic_qos(topicQos);
 		topicQos.value.reliability.kind = ReliabilityQosPolicyKind.RELIABLE_RELIABILITY_QOS;
 		topicQos.value.durability.kind = DurabilityQosPolicyKind.TRANSIENT_DURABILITY_QOS;
+		topicQos.value.history.kind = HistoryQosPolicyKind.KEEP_LAST_HISTORY_QOS;
+		topicQos.value.history.depth = 100000;
 		status = participant.set_default_topic_qos(topicQos.value);
 		checkStatus(status,
 				"DomainParticipant.set_default_topic_qos");
@@ -854,15 +858,17 @@ public class SAL_SALData {
 
 	public void createTopic2(String topicName) {
 		int status = -1;
-		participant.get_default_topic_qos(topicQos);
-		topicQos.value.reliability.kind = ReliabilityQosPolicyKind.RELIABLE_RELIABILITY_QOS;
-		topicQos.value.durability.kind = DurabilityQosPolicyKind.TRANSIENT_DURABILITY_QOS;
-		status = participant.set_default_topic_qos(topicQos.value);
+		participant.get_default_topic_qos(topicQos2);
+		topicQos2.value.reliability.kind = ReliabilityQosPolicyKind.RELIABLE_RELIABILITY_QOS;
+		topicQos2.value.durability.kind = DurabilityQosPolicyKind.TRANSIENT_DURABILITY_QOS;
+		topicQos2.value.history.kind = HistoryQosPolicyKind.KEEP_LAST_HISTORY_QOS;
+		topicQos2.value.history.depth = 100000;
+		status = participant.set_default_topic_qos(topicQos2.value);
 		checkStatus(status,
 				"DomainParticipant.set_default_topic_qos");
 		System.out.println("=== [createTopic2] : topicName " + topicName + " type = " + typeName2);
 
-		topic2 = participant.create_topic(topicName, typeName2, topicQos.value,
+		topic2 = participant.create_topic(topicName, typeName2, topicQos2.value,
 				null, STATUS_MASK_NONE.value);
 		checkHandle(topic2, "DomainParticipant.create_topic");
 	}
@@ -873,6 +879,8 @@ public class SAL_SALData {
 		participant.get_default_topic_qos(sal[actorIdx].topicQos);
 		sal[actorIdx].topicQos.value.reliability.kind = ReliabilityQosPolicyKind.RELIABLE_RELIABILITY_QOS;
 		sal[actorIdx].topicQos.value.durability.kind = DurabilityQosPolicyKind.TRANSIENT_DURABILITY_QOS;
+		sal[actorIdx].topicQos.value.history.kind = HistoryQosPolicyKind.KEEP_LAST_HISTORY_QOS;
+		sal[actorIdx].topicQos.value.history.depth = 100000;
 		status = participant.set_default_topic_qos(sal[actorIdx].topicQos.value);
 		checkStatus(status,
 				"DomainParticipant.set_default_topic_qos");
@@ -887,6 +895,8 @@ public class SAL_SALData {
 		participant.get_default_topic_qos(sal[actorIdx].topicQos2);
 		sal[actorIdx].topicQos2.value.reliability.kind = ReliabilityQosPolicyKind.RELIABLE_RELIABILITY_QOS;
 		sal[actorIdx].topicQos2.value.durability.kind = DurabilityQosPolicyKind.TRANSIENT_DURABILITY_QOS;
+		sal[actorIdx].topicQos2.value.history.kind = HistoryQosPolicyKind.KEEP_LAST_HISTORY_QOS;
+		sal[actorIdx].topicQos2.value.history.depth = 100000;
 		status = participant.set_default_topic_qos(sal[actorIdx].topicQos2.value);
 		checkStatus(status,
 				"DomainParticipant.set_default_topic_qos");
@@ -902,6 +912,8 @@ public class SAL_SALData {
 		participant.get_default_topic_qos(sal[actorIdx].topicQos);
 		sal[actorIdx].topicQos.value.reliability.kind = ReliabilityQosPolicyKind.RELIABLE_RELIABILITY_QOS;
 		sal[actorIdx].topicQos.value.durability.kind = DurabilityQosPolicyKind.TRANSIENT_DURABILITY_QOS;
+		sal[actorIdx].topicQos.value.history.kind = HistoryQosPolicyKind.KEEP_LAST_HISTORY_QOS;
+		sal[actorIdx].topicQos.value.history.depth = 100000;
 		status = participant.set_default_topic_qos(sal[actorIdx].topicQos.value);
 		checkStatus(status,
 				"DomainParticipant.set_default_topic_qos");
@@ -916,6 +928,8 @@ public class SAL_SALData {
 		participant.get_default_topic_qos(sal[actorIdx].topicQos2);
 		sal[actorIdx].topicQos2.value.reliability.kind = ReliabilityQosPolicyKind.RELIABLE_RELIABILITY_QOS;
 		sal[actorIdx].topicQos2.value.durability.kind = DurabilityQosPolicyKind.TRANSIENT_DURABILITY_QOS;
+		sal[actorIdx].topicQos2.value.history.kind = HistoryQosPolicyKind.KEEP_LAST_HISTORY_QOS;
+		sal[actorIdx].topicQos2.value.history.depth = 100000;
 		status = participant.set_default_topic_qos(sal[actorIdx].topicQos2.value);
 		checkStatus(status,
 				"DomainParticipant.set_default_topic_qos");

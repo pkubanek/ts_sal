@@ -5,7 +5,7 @@ source $SAL_WORK_DIR/idl-templates/validated/[set SUBSYS]_evtdef.tcl
 set my 0
 wm geometry  . 400x400
 wm title . "$SUBSYS Log Event generator"
-foreach i [lsort $ALIASES] {
+foreach i [lsort $EVENT_ALIASES($SUBSYS)] {
    set iw [string tolower $i]
    set y 0
    if { [info exists EVTS($SUBSYS,$i,param)] } {
@@ -78,7 +78,7 @@ global EVTS SUBSYS PARS TIMEOUT SAL_WORK_DIR
 #   exec sleep 5
 #}
 puts stdout "Starting $SUBSYS Log Event Listener"
-set LISTENER [exec gnome-terminal -T "$SUBSYS Log Event Listener" -e $SAL_WORK_DIR/$SUBSYS/cpp/src/sacpp_[set SUBSYS]_eventlog &]
+set LISTENER [exec xterm -geometry +400+10 -T "$SUBSYS Log Event Listener" -e $SAL_WORK_DIR/$SUBSYS/cpp/src/sacpp_[set SUBSYS]_eventlog &]
 
 
 

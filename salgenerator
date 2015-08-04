@@ -48,7 +48,7 @@ source $SAL_DIR/utilities.tcl
 
 set TSUBSYSTEMS ""
 foreach i $argv {
-   if { [file exists $i] } {
+   if { [file exists $SAL_DIR/xml-templates/$i] } {
       lappend TSUBSYSTEMS $i
    }
 }

@@ -5,7 +5,7 @@ source $SAL_WORK_DIR/idl-templates/validated/[set SUBSYS]_cmddef.tcl
 set my 0
 wm geometry  . 400x400
 wm title . "$SUBSYS command launcher"
-foreach i [lsort $ALIASES] {
+foreach i [lsort $CMD_ALIASES($SUBSYS)] {
    set iw [string tolower $i]
    set y 0
    if { [info exists CMDS($SUBSYS,$i,param)] } {
@@ -87,7 +87,7 @@ global CMDS SUBSYS PARS TIMEOUT SAL_WORK_DIR
 #   exec sleep 5
 #}
 puts stdout "Starting $SUBSYS controller simulation"
-set LISTENER [exec xterm -T "$SUBSYS controller simulator" -e $SAL_WORK_DIR/$SUBSYS/cpp/src/sacpp_[set SUBSYS]_ctrl 1 &]
+set LISTENER [exec xterm  -geometry +400+10 -T "$SUBSYS controller simulator" -e $SAL_WORK_DIR/$SUBSYS/cpp/src/sacpp_[set SUBSYS]_ctrl 1 &]
 
 
 
