@@ -1,7 +1,7 @@
 #!/usr/bin/tclsh
 
 proc writeXMLtelemetry { dpath subsys } { 
-global SAL_WORK_DIR
+global SAL_WORK_DIR SALVERSION
   exec mkdir -p $dpath
   set fout [open $dpath/[set subsys]_Telemetry.xml w]
   puts $fout "<?xml version=\"1.0\" encoding=\"UTF-8\"?>
@@ -13,10 +13,17 @@ global SAL_WORK_DIR
      set id [lindex [split [file tail $i] "_."] 1]
      if { $id != "Telemetry" && $id != "Commands" && $id != "Events" } {
 puts stdout "processing $id"
-         puts $fout "<SALTelemetry>"
+         puts $fout "<SALTelemetry>
+ <Subsystem>[set subsys]</Subsystem>
+ <Version>$SALVERSION</Version>
+ <Author>salgenerator</Author>
+ <EFDB_Topic>[set subsys]_[set id]</EFDB_Topic>"
          set fin [open $i r]
          while { [gets $fin rec] > -1 } { 
+          set tag [lindex [split $rec "<>"] 1]
+          if { $tag != "EFDB_Topic" } {
             puts $fout $rec
+           }
          }
          close $fin
          puts $fout "</SALTelemetry>"

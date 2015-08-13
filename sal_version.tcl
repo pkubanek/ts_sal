@@ -1,4 +1,4 @@
-set SALVERSION 2.4
+set SALVERSION 2.5.3
 set SAL_BASE_DIR $env(SAL_DIR)/scripts
 set SAL_CMAKE_DIR $SAL_BASE_DIR/code/simd/cmake
 set SAL_SID(auxscope) 		1000
@@ -17,11 +17,10 @@ set SAL_SID(ocs) 		13000
 set SAL_SID(power) 		14000
 set SAL_SID(rotator) 		15000
 set SAL_SID(scheduler) 		16000
-set SAL_SID(seeing_dimm) 	17000
-set SAL_SID(seeing_mass) 	18000
-set SAL_SID(skycam) 		19000
-set SAL_SID(system) 		20000
-set SAL_SID(tcs) 		21000
+set SAL_SID(seeing) 		17000
+set SAL_SID(skycam) 		18000
+set SAL_SID(system) 		19000
+set SAL_SID(tcs) 		20000
 
 set SAL_SUBSYSTEMS [lsort [array names SAL_SID]]
 

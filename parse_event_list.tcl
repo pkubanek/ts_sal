@@ -37,7 +37,7 @@ foreach i [lsort $ALIASES] {
    set fidl [open $SAL_WORK_DIR/idl-templates/validated/[set subsys]_logevent_$i.idl w]
    puts $fidl "   struct logevent_$i \{"
    add_private_idl $fidl "      "
-   puts $fidl "      long priority;"
+   puts $fidl "      long		priority;"
    if { [info exists EVTS($subsys,$i,param)] } {
      foreach p $EVTS($subsys,$i,param) {
          puts $fidl "      $p;"
