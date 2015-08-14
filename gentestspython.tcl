@@ -25,6 +25,7 @@ global EVENT_ALIASES EVTS SAL_WORK_DIR SYSDIC SAL_DIR
       set fcmd [open $SAL_WORK_DIR/$subsys/python/[set subsys]Event_[set alias].py w]
       puts $fcmd "
 import time
+import sys
 from SALPY_[set subsys] import *
 mgr = SAL_[set subsys][set initializer]
 event = [set subsys]_logevent_[set alias]C()
@@ -37,6 +38,7 @@ mgr.salShutdown()
       set fcmd [open $SAL_WORK_DIR/$subsys/python/[set subsys]EventLogger_[set alias].py w]
       puts $fcmd "
 import time
+import sys
 from SALPY_[set subsys] import *
 mgr = SAL_[set subsys][set initializer]
 while True:
@@ -53,6 +55,7 @@ mgr.salShutdown()
       set fcmd [open $SAL_WORK_DIR/$subsys/python/[set subsys]Event_[set alias].py w]
       puts $fcmd "
 import time
+import sys
 from SALPY_[set subsys] import *
 mgr = SAL_[set subsys][set initializer]
 event = [set subsys]_logeventC()
@@ -69,6 +72,7 @@ mgr.salShutdown()
  set fcmd [open $SAL_WORK_DIR/$subsys/python/[set subsys]EventLogger.py w]
  puts $fcmd "
 import time
+import sys
 from SALPY_[set subsys] import *
 mgr = SAL_[set subsys][set initializer]
 while True:
@@ -99,13 +103,15 @@ global CMD_ALIASES CMDS SAL_WORK_DIR SYSDIC SAL_DIR
       set fcmd [open $SAL_WORK_DIR/$subsys/python/[set subsys]Commander_[set alias].py w]
       puts $fcmd "
 import time
+import sys
+timeout=5
 from SALPY_[set subsys] import *
 mgr = SAL_[set subsys][set initializer]
 mgr.salCommander(\"[set subsys]_command_[set alias]\")
 command = [set subsys]_command_[set alias]C()
 command.device = sys.argv\[1\]
 cmdId = mgr.issueCommand_[set alias](command)
-retval = msg.waitForCompletion_[set alias](cmdId)
+retval = mgr.waitForCompletion_[set alias](cmdId,timeout)
 time.sleep(1)
 "
       close $fcmd
@@ -113,6 +119,7 @@ time.sleep(1)
       set fcmd [open $SAL_WORK_DIR/$subsys/python/[set subsys]Controller_[set alias].py w]
       puts $fcmd "
 import time
+import sys
 from SALPY_[set subsys] import *
 mgr = SAL_[set subsys][set initializer]
 mgr.salProcessor(\"[set subsys]_command_[set alias]\")
@@ -129,7 +136,9 @@ while True:
  set fcmd [open $SAL_WORK_DIR/$subsys/python/[set subsys]Commander.py w]
  puts $fcmd "
 import time
+import sys
 from SALPY_[set subsys] import *
+timeout=5
 mgr = SAL_[set subsys][set initializer]
 mgr.salCommander(\"[set subsys]_command\")
 command = [set subsys]_commandC()
@@ -138,7 +147,7 @@ command.property = sys.argv\[2\]
 command.action   = sys.argv\[3\]
 command.value    = sys.argv\[4\]
 cmdId = mgr.issueCommand(command)
-retval = msg.waitForCompletion(cmdId)
+retval = mgr.waitForCompletion(cmdId,timeout)
 time.sleep(1)
 "
  close $fcmd
@@ -146,6 +155,7 @@ time.sleep(1)
  set fcmd [open $SAL_WORK_DIR/$subsys/python/[set subsys]Controller.py w]
  puts $fcmd "
 import time
+import sys
 from SALPY_[set subsys] import *
 mgr = SAL_[set subsys][set initializer]
 mgr.salProcessor(\"[set subsys]_command\")
