@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="http://lsst-sal.tuc.noao.edu/schema/SALTelemetrySet.xsl"?>
+<SALTelemetrySet xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="http://lsst-sal.tuc.noao.edu/schema/SALTelemetrySet.xsd">
+<SALTelemetry>
+ <Subsystem>dm</Subsystem>
+ <Version>2.5.3</Version>
+ <Author>salgenerator</Author>
+ <EFDB_Topic>dm_alert</EFDB_Topic>
+<SALTelemetry>
+<Subsystem>dm</Subsystem>
+<Version>2.4</Version>
+<Author>salgenerator</Author>
+<Explanation></Explanation>
+      <item>
+          <EFDB_Name>summary_data_quality_parameters</EFDB_Name>
+          <Description></Description>
+          <Frequency>0.054</Frequency>
+          <Publishers>1</Publishers>
+          <Values_per_Publisher>32</Values_per_Publisher>
+          <Size_in_bytes>256</Size_in_bytes>
+          <IDL_Type>double</IDL_Type>
+          <Units></Units>
+          <Conversion></Conversion>
+          <Sensor_location></Sensor_location>
+          <Count>32</Count>
+          <Instances_per_night>2332</Instances_per_night>
+          <Bytes_per_night>597196</Bytes_per_night>
+      </item>
+</SALTelemetry>
+</SALTelemetry>
+</SALTelemetrySet>
