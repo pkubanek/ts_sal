@@ -6,7 +6,7 @@ CFG = Release
 ifeq ($(CFG), Release)
 CC            = gcc
 CXX           = g++
-CPPFLAGS      = $(PICFLAGS) $(GENFLAGS) $(SAL_CPPFLAGS) -D_REENTRANT -Wall -I"." -I"$(OSPL_HOME)/examples/include" -I"$(OSPL_HOME)/examples" -I"$(OSPL_HOME)/include" -I"$(OSPL_HOME)/include/sys" -I"$(OSPL_HOME)/include/dcps/C++/SACPP" -I"/usr/include/python$(PYTHONVER)" -I../../../SALSubsys/cpp/src -I../../../SALSubsys/cpp #-DSAL_SUBSYSTEM_ID_IS_KEYED
+CPPFLAGS      = $(PICFLAGS) $(GENFLAGS) $(SAL_CPPFLAGS) -D_REENTRANT -Wall -I"." -I"$(OSPL_HOME)/examples/include" -I"$(OSPL_HOME)/examples" -I"$(OSPL_HOME)/include" -I"$(OSPL_HOME)/include/sys" -I"$(OSPL_HOME)/include/dcps/C++/SACPP" -I"/usr/include/python$(PYTHONVER)" -I"$(SAL_HOME)/include" -I../../../SALSubsys/cpp/src -I../../../SALSubsys/cpp #-DSAL_SUBSYSTEM_ID_IS_KEYED
 LD            = $(CXX) $(CCFLAGS) $(CPPFLAGS)
 AR            = ar
 PICFLAGS      = -fPIC
