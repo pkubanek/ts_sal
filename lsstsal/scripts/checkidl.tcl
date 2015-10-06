@@ -144,7 +144,7 @@ global NEWTOPICS NEWSIZES NEWCONSTS
 global DESC SDESC IDLTYPES IDLSIZES
 global PUBLISHERS FREQUENCY KEYINDEX
 global SAL_DIR TIDUSED SAL_WORK_DIR
-global XMLTOPICS XMLTLM IDLRESERVED
+global XMLTOPICS XMLTLM IDLRESERVED XMLITEMS
   set fin [open $SAL_WORK_DIR/idl-templates/$f r]
   set fout [open $SAL_WORK_DIR/idl-templates/validated/$f w]
   stdlog "Creating $SAL_WORK_DIR/idl-templates/validated/$f"
@@ -299,7 +299,8 @@ global XMLTOPICS XMLTLM IDLRESERVED
              set props($id,location) "$location"
              set props($id,comment) "$comments"
              set ikey "[set nt]_[set id]"
-             set XMLTOPICS($ikey) 1
+             set XMLTOPICS($nt) 1
+             lappend XMLITEMS($nt) $id
              set XMLTLM($ikey,EFDB_Topic) $nt
              set XMLTLM($ikey,EFDB_Name) $id
              set XMLTLM($ikey,Description) $comments

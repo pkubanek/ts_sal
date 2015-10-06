@@ -109,8 +109,9 @@ global EVTS EVENT_ALIASES SALVERSION
         puts $fout "      <Count>1</Count>"
         puts $fout "    </item>"
         foreach j $EVTS($subsys,$i,param) {
+         set name [string trim [lindex $j 1] "()0123456789"]
+         if { $name != "priority" } {
            puts $fout "    <item>"
-           set name [string trim [lindex $j 1] "()0123456789"]
            set type [lindex $j 0]
            set count [lindex [split [lindex $j 1] "()"] 1]
            if { $count == ""} { set count 1}
@@ -126,6 +127,7 @@ global EVTS EVENT_ALIASES SALVERSION
            puts $fout "      <Units> </Units>"
            puts $fout "      <Count>$count</Count>"
            puts $fout "    </item>"
+         }
         }
      }
      puts $fout "</SALEvent>"
