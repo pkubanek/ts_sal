@@ -12,7 +12,7 @@ public class SALNAMESTRINGDataPublisher {
 		// Publish Telemetry
 		int count=0;
 		mgr.salTelemetryPub("SALNAMESTRING");
-		SALTopic theTopicInstance = new SALTopic();
+		SALData.SALTopic theTopicInstance = new SALData.SALTopic();
 		while (true) {
 			mgr.putSample(theTopicInstance);
 			System.out.println("=== [SALTopic Publisher] message sent" + count);

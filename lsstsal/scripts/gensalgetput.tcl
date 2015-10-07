@@ -57,9 +57,10 @@ salReturn SAL_[set base]::putSample_[set name]([set base]_[set name]C *data)
 salReturn SAL_[set base]::getSample_[set name]([set base]_[set name]C *data)
 \{
   [set base]::[set name]Seq Instances;
-  SampleInfoSeq info;
-  ReturnCode_t status =  - 1;
+  SampleInfoSeq_var info = new SampleInfoSeq;
+  ReturnCode_t status = -1;
   salReturn istatus = -1;
+  unsigned int numsamp = 0;
 
   int actorIdx = SAL__[set base]_[set name]_ACTOR;
   if ( sal\[actorIdx\].isReader == false ) \{
@@ -72,12 +73,12 @@ salReturn SAL_[set base]::getSample_[set name]([set base]_[set name]C *data)
   checkHandle(SALReader.in(), \"[set base]::[set name]DataReader::_narrow\");
   status = SALReader->take(Instances, info, sal\[SAL__[set base]_[set name]_ACTOR\].maxSamples , ANY_SAMPLE_STATE, ANY_VIEW_STATE, ANY_INSTANCE_STATE);
   checkStatus(status, \"[set base]::[set name]DataReader::take\");
-  istatus = SAL__NO_UPDATES;
-  for (DDS::ULong j = 0; j < Instances.length(); j++)
+  numsamp = Instances.length();
+  for (DDS::ULong j = 0; j < numsamp; j++)
   \{
     rcvdTime = getCurrentTime();
     if (debugLevel > 0) \{
-      cout << \"=== \[GetSample\] message received :\" << endl;
+      cout << \"=== \[GetSample\] message received :\" << numsamp << endl;
       cout << \"    revCode  : \" << Instances\[j\].private_revCode << endl;
       cout << \"    sndStamp  : \" << Instances\[j\].private_sndStamp << endl;
       cout << \"    origin  : \" << Instances\[j\].private_origin << endl;
@@ -94,6 +95,10 @@ salReturn SAL_[set base]::getSample_[set name]([set base]_[set name]C *data)
   \}
   status = SALReader->return_loan(Instances, info);
   checkStatus(status, \"[set base]::[set name]DataReader::return_loan\");
+  if ( numsamp == 0 ) \{
+     istatus = SAL__NO_UPDATES;
+     return istatus;
+  \}
   return istatus;
 \}
 
@@ -265,10 +270,15 @@ global SAL_DIR SAL_WORK_DIR SYSDIC
            foreach j $ptypes {
                set name [lindex $j 2]
 puts $fout "
-	public int putSample($name data)
+	public int putSample([set base].[set name] data)
 	\{
           int status = SAL__OK;
-	  DataWriter dwriter = getWriter();
+	  int actorIdx = SAL__[set base]_[set name]_ACTOR;
+	  if ( sal\[actorIdx\].isWriter == false ) \{
+	    createWriter(actorIdx,false);
+	    sal\[actorIdx\].isWriter = true;
+	  \}
+	  DataWriter dwriter = getWriter(actorIdx);
 	  [set name]DataWriter SALWriter = [set name]DataWriterHelper.narrow(dwriter);
 	  data.private_revCode = \"LSST TEST REVCODE\";
 	  if (debugLevel > 0) \{
@@ -295,56 +305,61 @@ puts $fout "
 	\}
 
 
-	public int getSample($name data)
+	public int getSample([set base].[set name] data)
 	\{
 	  int status =  -1;
           int last = 0;
+          int numsamp;
           [set name]SeqHolder SALInstance = new [set name]SeqHolder();
-	  DataReader dreader = getReader();
+	  int actorIdx = SAL__[set base]_[set name]_ACTOR;
+	  if ( sal\[actorIdx\].isReader == false ) \{"
+        if { [info exists SYSDIC($base,keyedID)] } { 
+          puts $fout "  		// Filter expr
+                String expr[] = new String[0];
+                String sFilter = \"[set base]ID = \" + subsystemID;
+    		createContentFilteredTopic(actorIdx,\"filteredtopic\", sFilter, expr);
+		// create DataReader
+ 		createReader(actorIdx,true);"
+        } else {
+          puts $fout "	    createReader(actorIdx,false);"
+        }
+         puts $fout "
+	    sal\[actorIdx\].isReader = true;
+	  \}
+	  DataReader dreader = getReader(actorIdx);
 	  [set name]DataReader SALReader = [set name]DataReaderHelper.narrow(dreader);
   	  SampleInfoSeqHolder infoSeq = new SampleInfoSeqHolder();
-	  SALReader.take(SALInstance, infoSeq, LENGTH_UNLIMITED.value,
+	  SALReader.take(SALInstance, infoSeq, sal\[actorIdx\].maxSamples,
 					ANY_SAMPLE_STATE.value, ANY_VIEW_STATE.value,
 					ANY_INSTANCE_STATE.value);
-	  if (debugLevel > 0) \{
-		for (int i = 0; i < SALInstance.value.length; i++) \{
+          numsamp = SALInstance.value.length;
+          if (numsamp > 0) \{
+ 	    if (debugLevel > 0) \{
+		for (int i = 0; i < numsamp; i++) \{
 				System.out.println(\"=== \[getSample $name \] message received :\");
 				System.out.println(\"    revCode  : \"
 						+ SALInstance.value\[i\].private_revCode);
                    last = i+1;
 		\}
-	  \}
-          if (last > 0) \{
-            data = SALInstance.value\[last-1\];
+	    \}
+            if (last > 0) \{
+              data = SALInstance.value\[last-1\];
+              last = SAL__OK;
+            \}
+          \} else \{
+              last = SAL__NO_UPDATES;
           \}
           status = SALReader.return_loan (SALInstance, infoSeq);
 	  return last;
 	\}
 
-	public int getNextSample($name data)
+	public int getNextSample([set base].[set name] data)
 	\{
 	  int status =  -1;
-          int last = 0;
-          [set name]SeqHolder SALInstance = new [set name]SeqHolder();
-	  DataReader dreader = getReader();
-	  [set name]DataReader SALReader = [set name]DataReaderHelper.narrow(dreader);
-  	  SampleInfoSeqHolder infoSeq = new SampleInfoSeqHolder();
-	  SALReader.take(SALInstance, infoSeq, 1,
-					ANY_SAMPLE_STATE.value, ANY_VIEW_STATE.value,
-					ANY_INSTANCE_STATE.value);
-	  if (debugLevel > 0) \{
-		for (int i = 0; i < SALInstance.value.length; i++) \{
-				System.out.println(\"=== \[getNextSample $name \] message received :\");
-				System.out.println(\"    revCode  : \"
-						+ SALInstance.value\[i\].private_revCode);
-                   last = i+1;
-		\}
-	  \}
-          if (last > 0) \{
-            data = SALInstance.value\[last-1\];
-          \}
-          status = SALReader.return_loan (SALInstance, infoSeq);
-	  return last;
+	  int actorIdx = SAL__[set base]_[set name]_ACTOR;
+          sal\[actorIdx\].maxSamples = 1;
+          status = getSample(data);
+          return status;
 	\}
 "
 
@@ -452,14 +467,16 @@ salReturn SAL_[set base]::putSample([set base]::[set name] data)
 
 salReturn SAL_[set base]::getSample([set base]::[set name]Seq data)
 \{
-  SampleInfoSeq infoSeq;
+  SampleInfoSeq_var infoSeq = new SampleInfoSeq;
   ReturnCode_t status =  - 1;
+  unsigned int numsamp = 0;
   DataReader_var dreader = getReader();
   [set base]::[set name]DataReader_var SALReader = [set base]::[set name]DataReader::_narrow(dreader.in());
   checkHandle(SALReader.in(), \"[set base]::[set name]DataReader::_narrow\");
   status = SALReader->take(data, infoSeq, LENGTH_UNLIMITED, ANY_SAMPLE_STATE, ANY_VIEW_STATE, ANY_INSTANCE_STATE);
   checkStatus(status, \"[set base]::[set name]DataReader::take\");
-  for (DDS::ULong j = 0; j < data.length(); j++)
+  numsamp = data.length();
+  for (DDS::ULong j = 0; j < numsamp; j++)
   \{
     rcvdTime = getCurrentTime();
     cout << \"=== \[GetSample\] message received :\" << endl;
@@ -467,6 +484,9 @@ salReturn SAL_[set base]::getSample([set base]::[set name]Seq data)
   \}
   status = SALReader->return_loan(data, infoSeq);
   checkStatus(status, \"[set base]::[set name]DataReader::return_loan\");
+  if (numsamp == 0) \{
+     status = SAL__NO_UPDATES;
+  \}
   return status;
 \}"
                puts $fouth "

@@ -7,6 +7,8 @@
   #include <string>
   #include <iostream>
   #include <fstream>
+  #include <string.h>
+  #include <stdlib.h>
   #include "SAL_defines.h"
   #include "ccpp_dds_dcps.h"
 // INSERT TYPE INCLUDES
@@ -108,7 +110,7 @@
       int rcvOrigin;
       double rcvdTime;
       salU64  origin;
-
+      char   domainName[128];
       salActor sal[SAL__ACTORS_MAXCOUNT];
 
     public:

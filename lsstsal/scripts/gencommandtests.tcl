@@ -71,7 +71,7 @@ int main (int argc, char *argv\[\])
   /* Remove the DataWriters etc */
   mgr.salShutdown();
 
-  return 0;
+  return status;
 \}
 
 "

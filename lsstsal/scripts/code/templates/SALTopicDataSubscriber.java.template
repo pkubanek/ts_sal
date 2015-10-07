@@ -10,7 +10,7 @@ public class SALNAMESTRINGDataSubscriber {
 		SAL_SALData mgr = new SAL_SALData(SALSUBSYSID);
 		mgr.salTelemetrySub("SALNAMESTRING");
 
-		SALTopic SALInstance = new SALTopic();
+		SALData.SALTopic SALInstance = new SALData.SALTopic();
                 System.out.println ("=== [SALTopic Subscriber] Ready ...");
 
 		boolean terminate = false;

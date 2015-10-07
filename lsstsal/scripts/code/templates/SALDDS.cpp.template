@@ -8,6 +8,12 @@ using namespace SALData;
 #ifdef SAL_SUBSYSTEM_ID_IS_KEYED
 SAL_SALData::SAL_SALData(int aKey)
 {
+   char *dname = getenv("LSST_DDS_DOMAIN");
+   if ( dname != NULL ) {
+      strncpy(domainName, dname, 128);
+   } else {
+      strncpy(domainName, "LSST", 128);
+   }
    hasReader = false;
    hasWriter = false;
    hasCommand = false;
@@ -21,6 +27,12 @@ SAL_SALData::SAL_SALData(int aKey)
 #else
 SAL_SALData::SAL_SALData()
 {
+   char *dname = getenv("LSST_DDS_DOMAIN");
+   if ( dname != NULL ) {
+      strncpy(domainName, dname, 128);
+   } else {
+      strncpy(domainName, "LSST", 128);
+   }
    hasReader = false;
    hasWriter = false;
    hasCommand = false;
@@ -36,6 +48,12 @@ SAL_SALData::SAL_SALData()
 #ifdef SAL_SUBSYSTEM_ID_IS_KEYED
 void SAL_SALData::salInitialize(int aKey)
 {
+   char *dname = getenv("LSST_DDS_DOMAIN");
+   if ( dname != NULL ) {
+      strncpy(domainName, dname, 128);
+   } else {
+      strncpy(domainName, "LSST", 128);
+   }
    hasReader = false;
    hasWriter = false;
    hasCommand = false;
@@ -49,6 +67,12 @@ void SAL_SALData::salInitialize(int aKey)
 #else
 void SAL_SALData::salInitialize()
 {
+   char *dname = getenv("LSST_DDS_DOMAIN");
+   if ( dname != NULL ) {
+      strncpy(domainName, dname, 128);
+   } else {
+      strncpy(domainName, "LSST", 128);
+   }
    hasReader = false;
    hasWriter = false;
    hasCommand = false;
@@ -126,7 +150,7 @@ salReturn SAL_SALData::salTelemetrySub(char *topicName)
 salReturn SAL_SALData::salTelemetryPub(int actorIdx)
 {
   // create domain participant
-  createParticipant("LSST");
+  createParticipant(domainName);
 
   //create type
   salTypeSupport(actorIdx);
@@ -153,7 +177,7 @@ salReturn SAL_SALData::salTelemetryPub(int actorIdx)
 salReturn SAL_SALData::salTelemetrySub(int actorIdx)
 {
    // create domain participant
-   createParticipant("LSST");
+   createParticipant(domainName);
 
    //create type
    salTypeSupport(actorIdx);
@@ -806,7 +830,7 @@ salReturn SAL_SALData::salCommand()
   string response="SALData_ackcmd";
 
   // create domain participant
-  createParticipant("LSST");
+  createParticipant(domainName);
 
   //create Publisher
   createPublisher();
@@ -859,7 +883,7 @@ salReturn SAL_SALData::salCommand(char *cmdAlias)
   string response="SALData_ackcmd";
 
   // create domain participant
-  createParticipant("LSST");
+  createParticipant(domainName);
 
   //create Publisher
   createPublisher(actorIdx);
@@ -911,7 +935,7 @@ salReturn SAL_SALData::salProcessor()
   string response="SALData_ackcmd";
 
   // create domain participant
-  createParticipant("LSST");
+  createParticipant(domainName);
 
   //create Publisher
   createPublisher();
@@ -965,7 +989,7 @@ salReturn SAL_SALData::salProcessor(char *cmdAlias)
   string response="SALData_ackcmd";
 
   // create domain participant
-  createParticipant("LSST");
+  createParticipant(domainName);
 
   //create Publisher
   createPublisher(actorIdx);
@@ -1017,7 +1041,7 @@ salReturn SAL_SALData::salEvent(char *topicName)
   if ( actorIdx < 0) {return SAL__ERROR;}
 
   // create domain participant
-  createParticipant("LSST");
+  createParticipant(domainName);
 
   //create type
   salTypeSupport(actorIdx);
@@ -1093,7 +1117,7 @@ void SAL_SALData::createTopic(char *topicName)
   reliable_topic_qos.reliability.kind = RELIABLE_RELIABILITY_QOS;
   reliable_topic_qos.durability.kind = TRANSIENT_DURABILITY_QOS;
   reliable_topic_qos.history.kind = KEEP_LAST_HISTORY_QOS;
-  reliable_topic_qos.history.depth = 100000;
+  reliable_topic_qos.history.depth = 10000;
 
   /* Make the tailored QoS the new default. */
   status = participant->set_default_topic_qos(reliable_topic_qos);
@@ -1111,7 +1135,7 @@ void SAL_SALData::createTopic2(char *topicName)
   reliable_topic_qos2.reliability.kind = RELIABLE_RELIABILITY_QOS;
   reliable_topic_qos2.durability.kind = TRANSIENT_DURABILITY_QOS;
   reliable_topic_qos2.history.kind = KEEP_LAST_HISTORY_QOS;
-  reliable_topic_qos2.history.depth = 100000;
+  reliable_topic_qos2.history.depth = 10000;
 
   /* Make the tailored QoS the new default. */
   status = participant->set_default_topic_qos(reliable_topic_qos2);
@@ -1129,7 +1153,7 @@ void SAL_SALData::createTopic(int actorIdx)
   sal[actorIdx].reliable_topic_qos.reliability.kind = RELIABLE_RELIABILITY_QOS;
   sal[actorIdx].reliable_topic_qos.durability.kind = TRANSIENT_DURABILITY_QOS;
   sal[actorIdx].reliable_topic_qos.history.kind = KEEP_LAST_HISTORY_QOS;
-  sal[actorIdx].reliable_topic_qos.history.depth = 100000;
+  sal[actorIdx].reliable_topic_qos.history.depth = 10000;
 
   /* Make the tailored QoS the new default. */
   status = participant->set_default_topic_qos(sal[actorIdx].reliable_topic_qos);
@@ -1147,7 +1171,7 @@ void SAL_SALData::createTopic2(int actorIdx)
   sal[actorIdx].reliable_topic_qos2.reliability.kind = RELIABLE_RELIABILITY_QOS;
   sal[actorIdx].reliable_topic_qos2.durability.kind = TRANSIENT_DURABILITY_QOS;
   sal[actorIdx].reliable_topic_qos2.history.kind = KEEP_LAST_HISTORY_QOS;
-  sal[actorIdx].reliable_topic_qos2.history.depth = 100000;
+  sal[actorIdx].reliable_topic_qos2.history.depth = 10000;
 
   /* Make the tailored QoS the new default. */
   status = participant->set_default_topic_qos(sal[actorIdx].reliable_topic_qos2);
@@ -1165,7 +1189,7 @@ void SAL_SALData::createTopic(int actorIdx, char *topicName)
   sal[actorIdx].reliable_topic_qos.reliability.kind = RELIABLE_RELIABILITY_QOS;
   sal[actorIdx].reliable_topic_qos.durability.kind = TRANSIENT_DURABILITY_QOS;
   sal[actorIdx].reliable_topic_qos.history.kind = KEEP_LAST_HISTORY_QOS;
-  sal[actorIdx].reliable_topic_qos.history.depth = 100000;
+  sal[actorIdx].reliable_topic_qos.history.depth = 10000;
 
   /* Make the tailored QoS the new default. */
   status = participant->set_default_topic_qos(sal[actorIdx].reliable_topic_qos);
@@ -1183,7 +1207,7 @@ void SAL_SALData::createTopic2(int actorIdx, char *topicName)
   sal[actorIdx].reliable_topic_qos2.reliability.kind = RELIABLE_RELIABILITY_QOS;
   sal[actorIdx].reliable_topic_qos2.durability.kind = TRANSIENT_DURABILITY_QOS;
   sal[actorIdx].reliable_topic_qos2.history.kind = KEEP_LAST_HISTORY_QOS;
-  sal[actorIdx].reliable_topic_qos2.history.depth = 100000;
+  sal[actorIdx].reliable_topic_qos2.history.depth = 10000;
 
   /* Make the tailored QoS the new default. */
   status = participant->set_default_topic_qos(sal[actorIdx].reliable_topic_qos2);
@@ -1301,6 +1325,7 @@ void SAL_SALData::deletePublisher()
     }
     for (int i=0; i<SAL__ACTORS_MAXCOUNT;i++) {
         if ( sal[i].publisher != NULL) {
+       cout << "    deletePublisher : " << i << endl;
           status = participant->delete_publisher(sal[i].publisher.in());
           checkStatus(status, "DDS::DomainParticipant::delete_publisher ");
         }
@@ -1512,6 +1537,10 @@ void SAL_SALData::createReader(int actorIdx,bool filtered)
   }
   checkHandle(sal[actorIdx].reader, "DDS::Subscriber::create_datareader ()");
   sal[actorIdx].isReader = true;
+  DDS::Duration_t a_timeout;
+  a_timeout.sec = 20;
+  a_timeout.nanosec = 0;
+  status = sal[actorIdx].reader->wait_for_historical_data(a_timeout);
 }
 
 void SAL_SALData::createReader2(int actorIdx,bool filtered)
@@ -1525,6 +1554,10 @@ void SAL_SALData::createReader2(int actorIdx,bool filtered)
   }
   checkHandle(sal[actorIdx].reader2, "DDS::Subscriber::create_datareader ()");
   sal[actorIdx].isReader = true;
+  DDS::Duration_t a_timeout;
+  a_timeout.sec = 20;
+  a_timeout.nanosec = 0;
+  status = sal[actorIdx].reader2->wait_for_historical_data(a_timeout);
 }
 
 

@@ -72,6 +72,7 @@ public class salActor {
 	this.isEventReader = false;
 	this.isEventWriter = false;
 	this.isProcessor = false;
+        this.maxSamples = 999999999;
     }
 }
 
