@@ -164,7 +164,7 @@ salReturn SAL_SALData::salTelemetryPub(int actorIdx)
   // create DataWriter :
   // If autodispose_unregistered_instances is set to true (default value),
   // you will have to start the subscriber before the publisher
-  bool autodispose_unregistered_instances = false;
+  bool autodispose_unregistered_instances = true;
   createWriter(actorIdx,autodispose_unregistered_instances);
   DataWriter_var dwriter = getWriter(actorIdx);
   sal[actorIdx].isWriter = true;
