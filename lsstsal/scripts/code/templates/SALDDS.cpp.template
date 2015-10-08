@@ -1055,11 +1055,7 @@ salReturn SAL_SALData::salEvent(char *topicName)
 
 void SAL_SALData::salShutdown()
 {
-  deleteReader();
-  deleteSubscriber();     
-  deleteWriter();
-  deletePublisher();
-  deleteTopics();
+  participant->delete_contained_entities();
   deleteParticipant();
 }
 

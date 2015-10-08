@@ -799,11 +799,7 @@ public class SAL_SALData {
 
 	public void salShutdown()
 	{
-          deleteReaders();
-	  deleteSubscriber();     
-	  deleteWriters();
-	  deletePublisher();
-	  deleteTopics();
+          participant.delete_contained_entities();
 	  deleteParticipant();
 	}
 
