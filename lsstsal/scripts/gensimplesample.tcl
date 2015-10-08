@@ -92,9 +92,10 @@ using namespace std;
                puts $fout "	#pragma keylist $name"
             }
             puts $fhdr "
-
+#ifdef SAL_DEBUG_CSTRUCTS
   [set subsys]_[set name]C()  \{ std::cout << \"[set subsys]_[set name]C()\"  << std::endl; \}
   ~[set subsys]_[set name]C() \{ std::cout << \"~[set subsys]_[set name]C()\"  << std::endl; \}
+#endif
 \};
 "
            puts $fbst "      ;"
