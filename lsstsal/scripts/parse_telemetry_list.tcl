@@ -17,7 +17,7 @@ foreach i [lsort $all] {
   set fin [open $i r]
   gets $fin rec
 puts $fout "<H3>[file tail [file rootname $i]] Telemetry Stream</H3><P><UL>"
-puts $fout "<TABLE BORDER=3 CELLPADDING=5 BGCOLOR=LightBlue WIDTH=700>
+puts $fout "<TABLE BORDER=3 CELLPADDING=5 BGCOLOR=LightBlue WIDTH=600>
 <TR BGCOLOR=Yellow><B><TD>Stream name</TD><TD>Item</TD><TD>Type</TD><TD>Comment</TD></B></TR>"
   while { [gets $fin rec] > -1 } {
    set rec [string trim $rec "\{\}"]

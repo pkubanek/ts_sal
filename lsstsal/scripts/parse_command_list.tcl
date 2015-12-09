@@ -73,7 +73,7 @@ exec mkdir -p $SAL_WORK_DIR/html/[set subsys]
 set fout [open $SAL_WORK_DIR/html/[set subsys]/command_[set subsys].html w]
 puts stdout "Generating html command table $subsys"
 puts $fout "<H3>$subsys Commands</H3><P><UL>"
-puts $fout "<TABLE BORDER=3 CELLPADDING=5 BGCOLOR=LightBlue  WIDTH=800>
+puts $fout "<TABLE BORDER=3 CELLPADDING=5 BGCOLOR=LightBlue  WIDTH=600>
 <TR BGCOLOR=Yellow><B><TD>Command Alias</TD><TD>Device</TD><TD>Property
 </TD><TD>Action</TD><TD>Parameter</TD></B></TR>"
 foreach i [lsort $ALIASES] {
