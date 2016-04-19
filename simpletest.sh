@@ -42,7 +42,7 @@ source $OSPL_HOME/release.com
 cd $SAL_WORK_DIR
 
 echo "Updating XML"
-wget https://github.com/lsst-ts/ts_xml/archive/master.zip
+wget -nv https://github.com/lsst-ts/ts_xml/archive/master.zip
 unzip master.zip
 mv -v ts_xml-master/sal_interfaces/*/*.xml .
 
