@@ -29,6 +29,6 @@ if [ "$1" = "CI" ]; then
 #	echo "Installing CentOS dependencies"
 #	yum -y install tk tk-devel swig ncurses-libs xterm xorg-x11-fonts-misc java-1.8.0-openjdk-devel boost-python boost-python-devel maven python-devel
 
-	mkdir $SAL_WORK_DIR
+	mkdir -p $SAL_WORK_DIR
 fi
 
