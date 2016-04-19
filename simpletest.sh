@@ -61,6 +61,6 @@ done
 
 camera/cpp/src/sacpp_camera_configure_controller &
 camera/cpp/src/sacpp_camera_configure_commander testSpec
-pkill camera/cpp/src/sacpp_camera_configure_controller
+pkill -f -9 sacpp_camera_configure_controller
 
 
