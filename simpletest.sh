@@ -53,4 +53,9 @@ do
    salgenerator $subsys html
 done
 
+echo "Generating C++"
+for subsys in camera dm dome hexapod m1m3 m2ms mount rotator scheduler tcs
+do
+   salgenerator $subsys sal cpp
+done
 
