@@ -63,4 +63,20 @@ camera/cpp/src/sacpp_camera_configure_controller &
 camera/cpp/src/sacpp_camera_configure_commander testSpec
 pkill -f -9 sacpp_camera_configure_controller
 
+camera/cpp/src/sacpp_camera_initGuiders_controller &
+camera/cpp/src/sacpp_camera_initGuiders_commander "1,1,1,1 100,100,100,100 32,32,32,32"
+pkill -f -9 sacpp_camera_initGuiders_controller
+
+camera/cpp/src/sacpp_camera_initImage_controller &
+camera/cpp/src/sacpp_camera_initImage_commander 2.0
+pkill -f -9 sacpp_camera_initImage_controller
+
+camera/cpp/src/sacpp_camera_setFilter_controller &
+camera/cpp/src/sacpp_camera_setFilter_commander R
+pkill -f -9 sacpp_camera_setFilter_controller
+
+camera/cpp/src/sacpp_camera_takeImages_controller &
+camera/cpp/src/sacpp_camera_takeImages_commander 15.0 1 1 1 1 test-image-name
+pkill -f -9 sacpp_camera_takeImages_controller
+
 
