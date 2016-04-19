@@ -59,3 +59,8 @@ do
    salgenerator $subsys sal cpp
 done
 
+camera/cpp/src/sacpp_camera_configure_controller &
+camera/cpp/src/sacpp_camera_configure_commander testSpec
+pkill camera/cpp/src/sacpp_camera_configure_controller
+
+
