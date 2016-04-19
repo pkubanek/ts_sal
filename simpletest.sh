@@ -15,7 +15,7 @@ export PYTHONPATH=$PYTHONPATH:${SAL_WORK_DIR}/lib
 mkdir -p $LSST_SDK_INSTALL/lsstsal/lib
 echo "LSST testing middleware toolset environment is configured"
 which tclsh
-salgenerator
+tclsh `which salgenerator`
 
 
 
