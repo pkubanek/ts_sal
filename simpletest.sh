@@ -19,11 +19,11 @@ if [ "$1" = "CI" ]; then
 	echo "Configuring Continuous Integration host"
 
 	echo "Installing OpenSplice"
-	wget ftp://ftp.noao.edu/pub/dmills/opensplice_latest.tgz
+	wget -nv ftp://ftp.noao.edu/pub/dmills/opensplice_latest.tgz
 	tar xzf opensplice_latest.tgz
 
 	echo "Installing Maven components"
-	wget ftp://ftp.noao.edu/pub/dmills/maven-sal-repos.tgz
+	wget -nv ftp://ftp.noao.edu/pub/dmills/maven-sal-repos.tgz
 	tar xzf maven-sal-repos.tgz
 
 #	echo "Installing CentOS dependencies"
@@ -31,4 +31,18 @@ if [ "$1" = "CI" ]; then
 
 	mkdir -p $SAL_WORK_DIR
 fi
+
+export OSPL_HOME=$LSST_SDK_INSTALL/OpenSpliceDDS/V6.4.1/HDE/x86_64.linux
+export M2_HOME=$LSST_SDK_INSTALL/apache-maven-3.3.1
+export OSPL_GATEWAY=$LSST_SDK_INSTALL/OpenSpliceGateway-1.0.3
+export M2=$M2_HOME/bin
+export RLM_HOME=$SAL_HOME/.m2/repository/org/opensplice/gateway/rlm/9.1.3
+source $OSPL_HOME/release.com
+
+cd $SAL_WORK_DIR
+
+echo "Updating XML"
+wget https://github.com/lsst-ts/ts_xml/archive/master.zip
+unzip master.zip
+mv -v ts_xml-master/sal_interfaces/*/*.xml .
 
