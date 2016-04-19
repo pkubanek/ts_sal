@@ -1,6 +1,6 @@
 #!/bin/sh
 
-export LSST_SDK_INSTALL=$HOME
+export LSST_SDK_INSTALL=$HOME/workspace/ts_sal
 export SAL_HOME=$LSST_SDK_INSTALL/lsstsal
 export SAL_WORK_DIR=$LSST_SDK_INSTALL/test
 export SAL_CPPFLAGS=-m64
