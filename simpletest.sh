@@ -79,4 +79,7 @@ camera/cpp/src/sacpp_camera_takeImages_controller &
 camera/cpp/src/sacpp_camera_takeImages_commander 1 15.0 1 1 1 1 test-image-name
 pkill -f -9 sacpp_camera_takeImages_controller
 
+camera/cpp/src/sacpp_camera_startIntegration_log &
+camera/cpp/src/sacpp_camera_startIntegration_send 1 test-image-name
+pkill -f -9 sacpp_camera_startIntegration_log
 
