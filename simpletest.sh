@@ -81,5 +81,6 @@ pkill -f -9 sacpp_camera_takeImages_controller
 
 camera/cpp/src/sacpp_camera_startIntegration_log &
 camera/cpp/src/sacpp_camera_startIntegration_send 1 test-image-name
+sleep 5
 pkill -f -9 sacpp_camera_startIntegration_log
 
