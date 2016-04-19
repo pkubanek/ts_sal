@@ -1,5 +1,4 @@
 *~
-lsstsal/lib
 lsstsal/scripts/code/include/sal/svcSAL*.h
 lsstsal/scripts/code/sql/*.sql
 lsstsal/scripts/include/ccpp*.h
