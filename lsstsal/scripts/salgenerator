@@ -1,4 +1,4 @@
-#!/usr/bin/tclsh
+#!../lsstsal/bin/tclsh
 
 #
 # Command line tool for SAL code/document/etc generation.
