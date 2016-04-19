@@ -14,8 +14,21 @@ export PATH=$JAVA_HOME/bin:${M2}:${SAL_HOME}/bin:${PATH}
 export PYTHONPATH=$PYTHONPATH:${SAL_WORK_DIR}/lib
 mkdir -p $LSST_SDK_INSTALL/lsstsal/lib
 echo "LSST testing middleware toolset environment is configured"
-which tclsh
-tclsh `which salgenerator`
 
+if [ "$1" = "CI" ]; then
+	echo "Configuring Continuous Integration host"
 
+	echo "Installing OpenSplice"
+	wget ftp://ftp.noao.edu/pub/dmills/opensplice_latest.tgz
+	tar xzf opensplice_latest.tgz
+
+	echo "Installing Maven components"
+	wget ftp://ftp.noao.edu/pub/dmills/maven-sal-repos.tgz
+	tar xzf maven-sal-repos.tgz
+
+#	echo "Installing CentOS dependencies"
+#	yum -y install tk tk-devel swig ncurses-libs xterm xorg-x11-fonts-misc java-1.8.0-openjdk-devel boost-python boost-python-devel maven python-devel
+
+	mkdir $SAL_WORK_DIR
+fi
 
