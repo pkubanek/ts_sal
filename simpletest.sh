@@ -33,7 +33,6 @@ if [ "$1" = "CI" ]; then
 fi
 
 export OSPL_HOME=$LSST_SDK_INSTALL/OpenSpliceDDS/V6.4.1/HDE/x86_64.linux
-export M2_HOME=$LSST_SDK_INSTALL/apache-maven-3.3.1
 export OSPL_GATEWAY=$LSST_SDK_INSTALL/OpenSpliceGateway-1.0.3
 export M2=$M2_HOME/bin
 export RLM_HOME=$SAL_HOME/.m2/repository/org/opensplice/gateway/rlm/9.1.3
@@ -64,6 +63,8 @@ for subsys in camera dm dome hexapod m1m3 m2ms mount rotator scheduler tcs
 do
    salgenerator $subsys sal java
 done
+
+salgenerator camera maven
 
 camera/cpp/src/sacpp_camera_configure_controller &
 camera/cpp/src/sacpp_camera_configure_commander testSpec
