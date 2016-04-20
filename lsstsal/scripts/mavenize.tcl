@@ -133,9 +133,10 @@ global SAL_WORK_DIR SAL_DIR SALVERSION
   </project>
 "
   close $fout
-  foreach i [glob $SAL_WORK_DIR/[set subsys]*.idl] {
+  foreach i [glob $SAL_WORK_DIR/idl-templates/validated/[set subsys]*.idl] {
      set id [join [lrange [split [file tail [file rootname $i]] _] 1 end] _]
-     catch {
+     set type [lindex [split $id _] 0]
+     if { $type != "command" && $type != "logevent" } {
        exec cp $SAL_WORK_DIR/[set subsys]_[set id]/java/src/[set subsys]_[set id]DataPublisher.java $SAL_WORK_DIR/maven/[set subsys]_[set SALVERSION]/src/test/java/.
        exec cp $SAL_WORK_DIR/[set subsys]_[set id]/java/src/[set subsys]_[set id]DataSubscriber.java $SAL_WORK_DIR/maven/[set subsys]_[set SALVERSION]/src/test/java/.
        puts stdout "Processed $id"
