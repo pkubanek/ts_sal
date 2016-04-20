@@ -59,6 +59,12 @@ do
    salgenerator $subsys sal cpp
 done
 
+echo "Generating Java"
+for subsys in camera dm dome hexapod m1m3 m2ms mount rotator scheduler tcs
+do
+   salgenerator $subsys java cpp
+done
+
 camera/cpp/src/sacpp_camera_configure_controller &
 camera/cpp/src/sacpp_camera_configure_commander testSpec
 pkill -f -9 sacpp_camera_configure_controller
