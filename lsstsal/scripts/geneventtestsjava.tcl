@@ -45,7 +45,7 @@ public class [set subsys]Event_[set alias] \{
 
           \} else \{
 
-            int priority=Integer.parseInt(args\[0\])
+            int priority=Integer.parseInt(args\[0\]);
 	    [set subsys].logevent_[set alias] event  = new [set subsys].logevent_[set alias]();
 	    event.private_revCode = \"LSST TEST EVENT\";"
      set narg 1
@@ -59,20 +59,20 @@ public class [set subsys]Event_[set alias] \{
         set pdim  [lindex $pspl 1]
         while { $l < $pdim } {
          switch $ptype {
-          boolean { puts $fcmd "  command.[set pname]\[$l\] = Boolean.valueOf(args\[$narg\]);" }
-          double  { puts $fcmd "  command.[set pname]\[$l\] = Double.valueOf(args\[$narg\]);" }
-          int     { puts $fcmd "  command.[set pname]\[$l\] = Integer.valueOf(args\[$narg\]);" }
-          long    { puts $fcmd "  command.[set pname]\[$l\] = Integer.valueOf(args\[$narg\]);" }
+          boolean { puts $fcmd "  	event.[set pname]\[$l\] = Boolean.valueOf(args\[$narg\]);" }
+          double  { puts $fcmd "  	event.[set pname]\[$l\] = Double.valueOf(args\[$narg\]);" }
+          int     { puts $fcmd "  	event.[set pname]\[$l\] = Integer.valueOf(args\[$narg\]);" }
+          long    { puts $fcmd "  	event.[set pname]\[$l\] = Integer.valueOf(args\[$narg\]);" }
          }
          incr l 1
         }
        } else {
         switch $ptype {
-          boolean { puts $fcmd "  command.[set pname] = Boolean.valueOf(args\[$narg\]);" }
-          double  { puts $fcmd "  command.[set pname] = Double.valueOf(args\[$narg\]);" }
-          int     { puts $fcmd "  command.[set pname] = Integer.valueOf(args\[$narg\]);" }
-          long    { puts $fcmd "  command.[set pname] = Integer.valueOf(args\[$narg\]);" }
-          string  { puts $fcmd "  command.[set pname] = args\[$narg\];" }
+          boolean { puts $fcmd "  	event.[set pname] = Boolean.valueOf(args\[$narg\]);" }
+          double  { puts $fcmd "  	event.[set pname] = Double.valueOf(args\[$narg\]);" }
+          int     { puts $fcmd "  	event.[set pname] = Integer.valueOf(args\[$narg\]);" }
+          long    { puts $fcmd "  	event.[set pname] = Integer.valueOf(args\[$narg\]);" }
+          string  { puts $fcmd "  	event.[set pname] = args\[$narg\];" }
        }
       }
       incr narg 1
@@ -98,7 +98,7 @@ public class [set subsys]Event_[set alias] \{
 import [set subsys].*;
 import org.lsst.sal.SAL_[set subsys];
 
-public class [set subsys]EventLogger \{
+public class [set subsys]EventLogger_[set alias] \{
 
 	public static void main(String\[\] args) \{
 	  int status   = SAL_[set subsys].SAL__OK;
@@ -109,7 +109,7 @@ public class [set subsys]EventLogger \{
 	  [set subsys].logevent_[set alias] event = new [set subsys].logevent_[set alias]();
 
 	  while (!finished) \{
-	     status = evt.getEvent(event);
+	     status = evt.getEvent_[set alias](event);
 	     if (status == SAL_[set subsys].SAL__OK) \{
                 System.out.println(\"=== Event Logged : \" + event);
              \}

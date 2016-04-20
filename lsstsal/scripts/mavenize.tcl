@@ -17,9 +17,9 @@ global SAL_WORK_DIR SAL_DIR SALVERSION
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>org.lsst.lsst-tsvm</groupId>
-  <artifactId>sal_camera</artifactId>
+  <artifactId>sal_[set subsys]</artifactId>
   <packaging>jar</packaging>
-  <name>sal_camera</name>
+  <name>sal_[set subsys]</name>
   <version>$SALVERSION</version>
 
   <url>http://lsst-tsvm.lsst.org</url>

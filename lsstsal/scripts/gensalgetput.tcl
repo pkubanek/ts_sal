@@ -315,7 +315,7 @@ puts $fout "
 	  if ( sal\[actorIdx\].isReader == false ) \{"
         if { [info exists SYSDIC($base,keyedID)] } { 
           puts $fout "  		// Filter expr
-                String expr[] = new String[0];
+                String expr\[\] = new String\[0\];
                 String sFilter = \"[set base]ID = \" + subsystemID;
     		createContentFilteredTopic(actorIdx,\"filteredtopic\", sFilter, expr);
 		// create DataReader
