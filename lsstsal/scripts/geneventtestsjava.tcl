@@ -13,7 +13,7 @@ proc geneventtestsjava { subsys } {
 global EVENT_ALIASES EVTS EVENT_ALIASES EVTS SAL_WORK_DIR SYSDIC SAL_DIR
  if { [info exists EVENT_ALIASES($subsys)] } {
   if { [info exists SYSDIC($subsys,keyedID)] } {
-       set initializer "(1)"
+       set initializer "( (short) 1 )"
   } else {
        set initializer "()"
   }

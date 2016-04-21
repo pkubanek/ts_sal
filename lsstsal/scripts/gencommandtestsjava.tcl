@@ -13,7 +13,7 @@ proc gencommandtestsjava { subsys } {
 global CMD_ALIASES CMDS EVENT_ALIASES EVTS SAL_WORK_DIR SYSDIC SAL_DIR
  if { [info exists CMD_ALIASES($subsys)] } {
    if { [info exists SYSDIC($subsys,keyedID)] } {
-       set initializer "(1)"
+       set initializer "( (short) 1)"
    } else {
        set initializer "()"
    }
@@ -53,9 +53,9 @@ public class [set subsys]Commander_[set alias] \{
 
 	    command.private_revCode = \"LSST TEST COMMAND\";"
   set cpars $CMDS($subsys,$alias)
-  puts $fcmd "  command.device   = \"[lindex $cpars 0]\";"
-  puts $fcmd "  command.property = \"[lindex $cpars 1]\";"
-  puts $fcmd "  command.action   = \"[lindex $cpars 2]\";"
+  puts $fcmd "  	command.device   = \"[lindex $cpars 0]\";"
+  puts $fcmd "  	command.property = \"[lindex $cpars 1]\";"
+  puts $fcmd "  	command.action   = \"[lindex $cpars 2]\";"
   set narg 1
   foreach p $CMDS($subsys,$alias,param) {
        set pname [lindex $p 1]
