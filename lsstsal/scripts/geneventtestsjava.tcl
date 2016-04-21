@@ -45,7 +45,7 @@ public class [set subsys]Event_[set alias]Test extends TestCase \{
 	  // Issue Event
           int status=0;
 
-  
+            mgr.salEvent(\"[set subsys]_logevent_[set alias]\");
             int priority=1;
 	    [set subsys].logevent_[set alias] event  = new [set subsys].logevent_[set alias]();
 	    event.private_revCode = \"LSST TEST EVENT\";"
@@ -93,12 +93,12 @@ public class [set subsys]Event_[set alias]Test extends TestCase \{
 "
       close $fcmd
       stdlog "	: event logger for = $alias"
-      set fcmd [open $SAL_WORK_DIR/$subsys/java/src/[set subsys]EventLogger_[set alias].java w]
+      set fcmd [open $SAL_WORK_DIR/$subsys/java/src/[set subsys]EventLogger_[set alias]Test.java w]
       puts $fcmd "
 import [set subsys].*;
 import org.lsst.sal.SAL_[set subsys];
 
-public class [set subsys]EventLogger_[set alias] \{
+public class [set subsys]EventLogger_[set alias]Test \{
 
 	public static void main(String\[\] args) \{
 	  int status   = SAL_[set subsys].SAL__OK;
@@ -106,6 +106,7 @@ public class [set subsys]EventLogger_[set alias] \{
 
 	  // Initialize
 	  SAL_[set subsys] evt = new SAL_[set subsys][set initializer];
+          evt.salEvent(\"[set subsys]_logevent_[set alias]\");
 	  [set subsys].logevent_[set alias] event = new [set subsys].logevent_[set alias]();
 
 	  while (!finished) \{

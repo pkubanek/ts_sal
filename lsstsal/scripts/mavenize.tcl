@@ -152,8 +152,7 @@ global SAL_WORK_DIR SAL_DIR SALVERSION
   exec cp -r $SAL_WORK_DIR/$subsys/java/$subsys $SAL_WORK_DIR/maven/[set subsys]_[set SALVERSION]/src/main/java/.
   exec mkdir -p $SAL_WORK_DIR/maven/libs
   exec cp $SAL_DIR/../lib/dcpssaj.jar $SAL_WORK_DIR/maven/libs/.
-  set junit [glob $SAL_DIR/../lib/junit*.jar]
-  exec cp $junit $SAL_WORK_DIR/maven/libs/.
+  exec cp $SAL_DIR/../lib/junit.jar $SAL_WORK_DIR/maven/libs/.
 }
 
 
