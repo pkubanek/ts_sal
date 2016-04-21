@@ -158,7 +158,12 @@ global SAL_WORK_DIR SAL_DIR SALVERSION
 
 
 proc mavenunittests { subsys } {
-global SAL_WORK_DIR SAL_DIR SALVERSION
+global SAL_WORK_DIR SAL_DIR SALVERSION CMD_ALIASES CMDS SYSDIC 
+   if { [info exists SYSDIC($subsys,keyedID)] } {
+       set initializer "( (short) 1)"
+   } else {
+       set initializer "()"
+   }
   set fout [open $SAL_WORK_DIR/maven/[set subsys]_[set SALVERSION]/src/test/java/[set subsys]CommanderTest.java w]
   puts $fout "
 package org.lsst.sal.junit.[set subsys];
@@ -179,7 +184,7 @@ public class [set subsys]CommanderTest extends TestCase \{
      set alias [lindex [split [lindex $i 2] _] 1]
      puts $fout "
   public void test[set subsys]Commander_[set alias]() \{
-	    SAL_[set subsys] mgr = new SAL_[set subsys]();
+	    SAL_[set subsys] mgr = new SAL_[set subsys][set initializer];
 
 	    // Issue command
             int cmdId=0;

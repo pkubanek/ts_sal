@@ -170,9 +170,9 @@ if { $OPTIONS(maven) } {
      puts stdout "Creating maven directories maven/[set subsys]_[set SALVERSION]"
      catch { set result [mavenize $subsys] } bad
      puts stdout "$result"
-     puts stdout "Creating unit tests maven/[set subsys][set subsys]_[set SALVERSION]"
-     catch { set result [mavenunittests $subsys] } bad
-     puts stdout "$result"
+#     puts stdout "Creating unit tests maven/[set subsys][set subsys]_[set SALVERSION]"
+#     catch { set result [mavenunittests $subsys] } bad
+#     puts stdout "$result"
      cd maven/[set subsys]_[set SALVERSION]  
      puts stdout "Running maven install"
      catch { set result [exec mvn install] } bad

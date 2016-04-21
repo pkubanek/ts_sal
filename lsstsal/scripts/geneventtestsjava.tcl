@@ -20,17 +20,24 @@ global EVENT_ALIASES EVTS EVENT_ALIASES EVTS SAL_WORK_DIR SYSDIC SAL_DIR
   foreach alias $EVENT_ALIASES($subsys) {
     if { [info exists EVTS($subsys,$alias,param)] } {
       stdlog "	: event test send for = $alias"
-      set fcmd [open $SAL_WORK_DIR/$subsys/java/src/[set subsys]Event_[set alias].java w]
+      set fcmd [open $SAL_WORK_DIR/$subsys/java/src/[set subsys]Event_[set alias]Test.java w]
       puts $fcmd "
 
 
 // This file contains the implementation for the [set subsys]_[set alias] event generator test.
+package org.lsst.sal.junit.camera;
+
+import junit.framework.TestCase;
 import [set subsys].*;
 import org.lsst.sal.SAL_[set subsys];
 
-public class [set subsys]Event_[set alias] \{
+public class [set subsys]Event_[set alias]Test extends TestCase \{
 
-	public static void main(String\[\] args) \{
+   	public [set subsys]Event_[set alias]Test(String name) \{
+   	   super(name);
+   	\}
+
+	public void test[set subsys]Event_[set alias] () \{
 
           short aKey=1;
 	  SAL_[set subsys] mgr = new SAL_[set subsys][set initializer];
@@ -38,14 +45,8 @@ public class [set subsys]Event_[set alias] \{
 	  // Issue Event
           int status=0;
 
-          if (args.length < [expr [llength $EVTS($subsys,$alias,plist)] +1] ) \{
-
-            System.err.println(\"Usage: priority $EVTS($subsys,$alias,plist)\");
-            System.exit(1);
-
-          \} else \{
-
-            int priority=Integer.parseInt(args\[0\]);
+  
+            int priority=1;
 	    [set subsys].logevent_[set alias] event  = new [set subsys].logevent_[set alias]();
 	    event.private_revCode = \"LSST TEST EVENT\";"
      set narg 1
@@ -59,20 +60,20 @@ public class [set subsys]Event_[set alias] \{
         set pdim  [lindex $pspl 1]
         while { $l < $pdim } {
          switch $ptype {
-          boolean { puts $fcmd "  	event.[set pname]\[$l\] = Boolean.valueOf(args\[$narg\]);" }
-          double  { puts $fcmd "  	event.[set pname]\[$l\] = Double.valueOf(args\[$narg\]);" }
-          int     { puts $fcmd "  	event.[set pname]\[$l\] = Integer.valueOf(args\[$narg\]);" }
-          long    { puts $fcmd "  	event.[set pname]\[$l\] = Integer.valueOf(args\[$narg\]);" }
+          boolean { puts $fcmd "  	event.[set pname]\[$l\] = true;" }
+          double  { puts $fcmd "  	event.[set pname]\[$l\] = (double) 1.0;" }
+          int     { puts $fcmd "  	event.[set pname]\[$l\] = (int) 1;" }
+          long    { puts $fcmd "  	event.[set pname]\[$l\] = (int) 1;" }
          }
          incr l 1
         }
        } else {
         switch $ptype {
-          boolean { puts $fcmd "  	event.[set pname] = Boolean.valueOf(args\[$narg\]);" }
-          double  { puts $fcmd "  	event.[set pname] = Double.valueOf(args\[$narg\]);" }
-          int     { puts $fcmd "  	event.[set pname] = Integer.valueOf(args\[$narg\]);" }
-          long    { puts $fcmd "  	event.[set pname] = Integer.valueOf(args\[$narg\]);" }
-          string  { puts $fcmd "  	event.[set pname] = args\[$narg\];" }
+          boolean { puts $fcmd "  	event.[set pname] = true;" }
+          double  { puts $fcmd "  	event.[set pname] = (double) 1.0;" }
+          int     { puts $fcmd "  	event.[set pname] = (int) 1;" }
+          long    { puts $fcmd "  	event.[set pname] = (int) 1;" }
+          string  { puts $fcmd "  	event.[set pname] = \"testing\";" }
        }
       }
       incr narg 1
@@ -85,7 +86,6 @@ public class [set subsys]Event_[set alias] \{
 	    /* Remove the DataWriters etc */
 	    mgr.salShutdown();
 
-	\}
       \}
 
 \}
@@ -131,7 +131,7 @@ public class [set subsys]EventLogger_[set alias] \{
         puts stdout "	: for $subsys $alias"
         exec cp $SAL_DIR/code/templates/Makefile.saj_SAL_testevents.template $SAL_WORK_DIR/$subsys/java/src/Makefile.saj_[set subsys]_[set alias]_test
         puts $frep "perl -pi -w -e 's/SALData/[set subsys]/g;' [set subsys]/java/src/Makefile.saj_[set subsys]_[set alias]_test"
-        puts $frep "perl -pi -w -e 's/SALALIAS/[set alias]/g;' [set subsys]/java/src/Makefile.saj_[set subsys]_[set alias]_test"
+        puts $frep "perl -pi -w -e 's/SALALIAS/[set alias]Test/g;' [set subsys]/java/src/Makefile.saj_[set subsys]_[set alias]_test"
       }
    }
    close $frep
