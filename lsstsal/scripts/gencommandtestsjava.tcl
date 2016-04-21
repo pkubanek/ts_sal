@@ -67,20 +67,20 @@ public class [set subsys]Commander_[set alias] \{
         set pdim  [lindex $pspl 1]
         while { $l < $pdim } {
          switch $ptype {
-          boolean { puts $fcmd "  command.[set pname]\[$l\] = Boolean.valueOf(args\[$narg\]);" }
-          double  { puts $fcmd "  command.[set pname]\[$l\] = Double.valueOf(args\[$narg\]);" }
-          int     { puts $fcmd "  command.[set pname]\[$l\] = Integer.valueOf(args\[$narg\]);" }
-          long    { puts $fcmd "  command.[set pname]\[$l\] = Integer.valueOf(args\[$narg\]);" }
+          boolean { puts $fcmd "  	command.[set pname]\[$l\] = Boolean.valueOf(args\[$narg\]);" }
+          double  { puts $fcmd "  	command.[set pname]\[$l\] = Double.valueOf(args\[$narg\]);" }
+          int     { puts $fcmd "  	command.[set pname]\[$l\] = Integer.valueOf(args\[$narg\]);" }
+          long    { puts $fcmd "  	command.[set pname]\[$l\] = Integer.valueOf(args\[$narg\]);" }
          }
          incr l 1
         }
        } else {
         switch $ptype {
-          boolean { puts $fcmd "  command.[set pname] = Boolean.valueOf(args\[$narg\]);" }
-          double  { puts $fcmd "  command.[set pname] = Double.valueOf(args\[$narg\]);" }
-          int     { puts $fcmd "  command.[set pname] = Integer.valueOf(args\[$narg\]);" }
-          long    { puts $fcmd "  command.[set pname] = Integer.valueOf(args\[$narg\]);" }
-          string  { puts $fcmd "  command.[set pname] = args\[$narg\];" }
+          boolean { puts $fcmd "  	command.[set pname] = Boolean.valueOf(args\[$narg\]);" }
+          double  { puts $fcmd "  	command.[set pname] = Double.valueOf(args\[$narg\]);" }
+          int     { puts $fcmd "  	command.[set pname] = Integer.valueOf(args\[$narg\]);" }
+          long    { puts $fcmd "  	command.[set pname] = Integer.valueOf(args\[$narg\]);" }
+          string  { puts $fcmd "  	command.[set pname] = args\[$narg\];" }
        }
       }
       incr narg 1
