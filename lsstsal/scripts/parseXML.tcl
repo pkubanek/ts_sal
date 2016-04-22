@@ -1,7 +1,7 @@
 #!/usr/bin/tclsh
 
 proc parseXMLtoidl { fname } { 
-global IDLRESERVED SAL_WORK_DIR SAL_DIR
+global IDLRESERVED SAL_WORK_DIR SAL_DIR CMDS CMD_ALIASES EVTS EVENT_ALIASES
    set fin [open $fname r]
    set fout ""
    set ctype ""

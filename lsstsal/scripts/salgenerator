@@ -1,6 +1,5 @@
 #!../lsstsal/bin/tclsh
 
-
 #
 # Command line tool for SAL code/document/etc generation.
 #
@@ -153,6 +152,15 @@ if { $OPTIONS(validate) } {
         }
         parseXMLtoidl [set i]_[set t].xml
         stdlog "Imported $i $t interface definitions"
+      }
+      if { $t == "Commands" } {
+        stdlog "Add lifecycle commands"
+        set SALSubsys $i
+        source $SAL_DIR/generateLifecycleCommands.tcl
+        set fxml [open /tmp/lifecycle.xml w]
+        puts $fxml $SAL_LIFECYCLE_COMMANDS 
+        close $fxml
+        parseXMLtoidl /tmp/lifecycle.xml
       }
     }
     stdlog "Validating $i interface IDL format definitions"

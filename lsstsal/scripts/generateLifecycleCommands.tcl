@@ -107,7 +107,7 @@ set SAL_LIFECYCLE_COMMANDS "
  <Version>$SALVERSION</Version>
  <Author>salgenerator</Author>
  <EFDB_Topic>[set SALSubsys]_command_takeControl</EFDB_Topic>
- <Alias>taekControl</Alias>
+ <Alias>takeControl</Alias>
  <Device>controller</Device>
  <Property>command</Property>
  <Action>allow</Action>
