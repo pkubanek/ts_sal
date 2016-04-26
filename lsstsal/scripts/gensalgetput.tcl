@@ -228,12 +228,10 @@ global SAL_DIR SAL_WORK_DIR SYSDIC
         puts $fout "        public int salTypeSupport(String topicName) \{
 		String\[\] parts = topicName.split(\"_\");"
         foreach i $atypes {
-           set base [lindex [exec grep module $i] 1]
            puts $fout "                if (\"[set base]\".equals(parts\[0\]) ) \{"
            set ptypes [split [exec grep pragma $i] \n]
            foreach j $ptypes {
                set name [lindex $j 2]
-#               puts stdout "	for $base $name"
                puts $fout "
                     if ( \"[set base]_$name\".equals(topicName) ) \{
 			[set name]TypeSupport [set name]TS = new [set name]TypeSupport();
@@ -248,7 +246,6 @@ global SAL_DIR SAL_WORK_DIR SYSDIC
 \}"
         puts $fout "        public int salTypeSupport(int actorIdx) \{"
         foreach i $atypes {
-           set base [lindex [exec grep module $i] 1]
            set ptypes [split [exec grep pragma $i] \n]
            foreach j $ptypes {
                set name [lindex $j 2]
@@ -265,7 +262,6 @@ global SAL_DIR SAL_WORK_DIR SYSDIC
   return SAL__ERR;
 \}"
         foreach i $atypes {
-           set base [lindex [exec grep module $i] 1]
            set ptypes [split [exec grep pragma $i] \n]
            foreach j $ptypes {
                set name [lindex $j 2]
@@ -400,12 +396,10 @@ puts $fout "
         puts $fout " salReturn SAL_[set base]::salTypeSupport(char *topicName) 
 \{"
         foreach i $atypes {
-           set base [lindex [exec grep module $i] 1]
            puts $fout "    if (strncmp(\"$base\",topicName,[string length $base]) == 0) \{"
            set ptypes [split [exec grep pragma $i] \n]
            foreach j $ptypes {
                set name [lindex $j 2]
-#               puts stdout "	for $base $name"
                puts $fout "
        if ( strcmp(\"[set base]_[set name]\",topicName) == 0) \{
 	  [set base]::[set name]TypeSupport_var mt = new [set base]::[set name]TypeSupport();
@@ -420,11 +414,9 @@ puts $fout "
         puts $fout " salReturn SAL_[set base]::salTypeSupport(int actorIdx) 
 \{"
         foreach i $atypes {
-           set base [lindex [exec grep module $i] 1]
            set ptypes [split [exec grep pragma $i] \n]
            foreach j $ptypes {
                set name [lindex $j 2]
-#               puts stdout "	for $base $name"
                puts $fout "
        if ( actorIdx == SAL__[set base]_[set name]_ACTOR ) \{
 	  [set base]::[set name]TypeSupport_var mt = new [set base]::[set name]TypeSupport();
@@ -436,7 +428,6 @@ puts $fout "
         puts $fout "  return SAL__ERR;
 \}"
         foreach i $atypes {
-           set base [lindex [exec grep module $i] 1]
            set ptypes [split [exec grep pragma $i] \n]
            foreach j $ptypes {
               set name [lindex $j 2]        

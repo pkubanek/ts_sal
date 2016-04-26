@@ -52,8 +52,7 @@ using namespace std;
 "
    set fbst [open $SAL_WORK_DIR/include/SAL_[set subsys]C.bp w]
    set fbst2 [open $SAL_WORK_DIR/include/SAL_[set subsys]C.bp2 w]
-   puts $fout "module $subsys
-\{"
+   puts $fout "module $subsys \{"
    foreach i $all {
       puts stdout "Adding $i to sal_$subsys.idl"
       set fin [open $i r]
