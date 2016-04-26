@@ -133,8 +133,8 @@ using namespace std;
    if { [info exists SYSDIC($subsys,keyedID)] } {
        genkeyedidl $fout $subsys
    } else {
-     puts $fout "   struct command
-   \{
+     puts $fout "	struct command
+	\{
       string<32>	private_revCode;
       double		private_sndStamp;
       double		private_rcvStamp;
@@ -146,10 +146,10 @@ using namespace std;
       string<32>	action;
       string<32>	value;
       string<128>	modifiers;
-   \};
-   #pragma keylist command
-   struct ackcmd
-   \{
+	\};
+	#pragma keylist command
+	struct ackcmd
+	\{
       string<32>	private_revCode;
       double		private_sndStamp;
       double		private_rcvStamp;
@@ -159,18 +159,18 @@ using namespace std;
       long 		ack;
       long 		error;
       string<32>	result;
-   \};
-   #pragma keylist ackcmd
-   struct logevent
-   \{
+	\};
+	#pragma keylist ackcmd
+	struct logevent
+	\{
       string<32>	private_revCode;
       double		private_sndStamp;
       double		private_rcvStamp;
       long		private_origin;
       long 		private_host;
       string<128>	message;
-   \};
-   #pragma keylist logevent"
+	\};
+	#pragma keylist logevent"
      puts $fout "\};
 "
    }
