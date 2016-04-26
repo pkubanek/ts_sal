@@ -286,47 +286,48 @@ global VPROPS
 
 
 proc genkeyedidl { fout base } {
-     puts $fout "   struct command
-   \{
-      short            [set base]ID;
-      string<32>	private_revCode;
-      double		private_sndStamp;
-      double		private_rcvStamp;
-      long		private_origin;
-      long 		private_host;
-      long		private_seqNum;
-      string<32>	device;
-      string<32>	property;
-      string<32>	action;
-      string<32>	value;
-      string<128>	modifiers;
-   \};
-   #pragma keylist command [set base]ID
-   struct ackcmd
-   \{
-      short            [set base]ID;
-      string<32>	private_revCode;
-      double		private_sndStamp;
-      double		private_rcvStamp;
-      long		private_origin;
-      long 		private_host;
-      long		private_seqNum;
-      long 		ack;
-      long 		error;
-      string<32>	result;
-   \};
-   #pragma keylist ackcmd [set base]ID
-   struct logevent
-   \{
-      short            [set base]ID;
-      string<32>	private_revCode;
-      double		private_sndStamp;
-      double		private_rcvStamp;
-      long		private_origin;
-      long 		private_host;
-      string<128>	message;
-   \};
-   #pragma keylist logevent [set base]ID"
+     puts $fout "	struct command
+	\{
+	  short            [set base]ID;
+	  string<32>	private_revCode;
+	  double	private_sndStamp;
+	  double	private_rcvStamp;
+	  long		private_origin;
+	  long 		private_host;
+	  long		private_seqNum;
+	  string<32>	device;
+	  string<32>	property;
+	  string<32>	action;
+	  string<32>	value;
+	  string<128>	modifiers;
+	\};
+	#pragma keylist command [set base]ID
+	struct ackcmd
+	\{
+	  short         [set base]ID;
+	  string<32>	private_revCode;
+	  double	private_sndStamp;
+	  double	private_rcvStamp;
+	  long		private_origin;
+	  long 		private_host;
+	  long		private_seqNum;
+	  long 		ack;
+	  long 		error;
+	  string<32>	result;
+	\};
+	#pragma keylist ackcmd [set base]ID
+	struct logevent
+	\{
+	  short         [set base]ID;
+	  string<32>	private_revCode;
+	  double	private_sndStamp;
+	  double	private_rcvStamp;
+	  long		private_origin;
+	  long 		private_host;
+	  long		private_seqNum;
+	  string<128>	message;
+	\};
+	#pragma keylist logevent [set base]ID"
      puts $fout "\};
 "
 }
