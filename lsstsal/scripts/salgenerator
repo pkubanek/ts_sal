@@ -14,11 +14,9 @@ if { $argc < 2 } {
 		validate - check the XML Telemetry/Command/LogEvent definitions
                 sal      - generate SAL wrappers for cpp, java, isocpp, python
                 lib      - generate shared library
-		compile  - compile a c++ module
-		java     - generate JNI interface
 		tcl      - generate tcl interface
 		html     - generate web form interfaces
-		labview  - generate Labview low-level interface
+		labview  - generate LabVIEW low-level interface
 		maven    - generate a maven repository
 		db       - generate telemetry database table
 
@@ -29,7 +27,6 @@ if { $argc < 2 } {
                     where the times are formatted like \"2008-11-12 16:20:01\"
                     and the interval is in seconds
 
-		shmem	 - generate shared memory interface
 		sim      - generate simulation configuration
 		icd      - generate ICD document
 		link     - link a SAL program
@@ -318,16 +315,15 @@ if { $OPTIONS(tcl) || $OPTIONS(shmem) } {
 }
 
 if { $OPTIONS(labview) } {
+  source $SAL_DIR/genshmemlabview.tcl
   cd $SAL_WORK_DIR
   foreach subsys $TARGETS {
-     if { [file exists $SAL_WORK_DIR/shmem-[set subsys]/[set subsys]_lvprostub.txt] != 0 } {
-        errorexit "Labview interface requires shmem interface"
-     }
-     lappend topics [file rootname $subsys]
+    stdlog "Generating LabVIEW low level code for $topics"
+    source $SAL_WORK_DIR/idl-templates/validated/[set subsys]_cmddef.tcl
+    source $SAL_WORK_DIR/idl-templates/validated/[set subsys]_evtdef.tcl
+    catch { set result [genshmemlabview $subsys] } bad
+    if { $OPTIONS(verbose) } {stdlog $result}
   }
-  stdlog "Generating Labview low level code for $topics"
-  source $SAL_DIR/genshmem-labview.tcl
-  catch { set result [dolvgen $topics] } bad
 }
   
 if { $OPTIONS(jni) } {
