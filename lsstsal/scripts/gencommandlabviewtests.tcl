@@ -1,6 +1,6 @@
 
 proc gencommandlabviewtests { subsys } {
-global CMD_ALIASES CMDS SAL_WORK_DIR SYSDIC
+global CMD_ALIASES CMDS SAL_DIR SAL_WORK_DIR SYSDIC
  if { [info exists CMD_ALIASES($subsys)] } {
    foreach alias $CMD_ALIASES($subsys) {
     if { [info exists CMDS($subsys,$alias,param)] } {
