@@ -26,7 +26,7 @@ int main (int argc, char *argv\[\])
   int timeout=10;
   int status=0;
 
-  [set subsys]_command_[set alias]_lv myData;
+  [set subsys]_command_[set alias]C myData;
   if (argc < 2) \{
      printf(\"Usage :  input parameters...\\n\");"
    set fidl [open $SAL_WORK_DIR/idl-templates/validated/[set subsys]_command_[set alias].idl r]
@@ -95,7 +95,7 @@ int main (int argc, char *argv\[\])
   os_time delay_10ms = \{ 0, 10000000 \};
   int cmdId = -1;
   int timeout = 1;
-  [set subsys]_command_[set alias]_lv SALInstance;
+  [set subsys]_command_[set alias]C SALInstance;
   SAL_[set subsys]_shmem mgr = SAL_[set subsys]_shmem();"
    if { [info exists SYSDIC($subsys,keyedID)] } {
       puts $fcmd "

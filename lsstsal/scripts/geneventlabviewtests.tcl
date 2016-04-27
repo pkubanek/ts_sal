@@ -28,7 +28,7 @@ using namespace [set subsys];
 int main (int argc, char *argv\[\])
 \{ 
   int priority = SAL__EVENT_INFO;
-  [set subsys]_logevent_[set alias]_lv myData;
+  [set subsys]_logevent_[set alias]C myData;
   if (argc < 2) \{
      printf(\"Usage :  input parameters...\\n\");
      printf(\"      int priority\\n\");
@@ -99,7 +99,7 @@ int main (int argc, char *argv\[\])
   os_time delay_10ms = \{ 0, 10000000 \};
   int status = -1;
 
-  [set subsys]_logevent_[set alias]_lv SALInstance;
+  [set subsys]_logevent_[set alias]C SALInstance;
    SAL_[set subsys]_shmem mgr = SAL_[set subsys]_shmem();
 #ifdef SAL_SUBSYSTEM_ID_IS_KEYED
   int [set subsys]ID = 1;
