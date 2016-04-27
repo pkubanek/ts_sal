@@ -6,24 +6,21 @@ CFG = Release
 ifeq ($(CFG), Release)
 CC            = gcc
 CXX           = g++
+CPPFLAGS      = $(PICFLAGS) $(GENFLAGS) $(SAL_CPPFLAGS) -D_REENTRANT -Wall -I"." -I"$(OSPL_HOME)/examples/include" -I"$(OSPL_HOME)/examples" -I"$(OSPL_HOME)/include" -I"$(OSPL_HOME)/include/sys" -I"$(OSPL_HOME)/include/dcps/C++/SACPP" -I"$(SAL_HOME)/include" -I../../SALSubsys/cpp/src -I../../../SALSubsys/labview -I../../../SALSubsys/cpp #-DSAL_SUBSYSTEM_ID_IS_KEYED
 LD            = $(CXX) $(CCFLAGS) $(CPPFLAGS)
 AR            = ar
 PICFLAGS      = -fPIC
-CPPFLAGS      = $(PICFLAGS) $(GENFLAGS) -g $(SAL_CPPFLAGS) -D_REENTRANT -Wall -I"." -I"$(OSPL_HOME)/examples/include" -I"$(OSPL_HOME)/examples" -I"$(OSPL_HOME)/include" -I"$(OSPL_HOME)/include/sys" -I"$(OSPL_HOME)/include/dcps/C++/SACPP" -I../../SALSubsys/cpp/src -I"$(SAL_HOME)/include" -I.. -I"$(SAL_WORK_DIR)/include" -Wno-write-strings #-DSAL_SUBSYSTEM_ID_IS_KEYED
 OBJEXT        = .o
+SHLIBEXT      = .so
 OUTPUT_OPTION = -o "$@"
 COMPILE.c     = $(CC) $(CFLAGS) $(CPPFLAGS) -c
 COMPILE.cc    = $(CXX) $(CCFLAGS) $(CPPFLAGS) -c
-LDFLAGS       = -L"." -L"$(OSPL_HOME)/lib" -Wl,-rpath,\$$ORIGIN -Wl,-rpath,\$$ORIGIN/$(OSPL_HOME)/lib -L"$(SAL_HOME)/lib"
+LDFLAGS       = -shared -fPIC -L"." -L"$(OSPL_HOME)/lib" -Wl,-rpath,\$$ORIGIN -Wl,-rpath,\$$ORIGIN/$(OSPL_HOME)/lib -L"$(SAL_HOME)/lib" -llibSAL_SALData
 CCC           = $(CXX)
-MAKEFILE      = Makefile.sacpp_SAL_testcommands
+MAKEFILE      = Makefile.sacpp_SALData_labview
 DEPENDENCIES  = .depend.$(MAKEFILE)
 BTARGETDIR    = ./
-BIN1           = $(BTARGETDIR)sacpp_SAL_Commander$(EXESUFFIX)$(EXEEXT)
-BIN2           = $(BTARGETDIR)sacpp_SAL_Controller$(EXESUFFIX)$(EXEEXT)
-OBJS1          = .obj/CheckStatus$(OBJEXT) .obj/SAL_SALSubsys$(OBJEXT) .obj/SALDataCommander$(OBJEXT)
-OBJS2          = .obj/CheckStatus$(OBJEXT) .obj/SAL_SALSubsys$(OBJEXT) .obj/SALDataController$(OBJEXT)
-## INSERT COMMANDS TEST SRC
+BIN           = $(BTARGETDIR)SALLV_SALData$(SHLIBEXT)
 CAT           = cat
 MV            = mv -f
 RM            = rm -rf
@@ -38,6 +35,8 @@ LIBPREFIX     = lib
 LIBSUFFIX     = 
 GENFLAGS      = 
 LDLIBS        = -l"sacpp_SAL_types$(LIBSUFFIX)" -l"dcpssacpp" -l"dcpsgapi" -l"ddsuser" -l"ddskernel" -l"ddsserialization" -l"ddsconfparser" -l"ddsconf" -l"ddsdatabase" -l"ddsutil" -l"ddsos" -ldl $(subst lib,-l,$(sort $(basename $(notdir $(wildcard /usr/lib/librt.so /lib/librt.so))))) -lpthread
+OBJS          = .obj/CheckStatus$(OBJEXT) .obj/SAL_SALSubsys$(OBJEXT) .obj/SAL_SALData_shmem$(OBJEXT)
+SRC           = CheckStatus.cpp SAL_SALSubsys.cpp SAL_SALData_shmem.cpp
 LINK.cc       = $(LD) $(LDFLAGS)
 EXPORTFLAGS   = 
 endif
@@ -47,16 +46,16 @@ CXX           = g++
 LD            = $(CXX) $(CCFLAGS) $(CPPFLAGS)
 AR            = ar
 PICFLAGS      = -fPIC
-CPPFLAGS      = $(PICFLAGS) $(GENFLAGS) $(SAL_CPPFLAGS) -D_REENTRANT -Wall -I"." -I"$(OSPL_HOME)/examples/include" -I"$(OSPL_HOME)/examples" -I"$(OSPL_HOME)/include" -I"$(OSPL_HOME)/include/sys" -I"$(OSPL_HOME)/include/dcps/C++/SACPP"
 OBJEXT        = .o
 OUTPUT_OPTION = -o "$@"
 COMPILE.c     = $(CC) $(CFLAGS) $(CPPFLAGS) -c
 COMPILE.cc    = $(CXX) $(CCFLAGS) $(CPPFLAGS) -c
 LDFLAGS       = -L"." -L"$(OSPL_HOME)/lib" -Wl,-rpath,\$$ORIGIN -Wl,-rpath,\$$ORIGIN/$(OSPL_HOME)/lib
 CCC           = $(CXX)
-MAKEFILE      = Makefile.sacpp_SAL_testcommands
+MAKEFILE      = Makefile.sacpp_SALData_labview
 DEPENDENCIES  = .depend.$(MAKEFILE)
 BTARGETDIR    = ./
+BIN           = $(BTARGETDIR)sacpp_SAL_labview$(SHLIBEXT)
 CAT           = cat
 MV            = mv -f
 RM            = rm -rf
@@ -71,7 +70,8 @@ LIBPREFIX     = lib
 LIBSUFFIX     = 
 GENFLAGS      = -g
 LDLIBS        = -l"sacpp_SAL_types$(LIBSUFFIX)" -l"dcpssacpp" -l"dcpsgapi" -l"ddsuser" -l"ddskernel" -l"ddsserialization" -l"ddsconfparser" -l"ddsconf" -l"ddsdatabase" -l"ddsutil" -l"ddsos" -ldl $(subst lib,-l,$(sort $(basename $(notdir $(wildcard /usr/lib/librt.so /lib/librt.so))))) -lpthread
-SRC           = ../src/CheckStatus.cpp ../src/SAL_SALSubsys.cpp ../src/SALDataCommander.cpp ../src/SALDataController.cpp
+OBJS          = .obj/CheckStatus$(OBJEXT) .obj/SAL_SALSubsys$(OBJEXT) .obj/SAL_SALData_shmem$(OBJEXT)
+SRC           = CheckStatus.cpp SAL_SALSubsys.cpp SAL_SALData_shmem.cpp
 LINK.cc       = $(LD) $(LDFLAGS)
 EXPORTFLAGS   = 
 endif
@@ -80,35 +80,26 @@ endif
 #       Local targets
 #----------------------------------------------------------------------------
 
-## INSERT COMMANDS TEST BIN
+all: $(BIN)
 
-$(BIN1): $(OBJS1)
+$(BIN): $(OBJS)
 	@$(TESTDIRSTART) "$(BTARGETDIR)" $(TESTDIREND) $(MKDIR) "$(BTARGETDIR)"
-	$(LINK.cc) $(OBJS1) $(LDLIBS) $(OUTPUT_OPTION)
-
-$(BIN2): $(OBJS2)
-	@$(TESTDIRSTART) "$(BTARGETDIR)" $(TESTDIREND) $(MKDIR) "$(BTARGETDIR)"
-	$(LINK.cc) $(OBJS2) $(LDLIBS) $(OUTPUT_OPTION)
-
-
-.obj/CheckStatus$(OBJEXT): ../src/CheckStatus.cpp
-	@$(TESTDIRSTART) ".obj/../src" $(TESTDIREND) $(MKDIR) ".obj/../src"
-	$(COMPILE.cc) $(EXPORTFLAGS) $(OUTPUT_OPTION) ../src/CheckStatus.cpp
-
-.obj/SAL_SALData$(OBJEXT): ../src/SAL_SALSubsys.cpp
-	@$(TESTDIRSTART) ".obj/../src" $(TESTDIREND) $(MKDIR) ".obj/../src"
-	$(COMPILE.cc) $(EXPORTFLAGS) $(OUTPUT_OPTION) ../src/SAL_SALSubsys.cpp
-
-.obj/SALDataCommander$(OBJEXT): ../src/SALDataCommander.cpp
-	@$(TESTDIRSTART) ".obj/../src" $(TESTDIREND) $(MKDIR) ".obj/../src"
-	$(COMPILE.cc) $(EXPORTFLAGS) $(OUTPUT_OPTION) ../src/SALDataCommander.cpp
-
-.obj/SALDataController$(OBJEXT): ../src/SALDataController.cpp
-	@$(TESTDIRSTART) ".obj/../src" $(TESTDIREND) $(MKDIR) ".obj/../src"
-	$(COMPILE.cc) $(EXPORTFLAGS) $(OUTPUT_OPTION) ../src/SALDataController.cpp
+	$(LINK.cc) $(OBJS) $(LDLIBS) $(OUTPUT_OPTION)
 
 generated: $(GENERATED_DIRTY)
 	@-:
+
+.obj/CheckStatus$(OBJEXT): CheckStatus.cpp
+	@$(TESTDIRSTART) ".obj" $(TESTDIREND) $(MKDIR) ".obj"
+	$(COMPILE.cc) $(EXPORTFLAGS) $(OUTPUT_OPTION) CheckStatus.cpp
+
+.obj/SAL_SALSubsys$(OBJEXT): SAL_SALSubsys.cpp
+	@$(TESTDIRSTART) ".obj" $(TESTDIREND) $(MKDIR) ".obj"
+	$(COMPILE.cc) $(EXPORTFLAGS) $(OUTPUT_OPTION) SAL_SALSubsys.cpp
+
+.obj/SALLV_SALData$(OBJEXT): SALLV_SALData.cpp
+	@$(TESTDIRSTART) ".obj" $(TESTDIREND) $(MKDIR) ".obj"
+	$(COMPILE.cc) $(EXPORTFLAGS) $(OUTPUT_OPTION) SAL_SALData_shmem.cpp
 
 clean:
 	-$(RM) $(OBJS)
