@@ -280,6 +280,16 @@ if { $OPTIONS(lib) } {
    }
 }
 
+if { $OPTIONS(labview) } {
+  set subsys [lindex [split [lindex $TARGETS 0] _] 0]
+  source $SAL_DIR/genshmemlabview.tcl
+  cd $SAL_WORK_DIR
+  stdlog "Generating LabVIEW low level code for $subsys"
+  source $SAL_WORK_DIR/idl-templates/validated/[set subsys]_cmddef.tcl
+  source $SAL_WORK_DIR/idl-templates/validated/[set subsys]_evtdef.tcl
+  catch { set result [genshmemlabview $subsys] } bad
+  if { $OPTIONS(verbose) } {stdlog $result}
+}
 
 
 ### TSUBSYSTEMS is svcSAL_topicname
@@ -314,17 +324,6 @@ if { $OPTIONS(tcl) || $OPTIONS(shmem) } {
   }
 }
 
-if { $OPTIONS(labview) } {
-  source $SAL_DIR/genshmemlabview.tcl
-  cd $SAL_WORK_DIR
-  foreach subsys $TARGETS {
-    stdlog "Generating LabVIEW low level code for $topics"
-    source $SAL_WORK_DIR/idl-templates/validated/[set subsys]_cmddef.tcl
-    source $SAL_WORK_DIR/idl-templates/validated/[set subsys]_evtdef.tcl
-    catch { set result [genshmemlabview $subsys] } bad
-    if { $OPTIONS(verbose) } {stdlog $result}
-  }
-}
   
 if { $OPTIONS(jni) } {
   source $SAL_DIR/genjnicode.tcl

@@ -35,6 +35,13 @@ set SAL_LIFECYCLE_COMMANDS "
  <Action>stop</Action>
  <Value></Value>
  <Explanation>http://sal.lsst.org/SAL/Commands/[set SALSubsys]_command_stop.html</Explanation>
+    <item>
+      <EFDB_Name>state</EFDB_Name>
+      <Description>Subsystem state</Description>
+       <IDL_Type>string</IDL_Type>
+      <Units> </Units>
+      <Count>1</Count>
+    </item>
 </SALCommand>
 
 <SALCommand>
@@ -48,6 +55,13 @@ set SAL_LIFECYCLE_COMMANDS "
  <Action>abort</Action>
  <Value></Value>
  <Explanation>http://sal.lsst.org/SAL/Commands/[set SALSubsys]_command_abort.html</Explanation>
+    <item>
+      <EFDB_Name>state</EFDB_Name>
+      <Description>Subsystem state</Description>
+       <IDL_Type>string</IDL_Type>
+      <Units> </Units>
+      <Count>1</Count>
+    </item>
 </SALCommand>
 
 <SALCommand>
@@ -61,6 +75,13 @@ set SAL_LIFECYCLE_COMMANDS "
  <Action></Action>
  <Value></Value>
  <Explanation>http://sal.lsst.org/SAL/Commands/[set SALSubsys]_command_enable.html</Explanation>
+    <item>
+      <EFDB_Name>state</EFDB_Name>
+      <Description>Subsystem state</Description>
+       <IDL_Type>string</IDL_Type>
+      <Units> </Units>
+      <Count>1</Count>
+    </item>
 </SALCommand>
 
 <SALCommand>
@@ -74,6 +95,13 @@ set SAL_LIFECYCLE_COMMANDS "
  <Action></Action>
  <Value></Value>
  <Explanation>http://sal.lsst.org/SAL/Commands/[set SALSubsys]_command_disable.html</Explanation>
+    <item>
+      <EFDB_Name>state</EFDB_Name>
+      <Description>Subsystem state</Description>
+       <IDL_Type>string</IDL_Type>
+      <Units> </Units>
+      <Count>1</Count>
+    </item>
 </SALCommand>
 
 <SALCommand>
@@ -87,6 +115,13 @@ set SAL_LIFECYCLE_COMMANDS "
  <Action>stop</Action>
  <Value></Value>
  <Explanation>http://sal.lsst.org/SAL/Commands/[set SALSubsys]_command_standby.html</Explanation>
+    <item>
+      <EFDB_Name>state</EFDB_Name>
+      <Description>Subsystem state</Description>
+       <IDL_Type>string</IDL_Type>
+      <Units> </Units>
+      <Count>1</Count>
+    </item>
 </SALCommand>
 
 <SALCommand>
@@ -100,6 +135,13 @@ set SAL_LIFECYCLE_COMMANDS "
  <Action>exit</Action>
  <Value></Value>
  <Explanation>http://sal.lsst.org/SAL/Commands/[set SALSubsys]_command_exit.html</Explanation>
+    <item>
+      <EFDB_Name>state</EFDB_Name>
+      <Description>Subsystem state</Description>
+       <IDL_Type>string</IDL_Type>
+      <Units> </Units>
+      <Count>1</Count>
+    </item>
 </SALCommand>
 
 <SALCommand>
@@ -113,6 +155,13 @@ set SAL_LIFECYCLE_COMMANDS "
  <Action>allow</Action>
  <Value>network</Value>
  <Explanation>http://sal.lsst.org/SAL/Commands/[set SALSubsys]_command_takeControl.html</Explanation>
+    <item>
+      <EFDB_Name>state</EFDB_Name>
+      <Description>Subsystem state</Description>
+       <IDL_Type>string</IDL_Type>
+      <Units> </Units>
+      <Count>1</Count>
+    </item>
 </SALCommand>
 
 </SALCommandSet>"
