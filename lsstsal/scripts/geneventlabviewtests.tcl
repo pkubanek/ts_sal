@@ -76,7 +76,7 @@ int main (int argc, char *argv\[\])
 "
      close $fevt
       stdlog "	: LabVIEW API log event test receive for = $alias"
-      set fevt [open $SAL_WORK_DIR/$subsys/labview/sacpp_[set subsys]_[set alias]_log.cpp w]
+      set fevt [open $SAL_WORK_DIR/$subsys/labview/sacpp_[set subsys]_[set alias]_LVlog.cpp w]
       puts $fevt "
 
 /*

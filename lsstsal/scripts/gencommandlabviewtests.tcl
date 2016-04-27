@@ -75,7 +75,7 @@ int main (int argc, char *argv\[\])
 "
      close $fcmd
       stdlog "	: LabVIEW API controller test receive for = $alias"
-      set fcmd [open $SAL_WORK_DIR/$subsys/cpp/src/sacpp_[set subsys]_[set alias]_LVcontroller.cpp w]
+      set fcmd [open $SAL_WORK_DIR/$subsys/labview/sacpp_[set subsys]_[set alias]_LVcontroller.cpp w]
       puts $fcmd "
 
 /*
