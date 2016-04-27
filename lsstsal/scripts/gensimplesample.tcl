@@ -82,7 +82,7 @@ using namespace std;
       \"putSample_[set name]\" ,  &::SAL_[set subsys]::putSample_[set name] )"
       }
       if { [info exists SYSDIC($subsys,keyedID)] } {
-          puts $fout "	  short [set subsys]ID;"
+          puts $fout "	  short	[set subsys]ID;"
       }
       set argidx 1
       while { [gets $fin rec] > -1 } {
@@ -288,13 +288,13 @@ global VPROPS
 proc genkeyedidl { fout base } {
      puts $fout "	struct command
 	\{
-	  short            [set base]ID;
 	  string<32>	private_revCode;
 	  double	private_sndStamp;
 	  double	private_rcvStamp;
 	  long		private_origin;
 	  long 		private_host;
 	  long		private_seqNum;
+	  short	[set base]ID;
 	  string<32>	device;
 	  string<32>	property;
 	  string<32>	action;
@@ -304,13 +304,13 @@ proc genkeyedidl { fout base } {
 	#pragma keylist command [set base]ID
 	struct ackcmd
 	\{
-	  short         [set base]ID;
 	  string<32>	private_revCode;
 	  double	private_sndStamp;
 	  double	private_rcvStamp;
 	  long		private_origin;
 	  long 		private_host;
 	  long		private_seqNum;
+	  short	[set base]ID;
 	  long 		ack;
 	  long 		error;
 	  string<32>	result;
@@ -318,13 +318,13 @@ proc genkeyedidl { fout base } {
 	#pragma keylist ackcmd [set base]ID
 	struct logevent
 	\{
-	  short         [set base]ID;
 	  string<32>	private_revCode;
 	  double	private_sndStamp;
 	  double	private_rcvStamp;
 	  long		private_origin;
 	  long 		private_host;
 	  long		private_seqNum;
+	  short	[set base]ID;
 	  string<128>	message;
 	\};
 	#pragma keylist logevent [set base]ID"

@@ -13,6 +13,7 @@ global SAL_DIR SAL_WORK_DIR
   set idlfile $SAL_WORK_DIR/idl-templates/validated/sal/sal_[set subsys].idl
   set ptypes [lsort [split [exec grep pragma $idlfile] \n]]
   set base $subsys
+  updateLabVIEWTypes $base
   genlabviewincl $base $ptypes
   genlabviewcpp  $base $ptypes
   genlabviewmake $base
@@ -120,6 +121,19 @@ global SAL_DIR SAL_WORK_DIR SYSDIC TELEMETRY_ALIASES
   close $fout
 }
 
+proc updateLabVIEWTypes { subsys } {
+global SAL_DIR SAL_WORK_DIR
+   set fin [open $SAL_WORK_DIR/idl-templates/validated/sal/sal_[set subsys].idl r]
+   set fout [open $SAL_DIR/../../ts_SALLabVIEW/SALTypeGenerator/IDLs/sal_[set subsys].idl w]
+   while { [gets $fin rec] > -1 } {
+      set t [string trim $rec "\{\}"]
+      if { [string range [lindex $t 1] 0 7] != "private_" } {
+         puts $fout $rec
+      }
+   }
+   close $fin
+   close $fout
+}
 
 proc genlabviewcpp { base ptypes } {
 global SAL_DIR SAL_WORK_DIR SYSDIC
