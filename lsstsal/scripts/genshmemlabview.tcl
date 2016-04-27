@@ -52,72 +52,67 @@ global SAL_DIR SAL_WORK_DIR SYSDIC TELEMETRY_ALIASES
   puts $fout "
 #include \"extcode.h\"
 #include \"SAL_[set base]C\.h\"
-   class SAL_[set base]_shmem \{
 
      struct [set base]_shmem \{"
   foreach j $ptypes {
      set name [lindex $j 2]
      set type [lindex [split $name _] 0]
-     puts $fout "	boolean  syncI_[set base]_[set name];"	
-     puts $fout "	boolean  syncO_[set base]_[set name];"	
-     puts $fout "	boolean  skipOld_[set base]_[set name];"	
-     puts $fout "	boolean  hasIncoming_[set base]_[set name];"	
-     puts $fout "	boolean  hasOutgoing_[set base]_[set name];"	
+     puts $fout "	bool  syncI_[set base]_[set name];"	
+     puts $fout "	bool  syncO_[set base]_[set name];"	
+     puts $fout "	bool  skipOld_[set base]_[set name];"	
+     puts $fout "	bool  hasIncoming_[set base]_[set name];"	
+     puts $fout "	bool  hasOutgoing_[set base]_[set name];"	
      puts $fout "	[set base]_[set name]C  shmemIncoming_[set base]_[set name];"	
      puts $fout "	[set base]_[set name]C  shmemOutgoing_[set base]_[set name];"
      if { $type == "command" && $name != "command" } {
         puts $fout "	unsigned long shmemOutgoing_[set base]_[set name]_cmdId;"
         puts $fout "	long          shmemOutgoing_[set base]_[set name]_cmdStatus;"
         puts $fout "	long          shmemOutgoing_[set base]_[set name]_errorCode;"
-        puts $fout "	std::string   shmemOutgoing_[set base]_[set name]_resultText;"
+        puts $fout "	unsigned long shmemOutgoing_[set base]_[set name]_resultCode;"
         puts $fout "	long          cmdSeqNum_[set name];"
         puts $fout "	long          rcvSeqNum_[set name];"
         puts $fout "	long          sndSeqNum_[set name];"
      }	
+     puts $fout "	[set base]_ackcmdC  shmemIncoming_ackcmd;"	
+     puts $fout "	[set base]_ackcmdC  shmemOutgoing_ackcmd;"	
   }
-  puts $fout "    \}
+  puts $fout "    \};
 
-     SAL_[set base] mgr;
      int shmSize = sizeof([set base]_shmem);
      int lShmId;
-     boolean shutdown;
+     bool shutdown_shmem;
      int [set base]_shmid = 0x[calcshmid $base];
   
-     public:
-	SAL_[set base]_shmem();
-        int salShmMonitor($idarg);
-        int salShmConnect($idarg);
-        int salShmRelease($idarg);"
+        int [set base]_salShmMonitor($idarg);
+        int [set base]_salShmConnect($idarg);
+        int [set base]_salShmRelease($idarg);"
   foreach j $ptypes {
      set name [lindex $j 2]
      set n2 [join [lrange [split $name _] 1 end] _]
      set type [lindex [split $name _] 0]
      if { $type == "command" && $name != "command" } {
        puts $fout "
-	int issueCommand_[set n2]LV([set base]_[set name]_lv **[set name]_Ctl);	
-	int acceptCommand_[set n2]LV([set base]_[set name]_lv **[set name]_Ctl);
-	int ackCommand_[set n2]LV(int cmdId, salLONG ack, salLONG error, char *result);
-	int waitForCompletion_[set n2]LV(int cmdSeqNum , unsigned int timeout);
-        int getResponse_[set n2]LV([set base]_ackcmd_lv **[set name]_Ctl"	
+	int [set base]_shm_issueCommand_[set n2]LV([set base]_[set name]C **[set name]_Ctl);	
+	int [set base]_shm_acceptCommand_[set n2]LV([set base]_[set name]C **[set name]_Ctl);
+	int [set base]_shm_ackCommand_[set n2]LV(int cmdId, salLONG ack, salLONG error, char *result);
+	int [set base]_shm_waitForCompletion_[set n2]LV(int cmdSeqNum , unsigned int timeout);
+        int [set base]_shm_getResponse_[set n2]LV([set base]_ackcmd_lv **[set name]_Ctl"	
      } else {
         if { $type == "logevent" && $name != "logevent" } {
            puts $fout "
-	int getEvent_[set n2]LV([set base]_[set name]_lv **[set name]_Ctl);	
-	int logEvent_[set n2]LV([set base]_[set name]_lv **[set name]_Ctl);"
+	int [set base]_shm_getEvent_[set n2]LV([set base]_[set name]C **[set name]_Ctl);	
+	int [set base]_shm_logEvent_[set n2]LV([set base]_[set name]C **[set name]_Ctl);"
         } else {
            if { $name != "ackcmd" && $name != "command" && $name != "logevent" } {
               lappend TELEMETRY_ALIASES($base) $name
            }
            puts $fout "
-	int getSample_[set name]LV([set base]_[set name]_lv **[set name]_Ctl);	
-	int getNextSample_[set name]LV([set base]_[set name]_lv **[set name]_Ctl);	
-	int putSample_[set name]LV([set base]_[set name]_lv **[set name]_Ctl);"
+	int [set base]_shm_getSample_[set name]LV([set base]_[set name]C **[set name]_Ctl);	
+	int [set base]_shm_getNextSample_[set name]LV([set base]_[set name]C **[set name]_Ctl);	
+	int [set base]_shm_putSample_[set name]LV([set base]_[set name]C **[set name]_Ctl);"
         }
      }   
    }
-   puts $fout "
-   \}
-"
   close $fout
 }
 
@@ -145,25 +140,27 @@ global SAL_DIR SAL_WORK_DIR SYSDIC
      set idarg2 "[set base]ID"
      set idoff "[set base]ID"
   }
-  set fout [open $SAL_WORK_DIR/[set base]/labview/SAL_[set base]_shmem.cpp w]
+  set fout [open $SAL_WORK_DIR/[set base]/labview/SAL_[set base]_salShmMonitor.cpp w]
   puts $fout "
 #include <sys/ipc.h>
 #include <sys/shm.h>
-#include \"SAL_[set base]\.h\
+#include \"SAL_[set base]\.h\"
+#include \"SAL_[set base]_shmem\.h\"
 using namespace [set base];
 "
   puts $fout "
-    int SAL_[set base]_shmem::salShmMonitor ([set idarg]) \{
+    int [set base]_salShmMonitor ([set idarg]) \{
       int status = 0;
 
-      shutdown = false;
+      shutdown_shmem = false;
       int actorIdx = 0;
 
-      [set base]_memIO *[set base]_shmem;
-      lShmId = shmget([set base]_shmid + [set idoff], shmsize , IPC_CREAT|0666);
+      [set base]_shmem *[set base]_memIO;
+      lShmId = shmget([set base]_shmid + [set idoff], shmSize , IPC_CREAT|0666);
       [set base]_memIO  = ([set base]_shmem *) shmat(lShmId, NULL, 0);
       SAL_[set base] mgr = SAL_[set base]($idarg2);
-      while ( !shutdown ) \{"
+
+      while ( !shutdown_shmem ) \{"
   foreach j $ptypes {
      set name [lindex $j 2]
      set type [lindex [split $name _] 0]
@@ -181,19 +178,26 @@ using namespace [set base];
       \}
     \}
 "
+  close $fout
+  set fout [open $SAL_WORK_DIR/[set base]/labview/SAL_[set base]_salShm.c w]
   puts $fout "
-    int SAL_[set base]_shmem::salShmConnect ([set idarg]) \{
-      int status = 0;
-      int actorIdx = 0;
+#include <sys/ipc.h>
+#include <sys/shm.h>
+#include \"SAL_[set base]\.h\"
+#include \"SAL_[set base]_shmem\.h\"
+#include \"SAL_actors.h\"
+"
+  puts $fout "
+    [set base]_shmem *[set base]_memIO;
 
-      [set base]_memIO *[set base]_shmem;
-      lShmId = shmget([set base]_shmid + [set idoff], shmsize , IPC_CREAT|0666);
+    int [set base]_salShmConnect ([set idarg]) \{
+
+      lShmId = shmget([set base]_shmid + [set idoff], shmSize , IPC_CREAT|0666);
       [set base]_memIO  = ([set base]_shmem *) shmat(lShmId, NULL, 0);
-      SAL_[set base] mgr = SAL_[set base]($idarg2);
       return SAL__OK;
     \}
 
-    int SAL_[set base]_shmem::salShmRelease([set idarg]) \{
+    int [set base]_shm_salShmRelease([set idarg]) \{
       return SAL__OK;
     \}
 "
@@ -216,42 +220,39 @@ using namespace [set base];
 proc genlvtelemetry { fout base name } {
 global SAL_WORK_DIR
    puts $fout "
-    int SAL_[set base]_shmem::getSample_[set name]LV([set base]_[set name]_lv **data) \{
-        int actorIdx = SAL__[set base]_[set name]_ACTOR;
-        syncI_[set base]_[set name] = true;
-        skipOld_[set base]_[set name] = false;
-        if ( hasIncoming_[set base]_[set name] ) \{"
+    int [set base]_shm_getSample_[set name]LV([set base]_[set name]C **data) \{
+        [set base]_memIO->syncI_[set base]_[set name] = true;
+        [set base]_memIO->skipOld_[set base]_[set name] = false;
+        if ( [set base]_memIO->hasIncoming_[set base]_[set name] ) \{"
    set frag [open $SAL_WORK_DIR/include/SAL_[set base]_[set name]shmin.tmp r]
    while { [gets $frag rec] > -1} {puts $fout $rec}
    close $frag
    puts $fout "
-           hasIncoming_[set base]_[set name] = false;
+           [set base]_memIO->hasIncoming_[set base]_[set name] = false;
         \} else \{
-           return SAL__NO_SAMPLES;
+           return SAL__NO_UPDATES;
         \}
         return SAL__OK;
     \}
 
-    int SAL_[set base]_shmem::getNextSample_[set name]LV([set base]_[set name]_lv **data) \{
-        int status = SAL__NO_SAMPLES;
-        int actorIdx = SAL__[set base]_[set name]_ACTOR;
-        syncI_[set base]_[set name] = true;
-        skipOld_[set base]_[set name] = true;
-	status = getSample_[set name]LV(data);
+    int [set base]_shm_getNextSample_[set name]LV([set base]_[set name]C **data) \{
+        int status = SAL__NO_UPDATES;
+        [set base]_memIO->syncI_[set base]_[set name] = true;
+        [set base]_memIO->skipOld_[set base]_[set name] = true;
+	status = [set base]_shm_getSample_[set name]LV(data);
         return status;
     \}
 
-    int SAL_[set base]_shmem::putSample_[set name]LV([set base]_[set name]_lv **data) \{
-        int actorIdx = SAL__[set base]_[set name]_ACTOR;
-        syncO_[set base]_[set name] = true;
-        if (hasOutgoing_[set base]_[set name]) \{ 
+    int [set base]_shm_putSample_[set name]LV([set base]_[set name]C **data) \{
+        [set base]_memIO->syncO_[set base]_[set name] = true;
+        if ([set base]_memIO->hasOutgoing_[set base]_[set name]) \{ 
            return SAL__ERROR;
         \}"
    set frag [open $SAL_WORK_DIR/include/SAL_[set base]_[set name]shmout.tmp r]
    while { [gets $frag rec] > -1} {puts $fout $rec}
    close $frag
    puts $fout "
-        hasOutgoing_[set base]_[set name] = true;
+        [set base]_memIO->hasOutgoing_[set base]_[set name] = true;
         return SAL__OK;
     \}
 "
@@ -261,39 +262,36 @@ proc genlvcommand { fout base name } {
 global SAL_WORK_DIR
    set n2 [join [lrange [split $name _] 1 end] _]
    puts $fout "
-    int SAL_[set base]_shmem::issueCommand_[set n2]LV([set base]_[set name]_lv **data) \{
-        int actorIdx = SAL__[set base]_[set name]_ACTOR;
-        syncO_[set base]_[set name] = true;
-        if (hasOutgoing_[set base]_[set name]) \{ 
+    int [set base]_shm_issueCommand_[set n2]LV([set base]_[set name]C **data) \{
+        [set base]_memIO->syncO_[set base]_[set name] = true;
+        if ([set base]_memIO->hasOutgoing_[set base]_[set name]) \{ 
            return SAL__ERROR;
         \}"
    set frag [open $SAL_WORK_DIR/include/SAL_[set base]_[set name]shmout.tmp r]
    while { [gets $frag rec] > -1} {puts $fout $rec}
    close $frag
    puts $fout "
-        hasOutgoing_[set base]_[set name] = true;
+        [set base]_memIO->hasOutgoing_[set base]_[set name] = true;
         return SAL__OK;
     \}"
    puts $fout "
-    int SAL_[set base]_shmem::acceptCommand_[set n2]LV([set base]_[set name]_lv **data) \{
-        int actorIdx = SAL__[set base]_[set name]_ACTOR;
-        syncI_[set base]_[set name] = true;
-        if ( hasIncoming_[set base]_[set name] ) \{"
+    int [set base]_shm_acceptCommand_[set n2]LV([set base]_[set name]C **data) \{
+        [set base]_memIO->syncI_[set base]_[set name] = true;
+        if ( [set base]_memIO->hasIncoming_[set base]_[set name] ) \{"
    set frag [open $SAL_WORK_DIR/include/SAL_[set base]_[set name]shmin.tmp r]
    while { [gets $frag rec] > -1} {puts $fout $rec}
    close $frag
    puts $fout "
-           hasIncoming_[set base]_[set name] = false;
+           [set base]_memIO->hasIncoming_[set base]_[set name] = false;
         \} else \{
-           return SAL__NO_SAMPLES;
+           return SAL__NO_UPDATES;
         \}
         return SAL__OK;
     \}"
    puts $fout "
-    int SAL_[set base]_shmem::ackCommand_[set n2]LV(int cmdId, salLONG ack, salLONG error, char *result) \{
-        int actorIdx = SAL__[set base]_ackcmd_ACTOR;
-        syncO_[set base]_ackcmd = true;
-        if (hasOutgoing_[set base]_ackcmd) \{ 
+    int [set base]_shm_ackCommand_[set n2]LV(int cmdId, salLONG ack, salLONG error, char *result) \{
+        [set base]_memIO->syncO_[set base]_ackcmd = true;
+        if ([set base]_memIO->hasOutgoing_[set base]_ackcmd) \{ 
            return SAL__ERROR;
         \}"
    puts $fout "
@@ -301,20 +299,19 @@ global SAL_WORK_DIR
         [set base]_memIO->shmemOutgoing_ackcmd->ack = ack;
         [set base]_memIO->shmemOutgoing_ackcmd->error = error;
         strcpy([set base]_memIO->shmemOutgoing_ackcmd->result, result);
-        hasOutgoing_[set base]_ackcmd = true;
+        [set base]_memIO->hasOutgoing_[set base]_ackcmd = true;
         return SAL__OK;
     \}"
    puts $fout "
-    int SAL_[set base]_shmem::waitForCompletion_[set n2]LV(int cmdSeqNum , unsigned int timeout ) \{
+    int [set base]_shm_waitForCompletion_[set n2]LV(int cmdSeqNum , unsigned int timeout ) \{
       salReturn status = SAL__OK;
       int countdown = timeout;
       [set base]_ackcmdC response;
-      int actorIdx = SAL__[set base]_ackcmd_ACTOR;
 
    while (status != SAL__CMD_COMPLETE && countdown != 0) \{
       status = getResponse_[set n2](response);
       if (status != SAL__CMD_NOACK) \{
-        if (rcvSeqNum_[set n2] != cmdSeqNum_[set n2]) \{ 
+        if ([set base]_memIO->rcvSeqNum_command_[set n2] != cmdSeqNum) \{ 
            status = SAL__CMD_NOACK;
         \}
       \}
@@ -326,12 +323,12 @@ global SAL_WORK_DIR
           logError(status);
       \}
       if (debugLevel > 0) \{
-         cout << \"=== \[waitForCompletion\]_[set n2] command \" << [set n2]_cmdSeqNum <
+         cout << \"=== \[waitForCompletion\]_[set n2] command \" << cmdSeqNum <
 <  \" timed out :\" << endl;
       \} 
    \} else \{
       if (debugLevel > 0) \{
-         cout << \"=== \[waitForCompletion\]_[set n2] command \" << [set n2]_cmdSeqNum <
+         cout << \"=== \[waitForCompletion\]_[set n2] command \" << cmdSeqNum <
 < \" completed ok :\" << endl;
       \} 
    \}
@@ -339,18 +336,18 @@ global SAL_WORK_DIR
     \}
 "
   puts $fout "
-    int SAL_[set base]_shmem::getResponse_[set n2]LV([set base]_ackcmdC *response ) \{
+    int [set base]_shm_getResponse_[set n2]LV([set base]_ackcmdC *response ) \{
         ReturnCode_t status = SAL__CMD_NOACK;
-        syncI_[set base]_ackcmd = true;
-        rcvSeqNum_[set n2] = 0;
-        if ( hasIncoming_[set base]_ackcmd ) \{
-           rcvSeqNum_[set n2]= [set base]_memIO->shmemIncoming_ackcmd->cmdId;
+        [set base]_memIO->syncI_[set base]_ackcmd = true;
+        [set base]_memIO->rcvSeqNum_command_[set n2] = 0;
+        if ( [set base]_memIO->hasIncoming_[set base]_ackcmd ) \{
+           [set base]_memIO->rcvSeqNum_command_[set n2]= [set base]_memIO->shmemIncoming_ackcmd->cmdId;
            response->cmdId = [set base]_memIO->shmemIncoming_ackcmd->cmdId;
            response->ack = [set base]_memIO->shmemIncoming_ackcmd->ack;
            response->error = [set base]_memIO->shmemIncoming_ackcmd->error;
            strcpy (response->result, [set base]_memIO->shmemIncoming_ackcmd->result);
            status = [set base]_memIO->shmemIncoming_ackcmd->ack;
-           hasIncoming_[set base]_ackcmd = false;
+           [set base]_memIO->hasIncoming_[set base]_ackcmd = false;
         \}
         return status;
     \}
@@ -363,32 +360,32 @@ proc genlvlogevent { fout base name } {
 global SAL_WORK_DIR
    set n2 [join [lrange [split $name _] 1 end] _]
    puts $fout "
-    int SAL_[set base]_shmem::getEvent_[set n2]LV([set base]_[set name]_lv **data) \{
+    int [set base]_shm_getEvent_[set n2]LV([set base]_[set name]C **data) \{
         int actorIdx = SAL__[set base]_[set name]_ACTOR;
-        syncI_[set base]_[set name] = true;
-        if ( hasIncoming_[set base]_[set name] ) \{"
+        [set base]_memIO->syncI_[set base]_[set name] = true;
+        if ( [set base]_memIO->hasIncoming_[set base]_[set name] ) \{"
    set frag [open $SAL_WORK_DIR/include/SAL_[set base]_[set name]shmin.tmp r]
    while { [gets $frag rec] > -1} {puts $fout $rec}
    close $frag
    puts $fout "
-           hasIncoming_[set base]_[set name] = false;
+           [set base]_memIO->hasIncoming_[set base]_[set name] = false;
         \} else \{
-           return SAL__NO_SAMPLES;
+           return SAL__NO_UPDATES;
         \}
         return SAL__OK;
     \}
 
-    int SAL_[set base]_shmem::logEvent_[set n2]LV([set base]_[set name]_lv **data) \{
+    int [set base]_shm_logEvent_[set n2]LV([set base]_[set name]C **data) \{
         int actorIdx = SAL__[set base]_[set name]_ACTOR;
-        syncO_[set base]_[set name] = true;
-        if (hasOutgoing_[set base]_[set name]) \{ 
+        [set base]_memIO->syncO_[set base]_[set name] = true;
+        if ([set base]_memIO->hasOutgoing_[set base]_[set name]) \{ 
            return SAL__ERROR;
         \}"
    set frag [open $SAL_WORK_DIR/include/SAL_[set base]_[set name]shmout.tmp r]
    while { [gets $frag rec] > -1} {puts $fout $rec}
    close $frag
    puts $fout "
-        hasOutgoing_[set base]_[set name] = true;
+        [set base]_memIO->hasOutgoing_[set base]_[set name] = true;
         return SAL__OK;
     \}
 "
@@ -398,27 +395,27 @@ global SAL_WORK_DIR
 proc monitortelemetry { fout base name } {
 global SAL_DIR SAL_WORK_DIR
    puts $fout "
-       if (syncI_[set base]_[set name]) \{
+       if ([set base]_memIO->syncI_[set base]_[set name]) \{
           actorIdx = SAL__[set base]_[set name]_ACTOR;
           if (sal\[actorIdx\].isReader == false) \{
              mgr.salTelemetrySub(actorIdx);
           \}
-          if ( hasIncoming_[set base]_[set name] = false ) \{
+          if ( [set base]_memIO->hasIncoming_[set base]_[set name] = false ) \{
              status = mgr.getNextSample_[set name](&[set base]_memIO->shmemIncoming_[set base]_[set name]);
              if (status == SAL__OK) \{
-                hasIncoming_[set base]_[set name] = true;
+                [set base]_memIO->hasIncoming_[set base]_[set name] = true;
              \}
           \}
        \}
-       if (syncO_[set base]_[set name]) \{
+       if ([set base]_memIO->syncO_[set base]_[set name]) \{
           actorIdx = SAL__[set base]_[set name]_ACTOR;
           if (sal\[actorIdx\].isReader == false) \{
              mgr.salTelemetryPub(actorIdx);
           \}
        \}
-       if ( hasOutgoing_[set base]_[set name] ) \{
+       if ( [set base]_memIO->hasOutgoing_[set base]_[set name] ) \{
           status = putSample_[set name](&[set base]_memIO->shmemOutgoing_[set base]_[set name])
-          hasOutgoing_[set base]_[set name] = false;
+          [set base]_memIO->hasOutgoing_[set base]_[set name] = false;
        \}
 "
 }
@@ -428,14 +425,14 @@ proc monitorcommand { fout base name } {
 global SAL_DIR SAL_WORK_DIR
    set n2 [join [lrange [split $name _] 1 end] _]
    puts $fout "
-       if (syncI_[set base]_[set name]) \{
+       if ([set base]_memIO->syncI_[set base]_[set name]) \{
           actorIdx = SAL__[set base]_[set name]_ACTOR;
           if (sal\[actorIdx\].isProcessor == false) \{
              mgr.salProcessor(\"[set base]_[set name]\");
           \}
           status = mgr.acceptCommand_[set n2](\&[set base]_memIO->shmemIncoming_[set base]_[set name]);
           if (status == SAL__OK) \{
-             hasIncoming_[set base]_[set name] = true;
+             [set base]_memIO->hasIncoming_[set base]_[set name] = true;
           \}
        \}
        if (syncO_[set base]_[set name]) \{
@@ -444,18 +441,18 @@ global SAL_DIR SAL_WORK_DIR
              mgr.salCommand(\"[set base]_[set name]\");
           \}
        \}
-       if ( hasOutgoing_[set base]_[set name] ) \{
+       if ( [set base]_memIO->hasOutgoing_[set base]_[set name] ) \{
           status = mgr.issueCommand_[set n2](&[set base]_memIO->shmemOutgoing_[set base]_[set name])
-          hasOutgoing_[set base]_[set name] = false;
+          [set base]_memIO->hasOutgoing_[set base]_[set name] = false;
        \}
-       if ( hasOutgoing_[set base]_ackcmd ) \{
+       if ( [set base]_memIO->hasOutgoing_[set base]_ackcmd ) \{
           status = mgr.ackCommand_[set n2](
 				\&[set base]_memIO->shmemOutgoing_[set base]_[set name]_cmdId,
 				\&[set base]_memIO->shmemOutgoing_[set base]_[set name]_cmdStatus,
 				\&[set base]_memIO->shmemOutgoing_[set base]_[set name]_errorCode,
 				\&[set base]_memIO->shmemOutgoing_[set base]_[set name]_resultText
                                           );
-          hasOutgoing_[set base]_ackcmd = false;
+          [set base]_memIO->hasOutgoing_[set base]_ackcmd = false;
        \}
 "
 }
@@ -471,18 +468,18 @@ global SAL_DIR SAL_WORK_DIR
           \}
           status = mgr.getEvent_[set name](\&[set base]_memIO->shmemIncoming_[set base]_[set name]);
           if (status == SAL__OK) \{
-             hasIncoming_[set base]_[set name] = true;
+             [set base]_memIO->hasIncoming_[set base]_[set name] = true;
           \}
        \}
-       if (syncO_[set base]_[set name]) \{
+       if ([set base]_memIO->syncO_[set base]_[set name]) \{
           actorIdx = SAL__[set base]_[set name]_ACTOR;
           if (sal\[actorIdx\].isEventWriter == false) \{
              mgr.salEvent(\"[set base]_[set name]\");
           \}
        \}
-       if ( hasOutgoing_[set base]_[set name] ) \{
+       if ( [set base]_memIO->hasOutgoing_[set base]_[set name] ) \{
           status = mgr.logEvent_[set name](\&[set base]_memIO->shmemOutgoing_[set base]_[set name],1)
-          hasOutgoing_[set base]_[set name] = false;
+          [set base]_memIO->hasOutgoing_[set base]_[set name] = false;
        \}
 "
 }

@@ -6,7 +6,8 @@ CFG = Release
 ifeq ($(CFG), Release)
 CC            = gcc
 CXX           = g++
-CPPFLAGS      = $(PICFLAGS) $(GENFLAGS) $(SAL_CPPFLAGS) -D_REENTRANT -Wall -I"." -I"$(OSPL_HOME)/examples/include" -I"$(OSPL_HOME)/examples" -I"$(OSPL_HOME)/include" -I"$(OSPL_HOME)/include/sys" -I"$(OSPL_HOME)/include/dcps/C++/SACPP" -I"$(SAL_HOME)/include" -I../../SALSubsys/cpp/src -I../../../SALSubsys/labview -I../../../SALSubsys/cpp #-DSAL_SUBSYSTEM_ID_IS_KEYED
+LVVERSION     = LabVIEW-2015-64
+CPPFLAGS      = $(PICFLAGS) $(GENFLAGS) $(SAL_CPPFLAGS) -D_REENTRANT -Wall -I"." -I"$(OSPL_HOME)/examples/include" -I"$(OSPL_HOME)/examples" -I"$(OSPL_HOME)/include" -I"$(OSPL_HOME)/include/sys" -I"$(OSPL_HOME)/include/dcps/C++/SACPP" -I"$(SAL_HOME)/include" -I../../SALSubsys/cpp/src -I../../../SALSubsys/labview -I../cpp -I../../../SALSubsys/cpp -I/usr/local/./natinst/$(LVVERSION)/cintools #-DSAL_SUBSYSTEM_ID_IS_KEYED
 LD            = $(CXX) $(CCFLAGS) $(CPPFLAGS)
 AR            = ar
 PICFLAGS      = -fPIC
@@ -35,8 +36,9 @@ LIBPREFIX     = lib
 LIBSUFFIX     = 
 GENFLAGS      = 
 LDLIBS        = -l"sacpp_SAL_types$(LIBSUFFIX)" -l"dcpssacpp" -l"dcpsgapi" -l"ddsuser" -l"ddskernel" -l"ddsserialization" -l"ddsconfparser" -l"ddsconf" -l"ddsdatabase" -l"ddsutil" -l"ddsos" -ldl $(subst lib,-l,$(sort $(basename $(notdir $(wildcard /usr/lib/librt.so /lib/librt.so))))) -lpthread
-OBJS          = .obj/CheckStatus$(OBJEXT) .obj/SAL_SALSubsys$(OBJEXT) .obj/SAL_SALData_shmem$(OBJEXT)
-SRC           = CheckStatus.cpp SAL_SALSubsys.cpp SAL_SALData_shmem.cpp
+OBJS          = .obj/CheckStatus$(OBJEXT) .obj/SAL_SALSubsys$(OBJEXT) .obj/SAL_SALData_salShm$(OBJEXT) .obj/SAL_SALData_salShmMonitor$(OBJEXT)
+SRC           = CheckStatus.cpp SAL_SALSubsys.cpp SAL_SALData_salShm.c SAL_SALData_salShmMonitor.cpp
+LINK.cc       = $(LD) $(LDFLAGS)
 LINK.cc       = $(LD) $(LDFLAGS)
 EXPORTFLAGS   = 
 endif
@@ -55,7 +57,7 @@ CCC           = $(CXX)
 MAKEFILE      = Makefile.sacpp_SALData_labview
 DEPENDENCIES  = .depend.$(MAKEFILE)
 BTARGETDIR    = ./
-BIN           = $(BTARGETDIR)sacpp_SAL_labview$(SHLIBEXT)
+BIN           = $(BTARGETDIR)sacpp_SALData_labview$(SHLIBEXT)
 CAT           = cat
 MV            = mv -f
 RM            = rm -rf
@@ -69,10 +71,6 @@ EXEEXT        =
 LIBPREFIX     = lib
 LIBSUFFIX     = 
 GENFLAGS      = -g
-LDLIBS        = -l"sacpp_SAL_types$(LIBSUFFIX)" -l"dcpssacpp" -l"dcpsgapi" -l"ddsuser" -l"ddskernel" -l"ddsserialization" -l"ddsconfparser" -l"ddsconf" -l"ddsdatabase" -l"ddsutil" -l"ddsos" -ldl $(subst lib,-l,$(sort $(basename $(notdir $(wildcard /usr/lib/librt.so /lib/librt.so))))) -lpthread
-OBJS          = .obj/CheckStatus$(OBJEXT) .obj/SAL_SALSubsys$(OBJEXT) .obj/SAL_SALData_shmem$(OBJEXT)
-SRC           = CheckStatus.cpp SAL_SALSubsys.cpp SAL_SALData_shmem.cpp
-LINK.cc       = $(LD) $(LDFLAGS)
 EXPORTFLAGS   = 
 endif
 
@@ -97,9 +95,13 @@ generated: $(GENERATED_DIRTY)
 	@$(TESTDIRSTART) ".obj" $(TESTDIREND) $(MKDIR) ".obj"
 	$(COMPILE.cc) $(EXPORTFLAGS) $(OUTPUT_OPTION) SAL_SALSubsys.cpp
 
-.obj/SALLV_SALData$(OBJEXT): SALLV_SALData.cpp
+.obj/SAL_SALData_salShmMonitor$(OBJEXT): SAL_SALData_salShmMonitor.cpp
 	@$(TESTDIRSTART) ".obj" $(TESTDIREND) $(MKDIR) ".obj"
-	$(COMPILE.cc) $(EXPORTFLAGS) $(OUTPUT_OPTION) SAL_SALData_shmem.cpp
+	$(COMPILE.cc) $(EXPORTFLAGS) $(OUTPUT_OPTION) SAL_SALData_salShmMonitor.cpp
+
+.obj/SAL_SALData_salShm$(OBJEXT): SAL_SALData_salShm.c
+	@$(TESTDIRSTART) ".obj" $(TESTDIREND) $(MKDIR) ".obj"
+	$(COMPILE.cc) $(EXPORTFLAGS) $(OUTPUT_OPTION) SAL_SALData_salShm.c
 
 clean:
 	-$(RM) $(OBJS)
