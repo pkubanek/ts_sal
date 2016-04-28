@@ -49,10 +49,13 @@ global SAL_DIR SAL_WORK_DIR SYSDIC TELEMETRY_ALIASES
      set idarg "unsigned int [set base]ID"
   }
   set fout [open $SAL_WORK_DIR/[set base]/labview/SAL_[set base]_shmem.h w]
+  set fhlv [open $SAL_WORK_DIR/[set base]/cpp/src/SAL_[set base]LV.h r]
+  while  { [gets $fhlv rec] > -1 } {
+     puts $fout $rec
+  }
+  close $fhlv
   puts $fout "
-#include \"extcode.h\"
-#include \"SAL_[set base]C\.h\"
-
+#define salLONG long
      struct [set base]_shmem \{"
   foreach j $ptypes {
      set name [lindex $j 2]

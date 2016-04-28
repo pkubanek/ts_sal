@@ -42,6 +42,7 @@ global SAL_DIR SAL_WORK_DIR SYSDIC VPROPS
    set fout [open $SAL_WORK_DIR/idl-templates/validated/sal/sal_$subsys.idl w]
    exec mkdir -p $SAL_WORK_DIR/[set subsys]/cpp/src
    set fhdr [open $SAL_WORK_DIR/[set subsys]/cpp/src/SAL_[set subsys]C.h w]
+   set fhlv [open $SAL_WORK_DIR/[set subsys]/cpp/src/SAL_[set subsys]LV.h w]
    puts $fhdr "
 #ifndef _SAL_[set subsys]C_
 #define _SAL_[set subsys]C_
@@ -71,6 +72,7 @@ using namespace std;
       puts $fout "	struct $name \{"
       puts $fhdr "struct [set subsys]_[set name]C
 \{"
+      puts $fhlv "typedef struct [set subsys]_[set name]C \{"
       puts $fbst "   bp::class_<[set subsys]_[set name]C>(\"[set subsys]_[set name]C\")"
       if {[string range $name 0 7] != "command_" && [string range $name 0 8] != "logevent_"}  {
         puts $fbst2 "
@@ -99,11 +101,13 @@ using namespace std;
 #endif
 \};
 "
+           puts $fhlv "\};"
            puts $fbst "      ;"
          } else {
             puts $fout "	$rec"
             if { [string range [lindex $rec 1] 0 7] != "private_" && [llength $rec] > 1 } {
                puts $fhdr [typeidltoc $rec]
+               puts $fhlv [typeidltolv $rec]
                set VPROPS(idx) $argidx
                set VPROPS(base) $subsys
                set VPROPS(topic) "[set subsys]_[set name]"
@@ -205,8 +209,17 @@ struct [set subsys]_logeventC
 
 #endif
 "
+   puts $fhlv "
+typedef struct [set subsys]_ackcmdC
+\{
+      long 	ack;
+      long 	error;
+      char	*result;
+\}
+"
    close $fout
    close $fhdr
+   close $fhlv
    close $fbst
    close $fbst2
    return $SAL_WORK_DIR/idl-templates/validated/sal/sal_$subsys.idl

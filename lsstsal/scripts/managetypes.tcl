@@ -142,6 +142,48 @@ proc testsimpletypecode { } {
    }
 }
 
+proc typeidltolv { rec } {
+global TYPESUBS
+   set u ""
+   if { [lindex $rec 0] == "string" } {
+      set name [string trim [lindex $rec 1] ";"]
+      set res "  char	*[set name];[join [lrange $rec 2 end]]"
+      return $res
+   }
+   if { [lindex $rec 0] == "unsigned" } {set u "unsigned"; set rec [join [lrange $rec 1 end] " "]}
+   if { [lindex $rec 0] == "char" } {
+      if { [llength [split $rec "\[("]] > 1 } {
+        set s [lindex [split $rec "\[\]()"] 1]
+        set name [lindex [lindex [split $rec "\[\]()"] 0] 1]
+        set res "  char *[set name];[join [lrange $rec 2 end]]"
+        return $res
+      }
+   }
+   if { [llength [split $rec "<"]] > 1 } {
+      set s [lindex [split $rec "<>"] 1]
+      set name [string trim [lindex $rec 1] ";"]
+      set res "  char 	*[set name];[join [lrange $rec 2 end]]"
+   } else {
+      if { [llength [split $rec "\[("]] > 1 } {
+        set s [lindex [split $rec "\[\]()"] 1]
+        set n [lindex [lindex [split $rec "\[\]()"] 0] 1]
+        set res "  [set u] $TYPESUBS([lindex $rec 0]) $n\[$s\];"
+      } else {
+        set res " [set u] $TYPESUBS([lindex $rec 0]) [join [lrange $rec 1 end]]"
+      }
+   }
+   return $res
+}
+
+
+proc testsimpletypecode { } {
+   foreach case "c idl sql" {
+      foreach typ "byte short int long float double string" {
+          puts stdout "$case $typ :: [simpletypecode test $typ 1 $case]"
+          puts stdout "$case $typ :: [simpletypecode test $typ 16 $case]"
+      }
+   }
+}
 
 proc transferdata { subsys name type size target {prefix ""} } {
 global TYPESIZE TYPEFORMAT
