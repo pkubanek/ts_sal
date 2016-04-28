@@ -115,6 +115,57 @@ int SAL_SALData::getActorIndex (char *topicName)
   return SAL__ERROR;
 }
 
+bool SAL_SALData::actorActive(int actorIdx) {
+  if ( sal[actorIdx].isActive ) {
+     return true;
+  }
+  return false;
+}
+
+bool SAL_SALData::actorReader(int actorIdx) {
+  if ( sal[actorIdx].isReader ) {
+     return true;
+  }
+  return false;
+}
+
+bool SAL_SALData::actorWriter(int actorIdx) {
+  if ( sal[actorIdx].isWriter ) {
+     return true;
+  }
+  return false;
+}
+
+bool SAL_SALData::actorCommand(int actorIdx) {
+  if ( sal[actorIdx].isCommand ) {
+     return true;
+  }
+  return false;
+}
+
+bool SAL_SALData::actorEventReader(int actorIdx) {
+  if ( sal[actorIdx].isEventReader ) {
+     return true;
+  }
+  return false;
+}
+
+bool SAL_SALData::actorEventWriter(int actorIdx) {
+  if ( sal[actorIdx].isEventWriter ) {
+     return true;
+  }
+  return false;
+}
+
+bool SAL_SALData::actorProcessor(int actorIdx) {
+  if ( sal[actorIdx].isProcessor ) {
+     return true;
+  }
+  return false;
+}
+
+
+
 
 // INSERT TYPE SUPPORT      
 

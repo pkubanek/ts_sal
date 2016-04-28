@@ -222,8 +222,8 @@ global VPROPS
       puts $fcod3 "       cout << \"    $VPROPS(name) : \" << SALInstance.$VPROPS(name)\[0\] << endl;"
       puts $fcod4 "    for (int i=0;i<$VPROPS(dim);i++)\{myData.$VPROPS(name)\[i\] = i+iseq;\}"
       puts $fcod6 "       cout << \"    $VPROPS(name) : \" << data->$VPROPS(name) << endl;"
-      puts $fcod7 "    for (int i=0;i<$VPROPS(dim);i++)\{[set VPROPS(base)]_memIO->shmemOutgoing_[set VPROPS(topic)]->$VPROPS(name)\[i\] = data->$VPROPS(name)\[i\];\}"
-      puts $fcod8 "    for (int i=0;i<$VPROPS(dim);i++)\{data->$VPROPS(name)\[i\] = [set VPROPS(base)]_memIO->shmemIncoming_[set VPROPS(topic)]->$VPROPS(name)\[i\];\}"
+      puts $fcod7 "    for (int i=0;i<$VPROPS(dim);i++)\{[set VPROPS(base)]_memIO->shmemOutgoing_[set VPROPS(topic)].$VPROPS(name)\[i\] = data->$VPROPS(name)\[i\];\}"
+      puts $fcod8 "    for (int i=0;i<$VPROPS(dim);i++)\{data->$VPROPS(name)\[i\] = [set VPROPS(base)]_memIO->shmemIncoming_[set VPROPS(topic)].$VPROPS(name)\[i\];\}"
       set idlim [expr $idx + $VPROPS(dim)]
       set myidx 0
       while { $idx < $idlim } {
@@ -254,15 +254,15 @@ global VPROPS
          puts $fcod4 "    myData.$VPROPS(name)=\"LSST\";"
          puts $fcod5 "    myData.$VPROPS(name)=argv\[$idx\];"
          puts $fcod6 "    cout << \"    $VPROPS(name) : \" << data->$VPROPS(name) << endl;"
-         puts $fcod7 "    strcpy([set VPROPS(base)]_memIO->shmemOutgoing_[set VPROPS(topic)]->$VPROPS(name) , data->$VPROPS(name));"
-         puts $fcod8 "    strcpy(data->$VPROPS(name) , [set VPROPS(base)]_memIO->shmemIncoming_[set VPROPS(topic)]->$VPROPS(name));"
+         puts $fcod7 "    [set VPROPS(base)]_memIO->shmemOutgoing_[set VPROPS(topic)].$VPROPS(name) = data->$VPROPS(name);"
+         puts $fcod8 "    data->$VPROPS(name) = [set VPROPS(base)]_memIO->shmemIncoming_[set VPROPS(topic)].$VPROPS(name);"
       } else {
          puts $fcod1 "    data->$VPROPS(name) = Instances\[j\].$VPROPS(name);"
          puts $fcod2 "    Instance.$VPROPS(name) = data->$VPROPS(name);"
          puts $fcod3 "    cout << \"    $VPROPS(name) : \" << SALInstance.$VPROPS(name) << endl;"
          puts $fcod6 "    cout << \"    $VPROPS(name) : \" << data->$VPROPS(name) << endl;"
-         puts $fcod7 "    [set VPROPS(base)]_memIO->shmemOutgoing_[set VPROPS(topic)]->$VPROPS(name) = data->$VPROPS(name);"
-         puts $fcod8 "    data->$VPROPS(name) = [set VPROPS(base)]_memIO->shmemIncoming_[set VPROPS(topic)]->$VPROPS(name);"
+         puts $fcod7 "    [set VPROPS(base)]_memIO->shmemOutgoing_[set VPROPS(topic)].$VPROPS(name) = data->$VPROPS(name);"
+         puts $fcod8 "    data->$VPROPS(name) = [set VPROPS(base)]_memIO->shmemIncoming_[set VPROPS(topic)].$VPROPS(name);"
          if { $VPROPS(int) } {
           if { $VPROPS(long) } {
             puts $fcod4 "    myData.$VPROPS(name) = 1;";

@@ -232,6 +232,13 @@
       Subscriber_ptr getSubscriber(int actorIdx);
       Topic_ptr      getTopic(int actorIdx);
       Topic_ptr      getTopic2(int actorIdx);
+      bool actorActive(int actorIdx);
+      bool actorReader(int actorIdx);
+      bool actorWriter(int actorIdx);
+      bool actorCommand(int actorIdx);
+      bool actorEventReader(int actorIdx);
+      bool actorEventWriter(int actorIdx);
+      bool actorProcessor(int actorIdx);
 
 
       ~SAL_SALData();
