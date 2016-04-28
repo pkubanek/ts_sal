@@ -101,8 +101,8 @@ global SAL_DIR SAL_WORK_DIR SYSDIC TELEMETRY_ALIASES
      } else {
         if { $type == "logevent" && $name != "logevent" } {
            puts $fout "
-	int [set base]_shm_getEvent_[set n2]LV([set base]_[set name]C **[set name]_Ctl);
-	int [set base]_shm_logEvent_[set n2]LV([set base]_[set name]C **[set name]_Ctl);"
+	int [set base]_shm_getEvent_[set n2]LV([set base]_[set name]C **pdata);
+	int [set base]_shm_logEvent_[set n2]LV([set base]_[set name]C **pdata);"
         } else {
            if { $name != "ackcmd" && $name != "command" && $name != "logevent" } {
               lappend TELEMETRY_ALIASES($base) $name
@@ -186,6 +186,7 @@ using namespace [set base];
 #include <sys/ipc.h>
 #include <sys/shm.h>
 #include \"SAL_[set base]\.h\"
+extern \"C\" \{
 #include \"SAL_[set base]_shmem\.h\"
 #include \"SAL_actors.h\"
 "
@@ -216,6 +217,8 @@ using namespace [set base];
        genlvtelemetry $fout $base $name
      }   
    }
+  puts $fout "\}
+"
   close $fout
 }
 
@@ -329,11 +332,11 @@ global SAL_WORK_DIR
    \}
    if (status != SAL__CMD_COMPLETE) \{
       if (debugLevel > 0) \{
-         cout << \"=== \[waitForCompletion\]_[set n2] command \" << cmdSeqNum <<  \" timed out :\" << endl;
+//         cout << \"=== \[waitForCompletion\]_[set n2] command \" << cmdSeqNum <<  \" timed out :\" << endl;
       \} 
    \} else \{
       if (debugLevel > 0) \{
-         cout << \"=== \[waitForCompletion\]_[set n2] command \" << cmdSeqNum << \" completed ok :\" << endl;
+//         cout << \"=== \[waitForCompletion\]_[set n2] command \" << cmdSeqNum << \" completed ok :\" << endl;
       \} 
    \}
    return status;
@@ -362,7 +365,7 @@ global SAL_WORK_DIR
 
 proc genlvlogevent { fout base name } {
 global SAL_WORK_DIR
-   set n2 [join [lrange [split $name _] 2 end] _]
+   set n2 [join [lrange [split $name _] 1 end] _]
    puts $fout "
     int [set base]_shm_getEvent_[set n2]LV([set base]_[set name]C **pdata) \{
         struct [set base]_[set name]C *data = *pdata;
