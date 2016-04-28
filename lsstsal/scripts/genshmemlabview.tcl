@@ -181,7 +181,7 @@ using namespace [set base];
     \}
 "
   close $fout
-  set fout [open $SAL_WORK_DIR/[set base]/labview/SAL_[set base]_salShm.c w]
+  set fout [open $SAL_WORK_DIR/[set base]/labview/SAL_[set base]_salShm.cpp w]
   puts $fout "
 #include <sys/ipc.h>
 #include <sys/shm.h>

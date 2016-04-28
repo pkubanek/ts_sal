@@ -110,7 +110,7 @@ generated: $(GENERATED_DIRTY)
 
 .obj/SAL_SALData_salShm$(OBJEXT): SAL_SALData_salShm.c
 	@$(TESTDIRSTART) ".obj" $(TESTDIREND) $(MKDIR) ".obj"
-	$(COMPILE.cc) $(EXPORTFLAGS) $(OUTPUT_OPTION) SAL_SALData_salShm.c
+	$(COMPILE.cc) $(EXPORTFLAGS) $(OUTPUT_OPTION) SAL_SALData_salShm.cpp
 
 clean:
 	-$(RM) $(OBJS)
