@@ -101,7 +101,7 @@ using namespace std;
 #endif
 \};
 "
-           puts $fhlv "\};"
+           puts $fhlv "\} [set subsys]_[set name]_Ctl;"
            puts $fbst "      ;"
          } else {
             puts $fout "	$rec"
@@ -215,7 +215,7 @@ typedef struct [set subsys]_ackcmdC
       long 	ack;
       long 	error;
       char	*result;
-\}
+\} [set subsys]_ackcmdC;
 "
    close $fout
    close $fhdr
