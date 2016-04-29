@@ -41,9 +41,9 @@ LIBSUFFIX     =
 GENFLAGS      = 
 LDLIBS        = -lpthread
 LDLIBS2        = -l"sacpp_SAL_types$(LIBSUFFIX)" -l"dcpssacpp" -l"dcpsgapi" -l"ddsuser" -l"ddskernel" -l"ddsserialization" -l"ddsconfparser" -l"ddsconf" -l"ddsdatabase" -l"ddsutil" -l"ddsos" -ldl $(subst lib,-l,$(sort $(basename $(notdir $(wildcard /usr/lib/librt.so /lib/librt.so))))) -lpthread
-OBJS1          = .obj/CheckStatus$(OBJEXT) .obj/SAL_SALSubsys$(OBJEXT) .obj/SAL_SALData_salShm$(OBJEXT)
+OBJS1          = .obj/SAL_SALData_salShm$(OBJEXT)
 OBJS2          = .obj/CheckStatus$(OBJEXT) .obj/SAL_SALSubsys$(OBJEXT) .obj/SAL_SALData_salShmMonitor$(OBJEXT)
-SRC           = CheckStatus.cpp SAL_SALSubsys.cpp SAL_SALData_salShm.c SAL_SALData_salShmMonitor.cpp
+SRC           = CheckStatus.cpp SAL_SALSubsys.cpp SAL_SALData_salShm.cpp SAL_SALData_salShmMonitor.cpp
 LINK.cc       = $(LD) $(LDFLAGS)
 LINK2.cc       = $(CXX) $(EXEFLAGS)
 EXPORTFLAGS   = 
@@ -92,7 +92,7 @@ $(BINLIB): $(OBJS1)
 
 $(DAEMON): $(OBJS2)
 	@$(TESTDIRSTART) "$(BTARGETDIR)" $(TESTDIREND) $(MKDIR) "$(BTARGETDIR)"
-	$(LINK2.cc) $(OBJS) $(LDLIBS2) $(OUTPUT_OPTION)
+	$(LINK2.cc) $(OBJS2) $(LDLIBS2) $(OUTPUT_OPTION)
 
 generated: $(GENERATED_DIRTY)
 	@-:
@@ -109,7 +109,7 @@ generated: $(GENERATED_DIRTY)
 	@$(TESTDIRSTART) ".obj" $(TESTDIREND) $(MKDIR) ".obj"
 	$(COMPILE.cc) $(EXPORTFLAGS) $(OUTPUT_OPTION) SAL_SALData_salShmMonitor.cpp
 
-.obj/SAL_SALData_salShm$(OBJEXT): SAL_SALData_salShm.c
+.obj/SAL_SALData_salShm$(OBJEXT): SAL_SALData_salShm.cpp
 	@$(TESTDIRSTART) ".obj" $(TESTDIREND) $(MKDIR) ".obj"
 	$(COMPILE.cc) $(EXPORTFLAGS) $(OUTPUT_OPTION) SAL_SALData_salShm.cpp
 

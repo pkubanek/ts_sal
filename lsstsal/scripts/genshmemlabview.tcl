@@ -158,18 +158,25 @@ global SAL_DIR SAL_WORK_DIR SYSDIC
 using namespace [set base];
 "
   puts $fout "
-    int [set base]_salShmMonitor ([set idarg]) \{
+    int main (int argc, char *argv\[\]) \{
       int status = 0;
+      int idoff = 0;
 
+      if (argc > 1) \{
+         sscanf(argv\[1\], \"%d\", &idoff);
+      \}
       shutdown_shmem = false;
       int actorIdx = 0;
 
       [set base]_shmem *[set base]_memIO;
       lShmId = shmget([set base]_shmid + [set idoff], shmSize , IPC_CREAT|0666);
       [set base]_memIO  = ([set base]_shmem *) shmat(lShmId, NULL, 0);
-      SAL_[set base] mgr = SAL_[set base]($idarg2);
-
-      while ( !shutdown_shmem ) \{"
+      SAL_[set base] mgr = SAL_[set base]($idarg2);"
+  foreach j $ptypes {
+     set name [lindex $j 2]
+     monitorsyncinit $fout $base $name
+  }
+  puts $fout "      while ( !shutdown_shmem ) \{"
   foreach j $ptypes {
      set name [lindex $j 2]
      set type [lindex [split $name _] 0]
@@ -179,7 +186,7 @@ using namespace [set base];
         if { $type == "logevent" && $name != "logevent" } {
            monitorlogevent $fout $base $name
         } else {
-           if { $name != "command" && $name != "logevent" } {
+           if { $name != "ackcmd" && $name != "command" && $name != "logevent" } {
               monitortelemetry $fout $base $name
            }
         }
@@ -187,6 +194,7 @@ using namespace [set base];
    }
   puts $fout "
       \}
+       exit(0);
     \}
 "
   close $fout
@@ -501,6 +509,19 @@ global SAL_DIR SAL_WORK_DIR
           status = mgr.logEvent_[set n2](\&[set base]_memIO->shmemOutgoing_[set base]_[set name],1);
           [set base]_memIO->hasOutgoing_[set base]_[set name] = false;
        \}
+"
+}
+
+
+proc monitorsyncinit { fout base name } {
+global SAL_DIR SAL_WORK_DIR
+   set n2 [join [lrange [split $name _] 1 end] _]
+   puts $fout "
+       [set base]_memIO->syncI_[set base]_[set name] = false;
+       [set base]_memIO->hasIncoming_[set base]_[set name] = false;
+       [set base]_memIO->syncO_[set base]_[set name] = false;
+       [set base]_memIO->hasOutgoing_[set base]_[set name] = false;
+       [set base]_memIO->skipOld_[set base]_[set name] = false;
 "
 }
 
