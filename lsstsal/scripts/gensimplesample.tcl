@@ -43,7 +43,6 @@ global SAL_DIR SAL_WORK_DIR SYSDIC VPROPS
    exec mkdir -p $SAL_WORK_DIR/[set subsys]/cpp/src
    set fhdr [open $SAL_WORK_DIR/[set subsys]/cpp/src/SAL_[set subsys]C.h w]
    set fhlv [open $SAL_WORK_DIR/[set subsys]/cpp/src/SAL_[set subsys]LV.h w]
-   puts $fhlv "#ifdef BUILD_FOR_LV"
    puts $fhdr "
 #ifndef _SAL_[set subsys]C_
 #define _SAL_[set subsys]C_
@@ -217,8 +216,6 @@ typedef struct [set subsys]_ackcmdC
       long 	error;
       char	*result;
 \} [set subsys]_ackcmdC;
-
-#endif
 "
    close $fout
    close $fhdr

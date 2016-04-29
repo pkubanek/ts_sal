@@ -50,9 +50,12 @@ global SAL_DIR SAL_WORK_DIR SYSDIC TELEMETRY_ALIASES
   }
   set fout [open $SAL_WORK_DIR/[set base]/labview/SAL_[set base]_shmem.h w]
   set fhlv [open $SAL_WORK_DIR/[set base]/cpp/src/SAL_[set base]LV.h r]
+  puts $fout "#ifdef BUILD_FOR_LV"
   while  { [gets $fhlv rec] > -1 } {
      puts $fout $rec
-  }
+ }
+  puts $fout "#endif
+"
   close $fhlv
   puts $fout "
 #define salLONG long
@@ -149,8 +152,8 @@ global SAL_DIR SAL_WORK_DIR SYSDIC
   puts $fout "
 #include <sys/ipc.h>
 #include <sys/shm.h>
-#include \"SAL_[set base]\.h\"
-#include \"SAL_[set base]_shmem\.h\"
+#include \"SAL_[set base].h\"
+#include \"SAL_[set base]_shmem.h\"
 #include \"SAL_actors.h\"
 using namespace [set base];
 "
@@ -189,11 +192,10 @@ using namespace [set base];
   puts $fout "
 #include <sys/ipc.h>
 #include <sys/shm.h>
-//#include \"SAL_[set base]\.h\"
 extern \"C\" \{
-#define BUILD_FOR_LV
 #include \"SAL_defines.h\"
-#include \"SAL_[set base]_shmem\.h\"
+#define BUILD_FOR_LV
+#include \"SAL_[set base]_shmem.h\"
 #include \"SAL_actors.h\"
 #define ReturnCode_t int
 
