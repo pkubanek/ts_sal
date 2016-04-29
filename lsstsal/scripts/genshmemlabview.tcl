@@ -193,6 +193,7 @@ using namespace [set base];
      }   
    }
   puts $fout "
+        usleep(1000);
       \}
        exit(0);
     \}
@@ -436,7 +437,7 @@ global SAL_DIR SAL_WORK_DIR
        \}
        if ([set base]_memIO->syncO_[set base]_[set name]) \{
           actorIdx = SAL__[set base]_[set name]_ACTOR;
-          if (mgr.actorReader(actorIdx) == false) \{
+          if (mgr.actorWriter(actorIdx) == false) \{
              mgr.salTelemetryPub(actorIdx);
           \}
        \}
