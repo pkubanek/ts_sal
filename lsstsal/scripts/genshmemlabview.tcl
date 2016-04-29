@@ -64,9 +64,11 @@ global SAL_DIR SAL_WORK_DIR SYSDIC TELEMETRY_ALIASES
      puts $fout "	bool  syncO_[set base]_[set name];"	
      puts $fout "	bool  skipOld_[set base]_[set name];"	
      puts $fout "	bool  hasIncoming_[set base]_[set name];"	
-     puts $fout "	bool  hasOutgoing_[set base]_[set name];"	
-     puts $fout "	[set base]_[set name]C  shmemIncoming_[set base]_[set name];"	
-     puts $fout "	[set base]_[set name]C  shmemOutgoing_[set base]_[set name];"
+     puts $fout "	bool  hasOutgoing_[set base]_[set name];"
+     if { $name != "command" && $name != "logevent" } {
+       puts $fout "	[set base]_[set name]C  shmemIncoming_[set base]_[set name];"	
+       puts $fout "	[set base]_[set name]C  shmemOutgoing_[set base]_[set name];"
+     }
      if { $type == "command" && $name != "command" } {
         puts $fout "	int shmemOutgoing_[set base]_[set name]_cmdSeqNum;"
         puts $fout "	int shmemIncoming_[set base]_[set name]_rcvSeqNum;"
@@ -107,10 +109,12 @@ global SAL_DIR SAL_WORK_DIR SYSDIC TELEMETRY_ALIASES
            if { $name != "ackcmd" && $name != "command" && $name != "logevent" } {
               lappend TELEMETRY_ALIASES($base) $name
            }
-           puts $fout "
-	int [set base]_shm_getSample_[set name]LV([set base]_[set name]C **[set name]_Ctl);
-	int [set base]_shm_getNextSample_[set name]LV([set base]_[set name]C **[set name]_Ctl);
-	int [set base]_shm_putSample_[set name]LV([set base]_[set name]C **[set name]_Ctl);"
+           if { $name != "command" && $name != "logevent" } {
+             puts $fout "
+  	     int [set base]_shm_getSample_[set name]LV([set base]_[set name]C **[set name]_Ctl);
+	     int [set base]_shm_getNextSample_[set name]LV([set base]_[set name]C **[set name]_Ctl);
+	     int [set base]_shm_putSample_[set name]LV([set base]_[set name]C **[set name]_Ctl);"
+           }
         }
      }   
    }
@@ -185,10 +189,14 @@ using namespace [set base];
   puts $fout "
 #include <sys/ipc.h>
 #include <sys/shm.h>
-#include \"SAL_[set base]\.h\"
+//#include \"SAL_[set base]\.h\"
 extern \"C\" \{
+#define BUILD_FOR_LV
+#include \"SAL_defines.h\"
 #include \"SAL_[set base]_shmem\.h\"
 #include \"SAL_actors.h\"
+#define ReturnCode_t int
+
 "
   puts $fout "
     [set base]_shmem *[set base]_memIO;
@@ -200,7 +208,7 @@ extern \"C\" \{
       return SAL__OK;
     \}
 
-    int [set base]_shm_salShmRelease([set idarg]) \{
+    int [set base]_salShmRelease([set idarg]) \{
       return SAL__OK;
     \}
 "
