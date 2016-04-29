@@ -179,7 +179,9 @@ using namespace [set base];
         if { $type == "logevent" && $name != "logevent" } {
            monitorlogevent $fout $base $name
         } else {
-           monitortelemetry $fout $base $name
+           if { $name != "command" && $name != "logevent" } {
+              monitortelemetry $fout $base $name
+           }
         }
      }   
    }
