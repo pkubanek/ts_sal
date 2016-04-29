@@ -56,9 +56,9 @@ AR            = ar
 PICFLAGS      = -fPIC
 OBJEXT        = .o
 OUTPUT_OPTION = -o "$@"
-COMPILE.c     = $(CC) $(CFLAGS) $(CPPFLAGS) -c
-COMPILE.cc    = $(CXX) $(CCFLAGS) $(CPPFLAGS) -c
-LDFLAGS       = -L"." -L"$(OSPL_HOME)/lib" -Wl,-rpath,\$$ORIGIN -Wl,-rpath,\$$ORIGIN/$(OSPL_HOME)/lib
+COMPILE.c     = $(CC) $(CFLAGS) $(CPPFLAGS) -c -g
+COMPILE.cc    = $(CXX) $(CCFLAGS) $(CPPFLAGS) -c -g
+LDFLAGS       = -g -L"." -L"$(OSPL_HOME)/lib" -Wl,-rpath,\$$ORIGIN -Wl,-rpath,\$$ORIGIN/$(OSPL_HOME)/lib
 CCC           = $(CXX)
 MAKEFILE      = Makefile.sacpp_SALData_labview
 DEPENDENCIES  = .depend.$(MAKEFILE)
@@ -88,7 +88,7 @@ all: $(BINLIB) $(DAEMON)
 
 $(BINLIB): $(OBJS1)
 	@$(TESTDIRSTART) "$(BTARGETDIR)" $(TESTDIREND) $(MKDIR) "$(BTARGETDIR)"
-	$(LINK.cc) $(OBJS) $(LDLIBS) $(OUTPUT_OPTION)
+	$(LINK.cc) $(OBJS1) $(LDLIBS) $(OUTPUT_OPTION)
 
 $(DAEMON): $(OBJS2)
 	@$(TESTDIRSTART) "$(BTARGETDIR)" $(TESTDIREND) $(MKDIR) "$(BTARGETDIR)"
