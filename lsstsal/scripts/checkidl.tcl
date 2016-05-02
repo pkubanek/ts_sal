@@ -179,7 +179,8 @@ global XMLTOPICS XMLTLM IDLRESERVED XMLITEMS
            puts $fdef "
 #if !defined(SAL_[set topicid]_IID__INCLUDED_)
 #define SAL_[set topicid]_IID__INCLUDED_"
-           foreach t $tnames {
+           if { [info exists tnames] } {
+            foreach t $tnames {
               set ps $props($t,size)
               if { $ps > 1 && $props($t,type) != "string" } {
                  incr ps 1
@@ -187,6 +188,7 @@ global XMLTOPICS XMLTLM IDLRESERVED XMLITEMS
               puts $fdef "#define SAL_IID_[set topicid]_[set t] $tid		// $t $props($t,type) $ps"
               puts $fsql "INSERT INTO [set topicid]_items VALUES ($props($t,num),\"$t\",\"$props($t,type)\",$props($t,size),\"$props($t,units)\",$props($t,freq),\"$props($t,range)\",\"$props($t,location)\",\"$props($t,comment)\");"
               incr tid 1
+            }
            }
            puts $fdef "#endif\n"
            close $fdef

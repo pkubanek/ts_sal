@@ -48,9 +48,6 @@ global IDLRESERVED SAL_WORK_DIR SAL_DIR CMDS CMD_ALIASES EVTS EVENT_ALIASES
            if { $ctype == "telemetry" } {
              close $fsql
            }
-           if { $itemid == 0 } {
-              exec rm $SAL_WORK_DIR/idl-templates/[set tname].idl
-           }
         }
         set itemid 0
         set tname $value

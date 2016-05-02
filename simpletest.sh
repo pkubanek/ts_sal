@@ -53,15 +53,27 @@ do
 done
 
 echo "Generating C++"
-for subsys in camera dm dome hexapod m1m3 m2ms mount rotator scheduler tcs
+for subsys in camera dm dome hexapod m1m3 m2ms MTMount rotator scheduler tcs
 do
    salgenerator $subsys sal cpp
 done
 
 echo "Generating Java"
-for subsys in camera dm dome hexapod m1m3 m2ms mount rotator scheduler tcs
+for subsys in camera dm dome hexapod m1m3 m2ms MTMount rotator scheduler tcs
 do
    salgenerator $subsys sal java
+done
+
+echo "Generating Python"
+for subsys in camera dm dome hexapod m1m3 m2ms MTMount rotator scheduler tcs
+do
+   salgenerator $subsys sal python
+done
+
+echo "Generating LabVIEW"
+for subsys in camera dm dome hexapod m1m3 m2ms MTMount rotator scheduler tcs
+do
+   salgenerator $subsys sal labview
 done
 
 salgenerator camera maven
