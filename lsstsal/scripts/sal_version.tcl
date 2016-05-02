@@ -11,7 +11,7 @@ set SAL_SID(hexapod) 		7000
 set SAL_SID(lasercal) 		8000
 set SAL_SID(m1m3) 		9000
 set SAL_SID(m2ms) 		10000
-set SAL_SID(mount) 		11000
+set SAL_SID(MTMount) 		11000
 set SAL_SID(network) 		12000
 set SAL_SID(ocs) 		13000
 set SAL_SID(power) 		14000
