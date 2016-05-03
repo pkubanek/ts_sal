@@ -4,21 +4,21 @@
 	xsi:noNamespaceSchemaLocation="http://lsst-sal.tuc.noao.edu/schema/SALEventSet.xsd">
 
 <SALEvent>
- <Subsystem>mount</Subsystem>
+ <Subsystem>MTMount</Subsystem>
  <Version>2.5.3</Version>
  <Author>salgenerator</Author>
- <EFDB_Topic>mount_logevent_accLimit</EFDB_Topic>
+ <EFDB_Topic>MTMount_logevent_accLimit</EFDB_Topic>
  <Alias>accLimit</Alias>
- <Explanation>http://sal.lsst.org/SAL/Events/mount_logevent_accLimit.html</Explanation>
+ <Explanation>http://sal.lsst.org/SAL/Events/MTMount_logevent_accLimit.html</Explanation>
 </SALEvent>
 
 <SALEvent>
- <Subsystem>mount</Subsystem>
+ <Subsystem>MTMount</Subsystem>
  <Version>2.5.3</Version>
  <Author>salgenerator</Author>
- <EFDB_Topic>mount_logevent_altLimit</EFDB_Topic>
+ <EFDB_Topic>MTMount_logevent_altLimit</EFDB_Topic>
  <Alias>altLimit</Alias>
- <Explanation>http://sal.lsst.org/SAL/Events/mount_logevent_altLimit.html</Explanation>
+ <Explanation>http://sal.lsst.org/SAL/Events/MTMount_logevent_altLimit.html</Explanation>
     <item>
       <EFDB_Name>priority</EFDB_Name>
       <Description>Severity of the event</Description>
@@ -36,12 +36,12 @@
 </SALEvent>
 
 <SALEvent>
- <Subsystem>mount</Subsystem>
+ <Subsystem>MTMount</Subsystem>
  <Version>2.5.3</Version>
  <Author>salgenerator</Author>
- <EFDB_Topic>mount_logevent_interlock</EFDB_Topic>
+ <EFDB_Topic>MTMount_logevent_interlock</EFDB_Topic>
  <Alias>interlock</Alias>
- <Explanation>http://sal.lsst.org/SAL/Events/mount_logevent_interlock.html</Explanation>
+ <Explanation>http://sal.lsst.org/SAL/Events/MTMount_logevent_interlock.html</Explanation>
     <item>
       <EFDB_Name>priority</EFDB_Name>
       <Description>Severity of the event</Description>
@@ -59,12 +59,12 @@
 </SALEvent>
 
 <SALEvent>
- <Subsystem>mount</Subsystem>
+ <Subsystem>MTMount</Subsystem>
  <Version>2.5.3</Version>
  <Author>salgenerator</Author>
- <EFDB_Topic>mount_logevent_powerError</EFDB_Topic>
+ <EFDB_Topic>MTMount_logevent_powerError</EFDB_Topic>
  <Alias>powerError</Alias>
- <Explanation>http://sal.lsst.org/SAL/Events/mount_logevent_powerError.html</Explanation>
+ <Explanation>http://sal.lsst.org/SAL/Events/MTMount_logevent_powerError.html</Explanation>
     <item>
       <EFDB_Name>priority</EFDB_Name>
       <Description>Severity of the event</Description>
@@ -89,39 +89,39 @@
 </SALEvent>
 
 <SALEvent>
- <Subsystem>mount</Subsystem>
+ <Subsystem>MTMount</Subsystem>
  <Version>2.5.3</Version>
  <Author>salgenerator</Author>
- <EFDB_Topic>mount_logevent_slewError</EFDB_Topic>
+ <EFDB_Topic>MTMount_logevent_slewError</EFDB_Topic>
  <Alias>slewError</Alias>
- <Explanation>http://sal.lsst.org/SAL/Events/mount_logevent_slewError.html</Explanation>
+ <Explanation>http://sal.lsst.org/SAL/Events/MTMount_logevent_slewError.html</Explanation>
 </SALEvent>
 
 <SALEvent>
- <Subsystem>mount</Subsystem>
+ <Subsystem>MTMount</Subsystem>
  <Version>2.5.3</Version>
  <Author>salgenerator</Author>
- <EFDB_Topic>mount_logevent_slewOK</EFDB_Topic>
+ <EFDB_Topic>MTMount_logevent_slewOK</EFDB_Topic>
  <Alias>slewOK</Alias>
- <Explanation>http://sal.lsst.org/SAL/Events/mount_logevent_slewOK.html</Explanation>
+ <Explanation>http://sal.lsst.org/SAL/Events/MTMount_logevent_slewOK.html</Explanation>
 </SALEvent>
 
 <SALEvent>
- <Subsystem>mount</Subsystem>
+ <Subsystem>MTMount</Subsystem>
  <Version>2.5.3</Version>
  <Author>salgenerator</Author>
- <EFDB_Topic>mount_logevent_slewReady</EFDB_Topic>
+ <EFDB_Topic>MTMount_logevent_slewReady</EFDB_Topic>
  <Alias>slewReady</Alias>
- <Explanation>http://sal.lsst.org/SAL/Events/mount_logevent_slewReady.html</Explanation>
+ <Explanation>http://sal.lsst.org/SAL/Events/MTMount_logevent_slewReady.html</Explanation>
 </SALEvent>
 
 <SALEvent>
- <Subsystem>mount</Subsystem>
+ <Subsystem>MTMount</Subsystem>
  <Version>2.5.3</Version>
  <Author>salgenerator</Author>
- <EFDB_Topic>mount_logevent_tempError</EFDB_Topic>
+ <EFDB_Topic>MTMount_logevent_tempError</EFDB_Topic>
  <Alias>tempError</Alias>
- <Explanation>http://sal.lsst.org/SAL/Events/mount_logevent_tempError.html</Explanation>
+ <Explanation>http://sal.lsst.org/SAL/Events/MTMount_logevent_tempError.html</Explanation>
     <item>
       <EFDB_Name>priority</EFDB_Name>
       <Description>Severity of the event</Description>
@@ -146,29 +146,29 @@
 </SALEvent>
 
 <SALEvent>
- <Subsystem>mount</Subsystem>
+ <Subsystem>MTMount</Subsystem>
  <Version>2.5.3</Version>
  <Author>salgenerator</Author>
- <EFDB_Topic>mount_logevent_trackLost</EFDB_Topic>
+ <EFDB_Topic>MTMount_logevent_trackLost</EFDB_Topic>
  <Alias>trackLost</Alias>
- <Explanation>http://sal.lsst.org/SAL/Events/mount_logevent_trackLost.html</Explanation>
+ <Explanation>http://sal.lsst.org/SAL/Events/MTMount_logevent_trackLost.html</Explanation>
 </SALEvent>
 
 <SALEvent>
- <Subsystem>mount</Subsystem>
+ <Subsystem>MTMount</Subsystem>
  <Version>2.5.3</Version>
  <Author>salgenerator</Author>
- <EFDB_Topic>mount_logevent_tracking</EFDB_Topic>
+ <EFDB_Topic>MTMount_logevent_tracking</EFDB_Topic>
  <Alias>tracking</Alias>
- <Explanation>http://sal.lsst.org/SAL/Events/mount_logevent_tracking.html</Explanation>
+ <Explanation>http://sal.lsst.org/SAL/Events/MTMount_logevent_tracking.html</Explanation>
 </SALEvent>
 
 <SALEvent>
- <Subsystem>mount</Subsystem>
+ <Subsystem>MTMount</Subsystem>
  <Version>2.5.3</Version>
  <Author>salgenerator</Author>
- <EFDB_Topic>mount_logevent_velLimit</EFDB_Topic>
+ <EFDB_Topic>MTMount_logevent_velLimit</EFDB_Topic>
  <Alias>velLimit</Alias>
- <Explanation>http://sal.lsst.org/SAL/Events/mount_logevent_velLimit.html</Explanation>
+ <Explanation>http://sal.lsst.org/SAL/Events/MTMount_logevent_velLimit.html</Explanation>
 </SALEvent>
 </SALEventSet>

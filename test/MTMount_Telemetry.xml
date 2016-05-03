@@ -3,10 +3,10 @@
 <SALTelemetrySet xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:noNamespaceSchemaLocation="http://lsst-sal.tuc.noao.edu/schema/SALTelemetrySet.xsd">
 <SALTelemetry>
- <Subsystem>mount</Subsystem>
+ <Subsystem>MTMount</Subsystem>
  <Version>2.5.3</Version>
  <Author>salgenerator</Author>
- <EFDB_Topic>mount_Application</EFDB_Topic>
+ <EFDB_Topic>MTMount_Application</EFDB_Topic>
       <item>
           <EFDB_Name>Demand</EFDB_Name>
           <Description></Description>
@@ -21,7 +21,7 @@
           <Count>4</Count>
           <Instances_per_night>2332</Instances_per_night>
           <Bytes_per_night>37324</Bytes_per_night>
-          <Explanation>http://sal.lsst.org/SAL/Telemetry/mount_Application_Demand.html</Explanation>
+          <Explanation>http://sal.lsst.org/SAL/Telemetry/MTMount_Application_Demand.html</Explanation>
       </item>
       <item>
           <EFDB_Name>Error</EFDB_Name>
@@ -37,7 +37,7 @@
           <Count>4</Count>
           <Instances_per_night>2332</Instances_per_night>
           <Bytes_per_night>37324</Bytes_per_night>
-          <Explanation>http://sal.lsst.org/SAL/Telemetry/mount_Application_Error.html</Explanation>
+          <Explanation>http://sal.lsst.org/SAL/Telemetry/MTMount_Application_Error.html</Explanation>
       </item>
       <item>
           <EFDB_Name>Position</EFDB_Name>
@@ -53,14 +53,14 @@
           <Count>4</Count>
           <Instances_per_night>2332</Instances_per_night>
           <Bytes_per_night>37324</Bytes_per_night>
-          <Explanation>http://sal.lsst.org/SAL/Telemetry/mount_Application_Position.html</Explanation>
+          <Explanation>http://sal.lsst.org/SAL/Telemetry/MTMount_Application_Position.html</Explanation>
       </item>
 </SALTelemetry>
 <SALTelemetry>
- <Subsystem>mount</Subsystem>
+ <Subsystem>MTMount</Subsystem>
  <Version>2.5.3</Version>
  <Author>salgenerator</Author>
- <EFDB_Topic>mount_TC</EFDB_Topic>
+ <EFDB_Topic>MTMount_TC</EFDB_Topic>
       <item>
           <EFDB_Name>Calibrated</EFDB_Name>
           <Description></Description>
@@ -75,7 +75,7 @@
           <Count>16</Count>
           <Instances_per_night>2332</Instances_per_night>
           <Bytes_per_night>149299</Bytes_per_night>
-          <Explanation>http://sal.lsst.org/SAL/Telemetry/mount_TC_Calibrated.html</Explanation>
+          <Explanation>http://sal.lsst.org/SAL/Telemetry/MTMount_TC_Calibrated.html</Explanation>
       </item>
       <item>
           <EFDB_Name>Raw</EFDB_Name>
@@ -91,90 +91,14 @@
           <Count>16</Count>
           <Instances_per_night>2332</Instances_per_night>
           <Bytes_per_night>149299</Bytes_per_night>
-          <Explanation>http://sal.lsst.org/SAL/Telemetry/mount_TC_Raw.html</Explanation>
+          <Explanation>http://sal.lsst.org/SAL/Telemetry/MTMount_TC_Raw.html</Explanation>
       </item>
 </SALTelemetry>
 <SALTelemetry>
- <Subsystem>mount</Subsystem>
+ <Subsystem>MTMount</Subsystem>
  <Version>2.5.3</Version>
  <Author>salgenerator</Author>
- <EFDB_Topic>mount_Alt</EFDB_Topic>
-      <item>
-          <EFDB_Name>Calibrated</EFDB_Name>
-          <Description></Description>
-          <Frequency>0.054</Frequency>
-          <Publishers>1</Publishers>
-          <Values_per_Publisher>32</Values_per_Publisher>
-          <Size_in_bytes>128</Size_in_bytes>
-          <IDL_Type>float</IDL_Type>
-          <Units></Units>
-          <Conversion></Conversion>
-          <Sensor_location></Sensor_location>
-          <Count>32</Count>
-          <Instances_per_night>2332</Instances_per_night>
-          <Bytes_per_night>298598</Bytes_per_night>
-          <Explanation>http://sal.lsst.org/SAL/Telemetry/mount_Alt_Calibrated.html</Explanation>
-      </item>
-      <item>
-          <EFDB_Name>Raw</EFDB_Name>
-          <Description></Description>
-          <Frequency>0.054</Frequency>
-          <Publishers>1</Publishers>
-          <Values_per_Publisher>16</Values_per_Publisher>
-          <Size_in_bytes>64</Size_in_bytes>
-          <IDL_Type>long</IDL_Type>
-          <Units></Units>
-          <Conversion></Conversion>
-          <Sensor_location></Sensor_location>
-          <Count>16</Count>
-          <Instances_per_night>2332</Instances_per_night>
-          <Bytes_per_night>149299</Bytes_per_night>
-          <Explanation>http://sal.lsst.org/SAL/Telemetry/mount_Alt_Raw.html</Explanation>
-      </item>
-</SALTelemetry>
-<SALTelemetry>
- <Subsystem>mount</Subsystem>
- <Version>2.5.3</Version>
- <Author>salgenerator</Author>
- <EFDB_Topic>mount_Metrology</EFDB_Topic>
-      <item>
-          <EFDB_Name>Calibrated</EFDB_Name>
-          <Description></Description>
-          <Frequency>0.054</Frequency>
-          <Publishers>1</Publishers>
-          <Values_per_Publisher>16</Values_per_Publisher>
-          <Size_in_bytes>64</Size_in_bytes>
-          <IDL_Type>float</IDL_Type>
-          <Units></Units>
-          <Conversion></Conversion>
-          <Sensor_location></Sensor_location>
-          <Count>16</Count>
-          <Instances_per_night>2332</Instances_per_night>
-          <Bytes_per_night>149299</Bytes_per_night>
-          <Explanation>http://sal.lsst.org/SAL/Telemetry/mount_Metrology_Calibrated.html</Explanation>
-      </item>
-      <item>
-          <EFDB_Name>Raw</EFDB_Name>
-          <Description></Description>
-          <Frequency>0.054</Frequency>
-          <Publishers>1</Publishers>
-          <Values_per_Publisher>16</Values_per_Publisher>
-          <Size_in_bytes>64</Size_in_bytes>
-          <IDL_Type>long</IDL_Type>
-          <Units></Units>
-          <Conversion></Conversion>
-          <Sensor_location></Sensor_location>
-          <Count>16</Count>
-          <Instances_per_night>2332</Instances_per_night>
-          <Bytes_per_night>149299</Bytes_per_night>
-          <Explanation>http://sal.lsst.org/SAL/Telemetry/mount_Metrology_Raw.html</Explanation>
-      </item>
-</SALTelemetry>
-<SALTelemetry>
- <Subsystem>mount</Subsystem>
- <Version>2.5.3</Version>
- <Author>salgenerator</Author>
- <EFDB_Topic>mount_Electrical</EFDB_Topic>
+ <EFDB_Topic>MTMount_Alt</EFDB_Topic>
       <item>
           <EFDB_Name>Calibrated</EFDB_Name>
           <Description></Description>
@@ -189,7 +113,7 @@
           <Count>32</Count>
           <Instances_per_night>2332</Instances_per_night>
           <Bytes_per_night>298598</Bytes_per_night>
-          <Explanation>http://sal.lsst.org/SAL/Telemetry/mount_Electrical_Calibrated.html</Explanation>
+          <Explanation>http://sal.lsst.org/SAL/Telemetry/MTMount_Alt_Calibrated.html</Explanation>
       </item>
       <item>
           <EFDB_Name>Raw</EFDB_Name>
@@ -205,14 +129,52 @@
           <Count>16</Count>
           <Instances_per_night>2332</Instances_per_night>
           <Bytes_per_night>149299</Bytes_per_night>
-          <Explanation>http://sal.lsst.org/SAL/Telemetry/mount_Electrical_Raw.html</Explanation>
+          <Explanation>http://sal.lsst.org/SAL/Telemetry/MTMount_Alt_Raw.html</Explanation>
       </item>
 </SALTelemetry>
 <SALTelemetry>
- <Subsystem>mount</Subsystem>
+ <Subsystem>MTMount</Subsystem>
  <Version>2.5.3</Version>
  <Author>salgenerator</Author>
- <EFDB_Topic>mount_Az</EFDB_Topic>
+ <EFDB_Topic>MTMount_Metrology</EFDB_Topic>
+      <item>
+          <EFDB_Name>Calibrated</EFDB_Name>
+          <Description></Description>
+          <Frequency>0.054</Frequency>
+          <Publishers>1</Publishers>
+          <Values_per_Publisher>16</Values_per_Publisher>
+          <Size_in_bytes>64</Size_in_bytes>
+          <IDL_Type>float</IDL_Type>
+          <Units></Units>
+          <Conversion></Conversion>
+          <Sensor_location></Sensor_location>
+          <Count>16</Count>
+          <Instances_per_night>2332</Instances_per_night>
+          <Bytes_per_night>149299</Bytes_per_night>
+          <Explanation>http://sal.lsst.org/SAL/Telemetry/MTMount_Metrology_Calibrated.html</Explanation>
+      </item>
+      <item>
+          <EFDB_Name>Raw</EFDB_Name>
+          <Description></Description>
+          <Frequency>0.054</Frequency>
+          <Publishers>1</Publishers>
+          <Values_per_Publisher>16</Values_per_Publisher>
+          <Size_in_bytes>64</Size_in_bytes>
+          <IDL_Type>long</IDL_Type>
+          <Units></Units>
+          <Conversion></Conversion>
+          <Sensor_location></Sensor_location>
+          <Count>16</Count>
+          <Instances_per_night>2332</Instances_per_night>
+          <Bytes_per_night>149299</Bytes_per_night>
+          <Explanation>http://sal.lsst.org/SAL/Telemetry/MTMount_Metrology_Raw.html</Explanation>
+      </item>
+</SALTelemetry>
+<SALTelemetry>
+ <Subsystem>MTMount</Subsystem>
+ <Version>2.5.3</Version>
+ <Author>salgenerator</Author>
+ <EFDB_Topic>MTMount_Electrical</EFDB_Topic>
       <item>
           <EFDB_Name>Calibrated</EFDB_Name>
           <Description></Description>
@@ -227,7 +189,7 @@
           <Count>32</Count>
           <Instances_per_night>2332</Instances_per_night>
           <Bytes_per_night>298598</Bytes_per_night>
-          <Explanation>http://sal.lsst.org/SAL/Telemetry/mount_Az_Calibrated.html</Explanation>
+          <Explanation>http://sal.lsst.org/SAL/Telemetry/MTMount_Electrical_Calibrated.html</Explanation>
       </item>
       <item>
           <EFDB_Name>Raw</EFDB_Name>
@@ -243,14 +205,52 @@
           <Count>16</Count>
           <Instances_per_night>2332</Instances_per_night>
           <Bytes_per_night>149299</Bytes_per_night>
-          <Explanation>http://sal.lsst.org/SAL/Telemetry/mount_Az_Raw.html</Explanation>
+          <Explanation>http://sal.lsst.org/SAL/Telemetry/MTMount_Electrical_Raw.html</Explanation>
       </item>
 </SALTelemetry>
 <SALTelemetry>
- <Subsystem>mount</Subsystem>
+ <Subsystem>MTMount</Subsystem>
  <Version>2.5.3</Version>
  <Author>salgenerator</Author>
- <EFDB_Topic>mount_CapacitorBank</EFDB_Topic>
+ <EFDB_Topic>MTMount_Az</EFDB_Topic>
+      <item>
+          <EFDB_Name>Calibrated</EFDB_Name>
+          <Description></Description>
+          <Frequency>0.054</Frequency>
+          <Publishers>1</Publishers>
+          <Values_per_Publisher>32</Values_per_Publisher>
+          <Size_in_bytes>128</Size_in_bytes>
+          <IDL_Type>float</IDL_Type>
+          <Units></Units>
+          <Conversion></Conversion>
+          <Sensor_location></Sensor_location>
+          <Count>32</Count>
+          <Instances_per_night>2332</Instances_per_night>
+          <Bytes_per_night>298598</Bytes_per_night>
+          <Explanation>http://sal.lsst.org/SAL/Telemetry/MTMount_Az_Calibrated.html</Explanation>
+      </item>
+      <item>
+          <EFDB_Name>Raw</EFDB_Name>
+          <Description></Description>
+          <Frequency>0.054</Frequency>
+          <Publishers>1</Publishers>
+          <Values_per_Publisher>16</Values_per_Publisher>
+          <Size_in_bytes>64</Size_in_bytes>
+          <IDL_Type>long</IDL_Type>
+          <Units></Units>
+          <Conversion></Conversion>
+          <Sensor_location></Sensor_location>
+          <Count>16</Count>
+          <Instances_per_night>2332</Instances_per_night>
+          <Bytes_per_night>149299</Bytes_per_night>
+          <Explanation>http://sal.lsst.org/SAL/Telemetry/MTMount_Az_Raw.html</Explanation>
+      </item>
+</SALTelemetry>
+<SALTelemetry>
+ <Subsystem>MTMount</Subsystem>
+ <Version>2.5.3</Version>
+ <Author>salgenerator</Author>
+ <EFDB_Topic>MTMount_CapacitorBank</EFDB_Topic>
       <item>
           <EFDB_Name>charge</EFDB_Name>
           <Description></Description>
@@ -265,7 +265,7 @@
           <Count>10</Count>
           <Instances_per_night>2332</Instances_per_night>
           <Bytes_per_night>93312</Bytes_per_night>
-          <Explanation>http://sal.lsst.org/SAL/Telemetry/mount_CapacitorBank_charge.html</Explanation>
+          <Explanation>http://sal.lsst.org/SAL/Telemetry/MTMount_CapacitorBank_charge.html</Explanation>
       </item>
       <item>
           <EFDB_Name>chargeRate</EFDB_Name>
@@ -281,7 +281,7 @@
           <Count>10</Count>
           <Instances_per_night>2332</Instances_per_night>
           <Bytes_per_night>93312</Bytes_per_night>
-          <Explanation>http://sal.lsst.org/SAL/Telemetry/mount_CapacitorBank_chargeRate.html</Explanation>
+          <Explanation>http://sal.lsst.org/SAL/Telemetry/MTMount_CapacitorBank_chargeRate.html</Explanation>
       </item>
       <item>
           <EFDB_Name>setpoint</EFDB_Name>
@@ -297,7 +297,7 @@
           <Count>1</Count>
           <Instances_per_night>2332</Instances_per_night>
           <Bytes_per_night>9331</Bytes_per_night>
-          <Explanation>http://sal.lsst.org/SAL/Telemetry/mount_CapacitorBank_setpoint.html</Explanation>
+          <Explanation>http://sal.lsst.org/SAL/Telemetry/MTMount_CapacitorBank_setpoint.html</Explanation>
       </item>
       <item>
           <EFDB_Name>status</EFDB_Name>
@@ -313,7 +313,7 @@
           <Count>10</Count>
           <Instances_per_night>2332</Instances_per_night>
           <Bytes_per_night>93312</Bytes_per_night>
-          <Explanation>http://sal.lsst.org/SAL/Telemetry/mount_CapacitorBank_status.html</Explanation>
+          <Explanation>http://sal.lsst.org/SAL/Telemetry/MTMount_CapacitorBank_status.html</Explanation>
       </item>
       <item>
           <EFDB_Name>temperature</EFDB_Name>
@@ -329,7 +329,7 @@
           <Count>10</Count>
           <Instances_per_night>2332</Instances_per_night>
           <Bytes_per_night>93312</Bytes_per_night>
-          <Explanation>http://sal.lsst.org/SAL/Telemetry/mount_CapacitorBank_temperature.html</Explanation>
+          <Explanation>http://sal.lsst.org/SAL/Telemetry/MTMount_CapacitorBank_temperature.html</Explanation>
       </item>
 </SALTelemetry>
 </SALTelemetrySet>
