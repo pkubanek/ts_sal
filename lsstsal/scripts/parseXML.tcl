@@ -35,9 +35,10 @@ global IDLRESERVED SAL_WORK_DIR SAL_DIR CMDS CMD_ALIASES EVTS EVENT_ALIASES
       if { $tag == "/SALCommand" } {
          set CMDS($subsys,$alias) "$device $property $action $value"
          set CMD_ALIASES($subsys) [lappend CMD_ALIASES($subsys) $alias]
-         if { [info exists CMDS($subsys,$alias,param)] == 0 } {
+         if { $itemid == 0 } {
             lappend CMDS($subsys,$alias,param) "string state"
             lappend CMDS($subsys,$alias,plist) state
+            puts $fout "	  string	state;"
          }
       }
       if { $tag == "EFDB_Topic" } {
