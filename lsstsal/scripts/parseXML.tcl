@@ -126,9 +126,6 @@ global IDLRESERVED SAL_WORK_DIR SAL_DIR CMDS CMD_ALIASES EVTS EVENT_ALIASES
    }
    close $fin
    puts stdout "itemid for $SAL_WORK_DIR/idl-templates/[set tname].idl=  $itemid"
-   if { $itemid == 0 } {
-      exec rm $SAL_WORK_DIR/idl-templates/[set tname].idl
-   }
    if { [info exists CMD_ALIASES($subsys)] } {
     if { $CMD_ALIASES($subsys) != "" } {
      puts stdout "Generating test command gui input"        
