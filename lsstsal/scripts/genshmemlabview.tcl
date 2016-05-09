@@ -20,6 +20,11 @@ global SAL_DIR SAL_WORK_DIR
   gencommandlabviewtests $base
   geneventlabviewtests $base
   gentelemetrylabviewtests $base
+  cd $SAL_WORK_DIR/[set subsys]/labview
+  exec ln -s ../cpp/src/SAL_[set subsys].cpp .
+  exec ln -s ../cpp/src/CheckStatus.cpp .
+  exec ln -s ../cpp/src/CheckStatus.h .
+  exec make -f Makefile.sacpp_[set subsys]_labview
 }
 
 proc genlabviewmake { subsys } {
