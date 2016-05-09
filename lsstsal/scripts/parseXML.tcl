@@ -31,7 +31,7 @@ global IDLRESERVED SAL_WORK_DIR SAL_DIR CMDS CMD_ALIASES EVTS EVENT_ALIASES
       if { $tag == "/SALEvent" } {
          set EVTS($subsys,$alias) $alias
          set EVENT_ALIASES($subsys) [lappend EVENT_ALIASES($subsys) $alias]
-         if { $itemid == 0 } {
+         if { [lsearch $EVTS($subsys,$alias,plist) priority] < 0 } {
             lappend EVTS($subsys,$alias,param) "long	priority"
             lappend EVTS($subsys,$alias,plist) priority
             puts $fout "	  long	priority;"
@@ -56,6 +56,11 @@ global IDLRESERVED SAL_WORK_DIR SAL_DIR CMDS CMD_ALIASES EVTS EVENT_ALIASES
            }
         }
         set itemid 0
+        if { [info exists topics($value)] } { 
+           puts stdout "ERROR - duplicate EFDB_Name = $value"
+           exit
+        }
+        set topics($value) 1
         set tname $value
         puts stdout "Translating $tname"
         set fout [open $SAL_WORK_DIR/idl-templates/[set tname].idl w]
