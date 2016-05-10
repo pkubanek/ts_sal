@@ -21,9 +21,11 @@ global SAL_DIR SAL_WORK_DIR
   geneventlabviewtests $base
   gentelemetrylabviewtests $base
   cd $SAL_WORK_DIR/[set subsys]/labview
-  exec ln -s ../cpp/src/SAL_[set subsys].cpp .
-  exec ln -s ../cpp/src/CheckStatus.cpp .
-  exec ln -s ../cpp/src/CheckStatus.h .
+  exec ln -sf ../cpp/src/SAL_[set subsys].cpp .
+  exec ln -sf ../cpp/src/SAL_Actors.h .
+  exec ln -sf ../../../lsstsal/include/SAL_defines.h .
+  exec ln -sf ../cpp/src/CheckStatus.cpp .
+  exec ln -sf ../cpp/src/CheckStatus.h .
   exec make -f Makefile.sacpp_[set subsys]_labview
 }
 
