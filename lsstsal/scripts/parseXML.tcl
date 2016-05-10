@@ -31,10 +31,12 @@ global IDLRESERVED SAL_WORK_DIR SAL_DIR CMDS CMD_ALIASES EVTS EVENT_ALIASES
       if { $tag == "/SALEvent" } {
          set EVTS($subsys,$alias) $alias
          set EVENT_ALIASES($subsys) [lappend EVENT_ALIASES($subsys) $alias]
-         if { [lsearch $EVTS($subsys,$alias,plist) priority] < 0 } {
+         if { [info exists EVTS($subsys,$alias,plist)] } {
+          if { [lsearch $EVTS($subsys,$alias,plist) priority] < 0 } {
             lappend EVTS($subsys,$alias,param) "long	priority"
             lappend EVTS($subsys,$alias,plist) priority
             puts $fout "	  long	priority;"
+          }
          }
       }
       if { $tag == "/SALCommand" } {
