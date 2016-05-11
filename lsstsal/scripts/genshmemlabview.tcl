@@ -85,10 +85,18 @@ global SAL_DIR SAL_WORK_DIR SYSDIC TELEMETRY_ALIASES
         puts $fout "	salLONG shmemOutgoing_[set base]_[set name]_cmdStatus;"
         puts $fout "	salLONG shmemOutgoing_[set base]_[set name]_errorCode;"
         puts $fout "	char shmemOutgoing_[set base]_[set name]_resultCode\[128\];"
-     }	
+     }
+puts stdout "reading  $SAL_WORK_DIR/include/SAL_[set base]_[set name]shmstr.tmp"
+     if { $name != "ackcmd" && $name != "command" && $name != "logevent" } {
+       set fstrb [open $SAL_WORK_DIR/include/SAL_[set base]_[set name]shmstr.tmp r]
+       while { [gets $fstrb rec] > -1 } {
+          puts $fout $rec
+       }
+       close $fstrb
+     }
   }
-  puts $fout "	[set base]_ackcmdC  shmemIncoming_ackcmd;"	
-  puts $fout "	[set base]_ackcmdC  shmemOutgoing_ackcmd;"	
+  puts $fout "	[set base]_ackcmdC  shmemIncoming_ackcmd;"
+  puts $fout "	[set base]_ackcmdC  shmemOutgoing_ackcmd;"
   puts $fout "    \};
 
      int shmSize = sizeof([set base]_shmem);
