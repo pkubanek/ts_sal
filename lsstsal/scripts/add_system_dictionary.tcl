@@ -1,5 +1,13 @@
+proc calcshmid { subsys } {
+  set fout [open /tmp/subsys.tmp w]
+  puts $fout "$subsys"
+  close $fout
+  set id [string range [exec md5sum /tmp/subsys.tmp] 0 3]
+  return $id
+}
 
-set SYSDIC(systems) "auxscope calibration camera dm  dome dome environment hexapod lasercal m1m3 m2ms mount network operations power rotator scheduler seeing skycam system tcs"
+
+set SYSDIC(systems) "auxscope calibration camera dm  dome dome environment hexapod lasercal m1m3 m2ms MTMount network operations power rotator scheduler seeing skycam system tcs"
 foreach s $SYSDIC(systems) {set SYSDIC($s,type) system}
 
 set SYSDIC(datatypes) "byte short int long float string int64 double ubyte ushort uint ulong"
@@ -180,19 +188,19 @@ m2ms.Supports - Mirror/Mount interface
 m2ms.Surface - Figure monitoring
 m2ms.TC - Thermal monitoring/control
 m2ms.Temps - Thermal monitoring/control
-mount - Telescope mount
-mount.Az - Azimuth axis monitoring/control
-mount.Alt - Altitude axis monitoring/control
-mount.Balance - Balance tuning mechanisms
-mount.Hexapod - Camera mount monitoring/control
-mount.Rotator - Camera mount monitoring/control
-mount.Metrology - Configuration/Position/Velocity monitoring
-mount.Application - Derived metadata
-mount.Electrical - Electrical system monitoring
-mount.Mirror_cover - Mirror covers
-mount.Power - Monitoring/control of power management
-mount.Services - Monitoring/control of N2/Vac/Coolant etc
-mount.TC - Thermal monitoring/control
+MTMount - Telescope mount
+MTMount.Az - Azimuth axis monitoring/control
+MTMount.Alt - Altitude axis monitoring/control
+MTMount.Balance - Balance tuning mechanisms
+MTMount.Hexapod - Camera mount monitoring/control
+MTMount.Rotator - Camera mount monitoring/control
+MTMount.Metrology - Configuration/Position/Velocity monitoring
+MTMount.Application - Derived metadata
+MTMount.Electrical - Electrical system monitoring
+MTMount.Mirror_cover - Mirror covers
+MTMount.Power - Monitoring/control of power management
+MTMount.Services - Monitoring/control of N2/Vac/Coolant etc
+MTMount.TC - Thermal monitoring/control
 network - Computer network hardware
 network.Application - Derived metadata
 network.Camera - Camera specific
@@ -258,7 +266,7 @@ system.Hardware - Modification logs
 system.Software - Modification logs
 tcs - Telescope control system
 tcs.kernel - Telescope pointing kernel
-tcs.mount - Mount interface
+tcs.MTMount - Mount interface
 tcs.optics - Active optics interface"
 
 foreach i [split $SYSDIC(subsystems) "\n" ] {
