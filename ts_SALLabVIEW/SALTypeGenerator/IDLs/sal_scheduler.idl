@@ -1,0 +1,138 @@
+module scheduler {
+	struct Application {
+	  float	data[200];
+	};
+	#pragma keylist Application
+	struct blockPusher {
+	  long	timestamp;
+	  double	block[4000];
+	};
+	#pragma keylist blockPusher
+	struct econstraints {
+	  long	codes[32];
+	};
+	#pragma keylist econstraints
+	struct iconstraints {
+	  long	codes[32];
+	};
+	#pragma keylist iconstraints
+	struct interestedProposal {
+	  long	pairNumber;
+	  long	proposalId;
+	  long	subSequenceNumber;
+	  long	targetId;
+	  double	targetProposalRankValue;
+	  long	targetRankPosition;
+	};
+	#pragma keylist interestedProposal
+	struct observationTest {
+	  long	observationId;
+	  double	observationTime;
+	  long	targetId;
+	  long	fieldId;
+	  string<1>    filter;
+	  double	ra;
+	  double	dec;
+	  double	angle;
+	  long	num_exposures;
+	};
+	#pragma keylist observationTest
+	struct parameters {
+	  long	parameters[128];
+	};
+	#pragma keylist parameters
+	struct program {
+	  float	completion;
+	  long	id;
+	  long	priority;
+	  long	status;
+	};
+	#pragma keylist program
+	struct progress {
+	  double	completion[32];
+	  long	priority[32];
+	  long	projection[32];
+	  long	taskid[32];
+	};
+	#pragma keylist progress
+	struct rankingData {
+	  double	LST;
+	  double	MJD;
+	  double	date;
+	  double	dec;
+	  double	exposureTime[10];
+	  long	fieldId;
+	  string<32>    filter;
+	  double	moonAlt;
+	  double	moonAz;
+	  double	moonDec;
+	  double	moonDistance;
+	  double	moonIllumination;
+	  double	moonRa;
+	  double	mountAltitude;
+	  double	mountAzimuth;
+	  long	observationNight;
+	  double	ra;
+	  double	rotatorAngle;
+	  double	seeing;
+	  double	skyAngle;
+	  double	skyBrightnessFilter;
+	  double	skyBrightnessV;
+	  double	slewTime;
+	  double	sunAlt;
+	  double	sunAz;
+	  double	sunElongation;
+	  double	transparency;
+	  double	visitTime;
+	  double	weatherHumidity;
+	  double	weatherWindDirection;
+	  double	weatherWindSpeed;
+	};
+	#pragma keylist rankingData
+	struct targetTest {
+	  long	targetId;
+	  long	fieldId;
+	  string<1>    filter;
+	  double	ra;
+	  double	dec;
+	  double	angle;
+	  long	num_exposures;
+	};
+	#pragma keylist targetTest
+	struct targets {
+	  double	airmass[10];
+	  double	catid[10];
+	  double	dec[10];
+	  long	filter[10];
+	  long	numexp[10];
+	  double	ra[10];
+	  double	rotangle[10];
+	};
+	#pragma keylist targets
+	struct timeHandler {
+	  double	timestamp;
+	};
+	#pragma keylist timeHandler
+	struct command
+	{
+      string<32>	device;
+      string<32>	property;
+      string<32>	action;
+      string<32>	value;
+      string<128>	modifiers;
+	};
+	#pragma keylist command
+	struct ackcmd
+	{
+      long 		ack;
+      long 		error;
+      string<32>	result;
+	};
+	#pragma keylist ackcmd
+	struct logevent
+	{
+      string<128>	message;
+	};
+	#pragma keylist logevent
+};
+

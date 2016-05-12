@@ -1,0 +1,385 @@
+module MTMount {
+	struct Alt {
+	  double	Angle_Set;
+	  double	Angle_Actual;
+	  unsigned long	EncHead_Actual_1;
+	  unsigned long	EncHead_Actual_2;
+	  unsigned long	EncHead_Actual_3;
+	  unsigned long	EncHead_Actual_4;
+	  double	Vel_Set;
+	  double	Vel_Actual;
+	  double	Acc_Actual;
+	  double	Torque_Set;
+	  unsigned long	Axis_Status;
+	  boolean	Positive_Adjustable_Software_Limit;
+	  boolean	Negative_Adjustable_Software_Limit;
+	  boolean	Positive_Operational_Directional_Limit_Switch;
+	  boolean	Negative_Operational_Directional_Limit_Switch;
+	  boolean	Positive_Software_Limit;
+	  boolean	Negative_Software_Limit;
+	  boolean	Positive_Directional_Limit_Switch;
+	  boolean	Negative_Directional_Limit_Switch;
+	  boolean	Positive_Power_Off_Switch;
+	  boolean	Negative_Power_Off_Switch;
+	  double	Curr_Actual;
+	  unsigned long	Drive_Status;
+	};
+	#pragma keylist Alt
+	struct Alt_OSS {
+	  boolean	Local_Remote;
+	  boolean	Floating;
+	  boolean	Cooling;
+	  boolean	Oil;
+	  boolean	Pump;
+	  double	Oil_Flow;
+	  double	Oil_Pressure;
+	  double	Oil_Temperature;
+	  double	Oil_Film;
+	  double	Oil_Filter_Pressure;
+	  unsigned long	Status;
+	};
+	#pragma keylist Alt_OSS
+	struct Alt_TC {
+	  double	Drive_Surface_Temperature_1;
+	  double	Drive_Surface_Temperature_2;
+	  double	Motor_Surface_Temperature_1;
+	  double	Motor_Surface_Temperature_2;
+	};
+	#pragma keylist Alt_TC
+	struct Az {
+	  double	Angle_Set;
+	  double	Angle_Actual;
+	  unsigned long	EncHead_Actual_1;
+	  unsigned long	EncHead_Actual_2;
+	  unsigned long	EncHead_Actual_3;
+	  unsigned long	EncHead_Actual_4;
+	  double	Vel_Set;
+	  double	Vel_Actual;
+	  double	Acc_Actual;
+	  double	Torque_Set;
+	  unsigned long	Axis_Status;
+	  boolean	Positive_Adjustable_Software_Limit;
+	  boolean	Negative_Adjustable_Software_Limit;
+	  boolean	Positive_Software_Limit;
+	  boolean	Negative_Software_Limit;
+	  boolean	Positive_Directional_Limit_Switch;
+	  boolean	Negative_Directional_Limit_Switch;
+	  boolean	Positive_Power_Off_Switch;
+	  boolean	Negative_Power_Off_Switch;
+	  double	Curr_Actual;
+	  unsigned long	Drive_Status;
+	};
+	#pragma keylist Az
+	struct Az_CW {
+	  double	AngleDif_Actual;
+	  double	AngleDif_ActualLVDT;
+	  boolean	Positive_Power_Off_Switch;
+	  boolean	Negative_Power_Off_Switch;
+	  unsigned long	Axis_Status;
+	  double	Curr_Actual_1;
+	  double	Curr_Actual_2;
+	  unsigned long	Drive_Status_1;
+	  unsigned long	Drive_Status_2;
+	};
+	#pragma keylist Az_CW
+	struct Az_OSS {
+	  boolean	Local_Remote;
+	  boolean	Floating;
+	  boolean	Cooling;
+	  boolean	Oil;
+	  boolean	Pump;
+	  double	Oil_Flow;
+	  double	Oil_Pressure;
+	  double	Oil_Temperature;
+	  double	Oil_Film;
+	  double	Oil_Filter_Pressure;
+	  unsigned long	Status;
+	};
+	#pragma keylist Az_OSS
+	struct Az_TC {
+	  double	Drive_Surface_Temperature_1;
+	  double	Drive_Surface_Temperature_2;
+	  double	Motor_Surface_Temperature_1;
+	  double	Motor_Surface_Temperature_2;
+	};
+	#pragma keylist Az_TC
+	struct Bal {
+	  double	Pos_Set;
+	  double	Pos_Actual;
+	  boolean	Positive_Directional_Limit_Switch;
+	  boolean	Negative_Directional_Limit_Switch;
+	  unsigned long	Axis_Status;
+	  double	Curr_Actual_1;
+	  double	Curr_Actual_2;
+	  double	Curr_Actual_3;
+	  double	Curr_Actual_4;
+	  unsigned long	Drive_Status_1;
+	  unsigned long	Drive_Status_2;
+	  unsigned long	Drive_Status_3;
+	  unsigned long	Drive_Status_4;
+	};
+	#pragma keylist Bal
+	struct Cab_TC {
+	  double	Cabinet_Internal_Temperature_1;
+	  double	Cabinet_Internal_Temperature_2;
+	  double	Cabinet_External_Temperature_1;
+	  double	Cabinet_External_Temperature_2;
+	};
+	#pragma keylist Cab_TC
+	struct Cam_CW {
+	  double	Angle_Actual;
+	  double	AngleDif_Actual;
+	  boolean	Positive_Directional_Limit_Switch;
+	  boolean	Negative_Directional_Limit_Switch;
+	  unsigned long	Axis_Status;
+	  double	Curr_Actual_1;
+	  double	Curr_Actual_2;
+	  unsigned long	Drive_Status_1;
+	  unsigned long	Drive_Status_2;
+	};
+	#pragma keylist Cam_CW
+	struct DP_1 {
+	  double	Pos_Set;
+	  double	Pos_Actual;
+	  double	Pos_Actual_Section_1;
+	  double	Pos_Actual_Section_2;
+	  boolean	Positive_Section_1_Directional_Limit_Switch;
+	  boolean	Negative_Section_1_Directional_Limit_Switch;
+	  boolean	Positive_Section_2_Directional_Limit_Switch;
+	  boolean	Negative_Section_2_Directional_Limit_Switch;
+	  unsigned long	Axis_Status;
+	  double	Curr_Actual_1;
+	  double	Curr_Actual_2;
+	  unsigned long	Drive_Status_1;
+	  unsigned long	Drive_Status_2;
+	};
+	#pragma keylist DP_1
+	struct DP_2 {
+	  double	Pos_Set;
+	  double	Pos_Actual;
+	  double	Pos_Actual_Section_1;
+	  double	Pos_Actual_Section_2;
+	  boolean	Positive_Section_1_Directional_Limit_Switch;
+	  boolean	Negative_Section_1_Directional_Limit_Switch;
+	  boolean	Positive_Section_2_Directional_Limit_Switch;
+	  boolean	Negative_Section_2_Directional_Limit_Switch;
+	  unsigned long	Axis_Status;
+	  double	Curr_Actual_1;
+	  double	Curr_Actual_2;
+	  unsigned long	Drive_Status_1;
+	  unsigned long	Drive_Status_2;
+	};
+	#pragma keylist DP_2
+	struct MC {
+	  double	Pos_Set;
+	  double	Pos_Actual;
+	  boolean	Positive_Directional_Limit_Switch;
+	  boolean	Negative_Directional_Limit_Switch;
+	  unsigned long	Axis_Status;
+	  double	Curr_Actual_1;
+	  double	Curr_Actual_2;
+	  double	Curr_Actual_3;
+	  double	Curr_Actual_4;
+	  unsigned long	Drive_Status_1;
+	  unsigned long	Drive_Status_2;
+	  unsigned long	Drive_Status_3;
+	  unsigned long	Drive_Status_4;
+	};
+	#pragma keylist MC
+	struct command_abort {
+	  string<32>	device;
+	  string<32>	property;
+	  string<32>	action;
+	  string<32>	value;
+	  string	state;
+	};
+	#pragma keylist command_abort
+	struct command_clearerror {
+	  string<32>	device;
+	  string<32>	property;
+	  string<32>	action;
+	  string<32>	value;
+	  string	state;
+	};
+	#pragma keylist command_clearerror
+	struct command_closeMirrorCover {
+	  string<32>	device;
+	  string<32>	property;
+	  string<32>	action;
+	  string<32>	value;
+	  string	state;
+	};
+	#pragma keylist command_closeMirrorCover
+	struct command_configure {
+	  string<32>	device;
+	  string<32>	property;
+	  string<32>	action;
+	  string<32>	value;
+	  string	spec_id;
+	};
+	#pragma keylist command_configure
+	struct command_disable {
+	  string<32>	device;
+	  string<32>	property;
+	  string<32>	action;
+	  string<32>	value;
+	  string	state;
+	};
+	#pragma keylist command_disable
+	struct command_disableCamWrap {
+	  string<32>	device;
+	  string<32>	property;
+	  string<32>	action;
+	  string<32>	value;
+	  string	state;
+	};
+	#pragma keylist command_disableCamWrap
+	struct command_enable {
+	  string<32>	device;
+	  string<32>	property;
+	  string<32>	action;
+	  string<32>	value;
+	  string	state;
+	};
+	#pragma keylist command_enable
+	struct command_enableCamWrap {
+	  string<32>	device;
+	  string<32>	property;
+	  string<32>	action;
+	  string<32>	value;
+	  string	state;
+	};
+	#pragma keylist command_enableCamWrap
+	struct command_enterControl {
+	  string<32>	device;
+	  string<32>	property;
+	  string<32>	action;
+	  string<32>	value;
+	  string	state;
+	};
+	#pragma keylist command_enterControl
+	struct command_exit {
+	  string<32>	device;
+	  string<32>	property;
+	  string<32>	action;
+	  string<32>	value;
+	  string	state;
+	};
+	#pragma keylist command_exit
+	struct command_moveToTarget {
+	  string<32>	device;
+	  string<32>	property;
+	  string<32>	action;
+	  string<32>	value;
+	  double	az_angle;
+	  double	el_angle;
+	  string	cablewrap_orientation;
+	};
+	#pragma keylist command_moveToTarget
+	struct command_openMirrorCover {
+	  string<32>	device;
+	  string<32>	property;
+	  string<32>	action;
+	  string<32>	value;
+	  string	state;
+	};
+	#pragma keylist command_openMirrorCover
+	struct command_standby {
+	  string<32>	device;
+	  string<32>	property;
+	  string<32>	action;
+	  string<32>	value;
+	  string	state;
+	};
+	#pragma keylist command_standby
+	struct command_start {
+	  string<32>	device;
+	  string<32>	property;
+	  string<32>	action;
+	  string<32>	value;
+	  string	configuration;
+	};
+	#pragma keylist command_start
+	struct command_stop {
+	  string<32>	device;
+	  string<32>	property;
+	  string<32>	action;
+	  string<32>	value;
+	  string	state;
+	};
+	#pragma keylist command_stop
+	struct command_stopMount {
+	  string<32>	device;
+	  string<32>	property;
+	  string<32>	action;
+	  string<32>	value;
+	  string	state;
+	};
+	#pragma keylist command_stopMount
+	struct command_takeControl {
+	  string<32>	device;
+	  string<32>	property;
+	  string<32>	action;
+	  string<32>	value;
+	  string	state;
+	};
+	#pragma keylist command_takeControl
+	struct command_trackTarget {
+	  string<32>	device;
+	  string<32>	property;
+	  string<32>	action;
+	  string<32>	value;
+	  double	az_angle;
+	  double	az_velocity;
+	  double	el_angle;
+	  double	el_velocity;
+	  double	time;
+	  string	cablewrap_orientation;
+	};
+	#pragma keylist command_trackTarget
+	struct logevent_mountError {
+	  long	id;
+	  string	text;
+	  long	priority;
+	};
+	#pragma keylist logevent_mountError
+	struct logevent_mountInPosition {
+	  boolean	inposition;
+	  long	priority;
+	};
+	#pragma keylist logevent_mountInPosition
+	struct logevent_mountState {
+	  long	id;
+	  string	text;
+	  long	priority;
+	};
+	#pragma keylist logevent_mountState
+	struct logevent_mountWarning {
+	  long	id;
+	  string	text;
+	  long	priority;
+	};
+	#pragma keylist logevent_mountWarning
+	struct command
+	{
+      string<32>	device;
+      string<32>	property;
+      string<32>	action;
+      string<32>	value;
+      string<128>	modifiers;
+	};
+	#pragma keylist command
+	struct ackcmd
+	{
+      long 		ack;
+      long 		error;
+      string<32>	result;
+	};
+	#pragma keylist ackcmd
+	struct logevent
+	{
+      string<128>	message;
+	};
+	#pragma keylist logevent
+};
+

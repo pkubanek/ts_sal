@@ -1,0 +1,122 @@
+module mount {
+	struct Alt {
+	  float	Calibrated[32];
+	  long	Raw[16];
+	};
+	#pragma keylist Alt
+	struct Application {
+	  float	Demand[4];
+	  float	Error[4];
+	  float	Position[4];
+	};
+	#pragma keylist Application
+	struct Az {
+	  float	Calibrated[32];
+	  long	Raw[16];
+	};
+	#pragma keylist Az
+	struct CapacitorBank {
+	  float	charge[10];
+	  float	chargeRate[10];
+	  float	setpoint;
+	  long	status[10];
+	  float	temperature[10];
+	};
+	#pragma keylist CapacitorBank
+	struct Electrical {
+	  float	Calibrated[32];
+	  long	Raw[16];
+	};
+	#pragma keylist Electrical
+	struct Metrology {
+	  float	Calibrated[16];
+	  long	Raw[16];
+	};
+	#pragma keylist Metrology
+	struct TC {
+	  float	Calibrated[16];
+	  long	Raw[16];
+	};
+	#pragma keylist TC
+	struct command_configure {
+	  string<32>	device;
+	  string<32>	property;
+	  string<32>	action;
+	  string<32>	value;
+	  string	spec_id;
+	};
+	#pragma keylist command_configure
+	struct command_enableCamWrap {
+	  string<32>	device;
+	  string<32>	property;
+	  string<32>	action;
+	  string<32>	value;
+	  double	angle;
+	};
+	#pragma keylist command_enableCamWrap
+	struct command_moveToTarget {
+	  string<32>	device;
+	  string<32>	property;
+	  string<32>	action;
+	  string<32>	value;
+	  string	azimuth;
+	  string	elevation;
+	  string	cable_wrap;
+	};
+	#pragma keylist command_moveToTarget
+	struct command_trackTarget {
+	  string<32>	device;
+	  string<32>	property;
+	  string<32>	action;
+	  string<32>	value;
+	  string	azimuth;
+	  string	elevation;
+	  double	time;
+	  string	cable_wrap;
+	};
+	#pragma keylist command_trackTarget
+	struct logevent_altLimit {
+	  long	priority;
+	  string	type;
+	};
+	#pragma keylist logevent_altLimit
+	struct logevent_interlock {
+	  long	priority;
+	  string	detail;
+	};
+	#pragma keylist logevent_interlock
+	struct logevent_powerError {
+	  long	priority;
+	  string	device;
+	  long	severity;
+	};
+	#pragma keylist logevent_powerError
+	struct logevent_tempError {
+	  long	priority;
+	  string	device;
+	  long	severity;
+	};
+	#pragma keylist logevent_tempError
+	struct command
+	{
+      string<32>	device;
+      string<32>	property;
+      string<32>	action;
+      string<32>	value;
+      string<128>	modifiers;
+	};
+	#pragma keylist command
+	struct ackcmd
+	{
+      long 		ack;
+      long 		error;
+      string<32>	result;
+	};
+	#pragma keylist ackcmd
+	struct logevent
+	{
+      string<128>	message;
+	};
+	#pragma keylist logevent
+};
+

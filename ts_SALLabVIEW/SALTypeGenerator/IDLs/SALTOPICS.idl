@@ -1,0 +1,2383 @@
+module camera {
+	struct CCC_status {
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
+	  long	Image_Status[20];
+	};
+	#pragma keylist CCC_status
+	struct Cluster_Encoder {
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
+	  float	PSF[9648];
+	};
+	#pragma keylist Cluster_Encoder
+	struct Cold {
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
+	  short	Valve_status[6];
+	};
+	#pragma keylist Cold
+	struct Cryo {
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
+	  float	Cold_temperature[3];
+	  float	Compressor;
+	  float	Compressor_speed[2];
+	  float	Cryo_temperature[12];
+	  float	Dischaarge_pressure[2];
+	  float	Discharge_temp[2];
+	  short	Flow_interlock[2];
+	  float	Heater_current[6];
+	  float	Heater_voltage[6];
+	  float	Intake_flow[2];
+	  float	Intake_pressure[2];
+	  float	Intake_temp[2];
+	  float	Post_expansion_pressure[2];
+	  float	Post_expansion_temp[2];
+	  float	Pre_expansion_pressure[2];
+	  float	Pre_expansion_temp[2];
+	  float	Return_temp[2];
+	};
+	#pragma keylist Cryo
+	struct Filter {
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
+	  short	REB_ID;
+	};
+	#pragma keylist Filter
+	struct GAS {
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
+	  short	REB_ID;
+	};
+	#pragma keylist GAS
+	struct GDS {
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
+	  long	flag[20];
+	};
+	#pragma keylist GDS
+	struct PCMS {
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
+	  short	REB_ID;
+	};
+	#pragma keylist PCMS
+	struct Prot {
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
+	  long	Status[2];
+	};
+	#pragma keylist Prot
+	struct Purge {
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
+	  long	Valves;
+	};
+	#pragma keylist Purge
+	struct SAS {
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
+	  short	REB_ID;
+	};
+	#pragma keylist SAS
+	struct SDS {
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
+	  long	flag[20];
+	};
+	#pragma keylist SDS
+	struct Shutter {
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
+	  string<32>	Profile_function;
+	};
+	#pragma keylist Shutter
+	struct WAS {
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
+	  short	REB_ID;
+	};
+	#pragma keylist WAS
+	struct WDS {
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
+	  long	flag[20];
+	};
+	#pragma keylist WDS
+	struct command_configure {
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
+	  string<32>	device;
+	  string<32>	property;
+	  string<32>	action;
+	  string<32>	value;
+	  string	specId;
+	};
+	#pragma keylist command_configure
+	struct command_initGuiders {
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
+	  string<32>	device;
+	  string<32>	property;
+	  string<32>	action;
+	  string<32>	value;
+	  string	roiSpec;
+	};
+	#pragma keylist command_initGuiders
+	struct command_initImage {
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
+	  string<32>	device;
+	  string<32>	property;
+	  string<32>	action;
+	  string<32>	value;
+	  double	deltaT;
+	};
+	#pragma keylist command_initImage
+	struct command_setFilter {
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
+	  string<32>	device;
+	  string<32>	property;
+	  string<32>	action;
+	  string<32>	value;
+	  string	name;
+	};
+	#pragma keylist command_setFilter
+	struct command_takeImages {
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
+	  string<32>	device;
+	  string<32>	property;
+	  string<32>	action;
+	  string<32>	value;
+	  long	numImages;
+	  double	expTime;
+	  boolean	shutter;
+	  boolean	science;
+	  boolean	guide;
+	  boolean	wfs;
+	  string	imageSequenceName;
+	};
+	#pragma keylist command_takeImages
+	struct logevent_startIntegration {
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
+	  long	priority;
+	  string	imageName;
+	};
+	#pragma keylist logevent_startIntegration
+	struct command
+	{
+      string<32>	private_revCode;
+      double		private_sndStamp;
+      double		private_rcvStamp;
+      long		private_origin;
+      long 		private_host;
+      long		private_seqNum;
+      string<32>	device;
+      string<32>	property;
+      string<32>	action;
+      string<32>	value;
+      string<128>	modifiers;
+	};
+	#pragma keylist command
+	struct ackcmd
+	{
+      string<32>	private_revCode;
+      double		private_sndStamp;
+      double		private_rcvStamp;
+      long		private_origin;
+      long 		private_host;
+      long		private_seqNum;
+      long 		ack;
+      long 		error;
+      string<32>	result;
+	};
+	#pragma keylist ackcmd
+	struct logevent
+	{
+      string<32>	private_revCode;
+      double		private_sndStamp;
+      double		private_rcvStamp;
+      long		private_origin;
+      long 		private_host;
+      string<128>	message;
+	};
+	#pragma keylist logevent
+};
+
+module dm {
+	struct alert {
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
+	  double	summary_data_quality_parameters[32];
+	};
+	#pragma keylist alert
+	struct alert_dq {
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
+	  double	summary_data_quality_parameters[32];
+	};
+	#pragma keylist alert_dq
+	struct alert_psf {
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
+	  double	psf_wcs_last_visit[32];
+	};
+	#pragma keylist alert_psf
+	struct alert_summary {
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
+	  long	alerts_sent;
+	  long	available_workers;
+	  long	latency_readout_to_last_alert;
+	};
+	#pragma keylist alert_summary
+	struct available_replicators_distributors {
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
+	  long	machine_count;
+	};
+	#pragma keylist available_replicators_distributors
+	struct efd_slave_replication_state {
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
+	  long	replication_state;
+	};
+	#pragma keylist efd_slave_replication_state
+	struct international_network_status {
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
+	  long	link_usage;
+	  long	link_utilization;
+	  long	link_capacity;
+	  long	link_latency;
+	};
+	#pragma keylist international_network_status
+	struct logevent_dmPublished {
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
+	  long	priority;
+	  long	visit_identifier;
+	  long	alert_count;
+	};
+	#pragma keylist logevent_dmPublished
+	struct logevent_dmToArchive {
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
+	  long	priority;
+	  long	image_id;
+	};
+	#pragma keylist logevent_dmToArchive
+	struct logevent_dmToBase {
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
+	  long	priority;
+	  long	image_id;
+	};
+	#pragma keylist logevent_dmToBase
+	struct logevent_image_archived_archive {
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
+	  long	image_id;
+	};
+	#pragma keylist logevent_image_archived_archive
+	struct logevent_image_archived_base {
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
+	  long	image_id;
+	};
+	#pragma keylist logevent_image_archived_base
+	struct logevent_processed_and_published {
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
+	  long	visit_identifier;
+	  long	alert_count;
+	};
+	#pragma keylist logevent_processed_and_published
+	struct raft_images_sent_current {
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
+	  long	current_mode_image_count;
+	  long	operations_image_count;
+	};
+	#pragma keylist raft_images_sent_current
+	struct successfully_archived {
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
+	  long	focal_plane_current_image_count;
+	  long	focal_plane_operations_image_count;
+	  long	last_focal_plane_image_id;
+	};
+	#pragma keylist successfully_archived
+	struct summit_to_base_network_status {
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
+	  long	link_usage;
+	  long	link_utilization;
+	  long	link_capacity;
+	  long	link_latency;
+	};
+	#pragma keylist summit_to_base_network_status
+	struct command
+	{
+      string<32>	private_revCode;
+      double		private_sndStamp;
+      double		private_rcvStamp;
+      long		private_origin;
+      long 		private_host;
+      long		private_seqNum;
+      string<32>	device;
+      string<32>	property;
+      string<32>	action;
+      string<32>	value;
+      string<128>	modifiers;
+	};
+	#pragma keylist command
+	struct ackcmd
+	{
+      string<32>	private_revCode;
+      double		private_sndStamp;
+      double		private_rcvStamp;
+      long		private_origin;
+      long 		private_host;
+      long		private_seqNum;
+      long 		ack;
+      long 		error;
+      string<32>	result;
+	};
+	#pragma keylist ackcmd
+	struct logevent
+	{
+      string<32>	private_revCode;
+      double		private_sndStamp;
+      double		private_rcvStamp;
+      long		private_origin;
+      long 		private_host;
+      string<128>	message;
+	};
+	#pragma keylist logevent
+};
+
+module dome {
+	struct Application {
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
+	  float	azError;
+	  float	azPosition;
+	  float	azTarget;
+	  float	elevError;
+	  float	elevPosition;
+	  float	elevTarget;
+	  float	lvError[72];
+	  float	lvPosition[72];
+	  float	lvTarget[72];
+	  float	scrError;
+	  float	scrPosition;
+	  float	scrTarget;
+	};
+	#pragma keylist Application
+	struct Azimuth {
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
+	  float	Calibrated[16];
+	  long	Raw[16];
+	};
+	#pragma keylist Azimuth
+	struct Bogies {
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
+	  float	currentMeasured[12];
+	  float	currentTarget[12];
+	  float	rpmMeasured[12];
+	  float	rpmTarget[12];
+	  long	status[12];
+	  float	temperature[12];
+	  float	torqueMeasured[12];
+	  float	torqueTarget[12];
+	};
+	#pragma keylist Bogies
+	struct CapacitorBank {
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
+	  float	charge[10];
+	  float	chargeRate[10];
+	  float	setpoint;
+	  long	status[10];
+	  float	temperature[10];
+	};
+	#pragma keylist CapacitorBank
+	struct Electrical {
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
+	  float	Calibrated[32];
+	  long	Raw[16];
+	};
+	#pragma keylist Electrical
+	struct Louvers {
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
+	  float	calibrated[72];
+	  long	raw[72];
+	  float	temperature[72];
+	  float	windSpeed[72];
+	};
+	#pragma keylist Louvers
+	struct Metrology {
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
+	  float	azCalibrated[4];
+	  long	azEncoder[4];
+	  float	elevCalibrated[4];
+	  long	elevEncoder[4];
+	  long	screenEncoder[4];
+	  long	shutterL[4];
+	  long	shutterR[4];
+	};
+	#pragma keylist Metrology
+	struct Screen {
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
+	  float	Calibrated[16];
+	  long	Raw[16];
+	};
+	#pragma keylist Screen
+	struct Shutter {
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
+	  float	Calibrated[16];
+	  long	Raw[16];
+	};
+	#pragma keylist Shutter
+	struct TC {
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
+	  float	boosterSpeed[4];
+	  float	calibrated[16];
+	  float	glycolFlow[4];
+	  float	glycolTemperature[4];
+	  long	raw[16];
+	  float	setPoint[16];
+	  long	status[16];
+	};
+	#pragma keylist TC
+	struct command_Crawl {
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
+	  string<32>	device;
+	  string<32>	property;
+	  string<32>	action;
+	  string<32>	value;
+	  double	azVelocity;
+	  double	elVelocity;
+	};
+	#pragma keylist command_Crawl
+	struct command_Louvers {
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
+	  string<32>	device;
+	  string<32>	property;
+	  string<32>	action;
+	  string<32>	value;
+	  double	openPercent[72];
+	};
+	#pragma keylist command_Louvers
+	struct command_Move {
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
+	  string<32>	device;
+	  string<32>	property;
+	  string<32>	action;
+	  string<32>	value;
+	  double	azimuth;
+	  double	elevation;
+	};
+	#pragma keylist command_Move
+	struct command_Track {
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
+	  string<32>	device;
+	  string<32>	property;
+	  string<32>	action;
+	  string<32>	value;
+	  string	mode;
+	};
+	#pragma keylist command_Track
+	struct command_start {
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
+	  string<32>	device;
+	  string<32>	property;
+	  string<32>	action;
+	  string<32>	value;
+	  string	configuration;
+	};
+	#pragma keylist command_start
+	struct logevent_interlock {
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
+	  long	priority;
+	  string	detail;
+	};
+	#pragma keylist logevent_interlock
+	struct logevent_posLimit {
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
+	  long	priority;
+	  string	device;
+	  string	limit;
+	  string	type;
+	};
+	#pragma keylist logevent_posLimit
+	struct logevent_powerError {
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
+	  long	priority;
+	  string	device;
+	  long	severity;
+	};
+	#pragma keylist logevent_powerError
+	struct logevent_tempError {
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
+	  long	priority;
+	  string	device;
+	  long	severity;
+	};
+	#pragma keylist logevent_tempError
+	struct command
+	{
+      string<32>	private_revCode;
+      double		private_sndStamp;
+      double		private_rcvStamp;
+      long		private_origin;
+      long 		private_host;
+      long		private_seqNum;
+      string<32>	device;
+      string<32>	property;
+      string<32>	action;
+      string<32>	value;
+      string<128>	modifiers;
+	};
+	#pragma keylist command
+	struct ackcmd
+	{
+      string<32>	private_revCode;
+      double		private_sndStamp;
+      double		private_rcvStamp;
+      long		private_origin;
+      long 		private_host;
+      long		private_seqNum;
+      long 		ack;
+      long 		error;
+      string<32>	result;
+	};
+	#pragma keylist ackcmd
+	struct logevent
+	{
+      string<32>	private_revCode;
+      double		private_sndStamp;
+      double		private_rcvStamp;
+      long		private_origin;
+      long 		private_host;
+      string<128>	message;
+	};
+	#pragma keylist logevent
+};
+
+module hexapod {
+	struct Actuators {
+	  short hexapodID;
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
+	  float	Calibrated[18];
+	  long	Raw[18];
+	};
+	#pragma keylist Actuators hexapodID
+	struct Application {
+	  short hexapodID;
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
+	  float	Demand[6];
+	  float	Error[6];
+	  float	Position[6];
+	};
+	#pragma keylist Application hexapodID
+	struct Electrical {
+	  short hexapodID;
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
+	  long	error[16];
+	  short	status[16];
+	  long	voltage[16];
+	};
+	#pragma keylist Electrical hexapodID
+	struct LimitSensors {
+	  short hexapodID;
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
+	  short	liftoff[18];
+	  short	limit[18];
+	};
+	#pragma keylist LimitSensors hexapodID
+	struct Metrology {
+	  short hexapodID;
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
+	  long	distance[18];
+	  long	error[18];
+	  short	status[18];
+	};
+	#pragma keylist Metrology hexapodID
+	struct TC {
+	  short hexapodID;
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
+	  float	error[16];
+	  float	setpoint[16];
+	  short	status[16];
+	  float	temperature[16];
+	};
+	#pragma keylist TC hexapodID
+	struct command_configureAcceleration {
+	  short hexapodID;
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
+	  string<32>	device;
+	  string<32>	property;
+	  string<32>	action;
+	  string<32>	value;
+	  double	xmin;
+	  double	xmax;
+	  double	ymin;
+	  double	ymax;
+	  double	zmin;
+	  double	zmax;
+	  double	umin;
+	  double	umax;
+	  double	vmin;
+	  double	vmax;
+	  double	wmin;
+	  double	wmax;
+	};
+	#pragma keylist command_configureAcceleration hexapodID
+	struct command_configureLimits {
+	  short hexapodID;
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
+	  string<32>	device;
+	  string<32>	property;
+	  string<32>	action;
+	  string<32>	value;
+	  long	xmin;
+	  long	xmax;
+	  long	ymin;
+	  long	ymax;
+	  long	zmin;
+	  long	zmax;
+	  long	umin;
+	  long	umax;
+	  long	vmin;
+	  long	vmax;
+	  long	wwmin;
+	  long	wmax;
+	};
+	#pragma keylist command_configureLimits hexapodID
+	struct command_configureLut {
+	  short hexapodID;
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
+	  string<32>	device;
+	  string<32>	property;
+	  string<32>	action;
+	  string<32>	value;
+	  double	xlut[90];
+	  double	ylut[90];
+	  double	zlut[90];
+	  double	ulut[90];
+	  double	vlut[90];
+	  double	wlut[90];
+	};
+	#pragma keylist command_configureLut hexapodID
+	struct command_configurePosition {
+	  short hexapodID;
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
+	  string<32>	device;
+	  string<32>	property;
+	  string<32>	action;
+	  string<32>	value;
+	  double	x;
+	  double	y;
+	  double	z;
+	  double	u;
+	  double	v;
+	  double	w;
+	  boolean	sync;
+	};
+	#pragma keylist command_configurePosition hexapodID
+	struct command_configureVelocity {
+	  short hexapodID;
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
+	  string<32>	device;
+	  string<32>	property;
+	  string<32>	action;
+	  string<32>	value;
+	  double	xmin;
+	  double	xmax;
+	  double	ymin;
+	  double	ymax;
+	  double	zmin;
+	  double	zmax;
+	  double	umin;
+	  double	umax;
+	  double	vmin;
+	  double	vmax;
+	  double	wmin;
+	  double	wmax;
+	};
+	#pragma keylist command_configureVelocity hexapodID
+	struct command_offset {
+	  short hexapodID;
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
+	  string<32>	device;
+	  string<32>	property;
+	  string<32>	action;
+	  string<32>	value;
+	  double	x;
+	  double	y;
+	  double	z;
+	  double	u;
+	  double	v;
+	  double	w;
+	  boolean	sync;
+	};
+	#pragma keylist command_offset hexapodID
+	struct command_pivot {
+	  short hexapodID;
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
+	  string<32>	device;
+	  string<32>	property;
+	  string<32>	action;
+	  string<32>	value;
+	  double	x;
+	  double	y;
+	  double	z;
+	};
+	#pragma keylist command_pivot hexapodID
+	struct logevent_interlock {
+	  short hexapodID;
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
+	  long	priority;
+	  string	detail;
+	};
+	#pragma keylist logevent_interlock hexapodID
+	struct logevent_limit {
+	  short hexapodID;
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
+	  long	priority;
+	  string	axis;
+	  string	limit;
+	  string	type;
+	};
+	#pragma keylist logevent_limit hexapodID
+	struct logevent_tempError {
+	  short hexapodID;
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
+	  long	priority;
+	  string	axis;
+	  string	device;
+	  long	severity;
+	  double	temp;
+	};
+	#pragma keylist logevent_tempError hexapodID
+	struct command
+	{
+	  short            hexapodID;
+	  string<32>	private_revCode;
+	  double	private_sndStamp;
+	  double	private_rcvStamp;
+	  long		private_origin;
+	  long 		private_host;
+	  long		private_seqNum;
+	  string<32>	device;
+	  string<32>	property;
+	  string<32>	action;
+	  string<32>	value;
+	  string<128>	modifiers;
+	};
+	#pragma keylist command hexapodID
+	struct ackcmd
+	{
+	  short         hexapodID;
+	  string<32>	private_revCode;
+	  double	private_sndStamp;
+	  double	private_rcvStamp;
+	  long		private_origin;
+	  long 		private_host;
+	  long		private_seqNum;
+	  long 		ack;
+	  long 		error;
+	  string<32>	result;
+	};
+	#pragma keylist ackcmd hexapodID
+	struct logevent
+	{
+	  short         hexapodID;
+	  string<32>	private_revCode;
+	  double	private_sndStamp;
+	  double	private_rcvStamp;
+	  long		private_origin;
+	  long 		private_host;
+	  long		private_seqNum;
+	  string<128>	message;
+	};
+	#pragma keylist logevent hexapodID
+};
+
+module m1m3 {
+	struct Actuators {
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
+	  float	cyltemp[120];
+	  float	envtemp[120];
+	  long	error[120];
+	  float	lvdtcorr[120];
+	  long	position[120];
+	  float	pressure[120];
+	  long	setpoint[120];
+	  long	status[120];
+	};
+	#pragma keylist Actuators
+	struct Application {
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
+	  float	demand[6];
+	  float	error[6];
+	  float	position[6];
+	  short	status[16];
+	};
+	#pragma keylist Application
+	struct Electrical {
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
+	  long	error[16];
+	  short	status[16];
+	  long	voltage[16];
+	};
+	#pragma keylist Electrical
+	struct LUT {
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
+	  float	param[32];
+	};
+	#pragma keylist LUT
+	struct LimitSensors {
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
+	  short	liftoff[64];
+	  short	limit[64];
+	};
+	#pragma keylist LimitSensors
+	struct Metrology {
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
+	  long	distance[16];
+	  long	error[16];
+	  short	status[16];
+	};
+	#pragma keylist Metrology
+	struct Support {
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
+	  float	force[6];
+	  long	stepcnt[6];
+	  long	targetpos[6];
+	};
+	#pragma keylist Support
+	struct Surface {
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
+	  float	Calibrated[1024];
+	  long	Raw[1024];
+	};
+	#pragma keylist Surface
+	struct TC {
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
+	  float	error[16];
+	  float	setpoint[16];
+	  short	status[16];
+	  float	temperature[16];
+	};
+	#pragma keylist TC
+	struct command_configure {
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
+	  string<32>	device;
+	  string<32>	property;
+	  string<32>	action;
+	  string<32>	value;
+	  string	spec_id;
+	};
+	#pragma keylist command_configure
+	struct command_start {
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
+	  string<32>	device;
+	  string<32>	property;
+	  string<32>	action;
+	  string<32>	value;
+	  string	configuration;
+	};
+	#pragma keylist command_start
+	struct command_target {
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
+	  string<32>	device;
+	  string<32>	property;
+	  string<32>	action;
+	  string<32>	value;
+	  double	azimuth;
+	  double	elevation;
+	};
+	#pragma keylist command_target
+	struct command_update {
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
+	  string<32>	device;
+	  string<32>	property;
+	  string<32>	action;
+	  string<32>	value;
+	  string	lut_id;
+	};
+	#pragma keylist command_update
+	struct logevent_interlock {
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
+	  long	priority;
+	  string	detail;
+	};
+	#pragma keylist logevent_interlock
+	struct logevent_limitError {
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
+	  long	priority;
+	  string	limit;
+	  string	type;
+	};
+	#pragma keylist logevent_limitError
+	struct logevent_tempError {
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
+	  long	priority;
+	  string	device;
+	  long	severity;
+	  double	temp;
+	};
+	#pragma keylist logevent_tempError
+	struct command
+	{
+      string<32>	private_revCode;
+      double		private_sndStamp;
+      double		private_rcvStamp;
+      long		private_origin;
+      long 		private_host;
+      long		private_seqNum;
+      string<32>	device;
+      string<32>	property;
+      string<32>	action;
+      string<32>	value;
+      string<128>	modifiers;
+	};
+	#pragma keylist command
+	struct ackcmd
+	{
+      string<32>	private_revCode;
+      double		private_sndStamp;
+      double		private_rcvStamp;
+      long		private_origin;
+      long 		private_host;
+      long		private_seqNum;
+      long 		ack;
+      long 		error;
+      string<32>	result;
+	};
+	#pragma keylist ackcmd
+	struct logevent
+	{
+      string<32>	private_revCode;
+      double		private_sndStamp;
+      double		private_rcvStamp;
+      long		private_origin;
+      long 		private_host;
+      string<128>	message;
+	};
+	#pragma keylist logevent
+};
+
+module m2ms {
+	struct axial_actuators {
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
+	  long	ilc_status[72];
+	};
+	#pragma keylist axial_actuators
+	struct command_adjust {
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
+	  string<32>	device;
+	  string<32>	property;
+	  string<32>	action;
+	  string<32>	value;
+	  double	azimuth;
+	  double	elevation;
+	};
+	#pragma keylist command_adjust
+	struct command_axialForces {
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
+	  string<32>	device;
+	  string<32>	property;
+	  string<32>	action;
+	  string<32>	value;
+	  double	deltaForce[72];
+	};
+	#pragma keylist command_axialForces
+	struct command_slew {
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
+	  string<32>	device;
+	  string<32>	property;
+	  string<32>	action;
+	  string<32>	value;
+	  double	azimuth;
+	  double	elevation;
+	};
+	#pragma keylist command_slew
+	struct command_start {
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
+	  string<32>	device;
+	  string<32>	property;
+	  string<32>	action;
+	  string<32>	value;
+	  string	configuration;
+	};
+	#pragma keylist command_start
+	struct command_update {
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
+	  string<32>	device;
+	  string<32>	property;
+	  string<32>	action;
+	  string<32>	value;
+	  string	lut_id;
+	};
+	#pragma keylist command_update
+	struct logevent_interlock {
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
+	  long	priority;
+	  string	detail;
+	};
+	#pragma keylist logevent_interlock
+	struct logevent_limitError {
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
+	  long	priority;
+	  string	limit;
+	  string	type;
+	};
+	#pragma keylist logevent_limitError
+	struct logevent_tempError {
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
+	  long	priority;
+	  string	device;
+	  long	severity;
+	  double	temp;
+	};
+	#pragma keylist logevent_tempError
+	struct ni9201 {
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
+	  double	ilc_comm_current[72];
+	};
+	#pragma keylist ni9201
+	struct ni9221 {
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
+	  double	ilc_comm_voltage[72];
+	};
+	#pragma keylist ni9221
+	struct ni9426 {
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
+	  boolean	current_balanced[72];
+	};
+	#pragma keylist ni9426
+	struct ni9485 {
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
+	  boolean	crio_interlock[72];
+	};
+	#pragma keylist ni9485
+	struct sensor_ilc {
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
+	  long	ilc_status[6];
+	};
+	#pragma keylist sensor_ilc
+	struct tangent_actuators {
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
+	  long	ilc_status[6];
+	};
+	#pragma keylist tangent_actuators
+	struct thermal {
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
+	  double	cell_exhaust_temperature[2];
+	};
+	#pragma keylist thermal
+	struct command
+	{
+      string<32>	private_revCode;
+      double		private_sndStamp;
+      double		private_rcvStamp;
+      long		private_origin;
+      long 		private_host;
+      long		private_seqNum;
+      string<32>	device;
+      string<32>	property;
+      string<32>	action;
+      string<32>	value;
+      string<128>	modifiers;
+	};
+	#pragma keylist command
+	struct ackcmd
+	{
+      string<32>	private_revCode;
+      double		private_sndStamp;
+      double		private_rcvStamp;
+      long		private_origin;
+      long 		private_host;
+      long		private_seqNum;
+      long 		ack;
+      long 		error;
+      string<32>	result;
+	};
+	#pragma keylist ackcmd
+	struct logevent
+	{
+      string<32>	private_revCode;
+      double		private_sndStamp;
+      double		private_rcvStamp;
+      long		private_origin;
+      long 		private_host;
+      string<128>	message;
+	};
+	#pragma keylist logevent
+};
+
+module mount {
+	struct Alt {
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
+	  float	Calibrated[32];
+	  long	Raw[16];
+	};
+	#pragma keylist Alt
+	struct Application {
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
+	  float	Demand[4];
+	  float	Error[4];
+	  float	Position[4];
+	};
+	#pragma keylist Application
+	struct Az {
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
+	  float	Calibrated[32];
+	  long	Raw[16];
+	};
+	#pragma keylist Az
+	struct CapacitorBank {
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
+	  float	charge[10];
+	  float	chargeRate[10];
+	  float	setpoint;
+	  long	status[10];
+	  float	temperature[10];
+	};
+	#pragma keylist CapacitorBank
+	struct Electrical {
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
+	  float	Calibrated[32];
+	  long	Raw[16];
+	};
+	#pragma keylist Electrical
+	struct Metrology {
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
+	  float	Calibrated[16];
+	  long	Raw[16];
+	};
+	#pragma keylist Metrology
+	struct TC {
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
+	  float	Calibrated[16];
+	  long	Raw[16];
+	};
+	#pragma keylist TC
+	struct command_configure {
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
+	  string<32>	device;
+	  string<32>	property;
+	  string<32>	action;
+	  string<32>	value;
+	  string	spec_id;
+	};
+	#pragma keylist command_configure
+	struct command_enableCamWrap {
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
+	  string<32>	device;
+	  string<32>	property;
+	  string<32>	action;
+	  string<32>	value;
+	  double	angle;
+	};
+	#pragma keylist command_enableCamWrap
+	struct command_moveToTarget {
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
+	  string<32>	device;
+	  string<32>	property;
+	  string<32>	action;
+	  string<32>	value;
+	  string	azimuth;
+	  string	elevation;
+	  string	cable_wrap;
+	};
+	#pragma keylist command_moveToTarget
+	struct command_trackTarget {
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
+	  string<32>	device;
+	  string<32>	property;
+	  string<32>	action;
+	  string<32>	value;
+	  string	azimuth;
+	  string	elevation;
+	  double	time;
+	  string	cable_wrap;
+	};
+	#pragma keylist command_trackTarget
+	struct logevent_altLimit {
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
+	  long	priority;
+	  string	type;
+	};
+	#pragma keylist logevent_altLimit
+	struct logevent_interlock {
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
+	  long	priority;
+	  string	detail;
+	};
+	#pragma keylist logevent_interlock
+	struct logevent_powerError {
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
+	  long	priority;
+	  string	device;
+	  long	severity;
+	};
+	#pragma keylist logevent_powerError
+	struct logevent_tempError {
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
+	  long	priority;
+	  string	device;
+	  long	severity;
+	};
+	#pragma keylist logevent_tempError
+	struct command
+	{
+      string<32>	private_revCode;
+      double		private_sndStamp;
+      double		private_rcvStamp;
+      long		private_origin;
+      long 		private_host;
+      long		private_seqNum;
+      string<32>	device;
+      string<32>	property;
+      string<32>	action;
+      string<32>	value;
+      string<128>	modifiers;
+	};
+	#pragma keylist command
+	struct ackcmd
+	{
+      string<32>	private_revCode;
+      double		private_sndStamp;
+      double		private_rcvStamp;
+      long		private_origin;
+      long 		private_host;
+      long		private_seqNum;
+      long 		ack;
+      long 		error;
+      string<32>	result;
+	};
+	#pragma keylist ackcmd
+	struct logevent
+	{
+      string<32>	private_revCode;
+      double		private_sndStamp;
+      double		private_rcvStamp;
+      long		private_origin;
+      long 		private_host;
+      string<128>	message;
+	};
+	#pragma keylist logevent
+};
+
+module rotator {
+	struct Electrical {
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
+	  long	error[16];
+	  short	status[16];
+	  long	voltage[16];
+	};
+	#pragma keylist Electrical
+	struct LimitSensors {
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
+	  short	liftoff[18];
+	  short	limit[18];
+	};
+	#pragma keylist LimitSensors
+	struct Position {
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
+	  float	Calibrated[32];
+	  long	Raw[16];
+	};
+	#pragma keylist Position
+	struct TC {
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
+	  float	error[16];
+	  float	setpoint[16];
+	  short	status[16];
+	  float	temperature[16];
+	};
+	#pragma keylist TC
+	struct command_configureAcceleration {
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
+	  string<32>	device;
+	  string<32>	property;
+	  string<32>	action;
+	  string<32>	value;
+	  double	amin;
+	  double	amax;
+	};
+	#pragma keylist command_configureAcceleration
+	struct command_configureVelocity {
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
+	  string<32>	device;
+	  string<32>	property;
+	  string<32>	action;
+	  string<32>	value;
+	  double	vmin;
+	  double	vmax;
+	};
+	#pragma keylist command_configureVelocity
+	struct command_move {
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
+	  string<32>	device;
+	  string<32>	property;
+	  string<32>	action;
+	  string<32>	value;
+	  double	angle;
+	};
+	#pragma keylist command_move
+	struct logevent_interlock {
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
+	  long	priority;
+	  string	detail;
+	};
+	#pragma keylist logevent_interlock
+	struct logevent_limit {
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
+	  long	priority;
+	  string	limit;
+	  string	type;
+	};
+	#pragma keylist logevent_limit
+	struct logevent_tempError {
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
+	  long	priority;
+	  string	device;
+	  long	severity;
+	};
+	#pragma keylist logevent_tempError
+	struct command
+	{
+      string<32>	private_revCode;
+      double		private_sndStamp;
+      double		private_rcvStamp;
+      long		private_origin;
+      long 		private_host;
+      long		private_seqNum;
+      string<32>	device;
+      string<32>	property;
+      string<32>	action;
+      string<32>	value;
+      string<128>	modifiers;
+	};
+	#pragma keylist command
+	struct ackcmd
+	{
+      string<32>	private_revCode;
+      double		private_sndStamp;
+      double		private_rcvStamp;
+      long		private_origin;
+      long 		private_host;
+      long		private_seqNum;
+      long 		ack;
+      long 		error;
+      string<32>	result;
+	};
+	#pragma keylist ackcmd
+	struct logevent
+	{
+      string<32>	private_revCode;
+      double		private_sndStamp;
+      double		private_rcvStamp;
+      long		private_origin;
+      long 		private_host;
+      string<128>	message;
+	};
+	#pragma keylist logevent
+};
+
+module scheduler {
+	struct Application {
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
+	  float	data[200];
+	};
+	#pragma keylist Application
+	struct blockPusher {
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
+	  long	timestamp;
+	  double	block[4000];
+	};
+	#pragma keylist blockPusher
+	struct econstraints {
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
+	  long	codes[32];
+	};
+	#pragma keylist econstraints
+	struct iconstraints {
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
+	  long	codes[32];
+	};
+	#pragma keylist iconstraints
+	struct interestedProposal {
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
+	  long	pairNumber;
+	  long	proposalId;
+	  long	subSequenceNumber;
+	  long	targetId;
+	  double	targetProposalRankValue;
+	  long	targetRankPosition;
+	};
+	#pragma keylist interestedProposal
+	struct observationTest {
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
+	  long	observationId;
+	  double	observationTime;
+	  long	targetId;
+	  long	fieldId;
+	  string<1>    filter;
+	  double	ra;
+	  double	dec;
+	  double	angle;
+	  long	num_exposures;
+	};
+	#pragma keylist observationTest
+	struct parameters {
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
+	  long	parameters[128];
+	};
+	#pragma keylist parameters
+	struct program {
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
+	  float	completion;
+	  long	id;
+	  long	priority;
+	  long	status;
+	};
+	#pragma keylist program
+	struct progress {
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
+	  double	completion[32];
+	  long	priority[32];
+	  long	projection[32];
+	  long	taskid[32];
+	};
+	#pragma keylist progress
+	struct rankingData {
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
+	  double	LST;
+	  double	MJD;
+	  double	date;
+	  double	dec;
+	  double	exposureTime[10];
+	  long	fieldId;
+	  string<32>    filter;
+	  double	moonAlt;
+	  double	moonAz;
+	  double	moonDec;
+	  double	moonDistance;
+	  double	moonIllumination;
+	  double	moonRa;
+	  double	mountAltitude;
+	  double	mountAzimuth;
+	  long	observationNight;
+	  double	ra;
+	  double	rotatorAngle;
+	  double	seeing;
+	  double	skyAngle;
+	  double	skyBrightnessFilter;
+	  double	skyBrightnessV;
+	  double	slewTime;
+	  double	sunAlt;
+	  double	sunAz;
+	  double	sunElongation;
+	  double	transparency;
+	  double	visitTime;
+	  double	weatherHumidity;
+	  double	weatherWindDirection;
+	  double	weatherWindSpeed;
+	};
+	#pragma keylist rankingData
+	struct targetTest {
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
+	  long	targetId;
+	  long	fieldId;
+	  string<1>    filter;
+	  double	ra;
+	  double	dec;
+	  double	angle;
+	  long	num_exposures;
+	};
+	#pragma keylist targetTest
+	struct targets {
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
+	  double	airmass[10];
+	  double	catid[10];
+	  double	dec[10];
+	  long	filter[10];
+	  long	numexp[10];
+	  double	ra[10];
+	  double	rotangle[10];
+	};
+	#pragma keylist targets
+	struct timeHandler {
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
+	  double	timestamp;
+	};
+	#pragma keylist timeHandler
+	struct command
+	{
+      string<32>	private_revCode;
+      double		private_sndStamp;
+      double		private_rcvStamp;
+      long		private_origin;
+      long 		private_host;
+      long		private_seqNum;
+      string<32>	device;
+      string<32>	property;
+      string<32>	action;
+      string<32>	value;
+      string<128>	modifiers;
+	};
+	#pragma keylist command
+	struct ackcmd
+	{
+      string<32>	private_revCode;
+      double		private_sndStamp;
+      double		private_rcvStamp;
+      long		private_origin;
+      long 		private_host;
+      long		private_seqNum;
+      long 		ack;
+      long 		error;
+      string<32>	result;
+	};
+	#pragma keylist ackcmd
+	struct logevent
+	{
+      string<32>	private_revCode;
+      double		private_sndStamp;
+      double		private_rcvStamp;
+      long		private_origin;
+      long 		private_host;
+      string<128>	message;
+	};
+	#pragma keylist logevent
+};
+
+module tcs {
+	struct AOCS {
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
+	  string	result;
+	};
+	#pragma keylist AOCS
+	struct WEP {
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
+	  string<256>    basis_set_name;
+	  long	number_of_terms;
+	  double	z_arr1[64];
+	  double	z_arr2[64];
+	  double	z_arr3[64];
+	  double	z_arr4[64];
+	};
+	#pragma keylist WEP
+	struct ZEMAX {
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
+	  string	bg_algorithm;
+	  double	exposure;
+	  long	iterations;
+	};
+	#pragma keylist ZEMAX
+	struct command_wfpCalculate {
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
+	  string<32>	device;
+	  string<32>	property;
+	  string<32>	action;
+	  string<32>	value;
+	  string<64>	uid;
+	};
+	#pragma keylist command_wfpCalculate
+	struct command_wfpSimulate {
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
+	  string<32>	device;
+	  string<32>	property;
+	  string<32>	action;
+	  string<32>	value;
+	  string<64>	uid;
+	  double	z_arr[18];
+	};
+	#pragma keylist command_wfpSimulate
+	struct kernel {
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
+	  float	dec;
+	  float	epoc;
+	  float	equinox;
+	  float	parallax;
+	  float	pmDec;
+	  float	pmRA;
+	  float	ra;
+	  float	rv;
+	};
+	#pragma keylist kernel
+	struct logevent_wfpDataReady {
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
+	  long	priority;
+	  string<256>	images_location_URI;
+	  string<64>	images_match_URI;
+	};
+	#pragma keylist logevent_wfpDataReady
+	struct logevent_zemaxError {
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
+	  long	priority;
+	  string<128>	details;
+	};
+	#pragma keylist logevent_zemaxError
+	struct command
+	{
+      string<32>	private_revCode;
+      double		private_sndStamp;
+      double		private_rcvStamp;
+      long		private_origin;
+      long 		private_host;
+      long		private_seqNum;
+      string<32>	device;
+      string<32>	property;
+      string<32>	action;
+      string<32>	value;
+      string<128>	modifiers;
+	};
+	#pragma keylist command
+	struct ackcmd
+	{
+      string<32>	private_revCode;
+      double		private_sndStamp;
+      double		private_rcvStamp;
+      long		private_origin;
+      long 		private_host;
+      long		private_seqNum;
+      long 		ack;
+      long 		error;
+      string<32>	result;
+	};
+	#pragma keylist ackcmd
+	struct logevent
+	{
+      string<32>	private_revCode;
+      double		private_sndStamp;
+      double		private_rcvStamp;
+      long		private_origin;
+      long 		private_host;
+      string<128>	message;
+	};
+	#pragma keylist logevent
+};
+

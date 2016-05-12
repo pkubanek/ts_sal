@@ -1,0 +1,28 @@
+
+This dvd/repository contains a release of the LSST SAL SDK.
+
+This communications middleware is based on the industry standard
+Data Distribution Services package. We are using the OpenSplice (V6)
+implementation from Prismtech.
+
+The SDK provides the ability to generate interface code for subsystem
+to subsystem communications. Primary support is for C++ and Java.
+
+Python bindings are also included which wrap the SAL API.
+
+The recommended development platform is CentOS 7.0 (x86_64 6t4-bit), 
+and a compatible JDK is included in the kit.
+
+To get started, unpack the salSDK archive in the /opt directory
+of your system disk and read the User Guide from the /opt/doc dirfectory.
+
+Approximately 1Gb of disk space will be used and it is recommended at 
+least another 200Mb be available for building the subsystem specific
+libraries and test programs.
+
+Dave Mills
+
+dmills@lsst.org
++1-520-318-8293
+
+
