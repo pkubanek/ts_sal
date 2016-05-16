@@ -22,7 +22,7 @@ global SAL_DIR SAL_WORK_DIR
   gentelemetrylabviewtests $base
   cd $SAL_WORK_DIR/[set subsys]/labview
   exec ln -sf ../cpp/src/SAL_[set subsys].cpp .
-  exec ln -sf ../cpp/src/SAL_Actors.h .
+  exec ln -sf ../cpp/src/SAL_actors.h .
   exec ln -sf ../../../lsstsal/include/SAL_defines.h .
   exec ln -sf ../cpp/src/CheckStatus.cpp .
   exec ln -sf ../cpp/src/CheckStatus.h .
@@ -300,7 +300,7 @@ global SAL_WORK_DIR LVSTRINGS
         int status = SAL__NO_UPDATES;
         [set base]_memIO->syncI_[set base]_[set name] = true;
         [set base]_memIO->skipOld_[set base]_[set name] = true;
-//	status = [set base]_shm_getSample_[set name]LV(data $xtrargs);
+	status = [set base]_shm_getSample_[set name]LV(data $xtrargs);
         return status;
     \}
 
@@ -495,7 +495,7 @@ global SAL_DIR SAL_WORK_DIR
           if (mgr.actorProcessor(actorIdx) == false) \{
              mgr.salProcessor(\"[set base]_[set name]\");
           \}
-          status = mgr.acceptCommand_[set n2](\&[set base]_memIO->shmemIncoming_[set base]_[set name]);
+          status = mgr.acceptCommand_[set n2](&[set base]_memIO->shmemIncoming_[set base]_[set name]);
           if (status == SAL__OK) \{
              [set base]_memIO->hasIncoming_[set base]_[set name] = true;
           \}
@@ -532,7 +532,7 @@ global SAL_DIR SAL_WORK_DIR
           if (mgr.actorEventReader(actorIdx) == false) \{
              mgr.salEvent(\"[set base]_[set name]\");
           \}
-          status = mgr.getEvent_[set n2](\&[set base]_memIO->shmemIncoming_[set base]_[set name]);
+          status = mgr.getEvent_[set n2](&[set base]_memIO->shmemIncoming_[set base]_[set name]);
           if (status == SAL__OK) \{
              [set base]_memIO->hasIncoming_[set base]_[set name] = true;
           \}
@@ -544,7 +544,7 @@ global SAL_DIR SAL_WORK_DIR
           \}
        \}
        if ( [set base]_memIO->hasOutgoing_[set base]_[set name] ) \{
-          status = mgr.logEvent_[set n2](\&[set base]_memIO->shmemOutgoing_[set base]_[set name],1);
+          status = mgr.logEvent_[set n2](&[set base]_memIO->shmemOutgoing_[set base]_[set name],1);
           [set base]_memIO->hasOutgoing_[set base]_[set name] = false;
        \}
 "
