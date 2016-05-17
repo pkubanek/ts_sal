@@ -1,0 +1,272 @@
+module tcs {
+	struct AOCS {
+	  string	result;
+	};
+	#pragma keylist AOCS
+	struct WEP {
+	  string<256>    basis_set_name;
+	  long	number_of_terms;
+	  double	z_arr1[64];
+	  double	z_arr2[64];
+	  double	z_arr3[64];
+	  double	z_arr4[64];
+	};
+	#pragma keylist WEP
+	struct ZEMAX {
+	  string	bg_algorithm;
+	  double	exposure;
+	  long	iterations;
+	};
+	#pragma keylist ZEMAX
+	struct command_abort {
+	  string<32>	device;
+	  string<32>	property;
+	  string<32>	action;
+	  string<32>	value;
+	  string	state;
+	};
+	#pragma keylist command_abort
+	struct command_disable {
+	  string<32>	device;
+	  string<32>	property;
+	  string<32>	action;
+	  string<32>	value;
+	  string	state;
+	};
+	#pragma keylist command_disable
+	struct command_enable {
+	  string<32>	device;
+	  string<32>	property;
+	  string<32>	action;
+	  string<32>	value;
+	  string	state;
+	};
+	#pragma keylist command_enable
+	struct command_exit {
+	  string<32>	device;
+	  string<32>	property;
+	  string<32>	action;
+	  string<32>	value;
+	  string	state;
+	};
+	#pragma keylist command_exit
+	struct command_standby {
+	  string<32>	device;
+	  string<32>	property;
+	  string<32>	action;
+	  string<32>	value;
+	  string	state;
+	};
+	#pragma keylist command_standby
+	struct command_start {
+	  string<32>	device;
+	  string<32>	property;
+	  string<32>	action;
+	  string<32>	value;
+	  string	configuration;
+	};
+	#pragma keylist command_start
+	struct command_stop {
+	  string<32>	device;
+	  string<32>	property;
+	  string<32>	action;
+	  string<32>	value;
+	  string	state;
+	};
+	#pragma keylist command_stop
+	struct command_takeControl {
+	  string<32>	device;
+	  string<32>	property;
+	  string<32>	action;
+	  string<32>	value;
+	  string	state;
+	};
+	#pragma keylist command_takeControl
+	struct command_wfpCalculate {
+	  string<32>	device;
+	  string<32>	property;
+	  string<32>	action;
+	  string<32>	value;
+	  string<64>	uid;
+	};
+	#pragma keylist command_wfpCalculate
+	struct command_wfpSimulate {
+	  string<32>	device;
+	  string<32>	property;
+	  string<32>	action;
+	  string<32>	value;
+	  string<64>	uid;
+	  double	z_arr[18];
+	};
+	#pragma keylist command_wfpSimulate
+	struct kernel_DawdleFilter {
+	  long	Bypass;
+	  float	T;
+	};
+	#pragma keylist kernel_DawdleFilter
+	struct kernel_FK5Target {
+	  float	dec;
+	  float	epoc;
+	  float	equinox;
+	  float	parallax;
+	  float	pmDec;
+	  float	pmRA;
+	  float	ra;
+	  float	rv;
+	};
+	#pragma keylist kernel_FK5Target
+	struct kernel_OpticsVt {
+	  float	tilt;
+	  float	tip;
+	};
+	#pragma keylist kernel_OpticsVt
+	struct kernel_PointingControl {
+	  float	AGuide;
+	  float	ALocal;
+	  float	BGuide;
+	  float	BLocal;
+	};
+	#pragma keylist kernel_PointingControl
+	struct kernel_PointingLog {
+	  float	Aux[3];
+	  float	Casspa;
+	  float	Dec;
+	  float	Fl;
+	  float	Humid;
+	  long	Marked;
+	  float	Pitch;
+	  float	Press;
+	  float	Ra;
+	  float	Rcorr;
+	  float	Roll;
+	  float	Temp;
+	  float	Tlr;
+	  float	Wavel;
+	  float	Xr;
+	  float	Yr;
+	};
+	#pragma keylist kernel_PointingLog
+	struct kernel_PointingModel {
+	  float	Coeffv[100];
+	  long	Model[30];
+	  long	Nterml;
+	  long	Nterms;
+	  long	Ntermx;
+	};
+	#pragma keylist kernel_PointingModel
+	struct kernel_Site {
+	  float	Amprms[21];
+	  float	Aoprms[15];
+	  float	Daz;
+	  float	Diurab;
+	  float	Elong;
+	  float	Lat;
+	  float	Refa;
+	  float	Refb;
+	  float	St0;
+	  float	T0;
+	  float	Tt0;
+	  float	Ttj;
+	  float	Ttmtai;
+	  float	Uau;
+	  float	Ukm;
+	  float	Vau;
+	  float	Vkm;
+	  float	delat;
+	  float	delut;
+	  float	elongm;
+	  float	hm;
+	  float	latm;
+	  float	tai;
+	  float	ttmtat;
+	  float	xpm;
+	  float	ypm;
+	};
+	#pragma keylist kernel_Site
+	struct kernel_Target {
+	  float	Humid;
+	  float	Press;
+	  float	TLR;
+	  float	Tai;
+	  float	Temp;
+	  float	Wavel;
+	  float	XOffset;
+	  float	YOffset;
+	  float	az;
+	  float	azdot;
+	  float	el;
+	  float	eldot;
+	  float	focalplaneX;
+	  float	focalplaneY;
+	  float	t0;
+	};
+	#pragma keylist kernel_Target
+	struct kernel_TimeKeeper {
+	  float	Cst;
+	  float	Dcst;
+	  float	Dsst;
+	  float	Sst;
+	  float	Tai;
+	  float	Tt;
+	};
+	#pragma keylist kernel_TimeKeeper
+	struct kernel_TrackRefSys {
+	  float	ae2mt[9];
+	  float	amprms[21];
+	  float	cst;
+	  float	diurab;
+	  float	hm;
+	  float	humid;
+	  float	press;
+	  float	refa;
+	  float	refb;
+	  float	sst;
+	  float	tdbj;
+	  float	temp;
+	  float	tlat;
+	  float	tlr;
+	  float	wavel;
+	};
+	#pragma keylist kernel_TrackRefSys
+	struct kernel_TrackingTarget {
+	  float	PositionX;
+	  float	PositionY;
+	  float	T0;
+	  float	VelocityX;
+	  float	VelocityY;
+	};
+	#pragma keylist kernel_TrackingTarget
+	struct logevent_wfpDataReady {
+	  long	priority;
+	  string<256>	images_location_URI;
+	  string<64>	images_match_URI;
+	};
+	#pragma keylist logevent_wfpDataReady
+	struct logevent_zemaxError {
+	  long	priority;
+	  string<128>	details;
+	};
+	#pragma keylist logevent_zemaxError
+	struct command
+	{
+      string<32>	device;
+      string<32>	property;
+      string<32>	action;
+      string<32>	value;
+      string<128>	modifiers;
+	};
+	#pragma keylist command
+	struct ackcmd
+	{
+      long 		ack;
+      long 		error;
+      string<32>	result;
+	};
+	#pragma keylist ackcmd
+	struct logevent
+	{
+      string<128>	message;
+	};
+	#pragma keylist logevent
+};
+

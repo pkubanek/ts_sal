@@ -1,4 +1,4 @@
-#!../lsstsal/bin/tclsh
+#!/usr/bin/tclsh
 
 #
 # Command line tool for SAL code/document/etc generation.
@@ -239,7 +239,8 @@ if { $OPTIONS(sal) } {
   } else {
         stdlog "WARNING : No Event definitions found for $base"
   }
-  set idlfile [makesalidl $base]
+  catch { set idlfile [makesalidl $base] } bad
+puts stdout $idlfile
   foreach subsys $TARGETS {
     set spl [file rootname [split $subsys _]]
     set base [lindex $spl 0]

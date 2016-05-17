@@ -5,6 +5,7 @@
 
 <SALEvent>
  <Subsystem>MTMount</Subsystem>
+<<<<<<< HEAD
  <Version>2.5.3</Version>
  <Author>salgenerator</Author>
  <EFDB_Topic>MTMount_logevent_accLimit</EFDB_Topic>
@@ -31,12 +32,32 @@
       <Description> </Description>
        <IDL_Type>string</IDL_Type>
       <Units> </Units>
+=======
+ <Version>3.0</Version>
+ <Author>Ander Ansuategi</Author>
+ <EFDB_Topic>MTMount_logevent_mountState</EFDB_Topic>
+ <Alias>mountState</Alias>
+ <Explanation>http://sal.lsst.org/SAL/Events/MTMount_mountState.html</Explanation>
+    <item>
+      <EFDB_Name>id</EFDB_Name>
+      <Description>Identifier of the state</Description>
+      <IDL_Type>long</IDL_Type>
+      <Units></Units>
+      <Count>1</Count>
+    </item>
+    <item>
+      <EFDB_Name>text</EFDB_Name>
+      <Description>The state of the state machine</Description>
+       <IDL_Type>string</IDL_Type>
+      <Units></Units>
+>>>>>>> release/Release-3-RC1
       <Count>1</Count>
     </item>
 </SALEvent>
 
 <SALEvent>
  <Subsystem>MTMount</Subsystem>
+<<<<<<< HEAD
  <Version>2.5.3</Version>
  <Author>salgenerator</Author>
  <EFDB_Topic>MTMount_logevent_interlock</EFDB_Topic>
@@ -54,12 +75,32 @@
       <Description> </Description>
        <IDL_Type>string</IDL_Type>
       <Units> </Units>
+=======
+ <Version>3.0</Version>
+ <Author>Ander Ansuategi</Author>
+ <EFDB_Topic>MTMount_logevent_mountWarning</EFDB_Topic>
+ <Alias>mountWarning</Alias>
+ <Explanation>http://sal.lsst.org/SAL/Events/MTMount_mountWarning.html</Explanation>
+    <item>
+      <EFDB_Name>id</EFDB_Name>
+      <Description>Identifier of the warning</Description>
+      <IDL_Type>long</IDL_Type>
+      <Units></Units>
+      <Count>1</Count>
+    </item>
+    <item>
+      <EFDB_Name>text</EFDB_Name>
+      <Description>The warning info</Description>
+       <IDL_Type>string</IDL_Type>
+      <Units></Units>
+>>>>>>> release/Release-3-RC1
       <Count>1</Count>
     </item>
 </SALEvent>
 
 <SALEvent>
  <Subsystem>MTMount</Subsystem>
+<<<<<<< HEAD
  <Version>2.5.3</Version>
  <Author>salgenerator</Author>
  <EFDB_Topic>MTMount_logevent_powerError</EFDB_Topic>
@@ -84,12 +125,32 @@
       <Description> </Description>
        <IDL_Type>long</IDL_Type>
       <Units> </Units>
+=======
+ <Version>3.0</Version>
+ <Author>Ander Ansuategi</Author>
+ <EFDB_Topic>MTMount_logevent_mountError</EFDB_Topic>
+ <Alias>mountError</Alias>
+ <Explanation>http://sal.lsst.org/SAL/Events/MTMount_mountError.html</Explanation>
+    <item>
+      <EFDB_Name>id</EFDB_Name>
+      <Description>Identifier of the error</Description>
+      <IDL_Type>long</IDL_Type>
+      <Units></Units>
+      <Count>1</Count>
+    </item>
+    <item>
+      <EFDB_Name>text</EFDB_Name>
+      <Description>The error info</Description>
+       <IDL_Type>string</IDL_Type>
+      <Units></Units>
+>>>>>>> release/Release-3-RC1
       <Count>1</Count>
     </item>
 </SALEvent>
 
 <SALEvent>
  <Subsystem>MTMount</Subsystem>
+<<<<<<< HEAD
  <Version>2.5.3</Version>
  <Author>salgenerator</Author>
  <EFDB_Topic>MTMount_logevent_slewError</EFDB_Topic>
@@ -170,5 +231,19 @@
  <EFDB_Topic>MTMount_logevent_velLimit</EFDB_Topic>
  <Alias>velLimit</Alias>
  <Explanation>http://sal.lsst.org/SAL/Events/MTMount_logevent_velLimit.html</Explanation>
+=======
+ <Version>3.0</Version>
+ <Author>Ander Ansuategi</Author>
+ <EFDB_Topic>MTMount_logevent_mountInPosition</EFDB_Topic>
+ <Alias>mountInPosition</Alias>
+ <Explanation>http://sal.lsst.org/SAL/Events/MTMount_mountInPosition.html</Explanation>
+    <item>
+      <EFDB_Name>inposition</EFDB_Name>
+      <Description>Whether the mount is in position or not</Description>
+      <IDL_Type>boolean</IDL_Type>
+      <Units></Units>
+      <Count>1</Count>
+    </item>
+>>>>>>> release/Release-3-RC1
 </SALEvent>
 </SALEventSet>

@@ -1,0 +1,172 @@
+module m2ms {
+	struct axial_actuators {
+	  long	ilc_status[72];
+	};
+	#pragma keylist axial_actuators
+	struct command_abort {
+	  string<32>	device;
+	  string<32>	property;
+	  string<32>	action;
+	  string<32>	value;
+	  string	state;
+	};
+	#pragma keylist command_abort
+	struct command_adjust {
+	  string<32>	device;
+	  string<32>	property;
+	  string<32>	action;
+	  string<32>	value;
+	  double	azimuth;
+	  double	elevation;
+	};
+	#pragma keylist command_adjust
+	struct command_axialForces {
+	  string<32>	device;
+	  string<32>	property;
+	  string<32>	action;
+	  string<32>	value;
+	  double	deltaForce[72];
+	};
+	#pragma keylist command_axialForces
+	struct command_disable {
+	  string<32>	device;
+	  string<32>	property;
+	  string<32>	action;
+	  string<32>	value;
+	  string	state;
+	};
+	#pragma keylist command_disable
+	struct command_enable {
+	  string<32>	device;
+	  string<32>	property;
+	  string<32>	action;
+	  string<32>	value;
+	  string	state;
+	};
+	#pragma keylist command_enable
+	struct command_exit {
+	  string<32>	device;
+	  string<32>	property;
+	  string<32>	action;
+	  string<32>	value;
+	  string	state;
+	};
+	#pragma keylist command_exit
+	struct command_slew {
+	  string<32>	device;
+	  string<32>	property;
+	  string<32>	action;
+	  string<32>	value;
+	  double	azimuth;
+	  double	elevation;
+	};
+	#pragma keylist command_slew
+	struct command_standby {
+	  string<32>	device;
+	  string<32>	property;
+	  string<32>	action;
+	  string<32>	value;
+	  string	state;
+	};
+	#pragma keylist command_standby
+	struct command_start {
+	  string<32>	device;
+	  string<32>	property;
+	  string<32>	action;
+	  string<32>	value;
+	  string	configuration;
+	};
+	#pragma keylist command_start
+	struct command_stop {
+	  string<32>	device;
+	  string<32>	property;
+	  string<32>	action;
+	  string<32>	value;
+	  string	state;
+	};
+	#pragma keylist command_stop
+	struct command_takeControl {
+	  string<32>	device;
+	  string<32>	property;
+	  string<32>	action;
+	  string<32>	value;
+	  string	state;
+	};
+	#pragma keylist command_takeControl
+	struct command_update {
+	  string<32>	device;
+	  string<32>	property;
+	  string<32>	action;
+	  string<32>	value;
+	  string	lut_id;
+	};
+	#pragma keylist command_update
+	struct logevent_interlock {
+	  long	priority;
+	  string	detail;
+	};
+	#pragma keylist logevent_interlock
+	struct logevent_limitError {
+	  long	priority;
+	  string	limit;
+	  string	type;
+	};
+	#pragma keylist logevent_limitError
+	struct logevent_tempError {
+	  long	priority;
+	  string	device;
+	  long	severity;
+	  double	temp;
+	};
+	#pragma keylist logevent_tempError
+	struct ni9201 {
+	  double	ilc_comm_current[72];
+	};
+	#pragma keylist ni9201
+	struct ni9221 {
+	  double	ilc_comm_voltage[72];
+	};
+	#pragma keylist ni9221
+	struct ni9426 {
+	  boolean	current_balanced[72];
+	};
+	#pragma keylist ni9426
+	struct ni9485 {
+	  boolean	crio_interlock[72];
+	};
+	#pragma keylist ni9485
+	struct sensor_ilc {
+	  long	ilc_status[6];
+	};
+	#pragma keylist sensor_ilc
+	struct tangent_actuators {
+	  long	ilc_status[6];
+	};
+	#pragma keylist tangent_actuators
+	struct thermal {
+	  double	cell_exhaust_temperature[2];
+	};
+	#pragma keylist thermal
+	struct command
+	{
+      string<32>	device;
+      string<32>	property;
+      string<32>	action;
+      string<32>	value;
+      string<128>	modifiers;
+	};
+	#pragma keylist command
+	struct ackcmd
+	{
+      long 		ack;
+      long 		error;
+      string<32>	result;
+	};
+	#pragma keylist ackcmd
+	struct logevent
+	{
+      string<128>	message;
+	};
+	#pragma keylist logevent
+};
+
