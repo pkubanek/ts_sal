@@ -37,6 +37,10 @@ global IDLRESERVED SAL_WORK_DIR SAL_DIR CMDS CMD_ALIASES EVTS EVENT_ALIASES
             lappend EVTS($subsys,$alias,plist) priority
             puts $fout "	  long	priority;"
           }
+         } else {
+          lappend EVTS($subsys,$alias,param) "long	priority"
+          lappend EVTS($subsys,$alias,plist) priority
+          puts $fout "	  long	priority;"
          }
       }
       if { $tag == "/SALCommand" } {
