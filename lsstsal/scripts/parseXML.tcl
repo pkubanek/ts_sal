@@ -31,13 +31,25 @@ global IDLRESERVED SAL_WORK_DIR SAL_DIR CMDS CMD_ALIASES EVTS EVENT_ALIASES
       if { $tag == "/SALEvent" } {
          set EVTS($subsys,$alias) $alias
          set EVENT_ALIASES($subsys) [lappend EVENT_ALIASES($subsys) $alias]
+         if { [info exists EVTS($subsys,$alias,plist)] } {
+          if { [lsearch $EVTS($subsys,$alias,plist) priority] < 0 } {
+            lappend EVTS($subsys,$alias,param) "long	priority"
+            lappend EVTS($subsys,$alias,plist) priority
+            puts $fout "	  long	priority;"
+          }
+         } else {
+          lappend EVTS($subsys,$alias,param) "long	priority"
+          lappend EVTS($subsys,$alias,plist) priority
+          puts $fout "	  long	priority;"
+         }
       }
       if { $tag == "/SALCommand" } {
          set CMDS($subsys,$alias) "$device $property $action $value"
          set CMD_ALIASES($subsys) [lappend CMD_ALIASES($subsys) $alias]
-         if { [info exists CMDS($subsys,$alias,param)] == 0 } {
+         if { $itemid == 0 } {
             lappend CMDS($subsys,$alias,param) "string state"
             lappend CMDS($subsys,$alias,plist) state
+            puts $fout "	  string	state;"
          }
       }
       if { $tag == "EFDB_Topic" } {
@@ -50,6 +62,11 @@ global IDLRESERVED SAL_WORK_DIR SAL_DIR CMDS CMD_ALIASES EVTS EVENT_ALIASES
            }
         }
         set itemid 0
+        if { [info exists topics($value)] } { 
+           puts stdout "ERROR - duplicate EFDB_Topic = $value"
+           exit
+        }
+        set topics($value) 1
         set tname $value
         puts stdout "Translating $tname"
         set fout [open $SAL_WORK_DIR/idl-templates/[set tname].idl w]
@@ -125,9 +142,6 @@ global IDLRESERVED SAL_WORK_DIR SAL_DIR CMDS CMD_ALIASES EVTS EVENT_ALIASES
    }
    close $fin
    puts stdout "itemid for $SAL_WORK_DIR/idl-templates/[set tname].idl=  $itemid"
-   if { $itemid == 0 } {
-      exec rm $SAL_WORK_DIR/idl-templates/[set tname].idl
-   }
    if { [info exists CMD_ALIASES($subsys)] } {
     if { $CMD_ALIASES($subsys) != "" } {
      puts stdout "Generating test command gui input"        
