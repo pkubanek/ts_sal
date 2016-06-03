@@ -46,7 +46,7 @@ unzip master.zip
 mv -v ts_xml-master/sal_interfaces/*/*.xml .
 
 echo "Validating interfaces"
-for subsys in camera dm dome hexapod m1m3 m2ms mount rotator scheduler tcs
+for subsys in camera dm dome hexapod m1m3 m2ms MTMount rotator scheduler tcs
 do
    salgenerator $subsys validate
    salgenerator $subsys html
