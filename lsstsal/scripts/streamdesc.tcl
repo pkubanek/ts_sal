@@ -170,34 +170,34 @@ set SDESC(m2ms.Surface) "
 <P>This topic records data pertaining to the requested and<BR>measured
 m2ms surface properties (figure, stresses, temps etc). "
 
-set SDESC(mount.Temps) "
+set SDESC(MTMount.Temps) "
 <P>Temperature sensing information for sensors located in the mount
 subsystem.<BR>Raw sensor readings, calibrated temperatures,
 time-series statistics, sensor health. "
 
-set SDESC(mount.Electrical) "
+set SDESC(MTMount.Electrical) "
 <P>Electrical parameters for devices located in the mount
 subsystem.<BR>Raw data, calibrated voltages, calibrated current,
 device power status. "
 
-set SDESC(mount.Metrology) "
+set SDESC(MTMount.Metrology) "
 <P>Position sensing information for sensors located in the mount
 subsystem.<BR>Raw sensor readings, calibrated positions, limit
 switches, status bits. "
 
-set SDESC(mount.Application) "
+set SDESC(MTMount.Application) "
 <P>Application specific information derived from sensors in the mount
 subsystem. "
 
-set SDESC(mount.Alt) "
+set SDESC(MTMount.Alt) "
 <P>This topic records application level information about
 the<BR>Altitude axis requested and actual position and status. "
 
-set SDESC(mount.Az) "
+set SDESC(MTMount.Az) "
 <P>This topic records application level information about the<BR>Azimuth
 axis requested and actual position and status. "
 
-set SDESC(mount.Rotator) "
+set SDESC(MTMount.Rotator) "
 <P>This topic records application level information about
 the<BR>instrument rotator requested and actual position and status." 
 

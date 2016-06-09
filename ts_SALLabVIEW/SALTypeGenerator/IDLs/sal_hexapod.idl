@@ -1,0 +1,206 @@
+module hexapod {
+	struct Actuators {
+	  short	hexapodID;
+	  float	Calibrated[18];
+	  long	Raw[18];
+	};
+	#pragma keylist Actuators hexapodID
+	struct Application {
+	  short	hexapodID;
+	  float	Demand[6];
+	  float	Error[6];
+	  float	Position[6];
+	};
+	#pragma keylist Application hexapodID
+	struct Electrical {
+	  short	hexapodID;
+	  long	error[16];
+	  short	status[16];
+	  long	voltage[16];
+	};
+	#pragma keylist Electrical hexapodID
+	struct LimitSensors {
+	  short	hexapodID;
+	  short	liftoff[18];
+	  short	limit[18];
+	};
+	#pragma keylist LimitSensors hexapodID
+	struct Metrology {
+	  short	hexapodID;
+	  long	distance[18];
+	  long	error[18];
+	  short	status[18];
+	};
+	#pragma keylist Metrology hexapodID
+	struct TC {
+	  short	hexapodID;
+	  float	error[16];
+	  float	setpoint[16];
+	  short	status[16];
+	  float	temperature[16];
+	};
+	#pragma keylist TC hexapodID
+	struct command_configureAcceleration {
+	  short	hexapodID;
+	  string<32>	device;
+	  string<32>	property;
+	  string<32>	action;
+	  string<32>	value;
+	  double	xmin;
+	  double	xmax;
+	  double	ymin;
+	  double	ymax;
+	  double	zmin;
+	  double	zmax;
+	  double	umin;
+	  double	umax;
+	  double	vmin;
+	  double	vmax;
+	  double	wmin;
+	  double	wmax;
+	};
+	#pragma keylist command_configureAcceleration hexapodID
+	struct command_configureLimits {
+	  short	hexapodID;
+	  string<32>	device;
+	  string<32>	property;
+	  string<32>	action;
+	  string<32>	value;
+	  long	xmin;
+	  long	xmax;
+	  long	ymin;
+	  long	ymax;
+	  long	zmin;
+	  long	zmax;
+	  long	umin;
+	  long	umax;
+	  long	vmin;
+	  long	vmax;
+	  long	wwmin;
+	  long	wmax;
+	};
+	#pragma keylist command_configureLimits hexapodID
+	struct command_configureLut {
+	  short	hexapodID;
+	  string<32>	device;
+	  string<32>	property;
+	  string<32>	action;
+	  string<32>	value;
+	  double	xlut[90];
+	  double	ylut[90];
+	  double	zlut[90];
+	  double	ulut[90];
+	  double	vlut[90];
+	  double	wlut[90];
+	};
+	#pragma keylist command_configureLut hexapodID
+	struct command_configurePosition {
+	  short	hexapodID;
+	  string<32>	device;
+	  string<32>	property;
+	  string<32>	action;
+	  string<32>	value;
+	  double	x;
+	  double	y;
+	  double	z;
+	  double	u;
+	  double	v;
+	  double	w;
+	  boolean	sync;
+	};
+	#pragma keylist command_configurePosition hexapodID
+	struct command_configureVelocity {
+	  short	hexapodID;
+	  string<32>	device;
+	  string<32>	property;
+	  string<32>	action;
+	  string<32>	value;
+	  double	xmin;
+	  double	xmax;
+	  double	ymin;
+	  double	ymax;
+	  double	zmin;
+	  double	zmax;
+	  double	umin;
+	  double	umax;
+	  double	vmin;
+	  double	vmax;
+	  double	wmin;
+	  double	wmax;
+	};
+	#pragma keylist command_configureVelocity hexapodID
+	struct command_offset {
+	  short	hexapodID;
+	  string<32>	device;
+	  string<32>	property;
+	  string<32>	action;
+	  string<32>	value;
+	  double	x;
+	  double	y;
+	  double	z;
+	  double	u;
+	  double	v;
+	  double	w;
+	  boolean	sync;
+	};
+	#pragma keylist command_offset hexapodID
+	struct command_pivot {
+	  short	hexapodID;
+	  string<32>	device;
+	  string<32>	property;
+	  string<32>	action;
+	  string<32>	value;
+	  double	x;
+	  double	y;
+	  double	z;
+	};
+	#pragma keylist command_pivot hexapodID
+	struct logevent_interlock {
+	  short	hexapodID;
+	  long	priority;
+	  string	detail;
+	};
+	#pragma keylist logevent_interlock hexapodID
+	struct logevent_limit {
+	  short	hexapodID;
+	  long	priority;
+	  string	axis;
+	  string	limit;
+	  string	type;
+	};
+	#pragma keylist logevent_limit hexapodID
+	struct logevent_tempError {
+	  short	hexapodID;
+	  long	priority;
+	  string	axis;
+	  string	device;
+	  long	severity;
+	  double	temp;
+	};
+	#pragma keylist logevent_tempError hexapodID
+	struct command
+	{
+	  short	hexapodID;
+	  string<32>	device;
+	  string<32>	property;
+	  string<32>	action;
+	  string<32>	value;
+	  string<128>	modifiers;
+	};
+	#pragma keylist command hexapodID
+	struct ackcmd
+	{
+	  short	hexapodID;
+	  long 		ack;
+	  long 		error;
+	  string<32>	result;
+	};
+	#pragma keylist ackcmd hexapodID
+	struct logevent
+	{
+	  short	hexapodID;
+	  string<128>	message;
+	};
+	#pragma keylist logevent hexapodID
+};
+

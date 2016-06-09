@@ -69,6 +69,7 @@ using namespace std;
       set fcod6 [open $SAL_WORK_DIR/include/SAL_[set subsys]_[set name]Cout.tmp w]
       set fcod7 [open $SAL_WORK_DIR/include/SAL_[set subsys]_[set name]shmout.tmp w]
       set fcod8 [open $SAL_WORK_DIR/include/SAL_[set subsys]_[set name]shmin.tmp w]
+      set fcod9 [open $SAL_WORK_DIR/include/SAL_[set subsys]_[set name]shmstr.tmp w]
       puts $fout "	struct $name \{"
       puts $fhdr "struct [set subsys]_[set name]C
 \{"
@@ -108,6 +109,9 @@ using namespace std;
             if { [string range [lindex $rec 1] 0 7] != "private_" && [llength $rec] > 1 } {
                puts $fhdr [typeidltoc $rec]
                puts $fhlv [typeidltolv $rec]
+               if { $VPROPS(string) == 1 } {
+                  puts $fcod9 "        char	[set subsys]_[set name]_[set VPROPS(name)]_buffer\[128\];"
+               }
                set VPROPS(idx) $argidx
                set VPROPS(base) $subsys
                set VPROPS(topic) "[set subsys]_[set name]"
@@ -133,6 +137,9 @@ using namespace std;
       close $fcod4
       close $fcod5
       close $fcod6
+      close $fcod7
+      close $fcod8
+      close $fcod9
    }
    if { [info exists SYSDIC($subsys,keyedID)] } {
        genkeyedidl $fout $subsys
@@ -267,8 +274,16 @@ global VPROPS
          puts $fcod4 "    myData.$VPROPS(name)=\"LSST\";"
          puts $fcod5 "    myData.$VPROPS(name)=argv\[$idx\];"
          puts $fcod6 "    cout << \"    $VPROPS(name) : \" << data->$VPROPS(name) << endl;"
-         puts $fcod7 "    [set VPROPS(base)]_memIO->shmemOutgoing_[set VPROPS(topic)].$VPROPS(name) = data->$VPROPS(name);"
-         puts $fcod8 "    data->$VPROPS(name) = [set VPROPS(base)]_memIO->shmemIncoming_[set VPROPS(topic)].$VPROPS(name);"
+#         puts $fcod7 "    [set VPROPS(base)]_memIO->shmemOutgoing_[set VPROPS(topic)].$VPROPS(name) = (char *)&[set VPROPS(base)]_memIO->[set VPROPS(topic)]_$VPROPS(name)_buffer;"
+#         puts $fcod8 "    [set VPROPS(base)]_memIO->shmemIncoming_[set VPROPS(topic)].$VPROPS(name) = (char *)&[set VPROPS(base)]_memIO->[set VPROPS(topic)]_$VPROPS(name)_buffer;"
+         puts $fcod7 "    strcpy([set VPROPS(base)]_memIO->[set VPROPS(topic)]_$VPROPS(name)_buffer , $VPROPS(name));"
+         puts $fcod8 "    strcpy($VPROPS(name) , [set VPROPS(base)]_memIO->[set VPROPS(topic)]_$VPROPS(name)_buffer);"
+#         puts $fcod7 "    strcpy([set VPROPS(base)]_memIO->[set VPROPS(topic)]_$VPROPS(name)_buffer , data->$VPROPS(name));"
+#         puts $fcod8 "    strcpy(data->$VPROPS(name) , [set VPROPS(base)]_memIO->[set VPROPS(topic)]_$VPROPS(name)_buffer);"
+#         puts $fcod7 "    strcpy([set VPROPS(base)]_memIO->shmemOutgoing_[set VPROPS(topic)].$VPROPS(name) , data->$VPROPS(name));"
+#         puts $fcod8 "    strcpy(data->$VPROPS(name) , [set VPROPS(base)]_memIO->shmemIncoming_[set VPROPS(topic)].$VPROPS(name));"
+#         puts $fcod7 "    [set VPROPS(base)]_memIO->shmemOutgoing_[set VPROPS(topic)].$VPROPS(name) = data->$VPROPS(name);"
+#         puts $fcod8 "    data->$VPROPS(name) = [set VPROPS(base)]_memIO->shmemIncoming_[set VPROPS(topic)].$VPROPS(name);"
       } else {
          puts $fcod1 "    data->$VPROPS(name) = Instances\[j\].$VPROPS(name);"
          puts $fcod2 "    Instance.$VPROPS(name) = data->$VPROPS(name);"

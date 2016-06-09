@@ -68,8 +68,7 @@ salReturn SAL_[set base]::getSample_[set name]([set base]_[set name]C *data)
     sal\[actorIdx\].isReader = true;
   \}
   DataReader_var dreader = getReader(actorIdx);
-  [set base]::[set name]DataReader_var SALReader = [set base]::[set name]DataReader::_narrow(dreader
-.in());
+  [set base]::[set name]DataReader_var SALReader = [set base]::[set name]DataReader::_narrow(dreader.in());
   checkHandle(SALReader.in(), \"[set base]::[set name]DataReader::_narrow\");
   status = SALReader->take(Instances, info, sal\[SAL__[set base]_[set name]_ACTOR\].maxSamples , ANY_SAMPLE_STATE, ANY_VIEW_STATE, ANY_INSTANCE_STATE);
   checkStatus(status, \"[set base]::[set name]DataReader::take\");

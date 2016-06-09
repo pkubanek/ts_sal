@@ -125,31 +125,31 @@ set DESC(m2ms.Surface) "
 <P>This subsystem maintains data pertaining to the requested and<BR>measured
 m2ms surface properties (figure, stresses, temps etc). "
 
-set DESC(mount.TC) "
+set DESC(MTMount.TC) "
 <P>Temperature monitoring  for sensors located in the mount
 subsystem.<BR>Raw sensor readings, calibrated temperatures,
 time series statistics, sensor health. "
 
-set DESC(mount.Electrical) "
+set DESC(MTMount.Electrical) "
 <P>Electrical monitoring  for devices located in the mount
 subsystem.<BR>Raw data, calibrated voltages, calibrated current,
 device power status. "
 
-set DESC(mount.Metrology) "
+set DESC(MTMount.Metrology) "
 <P>Position control  for sensors located in the mount
 subsystem.<BR>Raw sensor readings, calibrated positions, limit
 switches, status bits. "
 
 
-set DESC(mount.Alt) "
+set DESC(MTMount.Alt) "
 <P>This subsystem maintains application level information about
 the<BR>Altitude axis requested and actual position and status. "
 
-set DESC(mount.Az) "
+set DESC(MTMount.Az) "
 <P>This subsystem maintains application level information about the<BR>Azimuth
 axis requested and actual position and status. "
 
-set DESC(mount.Rotator) "
+set DESC(MTMount.Rotator) "
 <P>This subsystem maintains application level information about
 the<BR>instrument rotator requested and actual position and status." 
 
@@ -393,15 +393,15 @@ set SID(m2ms.Hexapod) 4.4
 set SID(m2ms.Actuators) 4.5
 set SID(m2ms.Surface) 4.6
 
-set SID(mount) 5
-set SID(mount.TC) 5.1
-set SID(mount.Electrical) 5.2
-set SID(mount.Metrology) 5.3
-set SID(mount.Alt) 5.4
-set SID(mount.Az) 5.5
+set SID(MTMount) 5
+set SID(MTMount.TC) 5.1
+set SID(MTMount.Electrical) 5.2
+set SID(MTMount.Metrology) 5.3
+set SID(MTMount.Alt) 5.4
+set SID(MTMount.Az) 5.5
 
 set SID(power) 6
-set SID(mount.Rotator) 5.6
+set SID(MTMount.Rotator) 5.6
 set SID(power.TC) 6.1
 set SID(power.Electrical) 6.2
 set SID(power.UPSs) 6.3
@@ -559,7 +559,7 @@ rotating joints including the two universal joints in the connecting
 rods."
 
 
-set DESC(mount) "Telescope mount and axes<BR>
+set DESC(MTMount) "Telescope mount and axes<BR>
 Optically the LSST telescope has a unique 3 mirror system. The primary mirror circumscribes
 the tertiary mirror such that both surfaces can be made into a single monolithic substrate 
 The camera assembly is also circumscribed within the secondary mirror
@@ -585,9 +585,9 @@ support. The entire secondary mirror assembly is attached to the top end spider 
 positioning actuators. The mounting system includes an interface plate to allow removal of the secondary mirror assembly without disconnecting the position actuators. 
 The secondary mirror assembly also incorporates a large baffle."
 
-set DESC(mount.secondary) ""
+set DESC(MTMount.secondary) ""
 
-set DESC(mount.instrumentAssembly) ""
+set DESC(MTMount.instrumentAssembly) ""
 
 
 set DESC(power) "Power supply and distribution systems"
@@ -794,34 +794,34 @@ set SDESC(m2ms.Surface) "
 <P>This topic records data pertaining to the requested and<BR>measured
 m2ms surface properties (figure, stresses, temps etc). "
 
-set SDESC(mount.TC) "
+set SDESC(MTMount.TC) "
 <P>Temperature sensing information for sensors located in the mount
 subsystem.<BR>Raw sensor readings, calibrated temperatures,
 time-series statistics, sensor health. "
 
-set SDESC(mount.Electrical) "
+set SDESC(MTMount.Electrical) "
 <P>Electrical parameters for devices located in the mount
 subsystem.<BR>Raw data, calibrated voltages, calibrated current,
 device power status. "
 
-set SDESC(mount.Metrology) "
+set SDESC(MTMount.Metrology) "
 <P>Position sensing information for sensors located in the mount
 subsystem.<BR>Raw sensor readings, calibrated positions, limit
 switches, status bits. "
 
-set SDESC(mount.Application) "
+set SDESC(MTMount.Application) "
 <P>Application specific information derived from sensors in the mount
 subsystem. "
 
-set SDESC(mount.Alt) "
+set SDESC(MTMount.Alt) "
 <P>This topic records application level information about
 the<BR>Altitude axis requested and actual position and status. "
 
-set SDESC(mount.Az) "
+set SDESC(MTMount.Az) "
 <P>This topic records application level information about the<BR>Azimuth
 axis requested and actual position and status. "
 
-set SDESC(mount.Rotator) "
+set SDESC(MTMount.Rotator) "
 <P>This topic records application level information about
 the<BR>instrument rotator requested and actual position and status." 
 
@@ -1292,7 +1292,7 @@ responses."
 
 set DESC(m1m3.Application) "This subsystem generates application level items calculated from subsystem raw data"
 set DESC(m2ms.Application) "This subsystem generates application level items calculated from subsystem raw data"
-set DESC(mount.Application) "This subsystem generates application level items calculated from subsystem raw data"
+set DESC(MTMount.Application) "This subsystem generates application level items calculated from subsystem raw data"
 set DESC(calibration.Application) "This subsystem generates application level items calculated from subsystem raw data"
 set DESC(dome.Application) "This subsystem generates application level items calculated from subsystem raw data"
 set DESC(scheduler.Application) "This subsystem generates application level items calculated from subsystem raw data"

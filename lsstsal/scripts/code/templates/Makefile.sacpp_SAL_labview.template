@@ -7,7 +7,7 @@ ifeq ($(CFG), Release)
 CC            = gcc
 CXX           = g++
 LVVERSION     = LabVIEW-2015-64
-CPPFLAGS      = $(PICFLAGS) $(GENFLAGS) $(SAL_CPPFLAGS) -D_REENTRANT -Wall -Wwrite-strings -I"." -I"$(OSPL_HOME)/examples/include" -I"$(OSPL_HOME)/examples" -I"$(OSPL_HOME)/include" -I"$(OSPL_HOME)/include/sys" -I"$(OSPL_HOME)/include/dcps/C++/SACPP" -I"$(SAL_HOME)/include" -I../../SALSubsys/cpp/src -I../../../SALSubsys/labview -I../cpp -I../../../SALSubsys/cpp -I/usr/local/./natinst/$(LVVERSION)/cintools #-DSAL_SUBSYSTEM_ID_IS_KEYED
+CPPFLAGS      = -g $(PICFLAGS) $(GENFLAGS) $(SAL_CPPFLAGS) -D_REENTRANT -Wall -Wwrite-strings -I"." -I"$(OSPL_HOME)/examples/include" -I"$(OSPL_HOME)/examples" -I"$(OSPL_HOME)/include" -I"$(OSPL_HOME)/include/sys" -I"$(OSPL_HOME)/include/dcps/C++/SACPP" -I"$(SAL_HOME)/include" -I../../SALSubsys/cpp/src -I../../../SALSubsys/labview -I../cpp -I../../../SALSubsys/cpp -I/usr/local/./natinst/$(LVVERSION)/cintools #-DSAL_SUBSYSTEM_ID_IS_KEYED
 LD            = $(CXX) $(CCFLAGS) $(CPPFLAGS)
 AR            = ar
 PICFLAGS      = -fPIC
@@ -16,9 +16,9 @@ SHLIBEXT      = .so
 OUTPUT_OPTION = -o "$@"
 COMPILE.c     = $(CC) $(CFLAGS) $(CPPFLAGS) -c
 COMPILE.cc    = $(CXX) $(CCFLAGS) $(CPPFLAGS) -c
-LDFLAGS       = -shared -fPIC -L"." -L"$(OSPL_HOME)/lib" -Wl,-rpath,\$$ORIGIN -Wl,-rpath,\$$ORIGIN/$(OSPL_HOME)/lib -L../cpp
+LDFLAGS       = -g -shared -fPIC -L"." -L"$(OSPL_HOME)/lib" -Wl,-rpath,\$$ORIGIN -Wl,-rpath,\$$ORIGIN/$(OSPL_HOME)/lib -L../cpp
 # -L"$(SAL_HOME)/lib" -llibSAL_SALData
-EXEFLAGS      = -fPIC -L"." -L"$(OSPL_HOME)/lib" -Wl,-rpath,\$$ORIGIN -Wl,-rpath,\$$ORIGIN/$(OSPL_HOME)/lib -L../cpp
+EXEFLAGS      = -g -fPIC -L"." -L"$(OSPL_HOME)/lib" -Wl,-rpath,\$$ORIGIN -Wl,-rpath,\$$ORIGIN/$(OSPL_HOME)/lib -L../cpp
 # -L"$(SAL_HOME)/lib" -llibSAL_SALData
 CCC           = $(CXX)
 MAKEFILE      = Makefile.sacpp_SALData_labview

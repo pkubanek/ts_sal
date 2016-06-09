@@ -63,7 +63,11 @@ global IDLRESERVED SAL_WORK_DIR SAL_DIR CMDS CMD_ALIASES EVTS EVENT_ALIASES
         }
         set itemid 0
         if { [info exists topics($value)] } { 
+<<<<<<< HEAD
            puts stdout "ERROR - duplicate EFDB_Topic = $value"
+=======
+           puts stdout "ERROR - duplicate EFDB_Name = $value"
+>>>>>>> hotfix/Hotfix-1
            exit
         }
         set topics($value) 1
