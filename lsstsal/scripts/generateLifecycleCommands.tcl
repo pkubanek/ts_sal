@@ -148,13 +148,13 @@ set SAL_LIFECYCLE_COMMANDS "
  <Subsystem>[set SALSubsys]</Subsystem>
  <Version>$SALVERSION</Version>
  <Author>salgenerator</Author>
- <EFDB_Topic>[set SALSubsys]_command_takeControl</EFDB_Topic>
- <Alias>takeControl</Alias>
+ <EFDB_Topic>[set SALSubsys]_command_enterControl</EFDB_Topic>
+ <Alias>enterControl</Alias>
  <Device>controller</Device>
  <Property>command</Property>
  <Action>allow</Action>
  <Value>network</Value>
- <Explanation>http://sal.lsst.org/SAL/Commands/[set SALSubsys]_command_takeControl.html</Explanation>
+ <Explanation>http://sal.lsst.org/SAL/Commands/[set SALSubsys]_command_enterControl.html</Explanation>
     <item>
       <EFDB_Name>state</EFDB_Name>
       <Description>Subsystem state</Description>
