@@ -50,7 +50,7 @@ global SAL_DIR SAL_WORK_DIR
 
 
 proc genlabviewincl { base ptypes } {
-global SAL_DIR SAL_WORK_DIR SYSDIC TELEMETRY_ALIASES LVSTRINGS
+global SAL_DIR SAL_WORK_DIR SYSDIC TELEMETRY_ALIASES LVSTRINGS LVSTRPARS
   set idarg ""
   if { [info exists SYSDIC($base,keyedID)] } {
      set idarg "unsigned int [set base]ID"
@@ -62,11 +62,13 @@ global SAL_DIR SAL_WORK_DIR SYSDIC TELEMETRY_ALIASES LVSTRINGS
      if { [string range $rec 0 13] == "typedef struct" } {
         set sname [lindex [string trim $rec "\{"] 2]
         set LVSTRINGS([set sname]) ""
+        set LVSTRPARS([set sname]) ""
      }
      set crec [string trim $rec "\{\}"]
      if { [lindex $crec 0] == "char" } {
        set param [string trim [lindex $crec 1] "*;"]
        set LVSTRINGS([set sname]) "$LVSTRINGS([set sname]), char *$param"
+       set LVSTRPARS([set sname]) "$LVSTRPARS([set sname]), $param"
      } else {
        puts $fout $rec
      }
@@ -122,9 +124,11 @@ puts stdout "reading  $SAL_WORK_DIR/include/SAL_[set base]_[set name]shmstr.tmp"
      set n2 [join [lrange [split $name _] 1 end] _]
      set type [lindex [split $name _] 0]
      if { [info exists LVSTRINGS([set base]_[set name]C)] } {
-        set xtrargs $LVSTRINGS([set base]_[set name]C)
+        set xtrargs  $LVSTRINGS([set base]_[set name]C)
+        set xtrargs2 $LVSTRPARS([set base]_[set name]C)
      } else {
         set xtrargs ""
+        set xtrargs2 ""
      }
      if { $type == "command" && $name != "command" } {
        puts $fout "
@@ -169,7 +173,7 @@ global SAL_DIR SAL_WORK_DIR
 }
 
 proc genlabviewcpp { base ptypes } {
-global SAL_DIR SAL_WORK_DIR SYSDIC LVSTRINGS
+global SAL_DIR SAL_WORK_DIR SYSDIC LVSTRINGS LVSTRPARS
   set idarg ""
   set idarg2 ""
   set idoff 0
@@ -274,11 +278,13 @@ extern \"C\" \{
 }
 
 proc genlvtelemetry { fout base name } {
-global SAL_WORK_DIR LVSTRINGS
+global SAL_WORK_DIR LVSTRINGS LVSTRPARS
      if { [info exists LVSTRINGS([set base]_[set name]C)] } {
-        set xtrargs [join $LVSTRINGS([set base]_[set name]C)]
+        set xtrargs  [join $LVSTRINGS([set base]_[set name]C)]
+        set xtrargs2 [join $LVSTRPARS([set base]_[set name]C)]
      } else {
         set xtrargs ""
+        set xtrargs2 ""
      }
    puts $fout "
     int [set base]_shm_getSample_[set name]LV([set base]_[set name]C *data $xtrargs) \{
@@ -300,7 +306,7 @@ global SAL_WORK_DIR LVSTRINGS
         int status = SAL__NO_UPDATES;
         [set base]_memIO->syncI_[set base]_[set name] = true;
         [set base]_memIO->skipOld_[set base]_[set name] = true;
-	status = [set base]_shm_getSample_[set name]LV(data $xtrargs);
+	status = [set base]_shm_getSample_[set name]LV(data $xtrargs2);
         return status;
     \}
 
@@ -320,11 +326,13 @@ global SAL_WORK_DIR LVSTRINGS
 }
 
 proc genlvcommand { fout base name } {
-global SAL_WORK_DIR LVSTRINGS
+global SAL_WORK_DIR LVSTRINGS LVSTRPARS
      if { [info exists LVSTRINGS([set base]_[set name]C)] } {
-        set xtrargs [join $LVSTRINGS([set base]_[set name]C)]
+        set xtrargs  [join $LVSTRINGS([set base]_[set name]C)]
+        set xtrargs2 [join $LVSTRPARS([set base]_[set name]C)]
      } else {
         set xtrargs ""
+        set xtrargs2 ""
      }
    set n2 [join [lrange [split $name _] 1 end] _]
    puts $fout "
@@ -377,7 +385,7 @@ global SAL_WORK_DIR LVSTRINGS
       
 
    while (status != SAL__CMD_COMPLETE && countdown != 0) \{
-//      status = [set base]_shm_getResponse_[set n2]LV(&response $xtrargs);
+//      status = [set base]_shm_getResponse_[set n2]LV(&response $xtrargs2);
       if (status != SAL__CMD_NOACK) \{
         if ([set base]_memIO->shmemIncoming_[set base]_[set name]_rcvSeqNum != cmdSeqNum) \{ 
            status = SAL__CMD_NOACK;
@@ -419,11 +427,13 @@ global SAL_WORK_DIR LVSTRINGS
 
 
 proc genlvlogevent { fout base name } {
-global SAL_WORK_DIR LVSTRINGS
+global SAL_WORK_DIR LVSTRINGS LVSTRPARS
      if { [info exists LVSTRINGS([set base]_[set name]C)] } {
-        set xtrargs [join $LVSTRINGS([set base]_[set name]C)]
+        set xtrargs  [join $LVSTRINGS([set base]_[set name]C)]
+        set xtrargs2 [join $LVSTRPARS([set base]_[set name]C)]
      } else {
         set xtrargs ""
+        set xtrargs2 ""
      }
    set n2 [join [lrange [split $name _] 1 end] _]
    puts $fout "
