@@ -5,13 +5,8 @@
 
 <SALCommand>
  <Subsystem>MTMount</Subsystem>
-<<<<<<< HEAD
- <Version>2.5.3</Version>
- <Author>salgenerator</Author>
-=======
  <Version>3.0</Version>
  <Author>Ander Ansuategi</Author>
->>>>>>> release/Release-3-RC1
  <EFDB_Topic>MTMount_command_closeMirrorCover</EFDB_Topic>
  <Alias>closeMirrorCover</Alias>
  <Device>mirrorCover</Device>
@@ -23,13 +18,8 @@
 
 <SALCommand>
  <Subsystem>MTMount</Subsystem>
-<<<<<<< HEAD
- <Version>2.5.3</Version>
- <Author>salgenerator</Author>
-=======
  <Version>3.0</Version>
  <Author>Ander Ansuategi</Author>
->>>>>>> release/Release-3-RC1
  <EFDB_Topic>MTMount_command_configure</EFDB_Topic>
  <Alias>configure</Alias>
  <Device>configure</Device>
@@ -40,11 +30,7 @@
     <item>
       <EFDB_Name>spec_id</EFDB_Name>
       <Description> </Description>
-<<<<<<< HEAD
-       <IDL_Type>string</IDL_Type>
-=======
       <IDL_Type>string</IDL_Type>
->>>>>>> release/Release-3-RC1
       <Units> </Units>
       <Count>1</Count>
     </item>
@@ -52,13 +38,8 @@
 
 <SALCommand>
  <Subsystem>MTMount</Subsystem>
-<<<<<<< HEAD
- <Version>2.5.3</Version>
- <Author>salgenerator</Author>
-=======
  <Version>3.0</Version>
  <Author>Ander Ansuategi</Author>
->>>>>>> release/Release-3-RC1
  <EFDB_Topic>MTMount_command_disableCamWrap</EFDB_Topic>
  <Alias>disableCamWrap</Alias>
  <Device>wrap</Device>
@@ -70,13 +51,8 @@
 
 <SALCommand>
  <Subsystem>MTMount</Subsystem>
-<<<<<<< HEAD
- <Version>2.5.3</Version>
- <Author>salgenerator</Author>
-=======
  <Version>3.0</Version>
  <Author>Ander Ansuategi</Author>
->>>>>>> release/Release-3-RC1
  <EFDB_Topic>MTMount_command_enableCamWrap</EFDB_Topic>
  <Alias>enableCamWrap</Alias>
  <Device>wrap</Device>
@@ -84,27 +60,12 @@
  <Action></Action>
  <Value></Value>
  <Explanation>http://sal.lsst.org/SAL/Commands/MTMount_command_enableCamWrap.html</Explanation>
-<<<<<<< HEAD
-    <item>
-      <EFDB_Name>angle</EFDB_Name>
-      <Description> </Description>
-       <IDL_Type>double</IDL_Type>
-      <Units> </Units>
-      <Count>1</Count>
-    </item>
-=======
->>>>>>> release/Release-3-RC1
 </SALCommand>
 
 <SALCommand>
  <Subsystem>MTMount</Subsystem>
-<<<<<<< HEAD
- <Version>2.5.3</Version>
- <Author>salgenerator</Author>
-=======
  <Version>3.0</Version>
  <Author>Ander Ansuategi</Author>
->>>>>>> release/Release-3-RC1
  <EFDB_Topic>MTMount_command_moveToTarget</EFDB_Topic>
  <Alias>moveToTarget</Alias>
  <Device>target</Device>
@@ -113,25 +74,6 @@
  <Value></Value>
  <Explanation>http://sal.lsst.org/SAL/Commands/MTMount_command_moveToTarget.html</Explanation>
     <item>
-<<<<<<< HEAD
-      <EFDB_Name>azimuth</EFDB_Name>
-      <Description> </Description>
-       <IDL_Type>string</IDL_Type>
-      <Units> </Units>
-      <Count>1</Count>
-    </item>
-    <item>
-      <EFDB_Name>elevation</EFDB_Name>
-      <Description> </Description>
-       <IDL_Type>string</IDL_Type>
-      <Units> </Units>
-      <Count>1</Count>
-    </item>
-    <item>
-      <EFDB_Name>cable_wrap</EFDB_Name>
-      <Description> </Description>
-       <IDL_Type>string</IDL_Type>
-=======
       <EFDB_Name>az_angle</EFDB_Name>
       <Description>Azimuth angle</Description>
       <IDL_Type>double</IDL_Type>
@@ -149,7 +91,6 @@
       <EFDB_Name>cablewrap_orientation</EFDB_Name>
       <Description>Cable Wrap orientation: Clockwise(CW), Counterclockwise(CCW)</Description>
       <IDL_Type>string</IDL_Type>
->>>>>>> release/Release-3-RC1
       <Units> </Units>
       <Count>1</Count>
     </item>
@@ -157,13 +98,8 @@
 
 <SALCommand>
  <Subsystem>MTMount</Subsystem>
-<<<<<<< HEAD
- <Version>2.5.3</Version>
- <Author>salgenerator</Author>
-=======
  <Version>3.0</Version>
  <Author>Ander Ansuategi</Author>
->>>>>>> release/Release-3-RC1
  <EFDB_Topic>MTMount_command_openMirrorCover</EFDB_Topic>
  <Alias>openMirrorCover</Alias>
  <Device>mirrorCover</Device>
@@ -175,31 +111,8 @@
 
 <SALCommand>
  <Subsystem>MTMount</Subsystem>
-<<<<<<< HEAD
- <Version>2.5.3</Version>
- <Author>salgenerator</Author>
-=======
  <Version>3.0</Version>
  <Author>Ander Ansuategi</Author>
->>>>>>> release/Release-3-RC1
- <EFDB_Topic>MTMount_command_stopMount</EFDB_Topic>
- <Alias>stopMount</Alias>
- <Device>axes</Device>
- <Property>motion</Property>
- <Action></Action>
- <Value></Value>
- <Explanation>http://sal.lsst.org/SAL/Commands/MTMount_command_stopMount.html</Explanation>
-</SALCommand>
-
-<SALCommand>
- <Subsystem>MTMount</Subsystem>
-<<<<<<< HEAD
- <Version>2.5.3</Version>
- <Author>salgenerator</Author>
-=======
- <Version>3.0</Version>
- <Author>Ander Ansuategi</Author>
->>>>>>> release/Release-3-RC1
  <EFDB_Topic>MTMount_command_trackTarget</EFDB_Topic>
  <Alias>trackTarget</Alias>
  <Device>target</Device>
@@ -208,19 +121,6 @@
  <Value></Value>
  <Explanation>http://sal.lsst.org/SAL/Commands/MTMount_command_trackTarget.html</Explanation>
     <item>
-<<<<<<< HEAD
-      <EFDB_Name>azimuth</EFDB_Name>
-      <Description> </Description>
-       <IDL_Type>string</IDL_Type>
-      <Units> </Units>
-      <Count>1</Count>
-    </item>
-    <item>
-      <EFDB_Name>elevation</EFDB_Name>
-      <Description> </Description>
-       <IDL_Type>string</IDL_Type>
-      <Units> </Units>
-=======
       <EFDB_Name>az_angle</EFDB_Name>
       <Description>Azimuth angle</Description>
       <IDL_Type>double</IDL_Type>
@@ -246,26 +146,11 @@
       <Description> Elevation velocity</Description>
       <IDL_Type>double</IDL_Type>
       <Units>Degrees/second</Units>
->>>>>>> release/Release-3-RC1
       <Count>1</Count>
     </item>
     <item>
       <EFDB_Name>time</EFDB_Name>
       <Description> </Description>
-<<<<<<< HEAD
-       <IDL_Type>double</IDL_Type>
-      <Units> </Units>
-      <Count>1</Count>
-    </item>
-    <item>
-      <EFDB_Name>cable_wrap</EFDB_Name>
-      <Description> </Description>
-       <IDL_Type>string</IDL_Type>
-      <Units> </Units>
-      <Count>1</Count>
-    </item>
-</SALCommand>
-=======
       <IDL_Type>double</IDL_Type>
       <Units>Seconds</Units>
       <Count>1</Count>
@@ -292,18 +177,4 @@
  <Value></Value>
  <Explanation>http://sal.lsst.org/SAL/Commands/MTMount_command_clearerror.html</Explanation>
 </SALCommand>
-
-<SALCommand>
- <Subsystem>MTMount</Subsystem>
- <Version>3.0</Version>
- <Author>Ander Ansuategi</Author>
- <EFDB_Topic>MTMount_command_enterControl</EFDB_Topic>
- <Alias>enterControl</Alias>
- <Device></Device>
- <Property></Property>
- <Action></Action>
- <Value></Value>
- <Explanation>http://sal.lsst.org/SAL/Commands/MTMount_command_enterControl.html</Explanation>
-</SALCommand>
->>>>>>> release/Release-3-RC1
 </SALCommandSet>
