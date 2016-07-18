@@ -107,7 +107,7 @@ import sys
 timeout=5
 from SALPY_[set subsys] import *
 mgr = SAL_[set subsys][set initializer]
-mgr.salCommander(\"[set subsys]_command_[set alias]\")
+mgr.salCommand(\"[set subsys]_command_[set alias]\")
 command = [set subsys]_command_[set alias]C()
 command.device = sys.argv\[1\]
 cmdId = mgr.issueCommand_[set alias](command)
@@ -140,7 +140,7 @@ import sys
 from SALPY_[set subsys] import *
 timeout=5
 mgr = SAL_[set subsys][set initializer]
-mgr.salCommander(\"[set subsys]_command\")
+mgr.salCommand(\"[set subsys]_command\")
 command = [set subsys]_commandC()
 command.device   = sys.argv\[1\]
 command.property = sys.argv\[2\]
