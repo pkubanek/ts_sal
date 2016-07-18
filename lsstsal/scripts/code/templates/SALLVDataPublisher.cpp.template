@@ -1,0 +1,60 @@
+
+/*
+ * This file contains the implementation for the LabVIEW API test 'SALNAMESTRINGPublisher' executable.
+ *
+ ***/
+
+#include <string>
+#include <sstream>
+#include <iostream>
+#include "SAL_SALData_shmem.h"
+#include "ccpp_sal_SALData.h"
+#include "os.h"
+
+#include "example_main.h"
+
+using namespace DDS;
+using namespace SAL_SALData_shmem;
+
+/* entry point exported and demangled so symbol can be found in shared library */
+extern "C"
+{
+  OS_API_EXPORT
+  int SALLVTelemetryPublisher(int argc, char *argv[]);
+}
+
+int SALLVTelemetryPublisher(char *topic_name)
+{
+  os_time delay_1s = { 1, 0 };
+  SALNAMESTRINGC myData;
+  long iseq;
+  SAL_SALData_shmem mgr = SAL_SALData_shmem();
+
+#ifdef SAL_SUBSYSTEM_ID_IS_KEYED
+  int SALDataID = 1;
+  mgr.salShmConnect(SALDataID);
+#else
+  mgr.salShmConnect()
+#endif
+
+  iseq = 1;
+  while (iseq < 5) {
+// INSERT_SAL_SHMOUT
+    iseq++;
+    mgr.putSample_SALTopic(&myData);
+    os_nanoSleep(delay_1s);
+  }
+
+  /* Remove the DataWriters etc */
+  mgr.salShmRelease();
+
+  return 0;
+}
+
+
+int OSPL_MAIN (int argc, char *argv[])
+{
+  return SALLVTelemetryPublisher ("SALNAMESTRING");
+}
+
+
