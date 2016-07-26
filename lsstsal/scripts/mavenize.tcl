@@ -6,7 +6,7 @@
 #
 
 proc mavenize { subsys } {
-global SAL_WORK_DIR SAL_DIR SALVERSION
+global env SAL_WORK_DIR SAL_DIR SALVERSION
   exec mkdir -p $SAL_WORK_DIR/maven/[set subsys]_[set SALVERSION]/src/main/java/org/lsst/sal/[set subsys]
   exec mkdir -p $SAL_WORK_DIR/maven/[set subsys]_[set SALVERSION]/src/test/java
   exec mkdir -p $SAL_WORK_DIR/maven/[set subsys]_[set SALVERSION]/src/main/resources
