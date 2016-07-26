@@ -333,7 +333,6 @@ puts $fout "
 					ANY_SAMPLE_STATE.value, ANY_VIEW_STATE.value,
 					ANY_INSTANCE_STATE.value);
           numsamp = SALInstance.value.length;
-          if (SALInstance.value\[0\].private_sndStamp == 0) \{numsamp=0;\}
           if (numsamp > 0) \{
  	    if (debugLevel > 0) \{
 		for (int i = 0; i < numsamp; i++) \{
@@ -472,7 +471,6 @@ salReturn SAL_[set base]::getSample([set base]::[set name]Seq data)
   status = SALReader->take(data, infoSeq, LENGTH_UNLIMITED, ANY_SAMPLE_STATE, ANY_VIEW_STATE, ANY_INSTANCE_STATE);
   checkStatus(status, \"[set base]::[set name]DataReader::take\");
   numsamp = data.length();
-  if (data\[0\].private_sndStamp == 0) \{numsamp=0;\}
   for (DDS::ULong j = 0; j < numsamp; j++)
   \{
     rcvdTime = getCurrentTime();
