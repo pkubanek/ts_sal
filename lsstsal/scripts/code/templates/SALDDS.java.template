@@ -160,7 +160,8 @@ public class SAL_SALData {
   		// Filter expr
                 String expr[] = new String[0];
                 String sFilter = "SALDataID = " + subsystemID;
-    		createContentFilteredTopic(actorIdx,"filteredtopic", sFilter, expr);
+                String ftopicName = "filtered_" + sal[actorIdx].topicName;
+   		createContentFilteredTopic(actorIdx,ftopicName, sFilter, expr);
 
 		// create DataReader
  		createReader(actorIdx,true);
@@ -980,13 +981,13 @@ public class SAL_SALData {
 
         public void  createContentFilteredTopic(int actorIdx, String topicName, String filter, String[] expr)
 	{
-	  sal[actorIdx].filteredtopic = participant.create_contentfilteredtopic(sal[actorIdx].topicName,sal[actorIdx].topic, filter, expr);
+	  sal[actorIdx].filteredtopic = participant.create_contentfilteredtopic(topicName,sal[actorIdx].topic, filter, expr);
 	  checkHandle(sal[actorIdx].filteredtopic, "DomainParticipant::create_contentfilteredtopic");
 	}
 
         public void  createContentFilteredTopic2(int actorIdx,  String topicName, String filter, String[] expr)
 	{
-	  sal[actorIdx].filteredtopic2 = participant.create_contentfilteredtopic(sal[actorIdx].topicName,sal[actorIdx].topic2, filter, expr);
+	  sal[actorIdx].filteredtopic2 = participant.create_contentfilteredtopic(topicName,sal[actorIdx].topic2, filter, expr);
 	  checkHandle(sal[actorIdx].filteredtopic2, "DomainParticipant::create_contentfilteredtopic");
 	}
 
