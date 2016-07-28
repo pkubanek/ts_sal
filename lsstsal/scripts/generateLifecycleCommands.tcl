@@ -128,13 +128,13 @@ set SAL_LIFECYCLE_COMMANDS "
  <Subsystem>[set SALSubsys]</Subsystem>
  <Version>$SALVERSION</Version>
  <Author>salgenerator</Author>
- <EFDB_Topic>[set SALSubsys]_command_exit</EFDB_Topic>
- <Alias>exit</Alias>
+ <EFDB_Topic>[set SALSubsys]_command_exitControl</EFDB_Topic>
+ <Alias>exitControl</Alias>
  <Device>controller</Device>
  <Property>command</Property>
  <Action>exit</Action>
  <Value></Value>
- <Explanation>http://sal.lsst.org/SAL/Commands/[set SALSubsys]_command_exit.html</Explanation>
+ <Explanation>http://sal.lsst.org/SAL/Commands/[set SALSubsys]_command_exitControl.html</Explanation>
     <item>
       <EFDB_Name>state</EFDB_Name>
       <Description>Subsystem state</Description>
