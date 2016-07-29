@@ -131,7 +131,7 @@ public class [set subsys]Controller_[set alias] \{
 	     cmdId = cmd.acceptCommand_[set alias](command);
 	     if (cmdId > 0) \{
 	       if (timeout > 0) \{
-	          cmd.ackCommand_[set alias](cmdId, SAL_[set subsys].SAL__CMD_INPROGRESS, timeout, \"Ack : OK\");
+	          cmd.ackCommand_[set alias](cmdId, SAL_[set subsys].SAL__CMD_INPROGRESS, 0, \"Ack : OK\");
  	          try \{Thread.sleep(timeout);\} catch (InterruptedException e)  \{ e.printStackTrace(); \}
 	       \}       
 	       cmd.ackCommand_[set alias](cmdId, SAL_[set subsys].SAL__CMD_COMPLETE, 0, \"Done : OK\");

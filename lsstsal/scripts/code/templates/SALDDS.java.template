@@ -670,20 +670,20 @@ public class SAL_SALData {
 
 	  //create Publisher
 	  createPublisher(actorIdx);
-	  createSubscriber(actorIdx);
+	  createSubscriber(SAL__SALData_ackcmd_ACTOR);
 
 	  //create types
 	  salTypeSupport(actorIdx);
 	  ackcmdTypeSupport mtr = new ackcmdTypeSupport();
-	  registerType2(actorIdx,mtr);
+	  registerType2(SAL__SALData_ackcmd_ACTOR,mtr);
 
 	  //create Topics
 #ifdef SAL_SUBSYSTEM_ID_IS_KEYED
 	  createTopic(actorIdx,stopic1);
-	  createTopic2(actorIdx,stopic2);
+	  createTopic2(SAL__SALData_ackcmd_ACTOR,stopic2);
 #else
 	  createTopic(actorIdx,cmdAlias);
-	  createTopic2(actorIdx,sresponse);
+	  createTopic2(SAL__SALData_ackcmd_ACTOR,sresponse);
 #endif
 	
 	  //create a reader for responses
@@ -691,15 +691,15 @@ public class SAL_SALData {
   	  // Filter expr
           String expr[] = new String[0];
           String sFilter = "SALDataID = " + subsystemID;
-    	  createContentFilteredTopic2(actorIdx,"filteredResponse", sFilter, expr);
+    	  createContentFilteredTopic2(SAL__SALData_ackcmd_ACTOR,"filteredResponse", sFilter, expr);
 
 	  // create DataReader
- 	  createReader2(actorIdx,true);
+ 	  createReader2(SAL__SALData_ackcmd_ACTOR,true);
 #else
-	  createReader2(actorIdx,false);
+	  createReader2(SAL__SALData_ackcmd_ACTOR,false);
 #endif
 	  sal[actorIdx].isReader = true;
-	  boolean autodispose_unregistered_instances = false;
+	  boolean autodispose_unregistered_instances = true;
 	  createWriter(actorIdx,autodispose_unregistered_instances);
 	  sal[actorIdx].isWriter = true;
 	  sal[actorIdx].isCommand = true;
@@ -765,21 +765,21 @@ public class SAL_SALData {
 	  createParticipant(domainName);
 
 	  //create Publisher
-	  createPublisher(actorIdx);
+	  createPublisher(SAL__SALData_ackcmd_ACTOR);
 	  createSubscriber(actorIdx);
 
 	  //create types
 	  salTypeSupport(actorIdx);
 	  ackcmdTypeSupport mtr = new ackcmdTypeSupport();
-	  registerType2(actorIdx,mtr);
+	  registerType2(SAL__SALData_ackcmd_ACTOR,mtr);
 
 	  //create Topics
 #ifdef SAL_SUBSYSTEM_ID_IS_KEYED
 	  createTopic(actorIdx,stopic1);
-	  createTopic2(actorIdx,stopic2);
+	  createTopic2(SAL__SALData_ackcmd_ACTOR,stopic2);
 #else
 	  createTopic(actorIdx,cmdAlias);
-	  createTopic2(actorIdx,sresponse);
+	  createTopic2(SAL__SALData_ackcmd_ACTOR,sresponse);
 #endif
 
 	  //create a reader for commands
@@ -792,8 +792,8 @@ public class SAL_SALData {
 #else
 	  createReader(actorIdx,false);
 #endif
-	  boolean autodispose_unregistered_instances = false;
-	  createWriter2(actorIdx,autodispose_unregistered_instances);
+	  boolean autodispose_unregistered_instances = true;
+	  createWriter2(SAL__SALData_ackcmd_ACTOR,autodispose_unregistered_instances);
 	  sal[actorIdx].isWriter = true;
 	  sal[actorIdx].isProcessor = true;
 	}
