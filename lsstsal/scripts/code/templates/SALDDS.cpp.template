@@ -215,7 +215,7 @@ salReturn SAL_SALData::salTelemetryPub(int actorIdx)
   // create DataWriter :
   // If autodispose_unregistered_instances is set to true (default value),
   // you will have to start the subscriber before the publisher
-  bool autodispose_unregistered_instances = true;
+  bool autodispose_unregistered_instances = false;
   createWriter(actorIdx,autodispose_unregistered_instances);
   DataWriter_var dwriter = getWriter(actorIdx);
   sal[actorIdx].isWriter = true;
@@ -289,7 +289,7 @@ int SAL_SALData::issueCommand( SALData::command data )
   // create DataWriter :
   // If autodispose_unregistered_instances is set to true (default value),
   // you will have to start the subscriber before the publisher
-  bool autodispose_unregistered_instances = true;
+  bool autodispose_unregistered_instances = false;
   if (!hasWriter) {
      createWriter(autodispose_unregistered_instances);
      hasWriter = true;
@@ -332,7 +332,7 @@ int SAL_SALData::issueCommandC( SALData_commandC *data )
   // create DataWriter :
   // If autodispose_unregistered_instances is set to true (default value),
   // you will have to start the subscriber before the publisher
-  bool autodispose_unregistered_instances = true;
+  bool autodispose_unregistered_instances = false;
   if (!hasWriter) {
      createWriter(autodispose_unregistered_instances);
      hasWriter = true;
@@ -914,7 +914,7 @@ salReturn SAL_SALData::salCommand()
   // create topic
   createContentFilteredTopic2("filteredResponse", sFilter.in(), sSeqExpr);
  // create DataReader
-  createReader2(true);
+  createReader2(false);
 #else
   createReader2(false);
 #endif
@@ -966,12 +966,12 @@ salReturn SAL_SALData::salCommand(char *cmdAlias)
   // create topic
   createContentFilteredTopic2(SAL__SALData_ackcmd_ACTOR,"filteredResponse", sFilter.in(), sSeqExpr);
  // create DataReader
-  createReader2(SAL__SALData_ackcmd_ACTOR,true);
+  createReader2(SAL__SALData_ackcmd_ACTOR,false);
 #else
   createReader2(SAL__SALData_ackcmd_ACTOR,false);
 #endif
   sal[actorIdx].isReader = true;
-  createWriter(actorIdx,false);
+  createWriter(actorIdx,true);
   sal[actorIdx].isCommand = true;
   sal[actorIdx].isWriter = true;
   sal[actorIdx].sndSeqNum = time(&sTime);
@@ -1019,11 +1019,11 @@ salReturn SAL_SALData::salProcessor()
   // create topic
   createContentFilteredTopic("filteredCommand", sFilter.in(), sSeqExpr);
  // create DataReader
-  createReader(true);
+  createReader(false);
 #else
   createReader(false);
 #endif
-  bool autodispose_unregistered_instances = false;
+  bool autodispose_unregistered_instances = true;
   createWriter2(autodispose_unregistered_instances);
   hasWriter = true;
   hasProcessor = true;
@@ -1072,7 +1072,7 @@ salReturn SAL_SALData::salProcessor(char *cmdAlias)
   // create topic
   createContentFilteredTopic(actorIdx,"filteredCommand", sFilter.in(), sSeqExpr);
  // create DataReader
-  createReader(actorIdx,true);
+  createReader(actorIdx,false);
 #else
   createReader(actorIdx,false);
 #endif
@@ -1413,7 +1413,7 @@ void SAL_SALData::createWriter2(int actorIdx)
   int status;
   status = sal[actorIdx].publisher->get_default_datawriter_qos(sal[actorIdx].dw_qos);
   checkStatus(status, "DDS::DomainParticipant::get_default_publisher_qos");
-  status = sal[actorIdx].publisher->copy_from_topic_qos(sal[actorIdx].dw_qos, sal[actorIdx].reliable_topic_qos);
+  status = sal[actorIdx].publisher->copy_from_topic_qos(sal[actorIdx].dw_qos, sal[actorIdx].reliable_topic_qos2);
   checkStatus(status, "DDS::Publisher::copy_from_topic_qos");
   sal[actorIdx].dw_qos.writer_data_lifecycle.autodispose_unregistered_instances = false;
   sal[actorIdx].writer2 = sal[actorIdx].publisher->create_datawriter(sal[actorIdx].topic2.in(),
@@ -1443,7 +1443,7 @@ void SAL_SALData::createWriter2(bool autodispose_unregistered_instances)
 {
   status = publisher->get_default_datawriter_qos(dw_qos);
   checkStatus(status, "DDS::DomainParticipant::get_default_publisher_qos");
-  status = publisher->copy_from_topic_qos(dw_qos, reliable_topic_qos);
+  status = publisher->copy_from_topic_qos(dw_qos, reliable_topic_qos2);
   checkStatus(status, "DDS::Publisher::copy_from_topic_qos");
   // Set autodispose to false so that you can start
   // the subscriber after the publisher
@@ -1476,7 +1476,7 @@ void SAL_SALData::createWriter2(int actorIdx,bool autodispose_unregistered_insta
 {
   status = sal[actorIdx].publisher->get_default_datawriter_qos(sal[actorIdx].dw_qos);
   checkStatus(status, "DDS::DomainParticipant::get_default_publisher_qos");
-  status = sal[actorIdx].publisher->copy_from_topic_qos(sal[actorIdx].dw_qos, sal[actorIdx].reliable_topic_qos);
+  status = sal[actorIdx].publisher->copy_from_topic_qos(sal[actorIdx].dw_qos, sal[actorIdx].reliable_topic_qos2);
   checkStatus(status, "DDS::Publisher::copy_from_topic_qos");
   // Set autodispose to false so that you can start
   // the subscriber after the publisher

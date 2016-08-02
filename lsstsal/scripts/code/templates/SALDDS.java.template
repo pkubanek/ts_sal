@@ -649,7 +649,7 @@ public class SAL_SALData {
     	  createContentFilteredTopic2("filteredResponse", sFilter, expr);
 
 	  // create DataReader
- 	  createReader2(true);
+ 	  createReader2(false);
 #else
 	  createReader2(false);
 #endif
@@ -694,12 +694,12 @@ public class SAL_SALData {
     	  createContentFilteredTopic2(SAL__SALData_ackcmd_ACTOR,"filteredResponse", sFilter, expr);
 
 	  // create DataReader
- 	  createReader2(SAL__SALData_ackcmd_ACTOR,true);
+ 	  createReader2(SAL__SALData_ackcmd_ACTOR,false);
 #else
 	  createReader2(SAL__SALData_ackcmd_ACTOR,false);
 #endif
 	  sal[actorIdx].isReader = true;
-	  boolean autodispose_unregistered_instances = true;
+	  boolean autodispose_unregistered_instances = false;
 	  createWriter(actorIdx,autodispose_unregistered_instances);
 	  sal[actorIdx].isWriter = true;
 	  sal[actorIdx].isCommand = true;
@@ -743,7 +743,7 @@ public class SAL_SALData {
           String expr[] = new String[0];
           String sFilter = "SALDataID = " + subsystemID;
     	  createContentFilteredTopic("filteredCommand", sFilter, expr);
- 	  createReader(true);
+ 	  createReader(false);
 #else
 	  createReader(false);
 #endif
@@ -788,11 +788,11 @@ public class SAL_SALData {
           String expr[] = new String[0];
           String sFilter = "SALDataID = " + subsystemID;
     	  createContentFilteredTopic(actorIdx,"filteredCommand", sFilter, expr);
- 	  createReader(actorIdx,true);
+ 	  createReader(actorIdx,false);
 #else
 	  createReader(actorIdx,false);
 #endif
-	  boolean autodispose_unregistered_instances = true;
+	  boolean autodispose_unregistered_instances = false;
 	  createWriter2(SAL__SALData_ackcmd_ACTOR,autodispose_unregistered_instances);
 	  sal[actorIdx].isWriter = true;
 	  sal[actorIdx].isProcessor = true;
@@ -1142,7 +1142,7 @@ public class SAL_SALData {
         
 	public void createWriter2(int actorIdx, boolean autodispose) {
 		sal[actorIdx].publisher.get_default_datawriter_qos(sal[actorIdx].WQosH);
-		sal[actorIdx].publisher.copy_from_topic_qos(sal[actorIdx].WQosH, sal[actorIdx].topicQos.value);
+		sal[actorIdx].publisher.copy_from_topic_qos(sal[actorIdx].WQosH, sal[actorIdx].topicQos2.value);
 		sal[actorIdx].WQosH.value.writer_data_lifecycle.autodispose_unregistered_instances = autodispose;
 		sal[actorIdx].writer2 = sal[actorIdx].publisher.create_datawriter(sal[actorIdx].topic2, sal[actorIdx].WQosH.value, null,STATUS_MASK_NONE.value);
 		checkHandle(sal[actorIdx].writer2, "Publisher.create_datawriter");

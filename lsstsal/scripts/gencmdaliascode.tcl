@@ -102,9 +102,7 @@ int SAL_SALData::issueCommand_[set i]( SALData_command_[set i]C *data )
   ReturnCode_t status = SALWriter->write(Instance, cmdHandle);
   sal\[actorIdx\].sndSeqNum++;
   checkStatus(status, \"SALCommand_[set i]DataWriter::write\");  
-#ifdef SAL_SUBSYSTEM_ID_IS_KEYED
     SALWriter->unregister_instance(Instance, cmdHandle);
-#endif
   if (status != SAL__OK) \{
       if (debugLevel >= SAL__LOG_ROUTINES) \{
           logError(status);
@@ -135,30 +133,35 @@ int SAL_SALData::acceptCommand_[set i]( SALData_command_[set i]C *data )
   DataReader_var dreader = getReader(actorIdx);
   SALData::command_[set i]DataReader_var SALReader = SALData::command_[set i]DataReader::_narrow(dreader.in());
   checkHandle(SALReader.in(), \"SALData::command_[set i]DataReader::_narrow\");
-  istatus = SALReader->take(Instances, info, 1,NOT_READ_SAMPLE_STATE, NEW_VIEW_STATE, ANY_INSTANCE_STATE);
+  istatus = SALReader->take(Instances, info, 1,ANY_SAMPLE_STATE, ANY_VIEW_STATE, ANY_INSTANCE_STATE);
   checkStatus(istatus, \"SALData::command_[set i]DataReader::take\");
   if (Instances.length() > 0) \{
-   if (info\[0\].valid_data) \{
-    if (debugLevel > 0) \{
+   j = Instances.length()-1;
+   if (info\[j\].valid_data) \{
+    if (debugLevel > 8) \{
       cout << \"=== \[acceptCommandC $i\] reading a command containing :\" << endl;
-      cout << \"    seqNum   : \" << Instances\[0\].private_seqNum << endl;
-      cout << \"    device   : \" << Instances\[0\].device << endl;
-      cout << \"    property : \" << Instances\[0\].property << endl;
-      cout << \"    action   : \" << Instances\[0\].action << endl;
-      cout << \"    value    : \" << Instances\[0\].value << endl;
+      cout << \"    seqNum   : \" << Instances\[j\].private_seqNum << endl;
+      cout << \"    device   : \" << Instances\[j\].device << endl;
+      cout << \"    property : \" << Instances\[j\].property << endl;
+      cout << \"    action   : \" << Instances\[j\].action << endl;
+      cout << \"    value    : \" << Instances\[j\].value << endl;
+      cout << \"    sample-state : \" << info\[j\].sample_state << endl;
+      cout << \"    view-state : \" << info\[j\].view_state << endl;
+      cout << \"    instance-state : \" << info\[j\].instance_state << endl;
     \}
 #ifdef SAL_SUBSYSTEM_ID_IS_KEYED
     ackdata.SALDataID = subsystemID;
 #endif
-    ackdata.private_origin = Instances\[0\].private_origin;
-    ackdata.private_seqNum = Instances\[0\].private_seqNum;
+    ackdata.private_origin = Instances\[j\].private_origin;
+    ackdata.private_seqNum = Instances\[j\].private_seqNum;
     ackdata.error = 0;
     ackdata.result = DDS::string_dup(\"SAL ACK\");
-    status = Instances\[0\].private_seqNum;
+    status = Instances\[j\].private_seqNum;
     rcvdTime = getCurrentTime();
-    rcvSeqNum = status;
-    rcvOrigin = Instances\[0\].private_origin;
-    ackdata.ack = SAL__CMD_ACK;"
+    if (( int(rcvdTime) - status) < 2 ) \{
+      rcvSeqNum = status;
+      rcvOrigin = Instances\[j\].private_origin;
+      ackdata.ack = SAL__CMD_ACK;"
         set fin [open $SAL_WORK_DIR/include/SAL_[set subsys]_command_[set i]Cget.tmp r]
         while { [gets $fin rec] > -1 } {
            puts $fout $rec
@@ -172,9 +175,13 @@ int SAL_SALData::acceptCommand_[set i]( SALData_command_[set i]C *data )
     ackdata.private_sndStamp = getCurrentTime();
     istatus = SALWriter->write(ackdata, ackHandle);
     checkStatus(istatus, \"SALData::ackcmdDataWriter::write\");
-#ifdef SAL_SUBSYSTEM_ID_IS_KEYED
     SALWriter->unregister_instance(ackdata, ackHandle);
-#endif
+     \} else \{
+        if (debugLevel > 8) \{
+          cout << \"    Old command ignored : \" << status << \":\" << int(rcvdTime) << endl;
+        \}
+        status = 0;
+     \}
    \}
   \} else \{
     status = 0;
@@ -221,29 +228,35 @@ salReturn SAL_SALData::waitForCompletion_[set i]( int cmdSeqNum , unsigned int t
 salReturn SAL_SALData::getResponse_[set i](SALData::ackcmdSeq data)
 \{
   int actorIdx = SAL__SALData_ackcmd_ACTOR;
+  int actorIdxCmd = SAL__SALData_command_[set i]_ACTOR;
   SampleInfoSeq info;
   ReturnCode_t status = SAL__CMD_NOACK;
   ReturnCode_t istatus =  -1;
+  int j=0;
   DataReader_var dreader = getReader2(actorIdx);
   SALData::ackcmdDataReader_var SALReader = SALData::ackcmdDataReader::_narrow(dreader.in());
   checkHandle(SALReader.in(), \"SALData::ackcmdDataReader::_narrow\");
-  istatus = SALReader->take(data, info, 1,NOT_READ_SAMPLE_STATE, NEW_VIEW_STATE, ANY_INSTANCE_STATE);
-  sal\[actorIdx\].rcvSeqNum = 0;
-  sal\[actorIdx\].rcvOrigin = 0;
+  istatus = SALReader->take(data, info, 1,ANY_SAMPLE_STATE, ANY_VIEW_STATE, ANY_INSTANCE_STATE);
+  sal\[actorIdxCmd\].rcvSeqNum = 0;
+  sal\[actorIdxCmd\].rcvOrigin = 0;
   checkStatus(istatus, \"SALData::ackcmdDataReader::take\");
   if (data.length() > 0) \{
-   if (data\[0\].private_seqNum > 0) \{
-    if (debugLevel > 0) \{
+   j = data.length()-1;
+   if (data\[j\].private_seqNum > 0) \{
+    if (debugLevel > 8) \{
       cout << \"=== \[getResponse_[set i]\] reading a message containing :\" << endl;
-      cout << \"    seqNum   : \" << data\[0\].private_seqNum << endl;
-      cout << \"    error    : \" << data\[0\].error << endl;
-      cout << \"    ack      : \" << data\[0\].ack << endl;
-      cout << \"    result   : \" << data\[0\].result << endl;
+      cout << \"    seqNum   : \" << data\[j\].private_seqNum << endl;
+      cout << \"    error    : \" << data\[j\].error << endl;
+      cout << \"    ack      : \" << data\[j\].ack << endl;
+      cout << \"    result   : \" << data\[j\].result << endl;
+      cout << \"    sample-state : \" << info\[j\].sample_state << endl;
+      cout << \"    view-state : \" << info\[j\].view_state << endl;
+      cout << \"    instance-state : \" << info\[j\].instance_state << endl;
     \}
-    status = data\[0\].ack;
+    status = data\[j\].ack;
     rcvdTime = getCurrentTime();
-    sal\[actorIdx\].rcvSeqNum = data\[0\].private_seqNum;
-    sal\[actorIdx\].rcvOrigin = data\[0\].private_origin;
+    sal\[actorIdxCmd\].rcvSeqNum = data\[j\].private_seqNum;
+    sal\[actorIdxCmd\].rcvOrigin = data\[j\].private_origin;
    \} else \{
       cout << \"=== \[getResponse_[set i]\] No ack yet!\" << endl;
       status = SAL__CMD_NOACK;
@@ -287,9 +300,7 @@ salReturn SAL_SALData::ackCommand_[set i]( int cmdId, salLONG ack, salLONG error
    ackdata.private_sndStamp = getCurrentTime();
    istatus = SALWriter->write(ackdata, ackHandle);
    checkStatus(istatus, \"SALData::ackcmdDataWriter::return_loan\");
-#ifdef SAL_SUBSYSTEM_ID_IS_KEYED
     SALWriter->unregister_instance(ackdata, ackHandle);
-#endif
    return SAL__OK;
 \}
 "
@@ -358,10 +369,10 @@ global CMD_ALIASES CMDS SYSDIC
   		DataReader dreader = getReader(actorIdx);
   		command_[set i]DataReader SALReader = command_[set i]DataReaderHelper.narrow(dreader);
                 info = new SampleInfoSeqHolder();
-  		istatus = SALReader.take(aCmd, info, 1,NOT_READ_SAMPLE_STATE.value, NEW_VIEW_STATE.value, ANY_INSTANCE_STATE.value);
+  		istatus = SALReader.take(aCmd, info, 1,ANY_SAMPLE_STATE.value, ANY_VIEW_STATE.value, ANY_INSTANCE_STATE.value);
 		if (aCmd.value.length > 0) \{
    		  if (info.value\[0\].valid_data) \{
-    		     if (debugLevel > 0) \{
+    		     if (debugLevel > 8) \{
       			System.out.println(  \"=== \[acceptCommand\] $i reading a command containing :\" );
       			System.out.println(  \"    seqNum   : \" + aCmd.value\[0\].private_seqNum );
       			System.out.println(  \"    device   : \" + aCmd.value\[0\].device);
@@ -392,14 +403,11 @@ global CMD_ALIASES CMDS SYSDIC
 		    ackdata.ack = SAL__CMD_ACK;"
       if { [info exists SYSDIC($subsys,keyedID)] } {
          puts $fout "		    ackdata.SALDataID = subsystemID;
-		    ackHandle = SALWriter.register_instance(ackdata);"
+		    ackHandle = SALWriter.register_instance(ackdata);
       }
       puts $fout "
-		    istatus = SALWriter.write(ackdata, ackHandle);"
-      if { [info exists SYSDIC($subsys,keyedID)] } {
-         puts $fout "
+		    istatus = SALWriter.write(ackdata, ackHandle);
 		    SALWriter.unregister_instance(ackdata, ackHandle);"
-      }
       puts $fout "
 		 \}
                 \} else \{
@@ -453,17 +461,18 @@ global CMD_ALIASES CMDS SYSDIC
 	  int status =  -1;
           int lastsample = 0;
           int actorIdx = SAL__SALData_ackcmd_ACTOR;
+          int actorIdxCmd = SAL__SALData_command_[set i]_ACTOR;
 
 	  DataReader dreader = getReader2(actorIdx);
 	  ackcmdDataReader SALReader = ackcmdDataReaderHelper.narrow(dreader);
   	  SampleInfoSeqHolder infoSeq = new SampleInfoSeqHolder();
 	  SALReader.take(data, infoSeq, 1, 
-					NOT_READ_SAMPLE_STATE.value,
-					NEW_VIEW_STATE.value,
+					ANY_SAMPLE_STATE.value,
+					ANY_VIEW_STATE.value,
 					ANY_INSTANCE_STATE.value);
 	  if (data.value.length > 0) \{
  		for (int i = 0; i < data.value.length; i++) \{
-                     if ( debugLevel > 0) \{
+                     if ( debugLevel > 8) \{
 				System.out.println(\"=== \[getResponse_[set i]\] message received :\");
 				System.out.println(\"    revCode  : \"
 						+ data.value\[i\].private_revCode);
@@ -471,8 +480,8 @@ global CMD_ALIASES CMDS SYSDIC
                     lastsample = i;
 		\}
 	 	status = data.value\[lastsample\].ack;
-	  	sal\[actorIdx\].rcvSeqNum = data.value\[lastsample\].private_seqNum;
-	  	sal\[actorIdx\].rcvOrigin = data.value\[lastsample\].private_origin;
+	  	sal\[actorIdxCmd\].rcvSeqNum = data.value\[lastsample\].private_seqNum;
+	  	sal\[actorIdxCmd\].rcvOrigin = data.value\[lastsample\].private_origin;
 	  \} else \{
 	        System.out.println(\"=== \[getResponse_[set i]\] No ack yet!\"); 
 	        status = SAL__CMD_NOACK;
@@ -514,9 +523,7 @@ global CMD_ALIASES CMDS SYSDIC
    		ackHandle = SALWriter.register_instance(ackdata);"
       }
       puts $fout "   		istatus = SALWriter.write(ackdata, ackHandle);"
-      if { [info exists SYSDIC($subsys,keyedID)] } {
-         puts $fout "    		SALWriter.unregister_instance(ackdata, ackHandle);"
-      }
+      puts $fout "    		SALWriter.unregister_instance(ackdata, ackHandle);"
       puts $fout "
    		return SAL__OK;
 	\}
