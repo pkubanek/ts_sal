@@ -79,7 +79,7 @@ int SAL_SALData::issueCommand_[set i]( SALData_command_[set i]C *data )
 #endif
 
   Instance.private_revCode =  DDS::string_dup(\"LSST TEST REVCODE\");
-  Instance.private_sndStamp = 1;
+  Instance.private_sndStamp = 0.0;
   Instance.private_origin =   1;
   Instance.private_seqNum =   sal\[actorIdx\].sndSeqNum;
   Instance.private_host =     1;"
@@ -158,7 +158,7 @@ int SAL_SALData::acceptCommand_[set i]( SALData_command_[set i]C *data )
     ackdata.result = DDS::string_dup(\"SAL ACK\");
     status = Instances\[j\].private_seqNum;
     rcvdTime = getCurrentTime();
-    if (( int(rcvdTime) - status) < 2 ) \{
+    if ( int(rcvdTime - Instances\[j\].private_sndStamp) < 2 ) \{
       rcvSeqNum = status;
       rcvOrigin = Instances\[j\].private_origin;
       ackdata.ack = SAL__CMD_ACK;"
@@ -326,12 +326,13 @@ global CMD_ALIASES CMDS SYSDIC
 	  if (sal\[actorIdx\].isCommand == false) \{
 	     salCommand(sal\[actorIdx\].topicName);
 	     sal\[actorIdx\].isCommand = true;
-	     sal\[actorIdx\].sndSeqNum = 123;
+	     sal\[actorIdx\].sndSeqNum = (int)getCurrentTime();
 	  \}
 	  DataWriter dwriter = getWriter(actorIdx);	
 	  command_[set i]DataWriter SALWriter = command_[set i]DataWriterHelper.narrow(dwriter);
 	  data.private_revCode = \"LSST TEST COMMAND\";
-	  data.private_seqNum = sal\[actorIdx\].sndSeqNum;"
+	  data.private_seqNum = sal\[actorIdx\].sndSeqNum;
+          data.private_sndStamp = getCurrentTime();"
       if { [info exists SYSDIC($subsys,keyedID)] } {
         puts $fout "	  data.SALDataID = subsystemID;
 	  cmdHandle = SALWriter.register_instance(data);"
@@ -380,35 +381,43 @@ global CMD_ALIASES CMDS SYSDIC
       			System.out.println(  \"    action   : \" + aCmd.value\[0\].action);
       			System.out.println(  \"    value    : \" + aCmd.value\[0\].value);
     		    \}
-                    ackdata = new SALData.ackcmd();"
+    		    status = aCmd.value\[0\].private_seqNum;
+    		    double rcvdTime = getCurrentTime();
+		    int dTime = (int)(rcvdTime - aCmd.value\[0\].private_sndStamp);
+    		    if ( dTime < 2 ) \{
+                      ackdata = new SALData.ackcmd();"
       if { [info exists SYSDIC($subsys,keyedID)] } {
-         puts $fout "	            ackdata.SALDataID = subsystemID;"
+         puts $fout "	              ackdata.SALDataID = subsystemID;"
       }
-      puts $fout "		    ackdata.private_origin = aCmd.value\[0\].private_origin;
-		    ackdata.private_seqNum = aCmd.value\[0\].private_seqNum;
-		    ackdata.error  = 0;
-		    ackdata.result = \"SAL ACK\";
-                    data.device    = aCmd.value\[0\].device;
-                    data.property  = aCmd.value\[0\].property;
-                    data.action    = aCmd.value\[0\].action;
-                    data.value     = aCmd.value\[0\].value;"
+      puts $fout "		      ackdata.private_origin = aCmd.value\[0\].private_origin;
+		      ackdata.private_seqNum = aCmd.value\[0\].private_seqNum;
+		      ackdata.error  = 0;
+		      ackdata.result = \"SAL ACK\";
+                      data.device    = aCmd.value\[0\].device;
+                      data.property  = aCmd.value\[0\].property;
+                      data.action    = aCmd.value\[0\].action;
+                      data.value     = aCmd.value\[0\].value;"
            foreach p $CMDS($subsys,$i,param) {
               set apar [lindex [split [lindex [string trim $p "\{\}"] 1] "()"] 0] 
-              puts $fout "                    data.$apar = aCmd.value\[0\].$apar;"
+              puts $fout "                      data.$apar = aCmd.value\[0\].$apar;"
            }
            puts $fout "
-		    status = aCmd.value\[0\].private_seqNum;
-		    rcvSeqNum = status;
-		    rcvOrigin = aCmd.value\[0\].private_origin;
-		    ackdata.ack = SAL__CMD_ACK;"
+		      status = aCmd.value\[0\].private_seqNum;
+		      rcvSeqNum = status;
+		      rcvOrigin = aCmd.value\[0\].private_origin;
+		      ackdata.ack = SAL__CMD_ACK;"
       if { [info exists SYSDIC($subsys,keyedID)] } {
-         puts $fout "		    ackdata.SALDataID = subsystemID;
-		    ackHandle = SALWriter.register_instance(ackdata);
+         puts $fout "		      ackdata.SALDataID = subsystemID;
+		      ackHandle = SALWriter.register_instance(ackdata);
       }
       puts $fout "
-		    istatus = SALWriter.write(ackdata, ackHandle);
-		    SALWriter.unregister_instance(ackdata, ackHandle);"
-      puts $fout "
+		      istatus = SALWriter.write(ackdata, ackHandle);
+		      SALWriter.unregister_instance(ackdata, ackHandle);"
+      puts $fout "  \} else \{
+    		     if (debugLevel > 8) \{
+      			System.out.println(  \"    Old command ignored :   \" + dTime );
+                     \}
+                   \}
 		 \}
                 \} else \{
   	           status = 0;

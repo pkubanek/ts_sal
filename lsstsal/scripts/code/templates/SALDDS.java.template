@@ -259,6 +259,13 @@ public class SAL_SALData {
 	}
 #endif
 
+	public double getCurrentTime()
+	{
+		long ms = System.currentTimeMillis();
+  		double ts = (double)ms / 1000.0;
+		return ts;
+	}
+
 	public int issueCommand( command data )
 	{
   	  long cmdHandle = HANDLE_NIL.value;
@@ -703,7 +710,7 @@ public class SAL_SALData {
 	  createWriter(actorIdx,autodispose_unregistered_instances);
 	  sal[actorIdx].isWriter = true;
 	  sal[actorIdx].isCommand = true;
-          sal[actorIdx].sndSeqNum = 123;
+          sal[actorIdx].sndSeqNum = (int)getCurrentTime();
 	}
 
 
