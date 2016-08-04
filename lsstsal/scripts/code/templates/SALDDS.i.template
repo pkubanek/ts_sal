@@ -1,4 +1,4 @@
-%module SAL_SALData
+%module SALPY_swig_SALData
 
 %include "typemaps.i"
 %include "carrays.i"
@@ -18,10 +18,8 @@
   #include <string.h>
   #include <stdlib.h>
   #include "SAL_defines.h"
-  #include "ccpp_dds_dcps.h"
-// INSERT TYPE INCLUDES
   #include "CheckStatus.h"
-  #include "SAL_SALDataC.h"
+  #include "SAL_SALData.h"
 
 %}
 

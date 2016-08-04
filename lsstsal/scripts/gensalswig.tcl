@@ -24,13 +24,8 @@ global SAL_DIR SAL_WORK_DIR SYSDIC
   set fouth [open [set base]/python/SAL_[set base].i w]
   set rec ""
   while { [string range $rec 0 21] != "// INSERT TYPE SUPPORT" } {
-     if { [string range $rec 0 22] == "// INSERT TYPE INCLUDES" } {
-       puts $fouth "  #include \"ccpp_sal_[lindex [split $base _] 0].h\""
-       gets $finh rec ; puts $fouth $rec
-     } else {
        gets $finh rec
        puts $fouth $rec
-     }
   }
   foreach i $atypes {
        set ptypes [split [exec grep pragma $i] \n]
@@ -59,5 +54,25 @@ global SAL_WORK_DIR
   close $frep
   exec chmod 755 /tmp/sreplace3.sal
   catch { set result [exec /tmp/sreplace3.sal] } bad
+  set fout [open $SAL_WORK_DIR/[set base]/python/Makefile_[set base].swig w]
+  puts $fout "
+LINK = \$(CXX) \$(LDFLAGS)
+all:
+	swig -Wall -c++ -python -I../cpp/src SAL_[set base].i
+	g++ -fPIC -Wall -Wextra  -I../cpp -I../cpp/src -I\$(SAL_HOME)/include \\
+		-I/cpp/src -I\$(OSPL_HOME)/include/dcps/C++/SACPP \\
+		-I/cpp/src -I\$(OSPL_HOME)/include/dcps/C++/CCPP \\
+		-I\$(PYTHON_BUILD_LOCATION)/include/python\$(PYTHON_BUILD_VERSION) \\
+		-shared SAL_[set base]_wrap.cxx \\
+		../cpp/src/SAL_[set base].cpp ../cpp/src/CheckStatus.cpp -o SALPY_swig_[set base].so \\
+		-lpython\$(PYTHON_BUILD_VERSION) -lstdc++
+"
+  close $fout
+  cd $SAL_WORK_DIR/[set base]/python
+  exec make -f Makefile_[set base].swig
 }
+
+
+
+
 
