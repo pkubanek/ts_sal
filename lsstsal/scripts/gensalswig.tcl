@@ -64,7 +64,12 @@ all:
 		-I/cpp/src -I\$(OSPL_HOME)/include/dcps/C++/CCPP \\
 		-I\$(PYTHON_BUILD_LOCATION)/include/python\$(PYTHON_BUILD_VERSION) \\
 		-shared SAL_[set base]_wrap.cxx \\
-		../cpp/src/SAL_[set base].cpp ../cpp/src/CheckStatus.cpp -o SALPY_swig_[set base].so \\
+		../cpp/src/SAL_[set base].cpp ../cpp/src/CheckStatus.cpp \\
+		-o SALPY_swig_[set base].so \\
+		-L\$(OSPL_HOME)/lib -L../cpp \\
+		-lsacpp_[set base]_types -ldcpssacpp -ldcpsgapi -lddsuser -lddskernel \\
+		-lddsserialization -lddsconfparser -lddsconf -lddsdatabase -lddsutil -lddsos \\
+		-ldl  -lpthread \\
 		-lpython\$(PYTHON_BUILD_VERSION) -lstdc++
 "
   close $fout
