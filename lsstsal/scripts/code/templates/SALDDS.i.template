@@ -1,0 +1,112 @@
+%module SAL_SALData
+
+%include "typemaps.i"
+%include "carrays.i"
+%include <std_string.i>
+
+%array_class(unsigned short,uShortArray);
+
+%{
+
+
+
+  #include <string>
+  #include <cassert>
+  #include <string>
+  #include <iostream>
+  #include <fstream>
+  #include <string.h>
+  #include <stdlib.h>
+  #include "SAL_defines.h"
+  #include "ccpp_dds_dcps.h"
+// INSERT TYPE INCLUDES
+  #include "CheckStatus.h"
+  #include "SAL_SALDataC.h"
+
+%}
+
+  using namespace std;
+
+
+  class SAL_SALData
+  {
+      bool hasReader;
+      bool hasWriter;
+      bool hasCommand;
+      bool hasEventReader;
+      bool hasEventWriter;
+      bool hasProcessor;
+      int subsystemID;
+      int debugLevel;
+      int cmdSeqNum;
+      int sndSeqNum;
+      int rcvSeqNum;
+      int rcvOrigin;
+      double rcvdTime;
+      salU64  origin;
+      char   domainName[128];
+
+    public:
+
+#ifdef SAL_SUBSYSTEM_ID_IS_KEYED
+     SAL_SALData(int aKey);
+#else
+     SAL_SALData();
+#endif
+
+      salReturn salTypeSupport(char *topicName);
+      salReturn salTelemetryPub(char *topicName);
+      salReturn salTelemetrySub(char *topicName);
+
+
+      double getCurrentTime();
+      double getRcvdTime();
+
+      void salShutdown();
+#ifdef SAL_SUBSYSTEM_ID_IS_KEYED
+      void salInitialize(int aKey);
+#else
+      void salInitialize();
+#endif
+      salReturn salCommand();
+      salReturn salProcessor();
+      int issueCommandC( SALData_commandC *data);
+      int acceptCommandC( SALData_commandC *data);
+      salReturn ackCommand( int cmdSeqNum, salLONG  ack, salLONG error, char *result );
+      salReturn checkCommand( int cmdSeqNum );
+      salReturn cancelCommand( int cmdSeqNum );
+      salReturn abortCommand( int cmdSeqNum );
+      salReturn waitForCompletion( int cmdSeqNum ,unsigned int timeout );
+      salReturn setDebugLevel( int level );
+      int getDebugLevel( int level );
+      int getOrigin();
+      int getProperty(salCHAR *property, salCHAR *value);
+      salReturn setProperty(salCHAR *property, salCHAR *value);
+      void logError(salReturn status);
+
+      salReturn logEvent( char *message, int priority );      
+      int getEventC(SALData_logeventC *data);
+
+      salReturn salTelemetryPub(int actorIdx);
+      salReturn salTelemetrySub(int actorIdx);
+      salReturn salEvent(char *topicName);
+      int getActorIndex(char *topic);
+      salReturn salTypeSupport(int actorIdx);
+      salReturn salCommand(char *cmdAlias);
+      salReturn salProcessor(char *cmdAlias);
+      bool actorActive(int actorIdx);
+      bool actorReader(int actorIdx);
+      bool actorWriter(int actorIdx);
+      bool actorCommand(int actorIdx);
+      bool actorEventReader(int actorIdx);
+      bool actorEventWriter(int actorIdx);
+      bool actorProcessor(int actorIdx);
+
+// INSERT TYPE SUPPORT      
+
+
+      ~SAL_SALData();
+  };
+
+%include "SAL_SALDataC.h"
+
