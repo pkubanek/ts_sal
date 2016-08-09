@@ -165,6 +165,7 @@ if { $OPTIONS(validate) } {
     foreach n $new {
       checkidl [file tail $n]
     }
+    exec $SAL_DIR/parse_telemetry_list.tcl $i
     stdlog "Completed $i validation\n\n"
   }
 }
