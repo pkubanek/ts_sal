@@ -151,6 +151,7 @@ global IDLRESERVED SAL_WORK_DIR SAL_DIR CMDS CMD_ALIASES EVTS EVENT_ALIASES
         puts $fout "set CMDS($c) \"$CMDS($c)\""
      }
      close $fout
+     genhtmlcommandtable $subsys
     }
    }
    if { [info exists EVENT_ALIASES($subsys)] } {
@@ -162,9 +163,62 @@ global IDLRESERVED SAL_WORK_DIR SAL_DIR CMDS CMD_ALIASES EVTS EVENT_ALIASES
         puts $fout "set EVTS($c) \"$EVTS($c)\""
      }
      close $fout
+     genhtmleventtable $subsys
     }
    }
 }
+
+
+proc genhtmlcommandtable { subsys } {
+global IDLRESERVED SAL_WORK_DIR SAL_DIR CMDS CMD_ALIASES EVTS EVENT_ALIASES
+  exec mkdir -p $SAL_WORK_DIR/html/[set subsys]
+  set fout [open $SAL_WORK_DIR/html/[set subsys]/[set subsys]_Commands.html w]
+  puts stdout "Generating html command table $subsys"
+  puts $fout "<H3>$subsys Commands</H3><P><UL>"
+  puts $fout "<TABLE BORDER=3 CELLPADDING=5 BGCOLOR=LightBlue  WIDTH=600>
+<TR BGCOLOR=Yellow><B><TD>Command Alias</TD><TD>Device</TD><TD>Property
+</TD><TD>Action</TD><TD>Parameter</TD></B></TR>"
+  foreach i [lsort $CMD_ALIASES($subsys)] {
+      set cmd "$CMDS($subsys,$i) - - -"
+      puts $fout "<TR><TD>$subsys<BR>$i</TD><TD>[lindex $cmd 0] </TD><TD>[lindex $cmd 1] </TD><TD> [lindex $cmd 2]</TD><TD> "
+      if { [info exists CMDS($subsys,$i,param)] } {
+        foreach p $CMDS($subsys,$i,param) {
+          puts $fout "$p<BR>"
+        } 
+        puts $fout "</TD></TR>"
+      } else {
+        puts $fout "n/a"
+      }
+  }
+  puts $fout "</TABLE></UL><P>"
+  close $fout
+}
+
+proc genhtmleventtable { subsys } {
+global IDLRESERVED SAL_WORK_DIR SAL_DIR CMDS CMD_ALIASES EVTS EVENT_ALIASES
+  exec mkdir -p $SAL_WORK_DIR/html/[set subsys]
+  set fout [open $SAL_WORK_DIR/html/[set subsys]/[set subsys]_Events.html w]
+  puts stdout "Generating html logevent table $subsys"
+  puts $fout "<H3>$subsys Logevents</H3><P><UL>"
+  puts $fout "<TABLE BORDER=3 CELLPADDING=5 BGCOLOR=LightBlue  WIDTH=600>
+<TR BGCOLOR=Yellow><B><TD>Log Event Alias</TD><TD>Activity</TD><TD>Event
+</TD><TD>Parameter(s)</TD></B></TR>"
+  foreach i [lsort $EVENT_ALIASES($subsys)] {
+      set evt "$EVTS($subsys,$i) - - -"
+      puts $fout "<TR><TD>$subsys<BR>$i</TD><TD>[lindex $evt 0] </TD><TD>[lindex $evt 1] </TD><TD> "
+      if { [info exists EVTS($subsys,$i,param)] } {
+        foreach p $EVTS($subsys,$i,param) {
+          puts $fout "$p<BR>"
+        } 
+        puts $fout "</TD></TR>"
+      } else {
+        puts $fout "n/a"
+      }
+  }
+  puts $fout "</TABLE></UL><P>"
+  close $fout
+}
+
 
 
 set IDLRESERVED "abstract any attribute boolean case char component const consumes context custom default double emits enum eventtype exception factory false finder fixed float getraises home import in inout interface local long module multiple native object octet oneway out primarykey private provides public publishes raises readonly sequence setraises short string struct supports switch true truncatable typedef typeid typeprefix union unsigned uses valuebase valuetype void wchar wstring"
