@@ -31,7 +31,7 @@ int main (int argc, char *argv\[\])
 \{ 
   int priority = SAL__EVENT_INFO;
   [set subsys]_logevent_[set alias]C myData;
-  if (argc < 2) \{
+  if (argc < [expr [llength $EVTS([set subsys],[set alias],plist)] +1]) \{
      printf(\"Usage :  input parameters...\\n\");
      printf(\"      int priority\\n\");
 "
