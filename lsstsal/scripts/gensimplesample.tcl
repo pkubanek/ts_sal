@@ -1,6 +1,6 @@
 #!/usr/bin/tclsh
 #
-#  Generate simple pub/sub programs for each data type
+#  Generate simple pub/sub programs for each data type in cpp and java
 #
 proc makesaldirs { base name } {
 global SAL_WORK_DIR
@@ -642,7 +642,7 @@ global SAL_WORK_DIR OPTIONS
 
 proc salidlgen { base lang } {
 global SAL_WORK_DIR OPTIONS
-   if { $lang == "python" } {set lang cpp}
+   if { $lang != "python" } {
    cd $SAL_WORK_DIR/$base/$lang
    puts stdout "Generating $lang type support for $base"
    if { $lang == "cpp" }     {catch { set result [exec make -f Makefile.sacpp_[set base]_types] } bad; puts stdout $bad}
@@ -650,18 +650,23 @@ global SAL_WORK_DIR OPTIONS
    if { $lang == "java"}     {catch { set result [exec make -f Makefile.saj_[set base]_types] } bad; puts stdout $bad}
    puts stdout "idl : $result"
    cd $SAL_WORK_DIR
+   }
 }
 
 proc salpythontestgen { base } {
-global SAL_WORK_DIR
+global SAL_WORK_DIR ONEPYTHON
+ if { $ONEPYTHON == 0 } {
    cd $SAL_WORK_DIR/$base/cpp/src
    puts stdout "Generating Python SAL support for $base"
    exec touch .depend.Makefile.sacpp_[set base]_python
    catch { set result [exec make -f Makefile.sacpp_[set base]_python] } bad
    if { $bad != "" } {puts stdout $bad}
    puts stdout "python : Done SALPY_[set base].so"
+   set ONEPYTHON 1
+ }
 }
 
+set ONEPYTHON 0
 
 proc saljavaclassgen { base id } {
 global SAL_WORK_DIR OPTIONS
