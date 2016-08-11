@@ -70,6 +70,7 @@ using namespace std;
       set fcod7 [open $SAL_WORK_DIR/include/SAL_[set subsys]_[set name]shmout.tmp w]
       set fcod8 [open $SAL_WORK_DIR/include/SAL_[set subsys]_[set name]shmin.tmp w]
       set fcod9 [open $SAL_WORK_DIR/include/SAL_[set subsys]_[set name]shmstr.tmp w]
+      set fcod10 [open $SAL_WORK_DIR/include/SAL_[set subsys]_[set name]Pargs.tmp w]
       puts $fout "	struct $name \{"
       puts $fhdr "struct [set subsys]_[set name]C
 \{"
@@ -115,7 +116,7 @@ using namespace std;
                set VPROPS(idx) $argidx
                set VPROPS(base) $subsys
                set VPROPS(topic) "[set subsys]_[set name]"
-               updatecfragments $fcod1 $fcod2 $fcod3 $fcod4 $fcod5 $fcod6 $fcod7 $fcod8
+               updatecfragments $fcod1 $fcod2 $fcod3 $fcod4 $fcod5 $fcod6 $fcod7 $fcod8 $fcod10
                set vname $VPROPS(name)
                if { $VPROPS(array) } {
                   puts $fbst "      .add_property(\"$vname\", make_array(&[set subsys]_[set name]C::$vname))"
@@ -140,6 +141,7 @@ using namespace std;
       close $fcod7
       close $fcod8
       close $fcod9
+      close $fcod10
    }
    if { [info exists SYSDIC($subsys,keyedID)] } {
        genkeyedidl $fout $subsys
@@ -232,7 +234,7 @@ typedef struct [set subsys]_ackcmdC
    return $SAL_WORK_DIR/idl-templates/validated/sal/sal_$subsys.idl
 }
 
-proc updatecfragments { fcod1 fcod2 fcod3 fcod4 fcod5 fcod6 fcod7 fcod8 } {
+proc updatecfragments { fcod1 fcod2 fcod3 fcod4 fcod5 fcod6 fcod7 fcod8 fcod10 } {
 global VPROPS
    set idx $VPROPS(idx)
    if { $VPROPS(iscommand) } {set idx [expr $idx - 4]}
@@ -261,6 +263,7 @@ global VPROPS
               puts $fcod5 "    sscanf(argv\[$idx\], \"%f\", &myData.$VPROPS(name)\[$myidx\]);"
            }
         }
+        puts $fcod10 "	myData.$VPROPS(name)\[$myidx\] = sys.argv\[$idx\]"
         incr idx 1
         incr myidx 1
       }
@@ -278,6 +281,7 @@ global VPROPS
 #         puts $fcod8 "    [set VPROPS(base)]_memIO->shmemIncoming_[set VPROPS(topic)].$VPROPS(name) = (char *)&[set VPROPS(base)]_memIO->[set VPROPS(topic)]_$VPROPS(name)_buffer;"
          puts $fcod7 "    strcpy([set VPROPS(base)]_memIO->[set VPROPS(topic)]_$VPROPS(name)_buffer , $VPROPS(name));"
          puts $fcod8 "    strcpy($VPROPS(name) , [set VPROPS(base)]_memIO->[set VPROPS(topic)]_$VPROPS(name)_buffer);"
+         puts $fcod10 "    myData.$VPROPS(name)=sys.argv\[$idx\]"
 #         puts $fcod7 "    strcpy([set VPROPS(base)]_memIO->[set VPROPS(topic)]_$VPROPS(name)_buffer , data->$VPROPS(name));"
 #         puts $fcod8 "    strcpy(data->$VPROPS(name) , [set VPROPS(base)]_memIO->[set VPROPS(topic)]_$VPROPS(name)_buffer);"
 #         puts $fcod7 "    strcpy([set VPROPS(base)]_memIO->shmemOutgoing_[set VPROPS(topic)].$VPROPS(name) , data->$VPROPS(name));"
@@ -291,6 +295,7 @@ global VPROPS
          puts $fcod6 "    cout << \"    $VPROPS(name) : \" << data->$VPROPS(name) << endl;"
          puts $fcod7 "    [set VPROPS(base)]_memIO->shmemOutgoing_[set VPROPS(topic)].$VPROPS(name) = data->$VPROPS(name);"
          puts $fcod8 "    data->$VPROPS(name) = [set VPROPS(base)]_memIO->shmemIncoming_[set VPROPS(topic)].$VPROPS(name);"
+         puts $fcod10 "    myData.$VPROPS(name)=sys.argv\[$idx\]"
          if { $VPROPS(int) } {
           if { $VPROPS(long) } {
             puts $fcod4 "    myData.$VPROPS(name) = 1;";
@@ -641,17 +646,23 @@ global SAL_WORK_DIR OPTIONS
 }
 
 proc salidlgen { base lang } {
-global SAL_WORK_DIR OPTIONS
+global SAL_WORK_DIR OPTIONS ONEDDSGEN
    if { $lang != "python" } {
-   cd $SAL_WORK_DIR/$base/$lang
-   puts stdout "Generating $lang type support for $base"
-   if { $lang == "cpp" }     {catch { set result [exec make -f Makefile.sacpp_[set base]_types] } bad; puts stdout $bad}
-   if { $lang == "isocpp" }  {catch { set result [exec make -f Makefile.ISO_Cxx_[set base]_Typesupport] } bad; puts stdout $bad}
-   if { $lang == "java"}     {catch { set result [exec make -f Makefile.saj_[set base]_types] } bad; puts stdout $bad}
-   puts stdout "idl : $result"
-   cd $SAL_WORK_DIR
+     if { $ONEDDSGEN == 0 } {
+       cd $SAL_WORK_DIR/$base/$lang
+       puts stdout "Generating $lang type support for $base"
+       if { $lang == "cpp" }     {catch { set result [exec make -f Makefile.sacpp_[set base]_types] } bad; puts stdout $bad}
+       if { $lang == "isocpp" }  {catch { set result [exec make -f Makefile.ISO_Cxx_[set base]_Typesupport] } bad; puts stdout $bad}
+       if { $lang == "java"}     {catch { set result [exec make -f Makefile.saj_[set base]_types] } bad; puts stdout $bad}
+       puts stdout "idl : $result"
+       cd $SAL_WORK_DIR
+       set ONEDDSGEN 1
+     }
    }
 }
+
+set ONEDDSGEN 0
+
 
 proc salpythontestgen { base } {
 global SAL_WORK_DIR ONEPYTHON
