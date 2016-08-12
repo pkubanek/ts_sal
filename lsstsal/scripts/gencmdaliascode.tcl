@@ -79,7 +79,7 @@ int SAL_SALData::issueCommand_[set i]( SALData_command_[set i]C *data )
 #endif
 
   Instance.private_revCode =  DDS::string_dup(\"LSST TEST REVCODE\");
-  Instance.private_sndStamp = 0.0;
+  Instance.private_sndStamp = getCurrentTime();
   Instance.private_origin =   1;
   Instance.private_seqNum =   sal\[actorIdx\].sndSeqNum;
   Instance.private_host =     1;"
@@ -158,7 +158,7 @@ int SAL_SALData::acceptCommand_[set i]( SALData_command_[set i]C *data )
     ackdata.result = DDS::string_dup(\"SAL ACK\");
     status = Instances\[j\].private_seqNum;
     rcvdTime = getCurrentTime();
-    if ( int(rcvdTime - Instances\[j\].private_sndStamp) < 2 ) \{
+    if ( (rcvdTime - Instances\[j\].private_sndStamp) < sal\[actorIdx\].sampleAge ) \{
       rcvSeqNum = status;
       rcvOrigin = Instances\[j\].private_origin;
       ackdata.ack = SAL__CMD_ACK;"
@@ -383,8 +383,8 @@ global CMD_ALIASES CMDS SYSDIC
     		    \}
     		    status = aCmd.value\[0\].private_seqNum;
     		    double rcvdTime = getCurrentTime();
-		    int dTime = (int)(rcvdTime - aCmd.value\[0\].private_sndStamp);
-    		    if ( dTime < 2 ) \{
+		    double dTime = rcvdTime - aCmd.value\[0\].private_sndStamp;
+    		    if ( dTime < sal\[actorIdx\].sampleAge ) \{
                       ackdata = new SALData.ackcmd();"
       if { [info exists SYSDIC($subsys,keyedID)] } {
          puts $fout "	              ackdata.SALDataID = subsystemID;"
@@ -408,7 +408,7 @@ global CMD_ALIASES CMDS SYSDIC
 		      ackdata.ack = SAL__CMD_ACK;"
       if { [info exists SYSDIC($subsys,keyedID)] } {
          puts $fout "		      ackdata.SALDataID = subsystemID;
-		      ackHandle = SALWriter.register_instance(ackdata);
+		      ackHandle = SALWriter.register_instance(ackdata);"
       }
       puts $fout "
 		      istatus = SALWriter.write(ackdata, ackHandle);

@@ -711,6 +711,7 @@ public class SAL_SALData {
 	  sal[actorIdx].isWriter = true;
 	  sal[actorIdx].isCommand = true;
           sal[actorIdx].sndSeqNum = (int)getCurrentTime();
+          sal[SAL__SALData_ackcmd_ACTOR].sampleAge = 1.0;
 	}
 
 
@@ -803,6 +804,7 @@ public class SAL_SALData {
 	  createWriter2(SAL__SALData_ackcmd_ACTOR,autodispose_unregistered_instances);
 	  sal[actorIdx].isWriter = true;
 	  sal[actorIdx].isProcessor = true;
+          sal[actorIdx].sampleAge = 1.0;
 	}
 
 	public void salShutdown()
@@ -1238,6 +1240,7 @@ public class SAL_SALData {
 	  DDS.Duration_t a_timeout = new Duration_t();
 	  a_timeout.sec = 20;
 	  a_timeout.nanosec = 0;
+          sal[actorIdx].sampleAge = 10.0;
 	  sal[actorIdx].reader.wait_for_historical_data(a_timeout);
 	}
 
@@ -1254,6 +1257,7 @@ public class SAL_SALData {
 	  DDS.Duration_t a_timeout = new Duration_t();
 	  a_timeout.sec = 20;
 	  a_timeout.nanosec = 0;
+          sal[actorIdx].sampleAge = 10.0;
 	  sal[actorIdx].reader2.wait_for_historical_data(a_timeout);
 	}
 

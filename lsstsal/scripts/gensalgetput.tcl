@@ -24,7 +24,7 @@ salReturn SAL_[set base]::putSample_[set name]([set base]_[set name]C *data)
   [set base]::[set name] Instance;
 
   Instance.private_revCode = DDS::string_dup(\"LSST TEST REVCODE\");
-  Instance.private_sndStamp = 1;
+  Instance.private_sndStamp = getCurrentTime();
   Instance.private_origin = 1;
   Instance.private_seqNum = sndSeqNum;
   Instance.private_host = 1;
@@ -73,18 +73,17 @@ salReturn SAL_[set base]::getSample_[set name]([set base]_[set name]C *data)
   status = SALReader->take(Instances, info, sal\[SAL__[set base]_[set name]_ACTOR\].maxSamples , ANY_SAMPLE_STATE, ANY_VIEW_STATE, ANY_INSTANCE_STATE);
   checkStatus(status, \"[set base]::[set name]DataReader::take\");
   numsamp = Instances.length();
-  if (Instances\[0\].private_sndStamp == 0) \{ numsamp = 0;\}
   for (DDS::ULong j = 0; j < numsamp; j++)
   \{
     rcvdTime = getCurrentTime();
-    if (debugLevel > 0) \{
+    if (debugLevel > 8) \{
       cout << \"=== \[GetSample\] message received :\" << numsamp << endl;
       cout << \"    revCode  : \" << Instances\[j\].private_revCode << endl;
       cout << \"    sndStamp  : \" << Instances\[j\].private_sndStamp << endl;
       cout << \"    origin  : \" << Instances\[j\].private_origin << endl;
       cout << \"    host  : \" << Instances\[j\].private_host << endl;
     \}
-
+    if ( (rcvdTime - Instances\[j\].private_sndStamp) < sal\[actorIdx\].sampleAge && (Instances\[0\].private_origin != 0)) \{
 "
   set frag [open $SAL_WORK_DIR/include/SAL_[set base]_[set name]Cget.tmp r]
   while { [gets $frag rec] > -1} {puts $fout $rec}
@@ -92,6 +91,9 @@ salReturn SAL_[set base]::getSample_[set name]([set base]_[set name]C *data)
   puts $fout "
 
     istatus = SAL__OK;
+   \} else \{
+     istatus = SAL__NO_UPDATES;
+   \}
   \}
   status = SALReader->return_loan(Instances, info);
   checkStatus(status, \"[set base]::[set name]DataReader::return_loan\");
@@ -110,6 +112,18 @@ salReturn SAL_[set base]::getNextSample_[set name]([set base]_[set name]C *data)
     return istatus;
 \}
 
+salReturn SAL_[set base]::flushSamples_[set name]([set base]_[set name]C *data)
+\{
+    salReturn istatus;
+    sal\[SAL__[set base]_[set name]_ACTOR\].maxSamples = LENGTH_UNLIMITED;
+    sal\[SAL__[set base]_[set name]_ACTOR\].sampleAge = -1.0;
+    istatus = getSample_[set name](data);
+    if (debugLevel > 8) \{
+        cout << \"===	\[flushSamples\] getSample returns :\" << istatus << endl;
+    \}
+    sal\[SAL__[set base]_[set name]_ACTOR\].sampleAge = 10.0;
+    return SAL__OK;
+\}
 "
 }
 
@@ -174,6 +188,7 @@ void SAL_SALData::initSalActors ()
       sal\[i\].isEventWriter = false;
       sal\[i\].isActive = false;
       sal\[i\].maxSamples = LENGTH_UNLIMITED;
+      sal\[i\].sampleAge = 10.0;
     \}
 "
    set idx 0
@@ -281,6 +296,7 @@ puts $fout "
 	  DataWriter dwriter = getWriter(actorIdx);
 	  [set name]DataWriter SALWriter = [set name]DataWriterHelper.narrow(dwriter);
 	  data.private_revCode = \"LSST TEST REVCODE\";
+          data.private_sndStamp = getCurrentTime();
 	  if (debugLevel > 0) \{
 	    System.out.println(\"=== \[putSample $name\] writing a message containing :\");
 	    System.out.println(\"    revCode  : \" + data.private_revCode);
@@ -343,8 +359,14 @@ puts $fout "
 		\}
 	    \}
             if (last > 0) \{
-              data = SALInstance.value\[last-1\];
-              last = SAL__OK;
+    		double rcvdTime = getCurrentTime();
+		double dTime = rcvdTime - SALInstance.value\[0\].private_sndStamp;
+    		if ( dTime < sal\[actorIdx\].sampleAge ) \{
+                   data = SALInstance.value\[last-1\];
+                   last = SAL__OK;
+                \} else \{
+                   last = SAL__NO_UPDATES;
+                \}
             \}
           \} else \{
               last = SAL__NO_UPDATES;
@@ -355,12 +377,24 @@ puts $fout "
 
 	public int getNextSample([set base].[set name] data)
 	\{
-	  int status =  -1;
+	  int status = -1;
 	  int actorIdx = SAL__[set base]_[set name]_ACTOR;
           sal\[actorIdx\].maxSamples = 1;
           status = getSample(data);
           return status;
 	\}
+
+	public int flushSamples([set base].[set name] data)
+	\{
+          int status = -1;
+	  int actorIdx = SAL__[set base]_[set name]_ACTOR;
+          sal\[actorIdx\].maxSamples = DDS.LENGTH_UNLIMITED.value;
+          sal\[actorIdx\].sampleAge = -1.0;
+          status = getSample(data);
+          sal\[actorIdx\].sampleAge = 10.0;
+          return SAL__OK;
+	\}
+
 "
 
            }
@@ -490,6 +524,7 @@ salReturn SAL_[set base]::getSample([set base]::[set name]Seq data)
       salReturn putSample_[set name]([set base]_[set name]C *data);
       salReturn getSample_[set name]([set base]_[set name]C *data);
       salReturn getNextSample_[set name]([set base]_[set name]C *data);
+      salReturn flushSamples_[set name]([set base]_[set name]C *data);
 "
                insertcfragments $fout $base $name
            }
