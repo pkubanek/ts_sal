@@ -160,7 +160,8 @@ public class SAL_SALData {
   		// Filter expr
                 String expr[] = new String[0];
                 String sFilter = "SALDataID = " + subsystemID;
-    		createContentFilteredTopic(actorIdx,"filteredtopic", sFilter, expr);
+                String ftopicName = "filtered_" + sal[actorIdx].topicName;
+   		createContentFilteredTopic(actorIdx,ftopicName, sFilter, expr);
 
 		// create DataReader
  		createReader(actorIdx,true);
@@ -257,6 +258,13 @@ public class SAL_SALData {
                 initSalActors();
 	}
 #endif
+
+	public double getCurrentTime()
+	{
+		long ms = System.currentTimeMillis();
+  		double ts = (double)ms / 1000.0;
+		return ts;
+	}
 
 	public int issueCommand( command data )
 	{
@@ -648,7 +656,7 @@ public class SAL_SALData {
     	  createContentFilteredTopic2("filteredResponse", sFilter, expr);
 
 	  // create DataReader
- 	  createReader2(true);
+ 	  createReader2(false);
 #else
 	  createReader2(false);
 #endif
@@ -669,20 +677,20 @@ public class SAL_SALData {
 
 	  //create Publisher
 	  createPublisher(actorIdx);
-	  createSubscriber(actorIdx);
+	  createSubscriber(SAL__SALData_ackcmd_ACTOR);
 
 	  //create types
 	  salTypeSupport(actorIdx);
 	  ackcmdTypeSupport mtr = new ackcmdTypeSupport();
-	  registerType2(actorIdx,mtr);
+	  registerType2(SAL__SALData_ackcmd_ACTOR,mtr);
 
 	  //create Topics
 #ifdef SAL_SUBSYSTEM_ID_IS_KEYED
 	  createTopic(actorIdx,stopic1);
-	  createTopic2(actorIdx,stopic2);
+	  createTopic2(SAL__SALData_ackcmd_ACTOR,stopic2);
 #else
 	  createTopic(actorIdx,cmdAlias);
-	  createTopic2(actorIdx,sresponse);
+	  createTopic2(SAL__SALData_ackcmd_ACTOR,sresponse);
 #endif
 	
 	  //create a reader for responses
@@ -690,19 +698,20 @@ public class SAL_SALData {
   	  // Filter expr
           String expr[] = new String[0];
           String sFilter = "SALDataID = " + subsystemID;
-    	  createContentFilteredTopic2(actorIdx,"filteredResponse", sFilter, expr);
+    	  createContentFilteredTopic2(SAL__SALData_ackcmd_ACTOR,"filteredResponse", sFilter, expr);
 
 	  // create DataReader
- 	  createReader2(actorIdx,true);
+ 	  createReader2(SAL__SALData_ackcmd_ACTOR,false);
 #else
-	  createReader2(actorIdx,false);
+	  createReader2(SAL__SALData_ackcmd_ACTOR,false);
 #endif
 	  sal[actorIdx].isReader = true;
 	  boolean autodispose_unregistered_instances = false;
 	  createWriter(actorIdx,autodispose_unregistered_instances);
 	  sal[actorIdx].isWriter = true;
 	  sal[actorIdx].isCommand = true;
-          sal[actorIdx].sndSeqNum = 123;
+          sal[actorIdx].sndSeqNum = (int)getCurrentTime();
+          sal[SAL__SALData_ackcmd_ACTOR].sampleAge = 1.0;
 	}
 
 
@@ -742,7 +751,7 @@ public class SAL_SALData {
           String expr[] = new String[0];
           String sFilter = "SALDataID = " + subsystemID;
     	  createContentFilteredTopic("filteredCommand", sFilter, expr);
- 	  createReader(true);
+ 	  createReader(false);
 #else
 	  createReader(false);
 #endif
@@ -764,21 +773,21 @@ public class SAL_SALData {
 	  createParticipant(domainName);
 
 	  //create Publisher
-	  createPublisher(actorIdx);
+	  createPublisher(SAL__SALData_ackcmd_ACTOR);
 	  createSubscriber(actorIdx);
 
 	  //create types
 	  salTypeSupport(actorIdx);
 	  ackcmdTypeSupport mtr = new ackcmdTypeSupport();
-	  registerType2(actorIdx,mtr);
+	  registerType2(SAL__SALData_ackcmd_ACTOR,mtr);
 
 	  //create Topics
 #ifdef SAL_SUBSYSTEM_ID_IS_KEYED
 	  createTopic(actorIdx,stopic1);
-	  createTopic2(actorIdx,stopic2);
+	  createTopic2(SAL__SALData_ackcmd_ACTOR,stopic2);
 #else
 	  createTopic(actorIdx,cmdAlias);
-	  createTopic2(actorIdx,sresponse);
+	  createTopic2(SAL__SALData_ackcmd_ACTOR,sresponse);
 #endif
 
 	  //create a reader for commands
@@ -787,14 +796,15 @@ public class SAL_SALData {
           String expr[] = new String[0];
           String sFilter = "SALDataID = " + subsystemID;
     	  createContentFilteredTopic(actorIdx,"filteredCommand", sFilter, expr);
- 	  createReader(actorIdx,true);
+ 	  createReader(actorIdx,false);
 #else
 	  createReader(actorIdx,false);
 #endif
 	  boolean autodispose_unregistered_instances = false;
-	  createWriter2(actorIdx,autodispose_unregistered_instances);
+	  createWriter2(SAL__SALData_ackcmd_ACTOR,autodispose_unregistered_instances);
 	  sal[actorIdx].isWriter = true;
 	  sal[actorIdx].isProcessor = true;
+          sal[actorIdx].sampleAge = 1.0;
 	}
 
 	public void salShutdown()
@@ -980,13 +990,13 @@ public class SAL_SALData {
 
         public void  createContentFilteredTopic(int actorIdx, String topicName, String filter, String[] expr)
 	{
-	  sal[actorIdx].filteredtopic = participant.create_contentfilteredtopic(sal[actorIdx].topicName,sal[actorIdx].topic, filter, expr);
+	  sal[actorIdx].filteredtopic = participant.create_contentfilteredtopic(topicName,sal[actorIdx].topic, filter, expr);
 	  checkHandle(sal[actorIdx].filteredtopic, "DomainParticipant::create_contentfilteredtopic");
 	}
 
         public void  createContentFilteredTopic2(int actorIdx,  String topicName, String filter, String[] expr)
 	{
-	  sal[actorIdx].filteredtopic2 = participant.create_contentfilteredtopic(sal[actorIdx].topicName,sal[actorIdx].topic2, filter, expr);
+	  sal[actorIdx].filteredtopic2 = participant.create_contentfilteredtopic(topicName,sal[actorIdx].topic2, filter, expr);
 	  checkHandle(sal[actorIdx].filteredtopic2, "DomainParticipant::create_contentfilteredtopic");
 	}
 
@@ -1141,7 +1151,7 @@ public class SAL_SALData {
         
 	public void createWriter2(int actorIdx, boolean autodispose) {
 		sal[actorIdx].publisher.get_default_datawriter_qos(sal[actorIdx].WQosH);
-		sal[actorIdx].publisher.copy_from_topic_qos(sal[actorIdx].WQosH, sal[actorIdx].topicQos.value);
+		sal[actorIdx].publisher.copy_from_topic_qos(sal[actorIdx].WQosH, sal[actorIdx].topicQos2.value);
 		sal[actorIdx].WQosH.value.writer_data_lifecycle.autodispose_unregistered_instances = autodispose;
 		sal[actorIdx].writer2 = sal[actorIdx].publisher.create_datawriter(sal[actorIdx].topic2, sal[actorIdx].WQosH.value, null,STATUS_MASK_NONE.value);
 		checkHandle(sal[actorIdx].writer2, "Publisher.create_datawriter");
@@ -1230,6 +1240,7 @@ public class SAL_SALData {
 	  DDS.Duration_t a_timeout = new Duration_t();
 	  a_timeout.sec = 20;
 	  a_timeout.nanosec = 0;
+          sal[actorIdx].sampleAge = 10.0;
 	  sal[actorIdx].reader.wait_for_historical_data(a_timeout);
 	}
 
@@ -1246,6 +1257,7 @@ public class SAL_SALData {
 	  DDS.Duration_t a_timeout = new Duration_t();
 	  a_timeout.sec = 20;
 	  a_timeout.nanosec = 0;
+          sal[actorIdx].sampleAge = 10.0;
 	  sal[actorIdx].reader2.wait_for_historical_data(a_timeout);
 	}
 

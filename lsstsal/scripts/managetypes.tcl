@@ -84,6 +84,7 @@ global TYPESUBS VPROPS
    set VPROPS(string) 0
    set VPROPS(int) 0
    set VPROPS(long) 0
+   set VPROPS(short) 0
    set VPROPS(double) 0
    set VPROPS(name) ""
    if { [lindex $rec 0] == "string" } {
@@ -116,6 +117,7 @@ global TYPESUBS VPROPS
    } else {
       if { [lindex $rec 0] != "float" && [lindex $rec 0] != "double" } {set VPROPS(int) 1}
       if { [lindex $rec 0] == "double" } {set VPROPS(double) 1 }
+      if { [lindex $rec 0] == "short" } {set VPROPS(short) 1 }
       if { [lindex $rec 0] == "long" } {set VPROPS(long) 1 }
       if { [llength [split $rec "\[("]] > 1 } {
         set s [lindex [split $rec "\[\]()"] 1]

@@ -63,6 +63,7 @@
       int			maxSamples;
       long long 		sndStamp[2];
       long long			rcvStamp[2];
+      double			sampleAge;
   };
 #endif
 

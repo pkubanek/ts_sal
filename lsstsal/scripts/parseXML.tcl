@@ -2,6 +2,7 @@
 
 proc parseXMLtoidl { fname } { 
 global IDLRESERVED SAL_WORK_DIR SAL_DIR CMDS CMD_ALIASES EVTS EVENT_ALIASES
+global TLMS TLM_ALIASES
    set fin [open $fname r]
    set fout ""
    set ctype ""
@@ -52,6 +53,9 @@ global IDLRESERVED SAL_WORK_DIR SAL_DIR CMDS CMD_ALIASES EVTS EVENT_ALIASES
             puts $fout "	  string	state;"
          }
       }
+      if { $tag == "/SALTelemetry" } {
+         set TLM_ALIASES($subsys) [lappend TLM_ALIASES($subsys) $alias]
+      }
       if { $tag == "EFDB_Topic" } {
          if { $fout != "" } {
            puts $fout "\};"
@@ -63,11 +67,7 @@ global IDLRESERVED SAL_WORK_DIR SAL_DIR CMDS CMD_ALIASES EVTS EVENT_ALIASES
         }
         set itemid 0
         if { [info exists topics($value)] } { 
-<<<<<<< HEAD
            puts stdout "ERROR - duplicate EFDB_Topic = $value"
-=======
-           puts stdout "ERROR - duplicate EFDB_Name = $value"
->>>>>>> hotfix/Hotfix-1
            exit
         }
         set topics($value) 1
@@ -85,6 +85,7 @@ global IDLRESERVED SAL_WORK_DIR SAL_DIR CMDS CMD_ALIASES EVTS EVENT_ALIASES
         if { $ctype == "telemetry" } {
            gentopicdefsql $tname
            set fsql [open $SAL_DIR/code/sql/[set tname]_items.sql a]
+	   set alias [join [lrange [split $tname "_"] 1 end] "_"]
         }
       }
       if { $tag == "EFDB_Name"} {
@@ -132,7 +133,9 @@ global IDLRESERVED SAL_WORK_DIR SAL_DIR CMDS CMD_ALIASES EVTS EVENT_ALIASES
             lappend EVTS($subsys,$alias,plist) [lindex $declare 1]
          }
          if { $ctype == "telemetry" } {
-           puts $fsql "INSERT INTO [set tname]_items VALUES ($itemid,\"$item\",\"$type\",$idim,\"$unit\",$freq,\"$range\",\"$location\",\"$desc\");"
+	    lappend TLMS($subsys,$alias,param) "$declare"
+	    lappend TLMS($subsys,$alias,plist) [lindex $declare 1]
+            puts $fsql "INSERT INTO [set tname]_items VALUES ($itemid,\"$item\",\"$type\",$idim,\"$unit\",$freq,\"$range\",\"$location\",\"$desc\");"
          }
       }
    }
@@ -155,6 +158,7 @@ global IDLRESERVED SAL_WORK_DIR SAL_DIR CMDS CMD_ALIASES EVTS EVENT_ALIASES
         puts $fout "set CMDS($c) \"$CMDS($c)\""
      }
      close $fout
+     genhtmlcommandtable $subsys
     }
    }
    if { [info exists EVENT_ALIASES($subsys)] } {
@@ -166,9 +170,99 @@ global IDLRESERVED SAL_WORK_DIR SAL_DIR CMDS CMD_ALIASES EVTS EVENT_ALIASES
         puts $fout "set EVTS($c) \"$EVTS($c)\""
      }
      close $fout
+     genhtmleventtable $subsys
+    }
+   }
+   if { [info exists TLM_ALIASES($subsys)] } {
+    if { $TLM_ALIASES($subsys) != "" } {
+      puts stdout "Generating telemetry gui input"
+      set fout [open $SAL_WORK_DIR/idl-templates/validated/[set subsys]_tlmdef.tcl w]
+      puts $fout "set TLM_ALIASES($subsys) \"$TLM_ALIASES($subsys)\""
+      foreach t [array names TLMS] {
+         puts $fout "set TLMS($t) \"$TLMS($t)\""
+      }
+      close $fout
     }
    }
 }
+
+
+proc genhtmlcommandtable { subsys } {
+global IDLRESERVED SAL_WORK_DIR SAL_DIR CMDS CMD_ALIASES EVTS EVENT_ALIASES
+  exec mkdir -p $SAL_WORK_DIR/html/[set subsys]
+  set fout [open $SAL_WORK_DIR/html/[set subsys]/[set subsys]_Commands.html w]
+  puts stdout "Generating html command table $subsys"
+  puts $fout "<H3>$subsys Commands</H3><P><UL>"
+  puts $fout "<TABLE BORDER=3 CELLPADDING=5 BGCOLOR=LightBlue  WIDTH=600>
+<TR BGCOLOR=Yellow><B><TD>Command Alias</TD><TD>Device</TD><TD>Property
+</TD><TD>Action</TD><TD>Parameter</TD></B></TR>"
+  foreach i [lsort $CMD_ALIASES($subsys)] {
+      set cmd "$CMDS($subsys,$i) - - -"
+      puts $fout "<TR><TD>$subsys<BR>$i</TD><TD>[lindex $cmd 0] </TD><TD>[lindex $cmd 1] </TD><TD> [lindex $cmd 2]</TD><TD> "
+      if { [info exists CMDS($subsys,$i,param)] } {
+        foreach p $CMDS($subsys,$i,param) {
+          puts $fout "$p<BR>"
+        } 
+        puts $fout "</TD></TR>"
+      } else {
+        puts $fout "n/a"
+      }
+  }
+  puts $fout "</TABLE></UL><P>"
+  close $fout
+}
+
+proc genhtmleventtable { subsys } {
+global IDLRESERVED SAL_WORK_DIR SAL_DIR CMDS CMD_ALIASES EVTS EVENT_ALIASES
+  exec mkdir -p $SAL_WORK_DIR/html/[set subsys]
+  set fout [open $SAL_WORK_DIR/html/[set subsys]/[set subsys]_Events.html w]
+  puts stdout "Generating html logevent table $subsys"
+  puts $fout "<H3>$subsys Logevents</H3><P><UL>"
+  puts $fout "<TABLE BORDER=3 CELLPADDING=5 BGCOLOR=LightBlue  WIDTH=600>
+<TR BGCOLOR=Yellow><B><TD>Log Event Alias</TD><TD>Activity</TD><TD>Event
+</TD><TD>Parameter(s)</TD></B></TR>"
+  foreach i [lsort $EVENT_ALIASES($subsys)] {
+      set evt "$EVTS($subsys,$i) - - -"
+      puts $fout "<TR><TD>$subsys<BR>$i</TD><TD>[lindex $evt 0] </TD><TD>[lindex $evt 1] </TD><TD> "
+      if { [info exists EVTS($subsys,$i,param)] } {
+        foreach p $EVTS($subsys,$i,param) {
+          puts $fout "$p<BR>"
+        } 
+        puts $fout "</TD></TR>"
+      } else {
+        puts $fout "n/a"
+      }
+  }
+  puts $fout "</TABLE></UL><P>"
+  close $fout
+}
+
+
+
+proc genhtmltelemetrytable { subsys } {
+global IDLRESERVED SAL_WORK_DIR SAL_DIR TLMS TLM_ALIASES
+  exec mkdir -p $SAL_WORK_DIR/html/[set subsys]
+  set fout [open $SAL_WORK_DIR/html/[set subsys]/[set subsys]_Telemetry.html w]
+  puts stdout "Generating html telemetry table $subsys"
+  puts $fout "<H3>$subsys Telemetry</H3><P><UL>"
+  puts $fout "<TABLE BORDER=3 CELLPADDING=5 BGCOLOR=LightBlue  WIDTH=600>
+<TR BGCOLOR=Yellow><B><TD>Telemetry Stream</TD><TD>Parameter(s)</TD></B></TR>"
+  foreach i [lsort $TLM_ALIASES($subsys)] {
+      set tlm "$TLMS($subsys,$i) - - -"
+      puts $fout "<TR><TD>$subsys<BR>$i</TD><TD> "
+      if { [info exists TLMS($subsys,$i,param)] } {
+        foreach p $TLMS($subsys,$i,param) {
+          puts $fout "$p<BR>"
+        } 
+        puts $fout "</TD></TR>"
+      } else {
+        puts $fout "n/a"
+      }
+  }
+  puts $fout "</TABLE></UL><P>"
+  close $fout
+}
+
 
 
 set IDLRESERVED "abstract any attribute boolean case char component const consumes context custom default double emits enum eventtype exception factory false finder fixed float getraises home import in inout interface local long module multiple native object octet oneway out primarykey private provides public publishes raises readonly sequence setraises short string struct supports switch true truncatable typedef typeid typeprefix union unsigned uses valuebase valuetype void wchar wstring"

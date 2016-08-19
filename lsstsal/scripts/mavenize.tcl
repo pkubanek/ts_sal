@@ -6,7 +6,7 @@
 #
 
 proc mavenize { subsys } {
-global SAL_WORK_DIR SAL_DIR SALVERSION
+global env SAL_WORK_DIR SAL_DIR SALVERSION
   exec mkdir -p $SAL_WORK_DIR/maven/[set subsys]_[set SALVERSION]/src/main/java/org/lsst/sal/[set subsys]
   exec mkdir -p $SAL_WORK_DIR/maven/[set subsys]_[set SALVERSION]/src/test/java
   exec mkdir -p $SAL_WORK_DIR/maven/[set subsys]_[set SALVERSION]/src/main/resources
@@ -151,13 +151,13 @@ global SAL_WORK_DIR SAL_DIR SALVERSION
   exec cp $SAL_WORK_DIR/$subsys/java/src/org/lsst/sal/salActor.java $SAL_WORK_DIR/maven/[set subsys]_[set SALVERSION]/src/main/java/org/lsst/sal/.
   exec cp -r $SAL_WORK_DIR/$subsys/java/$subsys $SAL_WORK_DIR/maven/[set subsys]_[set SALVERSION]/src/main/java/.
   exec mkdir -p $SAL_WORK_DIR/maven/libs
-  exec cp $SAL_DIR/../lib/dcpssaj.jar $SAL_WORK_DIR/maven/libs/.
+  exec cp $env(OSPL_HOME)/jar/dcpssaj.jar $SAL_WORK_DIR/maven/libs/.
   exec cp $SAL_DIR/../lib/junit.jar $SAL_WORK_DIR/maven/libs/.
 }
 
 
 proc mavenunittests { subsys } {
-global SAL_WORK_DIR SAL_DIR SALVERSION CMD_ALIASES CMDS SYSDIC 
+global env SAL_WORK_DIR SAL_DIR SALVERSION CMD_ALIASES CMDS SYSDIC 
    if { [info exists SYSDIC($subsys,keyedID)] } {
        set initializer "( (short) 1)"
    } else {

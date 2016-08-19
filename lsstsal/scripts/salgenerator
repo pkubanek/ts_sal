@@ -165,6 +165,7 @@ if { $OPTIONS(validate) } {
     foreach n $new {
       checkidl [file tail $n]
     }
+    exec $SAL_DIR/parse_telemetry_list.tcl $i
     stdlog "Completed $i validation\n\n"
   }
 }
@@ -226,6 +227,8 @@ if { $OPTIONS(simd) } {
 
 if { $OPTIONS(sal) } {
   set DONE_CMDEVT 0
+  set ONEDDSGEN 0
+  set ONEPYTHON 0
   cd $SAL_WORK_DIR
   source $SAL_DIR/gensimplesample.tcl
   set base [lindex [split [lindex $TARGETS 0] _] 0]
@@ -238,6 +241,11 @@ if { $OPTIONS(sal) } {
         source $SAL_WORK_DIR/idl-templates/validated/[set base]_evtdef.tcl
   } else {
         stdlog "WARNING : No Event definitions found for $base"
+  }
+  if { [file exists $SAL_WORK_DIR/idl-templates/validated/[set base]_tlmdef.tcl] } {
+        source $SAL_WORK_DIR/idl-templates/validated/[set base]_tlmdef.tcl
+  } else {
+        stdlog "WARNING : No Telemetry definitions found for $base"
   }
   catch { set idlfile [makesalidl $base] } bad
 puts stdout $idlfile
@@ -261,9 +269,10 @@ puts stdout $idlfile
        catch { set result [makesalcode $idlfile $base $name isocpp] } bad
        if { $OPTIONS(verbose) } {stdlog $result}
      }
-     if { $OPTIONS(python) } {
-       stdlog "Generating SAL Python code for $subsys"
+     if { $OPTIONS(python) && $ONEPYTHON == 0 } {
+       stdlog "Generating SAL Python code for $subsys $ONEPYTHON"
        catch { set result [makesalcode $idlfile $base $name python] } bad
+       set ONEPYTHON 1
        if { $OPTIONS(verbose) } {stdlog $result}
      }
      set DONE_CMDEVT 1

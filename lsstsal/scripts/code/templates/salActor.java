@@ -61,8 +61,9 @@ public class salActor {
         public int cmdSeqNum;
         public int rcvSeqNum;
         public int rcvOrigin;
-        public long[] sndStamp = {0L,0L};
-        public long[] rcvStamp = {0L,0L};
+        public double sndStamp;
+        public double rcvStamp;
+	public double sampleAge;
 
     public salActor() {
 	this.isActive = false;

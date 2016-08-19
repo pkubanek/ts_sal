@@ -8,6 +8,42 @@
 # gencmdtestspython camera
 #
 
+source $SAL_DIR/pythonprint.tcl
+
+proc gentelemetrytestspython { subsys } {
+global SAL_WORK_DIR SYSDIC SAL_DIR
+   if { [info exists SYSDIC($subsys,keyedID)] } {
+       set initializer "(1)"
+   } else {
+       set initializer "()"
+   }
+   set idlfile "$SAL_WORK_DIR/idl-templates/validated/sal/sal_[set subsys].idl"
+   set ptypes [split [exec grep pragma $idlfile] \n]
+   foreach j $ptypes {
+      set name [lindex $j 2]
+      set type [lindex [split $name _] 0]
+      if { $type != "command" && $type != "logevent" && $type != "ackcmd" } {
+         set fpub [open $SAL_WORK_DIR/$subsys/python/[set name]_Publisher.py w]
+	 puts $fpub "
+import time
+import sys
+from SALPY_[set subsys] import *
+mgr = SAL[set subsys][set initializer]
+mgr.salTelemetryPub(\"[set name]\")
+myData = [set name]C()"
+         set farg [open $SAL_WORK_DIR/include/SAL_[set name]Cpub r]
+	 while { [gets $farg rec] > -1 } {
+	    puts $fpub [string trim $rec " ;"]
+	 }
+	 close $fpub
+	 puts $fpub "
+retval = mgr.putSample_[set tlmid]
+time.sleep(1)
+mgr.shutdown()
+"
+      }
+   }
+}
 
 
 proc geneventtestspython { subsys } {
@@ -22,37 +58,43 @@ global EVENT_ALIASES EVTS SAL_WORK_DIR SYSDIC SAL_DIR
    foreach alias $EVENT_ALIASES($subsys) {
     if { [info exists EVTS($subsys,$alias,param)] } {
       stdlog "	: event test send for = $alias"
-      set fcmd [open $SAL_WORK_DIR/$subsys/python/[set subsys]Event_[set alias].py w]
+      set fcmd [open $SAL_WORK_DIR/$subsys/python/[set subsys]_Event_[set alias].py w]
       puts $fcmd "
 import time
 import sys
 from SALPY_[set subsys] import *
 mgr = SAL_[set subsys][set initializer]
-event = [set subsys]_logevent_[set alias]C()
-mgr.logEvent_[set alias](event, 1)
+myData = [set subsys]_logevent_[set alias]C()"
+      set farg [open $SAL_WORK_DIR/include/SAL_[set subsys]_logevent_[set alias]Pargs.tmp r]
+      while { [gets $farg rec] > -1 } {
+         puts $fcmd $rec
+      }
+      close $farg
+      puts $fcmd "
+mgr.logEvent_[set alias](myData, 1)
 time.sleep(1)
 mgr.salShutdown()
 "
       close $fcmd
       stdlog "	: event test receive for = $alias"
-      set fcmd [open $SAL_WORK_DIR/$subsys/python/[set subsys]EventLogger_[set alias].py w]
+      set fcmd [open $SAL_WORK_DIR/$subsys/python/[set subsys]_EventLogger_[set alias].py w]
       puts $fcmd "
 import time
 import sys
 from SALPY_[set subsys] import *
 mgr = SAL_[set subsys][set initializer]
 while True:
-	event = [set subsys]_logevent_[set alias]C()
-	retval = mgr.getEvent_[set alias](event)
-	print retval
-	print \">%s<\" % event.message
-	time.sleep(1)
+  event = [set subsys]_logevent_[set alias]C()
+  retval = mgr.getEvent_[set alias](event)
+  print retval
+  print \">%s<\" % event.message
+  time.sleep(1)
 mgr.salShutdown()
 "
       close $fcmd
     } else {
       stdlog "	: generic event test send for = $alias"
-      set fcmd [open $SAL_WORK_DIR/$subsys/python/[set subsys]Event_[set alias].py w]
+      set fcmd [open $SAL_WORK_DIR/$subsys/python/[set subsys]_Event_[set alias].py w]
       puts $fcmd "
 import time
 import sys
@@ -60,7 +102,7 @@ from SALPY_[set subsys] import *
 mgr = SAL_[set subsys][set initializer]
 event = [set subsys]_logeventC()
 event.message=\"[set alias]\"
-mgr.logEvent(event, 1)
+mgr.logEvent_[set alias](event, 1)
 time.sleep(1)
 mgr.salShutdown()
 "
@@ -69,7 +111,7 @@ mgr.salShutdown()
    }
  }
  stdlog "	: generic event test receiver"
- set fcmd [open $SAL_WORK_DIR/$subsys/python/[set subsys]EventLogger.py w]
+ set fcmd [open $SAL_WORK_DIR/$subsys/python/[set subsys]_EventLogger.py w]
  puts $fcmd "
 import time
 import sys
@@ -100,23 +142,29 @@ global CMD_ALIASES CMDS SAL_WORK_DIR SYSDIC SAL_DIR
    foreach alias $CMD_ALIASES($subsys) {
     if { [info exists CMDS($subsys,$alias,param)] } {
       stdlog "	: command test send for = $alias"
-      set fcmd [open $SAL_WORK_DIR/$subsys/python/[set subsys]Commander_[set alias].py w]
+      set fcmd [open $SAL_WORK_DIR/$subsys/python/[set subsys]_Commander_[set alias].py w]
       puts $fcmd "
 import time
 import sys
 timeout=5
 from SALPY_[set subsys] import *
 mgr = SAL_[set subsys][set initializer]
-mgr.salCommander(\"[set subsys]_command_[set alias]\")
-command = [set subsys]_command_[set alias]C()
-command.device = sys.argv\[1\]
-cmdId = mgr.issueCommand_[set alias](command)
+mgr.salCommand(\"[set subsys]_command_[set alias]\")
+myData = [set subsys]_command_[set alias]C()"
+       set farg [open $SAL_WORK_DIR/include/SAL_[set subsys]_command_[set alias]Pargs.tmp r]
+       gets $farg rec;gets $farg rec;gets $farg rec;gets $farg rec
+       while { [gets $farg rec] > -1 } {
+          puts $fcmd $rec
+       }
+       close $farg
+       puts $fcmd "
+cmdId = mgr.issueCommand_[set alias](myData)
 retval = mgr.waitForCompletion_[set alias](cmdId,timeout)
 time.sleep(1)
 "
       close $fcmd
       stdlog "	: command test receive for = $alias"
-      set fcmd [open $SAL_WORK_DIR/$subsys/python/[set subsys]Controller_[set alias].py w]
+      set fcmd [open $SAL_WORK_DIR/$subsys/python/[set subsys]_Controller_[set alias].py w]
       puts $fcmd "
 import time
 import sys
@@ -133,14 +181,14 @@ while True:
    }
  }
  stdlog "	: generic command test sender"
- set fcmd [open $SAL_WORK_DIR/$subsys/python/[set subsys]Commander.py w]
+ set fcmd [open $SAL_WORK_DIR/$subsys/python/[set subsys]_Commander.py w]
  puts $fcmd "
 import time
 import sys
 from SALPY_[set subsys] import *
 timeout=5
 mgr = SAL_[set subsys][set initializer]
-mgr.salCommander(\"[set subsys]_command\")
+mgr.salCommand(\"[set subsys]_command\")
 command = [set subsys]_commandC()
 command.device   = sys.argv\[1\]
 command.property = sys.argv\[2\]
@@ -152,7 +200,7 @@ time.sleep(1)
 "
  close $fcmd
  stdlog "	: generic command test receiver"
- set fcmd [open $SAL_WORK_DIR/$subsys/python/[set subsys]Controller.py w]
+ set fcmd [open $SAL_WORK_DIR/$subsys/python/[set subsys]_Controller.py w]
  puts $fcmd "
 import time
 import sys

@@ -65,7 +65,7 @@ global EVTS SUBSYS PARS TIMEOUT SAL_WORK_DIR
    }
    if { $ready } {
      catch {.evt$alias configure -bg orange}
-     exec gnome-terminal -e "$SAL_WORK_DIR/$SUBSYS/cpp/src/sacpp_[set SUBSYS]_event \"$alias\" \"$message\ +  $modifiers\""
+     exec gnome-terminal -e "$SAL_WORK_DIR/$SUBSYS/cpp/src/sacpp_[set SUBSYS]_[set alias]_send  $modifiers"
      .evt$alias configure -bg green
    } else { 
      set it [tk_dialog .d "Missing parameter" "All parameters must have a value" {} -1 "OK"]
@@ -78,7 +78,7 @@ global EVTS SUBSYS PARS TIMEOUT SAL_WORK_DIR
 #   exec sleep 5
 #}
 puts stdout "Starting $SUBSYS Log Event Listener"
-set LISTENER [exec xterm -geometry +400+10 -T "$SUBSYS Log Event Listener" -e $SAL_WORK_DIR/$SUBSYS/cpp/src/sacpp_[set SUBSYS]_eventlog &]
+set LISTENER [exec xterm -geometry +400+10 -T "$SUBSYS Log Event Listener" -e $SAL_WORK_DIR/$SUBSYS/cpp/src/sacpp_[set SUBSYS]_[set alias]_log &]
 
 
 

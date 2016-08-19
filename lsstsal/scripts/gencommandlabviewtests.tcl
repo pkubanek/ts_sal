@@ -27,7 +27,7 @@ int main (int argc, char *argv\[\])
   int status=0;
 
   [set subsys]_command_[set alias]C myData;
-  if (argc < 2) \{
+  if (argc < [expr [llength $CMDS([set subsys],[set alias],plist)] +1] ) \{
      printf(\"Usage :  input parameters...\\n\");"
    set fidl [open $SAL_WORK_DIR/idl-templates/validated/[set subsys]_command_[set alias].idl r]
    gets $fidl rec ; gets $fidl rec ;gets $fidl rec ;gets $fidl rec ;gets $fidl rec ;gets $fidl rec ;gets $fidl rec
@@ -119,7 +119,7 @@ int main (int argc, char *argv\[\])
   close $fin
   puts $fcmd "
        if (timeout > 0) \{
-          mgr.ackCommand_[set alias](cmdId, SAL__CMD_INPROGRESS, timeout, \"Ack : OK\");
+          mgr.ackCommand_[set alias](cmdId, SAL__CMD_INPROGRESS, 0, \"Ack : OK\");
           os_nanoSleep(delay_10ms);
        \}       
        mgr.ackCommand_[set alias](cmdId, SAL__CMD_COMPLETE, 0, \"Done : OK\");

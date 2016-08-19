@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-set SALVERSION 3.0.1
-=======
-set SALVERSION 3.0
->>>>>>> hotfix/Hotfix-1
+set SALVERSION 3.1.0
 set SAL_BASE_DIR $env(SAL_DIR)/scripts
 set SAL_CMAKE_DIR $SAL_BASE_DIR/code/simd/cmake
 set SAL_SID(auxscope) 		1000
