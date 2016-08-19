@@ -254,7 +254,11 @@ global VPROPS
            if { $VPROPS(long) } {
               puts $fcod5 "    sscanf(argv\[$idx\], \"%ld\", &myData.$VPROPS(name)\[$myidx\]);"
            } else {
-              puts $fcod5 "    sscanf(argv\[$idx\], \"%d\", &myData.$VPROPS(name)\[$myidx\]);"
+              if { $VPROPS(short) } { 
+                 puts $fcod5 "    sscanf(argv\[$idx\], \"%hd\", &myData.$VPROPS(name)\[$myidx\]);"
+              } else {
+                 puts $fcod5 "    sscanf(argv\[$idx\], \"%d\", &myData.$VPROPS(name)\[$myidx\]);"
+              }
            }
         } else {
            if { $VPROPS(double) } {
@@ -263,7 +267,7 @@ global VPROPS
               puts $fcod5 "    sscanf(argv\[$idx\], \"%f\", &myData.$VPROPS(name)\[$myidx\]);"
            }
         }
-        puts $fcod10 "	myData.$VPROPS(name)\[$myidx\] = sys.argv\[$idx\]"
+        puts $fcod10 "myData.$VPROPS(name)\[$myidx\] = sys.argv\[$idx\]"
         incr idx 1
         incr myidx 1
       }
@@ -281,7 +285,7 @@ global VPROPS
 #         puts $fcod8 "    [set VPROPS(base)]_memIO->shmemIncoming_[set VPROPS(topic)].$VPROPS(name) = (char *)&[set VPROPS(base)]_memIO->[set VPROPS(topic)]_$VPROPS(name)_buffer;"
          puts $fcod7 "    strcpy([set VPROPS(base)]_memIO->[set VPROPS(topic)]_$VPROPS(name)_buffer , $VPROPS(name));"
          puts $fcod8 "    strcpy($VPROPS(name) , [set VPROPS(base)]_memIO->[set VPROPS(topic)]_$VPROPS(name)_buffer);"
-         puts $fcod10 "    myData.$VPROPS(name)=sys.argv\[$idx\]"
+         puts $fcod10 "myData.$VPROPS(name)=sys.argv\[$idx\]"
 #         puts $fcod7 "    strcpy([set VPROPS(base)]_memIO->[set VPROPS(topic)]_$VPROPS(name)_buffer , data->$VPROPS(name));"
 #         puts $fcod8 "    strcpy(data->$VPROPS(name) , [set VPROPS(base)]_memIO->[set VPROPS(topic)]_$VPROPS(name)_buffer);"
 #         puts $fcod7 "    strcpy([set VPROPS(base)]_memIO->shmemOutgoing_[set VPROPS(topic)].$VPROPS(name) , data->$VPROPS(name));"
@@ -295,14 +299,18 @@ global VPROPS
          puts $fcod6 "    cout << \"    $VPROPS(name) : \" << data->$VPROPS(name) << endl;"
          puts $fcod7 "    [set VPROPS(base)]_memIO->shmemOutgoing_[set VPROPS(topic)].$VPROPS(name) = data->$VPROPS(name);"
          puts $fcod8 "    data->$VPROPS(name) = [set VPROPS(base)]_memIO->shmemIncoming_[set VPROPS(topic)].$VPROPS(name);"
-         puts $fcod10 "    myData.$VPROPS(name)=sys.argv\[$idx\]"
+         puts $fcod10 "myData.$VPROPS(name)=sys.argv\[$idx\]"
          if { $VPROPS(int) } {
           if { $VPROPS(long) } {
             puts $fcod4 "    myData.$VPROPS(name) = 1;";
             puts $fcod5 "    sscanf(argv\[$idx\], \"%ld\", &myData.$VPROPS(name));"
           } else {
             puts $fcod4 "    myData.$VPROPS(name) = 1;";
-            puts $fcod5 "    sscanf(argv\[$idx\], \"%d\", &myData.$VPROPS(name));"
+            if { $VPROPS(short) } {
+               puts $fcod5 "    sscanf(argv\[$idx\], \"%hd\", &myData.$VPROPS(name));"
+            } else {
+               puts $fcod5 "    sscanf(argv\[$idx\], \"%d\", &myData.$VPROPS(name));"
+            }
           }
          } else {
           if { $VPROPS(double) } {
@@ -366,9 +374,8 @@ proc genkeyedidl { fout base } {
 }
 
 
-
 proc makesalcode { idlfile base name lang } {
-global SAL_DIR SAL_WORK_DIR SYSDIC
+global SAL_DIR SAL_WORK_DIR SYSDIC ONEPYTHON
       puts stdout "Processing $base $name in $SAL_WORK_DIR"
       cd $SAL_WORK_DIR
       catch {makesaldirs $base $name}
@@ -610,8 +617,16 @@ puts stdout "done salidlgen $base $lang"
          saljavaclassgen $base $id
       }
       if { $lang == "python" } {
+         puts stdout "Generating Boost bindings"
          genpythonbinding $base
-         salpythontestgen $base
+         puts stdout "Generating python shared library"
+         salpythonshlibgen $base
+         puts stdout "Generating python command tests"
+         gencommandtestspython $base
+         puts stdout "Generating python event tests"
+         geneventtestspython $base
+         puts stdout "Generating python telemetry tests"
+         gentelemetrytestspython $base
       }
 }
 
@@ -661,23 +676,18 @@ global SAL_WORK_DIR OPTIONS ONEDDSGEN
    }
 }
 
-set ONEDDSGEN 0
 
 
-proc salpythontestgen { base } {
-global SAL_WORK_DIR ONEPYTHON
- if { $ONEPYTHON == 0 } {
+proc salpythonshlibgen { base } {
+global SAL_WORK_DIR
    cd $SAL_WORK_DIR/$base/cpp/src
    puts stdout "Generating Python SAL support for $base"
    exec touch .depend.Makefile.sacpp_[set base]_python
    catch { set result [exec make -f Makefile.sacpp_[set base]_python] } bad
    if { $bad != "" } {puts stdout $bad}
    puts stdout "python : Done SALPY_[set base].so"
-   set ONEPYTHON 1
- }
 }
 
-set ONEPYTHON 0
 
 proc saljavaclassgen { base id } {
 global SAL_WORK_DIR OPTIONS

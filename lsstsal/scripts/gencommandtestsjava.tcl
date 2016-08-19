@@ -54,9 +54,9 @@ public class [set subsys]Commander_[set alias]Test extends TestCase \{
 
 	    command.private_revCode = \"LSST TEST COMMAND\";"
   set cpars $CMDS($subsys,$alias)
-  puts $fcmd "          command.device   = \"[lindex $cpars 0]\";"
-  puts $fcmd "          command.property = \"[lindex $cpars 1]\";"
-  puts $fcmd "          command.action   = \"[lindex $cpars 2]\";"
+  puts $fcmd "            command.device   = \"[lindex $cpars 0]\";"
+  puts $fcmd "            command.property = \"[lindex $cpars 1]\";"
+  puts $fcmd "            command.action   = \"[lindex $cpars 2]\";"
   set narg 1
   foreach p $CMDS($subsys,$alias,param) {
        set pname [lindex $p 1]
@@ -68,20 +68,20 @@ public class [set subsys]Commander_[set alias]Test extends TestCase \{
         set pdim  [lindex $pspl 1]
         while { $l < $pdim } {
          switch $ptype {
-          boolean { puts $fcmd "        command.[set pname]\[$l\] = true;" }
-          double  { puts $fcmd "        command.[set pname]\[$l\] = (double) 1.0;" }
-          int     { puts $fcmd "        command.[set pname]\[$l\] = (int) 1;" }
-          long    { puts $fcmd "        command.[set pname]\[$l\] = (int) 1;" }
+          boolean { puts $fcmd "            command.[set pname]\[$l\] = true;" }
+          double  { puts $fcmd "            command.[set pname]\[$l\] = (double) 1.0;" }
+          int     { puts $fcmd "            command.[set pname]\[$l\] = (int) 1;" }
+          long    { puts $fcmd "            command.[set pname]\[$l\] = (int) 1;" }
          }
          incr l 1
         }
        } else {
         switch $ptype {
-          boolean { puts $fcmd "        command.[set pname] = true;" }
-          double  { puts $fcmd "        command.[set pname] = (double) 1.0;" }
-          int     { puts $fcmd "        command.[set pname] = (int) 1;" }
-          long    { puts $fcmd "        command.[set pname] = (int) 1;" }
-          string  { puts $fcmd "        command.[set pname] = \"testing\";" }
+          boolean { puts $fcmd "            command.[set pname] = true;" }
+          double  { puts $fcmd "            command.[set pname] = (double) 1.0;" }
+          int     { puts $fcmd "            command.[set pname] = (int) 1;" }
+          long    { puts $fcmd "            command.[set pname] = (int) 1;" }
+          string  { puts $fcmd "            command.[set pname] = \"testing\";" }
        }
       }
       incr narg 1

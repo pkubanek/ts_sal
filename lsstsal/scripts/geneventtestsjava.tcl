@@ -60,20 +60,20 @@ public class [set subsys]Event_[set alias]Test extends TestCase \{
         set pdim  [lindex $pspl 1]
         while { $l < $pdim } {
          switch $ptype {
-          boolean { puts $fcmd "  	event.[set pname]\[$l\] = true;" }
-          double  { puts $fcmd "  	event.[set pname]\[$l\] = (double) 1.0;" }
-          int     { puts $fcmd "  	event.[set pname]\[$l\] = (int) 1;" }
-          long    { puts $fcmd "  	event.[set pname]\[$l\] = (int) 1;" }
+          boolean { puts $fcmd "       	    event.[set pname]\[$l\] = true;" }
+          double  { puts $fcmd "  	    event.[set pname]\[$l\] = (double) 1.0;" }
+          int     { puts $fcmd "  	    event.[set pname]\[$l\] = (int) 1;" }
+          long    { puts $fcmd "  	    event.[set pname]\[$l\] = (int) 1;" }
          }
          incr l 1
         }
        } else {
         switch $ptype {
-          boolean { puts $fcmd "  	event.[set pname] = true;" }
-          double  { puts $fcmd "  	event.[set pname] = (double) 1.0;" }
-          int     { puts $fcmd "  	event.[set pname] = (int) 1;" }
-          long    { puts $fcmd "  	event.[set pname] = (int) 1;" }
-          string  { puts $fcmd "  	event.[set pname] = \"testing\";" }
+          boolean { puts $fcmd "  	    event.[set pname] = true;" }
+          double  { puts $fcmd "  	    event.[set pname] = (double) 1.0;" }
+          int     { puts $fcmd "  	    event.[set pname] = (int) 1;" }
+          long    { puts $fcmd "   	    event.[set pname] = (int) 1;" }
+          string  { puts $fcmd "  	    event.[set pname] = \"testing\";" }
        }
       }
       incr narg 1
