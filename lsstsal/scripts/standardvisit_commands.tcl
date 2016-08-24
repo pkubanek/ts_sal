@@ -30,10 +30,9 @@ set cameraCommander_takeImages   $env(SAL_WORK_DIR)/camera/cpp/src/sacpp_camera_
 
 
 set domeCommander     $env(SAL_WORK_DIR)/dome/cpp/src/sacpp_dome_cmd
-set hexapodCommander1 $env(SAL_WORK_DIR)/hexapod/cpp/src/sacpp_hexapod_cmd
-set hexapodCommander2 $env(SAL_WORK_DIR)/hexapod/cpp/src/sacpp_hexapod_cmd
-set m2msCommander     $env(SAL_WORK_DIR)/m2ms/cpp/src/sacpp_m2ms_cmd
-set rotatorCommander  $env(SAL_WORK_DIR)/rotator/cpp/src/sacpp_rotator_cmd
+set hexapodCommander1 $env(SAL_WORK_DIR)/hexapod/cpp/src/sacpp_hexapod_move_commander
+set hexapodCommander2 $env(SAL_WORK_DIR)/hexapod/cpp/src/sacpp_hexapod_move_commander2
+set m2msCommander     $env(SAL_WORK_DIR)/m2ms/cpp/src/sacpp_m2ms_ApplyBendingMode_commander
 
 puts stdout "----- Start of visit -----------------------------------------"
 if { $argc > 2 } {
@@ -67,16 +66,13 @@ puts stdout "Moving dome : target position set altaz azimuth=$az elevation=$alt"
 set status [catch {exec $domeCommander     5 target position set altaz "azimuth=$az elevation=$alt"} result]
 puts stdout [cmdok $result]
 ###puts stdout "Moving m2   : target position set altaz azimuth=$az elevation=$alt"
-###set status [catch {exec $m2msCommander       5 target position set altaz "azimuth=$az elevation=$alt"} result]
-puts stdout [cmdok $result]
-puts stdout "Adjusting rotator : target rotation rate set speed=$rotrate"
-set status [catch {exec $rotatorCommander       1 target rotation rate set "speed=$rotrate"} result]
+###set status [catch {exec $m2msCommander 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0} result]
 puts stdout [cmdok $result]
 puts stdout "Adjusting camera hexapod : actuators position absolute coords x=$ax1 y=$ax2 z=$ax3 v=$ax4 w=$ax5 z=$ax6"
-set status [catch {exec $hexapodCommander1 1 actuators position absolute coords "x=$ax1 y=$ax2 z=$ax3 v=-$ax4 w=$ax5 z=$ax6"} result]
+set status [catch {exec $hexapodCommander1 $ax1 $ax2 $ax3 $ax4 $ax5 $ax6 0} result]
 puts stdout [cmdok $result]
 puts stdout "Adjusting m2 hexapod : actuators position absolute coords x=$bx1 y=$bx2 z=$bx3 v=$bx4 w=$bx5 z=$bx6"
-set status [catch {exec $hexapodCommander2 1 actuators position absolute coords "x=$bx1 y=$bx2 z=$bx3 v=$bx4 w=$bx5 z=$bx6"} result]
+set status [catch {exec $hexapodCommander2 $bx1 $bx2 $bx3 $bx4 $bx5 $bx6 0} result]
 puts stdout [cmdok $result]
 #puts stdout "Sending guide star ROI's : guiders roi set position xpos=1,1,1,1,1,1,1,1 ypos=2,2,2,2,2,2,2,2 roiSize=32,32,32,32,32,32,32,32"
 #set status [catch {exec $cameraCommander   1 guiders roi set position "xpos=1,1,1,1,1,1,1,1 ypos=2,2,2,2,2,2,2,2 roiSize=32,32,32,32,32,32,32,32"} result]
