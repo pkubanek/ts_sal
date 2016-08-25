@@ -33,10 +33,9 @@ int main (int argc, char *argv\[\])
   [set subsys]_logevent_[set alias]C myData;
   if (argc < [expr [llength $EVTS([set subsys],[set alias],plist)] +1]) \{
      printf(\"Usage :  input parameters...\\n\");
-     printf(\"      int priority\\n\");
 "
    set fidl [open $SAL_WORK_DIR/idl-templates/validated/[set subsys]_logevent_[set alias].idl r]
-   gets $fidl rec ; gets $fidl rec ;gets $fidl rec ;gets $fidl rec ;gets $fidl rec ;gets $fidl rec ;gets $fidl rec ;gets $fidl rec
+   gets $fidl rec ; gets $fidl rec ;gets $fidl rec ;gets $fidl rec ;gets $fidl rec ;gets $fidl rec ;gets $fidl rec
    while { [gets $fidl rec] > -1 } {
       if { [lindex $rec 0] != "#pragma" && [lindex $rec 0]!= "\};" } {
          puts $fevt "     printf(\"$rec\\n\");"
@@ -56,11 +55,11 @@ int main (int argc, char *argv\[\])
 "
   set fin [open $SAL_WORK_DIR/include/SAL_[set subsys]_logevent_[set alias]Cargs.tmp r]
   while { [gets $fin rec] > -1 } {
-     if { [lindex [split $rec ",)"] 2] != " &myData.priority" } {
+#     if { [lindex [split $rec ",)"] 2] != " &myData.priority" } {
        puts $fevt $rec
-     } else {
-       puts $fevt "    sscanf(argv\[1\], \"%d\", &priority);"
-     }
+#     } else {
+#       puts $fevt "    sscanf(argv\[1\], \"%d\", &priority);"
+#     }
   }
   close $fin
   puts $fevt "
