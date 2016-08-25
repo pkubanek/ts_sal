@@ -117,6 +117,7 @@ import time
 import sys
 from SALPY_[set subsys] import *
 mgr = SAL_[set subsys][set initializer]
+print \"Event [set alias] logger ready\"
 while True:
 	event = [set subsys]_logeventC()
 	retval = mgr.getEvent(event)

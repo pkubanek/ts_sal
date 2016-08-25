@@ -108,6 +108,7 @@ public class [set subsys]EventLogger_[set alias]Test \{
 	  SAL_[set subsys] evt = new SAL_[set subsys][set initializer];
           evt.salEvent(\"[set subsys]_logevent_[set alias]\");
 	  [set subsys].logevent_[set alias] event = new [set subsys].logevent_[set alias]();
+          System.out.println(\"Event [set alias] logger ready \");
 
 	  while (!finished) \{
 	     status = evt.getEvent_[set alias](event);

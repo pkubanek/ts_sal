@@ -118,6 +118,8 @@ int test_[set subsys]_[set alias]_Log()
   SAL_[set subsys] mgr = SAL_[set subsys]();
 #endif
   mgr.salEvent(\"[set subsys]_logevent_[set alias]\");
+  cout << \"=== Event $alias logger ready = \" << endl;
+
   while (1) \{
   // receive event
     status = mgr.getEvent_[set alias](&SALInstance);
