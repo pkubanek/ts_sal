@@ -116,7 +116,7 @@ int test_[set subsys]_[set alias]_controller()
    }
    puts $fcmd "
   mgr.salProcessor(\"[set subsys]_command_[set alias]\");
-  cout << \"=== command $alias ready \" << endl;
+  cout << \"=== [set subsys]_[set alias] controller ready \" << endl;
 
   while (1) \{
     // receive command
