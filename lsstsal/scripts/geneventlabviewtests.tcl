@@ -54,15 +54,12 @@ int main (int argc, char *argv\[\])
 "
   set fin [open $SAL_WORK_DIR/include/SAL_[set subsys]_logevent_[set alias]shmout.tmp r]
   while { [gets $fin rec] > -1 } {
-     if { [lindex [split $rec ",)"] 2] != " &myData.priority" } {
        puts $fevt $rec
-     } else {
-       puts $fevt "    sscanf(argv\[1\], \"%d\", &priority);"
-     }
   }
   close $fin
   puts $fevt "
   // generate event
+  priority = myData.priority;
   mgr.logEvent_[set alias](&myData, priority);
   cout << \"=== Event $alias generated = \" << endl;
   sleep(1);

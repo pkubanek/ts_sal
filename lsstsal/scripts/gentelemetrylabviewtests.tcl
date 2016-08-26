@@ -26,7 +26,6 @@ using namespace [set subsys];
 
 int main (int argc, char *argv\[\])
 \{ 
-  int priority = SAL__EVENT_INFO;
   [set subsys]_[set alias]C myData;
   if (argc < 2) \{
      printf(\"Usage :  input parameters...\\n\");
