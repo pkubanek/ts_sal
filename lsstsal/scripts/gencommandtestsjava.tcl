@@ -125,6 +125,7 @@ public class [set subsys]Controller_[set alias] \{
 
 	  cmd.salProcessor(\"[set subsys]_command_[set alias]\");
 	  [set subsys].command_[set alias] command = new [set subsys].command_[set alias]();
+          System.out.println(\"[set subsys]_[set alias] controller ready \");
 
 	  while (!finished) \{
 

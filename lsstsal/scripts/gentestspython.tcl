@@ -117,6 +117,7 @@ import time
 import sys
 from SALPY_[set subsys] import *
 mgr = SAL_[set subsys][set initializer]
+print \"Event [set alias] logger ready\"
 while True:
 	event = [set subsys]_logeventC()
 	retval = mgr.getEvent(event)
@@ -172,6 +173,7 @@ from SALPY_[set subsys] import *
 mgr = SAL_[set subsys][set initializer]
 mgr.salProcessor(\"[set subsys]_command_[set alias]\")
 command = [set subsys]_command_[set alias]C()
+print \"[set subsys]_set alias] controller ready\"
 while True:
 	retval = mgr.acceptCommand_[set alias](command)
 	time.sleep(1)

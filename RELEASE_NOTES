@@ -1,10 +1,7 @@
-This is release 3.1.0 of the SAL SDK
+This is release 3.1.1 of the SAL SDK
 Please refer to the SAL User Guide for installation instructions.
 
-Changes for 3.1.0 : 
+Changes for 3.1.1 : 
 
-Fix sal_version
-Fix generated code for LabVIEW when XML definitions contain
-character string data (workaround for LabVIEW shared library wizard bug)
-
+Passed Continuous Integration C++ tests
 
