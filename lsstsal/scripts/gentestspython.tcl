@@ -24,40 +24,45 @@ global SAL_WORK_DIR SYSDIC SAL_DIR
       set name [lindex $j 2]
       set type [lindex [split $name _] 0]
       if { $type != "command" && $type != "logevent" && $type != "ackcmd" } {
-         stdlog "	: publisher for = $alias"
+         stdlog "	: publisher for = $name"
          set fpub [open $SAL_WORK_DIR/$subsys/python/[set subsys]_[set name]_Publisher.py w]
 	 puts $fpub "
 import time
 import sys
 from SALPY_[set subsys] import *
-mgr = SAL[set subsys][set initializer]
+mgr = SAL_[set subsys][set initializer]
 mgr.salTelemetryPub(\"[set subsys]_[set name]\")
 myData = [set subsys]_[set name]C()"
          set farg [open $SAL_WORK_DIR/include/SAL_[set subsys]_[set name]Cpub.tmp r]
 	 while { [gets $farg rec] > -1 } {
 	    puts $fpub [string trim $rec " ;"]
 	 }
-	 puts $fpub "
-retval = mgr.putSample_[set name](myData)
-time.sleep(1)
-mgr.shutdown()
+	 puts $fpub "i=0
+while i<10:
+  retval = mgr.putSample_[set name](myData)
+  i=i+1
+  time.sleep(1)
+
+mgr.salShutdown()
 exit()
 "
          close $fpub
-         stdlog "	: subscriber for = $alias"
+         stdlog "	: subscriber for = $name"
          set fsub [open $SAL_WORK_DIR/$subsys/python/[set subsys]_[set name]_Subscriber.py w]
 	 puts $fsub "
 import time
 import sys
 from SALPY_[set subsys] import *
-mgr = SAL[set subsys][set initializer]
+mgr = SAL_[set subsys][set initializer]
 mgr.salTelemetrySub(\"[set subsys]_[set name]\")
 myData = [set subsys]_[set name]C()
 while True:
-  retval = mgr.getNextSample_[set name](myData)"
+  retval = mgr.getNextSample_[set name](myData)
+  if retval==0:"
          pythonprinter $fsub [set subsys]_[set name]
 	 puts $fsub "  time.sleep(1)
-mgr.shutdown()
+
+mgr.salShutdown()
 exit()
 "
          close $fsub

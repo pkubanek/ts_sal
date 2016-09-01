@@ -17,9 +17,9 @@ global TLMS TLM_ALIASES CMDS CMD_ALIASES EVTS EVENT_ALIASES
     foreach item $items {
       set id [lindex $item end]
       if { [llength [split $item "\[\]"]] > 1 } {
-        puts $fout "  print myData.$id\[0\]"
+        puts $fout "    print myData.$id\[0\]"
       } else {
-        puts $fout "  print myData.$id"
+        puts $fout "    print myData.$id"
       }
     }
   }
