@@ -243,7 +243,7 @@ global VPROPS
       puts $fcod2 "    for (int iseq=0;iseq<$VPROPS(dim);iseq++) \{Instance.$VPROPS(name)\[iseq\] = data->$VPROPS(name)\[iseq\];\}"
       puts $fcod3 "       cout << \"    $VPROPS(name) : \" << SALInstance.$VPROPS(name)\[0\] << endl;"
       puts $fcod4 "    for (int i=0;i<$VPROPS(dim);i++)\{myData.$VPROPS(name)\[i\] = i+iseq;\}"
-      puts $fcod6 "       cout << \"    $VPROPS(name) : \" << data->$VPROPS(name) << endl;"
+      puts $fcod6 "       cout << \"    $VPROPS(name) : \" << data->$VPROPS(name)\[0\] << endl;"
       puts $fcod7 "    for (int i=0;i<$VPROPS(dim);i++)\{[set VPROPS(base)]_memIO->shmemOutgoing_[set VPROPS(topic)].$VPROPS(name)\[i\] = data->$VPROPS(name)\[i\];\}"
       puts $fcod8 "    for (int i=0;i<$VPROPS(dim);i++)\{data->$VPROPS(name)\[i\] = [set VPROPS(base)]_memIO->shmemIncoming_[set VPROPS(topic)].$VPROPS(name)\[i\];\}"
       set idlim [expr $idx + $VPROPS(dim)]
