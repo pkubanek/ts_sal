@@ -2,6 +2,7 @@
 # set SAL_DIR $env(SAL_DIR)
 # source $SAL_DIR/utilities.tcl
 # source $SAL_DIR/gentestspython.tcl
+# source $SAL_WORK_DIR/idl-templates/validated/camera_tlmdef.tcl
 # source $SAL_WORK_DIR/idl-templates/validated/camera_evtdef.tcl
 # source $SAL_WORK_DIR/idl-templates/validated/camera_cmddef.tcl
 # geneventtestspython camera
@@ -23,24 +24,43 @@ global SAL_WORK_DIR SYSDIC SAL_DIR
       set name [lindex $j 2]
       set type [lindex [split $name _] 0]
       if { $type != "command" && $type != "logevent" && $type != "ackcmd" } {
-         set fpub [open $SAL_WORK_DIR/$subsys/python/[set name]_Publisher.py w]
+         stdlog "	: publisher for = $alias"
+         set fpub [open $SAL_WORK_DIR/$subsys/python/[set subsys]_[set name]_Publisher.py w]
 	 puts $fpub "
 import time
 import sys
 from SALPY_[set subsys] import *
 mgr = SAL[set subsys][set initializer]
-mgr.salTelemetryPub(\"[set name]\")
-myData = [set name]C()"
-         set farg [open $SAL_WORK_DIR/include/SAL_[set name]Cpub r]
+mgr.salTelemetryPub(\"[set subsys]_[set name]\")
+myData = [set subsys]_[set name]C()"
+         set farg [open $SAL_WORK_DIR/include/SAL_[set subsys]_[set name]Cpub.tmp r]
 	 while { [gets $farg rec] > -1 } {
 	    puts $fpub [string trim $rec " ;"]
 	 }
-	 close $fpub
 	 puts $fpub "
-retval = mgr.putSample_[set tlmid]
+retval = mgr.putSample_[set name](myData)
 time.sleep(1)
 mgr.shutdown()
+exit()
 "
+         close $fpub
+         stdlog "	: subscriber for = $alias"
+         set fsub [open $SAL_WORK_DIR/$subsys/python/[set subsys]_[set name]_Subscriber.py w]
+	 puts $fsub "
+import time
+import sys
+from SALPY_[set subsys] import *
+mgr = SAL[set subsys][set initializer]
+mgr.salTelemetrySub(\"[set subsys]_[set name]\")
+myData = [set subsys]_[set name]C()
+while True:
+  retval = mgr.getNextSample_[set name](myData)"
+         pythonprinter $fsub [set subsys]_[set name]
+	 puts $fsub "  time.sleep(1)
+mgr.shutdown()
+exit()
+"
+         close $fsub
       }
    }
 }
