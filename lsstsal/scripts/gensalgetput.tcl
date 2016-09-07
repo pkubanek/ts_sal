@@ -14,6 +14,9 @@ global SAL_WORK_DIR
    puts $fout "
 salReturn SAL_[set base]::putSample_[set name]([set base]_[set name]C *data)
 \{
+#ifdef SAL_BUILD_FOR_PYTHON
+  Py_BEGIN_ALLOW_THREADS
+#endif
   int actorIdx = SAL__[set base]_[set name]_ACTOR;
   if ( sal\[actorIdx\].isWriter == false ) \{
     createWriter(actorIdx);
@@ -51,6 +54,9 @@ salReturn SAL_[set base]::putSample_[set name]([set base]_[set name]C *data)
 #ifdef SAL_SUBSYSTEM_ID_IS_KEYED
           SALWriter->unregister_instance(Instance, dataHandle);
 #endif
+#ifdef SAL_BUILD_FOR_PYTHON
+  Py_END_ALLOW_THREADS
+#endif
   return status;
 \}
 
@@ -62,6 +68,9 @@ salReturn SAL_[set base]::getSample_[set name]([set base]_[set name]C *data)
   salReturn istatus = -1;
   unsigned int numsamp = 0;
 
+#ifdef SAL_BUILD_FOR_PYTHON
+  Py_BEGIN_ALLOW_THREADS
+#endif
   int actorIdx = SAL__[set base]_[set name]_ACTOR;
   if ( sal\[actorIdx\].isReader == false ) \{
     createReader(actorIdx);
@@ -97,6 +106,9 @@ salReturn SAL_[set base]::getSample_[set name]([set base]_[set name]C *data)
   \}
   status = SALReader->return_loan(Instances, info);
   checkStatus(status, \"[set base]::[set name]DataReader::return_loan\");
+#ifdef SAL_BUILD_FOR_PYTHON
+  Py_END_ALLOW_THREADS
+#endif
   if ( numsamp == 0 ) \{
      istatus = SAL__NO_UPDATES;
      return istatus;
@@ -121,7 +133,7 @@ salReturn SAL_[set base]::flushSamples_[set name]([set base]_[set name]C *data)
     if (debugLevel > 8) \{
         cout << \"===	\[flushSamples\] getSample returns :\" << istatus << endl;
     \}
-    sal\[SAL__[set base]_[set name]_ACTOR\].sampleAge = 10.0;
+    sal\[SAL__[set base]_[set name]_ACTOR\].sampleAge = 100.0;
     return SAL__OK;
 \}
 "
@@ -188,7 +200,7 @@ void SAL_SALData::initSalActors ()
       sal\[i\].isEventWriter = false;
       sal\[i\].isActive = false;
       sal\[i\].maxSamples = LENGTH_UNLIMITED;
-      sal\[i\].sampleAge = 10.0;
+      sal\[i\].sampleAge = 100.0;
     \}
 "
    set idx 0
@@ -227,7 +239,7 @@ proc addActorIndexesJava { idlfile base fout } {
 
 
 proc addSALDDStypes { idlfile id lang base } {
-global SAL_DIR SAL_WORK_DIR SYSDIC
+global env SAL_DIR SAL_WORK_DIR SYSDIC
  set atypes $idlfile
  if { $lang == "java" } {
   exec cp $SAL_DIR/code/templates/salActor.java [set id]/java/src/org/lsst/sal/.
@@ -391,7 +403,7 @@ puts $fout "
           sal\[actorIdx\].maxSamples = DDS.LENGTH_UNLIMITED.value;
           sal\[actorIdx\].sampleAge = -1.0;
           status = getSample(data);
-          sal\[actorIdx\].sampleAge = 10.0;
+          sal\[actorIdx\].sampleAge = 100.0;
           return SAL__OK;
 	\}
 
@@ -418,7 +430,11 @@ puts $fout "
   set rec ""
   while { [string range $rec 0 21] != "// INSERT TYPE SUPPORT" } {
      if { [string range $rec 0 22] == "// INSERT TYPE INCLUDES" } {
-       puts $fouth "  #include \"ccpp_sal_[lindex [split $id _] 0].h\""
+       puts $fouth "  #include \"ccpp_sal_[lindex [split $id _] 0].h\"
+#ifdef SAL_BUILD_FOR_PYTHON
+#include \"python[set env(PYTHON_BUILD_VERSION)]/Python.h\"
+#endif
+"
        gets $finh rec ; puts $fouth $rec
      } else {
        gets $finh rec
