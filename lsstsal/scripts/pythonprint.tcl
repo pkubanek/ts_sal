@@ -6,9 +6,11 @@ global TLMS TLM_ALIASES CMDS CMD_ALIASES EVTS EVENT_ALIASES
   set alias [join [lrange $base 1 end] _]
   if { $alias != "ackcmd" } {
     if { [lindex $base 1] == "command" } {
+      set alias [lindex $base 2]
       set items $CMDS($subsys,$alias,param)
     } else {
       if { [lindex $base 1] == "logevent" } {
+        set alias [lindex $base 2]
         set items $EVTS($subsys,$alias,param)
       } else {
         set items $TLMS($subsys,$alias,param)
@@ -16,10 +18,11 @@ global TLMS TLM_ALIASES CMDS CMD_ALIASES EVTS EVENT_ALIASES
     }
     foreach item $items {
       set id [lindex $item end]
-      if { [llength [split $item "\[\]"]] > 1 } {
-        puts $fout "    print myData.$id\[0\]"
+      if { [llength [split $item "()"]] > 1 } {
+        set xid [lindex [split $id ()] 0]
+        puts $fout "    print \"$id = \",list(myData.$xid)"
       } else {
-        puts $fout "    print myData.$id"
+        puts $fout "    print \"$id = \",myData.$id"
       }
     }
   }

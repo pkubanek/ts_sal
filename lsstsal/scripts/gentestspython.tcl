@@ -33,9 +33,9 @@ from SALPY_[set subsys] import *
 mgr = SAL_[set subsys][set initializer]
 mgr.salTelemetryPub(\"[set subsys]_[set name]\")
 myData = [set subsys]_[set name]C()"
-         set farg [open $SAL_WORK_DIR/include/SAL_[set subsys]_[set name]Cpub.tmp r]
+         set farg [open $SAL_WORK_DIR/include/SAL_[set subsys]_[set name]Ppub.tmp r]
 	 while { [gets $farg rec] > -1 } {
-	    puts $fpub [string trim $rec " ;"]
+	    puts $fpub $rec
 	 }
 	 puts $fpub "i=0
 while i<10:
@@ -87,6 +87,10 @@ global EVENT_ALIASES EVTS SAL_WORK_DIR SYSDIC SAL_DIR
       puts $fcmd "
 import time
 import sys
+if len(sys.argv) < [expr [llength $EVTS([set subsys],[set alias],plist)] +1]:
+  print \"ERROR : Invalid or missing arguments : $EVTS([set subsys],[set alias],plist)\"
+  exit()
+
 from SALPY_[set subsys] import *
 mgr = SAL_[set subsys][set initializer]
 myData = [set subsys]_logevent_[set alias]C()"
@@ -95,10 +99,10 @@ myData = [set subsys]_logevent_[set alias]C()"
          puts $fcmd $rec
       }
       close $farg
-      puts $fcmd "
-mgr.logEvent_[set alias](myData, 1)
+      puts $fcmd "mgr.logEvent_[set alias](myData, priority)
 time.sleep(1)
 mgr.salShutdown()
+exit()
 "
       close $fcmd
       stdlog "	: event test receive for = $alias"
@@ -111,47 +115,15 @@ mgr = SAL_[set subsys][set initializer]
 while True:
   event = [set subsys]_logevent_[set alias]C()
   retval = mgr.getEvent_[set alias](event)
-  print retval
-  print \">%s<\" % event.message
+  print \"Event $subsys $alias received\" 
   time.sleep(1)
 mgr.salShutdown()
+exit()
 "
       close $fcmd
-    } else {
-      stdlog "	: generic event test send for = $alias"
-      set fcmd [open $SAL_WORK_DIR/$subsys/python/[set subsys]_Event_[set alias].py w]
-      puts $fcmd "
-import time
-import sys
-from SALPY_[set subsys] import *
-mgr = SAL_[set subsys][set initializer]
-event = [set subsys]_logeventC()
-event.message=\"[set alias]\"
-mgr.logEvent_[set alias](event, 1)
-time.sleep(1)
-mgr.salShutdown()
-"
-      close $fcmd
-    }
+    } 
    }
  }
- stdlog "	: generic event test receiver"
- set fcmd [open $SAL_WORK_DIR/$subsys/python/[set subsys]_EventLogger.py w]
- puts $fcmd "
-import time
-import sys
-from SALPY_[set subsys] import *
-mgr = SAL_[set subsys][set initializer]
-print \"Event [set alias] logger ready\"
-while True:
-	event = [set subsys]_logeventC()
-	retval = mgr.getEvent(event)
-	print retval
-	print \">%s<\" % event.message
-	time.sleep(1)
-mgr.salShutdown()
-"
- close $fcmd
 }
 
 
@@ -173,6 +145,10 @@ global CMD_ALIASES CMDS SAL_WORK_DIR SYSDIC SAL_DIR
 import time
 import sys
 timeout=5
+if len(sys.argv) < [expr [llength $CMDS([set subsys],[set alias],plist)] +1]:
+  print \"ERROR : Invalid or missing arguments : $CMDS([set subsys],[set alias],plist)\"
+  exit()
+
 from SALPY_[set subsys] import *
 mgr = SAL_[set subsys][set initializer]
 mgr.salCommand(\"[set subsys]_command_[set alias]\")
@@ -183,10 +159,11 @@ myData = [set subsys]_command_[set alias]C()"
           puts $fcmd $rec
        }
        close $farg
-       puts $fcmd "
-cmdId = mgr.issueCommand_[set alias](myData)
+       puts $fcmd "cmdId = mgr.issueCommand_[set alias](myData)
 retval = mgr.waitForCompletion_[set alias](cmdId,timeout)
 time.sleep(1)
+mgr.salShutdown()
+exit()
 "
       close $fcmd
       stdlog "	: command test receive for = $alias"
@@ -197,49 +174,22 @@ import sys
 from SALPY_[set subsys] import *
 mgr = SAL_[set subsys][set initializer]
 mgr.salProcessor(\"[set subsys]_command_[set alias]\")
-command = [set subsys]_command_[set alias]C()
+myData = [set subsys]_command_[set alias]C()
 print \"[set subsys]_set alias] controller ready\"
 while True:
-	retval = mgr.acceptCommand_[set alias](command)
-	time.sleep(1)
+    cmdId = mgr.acceptCommand_[set alias](myData)"
+     pythonprinter $fcmd [set subsys]_command_[set alias]
+     puts $fcmd "    time.sleep(1)
+    mgr.ackCommand_[set alias](cmdId, SAL__CMD_COMPLETE, 0, \"Done : OK\");
+    time.sleep(1)
+
+mgr.salShutdown()
+exit()
 "
       close $fcmd
     }
    }
  }
- stdlog "	: generic command test sender"
- set fcmd [open $SAL_WORK_DIR/$subsys/python/[set subsys]_Commander.py w]
- puts $fcmd "
-import time
-import sys
-from SALPY_[set subsys] import *
-timeout=5
-mgr = SAL_[set subsys][set initializer]
-mgr.salCommand(\"[set subsys]_command\")
-command = [set subsys]_commandC()
-command.device   = sys.argv\[1\]
-command.property = sys.argv\[2\]
-command.action   = sys.argv\[3\]
-command.value    = sys.argv\[4\]
-cmdId = mgr.issueCommand(command)
-retval = mgr.waitForCompletion(cmdId,timeout)
-time.sleep(1)
-"
- close $fcmd
- stdlog "	: generic command test receiver"
- set fcmd [open $SAL_WORK_DIR/$subsys/python/[set subsys]_Controller.py w]
- puts $fcmd "
-import time
-import sys
-from SALPY_[set subsys] import *
-mgr = SAL_[set subsys][set initializer]
-mgr.salProcessor(\"[set subsys]_command\")
-command = [set subsys]_commandC()
-while True:
-	retval = mgr.acceptCommand(command)
-	time.sleep(1)
-"
- close $fcmd
 }
 
 
