@@ -176,6 +176,7 @@ mgr = SAL_[set subsys][set initializer]
 mgr.salProcessor(\"[set subsys]_command_[set alias]\")
 myData = [set subsys]_command_[set alias]C()
 print \"[set subsys]_set alias] controller ready\"
+SAL__CMD_COMPLETE=303
 while True:
     cmdId = mgr.acceptCommand_[set alias](myData)"
      pythonprinter $fcmd [set subsys]_command_[set alias]
