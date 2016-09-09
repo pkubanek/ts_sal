@@ -56,6 +56,7 @@ from SALPY_[set subsys] import *
 mgr = SAL_[set subsys][set initializer]
 mgr.salTelemetrySub(\"[set subsys]_[set name]\")
 myData = [set subsys]_[set name]C()
+print \"[set subsys]_set alias] subscriber ready\"
 while True:
   retval = mgr.getNextSample_[set name](myData)
   if retval==0:"
@@ -112,6 +113,7 @@ import time
 import sys
 from SALPY_[set subsys] import *
 mgr = SAL_[set subsys][set initializer]
+print \"[set subsys]_set alias] logger ready\"
 while True:
   event = [set subsys]_logevent_[set alias]C()
   retval = mgr.getEvent_[set alias](event)

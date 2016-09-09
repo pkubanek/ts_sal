@@ -286,7 +286,7 @@ global VPROPS
          puts $fcod7 "    strcpy([set VPROPS(base)]_memIO->[set VPROPS(topic)]_$VPROPS(name)_buffer , $VPROPS(name));"
          puts $fcod8 "    strcpy($VPROPS(name) , [set VPROPS(base)]_memIO->[set VPROPS(topic)]_$VPROPS(name)_buffer);"
          puts $fcod10 "myData.$VPROPS(name)=sys.argv\[$idx\]"
-         puts $fcod4 "    myData.$VPROPS(name)=\"LSST\""
+         puts $fcod11 "    myData.$VPROPS(name)=\"LSST\""
       } else {
          puts $fcod1 "    data->$VPROPS(name) = Instances\[j\].$VPROPS(name);"
          puts $fcod2 "    Instance.$VPROPS(name) = data->$VPROPS(name);"
@@ -299,7 +299,7 @@ global VPROPS
           if { $VPROPS(long) } {
             puts $fcod4 "    myData.$VPROPS(name) = 1;";
             puts $fcod5 "    sscanf(argv\[$idx\], \"%ld\", &myData.$VPROPS(name));"
-            puts $fcod11 "    myData.$VPROPS(name) = 1";
+            puts $fcod11 "myData.$VPROPS(name) = 1";
           } else {
             puts $fcod4 "    myData.$VPROPS(name) = 1;";
             if { $VPROPS(short) } {
@@ -312,7 +312,7 @@ global VPROPS
           if { $VPROPS(double) } {
             puts $fcod4 "    myData.$VPROPS(name) = 1.0;";
             puts $fcod5 "    sscanf(argv\[$idx\], \"%lf\", &myData.$VPROPS(name));"
-            puts $fcod11 "    myData.$VPROPS(name) = 1.0";
+            puts $fcod11 "myData.$VPROPS(name) = 1.0";
           } else {
             puts $fcod4 "    myData.$VPROPS(name) = 1.0;";
             puts $fcod5 "    sscanf(argv\[$idx\], \"%f\", &myData.$VPROPS(name));"
