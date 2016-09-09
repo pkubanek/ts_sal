@@ -126,15 +126,15 @@ global TLMS TLM_ALIASES
          set declare [join [split $ydec "\]" ] ")"]
          if { $ctype == "command" } {
             lappend CMDS($subsys,$alias,param) "$declare"
-            lappend CMDS($subsys,$alias,plist) [lindex $declare 1]
+            lappend CMDS($subsys,$alias,plist)  $item
          }
          if { $ctype == "event" } {
             lappend EVTS($subsys,$alias,param) "$declare"
-            lappend EVTS($subsys,$alias,plist) [lindex $declare 1]
+            lappend EVTS($subsys,$alias,plist) $item
          }
          if { $ctype == "telemetry" } {
 	    lappend TLMS($subsys,$alias,param) "$declare"
-	    lappend TLMS($subsys,$alias,plist) [lindex $declare 1]
+	    lappend TLMS($subsys,$alias,plist) $item
             puts $fsql "INSERT INTO [set tname]_items VALUES ($itemid,\"$item\",\"$type\",$idim,\"$unit\",$freq,\"$range\",\"$location\",\"$desc\");"
          }
       }
@@ -185,6 +185,7 @@ global TLMS TLM_ALIASES
     }
    }
 }
+
 
 
 proc genhtmlcommandtable { subsys } {
@@ -239,7 +240,7 @@ global IDLRESERVED SAL_WORK_DIR SAL_DIR CMDS CMD_ALIASES EVTS EVENT_ALIASES
 
 
 
-proc genhtmltelemetrytable { subsys } {
+proc oldgenhtmltelemetrytable { subsys } {
 global IDLRESERVED SAL_WORK_DIR SAL_DIR TLMS TLM_ALIASES
   exec mkdir -p $SAL_WORK_DIR/html/[set subsys]
   set fout [open $SAL_WORK_DIR/html/[set subsys]/[set subsys]_Telemetry.html w]
@@ -248,7 +249,6 @@ global IDLRESERVED SAL_WORK_DIR SAL_DIR TLMS TLM_ALIASES
   puts $fout "<TABLE BORDER=3 CELLPADDING=5 BGCOLOR=LightBlue  WIDTH=600>
 <TR BGCOLOR=Yellow><B><TD>Telemetry Stream</TD><TD>Parameter(s)</TD></B></TR>"
   foreach i [lsort $TLM_ALIASES($subsys)] {
-      set tlm "$TLMS($subsys,$i) - - -"
       puts $fout "<TR><TD>$subsys<BR>$i</TD><TD> "
       if { [info exists TLMS($subsys,$i,param)] } {
         foreach p $TLMS($subsys,$i,param) {
