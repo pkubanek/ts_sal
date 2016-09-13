@@ -56,7 +56,7 @@ from SALPY_[set subsys] import *
 mgr = SAL_[set subsys][set initializer]
 mgr.salTelemetrySub(\"[set subsys]_[set name]\")
 myData = [set subsys]_[set name]C()
-print \"[set subsys]_set alias] subscriber ready\"
+print(\"[set subsys]_set alias] subscriber ready\")
 while True:
   retval = mgr.getNextSample_[set name](myData)
   if retval==0:"
@@ -89,7 +89,7 @@ global EVENT_ALIASES EVTS SAL_WORK_DIR SYSDIC SAL_DIR
 import time
 import sys
 if len(sys.argv) < [expr [llength $EVTS([set subsys],[set alias],plist)] +1]:
-  print \"ERROR : Invalid or missing arguments : $EVTS([set subsys],[set alias],plist)\"
+  print(\"ERROR : Invalid or missing arguments : $EVTS([set subsys],[set alias],plist)\")
   exit()
 
 from SALPY_[set subsys] import *
@@ -113,11 +113,11 @@ import time
 import sys
 from SALPY_[set subsys] import *
 mgr = SAL_[set subsys][set initializer]
-print \"[set subsys]_set alias] logger ready\"
+print(\"[set subsys]_set alias] logger ready\")
 while True:
   event = [set subsys]_logevent_[set alias]C()
   retval = mgr.getEvent_[set alias](event)
-  print \"Event $subsys $alias received\" 
+  print(\"Event $subsys $alias received\")
   time.sleep(1)
 mgr.salShutdown()
 exit()
@@ -148,7 +148,7 @@ import time
 import sys
 timeout=5
 if len(sys.argv) < [expr [llength $CMDS([set subsys],[set alias],plist)] +1]:
-  print \"ERROR : Invalid or missing arguments : $CMDS([set subsys],[set alias],plist)\"
+  print(\"ERROR : Invalid or missing arguments : $CMDS([set subsys],[set alias],plist)\")
   exit()
 
 from SALPY_[set subsys] import *
@@ -177,7 +177,7 @@ from SALPY_[set subsys] import *
 mgr = SAL_[set subsys][set initializer]
 mgr.salProcessor(\"[set subsys]_command_[set alias]\")
 myData = [set subsys]_command_[set alias]C()
-print \"[set subsys]_set alias] controller ready\"
+print(\"[set subsys]_set alias] controller ready\")
 SAL__CMD_COMPLETE=303
 while True:
     cmdId = mgr.acceptCommand_[set alias](myData)"
