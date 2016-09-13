@@ -296,10 +296,10 @@ global VPROPS
          puts $fcod8 "    data->$VPROPS(name) = [set VPROPS(base)]_memIO->shmemIncoming_[set VPROPS(topic)].$VPROPS(name);"
          puts $fcod10 "myData.$VPROPS(name)=sys.argv\[$idx\]"
          if { $VPROPS(int) } {
+          puts $fcod11 "myData.$VPROPS(name) = 1";
           if { $VPROPS(long) } {
             puts $fcod4 "    myData.$VPROPS(name) = 1;";
             puts $fcod5 "    sscanf(argv\[$idx\], \"%ld\", &myData.$VPROPS(name));"
-            puts $fcod11 "myData.$VPROPS(name) = 1";
           } else {
             puts $fcod4 "    myData.$VPROPS(name) = 1;";
             if { $VPROPS(short) } {
@@ -309,10 +309,10 @@ global VPROPS
             }
           }
          } else {
+          puts $fcod11 "myData.$VPROPS(name) = 1.0";
           if { $VPROPS(double) } {
             puts $fcod4 "    myData.$VPROPS(name) = 1.0;";
             puts $fcod5 "    sscanf(argv\[$idx\], \"%lf\", &myData.$VPROPS(name));"
-            puts $fcod11 "myData.$VPROPS(name) = 1.0";
           } else {
             puts $fcod4 "    myData.$VPROPS(name) = 1.0;";
             puts $fcod5 "    sscanf(argv\[$idx\], \"%f\", &myData.$VPROPS(name));"
