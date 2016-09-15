@@ -41,8 +41,8 @@ source $OSPL_HOME/release.com
 cd $SAL_WORK_DIR
 
 echo "Updating XML"
-wget -nv https://github.com/lsst-ts/ts_xml/archive/master.zip
-unzip master.zip
+wget -nv https://github.com/lsst-ts/ts_xml/archive/master.zip -O master.zip
+unzip -o master.zip
 mv -v ts_xml-master/sal_interfaces/*/*.xml .
 
 echo "Validating interfaces"
