@@ -20,7 +20,7 @@ global TLMS TLM_ALIASES CMDS CMD_ALIASES EVTS EVENT_ALIASES
       set id [lindex $item end]
       if { [llength [split $item "()"]] > 1 } {
         set xid [lindex [split $id ()] 0]
-        puts $fout "    print(\"$id = \",list(myData.$xid))"
+        puts $fout "    print(\"$id = \" + str(list(myData.$xid)))"
       } else {
         puts $fout "    print(\"$id = \",myData.$id)"
       }
