@@ -56,7 +56,7 @@ from SALPY_[set subsys] import *
 mgr = SAL_[set subsys][set initializer]
 mgr.salTelemetrySub(\"[set subsys]_[set name]\")
 myData = [set subsys]_[set name]C()
-print(\"[set subsys]_[set alias] subscriber ready\")
+print(\"[set subsys]_[set name] subscriber ready\")
 while True:
   retval = mgr.getNextSample_[set name](myData)
   if retval==0:"
