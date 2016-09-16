@@ -22,7 +22,7 @@ global TLMS TLM_ALIASES CMDS CMD_ALIASES EVTS EVENT_ALIASES
         set xid [lindex [split $id ()] 0]
         puts $fout "    print(\"$id = \" + str(list(myData.$xid)))"
       } else {
-        puts $fout "    print(\"$id = \",myData.$id)"
+        puts $fout "    print(\"$id = \" + str(myData.$id))"
       }
     }
   }
