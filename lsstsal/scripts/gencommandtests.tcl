@@ -19,6 +19,7 @@ global CMD_ALIASES CMDS SAL_WORK_DIR SYSDIC
 #include \"SAL_[set subsys].h\"
 #include \"ccpp_sal_[set subsys].h\"
 #include \"os.h\"
+#include <stdlib.h>
 using namespace DDS;
 using namespace [set subsys];
 
@@ -45,6 +46,9 @@ int main (int argc, char *argv\[\])
    if { [info exists SYSDIC($subsys,keyedID)] } {
       puts $fcmd "
   int [set subsys]ID = 1;
+  if (getenv(\"LSST_[set subsys]_ID\") != NULL) \{
+     sscanf(getenv(\"LSST_[set subsys]_ID\"),\"%d\",&[set subsys]ID);
+  \} 
   SAL_[set subsys] mgr = SAL_[set subsys]([set subsys]ID);"
    } else {
       puts $fcmd "  SAL_[set subsys] mgr = SAL_[set subsys]();"
@@ -91,6 +95,7 @@ int main (int argc, char *argv\[\])
 #include \"SAL_[set subsys].h\"
 #include \"ccpp_sal_[set subsys].h\"
 #include \"os.h\"
+#include <stdlib.h>
 using namespace DDS;
 using namespace [set subsys];
 
@@ -110,6 +115,9 @@ int test_[set subsys]_[set alias]_controller()
    if { [info exists SYSDIC($subsys,keyedID)] } {
       puts $fcmd "
   int [set subsys]ID = 1;
+  if (getenv(\"LSST_[set subsys]_ID\") != NULL) \{
+     sscanf(getenv(\"LSST_[set subsys]_ID\"),\"%d\",&[set subsys]ID);
+  \} 
   SAL_[set subsys] mgr = SAL_[set subsys]([set subsys]ID);"
    } else {
       puts $fcmd "  SAL_[set subsys] mgr = SAL_[set subsys]();"
@@ -212,7 +220,7 @@ SRC           = ../src/CheckStatus.cpp ../src/SAL_[set subsys].cpp $extrasrc"
    }
    close $fin
    close $fout
-   exec mv /tmp/Makefile.sacpp_[set subsys]_testcommands $SAL_WORK_DIR/$subsys/cpp/src/Makefile.sacpp_[set subsys]_testcommands
+   exec cp /tmp/Makefile.sacpp_[set subsys]_testcommands $SAL_WORK_DIR/$subsys/cpp/src/Makefile.sacpp_[set subsys]_testcommands
  }
 }
 

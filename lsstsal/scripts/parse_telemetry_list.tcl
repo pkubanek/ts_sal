@@ -24,7 +24,12 @@ puts $fout "<TABLE BORDER=3 CELLPADDING=5 BGCOLOR=LightBlue WIDTH=600>
    if { [lindex $rec 0] != "#pragma" } {
     if { [llength $rec] > 1 } {
       set type [lindex $rec 0]
-      set name [string trim [lindex $rec 1] "; "]
+      if { $type == "unsigned" } {
+        set type [lrange $rec 0 1]
+        set name [string trim [lindex $rec 2] "; "]
+      } else {
+        set name [string trim [lindex $rec 1] "; "]
+      }
       set cmt "-"
       if { [llength [split $rec "/"]] > 1 } {
          set cmt [lindex [split $rec "/"] 2]
