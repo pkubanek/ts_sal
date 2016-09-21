@@ -6,7 +6,7 @@
 
 source $env(SAL_DIR)/geneventaliascode.tcl
 source $env(SAL_DIR)/gencmdaliascode.tcl
-
+source $env(SAL_DIR)/gengenericreader.tcl
 
 proc insertcfragments { fout base name } {
 global SAL_WORK_DIR
@@ -137,6 +137,7 @@ salReturn SAL_[set base]::flushSamples_[set name]([set base]_[set name]C *data)
     return SAL__OK;
 \}
 "
+   gengenericreader $fout $base 
 }
 
 proc testifdef { } {

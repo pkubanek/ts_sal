@@ -113,6 +113,9 @@
       salU64  origin;
       char   domainName[128];
       salActor sal[SAL__ACTORS_MAXCOUNT];
+      int lastActor_telemetry;
+      int lastActor_command;
+      int lastActor_event;
 
     public:
 
@@ -126,6 +129,9 @@
       salReturn salTypeSupport(char *topicName);
       salReturn salTelemetryPub(char *topicName);
       salReturn salTelemetrySub(char *topicName);
+      salReturn telemetryAvailable();
+      salReturn commandAvailable();
+      salReturn eventAvailable();
 
 //      template <class T1, class T2>
 //      void putSample(T1 data, T2 writer);
