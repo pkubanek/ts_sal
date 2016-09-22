@@ -137,7 +137,6 @@ salReturn SAL_[set base]::flushSamples_[set name]([set base]_[set name]C *data)
     return SAL__OK;
 \}
 "
-   gengenericreader $fout $base 
 }
 
 proc testifdef { } {
@@ -550,6 +549,7 @@ salReturn SAL_[set base]::getSample([set base]::[set name]Seq data)
         gencmdaliascode $base cpp $fout
         geneventaliascode $base include $fouth
         geneventaliascode $base cpp $fout
+        gengenericreader $fout $base 
      } else {
         if { $rec == "using namespace SALData;" } {
           puts $fout "using namespace [set base];"

@@ -10,7 +10,7 @@ global ACTORTYPE
       set ACTORTYPE $ctype
       puts $fout "
 salReturn SAL_[set base]::[set ctype]Available () \{
-  SampleInfoSeq_var info = new SampleInfoSeq;
+  SampleInfoSeq_var infoSeq = new SampleInfoSeq;
   ReturnCode_t status = -1;
   DataReader_var dreader = NULL;
   unsigned int numsamp = 0;
@@ -43,14 +43,14 @@ salReturn SAL_[set base]::[set ctype]Available () \{
    if { $ctype == "reader" } {
       puts $fout "
   actorIdx = SAL__[set base]_[set name]_ACTOR;
-  if (actorIdx > lastActor) \{
-    dreader = getReader(actorIdx);
-    SALReader_[set name] = [set base]::[set name]DataReader::_narrow(dreader.in());
+  if (actorIdx > lastActor_[set ACTORTYPE]) \{
+    DataReader_var dreader = getReader(actorIdx);
+    [set base]::[set name]DataReader_var SALReader_[set name] = [set base]::[set name]DataReader::_narrow(dreader.in());
     checkHandle(SALReader_[set name].in(), \"[set base]::[set name]DataReader::_narrow\");
-    status = SALReader_[set name]->read(Instances_[set name], info, sal\[SAL__[set base]_[set name]_ACTOR\].maxSamples , ANY_SAMPLE_STATE, ANY_VIEW_STATE, ANY_INSTANCE_STATE);
+    status = SALReader_[set name]->read(Instances_[set name], infoSeq, sal\[SAL__[set base]_[set name]_ACTOR\].maxSamples , ANY_SAMPLE_STATE, ANY_VIEW_STATE, ANY_INSTANCE_STATE);
     checkStatus(status, \"[set base]::[set name]DataReader::read\");
     numsamp = Instances_[set name].length();
-    status = SALReader_[set name].return_loan (SALInstance_[set name], infoSeq);
+    status = SALReader_[set name]->return_loan (Instances_[set name], infoSeq);
     if (numsamp > 0) \{
        lastActor_[set ACTORTYPE] = actorIdx;
        return lastActor_[set ACTORTYPE];
@@ -61,7 +61,7 @@ salReturn SAL_[set base]::[set ctype]Available () \{
    if { $ctype == "final" } {
       puts $fout "
   lastActor_[set ACTORTYPE] = 0;
-  return SAL__NO_SAMPLES;
+  return SAL__NO_UPDATES;
 \}
 "
    }
@@ -151,7 +151,7 @@ int test_[set base]_telemetry reader()
 
   while (1) \{
      status = mgr.telemetryAvailable();
-     if (status != SAL__NO_SAMPLES) \{ 
+     if (status != SAL__NO_UPDATES) \{ 
 "
    foreach j $ptypes {
      set topic [lindex $j 2]
@@ -233,7 +233,7 @@ int test_[set base]_event_reader()
 
   while (1) \{
      status = mgr.eventAvailable();
-     if (status != SAL__NO_SAMPLES) \{ 
+     if (status != SAL__NO_UPDATES) \{ 
 "
    foreach j $ptypes {
      set topic [lindex $j 2]
@@ -314,7 +314,7 @@ int test_[set base]_command_reader()
 
   while (1) \{
      status = mgr.commandAvailable();
-     if (status != SAL__NO_SAMPLES) \{ 
+     if (status != SAL__NO_UPDATES) \{ 
 "
    foreach j $ptypes {
      set topic [lindex $j 2]
