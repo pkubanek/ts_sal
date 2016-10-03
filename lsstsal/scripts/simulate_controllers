@@ -8,12 +8,12 @@ if { [info exists env(SAL_WORK_DIR)] == 0 } {
 set base $env(SAL_WORK_DIR)
 set xy 500
 foreach i $argv {
-   set simctrl $base/$i/cpp/src/sacpp_[set i]_ctrl
    set subsys [lindex [split $i _] 0]
+   set simctrl $base/$subsys/cpp/src/sacpp_[set subsys]_ctrl
    if { [file exists $base/$subsys/cpp/src/sacpp_[set i]_controller] }  {
       set simctrl $base/$subsys/cpp/src/sacpp_[set i]_controller
    }
-   if { [info exists env(LSST_[string toupper [set i]]_SIMULATOR] } {
+   if { [info exists env(LSST_[string toupper [set i]]_SIMULATOR)] } {
       set simctrl $env(LSST_[string toupper [set i]]_SIMULATOR)
    }
    if { [file exists $simctrl] } {
