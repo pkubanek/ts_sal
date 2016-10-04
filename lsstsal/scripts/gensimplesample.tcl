@@ -257,12 +257,14 @@ global VPROPS
         if { $VPROPS(int) }  {
            if { $VPROPS(long) } {
               puts $fcod5 "    sscanf(argv\[$idx\], \"%ld\", &myData.$VPROPS(name)\[$myidx\]);"
+              puts $fcod10 "myData.$VPROPS(name)\[$myidx\] = long(sys.argv\[$idx\])"
            } else {
               if { $VPROPS(short) } { 
                  puts $fcod5 "    sscanf(argv\[$idx\], \"%hd\", &myData.$VPROPS(name)\[$myidx\]);"
               } else {
                  puts $fcod5 "    sscanf(argv\[$idx\], \"%d\", &myData.$VPROPS(name)\[$myidx\]);"
               }
+              puts $fcod10 "myData.$VPROPS(name)\[$myidx\] = int(sys.argv\[$idx\])"
            }
         } else {
            if { $VPROPS(double) } {
@@ -270,8 +272,8 @@ global VPROPS
            } else {
               puts $fcod5 "    sscanf(argv\[$idx\], \"%f\", &myData.$VPROPS(name)\[$myidx\]);"
            }
+           puts $fcod10 "myData.$VPROPS(name)\[$myidx\] = float(sys.argv\[$idx\])"
         }
-        puts $fcod10 "myData.$VPROPS(name)\[$myidx\] = sys.argv\[$idx\]"
         incr idx 1
         incr myidx 1
       }
@@ -294,12 +296,12 @@ global VPROPS
          puts $fcod6 "    cout << \"    $VPROPS(name) : \" << data->$VPROPS(name) << endl;"
          puts $fcod7 "    [set VPROPS(base)]_memIO->shmemOutgoing_[set VPROPS(topic)].$VPROPS(name) = data->$VPROPS(name);"
          puts $fcod8 "    data->$VPROPS(name) = [set VPROPS(base)]_memIO->shmemIncoming_[set VPROPS(topic)].$VPROPS(name);"
-         puts $fcod10 "myData.$VPROPS(name)=sys.argv\[$idx\]"
          if { $VPROPS(int) } {
           puts $fcod11 "myData.$VPROPS(name) = 1";
           if { $VPROPS(long) } {
             puts $fcod4 "    myData.$VPROPS(name) = 1;";
             puts $fcod5 "    sscanf(argv\[$idx\], \"%ld\", &myData.$VPROPS(name));"
+            puts $fcod10 "myData.$VPROPS(name)=long(sys.argv\[$idx\])"
           } else {
             puts $fcod4 "    myData.$VPROPS(name) = 1;";
             if { $VPROPS(short) } {
@@ -307,9 +309,11 @@ global VPROPS
             } else {
                puts $fcod5 "    sscanf(argv\[$idx\], \"%d\", &myData.$VPROPS(name));"
             }
+            puts $fcod10 "myData.$VPROPS(name)=int(sys.argv\[$idx\])"
           }
          } else {
           puts $fcod11 "myData.$VPROPS(name) = 1.0";
+          puts $fcod10 "myData.$VPROPS(name)=float(sys.argv\[$idx\])"
           if { $VPROPS(double) } {
             puts $fcod4 "    myData.$VPROPS(name) = 1.0;";
             puts $fcod5 "    sscanf(argv\[$idx\], \"%lf\", &myData.$VPROPS(name));"
