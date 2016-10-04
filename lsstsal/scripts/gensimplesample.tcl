@@ -326,7 +326,6 @@ global VPROPS
    }
 }
 
-
 proc genkeyedidl { fout base } {
      puts $fout "	struct command
 	\{
