@@ -94,6 +94,7 @@ if len(sys.argv) < [expr [llength $EVTS([set subsys],[set alias],plist)] +1]:
 
 from SALPY_[set subsys] import *
 mgr = SAL_[set subsys][set initializer]
+priority=1
 myData = [set subsys]_logevent_[set alias]C()"
       set farg [open $SAL_WORK_DIR/include/SAL_[set subsys]_logevent_[set alias]Pargs.tmp r]
       while { [gets $farg rec] > -1 } {
