@@ -94,14 +94,15 @@ if len(sys.argv) < [expr [llength $EVTS([set subsys],[set alias],plist)] +1]:
 
 from SALPY_[set subsys] import *
 mgr = SAL_[set subsys][set initializer]
-priority=1
+mgr.salEvent(\"[set subsys]_logevent_[set alias]\")
 myData = [set subsys]_logevent_[set alias]C()"
       set farg [open $SAL_WORK_DIR/include/SAL_[set subsys]_logevent_[set alias]Pargs.tmp r]
       while { [gets $farg rec] > -1 } {
          puts $fcmd $rec
       }
       close $farg
-      puts $fcmd "mgr.logEvent_[set alias](myData, priority)
+      puts $fcmd "priority=int(myData.priority)
+mgr.logEvent_[set alias](myData, priority)
 time.sleep(1)
 mgr.salShutdown()
 exit()
@@ -114,9 +115,10 @@ import time
 import sys
 from SALPY_[set subsys] import *
 mgr = SAL_[set subsys][set initializer]
+mgr.salEvent(\"[set subsys]_logevent_[set alias]\")
 print(\"[set subsys]_[set alias] logger ready\")
+event = [set subsys]_logevent_[set alias]C()
 while True:
-  event = [set subsys]_logevent_[set alias]C()
   retval = mgr.getEvent_[set alias](event)
   if retval==0:
     print(\"Event $subsys $alias received\")
