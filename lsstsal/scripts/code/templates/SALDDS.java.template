@@ -71,6 +71,9 @@ public class SAL_SALData {
         private short subsystemID;
         private long origin;
         private String domainName;
+        private int lastActor_telemetry;
+        private int lastActor_command;
+        private int lastActor_event;
 
         salActor[] sal = new salActor[SAL__ACTORS_MAXCOUNT];
 
