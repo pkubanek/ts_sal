@@ -214,11 +214,11 @@ salReturn SAL_SALData::waitForCompletion_[set i]( int cmdSeqNum , unsigned int t
           logError(status);
       \}
       if (debugLevel > 0) \{
-         cout << \"=== \[waitForCompletion_[set i]\] command \" << sal\[actorIdx\].cmdSeqNum <<  \" timed out :\" << endl;
+         cout << \"=== \[waitForCompletion_[set i]\] command \" << cmdSeqNum <<  \" timed out :\" << endl;
       \} 
    \} else \{
       if (debugLevel > 0) \{
-         cout << \"=== \[waitForCompletion_[set i]\] command \" << sal\[actorIdx\].cmdSeqNum << \" completed ok :\" << endl;
+         cout << \"=== \[waitForCompletion_[set i]\] command \" << cmdSeqNum << \" completed ok :\" << endl;
       \} 
    \}
    return status;
@@ -453,12 +453,12 @@ global CMD_ALIASES CMDS SYSDIC
 	   \}
 	   if (status != SAL__CMD_COMPLETE) \{
 	      if (debugLevel > 0) \{
-	         System.out.println( \"=== \[waitForCompletion_[set i]\] command \" + sal\[actorIdx\].cmdSeqNum +  \" timed out\");
+	         System.out.println( \"=== \[waitForCompletion_[set i]\] command \" + cmdSeqNum +  \" timed out\");
 	      \} 
 	      logError(status);
 	   \} else \{
 	      if (debugLevel > 0) \{
-	         System.out.println( \"=== \[waitForCompletion_[set i]\] command \" + sal\[actorIdx\].cmdSeqNum +  \" completed ok\");
+	         System.out.println( \"=== \[waitForCompletion_[set i]\] command \" + cmdSeqNum +  \" completed ok\");
 	      \} 
            \}
  	   return status;

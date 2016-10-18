@@ -40,12 +40,13 @@ set SAL_DIR $env(SAL_DIR)
 set OSPL_HOME $env(OSPL_HOME)
 source $SAL_DIR/versioning.tcl
 source $SAL_DIR/utilities.tcl
+source $SAL_DIR/add_system_dictionary.tcl
 
 puts stdout "SAL generator - V[set SALVERSION]"
 
 set TSUBSYSTEMS ""
 foreach i $argv {
-   if { [file exists $SAL_DIR/xml-templates/$i] } {
+   if { [lsearch $SYSDIC(systems) $i] > -1 } {
       lappend TSUBSYSTEMS $i
    }
 }

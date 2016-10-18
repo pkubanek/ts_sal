@@ -6,7 +6,7 @@
 
 source $env(SAL_DIR)/geneventaliascode.tcl
 source $env(SAL_DIR)/gencmdaliascode.tcl
-
+source $env(SAL_DIR)/gengenericreader.tcl
 
 proc insertcfragments { fout base name } {
 global SAL_WORK_DIR
@@ -549,6 +549,7 @@ salReturn SAL_[set base]::getSample([set base]::[set name]Seq data)
         gencmdaliascode $base cpp $fout
         geneventaliascode $base include $fouth
         geneventaliascode $base cpp $fout
+        gengenericreader $fout $base 
      } else {
         if { $rec == "using namespace SALData;" } {
           puts $fout "using namespace [set base];"
