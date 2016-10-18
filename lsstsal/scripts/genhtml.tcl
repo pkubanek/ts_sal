@@ -136,7 +136,7 @@ while { [gets $fin rec] > -1 } {
    set asize [lindex $rec 2]
    set atype [lindex $rec 3]
    set topic [join $d .]
-   if { $id != $last  } {
+   if { $id != $last && [lsearch $TSUBSYSTEMS $system] > -1 } {
       catch { doitem $nid $fout "" 1 int
               puts $fout "</TABLE><P>Click here to update: <input type=\"submit\" value=\"Submit\" name=\"update\"></FORM><P></BODY></HTML>"
               close $fout
@@ -197,7 +197,7 @@ while { [gets $fin rec] > -1 } {
 
 doitem $nid $fout "" 1 int
 
-foreach sname $SYSDIC(systems) {
+foreach sname $TSUBSYSTEMS {
    set id [join [split $sname "_"] "."]
    dogen $fgen $id
 }
@@ -240,7 +240,8 @@ close $fgen
 #
 # do fgen for each system on its own
 # 
-foreach s $SYSDIC(systems) {
+puts stdout "*************TSUBSYSTEMS is $TSUBSYSTEMS"
+foreach s $TSUBSYSTEMS {
 catch {unset doneit}
 set fgen [open $SAL_WORK_DIR/html/salgenerator/sal-generator-$s.html w]
 puts stdout "Creating sal-generator-$s form"

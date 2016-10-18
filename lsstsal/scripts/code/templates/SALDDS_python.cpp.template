@@ -441,6 +441,10 @@ BOOST_PYTHON_MODULE(SALPY_SALData){
             , (::salReturn ( ::SAL_SALData::* )( char * ) )( &::SAL_SALData::salProcessor )
             , ( bp::arg("cmdAlias") ) )    
         .def( 
+            "salEvent"
+            , (::salReturn ( ::SAL_SALData::* )( char * ) )( &::SAL_SALData::salEvent )
+            , ( bp::arg("evtAlias") ) )    
+        .def( 
             "salShutdown"
             , (void ( ::SAL_SALData::* )(  ) )( &::SAL_SALData::salShutdown ) )    
         .def( 
@@ -467,6 +471,15 @@ BOOST_PYTHON_MODULE(SALPY_SALData){
             "waitForCompletion"
             , (::salReturn ( ::SAL_SALData::* )( int,int ) )( &::SAL_SALData::waitForCompletion )
             , ( bp::arg("cmdSeqNum"), bp::arg("timeout") ) )
+        .def( 
+            "telemetryAvailable"
+            , (::salReturn ( ::SAL_SALData::* )(  ) )( &::SAL_SALData::telemetryAvailable ) )
+        .def( 
+            "commandAvailable"
+            , (::salReturn ( ::SAL_SALData::* )(  ) )( &::SAL_SALData::commandAvailable ) )
+        .def( 
+            "eventAvailable"
+            , (::salReturn ( ::SAL_SALData::* )(  ) )( &::SAL_SALData::eventAvailable ) )
 // INSERT_SAL_PYTHON_GETPUT
         ;
 

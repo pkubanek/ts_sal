@@ -92,6 +92,7 @@ set defdir .salwork
 set last ""
 set hasindex 0
 set ITEMLIST ""
+set flog [open /tmp/salhtml.log w]
 set fin [open $defdir/datastreams.detail r]
 set fsum [open $defdir/datastreams.names w]
 while { [gets $fin rec] > -1 } {
@@ -106,7 +107,7 @@ while { [gets $fin rec] > -1 } {
    }
    set id [lindex $rec 0]
    set topic [lindex $rec 0]
-   if { $id != $last  } {
+   if { $id != $last } {
       if { $last != "" } {puts $fsum $last}
       catch { 
 ###puts $fout "\};"
@@ -148,12 +149,12 @@ while { [gets $fin rec] > -1 } {
    if { [lindex $rec 2] > 1 } {
       set nd [lindex $rec 2]
 #puts stdout "nditem $fout $fo2 $name $type $nd"
-      nditem stdout $fo2 $name $type $nd
+      nditem $flog $fo2 $name $type $nd
    } else {
 #puts stdout "olddoitem $fout $fo2 $name $type"
-      olddoitem stdout $fo2 $name $type
+      olddoitem $flog $fo2 $name $type
    }
-   puts stdout "Added $name to $topic"
+   puts $flog "Added $name to $topic"
 }
 
 ###puts $fout "\};"
@@ -167,8 +168,8 @@ puts $fo2 ");"
 close $fo2
 puts $fo3 "set SQLREC($last) \"$ITEMLIST\""
 close $fo3
-           
-
+     
+close $flog
 
 
 close $fsum

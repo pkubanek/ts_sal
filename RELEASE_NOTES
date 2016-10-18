@@ -1,9 +1,13 @@
-This is release 3.2.0 of the SAL SDK
+This is release 3.2.1 of the SAL SDK
 Please refer to the SAL User Guide for installation instructions.
+
+Changes for 3.2.1 : 
+
+Passed comprehensive Continuous Integration Python tests
 
 Changes for 3.2.0 : 
 
-Passed Continuous Integration Python tests
+Passed initial Continuous Integration Python tests
 
 Changes for 3.1.1 : 
 

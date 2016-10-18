@@ -36,7 +36,7 @@ puts $fall "<HTML><HEAD><TITLE>Facility Subsystem and database simulation</TITLE
 <TR BGCOLOR=Yellow><B><TD>Stream Name</TD><TD>Simulate subsystem</TD></TR>"
 
 
-foreach subsystem [lsort $SYSDIC(systems)] {
+foreach subsystem $TSUBSYSTEMS {
 
 set nid 1
 puts $fall "<TR><TD><A HREF=\"index-dbsimulate-$subsystem.html\">$subsystem</A></TD>
