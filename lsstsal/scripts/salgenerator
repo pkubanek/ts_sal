@@ -246,7 +246,10 @@ if { $OPTIONS(sal) } {
   if { [file exists $SAL_WORK_DIR/idl-templates/validated/[set base]_tlmdef.tcl] } {
         source $SAL_WORK_DIR/idl-templates/validated/[set base]_tlmdef.tcl
   } else {
-        stdlog "WARNING : No Telemetry definitions found for $base"
+        stdlog "ERROR : No Telemetry definitions found for $base"
+        stdlog "        Install [set base]_Telemetry.xml in $SAL_WORK_DIR"
+        stdlog "        and run the validate step again."
+        exit 1
   }
   catch { set idlfile [makesalidl $base] } bad
 puts stdout $idlfile
