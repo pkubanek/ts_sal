@@ -184,38 +184,31 @@ calibration subsystem.<BR>Raw sensor readings, calibrated positions,
 limit switches, status bits. "
 
 
-set DESC(dome.TC) "
+set DESC(domeTHCS) "
 <P>Temperature monitoring  for sensors located in the
 dome subsystem.<BR>Raw sensor readings, calibrated temperatures,
 time series statistics, sensor health. "
 
-set DESC(dome.Electrical) "
+set DESC(domeMONCS) "
 <P>Electrical monitoring  for devices located in the dome
 subsystem.<BR>Raw data, calibrated voltages, calibrated current,
 device power status. "
 
-set DESC(dome.Metrology) "
-<P>Position control  for sensors located in the dome
-subsystem.<BR>Raw sensor readings, calibrated positions, limit
-switches, status bits. "
 
 
-set DESC(dome.Azimuth) "
+set DESC(domeADB) "
 <P>This subsystem maintains high level information pertaining to
 the<BR>dome positioning demand and performance, wind
 loading<BR>etc. "
 
-set DESC(dome.Shutter) "
+set DESC(domeAPS) "
 <P>This subsystem maintains high level information pertaining to the<BR>dome
 shutter positioning demand and performance, wind loading<BR>etc. "
 
-set DESC(dome.Vents) "
+set DESC(domeLouvers) "
 <P>This subsystem maintains high level information pertaining to the<BR>dome
 vents positioning demand and performance, wind loading<BR>etc. "
 
-set DESC(dome.Thermal_control) "
-<P>This subsystem maintains high level information pertaining to<BR>the
-control and monitoring of the thermal environment<BR>inside the dome."
 
 
 
@@ -355,117 +348,6 @@ set DESC(seeing_mass.TC) ""
 set DESC(seeing_mass.Electrical) ""
 set DESC(seeing_mass.Metrology) ""
 
-set SID(OCS) 1.0
-set SID(camera) 15
-
-set SID(camera.TC) 15.1
-set SID(camera.Electrical) 15.2
-set SID(camera.Metrology) 15.3
-set SID(camera.RNA) 15.4
-set SID(camera.Science_sensor_metadata) 15.5
-set SID(camera.Wavefront_sensors) 15.6
-set SID(camera.Guide_sensors) 15.7
-set SID(camera.Dewar_CoolerHeater) 15.8
-set SID(camera.Vacuum) 15.9
-set SID(camera.Filters) 15.10
-set SID(camera.Shutter) 15.11
-
-set SID(m1) 2
-set SID(m1m3.TC) 2.1
-set SID(m1m3.Electrical) 2.2
-set SID(m1m3.Metrology) 2.3
-set SID(m1m3.Support) 2.4
-set SID(m1m3.Actuators) 2.5
-set SID(m1m3.Surface) 2.6
-set SID(m3) 3
-set SID(m3.TC) 3.1
-set SID(m3.Electrical) 3.2
-set SID(m3.Metrology) 3.3
-set SID(m3.Support) 3.4
-set SID(m3.Actuators) 3.5
-set SID(m3.Surface) 3.6
-
-set SID(m2ms) 4
-set SID(m2ms.TC) 4.1
-set SID(m2ms.Electrical) 4.2
-set SID(m2ms.Metrology) 4.3
-set SID(m2ms.Hexapod) 4.4
-set SID(m2ms.Actuators) 4.5
-set SID(m2ms.Surface) 4.6
-
-set SID(MTMount) 5
-set SID(MTMount.TC) 5.1
-set SID(MTMount.Electrical) 5.2
-set SID(MTMount.Metrology) 5.3
-set SID(MTMount.Alt) 5.4
-set SID(MTMount.Az) 5.5
-
-set SID(power) 6
-set SID(MTMount.Rotator) 5.6
-set SID(power.TC) 6.1
-set SID(power.Electrical) 6.2
-set SID(power.UPSs) 6.3
-
-set SID(calibration) 7
-set SID(calibration.TC) 7.1
-set SID(calibration.Electrical) 7.2
-set SID(calibration.Metrology) 7.3
-
-set SID(dome) 8
-set SID(dome.TC) 8.1
-set SID(dome.Electrical) 8.2
-set SID(dome.Metrology) 8.3
-set SID(dome.Azimuth) 8.4
-set SID(dome.Shutter) 8.5
-set SID(dome.Vents) 8.6
-set SID(dome.Thermal_control) 8.7
-
-set SID(auxscope) 9
-set SID(auxscope.TC) 9.1
-set SID(auxscope.Electrical) 9.2
-set SID(auxscope.Metrology) 9.3
-set SID(auxscope.TCS) 9.4
-set SID(auxscope.Spectrometer) 9.5
-set SID(auxscope.Camera) 9.6
-
-set SID(lasercal) 10
-set SID(lasercal.TC) 10.1
-set SID(lasercal.Electrical) 10.2
-
-set SID(seeing_dimm) 11
-set SID(seeing_dimm.TC) 11.1
-set SID(seeing_dimm.Electrical) 11.2
-set SID(seeing_dimm.Metrology) 11.3
-
-set SID(seeing_mass) 12
-set SID(seeing_mass.TC) 12.1
-set SID(seeing_mass.Electrical) 12.2
-set SID(seeing_mass.Metrology) 12.3
-
-set SID(skycam) 13
-set SID(skycam.TC) 13.1
-set SID(skycam.Electrical) 13.2
-set SID(skycam.Metrology) 13.3
-
-set SID(environment) 14
-set SID(environment.TC) 14.1
-set SID(environment.Electrical) 14.2
-set SID(environment.Weather) 14.3
-set SID(environment.Dust_monitor) 14.4
-set SID(environment.Lightning_detector) 14.5
-set SID(environment.Seismometer) 14.6
-set SID(environment.Video_cameras) 14.7
-
-set SID(camera.Dewar_Cooler) ""
-set SID(seeing_dimm) 11
-set SID(seeing_dimm.TC) 11.1
-set SID(seeing_dimm.Electrical) 11.2
-set SID(seeing_dimm.Metrology) 11.3
-
-set SID(seeing_mass) 12
-set SID(seeing_mass.TC) 12.1
-set SID(seeing_mass.Electrical) 12.2
-set SID(seeing_mass.Metrology) 12.3
 
 set DOCO(ocs) Document-869
 set DOCO(standards-sw) "ESA 1991, Software Engineering Standards, ESA PSS-05-0, Issue 2, European Space Agency"
@@ -859,41 +741,29 @@ set SDESC(calibration.Application) "
 <P>Application specific information derived from sensors in the
 calibration subsystem. "
 
-set SDESC(dome.TC) "
+set SDESC(domeTHCS) "
 <P>Temperature sensing information for sensors located in the
 dome subsystem.<BR>Raw sensor readings, calibrated temperatures,
 time-series statistics, sensor health. "
 
-set SDESC(dome.Electrical) "
+set SDESC(domeMONCS) "
 <P>Electrical parameters for devices located in the dome
 subsystem.<BR>Raw data, calibrated voltages, calibrated current,
 device power status. "
 
-set SDESC(dome.Metrology) "
-<P>Position sensing information for sensors located in the dome
-subsystem.<BR>Raw sensor readings, calibrated positions, limit
-switches, status bits. "
 
-set SDESC(dome.Application) "
-<P>Application specific information derived from sensors in the
-dome subsystem. "
-
-set SDESC(dome.Azimuth) "
+set SDESC(domeADB) "
 <P>This topic records high level information pertaining to
 the<BR>dome positioning demand and performance, wind
 loading<BR>etc. "
 
-set SDESC(dome.Shutter) "
+set SDESC(domeAPS) "
 <P>This topic records high level information pertaining to the<BR>dome
 shutter positioning demand and performance, wind loading<BR>etc. "
 
-set SDESC(dome.Vents) "
+set SDESC(domeLouvers) "
 <P>This topic records high level information pertaining to the<BR>dome
 vents positioning demand and performance, wind loading<BR>etc. "
-
-set SDESC(dome.Thermal_control) "
-<P>This topic records high level information pertaining to<BR>the
-control and monitoring of the thermal environment<BR>inside the dome."
 
 set SDESC(scheduler.Application) "
 <P>Application specific information produced by the scheduler
@@ -1294,7 +1164,6 @@ set DESC(m1m3.Application) "This subsystem generates application level items cal
 set DESC(m2ms.Application) "This subsystem generates application level items calculated from subsystem raw data"
 set DESC(MTMount.Application) "This subsystem generates application level items calculated from subsystem raw data"
 set DESC(calibration.Application) "This subsystem generates application level items calculated from subsystem raw data"
-set DESC(dome.Application) "This subsystem generates application level items calculated from subsystem raw data"
 set DESC(scheduler.Application) "This subsystem generates application level items calculated from subsystem raw data"
 set DESC(operations.Application) "This subsystem generates application level items calculated from subsystem raw data"
 set DESC(auxscope.Application) "This subsystem generates application level items calculated from subsystem raw data"
@@ -1319,10 +1188,14 @@ set DESC(tcs.kernel.TrackingTarget) "This subsystem is internal to the tcs point
 
 set BLOBS(camera.WDS.wfsRaft) "100x100x8 32bit analysis images"
 set BLOBS(camera.GAS)  "64x64x1 16bit images"
-set BLOBS(auxscope.Spectrometer) "4096x2048x1 16bit images"
-set BLOBS(auxscope.Camera) "4096x4096x1 16bit images"
+#deprecated , these go to the DAQ
+#set BLOBS(auxscope.Spectrometer) "4096x2048x1 16bit images"
+#set BLOBS(auxscope.Camera) "4096x4096x1 16bit images"
 set BLOBS(seeing_dimm.Application) "64x64x4 16bit images"
 set BLOBS(seeing_mass.Application) "64x64x4 16bit images"
 set BLOBS(skycam.Application) "1024x1024x4 16bit images"
 set BLOBS(environment.Lightning_detector) "1024x1024x1 8bit history image"
 set BLOBS(environment.Video_cameras) "640x480x16 8bit images"
+
+
+

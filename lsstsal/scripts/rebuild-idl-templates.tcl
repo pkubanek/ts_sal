@@ -8,7 +8,7 @@ source $env(SAL_DIR)/checkidl.tcl
 
 
 foreach s $subsystems {
-   set all [lsort [glob $basedir/$s*.idl]]
+   set all [lsort [glob $basedir/[set s]_*.idl]]
    set fout [open idl-templates/template-$s.idl w]
    foreach f $all {
       set fin [open $f r]

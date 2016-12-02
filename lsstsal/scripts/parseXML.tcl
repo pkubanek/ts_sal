@@ -21,6 +21,11 @@ global TLMS TLM_ALIASES
       if { $tag == "SALEventSet" }     {set ctype "event"}
       if { $tag == "Alias" }           {
           set alias $value
+          set shouldbe [join [lrange [split $tname _] 2 end] "_"]
+          if { $alias != $shouldbe } {
+             puts stdout "ERROR - Alias does not match EFDB_Topic declaration for $alias"
+             exit
+          }
           if { $ctype == "command" } {set CMDS($subsys,$alias) $alias}
           if { $ctype == "event" }   {set EVTS($subsys,$alias) $alias}
       }

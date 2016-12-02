@@ -7,7 +7,7 @@ proc calcshmid { subsys } {
 }
 
 
-set SYSDIC(systems) "auxscope calibration camera dm  dome dome environment hexapod lasercal m1m3 m2ms MTMount network ocs operations power rotator scheduler seeing skycam system tcs"
+set SYSDIC(systems) "auxscope calibration camera dm  dome domeADB domeAPS domeLouvers domeLWS domeMONCS domeTHCS environment hexapod lasercal m1m3 m2ms MTMount network ocs operations power rotator scheduler seeing skycam system tcs"
 foreach s $SYSDIC(systems) {set SYSDIC($s,type) system}
 
 set SYSDIC(datatypes) "byte short int long float string int64 double ubyte ushort uint ulong"
@@ -112,38 +112,16 @@ dm.WCS - Astrometry calibrations
 dm.raw - Raw metrics
 dm.PIPE - Pipeline statuses
 dome - Dome mechanisms
-dome.Application - Derived metadata
-dome.Electrical - Electrical system monitoring
-dome.Metrology - Positional information
-dome.Azimuth - Dome rotation
-dome.Bogies - Dome trucks
+domeMOCS - Electrical system monitoring
+domeADB - Dome rotation
 dome.CapacitorBank - Capacitor bank
 dome.Crane - Camera handling system
 dome.Environment - Dome environmental sensing
 dome.Liftplatform - Mirror handling system
-dome.Screen - Calibration screen
-dome.Shutter - Dome aperture control
-dome.TC - Temperature control systems
-dome.Louvers - Dome vents and air-flow management
-environment - Environmental monitoring
-environment.Dust - Particulate monitoring
-environment.Electrical - Electrical system monitoring
-environment.Lightning - Electrical disturbance monitoring
-environment.Seismometer - Earthquake monitoring
-environment.TC - Temperature control systems
-environment.Weather - Local weather sensing
-environment.Video - Local video cameras
-dome - Dome mechanisms
-dome.Application - Derived metadata
-dome.Electrical - Electrical system monitoring
-dome.Metrology - Positional information
-dome.Azimuth - Dome rotation
-dome.Crane - Camera handling system
-dome.Environment - Dome environmental sensing
-dome.Liftplatform - Mirror handling system
-dome.Shutter - Dome aperture control
-dome.TC - Temperature control systems
-dome.Vents - Dome vents and air-flow management
+domeLWS - Calibration screen
+domeAPS - Dome aperture control
+domeTHCS - Temperature control systems
+domeLouvers - Dome vents and air-flow management
 environment - Environmental monitoring
 environment.Dust - Particulate monitoring
 environment.Electrical - Electrical system monitoring

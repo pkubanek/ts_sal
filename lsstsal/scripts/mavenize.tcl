@@ -133,7 +133,7 @@ global env SAL_WORK_DIR SAL_DIR SALVERSION
   </project>
 "
   close $fout
-  foreach i [glob $SAL_WORK_DIR/idl-templates/validated/[set subsys]*.idl] {
+  foreach i [glob $SAL_WORK_DIR/idl-templates/validated/[set subsys]_*.idl] {
      set id [join [lrange [split [file tail [file rootname $i]] _] 1 end] _]
      set type [lindex [split $id _] 0]
      if { $type != "command" && $type != "logevent" } {

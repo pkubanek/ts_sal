@@ -17,7 +17,7 @@ foreach o $oldfiles {
 }
 
 
-set idlfiles [lsort [glob $SAL_DIR/idl-templates/validated/[set subsys]*.idl]]
+set idlfiles [lsort [glob $SAL_DIR/idl-templates/validated/[set subsys]_*.idl]]
 foreach i $idlfiles {
   exec cp $i .
   puts stdout "Copied $i"

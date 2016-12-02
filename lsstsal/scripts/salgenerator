@@ -198,7 +198,7 @@ exec mkdir -p .salwork
 set TARGETS ""
 if { $OPTIONS(lib) == 0 } {
   set matches $TSUBSYSTEMS
-  foreach f [glob $SAL_WORK_DIR/idl-templates/validated/$matches*.idl] {
+  foreach f [glob $SAL_WORK_DIR/idl-templates/validated/[set matches]_*.idl] {
      set TARGETS "$TARGETS [file tail $f]"
   }
   if { $TARGETS == "" } {
