@@ -266,38 +266,32 @@ calibration subsystem.<BR>Raw sensor readings, calibrated positions,
 limit switches, status bits. "
 
 
-set DESC(dome.TC) "
+set DESC(domeTHCS) "
 <P>Temperature monitoring  for sensors located in the
 dome subsystem.<BR>Raw sensor readings, calibrated temperatures,
 time series statistics, sensor health. "
 
-set DESC(dome.Electrical) "
+set DESC(domeMONCS) "
 <P>Electrical monitoring  for devices located in the dome
 subsystem.<BR>Raw data, calibrated voltages, calibrated current,
 device power status. "
 
-set DESC(dome.Metrology) "
-<P>Position control  for sensors located in the dome
-subsystem.<BR>Raw sensor readings, calibrated positions, limit
-switches, status bits. "
 
-
-set DESC(dome.Azimuth) "
+set DESC(domeADB) "
 <P>This subsystem maintains high level information pertaining to
 the<BR>dome positioning demand and performance, wind
 loading<BR>etc. "
 
-set DESC(dome.Shutter) "
+set DESC(domeLWS) "
 <P>This subsystem maintains high level information pertaining to the<BR>dome
 shutter positioning demand and performance, wind loading<BR>etc. "
 
-set DESC(dome.Vents) "
+set DESC(domeLouvers) "
 <P>This subsystem maintains high level information pertaining to the<BR>dome
 vents positioning demand and performance, wind loading<BR>etc. "
 
-set DESC(dome.Thermal_control) "
-<P>This subsystem maintains high level information pertaining to<BR>the
-control and monitoring of the thermal environment<BR>inside the dome."
+set DESC(domeAPS) "
+<P>This subsystem controls the main shutter mechanism"
 
 
 
@@ -487,13 +481,12 @@ set SID(calibration.Electrical) 7.2
 set SID(calibration.Metrology) 7.3
 
 set SID(dome) 8
-set SID(dome.TC) 8.1
-set SID(dome.Electrical) 8.2
-set SID(dome.Metrology) 8.3
-set SID(dome.Azimuth) 8.4
-set SID(dome.Shutter) 8.5
-set SID(dome.Vents) 8.6
-set SID(dome.Thermal_control) 8.7
+set SID(domeTHCS) 8.1
+set SID(domeMONCS) 8.2
+set SID(domeADB) 8.2
+set SID(domeAPS) 8.3
+set SID(domeLouvers) 8.4
+set SID(domeTHCS) 8.5
 
 set SID(auxscope) 9
 set SID(auxscope.TC) 9.1

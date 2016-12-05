@@ -198,7 +198,7 @@ exec mkdir -p .salwork
 set TARGETS ""
 if { $OPTIONS(lib) == 0 } {
   set matches $TSUBSYSTEMS
-  foreach f [glob $SAL_WORK_DIR/idl-templates/validated/$matches*.idl] {
+  foreach f [glob $SAL_WORK_DIR/idl-templates/validated/[set matches]_*.idl] {
      set TARGETS "$TARGETS [file tail $f]"
   }
   if { $TARGETS == "" } {
@@ -246,7 +246,10 @@ if { $OPTIONS(sal) } {
   if { [file exists $SAL_WORK_DIR/idl-templates/validated/[set base]_tlmdef.tcl] } {
         source $SAL_WORK_DIR/idl-templates/validated/[set base]_tlmdef.tcl
   } else {
-        stdlog "WARNING : No Telemetry definitions found for $base"
+        stdlog "ERROR : No Telemetry definitions found for $base"
+        stdlog "        Install [set base]_Telemetry.xml in $SAL_WORK_DIR"
+        stdlog "        and run the validate step again."
+        exit 1
   }
   catch { set idlfile [makesalidl $base] } bad
 puts stdout $idlfile

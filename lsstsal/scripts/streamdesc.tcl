@@ -238,12 +238,12 @@ set SDESC(calibration.Application) "
 <P>Application specific information derived from sensors in the
 calibration subsystem. "
 
-set SDESC(dome.Temps) "
+set SDESC(domeTHCS) "
 <P>Temperature sensing information for sensors located in the
 dome subsystem.<BR>Raw sensor readings, calibrated temperatures,
 time-series statistics, sensor health. "
 
-set SDESC(dome.Electrical) "
+set SDESC(domeMONCS) "
 <P>Electrical parameters for devices located in the dome
 subsystem.<BR>Raw data, calibrated voltages, calibrated current,
 device power status. "
@@ -257,22 +257,22 @@ set SDESC(dome.Application) "
 <P>Application specific information derived from sensors in the
 dome subsystem. "
 
-set SDESC(dome.Azimuth) "
+set SDESC(domeADB) "
 <P>This topic records high level information pertaining to
 the<BR>dome positioning demand and performance, wind
 loading<BR>etc. "
 
-set SDESC(dome.Shutter) "
+set SDESC(domeLWS) "
 <P>This topic records high level information pertaining to the<BR>dome
-shutter positioning demand and performance, wind loading<BR>etc. "
+wind screen positioning demand and performance, wind loading<BR>etc. "
 
-set SDESC(dome.Vents) "
+set SDESC(domeLouvers) "
 <P>This topic records high level information pertaining to the<BR>dome
 vents positioning demand and performance, wind loading<BR>etc. "
 
-set SDESC(dome.Thermal_control) "
-<P>This topic records high level information pertaining to<BR>the
-control and monitoring of the thermal environment<BR>inside the dome."
+set SDESC(domeAPS) "
+<P>This topic records high level information pertaining to the<BR>dome
+shutter positioning demand and performance, wind loading<BR>etc. "
 
 set SDESC(scheduler.Application) "
 <P>Application specific information produced by the scheduler

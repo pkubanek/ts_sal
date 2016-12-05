@@ -8,7 +8,7 @@ source $SAL_DIR/add_private_idl.tcl
 set subsys [lindex $argv 0]
 exec mkdir -p $SAL_WORK_DIR/html/[set subsys]
 
-set all [lsort [glob idl-templates/validated/[set subsys]*.idl]]
+set all [lsort [glob idl-templates/validated/[set subsys]_*.idl]]
 set fout [open $SAL_WORK_DIR/html/[set subsys]/[set subsys]_Telemetry.html w]
 puts stdout "Generating html Telemetry table $subsys"
 foreach i [lsort $all] {

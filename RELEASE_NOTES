@@ -1,5 +1,9 @@
-This is release 3.2.1 of the SAL SDK - Make release as attempt to Hotfix did not merge to master --::(
+This is release 3.3 of the SAL SDK
 Please refer to the SAL User Guide for installation instructions.
+
+Changes for 3.3
+
+Add Dome commandable sub-systems for the major elements
 
 Changes for 3.2.1 : 
 

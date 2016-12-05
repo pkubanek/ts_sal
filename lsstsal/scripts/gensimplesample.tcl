@@ -37,9 +37,9 @@ global SAL_WORK_DIR
 
 proc makesalidl { subsys } {
 global SAL_DIR SAL_WORK_DIR SYSDIC VPROPS
-   set all [lsort [glob $SAL_WORK_DIR/idl-templates/validated/$subsys*.idl]]
+   set all [lsort [glob $SAL_WORK_DIR/idl-templates/validated/[set subsys]_*.idl]]
    exec mkdir -p $SAL_WORK_DIR/idl-templates/validated/sal
-   set fout [open $SAL_WORK_DIR/idl-templates/validated/sal/sal_$subsys.idl w]
+   set fout [open $SAL_WORK_DIR/idl-templates/validated/sal/sal_[set subsys].idl w]
    exec mkdir -p $SAL_WORK_DIR/[set subsys]/cpp/src
    set fhdr [open $SAL_WORK_DIR/[set subsys]/cpp/src/SAL_[set subsys]C.h w]
    set fhlv [open $SAL_WORK_DIR/[set subsys]/cpp/src/SAL_[set subsys]LV.h w]
