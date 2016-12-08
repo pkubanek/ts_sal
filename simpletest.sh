@@ -46,60 +46,36 @@ unzip -o master.zip
 mv -v ts_xml-master/sal_interfaces/*/*.xml .
 
 echo "Validating interfaces"
-for subsys in camera dm dome hexapod m1m3 m2ms MTMount rotator scheduler tcs
+for subsys in camera dm dome domeADB domeAPS domeLouvers domeLWS domeMONCS domeTHCS hexapod m1m3 m2ms MTMount rotator scheduler tcs
 do
    salgenerator $subsys validate
    salgenerator $subsys html
 done
 
 echo "Generating C++"
-for subsys in camera dm dome hexapod m1m3 m2ms MTMount rotator scheduler tcs
+for subsys in camera dm dome domeADB domeAPS domeLouvers domeLWS domeMONCS domeTHCS hexapod m1m3 m2ms MTMount rotator scheduler tcs
 do
    salgenerator $subsys sal cpp
 done
 
 echo "Generating Java"
-for subsys in camera dm dome hexapod m1m3 m2ms MTMount rotator scheduler tcs
+for subsys in camera dm dome domeADB domeAPS domeLouvers domeLWS domeMONCS domeTHCS hexapod m1m3 m2ms MTMount rotator scheduler tcs
 do
    salgenerator $subsys sal java
 done
 
 echo "Generating Python"
-for subsys in camera dm dome hexapod m1m3 m2ms MTMount rotator scheduler tcs
+for subsys in camera dm dome domeADB domeAPS domeLouvers domeLWS domeMONCS domeTHCS hexapod m1m3 m2ms MTMount rotator scheduler tcs
 do
    salgenerator $subsys sal python
 done
 
 echo "Generating LabVIEW"
-for subsys in camera dm dome hexapod m1m3 m2ms MTMount rotator scheduler tcs
+for subsys in camera dm dome domeADB domeAPS domeLouvers domeLWS domeMONCS domeTHCS hexapod m1m3 m2ms MTMount rotator scheduler tcs
 do
    salgenerator $subsys sal labview
 done
 
 salgenerator camera maven
 
-camera/cpp/src/sacpp_camera_configure_controller &
-camera/cpp/src/sacpp_camera_configure_commander testSpec
-pkill -f -9 sacpp_camera_configure_controller
-
-camera/cpp/src/sacpp_camera_initGuiders_controller &
-camera/cpp/src/sacpp_camera_initGuiders_commander "1,1,1,1 100,100,100,100 32,32,32,32"
-pkill -f -9 sacpp_camera_initGuiders_controller
-
-camera/cpp/src/sacpp_camera_initImage_controller &
-camera/cpp/src/sacpp_camera_initImage_commander 2.0
-pkill -f -9 sacpp_camera_initImage_controller
-
-camera/cpp/src/sacpp_camera_setFilter_controller &
-camera/cpp/src/sacpp_camera_setFilter_commander R
-pkill -f -9 sacpp_camera_setFilter_controller
-
-camera/cpp/src/sacpp_camera_takeImages_controller &
-camera/cpp/src/sacpp_camera_takeImages_commander 1 15.0 1 1 1 1 test-image-name
-pkill -f -9 sacpp_camera_takeImages_controller
-
-camera/cpp/src/sacpp_camera_startIntegration_log &
-camera/cpp/src/sacpp_camera_startIntegration_send 1 test-image-name
-sleep 5
-pkill -f -9 sacpp_camera_startIntegration_log
 
