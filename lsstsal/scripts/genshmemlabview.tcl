@@ -476,7 +476,11 @@ global SAL_DIR SAL_WORK_DIR
              mgr.salTelemetrySub(actorIdx);
           \}
           if ( [set base]_memIO->hasIncoming_[set base]_[set name] == false ) \{
-             status = mgr.getNextSample_[set name](&[set base]_memIO->shmemIncoming_[set base]_[set name]);
+             if \{ [set base]_memIO->skipOld_[set base]_[set name] == true ) \{
+                status = mgr.getSample_[set name](&[set base]_memIO->shmemIncoming_[set base]_[set name]);
+             \{ else \}
+                status = mgr.getNextSample_[set name](&[set base]_memIO->shmemIncoming_[set base]_[set name]);
+             \}
              if (status == SAL__OK) \{
                 [set base]_memIO->hasIncoming_[set base]_[set name] = true;
              \}
