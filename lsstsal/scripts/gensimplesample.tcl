@@ -110,7 +110,11 @@ using namespace std;
             puts $fout "	$rec"
             if { [string range [lindex $rec 1] 0 7] != "private_" && [llength $rec] > 1 } {
                puts $fhdr [typeidltoc $rec]
-               puts $fhlv [typeidltolv $rec]
+               if { $VPROPS(iscommand) } {
+                  if { [lsearch "device property action value" $VPROPS(name)] < 0 } {
+                     puts $fhlv [typeidltolv $rec]
+                  }
+               }
                if { $VPROPS(string) == 1 } {
                   puts $fcod9 "        char	[set subsys]_[set name]_[set VPROPS(name)]_buffer\[128\];"
                }

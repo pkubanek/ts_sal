@@ -53,9 +53,10 @@ global TLMS TLM_ALIASES
          set CMDS($subsys,$alias) "$device $property $action $value"
          set CMD_ALIASES($subsys) [lappend CMD_ALIASES($subsys) $alias]
          if { $itemid == 0 } {
-            lappend CMDS($subsys,$alias,param) "string state"
+            puts stdout "WARNING : Command $alias has no data fields , adding default state item"
+            lappend CMDS($subsys,$alias,param) "boolean state"
             lappend CMDS($subsys,$alias,plist) state
-            puts $fout "	  string	state;"
+            puts $fout "	  boolean	state;"
          }
       }
       if { $tag == "/SALTelemetry" } {
