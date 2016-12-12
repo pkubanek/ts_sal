@@ -114,6 +114,8 @@ using namespace std;
                   if { [lsearch "device property action value" $VPROPS(name)] < 0 } {
                      puts $fhlv [typeidltolv $rec]
                   }
+               } else {
+                  puts $fhlv [typeidltolv $rec]
                }
                if { $VPROPS(string) == 1 } {
                   puts $fcod9 "        char	[set subsys]_[set name]_[set VPROPS(name)]_buffer\[128\];"

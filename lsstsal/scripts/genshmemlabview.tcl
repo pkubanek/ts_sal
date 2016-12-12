@@ -342,6 +342,7 @@ global SAL_WORK_DIR LVSTRINGS LVSTRPARS
            return SAL__ERROR;
         \}"
    set frag [open $SAL_WORK_DIR/include/SAL_[set base]_[set name]shmout.tmp r]
+   gets $frag rec ; gets $frag rec ; gets $frag rec ; gets $frag rec
    while { [gets $frag rec] > -1} {puts $fout $rec}
    close $frag
    puts $fout "
@@ -353,6 +354,7 @@ global SAL_WORK_DIR LVSTRINGS LVSTRPARS
         [set base]_memIO->syncI_[set base]_[set name] = true;
         if ( [set base]_memIO->hasIncoming_[set base]_[set name] ) \{"
    set frag [open $SAL_WORK_DIR/include/SAL_[set base]_[set name]shmin.tmp r]
+   gets $frag rec ; gets $frag rec ; gets $frag rec ; gets $frag rec
    while { [gets $frag rec] > -1} {puts $fout $rec}
    close $frag
    puts $fout "
@@ -476,9 +478,9 @@ global SAL_DIR SAL_WORK_DIR
              mgr.salTelemetrySub(actorIdx);
           \}
           if ( [set base]_memIO->hasIncoming_[set base]_[set name] == false ) \{
-             if \{ [set base]_memIO->skipOld_[set base]_[set name] == true ) \{
+             if ( [set base]_memIO->skipOld_[set base]_[set name] == true ) \{
                 status = mgr.getSample_[set name](&[set base]_memIO->shmemIncoming_[set base]_[set name]);
-             \{ else \}
+             \} else \{
                 status = mgr.getNextSample_[set name](&[set base]_memIO->shmemIncoming_[set base]_[set name]);
              \}
              if (status == SAL__OK) \{
