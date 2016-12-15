@@ -173,25 +173,18 @@ global XMLTOPICS XMLTLM IDLRESERVED XMLITEMS
            close $fcmt
            set mdid [lindex [exec md5sum $SAL_WORK_DIR/idl-templates/validated/$topicid.idl] 0]
            set tid [format %d 0x[string range $mdid 26 end]]
-           set fdef [open $SAL_DIR/code/include/sal/svcSAL_[set topicid]_iid.h w]
            gentopicdefsql $topicid
-           set fsql [open $SAL_DIR/code/sql/[set topicid]_items.sql a]
-           puts $fdef "
-#if !defined(SAL_[set topicid]_IID__INCLUDED_)
-#define SAL_[set topicid]_IID__INCLUDED_"
+           set fsql [open $SAL_WORK_DIR/sql/[set topicid]_items.sql a]
            if { [info exists tnames] } {
             foreach t $tnames {
               set ps $props($t,size)
               if { $ps > 1 && $props($t,type) != "string" } {
                  incr ps 1
               }
-              puts $fdef "#define SAL_IID_[set topicid]_[set t] $tid		// $t $props($t,type) $ps"
               puts $fsql "INSERT INTO [set topicid]_items VALUES ($props($t,num),\"$t\",\"$props($t,type)\",$props($t,size),\"$props($t,units)\",$props($t,freq),\"$props($t,range)\",\"$props($t,location)\",\"$props($t,comment)\");"
               incr tid 1
             }
            }
-           puts $fdef "#endif\n"
-           close $fdef
            close $fsql
            puts $fhtm "</TABLE><P>Click here to update: <input type=\"submit\" value=\"Submit\" name=\"update\"></FORM><P></BODY></HTML>"
            close $fhtm
@@ -337,8 +330,8 @@ global XMLTOPICS XMLTLM IDLRESERVED XMLITEMS
 
 
 proc gentopicdefsql { topic } {
-global SAL_DIR
-   set fsql [open $SAL_DIR/code/sql/[set topic]_items.sql w]
+global SAL_WORK_DIR
+   set fsql [open $SAL_WORK_DIR/sql/[set topic]_items.sql w]
    puts $fsql "DROP TABLE IF EXISTS [set topic]_items;
 CREATE TABLE [set topic]_items (
   ItemId	  smallint unsigned,

@@ -90,7 +90,7 @@ global TLMS TLM_ALIASES
         }
         if { $ctype == "telemetry" } {
            gentopicdefsql $tname
-           set fsql [open $SAL_DIR/code/sql/[set tname]_items.sql a]
+           set fsql [open $SAL_WORK_DIR/sql/[set tname]_items.sql a]
 	   set alias [join [lrange [split $tname "_"] 1 end] "_"]
         }
       }
