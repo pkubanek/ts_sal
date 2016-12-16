@@ -331,6 +331,7 @@ global XMLTOPICS XMLTLM IDLRESERVED XMLITEMS
 
 proc gentopicdefsql { topic } {
 global SAL_WORK_DIR
+   exec mkdir -p $SAL_WORK_DIR/sql
    set fsql [open $SAL_WORK_DIR/sql/[set topic]_items.sql w]
    puts $fsql "DROP TABLE IF EXISTS [set topic]_items;
 CREATE TABLE [set topic]_items (
