@@ -36,16 +36,10 @@ foreach i [lsort $EVENT_ALIASES($SUBSYS)] {
    }
    incr my 30
 }
-button .done -text "Exit Event Generator" -width 44 -bg orange -command doexit
+button .done -text "Exit Event Generator" -width 44 -bg orange -command exit
 place .done -x 10 -y $my
 incr my 40
 wm geometry . 400x$my
-
-proc doexit { } {
-global LISTENER
-  exec kill -9 $LISTENER
-  exit
-}
 
 
 proc sendlogevent { alias } {
@@ -59,13 +53,18 @@ global EVTS SUBSYS PARS TIMEOUT SAL_WORK_DIR
       .evt$alias configure -bg orange
       foreach p  $EVTS($SUBSYS,$alias,param) {
          set name [lindex $p 1]
-         set modifiers "$modifiers $name=$PARS([set alias]_[set name])"
+         set modifiers "$modifiers $PARS([set alias]_[set name])"
          if { [string trim $PARS([set alias]_[set name])] == "" } {set ready 0}
       }
    }
    if { $ready } {
      catch {.evt$alias configure -bg orange}
+     puts stdout "Starting $SUBSYS Log Event Listener"
+     set LISTENER [exec xterm -geometry +400+10 -T "$SUBSYS Log Event Listener" -e $SAL_WORK_DIR/$SUBSYS/cpp/src/sacpp_[set SUBSYS]_[set alias]_log &]
+     after 5000
      exec gnome-terminal -e "$SAL_WORK_DIR/$SUBSYS/cpp/src/sacpp_[set SUBSYS]_[set alias]_send  $modifiers"
+     after 5000
+     exec kill -9 $LISTENER
      .evt$alias configure -bg green
    } else { 
      set it [tk_dialog .d "Missing parameter" "All parameters must have a value" {} -1 "OK"]
@@ -77,8 +76,6 @@ global EVTS SUBSYS PARS TIMEOUT SAL_WORK_DIR
 #   exec ospl start
 #   exec sleep 5
 #}
-puts stdout "Starting $SUBSYS Log Event Listener"
-set LISTENER [exec xterm -geometry +400+10 -T "$SUBSYS Log Event Listener" -e $SAL_WORK_DIR/$SUBSYS/cpp/src/sacpp_[set SUBSYS]_[set alias]_log &]
 
 
 
