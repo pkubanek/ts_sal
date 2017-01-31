@@ -486,6 +486,7 @@ public class SAL_SALData {
         public static final int SAL__AVAILABLESTATE =	532;
         public static final int SAL__FAULTSTATE	=	540;
 
+
 	public int waitForCompletion( int cmdSeqNum , int timeout )
 	{
 	   int status = 0;
