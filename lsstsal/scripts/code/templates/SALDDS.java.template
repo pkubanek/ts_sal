@@ -471,6 +471,20 @@ public class SAL_SALData {
         public static final int SAL__CMD_FAILED =   	-302;
         public static final int SAL__CMD_ABORTED =  	-303;
         public static final int SAL__CMD_TIMEOUT =  	-304;
+        public static final int SAL__DATA_AVAIL	=	400;
+        public static final int SAL__DEADLINE_MISS =	401;
+        public static final int SAL__INCOMPAT_QOS =	402;
+        public static final int SAL__SAMPLE_REJ	=	403;
+        public static final int SAL__LIVELINESS_CHG =	404;
+        public static final int SAL__SAMPLELOST	=	405;
+        public static final int SAL__SUBSCR_MATCH =	406;
+        public static final int SAL__STANDBYSTATE =	500;
+        public static final int SAL__DISABLEDSTATE =	510;
+        public static final int SAL__ENABLEDSTATE =	520;
+        public static final int SAL__OFFLINESTATE =	530;
+        public static final int SAL__PUBLISHONLYSTATE =	531;
+        public static final int SAL__AVAILABLESTATE =	532;
+        public static final int SAL__FAULTSTATE	=	540;
 
 	public int waitForCompletion( int cmdSeqNum , int timeout )
 	{
