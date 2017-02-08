@@ -213,6 +213,70 @@ public class [set subsys]CommanderTest extends TestCase \{
   puts $fout "
 \}"
   close $fout
+  set fout [open $SAL_WORK_DIR/maven/[set subsys]_[set SALVERSION]/src/test/java/[set subsys]ControllerTest.java w]
+  puts $fout "
+package org.lsst.sal.junit.[set subsys];
+
+import junit.framework.TestCase;
+import [set subsys].*;
+import org.lsst.sal.SAL_[set subsys];
+
+public class [set subsys]ControllerTest extends TestCase \{
+  
+   public [set subsys]ControllerTest(String name) \{
+      super(name);
+   \}
+
+"
+  foreach i $cmds {
+     set alias [lindex [split [lindex $i 2] _] 1]
+     puts $fout "
+public class [set subsys]Controller_[set alias]Test extends TestCase \{
+
+   	public [set subsys]Controller_[set alias]Test(String name) \{
+   	   super(name);
+   	\}
+
+	public void test[set subsys]Controller_[set alias]() \{
+          short aKey   = 1;
+	  int status   = SAL_[set subsys].SAL__OK;
+	  int cmdId    = 0;
+          int timeout  = 3;
+          boolean finished=false;
+
+	  // Initialize
+	  SAL_[set subsys] cmd = new SAL_[set subsys][set initializer];
+
+	  cmd.salProcessor(\"[set subsys]_command_[set alias]\");
+	  [set subsys].command_[set alias] command = new [set subsys].command_[set alias]();
+          System.out.println(\"[set subsys]_[set alias] controller ready \");
+
+	  while (!finished) \{
+
+	     cmdId = cmd.acceptCommand_[set alias](command);
+	     if (cmdId > 0) \{
+	       if (timeout > 0) \{
+	          cmd.ackCommand_[set alias](cmdId, SAL_[set subsys].SAL__CMD_INPROGRESS, 0, \"Ack : OK\");
+ 	          try \{Thread.sleep(timeout);\} catch (InterruptedException e)  \{ e.printStackTrace(); \}
+	       \}       
+	       cmd.ackCommand_[set alias](cmdId, SAL_[set subsys].SAL__CMD_COMPLETE, 0, \"Done : OK\");
+	     \}
+             timeout = timeout-1;
+             if (timeout == 0) \{
+               finished = true;
+             \}
+ 	     try \{Thread.sleep(1000);\} catch (InterruptedException e)  \{ e.printStackTrace(); \}
+	  \}
+
+	  /* Remove the DataWriters etc */
+	  cmd.salShutdown();
+       \}
+\}
+"
+  }
+  puts $fout "
+\}"
+  close $fout
 }
 
 

@@ -524,8 +524,10 @@ salReturn SAL_[set base]::getSample([set base]::[set name]Seq data)
   for (DDS::ULong j = 0; j < numsamp; j++)
   \{
     rcvdTime = getCurrentTime();
-    cout << \"=== \[GetSample\] message received :\" << endl;
-    cout << \"    revCode  : \" << data\[j\].private_revCode << endl;
+    if (data\[j\].private_origin != 0) \{
+      cout << \"=== \[GetSample\] message received :\" << endl;
+      cout << \"    revCode  : \" << data\[j\].private_revCode << endl;
+    \}
   \}
   status = SALReader->return_loan(data, infoSeq);
   checkStatus(status, \"[set base]::[set name]DataReader::return_loan\");
