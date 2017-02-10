@@ -102,26 +102,29 @@ public class [set subsys]Commander_[set alias]Test extends TestCase \{
 "
       close $fcmd
       stdlog "	: command test receive for = $alias"
-      set fcmd [open $SAL_WORK_DIR/$subsys/java/src/[set subsys]Controller_[set alias].java w]
+      set fcmd [open $SAL_WORK_DIR/$subsys/java/src/[set subsys]Controller_[set alias]Test.java w]
       puts $fcmd "
+package org.lsst.sal.junit.camera;
+
+import junit.framework.TestCase;
 import [set subsys].*;
 import org.lsst.sal.SAL_[set subsys];
 
-public class [set subsys]Controller_[set alias] \{
+public class [set subsys]Controller_[set alias]Test extends TestCase \{
 
-	public static void main(String\[\] args) \{
+   	public [set subsys]Controller_[set alias]Test(String name) \{
+   	   super(name);
+   	\}
+
+	public void test[set subsys]Controller_[set alias]() \{
           short aKey   = 1;
 	  int status   = SAL_[set subsys].SAL__OK;
 	  int cmdId    = 0;
-          int timeout  = 0;
+          int timeout  = 3;
           boolean finished=false;
 
 	  // Initialize
 	  SAL_[set subsys] cmd = new SAL_[set subsys][set initializer];
-
-          if (args.length > 0) \{
-             timeout=Integer.parseInt(args\[0\]) * 1000;
-          \}
 
 	  cmd.salProcessor(\"[set subsys]_command_[set alias]\");
 	  [set subsys].command_[set alias] command = new [set subsys].command_[set alias]();
@@ -136,7 +139,12 @@ public class [set subsys]Controller_[set alias] \{
  	          try \{Thread.sleep(timeout);\} catch (InterruptedException e)  \{ e.printStackTrace(); \}
 	       \}       
 	       cmd.ackCommand_[set alias](cmdId, SAL_[set subsys].SAL__CMD_COMPLETE, 0, \"Done : OK\");
+               finished = true;
 	     \}
+             timeout = timeout-1;
+             if (timeout == 0) \{
+               finished = true;
+             \}
  	     try \{Thread.sleep(1000);\} catch (InterruptedException e)  \{ e.printStackTrace(); \}
 	  \}
 

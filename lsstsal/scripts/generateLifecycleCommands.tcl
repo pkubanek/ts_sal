@@ -38,7 +38,7 @@ set SAL_LIFECYCLE_COMMANDS "
     <item>
       <EFDB_Name>state</EFDB_Name>
       <Description>Subsystem state</Description>
-       <IDL_Type>string</IDL_Type>
+       <IDL_Type>boolean</IDL_Type>
       <Units> </Units>
       <Count>1</Count>
     </item>
@@ -58,7 +58,7 @@ set SAL_LIFECYCLE_COMMANDS "
     <item>
       <EFDB_Name>state</EFDB_Name>
       <Description>Subsystem state</Description>
-       <IDL_Type>string</IDL_Type>
+       <IDL_Type>boolean</IDL_Type>
       <Units> </Units>
       <Count>1</Count>
     </item>
@@ -78,7 +78,7 @@ set SAL_LIFECYCLE_COMMANDS "
     <item>
       <EFDB_Name>state</EFDB_Name>
       <Description>Subsystem state</Description>
-       <IDL_Type>string</IDL_Type>
+       <IDL_Type>boolean</IDL_Type>
       <Units> </Units>
       <Count>1</Count>
     </item>
@@ -98,7 +98,7 @@ set SAL_LIFECYCLE_COMMANDS "
     <item>
       <EFDB_Name>state</EFDB_Name>
       <Description>Subsystem state</Description>
-       <IDL_Type>string</IDL_Type>
+       <IDL_Type>boolean</IDL_Type>
       <Units> </Units>
       <Count>1</Count>
     </item>
@@ -118,7 +118,7 @@ set SAL_LIFECYCLE_COMMANDS "
     <item>
       <EFDB_Name>state</EFDB_Name>
       <Description>Subsystem state</Description>
-       <IDL_Type>string</IDL_Type>
+       <IDL_Type>boolean</IDL_Type>
       <Units> </Units>
       <Count>1</Count>
     </item>
@@ -138,7 +138,7 @@ set SAL_LIFECYCLE_COMMANDS "
     <item>
       <EFDB_Name>state</EFDB_Name>
       <Description>Subsystem state</Description>
-       <IDL_Type>string</IDL_Type>
+       <IDL_Type>boolean</IDL_Type>
       <Units> </Units>
       <Count>1</Count>
     </item>
@@ -158,7 +158,7 @@ set SAL_LIFECYCLE_COMMANDS "
     <item>
       <EFDB_Name>state</EFDB_Name>
       <Description>Subsystem state</Description>
-       <IDL_Type>string</IDL_Type>
+       <IDL_Type>boolean</IDL_Type>
       <Units> </Units>
       <Count>1</Count>
     </item>

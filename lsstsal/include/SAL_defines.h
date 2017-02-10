@@ -89,7 +89,7 @@ typedef int	        salReturn;
 #define SAL__CMD_ABORTED   	-303
 #define SAL__CMD_TIMEOUT   	-304
 
-// callback types for subscritptions
+// callback types for subscriptions
 #define SAL__DATA_AVAIL		400
 #define SAL__DEADLINE_MISS	401
 #define SAL__INCOMPAT_QOS	402
@@ -97,6 +97,16 @@ typedef int	        salReturn;
 #define SAL__LIVELINESS_CHG	404
 #define SAL__SAMPLELOST		405
 #define SAL__SUBSCR_MATCH	406
+
+// lifecycle states
+#define SAL__STANDBYSTATE	500
+#define SAL__DISABLEDSTATE	510
+#define SAL__ENABLEDSTATE	520
+#define SAL__OFFLINESTATE	530
+#define SAL__PUBLISHONLYSTATE	531
+#define SAL__AVAILABLESTATE	532
+#define SAL__FAULTSTATE		540
+
 
 #define salDebugOutputString(__X__) fprintf(stderr,__X__)
 #define SAL__MAX_DBGMSG_SIZE   1024

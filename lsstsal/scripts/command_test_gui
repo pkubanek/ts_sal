@@ -42,16 +42,11 @@ foreach i [lsort $CMD_ALIASES($SUBSYS)] {
    place .timev$i -x 300 -y $my
    incr my 30
 }
-button .done -text "Exit commander" -width 44 -bg orange -command doexit
+button .done -text "Exit commander" -width 44 -bg orange -command exit
 place .done -x 10 -y $my
 incr my 40
 wm geometry . 400x$my
 
-proc doexit { } {
-global LISTENER
-  exec kill -9 $LISTENER
-  exit
-}
 
 
 proc runcommand { alias } {
@@ -68,13 +63,18 @@ global CMDS SUBSYS PARS TIMEOUT SAL_WORK_DIR
       .cmd$alias configure -bg orange
       foreach p  $CMDS($SUBSYS,$alias,param) {
          set name [lindex $p 1]
-         set modifiers "$modifiers $name=$PARS([set alias]_[set name])"
+         set modifiers "$modifiers $PARS([set alias]_[set name])"
          if { [string trim $PARS([set alias]_[set name])] == "" } {set ready 0}
       }
    }
    if { $ready } {
      catch {.cmd$alias configure -bg orange}
-     exec xterm -e "$SAL_WORK_DIR/$SUBSYS/cpp/src/sacpp_[set SUBSYS]_[set alias]_commander  $modifiers"
+     puts stdout "Starting $SUBSYS controller simulation"
+     set LISTENER [exec xterm  -geometry +400+10 -T "$SUBSYS controller simulator" -e $SAL_WORK_DIR/$SUBSYS/cpp/src/sacpp_[set SUBSYS]_[set alias]_controller &]
+     after 5000
+     exec xterm -e "$SAL_WORK_DIR/$SUBSYS/cpp/src/sacpp_[set SUBSYS]_[set alias]_commander $modifiers"
+     after 5000
+     exec kill -9 $LISTENER
      .cmd$alias configure -bg green
    } else { 
      set it [tk_dialog .d "Missing parameter" "All parameters must have a value" {} -1 "OK"]
@@ -86,8 +86,6 @@ global CMDS SUBSYS PARS TIMEOUT SAL_WORK_DIR
 #   exec ospl start
 #   exec sleep 5
 #}
-puts stdout "Starting $SUBSYS controller simulation"
-set LISTENER [exec xterm  -geometry +400+10 -T "$SUBSYS controller simulator" -e $SAL_WORK_DIR/$SUBSYS/cpp/src/sacpp_[set SUBSYS]_[set alias]_controller  &]
 
 
 

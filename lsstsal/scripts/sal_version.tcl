@@ -1,4 +1,4 @@
-set SALVERSION 3.2.1
+set SALVERSION 3.4.0
 set SAL_BASE_DIR $env(SAL_DIR)/scripts
 set SAL_CMAKE_DIR $SAL_BASE_DIR/code/simd/cmake
 set SAL_SID(auxscope) 		1000
@@ -6,6 +6,12 @@ set SAL_SID(calibration)	2000
 set SAL_SID(camera) 		3000
 set SAL_SID(dm) 		4000
 set SAL_SID(dome) 		5000
+set SAL_SID(domeADB) 		5100
+set SAL_SID(domeAPS) 		5200
+set SAL_SID(domeLouvers) 	5300
+set SAL_SID(domeLWS) 		5400
+set SAL_SID(domeMONCS) 		5500
+set SAL_SID(domeTHCS) 		5600
 set SAL_SID(environment) 	6000
 set SAL_SID(hexapod) 		7000
 set SAL_SID(lasercal) 		8000
