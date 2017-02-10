@@ -160,6 +160,15 @@ if { $OPTIONS(validate) } {
         close $fxml
         parseXMLtoidl /tmp/lifecycle.xml
       }
+      if { $t == "Events" } {
+        stdlog "Add generic statemachine events"
+        set SALSubsys $i
+        source $SAL_DIR/generateGenericEvents.tcl
+        set fxml [open /tmp/genericevent.xml w]
+        puts $fxml $SAL_GENERIC_EVENTS 
+        close $fxml
+        parseXMLtoidl /tmp/genericevent.xml
+      }
     }
     stdlog "Validating $i interface IDL format definitions"
     set new [lsort [glob $SAL_WORK_DIR/idl-templates/[set i]_*.idl]]
