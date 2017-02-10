@@ -1,5 +1,12 @@
-This is release 3.3 of the SAL SDK
+This is release 3.4 of the SAL SDK
 Please refer to the SAL User Guide for installation instructions.
+
+Changes for 3.4
+
+Added generic Event types
+Added Java controller tests
+Added m2ms Telemetry items
+Added ocs commands
 
 Changes for 3.3
 
