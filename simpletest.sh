@@ -46,32 +46,32 @@ unzip -o master.zip
 mv -v ts_xml-master/sal_interfaces/*/*.xml .
 
 echo "Validating interfaces"
-for subsys in camera dm dome domeADB domeAPS domeLouvers domeLWS domeMONCS domeTHCS hexapod m1m3 m2ms MTMount rotator scheduler tcs
+for subsys in camera dm dome domeADB domeAPS domeLouvers domeLWS domeMONCS domeTHCS hexapod m1m3 m2ms MTMount ocs rotator scheduler tcs
 do
    salgenerator $subsys validate
    salgenerator $subsys html
 done
 
 echo "Generating C++"
-for subsys in camera dm dome domeADB domeAPS domeLouvers domeLWS domeMONCS domeTHCS hexapod m1m3 m2ms MTMount rotator scheduler tcs
+for subsys in camera dm dome domeADB domeAPS domeLouvers domeLWS domeMONCS domeTHCS hexapod m1m3 m2ms MTMount ocs rotator scheduler tcs
 do
    salgenerator $subsys sal cpp
 done
 
 echo "Generating Java"
-for subsys in camera dm dome domeADB domeAPS domeLouvers domeLWS domeMONCS domeTHCS hexapod m1m3 m2ms MTMount rotator scheduler tcs
+for subsys in camera dm dome domeADB domeAPS domeLouvers domeLWS domeMONCS domeTHCS hexapod m1m3 m2ms MTMount ocs rotator scheduler tcs
 do
    salgenerator $subsys sal java
 done
 
 echo "Generating Python"
-for subsys in camera dm dome domeADB domeAPS domeLouvers domeLWS domeMONCS domeTHCS hexapod m1m3 m2ms MTMount rotator scheduler tcs
+for subsys in camera dm dome domeADB domeAPS domeLouvers domeLWS domeMONCS domeTHCS hexapod m1m3 m2ms MTMount ocs rotator scheduler tcs
 do
    salgenerator $subsys sal python
 done
 
 echo "Generating LabVIEW"
-for subsys in camera dm dome domeADB domeAPS domeLouvers domeLWS domeMONCS domeTHCS hexapod m1m3 m2ms MTMount rotator scheduler tcs
+for subsys in camera dm dome domeADB domeAPS domeLouvers domeLWS domeMONCS domeTHCS hexapod m1m3 m2ms MTMount ocs rotator scheduler tcs
 do
    salgenerator $subsys sal labview
 done
