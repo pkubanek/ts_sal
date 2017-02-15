@@ -181,6 +181,7 @@ proc genlabviewcpp { base ptypes } {
 global SAL_DIR SAL_WORK_DIR SYSDIC LVSTRINGS LVSTRPARS
   set idarg ""
   set idarg2 ""
+  set idarg3 "     unsigned int [set base]ID = 0;"
   set idoff "[set base]ID"
   if { [info exists SYSDIC($base,keyedID)] } {
      set idarg "unsigned int [set base]ID"
@@ -250,6 +251,7 @@ extern \"C\" \{
 
 "
   puts $fout "
+    [set idarg3]
     [set base]_shmem *[set base]_memIO;
 
     int [set base]_salShmConnect ([set idarg]) \{
@@ -578,6 +580,7 @@ global SAL_DIR SAL_WORK_DIR
           actorIdx = SAL__[set base]_[set name]_ACTOR;
           if (mgr.actorEventReader(actorIdx) == false) \{
              mgr.salEvent(\"[set base]_[set name]\");
+             [set base]_memIO->hasReader_[set base]_[set name] = true;
           \}
           status = mgr.getEvent_[set n2](&[set base]_memIO->shmemIncoming_[set base]_[set name]);
           if (status == SAL__OK) \{
@@ -588,6 +591,7 @@ global SAL_DIR SAL_WORK_DIR
           actorIdx = SAL__[set base]_[set name]_ACTOR;
           if (mgr.actorEventWriter(actorIdx) == false) \{
              mgr.salEvent(\"[set base]_[set name]\");
+             [set base]_memIO->hasWriter_[set base]_[set name] = true;
           \}
        \}
        if ( [set base]_memIO->hasOutgoing_[set base]_[set name] ) \{
