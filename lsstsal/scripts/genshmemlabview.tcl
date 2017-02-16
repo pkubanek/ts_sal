@@ -61,14 +61,13 @@ global SAL_DIR SAL_WORK_DIR SYSDIC TELEMETRY_ALIASES LVSTRINGS LVSTRPARS
   while  { [gets $fhlv rec] > -1 } {
      if { [string range $rec 0 13] == "typedef struct" } {
         set sname [lindex [string trim $rec "\{"] 2]
-        set LVSTRINGS([set sname]) ""
-        set LVSTRPARS([set sname]) ""
      }
      set crec [string trim $rec "\{\}"]
      if { [lindex $crec 0] == "char" } {
        set param [string trim [lindex $crec 1] "*;"]
-       set LVSTRINGS([set sname]) "$LVSTRINGS([set sname]), char *$param"
-       set LVSTRPARS([set sname]) "$LVSTRPARS([set sname]), $param"
+#       set LVSTRINGS([set sname]) "$LVSTRINGS([set sname]), char *$param"
+#       set LVSTRPARS([set sname]) "$LVSTRPARS([set sname]), $param"
+       puts $fout $rec
      } else {
        puts $fout $rec
      }
@@ -103,14 +102,14 @@ global SAL_DIR SAL_WORK_DIR SYSDIC TELEMETRY_ALIASES LVSTRINGS LVSTRPARS
         puts $fout "	char *shmemOutgoing_[set base]_[set name]_resultCode;"
         puts $fout "	char *shmemIncoming_[set base]_[set name]_resultCode;"
      }
-puts stdout "reading  $SAL_WORK_DIR/include/SAL_[set base]_[set name]shmstr.tmp"
-     if { $name != "ackcmd" && $name != "command" && $name != "logevent" } {
-       set fstrb [open $SAL_WORK_DIR/include/SAL_[set base]_[set name]shmstr.tmp r]
-       while { [gets $fstrb rec] > -1 } {
-          puts $fout $rec
-       }
-       close $fstrb
-     }
+#puts stdout "reading  $SAL_WORK_DIR/include/SAL_[set base]_[set name]shmstr.tmp"
+#     if { $name != "ackcmd" && $name != "command" && $name != "logevent" } {
+#       set fstrb [open $SAL_WORK_DIR/include/SAL_[set base]_[set name]shmstr.tmp r]
+#       while { [gets $fstrb rec] > -1 } {
+#          puts $fout $rec
+#       }
+#       close $fstrb
+#     }
   }
   puts $fout "	[set base]_ackcmdC shmemIncoming_ackcmd;"
   puts $fout "  [set base]_ackcmdC shmemOutgoing_ackcmd;"
@@ -128,13 +127,13 @@ puts stdout "reading  $SAL_WORK_DIR/include/SAL_[set base]_[set name]shmstr.tmp"
      set name [lindex $j 2]
      set n2 [join [lrange [split $name _] 1 end] _]
      set type [lindex [split $name _] 0]
-     if { [info exists LVSTRINGS([set base]_[set name]C)] } {
-        set xtrargs  $LVSTRINGS([set base]_[set name]C)
-        set xtrargs2 $LVSTRPARS([set base]_[set name]C)
-     } else {
+#     if { [info exists LVSTRINGS([set base]_[set name]C)] } {
+#        set xtrargs  $LVSTRINGS([set base]_[set name]C)
+#        set xtrargs2 $LVSTRPARS([set base]_[set name]C)
+#     } else {
         set xtrargs ""
         set xtrargs2 ""
-     }
+#     }
      if { $type == "command" && $name != "command" } {
        puts $fout "
 	int [set base]_shm_issueCommand_[set n2]LV([set base]_[set name]C *[set name]_Ctl $xtrargs);
@@ -199,6 +198,7 @@ using namespace [set base];
   puts $fout "
     int main (int argc, char *argv\[\]) \{
       int status = 0;
+      unsigned int lpriority=0;
       int [set idoff] = 0;
 
       if (argc > 1) \{
@@ -285,13 +285,13 @@ extern \"C\" \{
 
 proc genlvtelemetry { fout base name } {
 global SAL_WORK_DIR LVSTRINGS LVSTRPARS
-     if { [info exists LVSTRINGS([set base]_[set name]C)] } {
-        set xtrargs  [join $LVSTRINGS([set base]_[set name]C)]
-        set xtrargs2 [join $LVSTRPARS([set base]_[set name]C)]
-     } else {
+#     if { [info exists LVSTRINGS([set base]_[set name]C)] } {
+#        set xtrargs  [join $LVSTRINGS([set base]_[set name]C)]
+#        set xtrargs2 [join $LVSTRPARS([set base]_[set name]C)]
+#     } else {
         set xtrargs ""
         set xtrargs2 ""
-     }
+#     }
    puts $fout "
     int [set base]_shm_getSample_[set name]LV([set base]_[set name]C *data $xtrargs) \{
         [set base]_memIO->syncI_[set base]_[set name] = true;
@@ -595,7 +595,8 @@ global SAL_DIR SAL_WORK_DIR
           \}
        \}
        if ( [set base]_memIO->hasOutgoing_[set base]_[set name] ) \{
-          status = mgr.logEvent_[set n2](&[set base]_memIO->shmemOutgoing_[set base]_[set name],1);
+          lpriority = [set base]_memIO->shmemOutgoing_[set base]_[set name]->priority;
+          status = mgr.logEvent_[set n2](&[set base]_memIO->shmemOutgoing_[set base]_[set name],lpriority);
           [set base]_memIO->hasOutgoing_[set base]_[set name] = false;
        \}
 "
