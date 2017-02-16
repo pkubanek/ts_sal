@@ -198,7 +198,7 @@ using namespace [set base];
   puts $fout "
     int main (int argc, char *argv\[\]) \{
       int status = 0;
-      unsigned int lpriority=0;
+      long lpriority = 0;
       int [set idoff] = 0;
 
       if (argc > 1) \{

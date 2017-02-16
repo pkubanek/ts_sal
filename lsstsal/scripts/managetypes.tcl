@@ -149,7 +149,7 @@ global TYPESUBS
    set u ""
    if { [lindex $rec 0] == "string" } {
       set name [string trim [lindex $rec 1] ";"]
-      set res "  char	*[set name];[join [lrange $rec 2 end]]"
+      set res "  char	[set name]\[128\];[join [lrange $rec 2 end]]"
       return $res
    }
    if { [lindex $rec 0] == "unsigned" } {set u "unsigned"; set rec [join [lrange $rec 1 end] " "]}
@@ -157,14 +157,14 @@ global TYPESUBS
       if { [llength [split $rec "\[("]] > 1 } {
         set s [lindex [split $rec "\[\]()"] 1]
         set name [lindex [lindex [split $rec "\[\]()"] 0] 1]
-        set res "  char *[set name];[join [lrange $rec 2 end]]"
+        set res "  char [set name]\[[set s]\];[join [lrange $rec 2 end]]"
         return $res
       }
    }
    if { [llength [split $rec "<"]] > 1 } {
       set s [lindex [split $rec "<>"] 1]
       set name [string trim [lindex $rec 1] ";"]
-      set res "  char 	*[set name];[join [lrange $rec 2 end]]"
+      set res "  char 	[set name]\[[set s]\];[join [lrange $rec 2 end]]"
    } else {
       if { [llength [split $rec "\[("]] > 1 } {
         set s [lindex [split $rec "\[\]()"] 1]
