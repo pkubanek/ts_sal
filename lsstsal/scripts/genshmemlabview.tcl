@@ -595,7 +595,7 @@ global SAL_DIR SAL_WORK_DIR
           \}
        \}
        if ( [set base]_memIO->hasOutgoing_[set base]_[set name] ) \{
-          lpriority = [set base]_memIO->shmemOutgoing_[set base]_[set name]->priority;
+          lpriority = [set base]_memIO->shmemOutgoing_[set base]_[set name].priority;
           status = mgr.logEvent_[set n2](&[set base]_memIO->shmemOutgoing_[set base]_[set name],lpriority);
           [set base]_memIO->hasOutgoing_[set base]_[set name] = false;
        \}
