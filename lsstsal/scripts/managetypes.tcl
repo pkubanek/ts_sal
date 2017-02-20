@@ -86,9 +86,11 @@ global TYPESUBS VPROPS
    set VPROPS(long) 0
    set VPROPS(short) 0
    set VPROPS(double) 0
+   set VPROPS(lvres) 0
    set VPROPS(name) ""
    if { [lindex $rec 0] == "string" } {
       set VPROPS(string) 1
+      set VPROPS(lvres) 5
       set VPROPS(dim) 32
       set name [string trim [lindex $rec 1] ";"]
       set VPROPS(name) $name
@@ -102,6 +104,7 @@ global TYPESUBS VPROPS
         set name [lindex [lindex [split $rec "\[\]()"] 0] 1]
         set VPROPS(name) $name
         set VPROPS(string) 1
+        set VPROPS(lvres) 5
         set VPROPS(dim) [string trim $s "\\"]
         set res "  std::string	$name;[join [lrange $rec 2 end]]"
         return $res
@@ -115,10 +118,11 @@ global TYPESUBS VPROPS
       set VPROPS(name) [string trim [join [lrange $rec 1 end]] ";"]
       set VPROPS(string) 1
    } else {
-      if { [lindex $rec 0] != "float" && [lindex $rec 0] != "double" } {set VPROPS(int) 1}
-      if { [lindex $rec 0] == "double" } {set VPROPS(double) 1 }
-      if { [lindex $rec 0] == "short" } {set VPROPS(short) 1 }
-      if { [lindex $rec 0] == "long" } {set VPROPS(long) 1 }
+      if { [lindex $rec 0] != "float" && [lindex $rec 0] != "double" } {set VPROPS(int) 1; set LVPROPS(lvres) 9}
+      if { [lindex $rec 0] == "double" } {set VPROPS(double) 1; set LVPROPS(lvres) 10 }
+      if { [lindex $rec 0] == "short" } {set VPROPS(short) 1; set LVPROPS(lvres) 2  }
+      if { [lindex $rec 0] == "long" } {set VPROPS(long) 1; set LVPROPS(lvres) 3  }
+      if { $u == "unsigned" } { set VPROPS(lvres) [expr $VPROPS(lvres) +4] }
       if { [llength [split $rec "\[("]] > 1 } {
         set s [lindex [split $rec "\[\]()"] 1]
         set n [lindex [lindex [split $rec "\[\]()"] 0] 1]
@@ -145,11 +149,11 @@ proc testsimpletypecode { } {
 }
 
 proc typeidltolv { rec } {
-global TYPESUBS
+global TYPESUBS ATYPESUBS
    set u ""
    if { [lindex $rec 0] == "string" } {
       set name [string trim [lindex $rec 1] ";"]
-      set res "  char	[set name]\[128\];[join [lrange $rec 2 end]]"
+      set res "  StrHdl	[set name];[join [lrange $rec 2 end]]"
       return $res
    }
    if { [lindex $rec 0] == "unsigned" } {set u "unsigned"; set rec [join [lrange $rec 1 end] " "]}
@@ -157,19 +161,23 @@ global TYPESUBS
       if { [llength [split $rec "\[("]] > 1 } {
         set s [lindex [split $rec "\[\]()"] 1]
         set name [lindex [lindex [split $rec "\[\]()"] 0] 1]
-        set res "  char [set name]\[[set s]\];[join [lrange $rec 2 end]]"
+        set res "  StrHdl [set name];[join [lrange $rec 2 end]]"
         return $res
       }
    }
    if { [llength [split $rec "<"]] > 1 } {
       set s [lindex [split $rec "<>"] 1]
       set name [string trim [lindex $rec 1] ";"]
-      set res "  char 	[set name]\[[set s]\];[join [lrange $rec 2 end]]"
+      set res "  StrHdl [set name];[join [lrange $rec 2 end]]"
    } else {
       if { [llength [split $rec "\[("]] > 1 } {
         set s [lindex [split $rec "\[\]()"] 1]
         set n [lindex [lindex [split $rec "\[\]()"] 0] 1]
-        set res "  [set u] $TYPESUBS([lindex $rec 0]) $n\[$s\];"
+        if { $u == "unsigned" } {
+          set res "  U[string trim $ATYPESUBS([lindex $rec 0]) I] $n\;"
+        } else {
+          set res "  $ATYPESUBS([lindex $rec 0]) $n\;"
+        }
       } else {
         set res " [set u] $TYPESUBS([lindex $rec 0]) [join [lrange $rec 1 end]]"
       }
@@ -401,6 +409,26 @@ set TYPESUBS(unsignedshort)  short
 set TYPESUBS(unsignedint16)  short
 set TYPESUBS(unsignedint32)  long
 set TYPESUBS(unsignedlong)   long
+
+set ATYPESUBS(string) StrHdl
+set ATYPESUBS(String) StrHdl
+set ATYPESUBS(byte)   StrHdl
+set ATYPESUBS(char)   StrHdl
+set ATYPESUBS(octet)  StrHdl
+set ATYPESUBS(int)    I32ArrayHdl
+set ATYPESUBS(short)  I16ArrayHdl
+set ATYPESUBS(int16)  I16ArrayHdl
+set ATYPESUBS(int32)  I32ArrayHdl
+set ATYPESUBS(long)   I32ArrayHdl
+set ATYPESUBS(float)  SGLArrayHdl
+set ATYPESUBS(double) DBLArrayHdl
+set ATYPESUBS(bool)   U32ArrayHdl
+set ATYPESUBS(boolean) 		U32ArrayHdl
+set ATYPESUBS(unsignedint)      U32ArrayHdl
+set ATYPESUBS(unsignedshort)    U16ArrayHdl
+set ATYPESUBS(unsignedint16)    U16ArrayHdl
+set ATYPESUBS(unsignedint32)    U32ArrayHdl
+set ATYPESUBS(unsignedlong)     U32ArrayHdl
 
 set TYPESIZE(String) 1
 set TYPESIZE(string) 1

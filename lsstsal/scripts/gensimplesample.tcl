@@ -35,6 +35,94 @@ global SAL_WORK_DIR
    exec touch $SAL_WORK_DIR/[set base]/isocpp/.depend.Makefile.ISO_Cxx_[set base]_types
 }
 
+
+proc addlvtypes { fhlv } {
+  puts $fhlv "
+typedef signed char int8_t;
+typedef short int int16_t;
+typedef int int32_t;
+typedef long int int64_t;
+typedef unsigned char uint8_t;
+typedef unsigned short int uint16_t;
+typedef unsigned int uint32_t;
+typedef unsigned long int uint64_t;
+
+typedef struct \{
+	int size;
+	int8_t data\[1\];
+\} I8Array;
+typedef I8Array** I8ArrayHdl;
+
+typedef struct \{
+	int size;
+	int16_t data\[1\];
+\} I16Array;
+typedef I16Array** I16ArrayHdl;
+
+typedef struct \{
+	int size;
+	int data\[1\];
+\} I32Array;
+typedef I32Array** I32ArrayHdl;
+
+typedef struct \{
+	int size;
+	int64_t data\[1\];
+\} I64Array;
+typedef I64Array** I64ArrayHdl;
+
+typedef struct \{
+	int size;
+	uint8_t data\[1\];
+\} U8Array;
+typedef U8Array** U8ArrayHdl;
+
+typedef struct \{
+	int size;
+	uint16_t data\[1\];
+\} U16Array;
+typedef U16Array** U16ArrayHdl;
+
+typedef struct \{
+	int size;
+	uint32_t data\[1\];
+\} U32Array;
+typedef U32Array** U32ArrayHdl;
+
+typedef struct \{
+	int size;
+	uint64_t data\[1\];
+\} U64Array;
+typedef U64Array** U64ArrayHdl;
+
+typedef struct \{
+	int size;
+	float data\[1\];
+\} SGLArray;
+typedef SGLArray** SGLArrayHdl;
+
+typedef struct \{
+	int size;
+	double data\[1\];
+\} DBLArray;
+typedef DBLArray** DBLArrayHdl;
+
+typedef struct \{
+	int size;
+	char data\[1\];
+\} Str;
+typedef Str** StrHdl;
+
+typedef struct \{
+	int size;
+	StrHdl data\[1\];
+\} StrArray;
+typedef StrArray** StrArrayHdl;
+"
+}
+
+
+
 proc makesalidl { subsys } {
 global SAL_DIR SAL_WORK_DIR SYSDIC VPROPS
    set all [lsort [glob $SAL_WORK_DIR/idl-templates/validated/[set subsys]_*.idl]]
@@ -43,6 +131,7 @@ global SAL_DIR SAL_WORK_DIR SYSDIC VPROPS
    exec mkdir -p $SAL_WORK_DIR/[set subsys]/cpp/src
    set fhdr [open $SAL_WORK_DIR/[set subsys]/cpp/src/SAL_[set subsys]C.h w]
    set fhlv [open $SAL_WORK_DIR/[set subsys]/cpp/src/SAL_[set subsys]LV.h w]
+   addlvtypes $fhlv
    puts $fhdr "
 #ifndef _SAL_[set subsys]C_
 #define _SAL_[set subsys]C_
@@ -69,13 +158,12 @@ using namespace std;
       set fcod6 [open $SAL_WORK_DIR/include/SAL_[set subsys]_[set name]Cout.tmp w]
       set fcod7 [open $SAL_WORK_DIR/include/SAL_[set subsys]_[set name]shmout.tmp w]
       set fcod8 [open $SAL_WORK_DIR/include/SAL_[set subsys]_[set name]shmin.tmp w]
-      set fcod9 [open $SAL_WORK_DIR/include/SAL_[set subsys]_[set name]shmstr.tmp w]
       set fcod10 [open $SAL_WORK_DIR/include/SAL_[set subsys]_[set name]Pargs.tmp w]
       set fcod11 [open $SAL_WORK_DIR/include/SAL_[set subsys]_[set name]Ppub.tmp w]
       puts $fout "	struct $name \{"
       puts $fhdr "struct [set subsys]_[set name]C
 \{"
-      puts $fhlv "typedef struct [set subsys]_[set name]C \{"
+      puts $fhlv "typedef struct [set subsys]_[set name]LV \{"
       puts $fbst "   bp::class_<[set subsys]_[set name]C>(\"[set subsys]_[set name]C\")"
       if {[string range $name 0 7] != "command_" && [string range $name 0 8] != "logevent_"}  {
         puts $fbst2 "
@@ -117,9 +205,6 @@ using namespace std;
 #               } else {
                   puts $fhlv [typeidltolv $rec]
 #               }
-               if { $VPROPS(string) == 1 } {
-                  puts $fcod9 "        char	[set subsys]_[set name]_[set VPROPS(name)]_buffer\[128\];"
-               }
                set VPROPS(idx) $argidx
                set VPROPS(base) $subsys
                set VPROPS(topic) "[set subsys]_[set name]"
@@ -147,7 +232,6 @@ using namespace std;
       close $fcod6
       close $fcod7
       close $fcod8
-      close $fcod9
       close $fcod10
       close $fcod11
    }
@@ -204,8 +288,6 @@ struct [set subsys]_commandC
       std::string	value;
       std::string	modifiers;
 
-      [set subsys]_commandC()  \{ std::cout << \"[set subsys]_commandC() \"  << std::endl; \}
-      ~[set subsys]_commandC()  \{ std::cout << \"~[set subsys]_commandC() \"  << std::endl; \}
 \};
 struct [set subsys]_ackcmdC
 \{
@@ -213,29 +295,61 @@ struct [set subsys]_ackcmdC
       long 	error;
       std::string	result;
 
-      [set subsys]_ackcmdC()   \{ std::cout << \"[set subsys]_ackcmdC() \"  << std::endl; \}
-      ~[set subsys]_ackcmdC()  \{ std::cout << \"~[set subsys]_ackcmdC() \"  << std::endl; \}
 \};
 struct [set subsys]_logeventC
 \{
       std::string	message;
 
-      [set subsys]_logeventC()   \{ std::cout << \"[set subsys]_logeventC() \"  << std::endl; \}
-      ~[set subsys]_logeventC()  \{ std::cout << \"~[set subsys]_logeventC() \"  << std::endl; \}
 \};
 
 #endif
 "
    puts $fhlv "
-typedef struct [set subsys]_ackcmdC
+typedef struct [set subsys]_ackcmdLV
 \{
+      int       cmdSeqNum;
       long 	ack;
       long 	error;
-      char	*result;
-\} [set subsys]_ackcmdC;
+      StrHdl	result;
+\} [set subsys]_ackcmd_Ctl;
+typedef struct [set subsys]_waitCompleteLV
+\{
+      int       cmdSeqNum;
+      unsigned int timeout;
+\} [set subsys]_waitComplete_Ctl;
 "
    close $fout
    close $fhdr
+#   foreach i $all {
+#      puts stdout "Adding $i CStr to LV header"
+#      set fin [open $i r]
+#      gets $fin rec
+#      set name [join [lrange [split [file rootname [file tail $i]] _] 1 end] _]
+#      puts $fhlv "typedef struct [set subsys]_[set name]C \{"
+#      while { [gets $fin rec] > -1 } {
+#         if { [lindex $rec 0] == "#pragma" } {
+#           puts $fhlv "\} [set subsys]_[set name]_CStr;"
+#         } else {
+#            if { [string range [lindex $rec 1] 0 7] != "private_" && [llength $rec] > 1 } {
+#               set it [typeidltoc $rec]
+#               if { [string range $it 0 12] == "  std::string" } {
+#                  puts $fhlv "  char *[string range $it 13 end]"
+#               } else {
+#                  puts $fhlv $it
+#               }
+#            }
+#         }
+#      }
+#      }
+#      puts $fhlv "
+#typedef struct [set subsys]_ackcmdC
+#\{
+#      int       cmdSeqNum;
+#      long 	ack;
+#      long 	error;
+#      char 	result[128];
+#\} [set subsys]_ackcmd_CStr;
+#"
    close $fhlv
    close $fbst
    close $fbst2
@@ -252,8 +366,14 @@ global VPROPS
       puts $fcod3 "       cout << \"    $VPROPS(name) : \" << SALInstance.$VPROPS(name)\[0\] << endl;"
       puts $fcod4 "    for (int i=0;i<$VPROPS(dim);i++)\{myData.$VPROPS(name)\[i\] = i+iseq;\}"
       puts $fcod6 "       cout << \"    $VPROPS(name) : \" << data->$VPROPS(name)\[0\] << endl;"
-      puts $fcod7 "    for (int i=0;i<$VPROPS(dim);i++)\{[set VPROPS(base)]_memIO->shmemOutgoing_[set VPROPS(topic)].$VPROPS(name)\[i\] = data->$VPROPS(name)\[i\];\}"
-      puts $fcod8 "    for (int i=0;i<$VPROPS(dim);i++)\{data->$VPROPS(name)\[i\] = [set VPROPS(base)]_memIO->shmemIncoming_[set VPROPS(topic)].$VPROPS(name)\[i\];\}"
+      puts $fcod7 "
+           int $VPROPS(name)Size = (*(data->$VPROPS(name)))->size ;
+           for (int i=0;i<$VPROPS(dim) && i<$VPROPS(name)Size;i++)\{[set VPROPS(base)]_memIO->shmemOutgoing_[set VPROPS(topic)].$VPROPS(name)\[i\] = (*(data->$VPROPS(name)))->data\[i\];\}"
+      puts $fcod8 "
+           int $VPROPS(name)Size = sizeof(int) + $VPROPS(dim);
+           (*(data->$VPROPS(name)))->size = $VPROPS(name)Size;
+           NumericArrayResize($VPROPS(lvres), 1, (UHandle*)(&(data->$VPROPS(name))), $VPROPS(name)Size);
+           for (int i=0;i<$VPROPS(dim);i++)\{(*(data->$VPROPS(name)))->data\[i\] = [set VPROPS(base)]_memIO->shmemIncoming_[set VPROPS(topic)].$VPROPS(name)\[i\];\}"
       puts $fcod11 "for i in range(0,$VPROPS(dim)):
   myData.$VPROPS(name)\[i\]=i"
       set idlim [expr $idx + $VPROPS(dim)]
@@ -291,8 +411,14 @@ global VPROPS
          puts $fcod4 "    myData.$VPROPS(name)=\"LSST\";"
          puts $fcod5 "    myData.$VPROPS(name)=argv\[$idx\];"
          puts $fcod6 "    cout << \"    $VPROPS(name) : \" << data->$VPROPS(name) << endl;"
-         puts $fcod7 "    strcpy([set VPROPS(base)]_memIO->shmemOutgoing_[set VPROPS(topic)].$VPROPS(name) , data->$VPROPS(name));"
-         puts $fcod8 "    strcpy(data->$VPROPS(name) , [set VPROPS(base)]_memIO->shmemIncoming_[set VPROPS(topic)].$VPROPS(name));"
+         puts $fcod7 "
+           int $VPROPS(name)Size = (*(data->$VPROPS(name)))->size ;
+           for (int i=0;i<$VPROPS(dim) && i<$VPROPS(name)Size;i++)\{[set VPROPS(base)]_memIO->shmemOutgoing_[set VPROPS(topic)].$VPROPS(name)\[i\] = (*(data->$VPROPS(name)))->data\[i\];\}"
+         puts $fcod8 "
+           int $VPROPS(name)Size = sizeof(int) + $VPROPS(dim);
+           (*(data->$VPROPS(name)))->size = [set VPROPS(base)]_memIO->shmemIncoming_[set VPROPS(topic)].$VPROPS(name).length();
+           NumericArrayResize($VPROPS(lvres), 1, (UHandle*)(&(data->$VPROPS(name))), $VPROPS(name)Size);
+           for (int i=0;i<$VPROPS(dim);i++)\{(*(data->$VPROPS(name)))->data\[i\] = [set VPROPS(base)]_memIO->shmemIncoming_[set VPROPS(topic)].$VPROPS(name)\[i\];\}"
          puts $fcod10 "myData.$VPROPS(name)=sys.argv\[$idx\]"
          puts $fcod11 "myData.$VPROPS(name)=\"LSST\""
       } else {
@@ -300,8 +426,8 @@ global VPROPS
          puts $fcod2 "    Instance.$VPROPS(name) = data->$VPROPS(name);"
          puts $fcod3 "    cout << \"    $VPROPS(name) : \" << SALInstance.$VPROPS(name) << endl;"
          puts $fcod6 "    cout << \"    $VPROPS(name) : \" << data->$VPROPS(name) << endl;"
-         puts $fcod7 "    [set VPROPS(base)]_memIO->shmemOutgoing_[set VPROPS(topic)].$VPROPS(name) = data->$VPROPS(name);"
-         puts $fcod8 "    data->$VPROPS(name) = [set VPROPS(base)]_memIO->shmemIncoming_[set VPROPS(topic)].$VPROPS(name);"
+         puts $fcod7 "           [set VPROPS(base)]_memIO->shmemOutgoing_[set VPROPS(topic)].$VPROPS(name) = data->$VPROPS(name);"
+         puts $fcod8 "           data->$VPROPS(name) = [set VPROPS(base)]_memIO->shmemIncoming_[set VPROPS(topic)].$VPROPS(name);"
          if { $VPROPS(int) } {
           puts $fcod11 "myData.$VPROPS(name) = 1";
           if { $VPROPS(long) } {
