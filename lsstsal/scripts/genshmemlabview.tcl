@@ -621,7 +621,7 @@ global SAL_DIR SAL_WORK_DIR LVSTRPARS
        if ( [set base]_memIO->hasOutgoing_[set base]_[set name] ) \{"
    if { [info exists LVSTRPARS([set base]_[set name]LV)] } {
       foreach param $LVSTRPARS([set base]_[set name]LV) {
-         puts $fout "                    [set base]_memIO->shmemOutgoing_[set base]_[set name].$param = [set base]_memIO->[set base]_[set name]LV_[set param]_bufferOut;"
+         puts $fout "                    strcpy([set base]_memIO->shmemOutgoing_[set base]_[set name].[set param]_buffer,[set base]_memIO->[set base]_[set name]LV_[set param]_bufferOut);"
       }
    }
    puts $fout "
@@ -671,7 +671,7 @@ global SAL_DIR SAL_WORK_DIR LVSTRPARS
        if ( [set base]_memIO->hasOutgoing_[set base]_[set name] ) \{"
    if { [info exists LVSTRPARS([set base]_[set name]LV)] } {
       foreach param $LVSTRPARS([set base]_[set name]LV) {
-         puts $fout "                    [set base]_memIO->shmemOutgoing_[set base]_[set name].$param = [set base]_memIO->[set base]_[set name]LV_[set param]_bufferOut;"
+         puts $fout "                    strcpy([set base]_memIO->shmemOutgoing_[set base]_[set name].[set param]_buffer,[set base]_memIO->[set base]_[set name]LV_[set param]_bufferOut);"
       }
    }
    puts $fout "
@@ -724,7 +724,7 @@ global SAL_DIR SAL_WORK_DIR LVSTRPARS
           lpriority = [set base]_memIO->shmemOutgoing_[set base]_[set name].priority;"
    if { [info exists LVSTRPARS([set base]_[set name]LV)] } {
       foreach param $LVSTRPARS([set base]_[set name]LV) {
-         puts $fout "                    [set base]_memIO->shmemOutgoing_[set base]_[set name].$param = [set base]_memIO->[set base]_[set name]LV_[set param]_bufferOut;"
+         puts $fout "                    strcpy([set base]_memIO->shmemOutgoing_[set base]_[set name].[set param]_buffer,[set base]_memIO->[set base]_[set name]LV_[set param]_bufferOut);"
       }
    }
    puts $fout "

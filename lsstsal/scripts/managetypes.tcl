@@ -94,7 +94,7 @@ global TYPESUBS VPROPS
       set VPROPS(dim) 32
       set name [string trim [lindex $rec 1] ";"]
       set VPROPS(name) $name
-      set res "  std::string	$name;[join [lrange $rec 2 end]]"
+      set res "  std::string	$name;[join [lrange $rec 2 end]]\n   char [set name]_buffer\[128\];"
       return $res
    }
    if { [lindex $rec 0] == "unsigned" } {set u "unsigned"; set rec [join [lrange $rec 1 end] " "]}
