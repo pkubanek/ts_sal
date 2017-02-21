@@ -198,13 +198,13 @@ using namespace std;
             puts $fout "	$rec"
             if { [string range [lindex $rec 1] 0 7] != "private_" && [llength $rec] > 1 } {
                puts $fhdr [typeidltoc $rec]
-#               if { $VPROPS(iscommand) } {
-#                  if { [lsearch "device property action value" $VPROPS(name)] < 0 } {
-#                     puts $fhlv [typeidltolv $rec]
-#                  }
-#               } else {
+               if { $VPROPS(iscommand) } {
+                  if { [lsearch "device property action value" $VPROPS(name)] < 0 } {
+                     puts $fhlv [typeidltolv $rec]
+                  }
+               } else {
                   puts $fhlv [typeidltolv $rec]
-#               }
+               }
                set VPROPS(idx) $argidx
                set VPROPS(base) $subsys
                set VPROPS(topic) "[set subsys]_[set name]"
@@ -411,14 +411,18 @@ global VPROPS
          puts $fcod4 "    myData.$VPROPS(name)=\"LSST\";"
          puts $fcod5 "    myData.$VPROPS(name)=argv\[$idx\];"
          puts $fcod6 "    cout << \"    $VPROPS(name) : \" << data->$VPROPS(name) << endl;"
-         puts $fcod7 "
+         if { $VPROPS(iscommand) } {
+            if { [lsearch "device property action value" $VPROPS(name)] < 0 } {
+              puts $fcod7 "
            int $VPROPS(name)Size = (*(data->$VPROPS(name)))->size ;
            for (int i=0;i<$VPROPS(dim) && i<$VPROPS(name)Size;i++)\{[set VPROPS(base)]_memIO->[set VPROPS(topic)]LV_$VPROPS(name)_bufferOut\[i\] = (*(data->$VPROPS(name)))->data\[i\];\}"
-         puts $fcod8 "
+               puts $fcod8 "
            int $VPROPS(name)Size = sizeof(int) + $VPROPS(dim);
            (*(data->$VPROPS(name)))->size = strlen([set VPROPS(base)]_memIO->[set VPROPS(topic)]LV_$VPROPS(name)_bufferIn);
            NumericArrayResize($VPROPS(lvres), 1, (UHandle*)(&(data->$VPROPS(name))), $VPROPS(name)Size);
            for (int i=0;i<$VPROPS(dim);i++)\{(*(data->$VPROPS(name)))->data\[i\] = [set VPROPS(base)]_memIO->[set VPROPS(topic)]LV_$VPROPS(name)_bufferIn\[i\];\}"
+            }
+         }
          puts $fcod10 "myData.$VPROPS(name)=sys.argv\[$idx\]"
          puts $fcod11 "myData.$VPROPS(name)=\"LSST\""
       } else {

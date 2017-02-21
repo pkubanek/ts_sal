@@ -66,10 +66,12 @@ global SAL_DIR SAL_WORK_DIR SYSDIC TELEMETRY_ALIASES LVSTRINGS LVSTRPARS
      set crec [string trim $rec "\{\}"]
      if { [lindex $crec 0] == "StrHdl" && $sname != "" } {
        set param [string trim [lindex $crec 1] "*;"]
-       set LVSTRINGS([set sname]_[set param]) 1
+       if { [lsearch "device property action value" $param] < 0 } {
+         set LVSTRINGS([set sname]_[set param]) 1
 #       set LVSTRINGS([set sname]) "$LVSTRINGS([set sname]), char *$param"
-       set LVSTRPARS([set sname]) "$LVSTRPARS([set sname]) $param"
-       puts $fout $rec
+         set LVSTRPARS([set sname]) "$LVSTRPARS([set sname]) $param"
+         puts $fout $rec
+       }
      } else {
        puts $fout $rec
      }
