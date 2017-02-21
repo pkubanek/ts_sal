@@ -117,11 +117,12 @@ global TYPESUBS VPROPS
       set res "  std::string	$name;[join [lrange $rec 2 end]]"
       set VPROPS(name) [string trim [join [lrange $rec 1 end]] ";"]
       set VPROPS(string) 1
+      set VPROPS(lvres) 5
    } else {
-      if { [lindex $rec 0] != "float" && [lindex $rec 0] != "double" } {set VPROPS(int) 1; set LVPROPS(lvres) 9}
-      if { [lindex $rec 0] == "double" } {set VPROPS(double) 1; set LVPROPS(lvres) 10 }
-      if { [lindex $rec 0] == "short" } {set VPROPS(short) 1; set LVPROPS(lvres) 2  }
-      if { [lindex $rec 0] == "long" } {set VPROPS(long) 1; set LVPROPS(lvres) 3  }
+      if { [lindex $rec 0] != "float" && [lindex $rec 0] != "double" } {set VPROPS(int) 1; set VPROPS(lvres) 9}
+      if { [lindex $rec 0] == "double" } {set VPROPS(double) 1; set VPROPS(lvres) 10 }
+      if { [lindex $rec 0] == "short" } {set VPROPS(short) 1; set VPROPS(lvres) 2  }
+      if { [lindex $rec 0] == "long" } {set VPROPS(long) 1; set VPROPS(lvres) 3  }
       if { $u == "unsigned" } { set VPROPS(lvres) [expr $VPROPS(lvres) +4] }
       if { [llength [split $rec "\[("]] > 1 } {
         set s [lindex [split $rec "\[\]()"] 1]

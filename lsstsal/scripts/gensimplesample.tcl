@@ -413,12 +413,12 @@ global VPROPS
          puts $fcod6 "    cout << \"    $VPROPS(name) : \" << data->$VPROPS(name) << endl;"
          puts $fcod7 "
            int $VPROPS(name)Size = (*(data->$VPROPS(name)))->size ;
-           for (int i=0;i<$VPROPS(dim) && i<$VPROPS(name)Size;i++)\{[set VPROPS(base)]_memIO->shmemOutgoing_[set VPROPS(topic)].$VPROPS(name)\[i\] = (*(data->$VPROPS(name)))->data\[i\];\}"
+           for (int i=0;i<$VPROPS(dim) && i<$VPROPS(name)Size;i++)\{[set VPROPS(base)]_memIO->[set VPROPS(topic)]LV_$VPROPS(name)_bufferOut\[i\] = (*(data->$VPROPS(name)))->data\[i\];\}"
          puts $fcod8 "
            int $VPROPS(name)Size = sizeof(int) + $VPROPS(dim);
-           (*(data->$VPROPS(name)))->size = [set VPROPS(base)]_memIO->shmemIncoming_[set VPROPS(topic)].$VPROPS(name).length();
+           (*(data->$VPROPS(name)))->size = strlen([set VPROPS(base)]_memIO->[set VPROPS(topic)]LV_$VPROPS(name)_bufferIn);
            NumericArrayResize($VPROPS(lvres), 1, (UHandle*)(&(data->$VPROPS(name))), $VPROPS(name)Size);
-           for (int i=0;i<$VPROPS(dim);i++)\{(*(data->$VPROPS(name)))->data\[i\] = [set VPROPS(base)]_memIO->shmemIncoming_[set VPROPS(topic)].$VPROPS(name)\[i\];\}"
+           for (int i=0;i<$VPROPS(dim);i++)\{(*(data->$VPROPS(name)))->data\[i\] = [set VPROPS(base)]_memIO->[set VPROPS(topic)]LV_$VPROPS(name)_bufferIn\[i\];\}"
          puts $fcod10 "myData.$VPROPS(name)=sys.argv\[$idx\]"
          puts $fcod11 "myData.$VPROPS(name)=\"LSST\""
       } else {
