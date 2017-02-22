@@ -48,6 +48,7 @@ global SAL_WORK_DIR
 
 proc genlabviewmake { subsys } {
 global SAL_DIR SAL_WORK_DIR
+  set lvv [file tail [glob /usr/local/natinst/LabVIEW*64]]
   set frep [open /tmp/sreplace4.sal w]
   puts $frep "#!/bin/sh"
   exec touch $SAL_WORK_DIR/[set subsys]/labview/.depend.Makefile.sacpp_SALData_labview
@@ -55,6 +56,7 @@ global SAL_DIR SAL_WORK_DIR
   puts $frep "perl -pi -w -e 's/_SAL_/_[set subsys]_/g;' $SAL_WORK_DIR/[set subsys]/labview/Makefile.sacpp_[set subsys]_labview"
   puts $frep "perl -pi -w -e 's/SALSubsys/[set subsys]/g;' $SAL_WORK_DIR/[set subsys]/labview/Makefile.sacpp_[set subsys]_labview"
   puts $frep "perl -pi -w -e 's/SALData/[set subsys]/g;' $SAL_WORK_DIR/[set subsys]/labview/Makefile.sacpp_[set subsys]_labview"
+  puts $frep "perl -pi -w -e 's/LabVIEW-2015-64/[set lvv]/g;' $SAL_WORK_DIR/[set subsys]/labview/Makefile.sacpp_[set subsys]_labview"
   if { [info exists SYSDIC($subsys,keyedID)] } {
      puts $frep "perl -pi -w -e 's/#-DSAL_SUBSYSTEM/-DSAL_SUBSYSTEM/g;' $SAL_WORK_DIR/[set subsys]/labview/Makefile.sacpp_[set subsys]_labview"
   }
