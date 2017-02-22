@@ -152,7 +152,7 @@ global SAL_DIR SAL_WORK_DIR SYSDIC TELEMETRY_ALIASES LVSTRINGS LVSTRPARS
         int [set base]_salShmMonitor($idarg);
         int [set base]_salShmConnect($idarg);
         int [set base]_salShmRelease($idarg);
-        void [set base]_shm_activateCallbacksLV();
+        void [set base]_shm_checkCallbacksLV();
 "
   foreach j $ptypes {
      set name [lindex $j 2]
@@ -266,7 +266,7 @@ using namespace [set base];
      }   
    }
   puts $fout "
-        usleep(1000);
+        usleep(100);
       \}
        exit(0);
     \}
@@ -356,9 +356,8 @@ proc genlvcallback { fout base name } {
 
 proc genlvlaunchcallbacks { fout base ptypes } {
    puts $fout "
-    void [set base]_shm_activateCallbacksLV() \{
-       int salActorIdx=0;
-       while (1) \{"
+    void [set base]_shm_checkCallbacksLV() \{
+       int salActorIdx=0;"
    foreach j $ptypes {
      set name [lindex $j 2]
      puts $fout "
@@ -371,8 +370,6 @@ proc genlvlaunchcallbacks { fout base ptypes } {
         \}"
    }
    puts $fout "
-           usleep(1000);
-       \}
    \}
 "
 }
