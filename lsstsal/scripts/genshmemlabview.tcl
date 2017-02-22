@@ -14,6 +14,7 @@ global SAL_DIR SAL_WORK_DIR
   set ptypes [lsort [split [exec grep pragma $idlfile] \n]]
   set base $subsys
   updateLabVIEWTypes $base
+  genlabviewidl  $base
   genlabviewincl $base $ptypes
   genlabviewcpp  $base $ptypes
   genlabviewmake $base
@@ -28,6 +29,22 @@ global SAL_DIR SAL_WORK_DIR
   exec ln -sf ../cpp/src/CheckStatus.h .
   exec make -f Makefile.sacpp_[set subsys]_labview
 }
+
+proc genlabviewidl { subsys } {
+global SAL_WORK_DIR
+   set fin  [open $SAL_WORK_DIR/[set subsys]/cpp/sal_[set subsys].idl r]
+   set fout [open $SAL_WORK_DIR/[set subsys]/labview/sal_[set subsys].idl w]
+   while { [gets $fin rec] > -1 } {
+      set it [string trim $rec "\{\}"]
+      if { [lsearch "device\; property\; action\; value\;" [lindex $it 1]] < 0 } {
+         puts $fout $rec
+      }
+   }
+   close $fin
+   close $fout
+}
+
+
 
 proc genlabviewmake { subsys } {
 global SAL_DIR SAL_WORK_DIR
