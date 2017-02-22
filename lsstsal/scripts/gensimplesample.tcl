@@ -160,6 +160,8 @@ using namespace std;
       set fcod8 [open $SAL_WORK_DIR/include/SAL_[set subsys]_[set name]shmin.tmp w]
       set fcod10 [open $SAL_WORK_DIR/include/SAL_[set subsys]_[set name]Pargs.tmp w]
       set fcod11 [open $SAL_WORK_DIR/include/SAL_[set subsys]_[set name]Ppub.tmp w]
+      set fcod12 [open $SAL_WORK_DIR/include/SAL_[set subsys]_[set name]monout.tmp w]
+      set fcod13 [open $SAL_WORK_DIR/include/SAL_[set subsys]_[set name]monin.tmp w]
       puts $fout "	struct $name \{"
       puts $fhdr "struct [set subsys]_[set name]C
 \{"
@@ -208,7 +210,7 @@ using namespace std;
                set VPROPS(idx) $argidx
                set VPROPS(base) $subsys
                set VPROPS(topic) "[set subsys]_[set name]"
-               updatecfragments $fcod1 $fcod2 $fcod3 $fcod4 $fcod5 $fcod6 $fcod7 $fcod8 $fcod10 $fcod11
+               updatecfragments $fcod1 $fcod2 $fcod3 $fcod4 $fcod5 $fcod6 $fcod7 $fcod8 $fcod10 $fcod11 $fcod12 $fcod13
                set vname $VPROPS(name)
                if { $VPROPS(array) } {
                   puts $fbst "      .add_property(\"$vname\", make_array(&[set subsys]_[set name]C::$vname))"
@@ -356,7 +358,7 @@ typedef struct [set subsys]_waitCompleteLV
    return $SAL_WORK_DIR/idl-templates/validated/sal/sal_$subsys.idl
 }
 
-proc updatecfragments { fcod1 fcod2 fcod3 fcod4 fcod5 fcod6 fcod7 fcod8 fcod10 fcod11 } {
+proc updatecfragments { fcod1 fcod2 fcod3 fcod4 fcod5 fcod6 fcod7 fcod8 fcod10 fcod11 fcod12 fcod13 } {
 global VPROPS
    set idx $VPROPS(idx)
    if { $VPROPS(iscommand) } {set idx [expr $idx - 4]}
@@ -376,6 +378,8 @@ global VPROPS
            for (int i=0;i<$VPROPS(dim);i++)\{(*(data->$VPROPS(name)))->data\[i\] = [set VPROPS(base)]_memIO->shmemIncoming_[set VPROPS(topic)].$VPROPS(name)\[i\];\}"
       puts $fcod11 "for i in range(0,$VPROPS(dim)):
   myData.$VPROPS(name)\[i\]=i"
+      puts $fcod12 "    for (int i=0;i<$VPROPS(dim);i++) \{Outgoing_[set VPROPS(topic)]->$VPROPS(name)\[i\]=[set VPROPS(base)]_memIO->shmemOutgoing_[set VPROPS(topic)].$VPROPS(name)\[i\];\}"
+      puts $fcod13 "    for (int i=0;i<$VPROPS(dim);i++) \{[set VPROPS(base)]_memIO->shmemIncoming_[set VPROPS(topic)].$VPROPS(name)\[i\]=Incoming_[set VPROPS(topic)]->$VPROPS(name)\[i\];\}"
       set idlim [expr $idx + $VPROPS(dim)]
       set myidx 0
       while { $idx < $idlim } {
@@ -425,6 +429,12 @@ global VPROPS
          }
          puts $fcod10 "myData.$VPROPS(name)=sys.argv\[$idx\]"
          puts $fcod11 "myData.$VPROPS(name)=\"LSST\""
+         if { $VPROPS(iscommand) } {
+            if { [lsearch "device property action value" $VPROPS(name)] < 0 } {
+               puts $fcod12 "             Outgoing_[set VPROPS(topic)]->[set VPROPS(name)]=[set VPROPS(base)]_memIO->[set VPROPS(topic)]LV_[set VPROPS(name)]_bufferOut;"
+               puts $fcod13 "             strcpy([set VPROPS(base)]_memIO->[set VPROPS(topic)]LV_[set VPROPS(name)]_bufferIn,Incoming_[set VPROPS(topic)]->[set VPROPS(name)].c_str());"
+            }
+         }
       } else {
          puts $fcod1 "    data->$VPROPS(name) = Instances\[j\].$VPROPS(name);"
          puts $fcod2 "    Instance.$VPROPS(name) = data->$VPROPS(name);"
@@ -432,6 +442,8 @@ global VPROPS
          puts $fcod6 "    cout << \"    $VPROPS(name) : \" << data->$VPROPS(name) << endl;"
          puts $fcod7 "           [set VPROPS(base)]_memIO->shmemOutgoing_[set VPROPS(topic)].$VPROPS(name) = data->$VPROPS(name);"
          puts $fcod8 "           data->$VPROPS(name) = [set VPROPS(base)]_memIO->shmemIncoming_[set VPROPS(topic)].$VPROPS(name);"
+         puts $fcod12 "           Outgoing_[set VPROPS(topic)]->$VPROPS(name)=[set VPROPS(base)]_memIO->shmemOutgoing_[set VPROPS(topic)].$VPROPS(name);"
+         puts $fcod13 "           [set VPROPS(base)]_memIO->shmemIncoming_[set VPROPS(topic)].$VPROPS(name)=Incoming_[set VPROPS(topic)]->$VPROPS(name);"
          if { $VPROPS(int) } {
           puts $fcod11 "myData.$VPROPS(name) = 1";
           if { $VPROPS(long) } {

@@ -595,20 +595,20 @@ global SAL_DIR SAL_WORK_DIR LVSTRPARS
              [set base]_memIO->hasReader_[set base]_[set name] = true;
           \}
           if ( [set base]_memIO->hasIncoming_[set base]_[set name] == false ) \{
-             if ( [set base]_memIO->skipOld_[set base]_[set name] == true ) \{
-                status = mgr.getSample_[set name](&[set base]_memIO->shmemIncoming_[set base]_[set name]);
+            [set base]_[set name]C *Incoming_[set base]_[set name] = new [set base]_[set name]C;
+            if ( [set base]_memIO->skipOld_[set base]_[set name] == true ) \{
+                status = mgr.getSample_[set name](Incoming_[set base]_[set name]);
              \} else \{
-                status = mgr.getNextSample_[set name](&[set base]_memIO->shmemIncoming_[set base]_[set name]);
+                status = mgr.getNextSample_[set name](Incoming_[set base]_[set name]);
              \}
              if (status == SAL__OK) \{"
-   if { [info exists LVSTRPARS([set base]_[set name]LV)] } {
-      foreach param $LVSTRPARS([set base]_[set name]LV) {
-         puts $fout "                    strcpy([set base]_memIO->[set base]_[set name]LV_[set param]_bufferIn,[set base]_memIO->shmemIncoming_[set base]_[set name].$param.c_str());"
-      }
-   }
+   set frag [open $SAL_WORK_DIR/include/SAL_[set base]_[set name]monin.tmp r]
+   while { [gets $frag rec] > -1} {puts $fout $rec}
+   close $frag
    puts $fout "
                 [set base]_memIO->hasIncoming_[set base]_[set name] = true;
              \}
+             delete \[\] Incoming_[set base]_[set name];
           \}
        \}
        if ([set base]_memIO->syncO_[set base]_[set name]) \{
@@ -618,15 +618,15 @@ global SAL_DIR SAL_WORK_DIR LVSTRPARS
              [set base]_memIO->hasWriter_[set base]_[set name] = true;
           \}
        \}
-       if ( [set base]_memIO->hasOutgoing_[set base]_[set name] ) \{"
-   if { [info exists LVSTRPARS([set base]_[set name]LV)] } {
-      foreach param $LVSTRPARS([set base]_[set name]LV) {
-         puts $fout "                    strcpy([set base]_memIO->shmemOutgoing_[set base]_[set name].[set param]_buffer,[set base]_memIO->[set base]_[set name]LV_[set param]_bufferOut);"
-      }
-   }
+       if ( [set base]_memIO->hasOutgoing_[set base]_[set name] ) \{
+          [set base]_[set name]C *Outgoing_[set base]_[set name] = new [set base]_[set name]C;"
+   set frag [open $SAL_WORK_DIR/include/SAL_[set base]_[set name]monout.tmp r]
+   while { [gets $frag rec] > -1} {puts $fout $rec}
+   close $frag
    puts $fout "
-          status = mgr.putSample_[set name](&[set base]_memIO->shmemOutgoing_[set base]_[set name]);
+          status = mgr.putSample_[set name](Outgoing_[set base]_[set name]);
           [set base]_memIO->hasOutgoing_[set base]_[set name] = false;
+          delete \[\] Outgoing_[set base]_[set name];
        \}
 "
 }
@@ -641,16 +641,16 @@ global SAL_DIR SAL_WORK_DIR LVSTRPARS
           if (mgr.actorProcessor(actorIdx) == false) \{
              mgr.salProcessor(\"[set base]_[set name]\");
           \}
-          status = mgr.acceptCommand_[set n2](&[set base]_memIO->shmemIncoming_[set base]_[set name]);
+          [set base]_[set name]C *Incoming_[set base]_[set name] = new [set base]_[set name]C;
+          status = mgr.acceptCommand_[set n2](Incoming_[set base]_[set name]);
           if (status == SAL__OK) \{"
-   if { [info exists LVSTRPARS([set base]_[set name]LV)] } {
-      foreach param $LVSTRPARS([set base]_[set name]LV) {
-         puts $fout "                    strcpy([set base]_memIO->[set base]_[set name]LV_[set param]_bufferIn,[set base]_memIO->shmemIncoming_[set base]_[set name].$param.c_str());"
-      }
-   }
+   set frag [open $SAL_WORK_DIR/include/SAL_[set base]_[set name]monin.tmp r]
+   while { [gets $frag rec] > -1} {puts $fout $rec}
+   close $frag
    puts  $fout "
              [set base]_memIO->hasIncoming_[set base]_[set name] = true;
           \}
+          delete \[\] Incoming_[set base]_[set name];
        \}
        if ([set base]_memIO->syncI_[set base]_ackcmd) \{
           actorIdx = SAL__[set base]_ackcmd_ACTOR;
@@ -668,16 +668,16 @@ global SAL_DIR SAL_WORK_DIR LVSTRPARS
              mgr.salCommand(\"[set base]_[set name]\");
           \}
        \}
-       if ( [set base]_memIO->hasOutgoing_[set base]_[set name] ) \{"
-   if { [info exists LVSTRPARS([set base]_[set name]LV)] } {
-      foreach param $LVSTRPARS([set base]_[set name]LV) {
-         puts $fout "                    strcpy([set base]_memIO->shmemOutgoing_[set base]_[set name].[set param]_buffer,[set base]_memIO->[set base]_[set name]LV_[set param]_bufferOut);"
-      }
-   }
+       if ( [set base]_memIO->hasOutgoing_[set base]_[set name] ) \{
+          [set base]_[set name]C *Outgoing_[set base]_[set name] = new [set base]_[set name]C;"
+   set frag [open $SAL_WORK_DIR/include/SAL_[set base]_[set name]monout.tmp r]
+   while { [gets $frag rec] > -1} {puts $fout $rec}
+   close $frag
    puts $fout "
-          status = mgr.issueCommand_[set n2](&[set base]_memIO->shmemOutgoing_[set base]_[set name]);
+          status = mgr.issueCommand_[set n2](Outgoing_[set base]_[set name]);
           [set base]_memIO->shmemOutgoing_[set base]_[set name]_cmdSeqNum = status;
           [set base]_memIO->hasOutgoing_[set base]_[set name] = false;
+          delete \[\] Outgoing_[set base]_[set name];
        \}
        if ( [set base]_memIO->hasOutgoing_[set base]_ackcmd ) \{
           status = mgr.ackCommand_[set n2](
@@ -702,16 +702,16 @@ global SAL_DIR SAL_WORK_DIR LVSTRPARS
              mgr.salEvent(\"[set base]_[set name]\");
              [set base]_memIO->hasReader_[set base]_[set name] = true;
           \}
-          status = mgr.getEvent_[set n2](&[set base]_memIO->shmemIncoming_[set base]_[set name]);
+          [set base]_[set name]C *Incoming_[set base]_[set name] = new [set base]_[set name]C;
+          status = mgr.getEvent_[set n2](Incoming_[set base]_[set name]);
           if (status == SAL__OK) \{"
-   if { [info exists LVSTRPARS([set base]_[set name]LV)] } {
-      foreach param $LVSTRPARS([set base]_[set name]LV) {
-         puts $fout "                    strcpy([set base]_memIO->[set base]_[set name]LV_[set param]_bufferIn,[set base]_memIO->shmemIncoming_[set base]_[set name].$param.c_str());"
-      }
-   }
+   set frag [open $SAL_WORK_DIR/include/SAL_[set base]_[set name]monin.tmp r]
+   while { [gets $frag rec] > -1} {puts $fout $rec}
+   close $frag
    puts $fout "
              [set base]_memIO->hasIncoming_[set base]_[set name] = true;
           \}
+          delete \[\] Incoming_[set base]_[set name];
        \}
        if ([set base]_memIO->syncO_[set base]_[set name]) \{
           actorIdx = SAL__[set base]_[set name]_ACTOR;
@@ -721,15 +721,15 @@ global SAL_DIR SAL_WORK_DIR LVSTRPARS
           \}
        \}
        if ( [set base]_memIO->hasOutgoing_[set base]_[set name] ) \{
-          lpriority = [set base]_memIO->shmemOutgoing_[set base]_[set name].priority;"
-   if { [info exists LVSTRPARS([set base]_[set name]LV)] } {
-      foreach param $LVSTRPARS([set base]_[set name]LV) {
-         puts $fout "                    strcpy([set base]_memIO->shmemOutgoing_[set base]_[set name].[set param]_buffer,[set base]_memIO->[set base]_[set name]LV_[set param]_bufferOut);"
-      }
-   }
+          lpriority = [set base]_memIO->shmemOutgoing_[set base]_[set name].priority;
+          [set base]_[set name]C *Outgoing_[set base]_[set name] = new [set base]_[set name]C;"
+   set frag [open $SAL_WORK_DIR/include/SAL_[set base]_[set name]monout.tmp r]
+   while { [gets $frag rec] > -1} {puts $fout $rec}
+   close $frag
    puts $fout "
-          status = mgr.logEvent_[set n2](&[set base]_memIO->shmemOutgoing_[set base]_[set name],lpriority);
+          status = mgr.logEvent_[set n2](Outgoing_[set base]_[set name],lpriority);
           [set base]_memIO->hasOutgoing_[set base]_[set name] = false;
+          delete \[\] Outgoing_[set base]_[set name];
        \}
 "
 }
