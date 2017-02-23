@@ -80,14 +80,6 @@ module dome {
 	  long	status[16];
 	};
 	#pragma keylist TC
-	struct command_CloseShutter {
-	  string<32>	device;
-	  string<32>	property;
-	  string<32>	action;
-	  string<32>	value;
-	  string	state;
-	};
-	#pragma keylist command_CloseShutter
 	struct command_Crawl {
 	  string<32>	device;
 	  string<32>	property;
@@ -114,30 +106,6 @@ module dome {
 	  double	elevation;
 	};
 	#pragma keylist command_Move
-	struct command_MovetoCal {
-	  string<32>	device;
-	  string<32>	property;
-	  string<32>	action;
-	  string<32>	value;
-	  string	state;
-	};
-	#pragma keylist command_MovetoCal
-	struct command_OpenShutter {
-	  string<32>	device;
-	  string<32>	property;
-	  string<32>	action;
-	  string<32>	value;
-	  string	state;
-	};
-	#pragma keylist command_OpenShutter
-	struct command_Park {
-	  string<32>	device;
-	  string<32>	property;
-	  string<32>	action;
-	  string<32>	value;
-	  string	state;
-	};
-	#pragma keylist command_Park
 	struct command_Track {
 	  string<32>	device;
 	  string<32>	property;
@@ -146,46 +114,6 @@ module dome {
 	  string	mode;
 	};
 	#pragma keylist command_Track
-	struct command_abort {
-	  string<32>	device;
-	  string<32>	property;
-	  string<32>	action;
-	  string<32>	value;
-	  string	state;
-	};
-	#pragma keylist command_abort
-	struct command_disable {
-	  string<32>	device;
-	  string<32>	property;
-	  string<32>	action;
-	  string<32>	value;
-	  string	state;
-	};
-	#pragma keylist command_disable
-	struct command_enable {
-	  string<32>	device;
-	  string<32>	property;
-	  string<32>	action;
-	  string<32>	value;
-	  string	state;
-	};
-	#pragma keylist command_enable
-	struct command_exit {
-	  string<32>	device;
-	  string<32>	property;
-	  string<32>	action;
-	  string<32>	value;
-	  string	state;
-	};
-	#pragma keylist command_exit
-	struct command_standby {
-	  string<32>	device;
-	  string<32>	property;
-	  string<32>	action;
-	  string<32>	value;
-	  string	state;
-	};
-	#pragma keylist command_standby
 	struct command_start {
 	  string<32>	device;
 	  string<32>	property;
@@ -194,48 +122,11 @@ module dome {
 	  string	configuration;
 	};
 	#pragma keylist command_start
-	struct command_stop {
-	  string<32>	device;
-	  string<32>	property;
-	  string<32>	action;
-	  string<32>	value;
-	  string	state;
-	};
-	#pragma keylist command_stop
-	struct command_takeControl {
-	  string<32>	device;
-	  string<32>	property;
-	  string<32>	action;
-	  string<32>	value;
-	  string	state;
-	};
-	#pragma keylist command_takeControl
-	struct logevent_AccLimit {
-	};
-	#pragma keylist logevent_AccLimit
-	struct logevent_VelLimit {
-	};
-	#pragma keylist logevent_VelLimit
-	struct logevent_crawlLost {
-	};
-	#pragma keylist logevent_crawlLost
-	struct logevent_crawling {
-	};
-	#pragma keylist logevent_crawling
 	struct logevent_interlock {
 	  long	priority;
 	  string	detail;
 	};
 	#pragma keylist logevent_interlock
-	struct logevent_jerkLimit {
-	};
-	#pragma keylist logevent_jerkLimit
-	struct logevent_lldvError {
-	};
-	#pragma keylist logevent_lldvError
-	struct logevent_lldvOK {
-	};
-	#pragma keylist logevent_lldvOK
 	struct logevent_posLimit {
 	  long	priority;
 	  string	device;
@@ -249,30 +140,12 @@ module dome {
 	  long	severity;
 	};
 	#pragma keylist logevent_powerError
-	struct logevent_screenLimit {
-	};
-	#pragma keylist logevent_screenLimit
-	struct logevent_slewError {
-	};
-	#pragma keylist logevent_slewError
-	struct logevent_slewOK {
-	};
-	#pragma keylist logevent_slewOK
-	struct logevent_slewReady {
-	};
-	#pragma keylist logevent_slewReady
 	struct logevent_tempError {
 	  long	priority;
 	  string	device;
 	  long	severity;
 	};
 	#pragma keylist logevent_tempError
-	struct logevent_trackLost {
-	};
-	#pragma keylist logevent_trackLost
-	struct logevent_tracking {
-	};
-	#pragma keylist logevent_tracking
 	struct command
 	{
       string<32>	device;

@@ -1,6 +1,7 @@
 ﻿<?xml version='1.0' encoding='UTF-8'?>
-<Project Type="Project" LVVersion="13008000">
+<Project Type="Project" LVVersion="15008000">
 	<Item Name="My Computer" Type="My Computer">
+		<Property Name="NI.SortType" Type="Int">3</Property>
 		<Property Name="server.app.propertiesEnabled" Type="Bool">true</Property>
 		<Property Name="server.control.propertiesEnabled" Type="Bool">true</Property>
 		<Property Name="server.tcp.enabled" Type="Bool">false</Property>
@@ -49,11 +50,11 @@
 			<Item Name="Array.lvclass" Type="LVClass" URL="../Elements/Array/Array.lvclass"/>
 			<Item Name="Primitive.lvclass" Type="LVClass" URL="../Elements/Primitive/Primitive.lvclass"/>
 		</Item>
-		<Item Name="FileSelector" Type="Folder">
-			<Item Name="FileSelector.lvclass" Type="LVClass" URL="../FileSelector/FileSelector.lvclass"/>
-		</Item>
 		<Item Name="IDLFile" Type="Folder">
 			<Item Name="IDLFile.lvclass" Type="LVClass" URL="../IDLFile/IDLFile.lvclass"/>
+		</Item>
+		<Item Name="FileSelector" Type="Folder">
+			<Item Name="FileSelector.lvclass" Type="LVClass" URL="../FileSelector/FileSelector.lvclass"/>
 		</Item>
 		<Item Name="InterfaceTypes" Type="Folder">
 			<Item Name="Cold_current.ctl" Type="VI" URL="../InterfaceTypes/Cold_current.ctl"/>
@@ -74,18 +75,29 @@
 			<Item Name="ElementType.ctl" Type="VI" URL="../Typedefs/ElementType.ctl"/>
 			<Item Name="LibraryInfo.ctl" Type="VI" URL="../Typedefs/LibraryInfo.ctl"/>
 		</Item>
-		<Item Name="salMain.vi" Type="VI" URL="../salMain.vi"/>
-		<Item Name="salMain2.vi" Type="VI" URL="../salMain2.vi"/>
-		<Item Name="writeColdCurrent.vi" Type="VI" URL="../InterfaceTypes/writeColdCurrent.vi"/>
+		<Item Name="VIUpdate" Type="Folder">
+			<Item Name="ControlExists.vi" Type="VI" URL="../../VIUpdate/ControlExists.vi"/>
+			<Item Name="LabelToControl.vi" Type="VI" URL="../../VIUpdate/LabelToControl.vi"/>
+			<Item Name="RenameVI.vi" Type="VI" URL="../../VIUpdate/RenameVI.vi"/>
+			<Item Name="UpdateVI.vi" Type="VI" URL="../../VIUpdate/UpdateVI.vi"/>
+		</Item>
+		<Item Name="controlGenerator.vi" Type="VI" URL="../controlGenerator.vi"/>
+		<Item Name="main.vi" Type="VI" URL="../../main.vi"/>
+		<Item Name="viUpdate.vi" Type="VI" URL="../../VIUpdate/viUpdate.vi"/>
 		<Item Name="Dependencies" Type="Dependencies">
 			<Item Name="vi.lib" Type="Folder">
 				<Item Name="Clear Errors.vi" Type="VI" URL="/&lt;vilib&gt;/Utility/error.llb/Clear Errors.vi"/>
 				<Item Name="Error Cluster From Error Code.vi" Type="VI" URL="/&lt;vilib&gt;/Utility/error.llb/Error Cluster From Error Code.vi"/>
 				<Item Name="ex_CorrectErrorChain.vi" Type="VI" URL="/&lt;vilib&gt;/express/express shared/ex_CorrectErrorChain.vi"/>
+				<Item Name="List Directory and LLBs.vi" Type="VI" URL="/&lt;vilib&gt;/Utility/libraryn.llb/List Directory and LLBs.vi"/>
 				<Item Name="LVBoundsTypeDef.ctl" Type="VI" URL="/&lt;vilib&gt;/Utility/miscctls.llb/LVBoundsTypeDef.ctl"/>
 				<Item Name="LVNumericRepresentation.ctl" Type="VI" URL="/&lt;vilib&gt;/numeric/LVNumericRepresentation.ctl"/>
 				<Item Name="LVPointTypeDef.ctl" Type="VI" URL="/&lt;vilib&gt;/Utility/miscctls.llb/LVPointTypeDef.ctl"/>
+				<Item Name="Recursive File List.vi" Type="VI" URL="/&lt;vilib&gt;/Utility/libraryn.llb/Recursive File List.vi"/>
 				<Item Name="subFile Dialog.vi" Type="VI" URL="/&lt;vilib&gt;/express/express input/FileDialogBlock.llb/subFile Dialog.vi"/>
+				<Item Name="TRef Traverse.vi" Type="VI" URL="/&lt;vilib&gt;/Utility/traverseref.llb/TRef Traverse.vi"/>
+				<Item Name="TRef TravTarget.ctl" Type="VI" URL="/&lt;vilib&gt;/Utility/traverseref.llb/TRef TravTarget.ctl"/>
+				<Item Name="VI Scripting - Traverse.lvlib" Type="Library" URL="/&lt;vilib&gt;/Utility/traverseref.llb/VI Scripting - Traverse.lvlib"/>
 			</Item>
 		</Item>
 		<Item Name="Build Specifications" Type="Build"/>
