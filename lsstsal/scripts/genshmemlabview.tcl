@@ -462,6 +462,10 @@ global SAL_WORK_DIR LVSTRINGS LVSTRPARS
    puts $fout "
         [set base]_memIO->hasOutgoing_[set base]_[set name] = true;
         cmdId = [set base]_memIO->shmemOutgoing_[set base]_[set name]_cmdSeqNum;
+        while (cmdId == 0) \{
+           usleep(1000);
+        \}
+        [set base]_memIO->shmemOutgoing_[set base]_[set name]_cmdSeqNum = 0;
         return cmdId;
     \}"
    puts $fout "
@@ -666,6 +670,7 @@ global SAL_DIR SAL_WORK_DIR LVSTRPARS
        if ([set base]_memIO->syncI_[set base]_ackcmd) \{
           actorIdx = SAL__[set base]_ackcmd_ACTOR;
           status = mgr.getResponse_[set n2]([set base]_ackcmdSeq);
+          [set base]_memIO->hasReader_[set base]_ackcmd = true;
           if (status == SAL__OK) \{
              strcpy([set base]_memIO->shmemIncoming_[set base]_[set name]_resultCode,[set base]_ackcmdSeq\[0\].result);
              [set base]_memIO->shmemIncoming_[set base]_[set name]_cmdStatus = [set base]_ackcmdSeq\[0\].ack;
@@ -689,6 +694,10 @@ global SAL_DIR SAL_WORK_DIR LVSTRPARS
           [set base]_memIO->hasOutgoing_[set base]_[set name] = false;
        \}
        if ( [set base]_memIO->hasOutgoing_[set base]_ackcmd ) \{
+          actorIdx = SAL__[set base]_[set name]_ACTOR;
+          if (mgr.actorProcessor(actorIdx) == false) \{
+             mgr.salProcessor(\"[set base]_[set name]\");
+          \}
           status = mgr.ackCommand_[set n2](
 				[set base]_memIO->shmemOutgoing_[set base]_[set name]_cmdSeqNum,
 				[set base]_memIO->shmemOutgoing_[set base]_[set name]_cmdStatus,
