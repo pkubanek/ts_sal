@@ -453,11 +453,9 @@ global SAL_WORK_DIR LVSTRINGS LVSTRPARS
     int [set base]_shm_issueCommand_[set n2]LV([set base]_[set name]LV *data $xtrargs) \{
         int cmdId = 0;
         [set base]_memIO->syncO_[set base]_[set name] = true;
+        [set base]_memIO->hasOutgoing_[set base]_[set name] = true;
         while ([set base]_memIO->hasWriter_[set base]_[set name] == false) \{
            usleep(1000);
-        \}
-        if ([set base]_memIO->hasOutgoing_[set base]_[set name]) \{ 
-           return SAL__ERROR;
         \}"
    set frag [open $SAL_WORK_DIR/include/SAL_[set base]_[set name]shmout.tmp r]
    while { [gets $frag rec] > -1} {puts $fout $rec}
@@ -503,9 +501,6 @@ global SAL_WORK_DIR LVSTRINGS LVSTRPARS
         [set base]_memIO->syncO_[set base]_ackcmd = true;
         while ([set base]_memIO->hasWriter_[set base]_ackcmd == false) \{
            usleep(1000);
-        \}
-        if ([set base]_memIO->hasOutgoing_[set base]_ackcmd) \{ 
-           return SAL__ERROR;
         \}"
    puts $fout "
         [set base]_memIO->shmemOutgoing_[set base]_[set name]_cmdSeqNum = theack->cmdSeqNum;
@@ -711,19 +706,21 @@ global SAL_DIR SAL_WORK_DIR LVSTRPARS
           [set base]_memIO->hasOutgoing_[set base]_[set name] = false;
           [set base]_memIO->hasWriter_[set base]_[set name] = true;
        \}
-       if ( [set base]_memIO->hasOutgoing_[set base]_ackcmd ) \{
-          actorIdx = SAL__[set base]_[set name]_ACTOR;
-          if (mgr.actorProcessor(actorIdx) == false) \{
-             mgr.salProcessor(\"[set base]_[set name]\");
-             [set base]_memIO->hasWriter_[set base]_ackcmd = true;
-          \}
-          status = mgr.ackCommand_[set n2](
+          if ([set base]_memIO->syncO_[set base]_ackcmd) \{
+            actorIdx = SAL__[set base]_[set name]_ACTOR;
+            if (mgr.actorProcessor(actorIdx) == false) \{
+              mgr.salProcessor(\"[set base]_[set name]\");
+              [set base]_memIO->hasWriter_[set base]_ackcmd = true;
+           \}
+          if ( [set base]_memIO->hasOutgoing_[set base]_ackcmd ) \{
+             status = mgr.ackCommand_[set n2](
 				[set base]_memIO->shmemOutgoing_[set base]_[set name]_cmdSeqNum,
 				[set base]_memIO->shmemOutgoing_[set base]_[set name]_cmdStatus,
 				[set base]_memIO->shmemOutgoing_[set base]_[set name]_errorCode,
 				[set base]_memIO->shmemOutgoing_[set base]_[set name]_resultCode
                                           );
           [set base]_memIO->hasOutgoing_[set base]_ackcmd = false;
+          \}
        \}
 "
 }
