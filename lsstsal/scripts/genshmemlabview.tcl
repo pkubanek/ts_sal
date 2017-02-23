@@ -531,6 +531,9 @@ global SAL_WORK_DIR LVSTRINGS LVSTRPARS
     int [set base]_shm_getResponse_[set n2]LV([set base]_ackcmdLV *data) \{
         ReturnCode_t status = SAL__CMD_NOACK;
         [set base]_memIO->syncI_[set base]_ackcmd = true;
+        while ([set base]_memIO->hasReader_[set base]_ackcmd == false) \{
+           usleep(1000);
+        \}
         [set base]_memIO->shmemIncoming_[set base]_[set name]_rcvSeqNum = 0;
         if ( [set base]_memIO->hasIncoming_[set base]_ackcmd ) \{
            data->ack = [set base]_memIO->shmemIncoming_[set base]_[set name]_cmdStatus;
@@ -538,7 +541,7 @@ global SAL_WORK_DIR LVSTRINGS LVSTRPARS
            int resultSize = sizeof(int) + 32;
            (*(data->result))->size = resultSize;
            NumericArrayResize(5, 1, (UHandle*)(&(data->result)), resultSize);
-           for (int i=0;i<32;i++)\{(*(data->result))->data\[i\] = m2ms_memIO->shmemIncoming_ackcmd.result\[i\];\}
+           for (int i=0;i<32;i++)\{(*(data->result))->data\[i\] = [set base]_memIO->[set base]_ackcmdLV_result_bufferIn\[i\];\}
            status = [set base]_memIO->shmemIncoming_ackcmd.ack;
            [set base]_memIO->hasIncoming_[set base]_ackcmd = false;
            if ([set base]_memIO->callbackHdl_[set base]_ackcmd > 0) \{
