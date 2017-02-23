@@ -671,7 +671,7 @@ global SAL_DIR SAL_WORK_DIR LVSTRPARS
              [set base]_memIO->hasReader_[set base]_[set name] = true;
           \}
           status = mgr.acceptCommand_[set n2](Incoming_[set base]_[set name]);
-          if (status == SAL__OK) \{"
+          if (status > 0) \{"
    set frag [open $SAL_WORK_DIR/include/SAL_[set base]_[set name]monin.tmp r]
    while { [gets $frag rec] > -1} {puts $fout $rec}
    close $frag
@@ -684,7 +684,7 @@ global SAL_DIR SAL_WORK_DIR LVSTRPARS
           actorIdx = SAL__[set base]_ackcmd_ACTOR;
           status = mgr.getResponse_[set n2]([set base]_ackcmdSeq);
           [set base]_memIO->hasReader_[set base]_ackcmd = true;
-          if (status == SAL__OK) \{
+          if (status == SAL__CMD_COMPLETE) \{
              strcpy([set base]_memIO->shmemIncoming_[set base]_[set name]_resultCode,[set base]_ackcmdSeq\[0\].result);
              [set base]_memIO->shmemIncoming_[set base]_[set name]_cmdStatus = [set base]_ackcmdSeq\[0\].ack;
              [set base]_memIO->shmemIncoming_[set base]_[set name]_errorCode = [set base]_ackcmdSeq\[0\].error;

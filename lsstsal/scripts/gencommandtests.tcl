@@ -5,6 +5,9 @@ global CMD_ALIASES CMDS SAL_WORK_DIR SYSDIC
    foreach alias $CMD_ALIASES($subsys) {
     if { [info exists CMDS($subsys,$alias,param)] } {
       stdlog "	: command test send for = $alias"
+      set chk "exec  nl $SAL_WORK_DIR/include/SAL_[set subsys]_command_[set alias]Cargs.tmp | tail -1"
+      set ichk [eval $chk]
+      set numargs [expr [string range $ichk 0 8] -4]
       set fcmd [open $SAL_WORK_DIR/$subsys/cpp/src/sacpp_[set subsys]_[set alias]_commander.cpp w]
       puts $fcmd "
 
@@ -30,7 +33,7 @@ int main (int argc, char *argv\[\])
   int status=0;
 
   [set subsys]_command_[set alias]C myData;
-  if (argc < [expr [llength $CMDS([set subsys],[set alias],plist)] +1] ) \{
+  if (argc < $numargs ) \{
      printf(\"Usage :  input parameters...\\n\");"
    set fidl [open $SAL_WORK_DIR/idl-templates/validated/[set subsys]_command_[set alias].idl r]
    gets $fidl rec ; gets $fidl rec ;gets $fidl rec ;gets $fidl rec ;gets $fidl rec ;gets $fidl rec ;gets $fidl rec
