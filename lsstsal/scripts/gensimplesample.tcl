@@ -46,6 +46,13 @@ typedef unsigned char uint8_t;
 typedef unsigned short int uint16_t;
 typedef unsigned int uint32_t;
 typedef unsigned long int uint64_t;
+typedef unsigned char bool_t;
+typedef struct \{
+	int size;
+	bool_t data\[1\];
+\} BooleanArray;
+typedef BooleanArray** BooleanArrayHdl;
+
 
 typedef struct \{
 	int size;
@@ -322,36 +329,6 @@ typedef struct [set subsys]_waitCompleteLV
 "
    close $fout
    close $fhdr
-#   foreach i $all {
-#      puts stdout "Adding $i CStr to LV header"
-#      set fin [open $i r]
-#      gets $fin rec
-#      set name [join [lrange [split [file rootname [file tail $i]] _] 1 end] _]
-#      puts $fhlv "typedef struct [set subsys]_[set name]C \{"
-#      while { [gets $fin rec] > -1 } {
-#         if { [lindex $rec 0] == "#pragma" } {
-#           puts $fhlv "\} [set subsys]_[set name]_CStr;"
-#         } else {
-#            if { [string range [lindex $rec 1] 0 7] != "private_" && [llength $rec] > 1 } {
-#               set it [typeidltoc $rec]
-#               if { [string range $it 0 12] == "  std::string" } {
-#                  puts $fhlv "  char *[string range $it 13 end]"
-#               } else {
-#                  puts $fhlv $it
-#               }
-#            }
-#         }
-#      }
-#      }
-#      puts $fhlv "
-#typedef struct [set subsys]_ackcmdC
-#\{
-#      int       cmdSeqNum;
-#      long 	ack;
-#      long 	error;
-#      char 	result[128];
-#\} [set subsys]_ackcmd_CStr;
-#"
    close $fhlv
    close $fbst
    close $fbst2

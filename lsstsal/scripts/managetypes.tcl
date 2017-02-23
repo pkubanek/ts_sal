@@ -84,6 +84,7 @@ global TYPESUBS VPROPS
    set VPROPS(string) 0
    set VPROPS(int) 0
    set VPROPS(long) 0
+   set VPROPS(boolean) 0
    set VPROPS(short) 0
    set VPROPS(double) 0
    set VPROPS(lvres) 0
@@ -123,6 +124,7 @@ global TYPESUBS VPROPS
       if { [lindex $rec 0] == "double" } {set VPROPS(double) 1; set VPROPS(lvres) 10 }
       if { [lindex $rec 0] == "short" } {set VPROPS(short) 1; set VPROPS(lvres) 2  }
       if { [lindex $rec 0] == "long" } {set VPROPS(long) 1; set VPROPS(lvres) 3  }
+      if { [lindex $rec 0] == "boolean" } {set VPROPS(boolean) 1; set VPROPS(lvres) 5  }
       if { $u == "unsigned" } { set VPROPS(lvres) [expr $VPROPS(lvres) +4] }
       if { [llength [split $rec "\[("]] > 1 } {
         set s [lindex [split $rec "\[\]()"] 1]
@@ -180,7 +182,11 @@ global TYPESUBS ATYPESUBS
           set res "  $ATYPESUBS([lindex $rec 0]) $n\;"
         }
       } else {
-        set res " [set u] $TYPESUBS([lindex $rec 0]) [join [lrange $rec 1 end]]"
+        if { [lindex $rec 0] == "boolean" } {
+           set res " bool_t [join [lrange $rec 1 end]]"
+        } else {
+           set res " [set u] $TYPESUBS([lindex $rec 0]) [join [lrange $rec 1 end]]"
+        }
       }
    }
    return $res
@@ -423,8 +429,8 @@ set ATYPESUBS(int32)  I32ArrayHdl
 set ATYPESUBS(long)   I32ArrayHdl
 set ATYPESUBS(float)  SGLArrayHdl
 set ATYPESUBS(double) DBLArrayHdl
-set ATYPESUBS(bool)   U32ArrayHdl
-set ATYPESUBS(boolean) 		U32ArrayHdl
+set ATYPESUBS(bool)   BooleanArrayHdl
+set ATYPESUBS(boolean) 		BooleanArrayHdl
 set ATYPESUBS(unsignedint)      U32ArrayHdl
 set ATYPESUBS(unsignedshort)    U16ArrayHdl
 set ATYPESUBS(unsignedint16)    U16ArrayHdl
