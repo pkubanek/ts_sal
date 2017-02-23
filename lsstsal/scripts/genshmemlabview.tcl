@@ -472,6 +472,9 @@ global SAL_WORK_DIR LVSTRINGS LVSTRPARS
     int [set base]_shm_acceptCommand_[set n2]LV([set base]_[set name]LV *data $xtrargs) \{
         int cmdId;
         [set base]_memIO->syncI_[set base]_[set name] = true;
+        while ([set base]_memIO->hasReader_[set base]_[set name] == false) \{
+           usleep(1000);
+        \}
         if ( [set base]_memIO->hasIncoming_[set base]_[set name] ) \{"
    set frag [open $SAL_WORK_DIR/include/SAL_[set base]_[set name]shmin.tmp r]
    while { [gets $frag rec] > -1} {puts $fout $rec}
@@ -480,6 +483,7 @@ global SAL_WORK_DIR LVSTRINGS LVSTRPARS
            cmdId = [set base]_memIO->shmemIncoming_[set base]_[set name]_rcvSeqNum;
            [set base]_memIO->hasIncoming_[set base]_[set name] = false;
            if (cmdId != 0) \{
+              [set base]_memIO->shmemIncoming_[set base]_[set name]_rcvSeqNum = 0;
               return cmdId;
            \}
         \} else \{
@@ -546,7 +550,6 @@ global SAL_WORK_DIR LVSTRINGS LVSTRPARS
         while ([set base]_memIO->hasReader_[set base]_ackcmd == false) \{
            usleep(1000);
         \}
-        [set base]_memIO->shmemIncoming_[set base]_[set name]_rcvSeqNum = 0;
         if ( [set base]_memIO->hasIncoming_[set base]_ackcmd ) \{
            data->ack = [set base]_memIO->shmemIncoming_[set base]_[set name]_cmdStatus;
            data->error = [set base]_memIO->shmemIncoming_[set base]_[set name]_errorCode;
@@ -665,6 +668,7 @@ global SAL_DIR SAL_WORK_DIR LVSTRPARS
           actorIdx = SAL__[set base]_[set name]_ACTOR;
           if (mgr.actorProcessor(actorIdx) == false) \{
              mgr.salProcessor(\"[set base]_[set name]\");
+             [set base]_memIO->hasReader_[set base]_[set name] = true;
           \}
           status = mgr.acceptCommand_[set n2](Incoming_[set base]_[set name]);
           if (status == SAL__OK) \{"
