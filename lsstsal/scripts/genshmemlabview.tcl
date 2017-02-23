@@ -453,6 +453,9 @@ global SAL_WORK_DIR LVSTRINGS LVSTRPARS
     int [set base]_shm_issueCommand_[set n2]LV([set base]_[set name]LV *data $xtrargs) \{
         int cmdId = 0;
         [set base]_memIO->syncO_[set base]_[set name] = true;
+        while ([set base]_memIO->hasWriter_[set base]_[set name] == false) \{
+           usleep(1000);
+        \}
         if ([set base]_memIO->hasOutgoing_[set base]_[set name]) \{ 
            return SAL__ERROR;
         \}"
@@ -463,6 +466,7 @@ global SAL_WORK_DIR LVSTRINGS LVSTRPARS
         [set base]_memIO->hasOutgoing_[set base]_[set name] = true;
         cmdId = [set base]_memIO->shmemOutgoing_[set base]_[set name]_cmdSeqNum;
         while (cmdId == 0) \{
+           cmdId = [set base]_memIO->shmemOutgoing_[set base]_[set name]_cmdSeqNum;
            usleep(1000);
         \}
         [set base]_memIO->shmemOutgoing_[set base]_[set name]_cmdSeqNum = 0;
@@ -705,6 +709,7 @@ global SAL_DIR SAL_WORK_DIR LVSTRPARS
           status = mgr.issueCommand_[set n2](Outgoing_[set base]_[set name]);
           [set base]_memIO->shmemOutgoing_[set base]_[set name]_cmdSeqNum = status;
           [set base]_memIO->hasOutgoing_[set base]_[set name] = false;
+          [set base]_memIO->hasWriter_[set base]_[set name] = true;
        \}
        if ( [set base]_memIO->hasOutgoing_[set base]_ackcmd ) \{
           actorIdx = SAL__[set base]_[set name]_ACTOR;
