@@ -25,7 +25,7 @@ global EVENT_ALIASES EVTS EVENT_ALIASES EVTS SAL_WORK_DIR SYSDIC SAL_DIR
 
 
 // This file contains the implementation for the [set subsys]_[set alias] event generator test.
-package org.lsst.sal.junit.camera;
+package org.lsst.sal.junit.[set subsys];
 
 import junit.framework.TestCase;
 import [set subsys].*;
