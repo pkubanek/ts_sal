@@ -300,8 +300,8 @@ struct [set subsys]_commandC
 \};
 struct [set subsys]_ackcmdC
 \{
-      long 	ack;
-      long 	error;
+      int 	ack;
+      int 	error;
       std::string	result;
 
 \};
@@ -317,8 +317,8 @@ struct [set subsys]_logeventC
 typedef struct [set subsys]_ackcmdLV
 \{
       int       cmdSeqNum;
-      long 	ack;
-      long 	error;
+      int 	ack;
+      int 	error;
       StrHdl	result;
 \} [set subsys]_ackcmd_Ctl;
 typedef struct [set subsys]_waitCompleteLV
@@ -404,11 +404,9 @@ global VPROPS
          }
          puts $fcod10 "myData.$VPROPS(name)=sys.argv\[$idx\]"
          puts $fcod11 "myData.$VPROPS(name)=\"LSST\""
-         if { $VPROPS(iscommand) } {
-            if { [lsearch "device property action value" $VPROPS(name)] < 0 } {
+         if { [lsearch "device property action value" $VPROPS(name)] < 0 } {
                puts $fcod12 "             Outgoing_[set VPROPS(topic)]->[set VPROPS(name)]=[set VPROPS(base)]_memIO->[set VPROPS(topic)]LV_[set VPROPS(name)]_bufferOut;"
                puts $fcod13 "             strcpy([set VPROPS(base)]_memIO->[set VPROPS(topic)]LV_[set VPROPS(name)]_bufferIn,Incoming_[set VPROPS(topic)]->[set VPROPS(name)].c_str());"
-            }
          }
       } else {
          puts $fcod1 "    data->$VPROPS(name) = Instances\[j\].$VPROPS(name);"
