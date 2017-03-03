@@ -7,7 +7,7 @@ global CMD_ALIASES CMDS SAL_WORK_DIR SYSDIC
       stdlog "	: command test send for = $alias"
       set chk "exec  nl $SAL_WORK_DIR/include/SAL_[set subsys]_command_[set alias]Cargs.tmp | tail -1"
       set ichk [eval $chk]
-      set numargs [expr [string range $ichk 0 8] -4]
+      set numargs [expr [string range $ichk 0 8] -3]
       set fcmd [open $SAL_WORK_DIR/$subsys/cpp/src/sacpp_[set subsys]_[set alias]_commander.cpp w]
       puts $fcmd "
 

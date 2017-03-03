@@ -123,7 +123,7 @@ global TYPESUBS VPROPS
       if { [lindex $rec 0] != "float" && [lindex $rec 0] != "double" } {set VPROPS(int) 1; set VPROPS(lvres) 9}
       if { [lindex $rec 0] == "double" } {set VPROPS(double) 1; set VPROPS(lvres) 10 }
       if { [lindex $rec 0] == "short" } {set VPROPS(short) 1; set VPROPS(lvres) 2  }
-      if { [lindex $rec 0] == "long" } {set VPROPS(long) 1; set VPROPS(lvres) 3  }
+      if { [lindex $rec 0] == "long" } {set VPROPS(int) 1; set VPROPS(lvres) 3  }
       if { [lindex $rec 0] == "boolean" } {set VPROPS(boolean) 1; set VPROPS(lvres) 5  }
       if { $u == "unsigned" } { set VPROPS(lvres) [expr $VPROPS(lvres) +4] }
       if { [llength [split $rec "\[("]] > 1 } {
@@ -402,21 +402,23 @@ set TYPESUBS(String) char
 set TYPESUBS(byte)   char
 set TYPESUBS(char)   char
 set TYPESUBS(octet)  char
-set TYPESUBS(int)    long
+set TYPESUBS(int)    int
 set TYPESUBS(short)  short
 set TYPESUBS(int16)  short
 set TYPESUBS(int32)  long
-set TYPESUBS(long)   long
+set TYPESUBS(long)   int
 set TYPESUBS(float)  float
 set TYPESUBS(double) double
+set TYPESUBS(longlong) long
 set TYPESUBS(bool)   int
 set TYPESUBS(boolean) int
 set TYPESUBS(unsignedint)    long
 set TYPESUBS(unsignedshort)  short
 set TYPESUBS(unsignedint16)  short
-set TYPESUBS(unsignedint32)  long
-set TYPESUBS(unsignedlong)   long
+set TYPESUBS(unsignedint32)  int
+set TYPESUBS(unsignedlong)   int
 
+set TYPESUBS(unsignedlonglong) long
 set ATYPESUBS(string) StrHdl
 set ATYPESUBS(String) StrHdl
 set ATYPESUBS(byte)   StrHdl
@@ -452,11 +454,13 @@ set TYPESIZE(double) 8
 set TYPESIZE(int64)  8
 set TYPESIZE(bool)   4
 set TYPESIZE(boolean) 4
+set TYPESIZE(longlong) 8
 set TYPESIZE(unsignedshort)  2
 set TYPESIZE(unsignedint16)  2
 set TYPESIZE(unsignedint)    4
 set TYPESIZE(unsignedint32)  4
 set TYPESIZE(unsignedlong)   4
+set TYPESIZE(unsignedlonglong) 8
 
 set TYPEFORMAT(byte)   "%d"
 set TYPEFORMAT(octet)  "%d"
@@ -466,15 +470,17 @@ set TYPEFORMAT(int)    "%d"
 set TYPEFORMAT(int32)  "%d"
 set TYPEFORMAT(bool)   "%d"
 set TYPEFORMAT(boolean) "%d"
-set TYPEFORMAT(long)   "%ld"
+set TYPEFORMAT(long)   "%d"
 set TYPEFORMAT(float)  "%f"
 set TYPEFORMAT(double) "%lf"
 set TYPEFORMAT(int64)  "%ld"
+set TYPEFORMAT(longlong)   "%ld"
 set TYPEFORMAT(unsignedshort)  "%d"
 set TYPEFORMAT(unsignedint16)  "%d"
 set TYPEFORMAT(unsignedint)    "%d"
 set TYPEFORMAT(unsignedint32)  "%d"
-set TYPEFORMAT(unsignedlong)   "%ld"
+set TYPEFORMAT(unsignedlong)   "%d"
+set TYPEFORMAT(unsignedlonglong)   "%ld"
 
 
 

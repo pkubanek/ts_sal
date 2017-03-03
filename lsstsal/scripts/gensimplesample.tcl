@@ -300,8 +300,8 @@ struct [set subsys]_commandC
 \};
 struct [set subsys]_ackcmdC
 \{
-      long 	ack;
-      long 	error;
+      int 	ack;
+      int 	error;
       std::string	result;
 
 \};
@@ -317,8 +317,8 @@ struct [set subsys]_logeventC
 typedef struct [set subsys]_ackcmdLV
 \{
       int       cmdSeqNum;
-      long 	ack;
-      long 	error;
+      int 	ack;
+      int 	error;
       StrHdl	result;
 \} [set subsys]_ackcmd_Ctl;
 typedef struct [set subsys]_waitCompleteLV
@@ -349,9 +349,8 @@ global VPROPS
            int $VPROPS(name)Size = (*(data->$VPROPS(name)))->size ;
            for (int i=0;i<$VPROPS(dim) && i<$VPROPS(name)Size;i++)\{[set VPROPS(base)]_memIO->shmemOutgoing_[set VPROPS(topic)].$VPROPS(name)\[i\] = (*(data->$VPROPS(name)))->data\[i\];\}"
       puts $fcod8 "
-           int $VPROPS(name)Size = sizeof(int) + $VPROPS(dim);
+           int $VPROPS(name)Size = $VPROPS(dim);
            (*(data->$VPROPS(name)))->size = $VPROPS(name)Size;
-           NumericArrayResize($VPROPS(lvres), 1, (UHandle*)(&(data->$VPROPS(name))), $VPROPS(name)Size);
            for (int i=0;i<$VPROPS(dim);i++)\{(*(data->$VPROPS(name)))->data\[i\] = [set VPROPS(base)]_memIO->shmemIncoming_[set VPROPS(topic)].$VPROPS(name)\[i\];\}"
       puts $fcod11 "for i in range(0,$VPROPS(dim)):
   myData.$VPROPS(name)\[i\]=i"
@@ -398,19 +397,16 @@ global VPROPS
            int $VPROPS(name)Size = (*(data->$VPROPS(name)))->size ;
            for (int i=0;i<$VPROPS(dim) && i<$VPROPS(name)Size;i++)\{[set VPROPS(base)]_memIO->[set VPROPS(topic)]LV_$VPROPS(name)_bufferOut\[i\] = (*(data->$VPROPS(name)))->data\[i\];\}"
                puts $fcod8 "
-           int $VPROPS(name)Size = sizeof(int) + $VPROPS(dim);
+           int $VPROPS(name)Size = $VPROPS(dim);
            (*(data->$VPROPS(name)))->size = strlen([set VPROPS(base)]_memIO->[set VPROPS(topic)]LV_$VPROPS(name)_bufferIn);
-           NumericArrayResize($VPROPS(lvres), 1, (UHandle*)(&(data->$VPROPS(name))), $VPROPS(name)Size);
            for (int i=0;i<$VPROPS(dim);i++)\{(*(data->$VPROPS(name)))->data\[i\] = [set VPROPS(base)]_memIO->[set VPROPS(topic)]LV_$VPROPS(name)_bufferIn\[i\];\}"
             }
          }
          puts $fcod10 "myData.$VPROPS(name)=sys.argv\[$idx\]"
          puts $fcod11 "myData.$VPROPS(name)=\"LSST\""
-         if { $VPROPS(iscommand) } {
-            if { [lsearch "device property action value" $VPROPS(name)] < 0 } {
+         if { [lsearch "device property action value" $VPROPS(name)] < 0 } {
                puts $fcod12 "             Outgoing_[set VPROPS(topic)]->[set VPROPS(name)]=[set VPROPS(base)]_memIO->[set VPROPS(topic)]LV_[set VPROPS(name)]_bufferOut;"
                puts $fcod13 "             strcpy([set VPROPS(base)]_memIO->[set VPROPS(topic)]LV_[set VPROPS(name)]_bufferIn,Incoming_[set VPROPS(topic)]->[set VPROPS(name)].c_str());"
-            }
          }
       } else {
          puts $fcod1 "    data->$VPROPS(name) = Instances\[j\].$VPROPS(name);"
