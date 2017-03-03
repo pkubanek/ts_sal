@@ -25,7 +25,7 @@ global CMD_ALIASES CMDS EVENT_ALIASES EVTS SAL_WORK_DIR SYSDIC SAL_DIR
 
 
 // This file contains the implementation for the [set subsys]_[set alias] commander test.
-package org.lsst.sal.junit.camera;
+package org.lsst.sal.junit.[set subsys];
 
 import junit.framework.TestCase;
 import [set subsys].*;
@@ -104,7 +104,7 @@ public class [set subsys]Commander_[set alias]Test extends TestCase \{
       stdlog "	: command test receive for = $alias"
       set fcmd [open $SAL_WORK_DIR/$subsys/java/src/[set subsys]Controller_[set alias]Test.java w]
       puts $fcmd "
-package org.lsst.sal.junit.camera;
+package org.lsst.sal.junit.[set subsys];
 
 import junit.framework.TestCase;
 import [set subsys].*;

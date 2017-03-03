@@ -1,75 +1,356 @@
 module m2ms {
-	struct axial_actuators {
-	  long	ilc_status[72];
+	struct ActuatorLimitSwitches {
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
+	  boolean	forward[72];
+	  boolean	reverse[72];
 	};
-	#pragma keylist axial_actuators
-	struct command_abort {
+	#pragma keylist ActuatorLimitSwitches
+	struct AxialActuatorAbsolutePositionSteps {
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
+	  long	axialAbsolutePositionSteps[72];
+	};
+	#pragma keylist AxialActuatorAbsolutePositionSteps
+	struct AxialActuatorPositionAbsoluteEncoderPositionMeasured {
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
+	  double	axialEncoderPositionMeasured[72];
+	};
+	#pragma keylist AxialActuatorPositionAbsoluteEncoderPositionMeasured
+	struct AxialForcesMeasured {
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
+	  double	axialForceMeasured[72];
+	};
+	#pragma keylist AxialForcesMeasured
+	struct MirrorPositionMeasured {
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
+	  double	xTilt;
+	  double	yTilt;
+	  double	piston;
+	  double	xPosition;
+	  double	yPosition;
+	  double	theta_z_position;
+	};
+	#pragma keylist MirrorPositionMeasured
+	struct PowerStatus {
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
+	  double	voltages[16];
+	  double	currents[16];
+	  boolean	onOff[16];
+	  unsigned long	states[16];
+	};
+	#pragma keylist PowerStatus
+	struct RawDisplacement {
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
+	  double	rawPosition[72];
+	};
+	#pragma keylist RawDisplacement
+	struct RawTelemetry {
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
+	  long	dataPacket[720];
+	};
+	#pragma keylist RawTelemetry
+	struct StepVectorUpdate {
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
+	  long	steps[72];
+	};
+	#pragma keylist StepVectorUpdate
+	struct SystemStatus {
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
+	  unsigned long	statusBits[72];
+	};
+	#pragma keylist SystemStatus
+	struct TangentActuatorAbsolutePositionSteps {
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
+	  long	tangentLink_0deg_absolutePositionSteps;
+	  long	tangentLink_60deg_absolutePositionSteps;
+	  long	tangentLink_120deg_absolutePositionSteps;
+	  long	tangentLink_180deg_absolutePositionSteps;
+	  long	tangentLink_240deg_absolutePositionSteps;
+	  long	tangentLink_300deg_absolutePositionSteps;
+	};
+	#pragma keylist TangentActuatorAbsolutePositionSteps
+	struct TangentActuatorPositionAbsoluteEncoderPositionMeasured {
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
+	  double	tangentLink_0deg_absoluteEncoderPositionMeasured;
+	  double	tangentLink_60deg_absoluteEncoderPositionMeasured;
+	  double	tangentLink_120deg_absoluteEncoderPositionMeasured;
+	  double	tangentLink_180deg_absoluteEncoderPositionMeasured;
+	  double	tangentLink_240deg_absoluteEncoderPositionMeasured;
+	  double	tangentLink_300deg_absoluteEncoderPositionMeasured;
+	};
+	#pragma keylist TangentActuatorPositionAbsoluteEncoderPositionMeasured
+	struct TangentForcesMeasured {
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
+	  double	tangentLink_0deg_forceMeasured;
+	  double	tangentLink_60deg_forceMeasured;
+	  double	tangentLink_120deg_forceMeasured;
+	  double	tangentLink_180deg_forceMeasured;
+	  double	tangentLink_240deg_forceMeasured;
+	  double	tangentLink_300deg_forceMeasured;
+	};
+	#pragma keylist TangentForcesMeasured
+	struct TargetForces {
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
+	  double	setPoint[72];
+	  double	forceComponent[72];
+	};
+	#pragma keylist TargetForces
+	struct TemperaturesMeasured {
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
+	  double	temps[72];
+	  double	intakeTemperatures[4];
+	  double	exhaustTemperatures[4];
+	};
+	#pragma keylist TemperaturesMeasured
+	struct ZenithAngleMeasured {
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
+	  double	ZenithAngleMeasured;
+	};
+	#pragma keylist ZenithAngleMeasured
+	struct command_ApplyBendingMode {
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
 	  string<32>	device;
 	  string<32>	property;
 	  string<32>	action;
 	  string<32>	value;
-	  string	state;
+	  short	bendingModeNbr[32];
+	  double	bendingModeValue[32];
+	};
+	#pragma keylist command_ApplyBendingMode
+	struct command_ApplyForce {
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
+	  string<32>	device;
+	  string<32>	property;
+	  string<32>	action;
+	  string<32>	value;
+	  double	forceSetPoint[72];
+	};
+	#pragma keylist command_ApplyForce
+	struct command_MoveAxialActuator {
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
+	  string<32>	device;
+	  string<32>	property;
+	  string<32>	action;
+	  string<32>	value;
+	  short	axialActuatorID;
+	  long	relativeStepsToMove;
+	};
+	#pragma keylist command_MoveAxialActuator
+	struct command_PositionMirror {
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
+	  string<32>	device;
+	  string<32>	property;
+	  string<32>	action;
+	  string<32>	value;
+	  double	xTilt;
+	  double	yTilt;
+	  double	piston;
+	};
+	#pragma keylist command_PositionMirror
+	struct command_SetCorrectionMode {
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
+	  string<32>	device;
+	  string<32>	property;
+	  string<32>	action;
+	  string<32>	value;
+	  long	Mode;
+	};
+	#pragma keylist command_SetCorrectionMode
+	struct command_abort {
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
+	  string<32>	device;
+	  string<32>	property;
+	  string<32>	action;
+	  string<32>	value;
+	  boolean	state;
 	};
 	#pragma keylist command_abort
-	struct command_adjust {
-	  string<32>	device;
-	  string<32>	property;
-	  string<32>	action;
-	  string<32>	value;
-	  double	azimuth;
-	  double	elevation;
-	};
-	#pragma keylist command_adjust
-	struct command_axialForces {
-	  string<32>	device;
-	  string<32>	property;
-	  string<32>	action;
-	  string<32>	value;
-	  double	deltaForce[72];
-	};
-	#pragma keylist command_axialForces
 	struct command_disable {
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
 	  string<32>	device;
 	  string<32>	property;
 	  string<32>	action;
 	  string<32>	value;
-	  string	state;
+	  boolean	state;
 	};
 	#pragma keylist command_disable
 	struct command_enable {
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
 	  string<32>	device;
 	  string<32>	property;
 	  string<32>	action;
 	  string<32>	value;
-	  string	state;
+	  boolean	state;
 	};
 	#pragma keylist command_enable
-	struct command_exit {
+	struct command_enterControl {
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
 	  string<32>	device;
 	  string<32>	property;
 	  string<32>	action;
 	  string<32>	value;
-	  string	state;
+	  boolean	state;
 	};
-	#pragma keylist command_exit
-	struct command_slew {
+	#pragma keylist command_enterControl
+	struct command_exitControl {
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
 	  string<32>	device;
 	  string<32>	property;
 	  string<32>	action;
 	  string<32>	value;
-	  double	azimuth;
-	  double	elevation;
+	  boolean	state;
 	};
-	#pragma keylist command_slew
+	#pragma keylist command_exitControl
 	struct command_standby {
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
 	  string<32>	device;
 	  string<32>	property;
 	  string<32>	action;
 	  string<32>	value;
-	  string	state;
+	  boolean	state;
 	};
 	#pragma keylist command_standby
 	struct command_start {
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
 	  string<32>	device;
 	  string<32>	property;
 	  string<32>	action;
@@ -78,77 +359,115 @@ module m2ms {
 	};
 	#pragma keylist command_start
 	struct command_stop {
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
 	  string<32>	device;
 	  string<32>	property;
 	  string<32>	action;
 	  string<32>	value;
-	  string	state;
+	  boolean	state;
 	};
 	#pragma keylist command_stop
-	struct command_takeControl {
-	  string<32>	device;
-	  string<32>	property;
-	  string<32>	action;
-	  string<32>	value;
-	  string	state;
-	};
-	#pragma keylist command_takeControl
-	struct command_update {
-	  string<32>	device;
-	  string<32>	property;
-	  string<32>	action;
-	  string<32>	value;
-	  string	lut_id;
-	};
-	#pragma keylist command_update
-	struct logevent_interlock {
+	struct logevent_AppliedSettingsMatchStart {
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
+	  boolean	appliedSettingsMatchStartIsTrue;
 	  long	priority;
-	  string	detail;
 	};
-	#pragma keylist logevent_interlock
-	struct logevent_limitError {
+	#pragma keylist logevent_AppliedSettingsMatchStart
+	struct logevent_ErrorCode {
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
+	  long	errorCode;
 	  long	priority;
-	  string	limit;
-	  string	type;
 	};
-	#pragma keylist logevent_limitError
-	struct logevent_tempError {
+	#pragma keylist logevent_ErrorCode
+	struct logevent_M2AssemblyInPosition {
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
+	  boolean	inPosition;
 	  long	priority;
-	  string	device;
-	  long	severity;
-	  double	temp;
 	};
-	#pragma keylist logevent_tempError
-	struct ni9201 {
-	  double	ilc_comm_current[72];
+	#pragma keylist logevent_M2AssemblyInPosition
+	struct logevent_M2DetailedState {
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
+	  short	state;
+	  long	priority;
 	};
-	#pragma keylist ni9201
-	struct ni9221 {
-	  double	ilc_comm_voltage[72];
+	#pragma keylist logevent_M2DetailedState
+	struct logevent_M2FaultState {
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
+	  short	state;
+	  long	priority;
 	};
-	#pragma keylist ni9221
-	struct ni9426 {
-	  boolean	current_balanced[72];
+	#pragma keylist logevent_M2FaultState
+	struct logevent_M2SummaryState {
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
+	  short	state;
+	  long	priority;
 	};
-	#pragma keylist ni9426
-	struct ni9485 {
-	  boolean	crio_interlock[72];
+	#pragma keylist logevent_M2SummaryState
+	struct logevent_SettingVersions {
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
+	  string	recommendedSettingVersion;
+	  long	priority;
 	};
-	#pragma keylist ni9485
-	struct sensor_ilc {
-	  long	ilc_status[6];
+	#pragma keylist logevent_SettingVersions
+	struct logevent_SummaryState {
+	  string<32>	private_revCode; //private
+	  double	private_sndStamp; //private
+	  double	private_rcvStamp; //private
+	  long		private_seqNum; //private
+	  long		private_origin; //private
+	  long		private_host; //private
+	  long	SummaryStateValue;
+	  long	priority;
 	};
-	#pragma keylist sensor_ilc
-	struct tangent_actuators {
-	  long	ilc_status[6];
-	};
-	#pragma keylist tangent_actuators
-	struct thermal {
-	  double	cell_exhaust_temperature[2];
-	};
-	#pragma keylist thermal
+	#pragma keylist logevent_SummaryState
 	struct command
 	{
+      string<32>	private_revCode;
+      double		private_sndStamp;
+      double		private_rcvStamp;
+      long		private_origin;
+      long 		private_host;
+      long		private_seqNum;
       string<32>	device;
       string<32>	property;
       string<32>	action;
@@ -158,6 +477,12 @@ module m2ms {
 	#pragma keylist command
 	struct ackcmd
 	{
+      string<32>	private_revCode;
+      double		private_sndStamp;
+      double		private_rcvStamp;
+      long		private_origin;
+      long 		private_host;
+      long		private_seqNum;
       long 		ack;
       long 		error;
       string<32>	result;
@@ -165,8 +490,12 @@ module m2ms {
 	#pragma keylist ackcmd
 	struct logevent
 	{
+      string<32>	private_revCode;
+      double		private_sndStamp;
+      double		private_rcvStamp;
+      long		private_origin;
+      long 		private_host;
       string<128>	message;
 	};
 	#pragma keylist logevent
 };
-
