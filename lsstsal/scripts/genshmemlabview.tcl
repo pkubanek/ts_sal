@@ -552,9 +552,8 @@ global SAL_WORK_DIR LVSTRINGS LVSTRPARS
         if ( [set base]_memIO->hasIncoming_[set base]_ackcmd ) \{
            data->ack = [set base]_memIO->shmemIncoming_[set base]_[set name]_cmdStatus;
            data->error = [set base]_memIO->shmemIncoming_[set base]_[set name]_errorCode;
-           int resultSize = sizeof(int) + 32;
+           int resultSize = 32;
            (*(data->result))->size = resultSize;
-           NumericArrayResize(5, 1, (UHandle*)(&(data->result)), resultSize);
            for (int i=0;i<32;i++)\{(*(data->result))->data\[i\] = [set base]_memIO->[set base]_ackcmdLV_result_bufferIn\[i\];\}
            status = [set base]_memIO->shmemIncoming_ackcmd.ack;
            [set base]_memIO->hasIncoming_[set base]_ackcmd = false;

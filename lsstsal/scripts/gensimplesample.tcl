@@ -349,9 +349,8 @@ global VPROPS
            int $VPROPS(name)Size = (*(data->$VPROPS(name)))->size ;
            for (int i=0;i<$VPROPS(dim) && i<$VPROPS(name)Size;i++)\{[set VPROPS(base)]_memIO->shmemOutgoing_[set VPROPS(topic)].$VPROPS(name)\[i\] = (*(data->$VPROPS(name)))->data\[i\];\}"
       puts $fcod8 "
-           int $VPROPS(name)Size = sizeof(int) + $VPROPS(dim);
+           int $VPROPS(name)Size = $VPROPS(dim);
            (*(data->$VPROPS(name)))->size = $VPROPS(name)Size;
-           NumericArrayResize($VPROPS(lvres), 1, (UHandle*)(&(data->$VPROPS(name))), $VPROPS(name)Size);
            for (int i=0;i<$VPROPS(dim);i++)\{(*(data->$VPROPS(name)))->data\[i\] = [set VPROPS(base)]_memIO->shmemIncoming_[set VPROPS(topic)].$VPROPS(name)\[i\];\}"
       puts $fcod11 "for i in range(0,$VPROPS(dim)):
   myData.$VPROPS(name)\[i\]=i"
@@ -398,9 +397,8 @@ global VPROPS
            int $VPROPS(name)Size = (*(data->$VPROPS(name)))->size ;
            for (int i=0;i<$VPROPS(dim) && i<$VPROPS(name)Size;i++)\{[set VPROPS(base)]_memIO->[set VPROPS(topic)]LV_$VPROPS(name)_bufferOut\[i\] = (*(data->$VPROPS(name)))->data\[i\];\}"
                puts $fcod8 "
-           int $VPROPS(name)Size = sizeof(int) + $VPROPS(dim);
+           int $VPROPS(name)Size = $VPROPS(dim);
            (*(data->$VPROPS(name)))->size = strlen([set VPROPS(base)]_memIO->[set VPROPS(topic)]LV_$VPROPS(name)_bufferIn);
-           NumericArrayResize($VPROPS(lvres), 1, (UHandle*)(&(data->$VPROPS(name))), $VPROPS(name)Size);
            for (int i=0;i<$VPROPS(dim);i++)\{(*(data->$VPROPS(name)))->data\[i\] = [set VPROPS(base)]_memIO->[set VPROPS(topic)]LV_$VPROPS(name)_bufferIn\[i\];\}"
             }
          }
