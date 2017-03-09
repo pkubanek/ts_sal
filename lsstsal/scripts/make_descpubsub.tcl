@@ -1,4 +1,4 @@
-
+#!/usr/bin/tclsh
 
 set fin [open $env(SAL_WORK_DIR)/.salwork/datastreams.names r]
 set fout [open $env(SAL_WORK_DIR)/.salwork/datastreams_desc.pubsub w]
