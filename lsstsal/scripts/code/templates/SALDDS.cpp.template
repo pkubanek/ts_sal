@@ -165,6 +165,15 @@ bool SAL_SALData::actorProcessor(int actorIdx) {
 }
 
 
+int SAL_SALData::getIntProperty(int actorIdx,salCHAR *property)
+{
+  if (strcmp("ack", property) == 0) {return sal[actorIdx].ack;}
+  if (strcmp("error", property) == 0) {return sal[actorIdx].error;}
+  if (strcmp("rcvSeqNum", property) == 0) {return sal[actorIdx].rcvSeqNum;}
+  return SAL__OK;
+}
+
+
 
 
 // INSERT TYPE SUPPORT      
@@ -689,6 +698,17 @@ int SAL_SALData::getOrigin()
    }
    return status;
 }
+      
+void SAL_SALData::setMaxSamples(int actorIdx, int n)
+{
+    if ( n < 0 ) {
+       sal[actorIdx].maxSamples = LENGTH_UNLIMITED;
+    } else {
+       sal[actorIdx].maxSamples = n;
+    }
+}
+
+
 
 int SAL_SALData::getProperty(salCHAR *property, salCHAR *value)
 {

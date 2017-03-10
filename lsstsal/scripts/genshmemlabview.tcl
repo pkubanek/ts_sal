@@ -629,7 +629,7 @@ global SAL_DIR SAL_WORK_DIR LVSTRPARS
           \}
           if ( [set base]_memIO->hasIncoming_[set base]_[set name] == false ) \{
             if ( [set base]_memIO->skipOld_[set base]_[set name] == true ) \{
-                mgr.sal(actorIdx).maxSamples = LENGTH_UNLIMITED;
+                mgr.setMaxSamples(actorIdx,-1);
                 status = mgr.getSample_[set name](Incoming_[set base]_[set name]);
              \} else \{
                 status = mgr.getNextSample_[set name](Incoming_[set base]_[set name]);
@@ -687,7 +687,9 @@ global SAL_DIR SAL_WORK_DIR LVSTRPARS
           status = mgr.getResponse_[set n2]([set base]_ackcmdSeq);
           [set base]_memIO->hasReader_[set base]_ackcmd = true;
           if (status == SAL__CMD_COMPLETE) \{
-             [set base]_memIO->shmemIncoming_[set base]_[set name]_rcvSeqNum = mgr.sal(SAL__[set base]_[set name]_ACTOR).rcvSeqNum;
+             [set base]_memIO->shmemIncoming_[set base]_[set name]_rcvSeqNum = mgr.getIntProperty(SAL__[set base]_[set name]_ACTOR , \"rcvSeqNum\");
+             [set base]_memIO->shmemIncoming_[set base]_[set name]_cmdStatus = mgr.getIntProperty(SAL__[set base]_[set name]_ACTOR , \"ack\");
+             [set base]_memIO->shmemIncoming_[set base]_[set name]_errorCode = mgr.getIntProperty(SAL__[set base]_[set name]_ACTOR , \"error\");
              [set base]_memIO->hasIncoming_[set base]_ackcmd = true;
           \}
        \}

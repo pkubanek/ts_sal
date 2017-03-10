@@ -861,6 +861,7 @@ global SAL_WORK_DIR OPTIONS DONE_CMDEVT
    catch {puts stdout "result = $result"}
    catch {puts stdout "$bad"}
    puts stdout "cpp : Done Event/Logger"
+   set DONE_CMDEVT 1
    cd $SAL_WORK_DIR
   }
 }

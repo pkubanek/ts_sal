@@ -256,6 +256,9 @@ salReturn SAL_SALData::getResponse_[set i](SALData::ackcmdSeq data)
     rcvdTime = getCurrentTime();
     sal\[actorIdxCmd\].rcvSeqNum = data\[j\].private_seqNum;
     sal\[actorIdxCmd\].rcvOrigin = data\[j\].private_origin;
+    sal\[actorIdxCmd\].ack = data\[j\].ack;
+    sal\[actorIdxCmd\].error = data\[j\].error;
+    strcpy(sal\[actorIdxCmd\].result,DDS::string_dup(data\[j\].result));
    \} else \{
       cout << \"=== \[getResponse_[set i]\] No ack yet!\" << endl;
       status = SAL__CMD_NOACK;
