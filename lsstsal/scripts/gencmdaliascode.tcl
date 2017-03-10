@@ -68,7 +68,7 @@ int SAL_SALData::issueCommand_[set i]( SALData_command_[set i]C *data )
   if (sal\[actorIdx\].isCommand == false) \{
      salCommand(sal\[actorIdx\].topicName);
      sal\[actorIdx\].isCommand = true;
-     sal\[actorIdx\].sndSeqNum = time(&sTime);
+     sal\[actorIdx\].sndSeqNum = rand();
   \}
   DataWriter_var dwriter = getWriter(actorIdx);
   SALCommand_[set i]DataWriter_var SALWriter = SALCommand_[set i]DataWriter::_narrow(dwriter.in());
@@ -320,13 +320,14 @@ global CMD_ALIASES CMDS SYSDIC
       puts $fout "
 	public int issueCommand_[set i]( command_[set i] data )
 	\{
+          Random rand;
   	  long cmdHandle = HANDLE_NIL.value;
           int status;
           int actorIdx = SAL__SALData_command_[set i]_ACTOR;
 	  if (sal\[actorIdx\].isCommand == false) \{
 	     salCommand(sal\[actorIdx\].topicName);
 	     sal\[actorIdx\].isCommand = true;
-	     sal\[actorIdx\].sndSeqNum = (int)getCurrentTime();
+	     sal\[actorIdx\].sndSeqNum = (int)rand.nextInt(999999999);
 	  \}
 	  DataWriter dwriter = getWriter(actorIdx);	
 	  command_[set i]DataWriter SALWriter = command_[set i]DataWriterHelper.narrow(dwriter);
