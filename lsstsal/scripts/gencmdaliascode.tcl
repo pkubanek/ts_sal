@@ -61,7 +61,6 @@ int SAL_SALData::issueCommand_[set i]( SALData_command_[set i]C *data )
 \{
   
   InstanceHandle_t cmdHandle = DDS::HANDLE_NIL;
-  time_t sTime;
   SALData::command_[set i] Instance;
   int actorIdx = SAL__SALData_command_[set i]_ACTOR;
   // create DataWriter :
