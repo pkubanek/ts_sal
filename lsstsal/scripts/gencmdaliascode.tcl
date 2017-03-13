@@ -322,7 +322,7 @@ global CMD_ALIASES CMDS SYSDIC
       puts $fout "
 	public int issueCommand_[set i]( command_[set i] data )
 	\{
-          Random rand;
+          Random rand= new Random();
   	  long cmdHandle = HANDLE_NIL.value;
           int status;
           int actorIdx = SAL__SALData_command_[set i]_ACTOR;
