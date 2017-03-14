@@ -322,14 +322,14 @@ global CMD_ALIASES CMDS SYSDIC
       puts $fout "
 	public int issueCommand_[set i]( command_[set i] data )
 	\{
-          Random rand= new Random();
+          Random randGen = new java.util.Random();
   	  long cmdHandle = HANDLE_NIL.value;
           int status;
           int actorIdx = SAL__SALData_command_[set i]_ACTOR;
 	  if (sal\[actorIdx\].isCommand == false) \{
 	     salCommand(sal\[actorIdx\].topicName);
 	     sal\[actorIdx\].isCommand = true;
-	     sal\[actorIdx\].sndSeqNum = (int)rand.nextInt(999999999);
+	     sal\[actorIdx\].sndSeqNum = (int)randGen.nextInt(99999999);
 	  \}
 	  DataWriter dwriter = getWriter(actorIdx);	
 	  command_[set i]DataWriter SALWriter = command_[set i]DataWriterHelper.narrow(dwriter);
