@@ -29,6 +29,7 @@ import DDS.DataReader;
 import DDS.LENGTH_UNLIMITED;
 import DDS.SampleInfoSeqHolder;
 import org.lsst.sal.salActor;
+import java.util.Random;
 
 // INSERT SAL IMPORTS
 
@@ -1371,16 +1372,16 @@ public class SAL_SALData {
 		RetCodeName[12] = new String("DDS_RETCODE_ILLEGAL_OPERATION");
 	}
 
-	/**
+	/*
 	 * Returns the name of an error code.
-	 **/
+	 */
 	public static String getErrorName(int status) {
 		return RetCodeName[status];
 	}
 
-	/**
+	/*
 	 * Check the return status for errors. If there is an error, then terminate.
-	 **/
+	 */
 	public static void checkStatus(int status, String info) {
 		if (status != RETCODE_OK.value && status != RETCODE_NO_DATA.value) {
 			System.out
@@ -1390,9 +1391,9 @@ public class SAL_SALData {
 		}
 	}
 
-	/**
+	/*
 	 * Check whether a valid handle has been returned. If not, then terminate.
-	 **/
+	 */
 	public static void checkHandle(Object handle, String info) {
 		if (handle == null) {
 			System.out.println("Error in " + info
