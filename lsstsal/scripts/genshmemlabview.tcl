@@ -50,8 +50,12 @@ global SAL_WORK_DIR
 
 
 proc genlabviewmake { subsys } {
-global SAL_DIR SAL_WORK_DIR
-  set lvv [file tail [glob /usr/local/natinst/LabVIEW*64]]
+global SAL_DIR SAL_WORK_DIR env
+  if { [info exists env(LABVIEW_HOME)] } {
+     set lvv [file tail [glob $env(LABVIEW_HOME)/LabVIEW*64]]
+  } else {
+     set lvv [file tail [glob /usr/local/natinst/LabVIEW*64]]
+  }
   set frep [open /tmp/sreplace4.sal w]
   puts $frep "#!/bin/sh"
   exec touch $SAL_WORK_DIR/[set subsys]/labview/.depend.Makefile.sacpp_SALData_labview
@@ -121,12 +125,16 @@ global SAL_DIR SAL_WORK_DIR SYSDIC TELEMETRY_ALIASES LVSTRINGS LVSTRPARS
        puts $fout "	[set base]_[set name]C  shmemOutgoing_[set base]_[set name];"
      }
      if { $type == "command" && $name != "command" } {
-        puts $fout "	int shmemOutgoing_[set base]_[set name]_cmdSeqNum;"
-        puts $fout "	int shmemIncoming_[set base]_[set name]_rcvSeqNum;"
-        puts $fout "	int shmemOutgoing_[set base]_[set name]_cmdStatus;"
-        puts $fout "	int shmemOutgoing_[set base]_[set name]_errorCode;"
-        puts $fout "	int shmemIncoming_[set base]_[set name]_cmdStatus;"
-        puts $fout "	int shmemIncoming_[set base]_[set name]_errorCode;"
+        puts $fout "    bool syncI_[set base]_[set name]_ackcmd;"
+        puts $fout "    bool syncO_[set base]_[set name]_ackcmd;"
+        puts $fout "	bool hasIncoming_[set base]_[set name]_ackcmd;"	
+        puts $fout "	bool hasOutgoing_[set base]_[set name]_ackcmd;"
+        puts $fout "	int  shmemOutgoing_[set base]_[set name]_cmdSeqNum;"
+        puts $fout "	int  shmemIncoming_[set base]_[set name]_rcvSeqNum;"
+        puts $fout "	int  shmemOutgoing_[set base]_[set name]_cmdStatus;"
+        puts $fout "	int  shmemOutgoing_[set base]_[set name]_errorCode;"
+        puts $fout "	int  shmemIncoming_[set base]_[set name]_cmdStatus;"
+        puts $fout "	int  shmemIncoming_[set base]_[set name]_errorCode;"
         puts $fout "	char shmemOutgoing_[set base]_[set name]_resultCode\[128\];"
         puts $fout "	char shmemIncoming_[set base]_[set name]_resultCode\[128\];"
      }
@@ -172,6 +180,7 @@ global SAL_DIR SAL_WORK_DIR SYSDIC TELEMETRY_ALIASES LVSTRINGS LVSTRPARS
 #     }
      if { $type == "command" && $name != "command" } {
        puts $fout "
+        int [set base]_shm_salProcessor_[set n2]LV();
 	int [set base]_shm_issueCommand_[set n2]LV([set base]_[set name]LV *[set name]_Ctl $xtrargs);
 	int [set base]_shm_acceptCommand_[set n2]LV([set base]_[set name]LV *[set name]_Ctl $xtrargs);
 	int [set base]_shm_ackCommand_[set n2]LV([set base]_ackcmdLV *ackcmd_Ctl);
@@ -474,12 +483,17 @@ global SAL_WORK_DIR LVSTRINGS LVSTRPARS
         return cmdId;
     \}"
    puts $fout "
-    int [set base]_shm_acceptCommand_[set n2]LV([set base]_[set name]LV *data $xtrargs) \{
-        int cmdId;
+
+    int [set base]_shm_salProcessor_[set n2]LV() \{
         [set base]_memIO->syncI_[set base]_[set name] = true;
         while ([set base]_memIO->hasReader_[set base]_[set name] == false) \{
            usleep(1000);
         \}
+        return SAL__OK;
+    \}
+
+    int [set base]_shm_acceptCommand_[set n2]LV([set base]_[set name]LV *data $xtrargs) \{
+        int cmdId;
         if ( [set base]_memIO->hasIncoming_[set base]_[set name] ) \{"
    set frag [open $SAL_WORK_DIR/include/SAL_[set base]_[set name]shmin.tmp r]
    while { [gets $frag rec] > -1} {puts $fout $rec}
@@ -501,7 +515,7 @@ global SAL_WORK_DIR LVSTRINGS LVSTRPARS
     \}"
    puts $fout "
     int [set base]_shm_ackCommand_[set n2]LV([set base]_ackcmdLV *theack) \{
-        [set base]_memIO->syncO_[set base]_ackcmd = true;
+        [set base]_memIO->syncO_[set base]_[set name]_ackcmd = true;
         while ([set base]_memIO->hasWriter_[set base]_ackcmd == false) \{
            usleep(1000);
         \}"
@@ -511,7 +525,7 @@ global SAL_WORK_DIR LVSTRINGS LVSTRPARS
         [set base]_memIO->shmemOutgoing_[set base]_[set name]_errorCode = theack->error;
         int resultSize = (*(theack->result))->size;
         strncpy([set base]_memIO->shmemOutgoing_[set base]_[set name]_resultCode, (*(theack->result))->data, resultSize);
-        [set base]_memIO->hasOutgoing_[set base]_ackcmd = true;
+        [set base]_memIO->hasOutgoing_[set base]_[set name]_ackcmd = true;
         return SAL__OK;
     \}"
    puts $fout "
@@ -548,18 +562,19 @@ global SAL_WORK_DIR LVSTRINGS LVSTRPARS
   puts $fout "
     int [set base]_shm_getResponse_[set n2]LV([set base]_ackcmdLV *data) \{
         ReturnCode_t status = SAL__CMD_NOACK;
-        [set base]_memIO->syncI_[set base]_ackcmd = true;
+        [set base]_memIO->syncI_[set base]_[set name]_ackcmd = true;
         while ([set base]_memIO->hasReader_[set base]_ackcmd == false) \{
            usleep(1000);
         \}
-        if ( [set base]_memIO->hasIncoming_[set base]_ackcmd ) \{
+        if ( [set base]_memIO->hasIncoming_[set base]_[set name]_ackcmd ) \{
            data->ack = [set base]_memIO->shmemIncoming_[set base]_[set name]_cmdStatus;
            data->error = [set base]_memIO->shmemIncoming_[set base]_[set name]_errorCode;
+           data->cmdSeqNum = [set base]_memIO->shmemIncoming_[set base]_[set name]_rcvSeqNum;
            int resultSize = 32;
            (*(data->result))->size = resultSize;
            for (int i=0;i<32;i++)\{(*(data->result))->data\[i\] = [set base]_memIO->[set base]_ackcmdLV_result_bufferIn\[i\];\}
            status = [set base]_memIO->shmemIncoming_ackcmd.ack;
-           [set base]_memIO->hasIncoming_[set base]_ackcmd = false;
+           [set base]_memIO->hasIncoming_[set base]_[set name]_ackcmd = false;
            if ([set base]_memIO->callbackHdl_[set base]_ackcmd > 0) \{
               [set base]_memIO->hasCallback_[set base]_ackcmd = true;
            \}
@@ -682,7 +697,7 @@ global SAL_DIR SAL_WORK_DIR LVSTRPARS
              [set base]_memIO->shmemIncoming_[set base]_[set name]_rcvSeqNum = status;
           \}
        \}
-       if ([set base]_memIO->syncI_[set base]_ackcmd) \{
+       if ([set base]_memIO->syncI_[set base]_[set name]_ackcmd) \{
           actorIdx = SAL__[set base]_ackcmd_ACTOR;
           status = mgr.getResponse_[set n2]([set base]_ackcmdSeq);
           [set base]_memIO->hasReader_[set base]_ackcmd = true;
@@ -690,7 +705,7 @@ global SAL_DIR SAL_WORK_DIR LVSTRPARS
              [set base]_memIO->shmemIncoming_[set base]_[set name]_rcvSeqNum = mgr.getIntProperty(SAL__[set base]_[set name]_ACTOR , \"rcvSeqNum\");
              [set base]_memIO->shmemIncoming_[set base]_[set name]_cmdStatus = mgr.getIntProperty(SAL__[set base]_[set name]_ACTOR , \"ack\");
              [set base]_memIO->shmemIncoming_[set base]_[set name]_errorCode = mgr.getIntProperty(SAL__[set base]_[set name]_ACTOR , \"error\");
-             [set base]_memIO->hasIncoming_[set base]_ackcmd = true;
+             [set base]_memIO->hasIncoming_[set base]_[set name]_ackcmd = true;
           \}
        \}
        if ([set base]_memIO->syncO_[set base]_[set name]) \{
@@ -709,22 +724,22 @@ global SAL_DIR SAL_WORK_DIR LVSTRPARS
           [set base]_memIO->hasOutgoing_[set base]_[set name] = false;
           [set base]_memIO->hasWriter_[set base]_[set name] = true;
        \}
-          if ([set base]_memIO->syncO_[set base]_ackcmd) \{
+       if ([set base]_memIO->syncO_[set base]_[set name]_ackcmd) \{
             actorIdx = SAL__[set base]_[set name]_ACTOR;
             if (mgr.actorProcessor(actorIdx) == false) \{
               mgr.salProcessor(\"[set base]_[set name]\");
               [set base]_memIO->hasWriter_[set base]_ackcmd = true;
-           \}
-          if ( [set base]_memIO->hasOutgoing_[set base]_ackcmd ) \{
+       \}
+       if ( [set base]_memIO->hasOutgoing_[set base]_[set name]_ackcmd ) \{
              status = mgr.ackCommand_[set n2](
 				[set base]_memIO->shmemOutgoing_[set base]_[set name]_cmdSeqNum,
 				[set base]_memIO->shmemOutgoing_[set base]_[set name]_cmdStatus,
 				[set base]_memIO->shmemOutgoing_[set base]_[set name]_errorCode,
 				[set base]_memIO->shmemOutgoing_[set base]_[set name]_resultCode
                                           );
-          [set base]_memIO->hasOutgoing_[set base]_ackcmd = false;
-          \}
+          [set base]_memIO->hasOutgoing_[set base]_[set name]_ackcmd = false;
        \}
+     \}
 "
 }
 
@@ -784,12 +799,14 @@ global SAL_DIR SAL_WORK_DIR
        [set base]_memIO->hasWriter_[set base]_[set name] = false;
        [set base]_[set name]C *Incoming_[set base]_[set name] = new [set base]_[set name]C;
        [set base]_[set name]C *Outgoing_[set base]_[set name] = new [set base]_[set name]C;"
-#     if { $type == "command" && $name != "command" } {
-#       puts $fout "    
-#       [set base]_memIO->shmemOutgoing_[set base]_[set name]_resultCode = (char *)malloc(128);
-#       [set base]_memIO->shmemIncoming_[set base]_[set name]_resultCode = (char *)malloc(128);
-#"
-#     }
+     if { $type == "command" && $name != "command" } {
+       puts $fout "    
+       [set base]_memIO->syncI_[set base]_[set name]_ackcmd = false;
+       [set base]_memIO->syncO_[set base]_[set name]_ackcmd = false;
+       [set base]_memIO->hasIncoming_[set base]_[set name]_ackcmd = false;
+       [set base]_memIO->hasOutgoing_[set base]_[set name]_ackcmd = false;
+"
+     }
 }
 
 proc modlabviewpubsubexamples { id } {
