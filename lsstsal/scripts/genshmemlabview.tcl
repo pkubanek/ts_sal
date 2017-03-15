@@ -28,6 +28,7 @@ global SAL_DIR SAL_WORK_DIR
   exec ln -sf ../cpp/src/CheckStatus.cpp .
   exec ln -sf ../cpp/src/CheckStatus.h .
   exec make -f Makefile.sacpp_[set subsys]_labview
+  exec rm -fr lib
 }
 
 proc genlabviewidl { subsys } {
