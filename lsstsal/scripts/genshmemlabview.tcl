@@ -189,6 +189,7 @@ global SAL_DIR SAL_WORK_DIR SYSDIC TELEMETRY_ALIASES LVSTRINGS LVSTRPARS
      } else {
         if { $type == "logevent" && $name != "logevent" } {
            puts $fout "
+        int [set base]_shm_salEvent_[set n2]LV();
 	int [set base]_shm_getEvent_[set n2]LV([set base]_[set name]LV *[set name]_Ctl $xtrargs);
 	int [set base]_shm_logEvent_[set n2]LV([set base]_[set name]LV *[set name]_Ctl $xtrargs);"
         } else {
@@ -197,6 +198,7 @@ global SAL_DIR SAL_WORK_DIR SYSDIC TELEMETRY_ALIASES LVSTRINGS LVSTRPARS
            }
            if { $name != "command" && $name != "logevent" } {
              puts $fout "
+             int [set base]_shm_salTelemetrySub_[set n2]LV();
   	     int [set base]_shm_getSample_[set name]LV([set base]_[set name]LV *[set name]_Ctl $xtrargs);
 	     int [set base]_shm_getNextSample_[set name]LV([set base]_[set name]LV *[set name]_Ctl $xtrargs);
 	     int [set base]_shm_putSample_[set name]LV([set base]_[set name]LV *[set name]_Ctl $xtrargs);"
@@ -401,6 +403,14 @@ global SAL_WORK_DIR LVSTRINGS LVSTRPARS
         set xtrargs2 ""
 #     }
    puts $fout "
+    int [set base]_shm_salTelemetrySub_[set n2]LV() \{
+        [set base]_memIO->syncI_[set base]_[set name] = true;
+        while ([set base]_memIO->hasReader_[set base]_[set name] == false) \{
+           usleep(1000);
+        \}
+        return SAL__OK;
+    \}
+
     int [set base]_shm_getSample_[set name]LV([set base]_[set name]LV *data $xtrargs) \{
         [set base]_memIO->syncI_[set base]_[set name] = true;
         [set base]_memIO->skipOld_[set base]_[set name] = false;
@@ -491,6 +501,7 @@ global SAL_WORK_DIR LVSTRINGS LVSTRPARS
         \}
         return SAL__OK;
     \}
+
 
     int [set base]_shm_acceptCommand_[set n2]LV([set base]_[set name]LV *data $xtrargs) \{
         int cmdId;
@@ -597,6 +608,14 @@ global SAL_WORK_DIR LVSTRINGS LVSTRPARS
 #     }
    set n2 [join [lrange [split $name _] 1 end] _]
    puts $fout "
+    int [set base]_shm_salEvent_[set n2]LV() \{
+        [set base]_memIO->syncI_[set base]_[set name] = true;
+        while ([set base]_memIO->hasReader_[set base]_[set name] == false) \{
+           usleep(1000);
+        \}
+        return SAL__OK;
+    \}
+
     int [set base]_shm_getEvent_[set n2]LV([set base]_[set name]LV *data $xtrargs) \{
         [set base]_memIO->syncI_[set base]_[set name] = true;
         while ([set base]_memIO->hasReader_[set base]_[set name] == false) \{
