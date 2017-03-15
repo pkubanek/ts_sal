@@ -1,3 +1,20 @@
+#
+#  add to .h and change m2ms_shmem to shmemIO
+#     struct m2ms_shmem {
+#        shmemIO client[50];
+#     };
+#
+# add inUse flag to client struct
+#
+# in cpp change all m2ms_memIO->  to m2ms->memIO->client[cid].
+#
+# in connect look for unused inUse slot and clear all flags in it
+# store returned slot number in global var in LV library
+# in disconnect , clear all flags and reset inUse flag
+#
+# change monitor syncInit to a routine and call on connect/disconnect
+#
+
 
 set SAL_DIR $env(SAL_DIR)
 set SAL_WORK_DIR $env(SAL_WORK_DIR)
@@ -182,10 +199,10 @@ global SAL_DIR SAL_WORK_DIR SYSDIC TELEMETRY_ALIASES LVSTRINGS LVSTRPARS
      if { $type == "command" && $name != "command" } {
        puts $fout "
         int [set base]_shm_salProcessor_[set n2]LV();
-	int [set base]_shm_issueCommand_[set n2]LV([set base]_[set name]LV *[set name]_Ctl $xtrargs);
-	int [set base]_shm_acceptCommand_[set n2]LV([set base]_[set name]LV *[set name]_Ctl $xtrargs);
-	int [set base]_shm_ackCommand_[set n2]LV([set base]_ackcmdLV *ackcmd_Ctl);
-	int [set base]_shm_waitForCompletion_[set n2]LV([set base]_waitCompleteLV *waitComplete_Ctl);
+        int [set base]_shm_issueCommand_[set n2]LV([set base]_[set name]LV *[set name]_Ctl $xtrargs);
+        int [set base]_shm_acceptCommand_[set n2]LV([set base]_[set name]LV *[set name]_Ctl $xtrargs);
+        int [set base]_shm_ackCommand_[set n2]LV([set base]_ackcmdLV *ackcmd_Ctl);
+        int [set base]_shm_waitForCompletion_[set n2]LV([set base]_waitCompleteLV *waitComplete_Ctl);
         int [set base]_shm_getResponse_[set n2]LV([set base]_ackcmdLV *ackcmd_Ctl);"
      } else {
         if { $type == "logevent" && $name != "logevent" } {
@@ -199,10 +216,10 @@ global SAL_DIR SAL_WORK_DIR SYSDIC TELEMETRY_ALIASES LVSTRINGS LVSTRPARS
            }
            if { $name != "command" && $name != "logevent" } {
              puts $fout "
-             int [set base]_shm_salTelemetrySub_[set name]LV();
-  	     int [set base]_shm_getSample_[set name]LV([set base]_[set name]LV *[set name]_Ctl $xtrargs);
-	     int [set base]_shm_getNextSample_[set name]LV([set base]_[set name]LV *[set name]_Ctl $xtrargs);
-	     int [set base]_shm_putSample_[set name]LV([set base]_[set name]LV *[set name]_Ctl $xtrargs);"
+        int [set base]_shm_salTelemetrySub_[set name]LV();
+        int [set base]_shm_getSample_[set name]LV([set base]_[set name]LV *[set name]_Ctl $xtrargs);
+        int [set base]_shm_getNextSample_[set name]LV([set base]_[set name]LV *[set name]_Ctl $xtrargs);
+        int [set base]_shm_putSample_[set name]LV([set base]_[set name]LV *[set name]_Ctl $xtrargs);"
            }
         }
      }   
@@ -705,6 +722,7 @@ global SAL_DIR SAL_WORK_DIR LVSTRPARS
           actorIdx = SAL__[set base]_[set name]_ACTOR;
           if (mgr.actorProcessor(actorIdx) == false) \{
              mgr.salProcessor(\"[set base]_[set name]\");
+             [set base]_memIO->hasWriter_[set base]_ackcmd = true;
              [set base]_memIO->hasReader_[set base]_[set name] = true;
           \}
           status = mgr.acceptCommand_[set n2](Incoming_[set base]_[set name]);
@@ -749,6 +767,7 @@ global SAL_DIR SAL_WORK_DIR LVSTRPARS
             if (mgr.actorProcessor(actorIdx) == false) \{
               mgr.salProcessor(\"[set base]_[set name]\");
               [set base]_memIO->hasWriter_[set base]_ackcmd = true;
+              [set base]_memIO->hasReader_[set base]_[set name] = true;
        \}
        if ( [set base]_memIO->hasOutgoing_[set base]_[set name]_ackcmd ) \{
              status = mgr.ackCommand_[set n2](
