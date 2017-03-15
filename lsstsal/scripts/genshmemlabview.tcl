@@ -27,8 +27,8 @@ global SAL_DIR SAL_WORK_DIR
   exec ln -sf ../../../lsstsal/include/SAL_defines.h .
   exec ln -sf ../cpp/src/CheckStatus.cpp .
   exec ln -sf ../cpp/src/CheckStatus.h .
-  exec make -f Makefile.sacpp_[set subsys]_labview
   exec rm -fr lib
+  exec make -f Makefile.sacpp_[set subsys]_labview
 }
 
 proc genlabviewidl { subsys } {
@@ -404,7 +404,7 @@ global SAL_WORK_DIR LVSTRINGS LVSTRPARS
         set xtrargs2 ""
 #     }
    puts $fout "
-    int [set base]_shm_salTelemetrySub_[set n2]LV() \{
+    int [set base]_shm_salTelemetrySub_[set name]LV() \{
         [set base]_memIO->syncI_[set base]_[set name] = true;
         while ([set base]_memIO->hasReader_[set base]_[set name] == false) \{
            usleep(1000);
