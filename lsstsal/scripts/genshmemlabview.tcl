@@ -199,7 +199,7 @@ global SAL_DIR SAL_WORK_DIR SYSDIC TELEMETRY_ALIASES LVSTRINGS LVSTRPARS
            }
            if { $name != "command" && $name != "logevent" } {
              puts $fout "
-             int [set base]_shm_salTelemetrySub_[set n2]LV();
+             int [set base]_shm_salTelemetrySub_[set name]LV();
   	     int [set base]_shm_getSample_[set name]LV([set base]_[set name]LV *[set name]_Ctl $xtrargs);
 	     int [set base]_shm_getNextSample_[set name]LV([set base]_[set name]LV *[set name]_Ctl $xtrargs);
 	     int [set base]_shm_putSample_[set name]LV([set base]_[set name]LV *[set name]_Ctl $xtrargs);"
