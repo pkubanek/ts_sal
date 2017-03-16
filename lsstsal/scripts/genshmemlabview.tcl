@@ -565,14 +565,15 @@ global SAL_WORK_DIR LVSTRINGS LVSTRPARS
       [set base]_ackcmdLV response;
       char *result=(char *)malloc(128);
 
+   status = [set base]_shm_getResponse_[set n2]LV(&response);
    while (status != SAL__CMD_COMPLETE && countdown != 0) \{
-      status = [set base]_shm_getResponse_[set n2]LV(&response);
       if (status != SAL__CMD_NOACK) \{
         if ([set base]_memIO->shmemIncoming_[set base]_[set name]_rcvSeqNum != waitStatus->cmdSeqNum) \{ 
            status = SAL__CMD_NOACK;
         \}
       \}
       usleep(SAL__SLOWPOLL);
+      status = [set base]_shm_getResponse_[set n2]LV(&response);
       countdown--;
    \}
    if (status != SAL__CMD_COMPLETE) \{
@@ -599,10 +600,9 @@ global SAL_WORK_DIR LVSTRINGS LVSTRPARS
            data->ack = [set base]_memIO->shmemIncoming_[set base]_[set name]_cmdStatus;
            data->error = [set base]_memIO->shmemIncoming_[set base]_[set name]_errorCode;
            data->cmdSeqNum = [set base]_memIO->shmemIncoming_[set base]_[set name]_rcvSeqNum;
-           int resultSize = 32;
-           (*(data->result))->size = resultSize;
-           for (int i=0;i<32;i++)\{(*(data->result))->data\[i\] = [set base]_memIO->[set base]_ackcmdLV_result_bufferIn\[i\];\}
-           status = [set base]_memIO->shmemIncoming_ackcmd.ack;
+           int resultSize = (*(data->result))->size ;
+           for (int i=0;i<resultSize;i++)\{(*(data->result))->data\[i\] = [set base]_memIO->[set base]_ackcmdLV_result_bufferIn\[i\];\}
+           status = [set base]_memIO->shmemIncoming_[set base]_[set name]_cmdStatus;
            [set base]_memIO->hasIncoming_[set base]_[set name]_ackcmd = false;
            if ([set base]_memIO->callbackHdl_[set base]_ackcmd > 0) \{
               [set base]_memIO->hasCallback_[set base]_ackcmd = true;
@@ -768,9 +768,10 @@ global SAL_DIR SAL_WORK_DIR LVSTRPARS
               mgr.salProcessor(\"[set base]_[set name]\");
               [set base]_memIO->hasWriter_[set base]_ackcmd = true;
               [set base]_memIO->hasReader_[set base]_[set name] = true;
+            \}
        \}
        if ( [set base]_memIO->hasOutgoing_[set base]_[set name]_ackcmd ) \{
-             status = mgr.ackCommand_[set n2](
+          status = mgr.ackCommand_[set n2](
 				[set base]_memIO->shmemOutgoing_[set base]_[set name]_cmdSeqNum,
 				[set base]_memIO->shmemOutgoing_[set base]_[set name]_cmdStatus,
 				[set base]_memIO->shmemOutgoing_[set base]_[set name]_errorCode,
@@ -778,7 +779,6 @@ global SAL_DIR SAL_WORK_DIR LVSTRPARS
                                           );
           [set base]_memIO->hasOutgoing_[set base]_[set name]_ackcmd = false;
        \}
-     \}
 "
 }
 
