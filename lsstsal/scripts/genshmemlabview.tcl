@@ -435,6 +435,9 @@ global SAL_WORK_DIR LVSTRINGS LVSTRPARS
         while ([set base]_memIO->hasReader_[set base]_[set name] == false) \{
            usleep(1000);
         \}
+        if ([set base]_memIO->callbackHdl_[set base]_[set name] > 0) \{
+           [set base]_memIO->hasCallback_[set base]_[set name] = true;
+        \}
         if ( [set base]_memIO->hasIncoming_[set base]_[set name] ) \{"
    set frag [open $SAL_WORK_DIR/include/SAL_[set base]_[set name]shmin.tmp r]
    while { [gets $frag rec] > -1} {puts $fout $rec}
@@ -443,9 +446,6 @@ global SAL_WORK_DIR LVSTRINGS LVSTRPARS
            [set base]_memIO->hasIncoming_[set base]_[set name] = false;
         \} else \{
            return SAL__NO_UPDATES;
-        \}
-        if ([set base]_memIO->callbackHdl_[set base]_[set name] > 0) \{
-           [set base]_memIO->hasCallback_[set base]_[set name] = true;
         \}
         return SAL__OK;
     \}
@@ -523,6 +523,9 @@ global SAL_WORK_DIR LVSTRINGS LVSTRPARS
 
     int [set base]_shm_acceptCommand_[set n2]LV([set base]_[set name]LV *data $xtrargs) \{
         int cmdId;
+        if ([set base]_memIO->callbackHdl_[set base]_[set name] > 0) \{
+           [set base]_memIO->hasCallback_[set base]_[set name] = true;
+        \}
         if ( [set base]_memIO->hasIncoming_[set base]_[set name] ) \{"
    set frag [open $SAL_WORK_DIR/include/SAL_[set base]_[set name]shmin.tmp r]
    while { [gets $frag rec] > -1} {puts $fout $rec}
@@ -536,9 +539,6 @@ global SAL_WORK_DIR LVSTRINGS LVSTRPARS
            \}
         \} else \{
            return SAL__NO_UPDATES;
-        \}
-        if ([set base]_memIO->callbackHdl_[set base]_[set name] > 0) \{
-           [set base]_memIO->hasCallback_[set base]_[set name] = true;
         \}
         return SAL__OK;
     \}"
@@ -596,6 +596,9 @@ global SAL_WORK_DIR LVSTRINGS LVSTRPARS
         while ([set base]_memIO->hasReader_[set base]_ackcmd == false) \{
            usleep(1000);
         \}
+        if ([set base]_memIO->callbackHdl_[set base]_ackcmd > 0) \{
+           [set base]_memIO->hasCallback_[set base]_ackcmd = true;
+        \}
         if ( [set base]_memIO->hasIncoming_[set base]_[set name]_ackcmd ) \{
            data->ack = [set base]_memIO->shmemIncoming_[set base]_[set name]_cmdStatus;
            data->error = [set base]_memIO->shmemIncoming_[set base]_[set name]_errorCode;
@@ -604,9 +607,6 @@ global SAL_WORK_DIR LVSTRINGS LVSTRPARS
            for (int i=0;i<resultSize;i++)\{(*(data->result))->data\[i\] = [set base]_memIO->[set base]_ackcmdLV_result_bufferIn\[i\];\}
            status = [set base]_memIO->shmemIncoming_[set base]_[set name]_cmdStatus;
            [set base]_memIO->hasIncoming_[set base]_[set name]_ackcmd = false;
-           if ([set base]_memIO->callbackHdl_[set base]_ackcmd > 0) \{
-              [set base]_memIO->hasCallback_[set base]_ackcmd = true;
-           \}
         \}
         return status;
     \}
@@ -639,6 +639,9 @@ global SAL_WORK_DIR LVSTRINGS LVSTRPARS
         while ([set base]_memIO->hasReader_[set base]_[set name] == false) \{
            usleep(1000);
         \}
+        if ([set base]_memIO->callbackHdl_[set base]_[set name] > 0) \{
+           [set base]_memIO->hasCallback_[set base]_[set name] = true;
+        \}
         if ( [set base]_memIO->hasIncoming_[set base]_[set name] ) \{"
    set frag [open $SAL_WORK_DIR/include/SAL_[set base]_[set name]shmin.tmp r]
    while { [gets $frag rec] > -1} {puts $fout $rec}
@@ -647,9 +650,6 @@ global SAL_WORK_DIR LVSTRINGS LVSTRPARS
            [set base]_memIO->hasIncoming_[set base]_[set name] = false;
         \} else \{
            return SAL__NO_UPDATES;
-        \}
-        if ([set base]_memIO->callbackHdl_[set base]_[set name] > 0) \{
-           [set base]_memIO->hasCallback_[set base]_[set name] = true;
         \}
         return SAL__OK;
     \}
