@@ -512,7 +512,7 @@ global SAL_WORK_DIR LVSTRINGS LVSTRPARS
         while ([set base]_memIO->client\[LVClient\].hasReader_[set base]_[set name] == false) \{
            usleep(1000);
         \}
-        if ([set base]_memIO->client\[LVClient\].callbackHdl_[set base]_[set name] > 0) \{
+        if ([set base]_memIO->client\[LVClient\].callbackHdl_[set base]_[set name] != 0) \{
            [set base]_memIO->client\[LVClient\].hasCallback_[set base]_[set name] = true;
         \}
         if ( [set base]_memIO->client\[LVClient\].hasIncoming_[set base]_[set name] ) \{"
@@ -600,7 +600,7 @@ global SAL_WORK_DIR LVSTRINGS LVSTRPARS
 
     int [set base]_shm_acceptCommand_[set n2]LV([set base]_[set name]LV *data $xtrargs) \{
         int cmdId;
-        if ([set base]_memIO->client\[LVClient\].callbackHdl_[set base]_[set name] > 0) \{
+        if ([set base]_memIO->client\[LVClient\].callbackHdl_[set base]_[set name] != 0) \{
            [set base]_memIO->client\[LVClient\].hasCallback_[set base]_[set name] = true;
         \}
         if ( [set base]_memIO->client\[LVClient\].hasIncoming_[set base]_[set name] ) \{"
@@ -673,7 +673,7 @@ global SAL_WORK_DIR LVSTRINGS LVSTRPARS
         while ([set base]_memIO->client\[LVClient\].hasReader_[set base]_ackcmd == false) \{
            usleep(1000);
         \}
-        if ([set base]_memIO->client\[LVClient\].callbackHdl_[set base]_[set name]_ackcmd > 0) \{
+        if ([set base]_memIO->client\[LVClient\].callbackHdl_[set base]_[set name]_ackcmd != 0) \{
            [set base]_memIO->client\[LVClient\].hasCallback_[set base]_[set name]_ackcmd = true;
         \}
         if ( [set base]_memIO->client\[LVClient\].hasIncoming_[set base]_[set name]_ackcmd ) \{
@@ -716,7 +716,7 @@ global SAL_WORK_DIR LVSTRINGS LVSTRPARS
         while ([set base]_memIO->client\[LVClient\].hasReader_[set base]_[set name] == false) \{
            usleep(1000);
         \}
-        if ([set base]_memIO->client\[LVClient\].callbackHdl_[set base]_[set name] > 0) \{
+        if ([set base]_memIO->client\[LVClient\].callbackHdl_[set base]_[set name] != 0) \{
            [set base]_memIO->client\[LVClient\].hasCallback_[set base]_[set name] = true;
         \}
         if ( [set base]_memIO->client\[LVClient\].hasIncoming_[set base]_[set name] ) \{"
