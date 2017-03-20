@@ -600,9 +600,6 @@ global SAL_WORK_DIR LVSTRINGS LVSTRPARS
 
     int [set base]_shm_acceptCommand_[set n2]LV([set base]_[set name]LV *data $xtrargs) \{
         int cmdId;
-        if ([set base]_memIO->client\[LVClient\].callbackHdl_[set base]_[set name] != 0) \{
-           [set base]_memIO->client\[LVClient\].hasCallback_[set base]_[set name] = true;
-        \}
         if ( [set base]_memIO->client\[LVClient\].hasIncoming_[set base]_[set name] ) \{"
    set frag [open $SAL_WORK_DIR/include/SAL_[set base]_[set name]shmin.tmp r]
    while { [gets $frag rec] > -1} {puts $fout $rec}
@@ -610,6 +607,9 @@ global SAL_WORK_DIR LVSTRINGS LVSTRPARS
    puts $fout "
            cmdId = [set base]_memIO->client\[LVClient\].shmemIncoming_[set base]_[set name]_rcvSeqNum;
            [set base]_memIO->client\[LVClient\].hasIncoming_[set base]_[set name] = false;
+           if ([set base]_memIO->client\[LVClient\].callbackHdl_[set base]_[set name] != 0) \{
+              [set base]_memIO->client\[LVClient\].hasCallback_[set base]_[set name] = true;
+           \}
            if (cmdId != 0) \{
               [set base]_memIO->client\[LVClient\].shmemIncoming_[set base]_[set name]_rcvSeqNum = 0;
               return cmdId;
@@ -676,17 +676,17 @@ global SAL_WORK_DIR LVSTRINGS LVSTRPARS
         while ([set base]_memIO->client\[LVClient\].hasReader_[set base]_ackcmd == false) \{
            usleep(1000);
         \}
-        if ([set base]_memIO->client\[LVClient\].callbackHdl_[set base]_[set name]_ackcmd != 0) \{
-           [set base]_memIO->client\[LVClient\].hasCallback_[set base]_[set name]_ackcmd = true;
-        \}
         if ( [set base]_memIO->client\[LVClient\].hasIncoming_[set base]_[set name]_ackcmd ) \{
+           [set base]_memIO->client\[LVClient\].hasIncoming_[set base]_[set name]_ackcmd = false;
+           if ([set base]_memIO->client\[LVClient\].callbackHdl_[set base]_[set name]_ackcmd != 0) \{
+              [set base]_memIO->client\[LVClient\].hasCallback_[set base]_[set name]_ackcmd = true;
+           \}
            data->ack = [set base]_memIO->client\[LVClient\].shmemIncoming_[set base]_[set name]_cmdStatus;
            data->error = [set base]_memIO->client\[LVClient\].shmemIncoming_[set base]_[set name]_errorCode;
            data->cmdSeqNum = [set base]_memIO->client\[LVClient\].shmemIncoming_[set base]_[set name]_rcvSeqNum;
            int resultSize = (*(data->result))->size ;
            for (int i=0;i<resultSize;i++)\{(*(data->result))->data\[i\] = [set base]_memIO->client\[LVClient\].[set base]_ackcmdLV_result_bufferIn\[i\];\}
            status = [set base]_memIO->client\[LVClient\].shmemIncoming_[set base]_[set name]_cmdStatus;
-           [set base]_memIO->client\[LVClient\].hasIncoming_[set base]_[set name]_ackcmd = false;
         \}
         return status;
     \}
