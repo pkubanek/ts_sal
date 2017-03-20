@@ -645,14 +645,17 @@ global SAL_WORK_DIR LVSTRINGS LVSTRPARS
    status = [set base]_shm_getResponse_[set n2]LV(&response);
    while (status != SAL__CMD_COMPLETE && countdown != 0) \{
       if (status != SAL__CMD_NOACK) \{
-        if ([set base]_memIO->client\[LVClient\].shmemIncoming_[set base]_[set name]_rcvSeqNum != waitStatus->cmdSeqNum) \{ 
-           status = SAL__CMD_NOACK;
+        if ([set base]_memIO->client\[LVClient\].shmemIncoming_[set base]_[set name]_rcvSeqNum != 0) \{ 
+          if ([set base]_memIO->client\[LVClient\].shmemIncoming_[set base]_[set name]_rcvSeqNum != waitStatus->cmdSeqNum) \{ 
+            status = SAL__CMD_NOACK;
+          \}
         \}
       \}
       usleep(SAL__SLOWPOLL);
       status = [set base]_shm_getResponse_[set n2]LV(&response);
       countdown--;
    \}
+      [set base]_memIO->client\[LVClient\].shmemIncoming_[set base]_[set name]_rcvSeqNum = 0;
    if (status != SAL__CMD_COMPLETE) \{
       if (debugLevel > 0) \{
 //         cout << \"=== \[waitForCompletion\]_[set n2] command \" << cmdSeqNum <<  \" timed out :\" << endl;
