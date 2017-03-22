@@ -7,7 +7,7 @@ proc calcshmid { subsys } {
 }
 
 
-set SYSDIC(systems) "auxscope calibration camera dm  dome domeADB domeAPS domeLouvers domeLWS domeMONCS domeTHCS environment hexapod lasercal m1m3 m2ms MTMount network ocs operations power rotator scheduler seeing skycam system tcs"
+set SYSDIC(systems) "auxscope calibration camera dm  dome domeADB domeAPS domeLouvers domeLWS domeMONCS domeTHCS environment exa hexapod lasercal m1m3 m2ms MTMount network ocs operations power rotator scheduler seeing skycam system tcs"
 foreach s $SYSDIC(systems) {set SYSDIC($s,type) system}
 
 set SYSDIC(datatypes) "byte short int long float string int64 double ubyte ushort uint ulong"
