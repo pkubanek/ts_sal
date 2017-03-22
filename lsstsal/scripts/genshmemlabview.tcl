@@ -572,8 +572,8 @@ global SAL_WORK_DIR LVSTRINGS LVSTRPARS
         [set base]_memIO->client\[LVClient\].syncO_[set base]_[set name] = true;
         while ([set base]_memIO->client\[LVClient\].hasWriter_[set base]_[set name] == false) \{
            usleep(1000);
-        \}"
-        [set base]_memIO->client\[LVClient\].hasOutgoing_[set base]_[set name] = true;
+        \}
+        [set base]_memIO->client\[LVClient\].hasOutgoing_[set base]_[set name] = true;"
    set frag [open $SAL_WORK_DIR/include/SAL_[set base]_[set name]shmout.tmp r]
    while { [gets $frag rec] > -1} {puts $fout $rec}
    close $frag
