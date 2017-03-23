@@ -29,7 +29,7 @@ using namespace [set subsys];
 int main (int argc, char *argv\[\])
 \{ 
   int cmdId;
-  int timeout=10;
+  int timeout=3;
   int status=0;
 
   [set subsys]_command_[set alias]C myData;

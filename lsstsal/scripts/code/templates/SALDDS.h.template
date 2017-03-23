@@ -70,6 +70,7 @@
       long long			rcvStamp[2];
       double			sampleAge;
       int                       historyDepth;
+      bool                      tuneableQos;
   };
 #endif
 
@@ -148,6 +149,7 @@
 
       double getCurrentTime();
       double getRcvdTime();
+      void setTuneableQos(int actorIdx);
 
       salReturn getResponse(SALData::ackcmdSeq data);
       void salShutdown();
