@@ -1222,7 +1222,7 @@ void SAL_SALData::createTopic(int actorIdx)
   sal[actorIdx].reliable_topic_qos.reliability.kind = RELIABLE_RELIABILITY_QOS;
   sal[actorIdx].reliable_topic_qos.durability.kind = TRANSIENT_DURABILITY_QOS;
   sal[actorIdx].reliable_topic_qos.history.kind = KEEP_LAST_HISTORY_QOS;
-  sal[actorIdx].reliable_topic_qos.history.depth = 10000;
+  sal[actorIdx].reliable_topic_qos.history.depth = sal[actorIdx].historyDepth;
 
   /* Make the tailored QoS the new default. */
   status = participant->set_default_topic_qos(sal[actorIdx].reliable_topic_qos);
@@ -1240,7 +1240,7 @@ void SAL_SALData::createTopic2(int actorIdx)
   sal[actorIdx].reliable_topic_qos2.reliability.kind = RELIABLE_RELIABILITY_QOS;
   sal[actorIdx].reliable_topic_qos2.durability.kind = TRANSIENT_DURABILITY_QOS;
   sal[actorIdx].reliable_topic_qos2.history.kind = KEEP_LAST_HISTORY_QOS;
-  sal[actorIdx].reliable_topic_qos2.history.depth = 10000;
+  sal[actorIdx].reliable_topic_qos2.history.depth = sal[actorIdx].historyDepth;
 
   /* Make the tailored QoS the new default. */
   status = participant->set_default_topic_qos(sal[actorIdx].reliable_topic_qos2);
@@ -1258,7 +1258,7 @@ void SAL_SALData::createTopic(int actorIdx, char *topicName)
   sal[actorIdx].reliable_topic_qos.reliability.kind = RELIABLE_RELIABILITY_QOS;
   sal[actorIdx].reliable_topic_qos.durability.kind = TRANSIENT_DURABILITY_QOS;
   sal[actorIdx].reliable_topic_qos.history.kind = KEEP_LAST_HISTORY_QOS;
-  sal[actorIdx].reliable_topic_qos.history.depth = 10000;
+  sal[actorIdx].reliable_topic_qos.history.depth = sal[actorIdx].historyDepth;
 
   /* Make the tailored QoS the new default. */
   status = participant->set_default_topic_qos(sal[actorIdx].reliable_topic_qos);
@@ -1276,7 +1276,7 @@ void SAL_SALData::createTopic2(int actorIdx, char *topicName)
   sal[actorIdx].reliable_topic_qos2.reliability.kind = RELIABLE_RELIABILITY_QOS;
   sal[actorIdx].reliable_topic_qos2.durability.kind = TRANSIENT_DURABILITY_QOS;
   sal[actorIdx].reliable_topic_qos2.history.kind = KEEP_LAST_HISTORY_QOS;
-  sal[actorIdx].reliable_topic_qos2.history.depth = 10000;
+  sal[actorIdx].reliable_topic_qos2.history.depth = sal[actorIdx].historyDepth;
 
   /* Make the tailored QoS the new default. */
   status = participant->set_default_topic_qos(sal[actorIdx].reliable_topic_qos2);
