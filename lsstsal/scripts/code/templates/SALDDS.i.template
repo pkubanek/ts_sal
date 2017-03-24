@@ -63,6 +63,7 @@
 
       double getCurrentTime();
       double getRcvdTime();
+      void setTuneableQos(char *topicName);
 
       void salShutdown();
 #ifdef SAL_SUBSYSTEM_ID_IS_KEYED
@@ -87,6 +88,10 @@
       salReturn getDblProperty(actorIdx,salCHAR *property, double *value);
       salReturn getBoolProperty(actorIdx,salCHAR *property, boolean *value);
       salReturn setProperty(salCHAR *property, salCHAR *value);
+      int getIntProperty(int actorIdx,salCHAR *property);
+      double getDblProperty(int actorIdx,salCHAR *property);
+      bool getBoolProperty(int actorIdx,salCHAR *property);
+      void setMaxSamples(int actorIdx, int n);
       void logError(salReturn status);
 
       salReturn logEvent( char *message, int priority );      

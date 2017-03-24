@@ -102,8 +102,12 @@ double SAL_SALData::getRcvdTime()
      return rcvdTime;
 }
 
-void SAL_SALData::setTuneableQos (int actorIdx) {
-    sal[actorIdx].tuneableQos = true;
+void SAL_SALData::setTuneableQos (char *topicName) {
+    int actorIdx;
+    actorIdx = getActorIndex(topicName);
+    if (actorIdx > 0) {
+       sal[actorIdx].tuneableQos = true;
+    }
 }
 
 

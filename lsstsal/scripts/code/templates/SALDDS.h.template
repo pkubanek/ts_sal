@@ -149,7 +149,7 @@
 
       double getCurrentTime();
       double getRcvdTime();
-      void setTuneableQos(int actorIdx);
+      void setTuneableQos(char *topicName);
 
       salReturn getResponse(SALData::ackcmdSeq data);
       void salShutdown();
