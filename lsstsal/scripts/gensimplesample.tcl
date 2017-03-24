@@ -391,8 +391,7 @@ global VPROPS
          puts $fcod4 "    myData.$VPROPS(name)=\"LSST\";"
          puts $fcod5 "    myData.$VPROPS(name)=argv\[$idx\];"
          puts $fcod6 "    cout << \"    $VPROPS(name) : \" << data->$VPROPS(name) << endl;"
-         if { $VPROPS(iscommand) } {
-            if { [lsearch "device property action value" $VPROPS(name)] < 0 } {
+         if { [lsearch "device property action value" $VPROPS(name)] < 0 } {
               puts $fcod7 "
            int $VPROPS(name)Size = (*(data->$VPROPS(name)))->size ;
            for (int i=0;i<$VPROPS(dim) && i<$VPROPS(name)Size;i++)\{[set VPROPS(base)]_memIO->client\[LVClient\].[set VPROPS(topic)]LV_$VPROPS(name)_bufferOut\[i\] = (*(data->$VPROPS(name)))->data\[i\];\}"
@@ -400,7 +399,6 @@ global VPROPS
            int $VPROPS(name)Size = $VPROPS(dim);
            (*(data->$VPROPS(name)))->size = strlen([set VPROPS(base)]_memIO->client\[LVClient\].[set VPROPS(topic)]LV_$VPROPS(name)_bufferIn);
            for (int i=0;i<$VPROPS(dim);i++)\{(*(data->$VPROPS(name)))->data\[i\] = [set VPROPS(base)]_memIO->client\[LVClient\].[set VPROPS(topic)]LV_$VPROPS(name)_bufferIn\[i\];\}"
-            }
          }
          puts $fcod10 "myData.$VPROPS(name)=sys.argv\[$idx\]"
          puts $fcod11 "myData.$VPROPS(name)=\"LSST\""
