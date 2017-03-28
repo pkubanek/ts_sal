@@ -241,7 +241,7 @@ if { $OPTIONS(sal) } {
   set ONEPYTHON 0
   if { [expr $OPTIONS(cpp) + $OPTIONS(isocpp) + $OPTIONS(java) + $OPTIONS(python)] == 0 } {
      stdlog "========================================================================"
-     stdlog "ERROR :  sal option requires a langguage choice , cpp/isocpp/java/python"
+     stdlog "ERROR :  sal option requires a language choice , cpp/isocpp/java/python"
      stdlog "========================================================================"
      exit
   }
