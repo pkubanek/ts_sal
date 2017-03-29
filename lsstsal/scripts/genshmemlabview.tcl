@@ -128,7 +128,8 @@ global SAL_DIR SAL_WORK_DIR SYSDIC TELEMETRY_ALIASES LVSTRINGS LVSTRPARS
      struct shmemIO \{
          bool  inUse;
          bool  initialized;
-         bool  shutdown;"
+         bool  shutdown;
+         int   activeCommand;"
   foreach j $ptypes {
      set name [lindex $j 2]
      set type [lindex [split $name _] 0]
@@ -159,6 +160,7 @@ global SAL_DIR SAL_WORK_DIR SYSDIC TELEMETRY_ALIASES LVSTRINGS LVSTRPARS
         puts $fout "	int  shmemOutgoing_[set base]_[set name]_errorCode;"
         puts $fout "	int  shmemIncoming_[set base]_[set name]_cmdStatus;"
         puts $fout "	int  shmemIncoming_[set base]_[set name]_errorCode;"
+        puts $fout "	int  shmemIncoming_[set base]_[set name]_waitForSeqNum;"
         puts $fout "	char shmemOutgoing_[set base]_[set name]_resultCode\[128\];"
         puts $fout "	char shmemIncoming_[set base]_[set name]_resultCode\[128\];"
      }
@@ -182,7 +184,7 @@ global SAL_DIR SAL_WORK_DIR SYSDIC TELEMETRY_ALIASES LVSTRINGS LVSTRPARS
   puts $fout "    \};
 
      struct [set base]_shmem \{
-        shmemIO client\[5\];
+        shmemIO client\[20\];
      \};
 
      int shmSize = sizeof([set base]_shmem);
@@ -293,14 +295,14 @@ using namespace [set base];
       [set base]_shmem *[set base]_memIO;
       lShmId = shmget([set base]_shmid + [set idoff], shmSize , IPC_CREAT|0666);
       [set base]_memIO  = ([set base]_shmem *) shmat(lShmId, NULL, 0);
-      SAL_[set base] mgr\[5\];"
+      SAL_[set base] mgr\[20\];"
   foreach j $ptypes {
      set name [lindex $j 2]
      monitorsyncinit $fout $base $name
   }
   puts $fout "       [set base]::ackcmdSeq [set base]_ackcmdSeq;"
   puts $fout "      while ( !shutdown_shmem ) \{
-                     for (LVClient=0;LVClient<5;LVClient++) \{
+                     for (LVClient=0;LVClient<20;LVClient++) \{
                       if ([set base]_memIO->client\[LVClient\].inUse && [set base]_memIO->client\[LVClient\].initialized == false) \{
                           mgr\[LVClient\] = SAL_[set base]($idarg2);
                           [set base]_memIO->client\[LVClient\].initialized = true;
@@ -361,10 +363,10 @@ extern \"C\" \{
       LVClient = 0;
       lShmId = shmget([set base]_shmid + [set idoff], shmSize , IPC_CREAT|0666);
       [set base]_memIO  = ([set base]_shmem *) shmat(lShmId, NULL, 0);
-      while ([set base]_memIO->client\[LVClient\].inUse == true && LVClient < 5) \{
+      while ([set base]_memIO->client\[LVClient\].inUse == true && LVClient < 20) \{
          LVClient = LVClient + 1;
       \}
-      if (LVClient == 5) \{ return SAL__ERROR; \}
+      if (LVClient == 20) \{ return SAL__ERROR; \}
       [set base]_shm_initFlags();
       [set base]_memIO->client\[LVClient\].inUse = true;
       return SAL__OK;
@@ -372,6 +374,7 @@ extern \"C\" \{
 
     int [set base]_salShmRelease() \{
       [set base]_memIO->client\[LVClient\].shutdown = true;
+      [set base]_shm_initFlags();
       shmdt([set base]_memIO);
       return SAL__OK;
     \}
@@ -556,6 +559,7 @@ global SAL_WORK_DIR LVSTRINGS LVSTRPARS
 "
 }
 
+
 proc genlvcommand { fout base name } {
 global SAL_WORK_DIR LVSTRINGS LVSTRPARS
 #     if { [info exists LVSTRINGS([set base]_[set name]C)] } {
@@ -578,11 +582,12 @@ global SAL_WORK_DIR LVSTRINGS LVSTRPARS
    close $frag
    puts $fout "
         [set base]_memIO->client\[LVClient\].hasOutgoing_[set base]_[set name] = true;
-        cmdId = [set base]_memIO->client\[LVClient\].shmemOutgoing_[set base]_[set name]_cmdSeqNum;
+        [set base]_memIO->client\[LVClient\].shmemOutgoing_[set base]_[set name]_cmdSeqNum = 0;
         while (cmdId == 0) \{
            cmdId = [set base]_memIO->client\[LVClient\].shmemOutgoing_[set base]_[set name]_cmdSeqNum;
            usleep(1000);
         \}
+        [set base]_memIO->client\[LVClient\].shmemIncoming_[set base]_[set name]_waitForSeqNum = cmdId;
         [set base]_memIO->client\[LVClient\].shmemOutgoing_[set base]_[set name]_cmdSeqNum = 0;
         return cmdId;
     \}"
@@ -610,7 +615,8 @@ global SAL_WORK_DIR LVSTRINGS LVSTRPARS
               [set base]_memIO->client\[LVClient\].hasCallback_[set base]_[set name] = true;
            \}
            if (cmdId != 0) \{
-              [set base]_memIO->client\[LVClient\].shmemIncoming_[set base]_[set name]_rcvSeqNum = 0;
+//              [set base]_memIO->client\[LVClient\].shmemIncoming_[set base]_[set name]_rcvSeqNum = 0;
+//   cout << \"accepted a command \" << cmdId << endl;
               return cmdId;
            \}
         \} else \{
@@ -640,21 +646,27 @@ global SAL_WORK_DIR LVSTRINGS LVSTRPARS
       int countdown = waitStatus->timeout;
       [set base]_ackcmdLV response;
       char *result=(char *)malloc(128);
-
-   status = [set base]_shm_getResponse_[set n2]LV(&response);
+        
+   [set base]_memIO->client\[LVClient\].activeCommand = SAL__[set base]_[set name]_ACTOR;
+//   [set base]_memIO->client\[LVClient\].shmemIncoming_[set base]_[set name]_waitForSeqNum = waitStatus->cmdSeqNum;
+   status = SAL__CMD_NOACK;
    while (status != SAL__CMD_COMPLETE && countdown != 0) \{
-      if (status != SAL__CMD_NOACK) \{
-        if ([set base]_memIO->client\[LVClient\].shmemIncoming_[set base]_[set name]_rcvSeqNum != 0) \{ 
-          if ([set base]_memIO->client\[LVClient\].shmemIncoming_[set base]_[set name]_rcvSeqNum != waitStatus->cmdSeqNum) \{ 
-            status = SAL__CMD_NOACK;
-          \}
-        \}
-      \}
-      usleep(SAL__SLOWPOLL);
       status = [set base]_shm_getResponse_[set n2]LV(&response);
+//      if (status != SAL__CMD_NOACK) \{
+//        if ([set base]_memIO->client\[LVClient\].shmemIncoming_[set base]_[set name]_rcvSeqNum != 0) \{ 
+//          if ([set base]_memIO->client\[LVClient\].shmemIncoming_[set base]_[set name]_rcvSeqNum != waitStatus->cmdSeqNum) \{ 
+//            status = SAL__CMD_NOACK;
+//          \}
+//        \}
+//      \}
+//   cout << \"waiting for completion\" << countdown << endl;
+//   cout << \"waiting for completion status\" << status << endl;
+      usleep(SAL__SLOWPOLL);
       countdown--;
    \}
-      [set base]_memIO->client\[LVClient\].shmemIncoming_[set base]_[set name]_rcvSeqNum = 0;
+//   [set base]_memIO->client\[LVClient\].shmemIncoming_[set base]_[set name]_rcvSeqNum = 0;
+   [set base]_memIO->client\[LVClient\].hasIncoming_[set base]_[set name]_ackcmd = false;
+//   [set base]_memIO->client\[LVClient\].shmemIncoming_[set base]_[set name]_waitForSeqNum = 0;
    if (status != SAL__CMD_COMPLETE) \{
       if (debugLevel > 0) \{
 //         cout << \"=== \[waitForCompletion\]_[set n2] command \" << cmdSeqNum <<  \" timed out :\" << endl;
@@ -675,8 +687,11 @@ global SAL_WORK_DIR LVSTRINGS LVSTRPARS
         while ([set base]_memIO->client\[LVClient\].hasReader_[set base]_ackcmd == false) \{
            usleep(1000);
         \}
-        if ( [set base]_memIO->client\[LVClient\].hasIncoming_[set base]_[set name]_ackcmd ) \{
-           [set base]_memIO->client\[LVClient\].hasIncoming_[set base]_[set name]_ackcmd = false;
+        if ([set base]_memIO->client\[LVClient\].hasIncoming_[set base]_[set name]_ackcmd ) \{
+        if ([set base]_memIO->client\[LVClient\].shmemIncoming_[set base]_[set name]_rcvSeqNum != 0) \{
+        if ([set base]_memIO->client\[LVClient\].shmemIncoming_[set base]_[set name]_waitForSeqNum != 0) \{
+        if ([set base]_memIO->client\[LVClient\].shmemIncoming_[set base]_[set name]_rcvSeqNum ==
+             [set base]_memIO->client\[LVClient\].shmemIncoming_[set base]_[set name]_waitForSeqNum) \{
            if ([set base]_memIO->client\[LVClient\].callbackHdl_[set base]_[set name]_ackcmd != 0) \{
               [set base]_memIO->client\[LVClient\].hasCallback_[set base]_[set name]_ackcmd = true;
            \}
@@ -686,11 +701,22 @@ global SAL_WORK_DIR LVSTRINGS LVSTRPARS
            int resultSize = (*(data->result))->size ;
            for (int i=0;i<resultSize;i++)\{(*(data->result))->data\[i\] = [set base]_memIO->client\[LVClient\].[set base]_ackcmdLV_result_bufferIn\[i\];\}
            status = [set base]_memIO->client\[LVClient\].shmemIncoming_[set base]_[set name]_cmdStatus;
+           if (data->ack == SAL__CMD_COMPLETE) \{
+              [set base]_memIO->client\[LVClient\].shmemIncoming_[set base]_[set name]_waitForSeqNum = 0;
+              [set base]_memIO->client\[LVClient\].shmemIncoming_[set base]_[set name]_rcvSeqNum = 0;
+              [set base]_memIO->client\[LVClient\].activeCommand = 0;
+           \}
+//    cout << \"got an ack\" << status << endl;
+         \}
+        \}
+        \}
+        [set base]_memIO->client\[LVClient\].hasIncoming_[set base]_[set name]_ackcmd = false;
         \}
         return status;
     \}
 "
 }
+
 
 
 
@@ -793,6 +819,8 @@ global SAL_DIR SAL_WORK_DIR LVSTRPARS
 }
 
 
+
+
 proc monitorcommand { fout base name } {
 global SAL_DIR SAL_WORK_DIR LVSTRPARS
    set n2 [join [lrange [split $name _] 1 end] _]
@@ -814,21 +842,28 @@ global SAL_DIR SAL_WORK_DIR LVSTRPARS
              [set base]_memIO->client\[LVClient\].shmemIncoming_[set base]_[set name]_rcvSeqNum = status;
           \}
        \}
+       if ([set base]_memIO->client\[LVClient\].activeCommand == SAL__[set base]_[set name]_ACTOR) \{
        if ([set base]_memIO->client\[LVClient\].syncI_[set base]_[set name]_ackcmd) \{
+       if ([set base]_memIO->client\[LVClient\].hasIncoming_[set base]_[set name]_ackcmd == false) \{
+          [set base]::ackcmdSeq response;
           actorIdx = SAL__[set base]_ackcmd_ACTOR;
-          status = mgr\[LVClient\].getResponse_[set n2]([set base]_ackcmdSeq);
+          status = mgr\[LVClient\].getResponse_[set n2](response);
           [set base]_memIO->client\[LVClient\].hasReader_[set base]_ackcmd = true;
           if (status == SAL__CMD_COMPLETE) \{
              [set base]_memIO->client\[LVClient\].shmemIncoming_[set base]_[set name]_rcvSeqNum = mgr\[LVClient\].getIntProperty(SAL__[set base]_[set name]_ACTOR , \"rcvSeqNum\");
              [set base]_memIO->client\[LVClient\].shmemIncoming_[set base]_[set name]_cmdStatus = mgr\[LVClient\].getIntProperty(SAL__[set base]_[set name]_ACTOR , \"ack\");
              [set base]_memIO->client\[LVClient\].shmemIncoming_[set base]_[set name]_errorCode = mgr\[LVClient\].getIntProperty(SAL__[set base]_[set name]_ACTOR , \"error\");
              [set base]_memIO->client\[LVClient\].hasIncoming_[set base]_[set name]_ackcmd = true;
-          \}
+           \}
+        \}
+       \}
        \}
        if ([set base]_memIO->client\[LVClient\].syncO_[set base]_[set name]) \{
           actorIdx = SAL__[set base]_[set name]_ACTOR;
           if (mgr\[LVClient\].actorCommand(actorIdx) == false) \{
              mgr\[LVClient\].salCommand(\"[set base]_[set name]\");
+             [set base]_memIO->client\[LVClient\].hasReader_[set base]_ackcmd = true;
+             [set base]_memIO->client\[LVClient\].hasWriter_[set base]_[set name] = true;
           \}
        \}
        if ( [set base]_memIO->client\[LVClient\].hasOutgoing_[set base]_[set name] ) \{"
@@ -851,7 +886,7 @@ global SAL_DIR SAL_WORK_DIR LVSTRPARS
        \}
        if ( [set base]_memIO->client\[LVClient\].hasOutgoing_[set base]_[set name]_ackcmd ) \{
           status = mgr\[LVClient\].ackCommand_[set n2](
-				[set base]_memIO->client\[LVClient\].shmemOutgoing_[set base]_[set name]_cmdSeqNum,
+				[set base]_memIO->client\[LVClient\].shmemIncoming_[set base]_[set name]_rcvSeqNum,
 				[set base]_memIO->client\[LVClient\].shmemOutgoing_[set base]_[set name]_cmdStatus,
 				[set base]_memIO->client\[LVClient\].shmemOutgoing_[set base]_[set name]_errorCode,
 				[set base]_memIO->client\[LVClient\].shmemOutgoing_[set base]_[set name]_resultCode
@@ -860,6 +895,8 @@ global SAL_DIR SAL_WORK_DIR LVSTRPARS
        \}
 "
 }
+
+
 
 
 proc monitorlogevent { fout base name } {
@@ -925,6 +962,7 @@ global SAL_DIR SAL_WORK_DIR
        [set base]_memIO->client\[LVClient\].hasOutgoing_[set base]_[set name]_ackcmd = false;
        [set base]_memIO->client\[LVClient\].hasCallback_[set base]_[set name]_ackcmd = false;
        [set base]_memIO->client\[LVClient\].callbackHdl_[set base]_[set name]_ackcmd = 0;
+       [set base]_memIO->client\[LVClient\].activeCommand = 0;
 "
      }
 }

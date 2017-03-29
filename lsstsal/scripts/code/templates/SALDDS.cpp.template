@@ -1137,20 +1137,23 @@ salReturn SAL_SALData::salEvent(char *topicName)
 
 void SAL_SALData::salShutdown()
 {
-  participant->delete_contained_entities();
-  deleteParticipant();
+  if (participant != NULL) {
+    participant->delete_contained_entities();
+    deleteParticipant();
+  }
 }
 
 void SAL_SALData::createParticipant(const char *partitiontName)
 {
-  domain = DOMAIN_ID_DEFAULT;
-  dpf = DomainParticipantFactory::get_instance();
-  checkHandle(dpf.in(), "DDS::DomainParticipantFactory::get_instance");
-  participant = dpf->create_participant(domain, PARTICIPANT_QOS_DEFAULT, NULL,
-    STATUS_MASK_NONE);
-  checkHandle(participant.in(),
-    "DDS::DomainParticipantFactory::create_participant");
-  partition = partitiontName;
+  
+  if (participant == NULL) {
+    domain = DOMAIN_ID_DEFAULT;
+    dpf = DomainParticipantFactory::get_instance();
+    checkHandle(dpf.in(), "DDS::DomainParticipantFactory::get_instance");
+    participant = dpf->create_participant(domain, PARTICIPANT_QOS_DEFAULT, NULL,STATUS_MASK_NONE);
+    checkHandle(participant.in(),"DDS::DomainParticipantFactory::create_participant");
+    partition = partitiontName;
+  }
 }
 
 void SAL_SALData::deleteParticipant()

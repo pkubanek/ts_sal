@@ -828,8 +828,10 @@ public class SAL_SALData {
 
 	public void salShutdown()
 	{
-          participant.delete_contained_entities();
-	  deleteParticipant();
+          if (participant != null) {
+            participant.delete_contained_entities();
+  	    deleteParticipant();
+          }
 	}
 
 	public int salEvent(String topicName)
@@ -851,6 +853,7 @@ public class SAL_SALData {
 	}
 
 	public void createParticipant(String partitionName) {
+           if (participant == null) {
 		dpf = DomainParticipantFactory.get_instance();
 		checkHandle(dpf, "DomainParticipantFactory.get_instance");
 
@@ -859,6 +862,7 @@ public class SAL_SALData {
 		checkHandle(dpf,
 				"DomainParticipantFactory.create_participant");
 		this.partitionName = partitionName;
+           }
 	}
 
 	public void deleteParticipant() {
