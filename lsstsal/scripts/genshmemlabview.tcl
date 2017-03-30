@@ -909,13 +909,15 @@ global SAL_DIR SAL_WORK_DIR LVSTRPARS
              mgr\[LVClient\].salEvent(\"[set base]_[set name]\");
              [set base]_memIO->client\[LVClient\].hasReader_[set base]_[set name] = true;
           \}
-          status = mgr\[LVClient\].getEvent_[set n2](Incoming_[set base]_[set name]);
-          if (status == SAL__OK) \{"
+          if ( [set base]_memIO->client\[LVClient\].hasIncoming_[set base]_[set name] == false ) \{
+           status = mgr\[LVClient\].getEvent_[set n2](Incoming_[set base]_[set name]);
+           if (status == SAL__OK) \{"
    set frag [open $SAL_WORK_DIR/include/SAL_[set base]_[set name]monin.tmp r]
    while { [gets $frag rec] > -1} {puts $fout $rec}
    close $frag
    puts $fout "
              [set base]_memIO->client\[LVClient\].hasIncoming_[set base]_[set name] = true;
+           \}
           \}
        \}
        if ([set base]_memIO->client\[LVClient\].syncO_[set base]_[set name]) \{
