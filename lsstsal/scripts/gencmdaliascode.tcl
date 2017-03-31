@@ -194,7 +194,7 @@ int SAL_SALData::acceptCommand_[set i]( SALData_command_[set i]C *data )
 salReturn SAL_SALData::waitForCompletion_[set i]( int cmdSeqNum , unsigned int timeout )
 \{
    salReturn status = SAL__OK;
-   int countdown = timeout;
+   int countdown = timeout*100;
    SALData::ackcmdSeq response;
    int actorIdx = SAL__SALData_command_[set i]_ACTOR;
 
@@ -433,7 +433,7 @@ global CMD_ALIASES CMDS SYSDIC
 	public int waitForCompletion_[set i]( int cmdSeqNum , int timeout )
 	\{
 	   int status = 0;
-	   int countdown = timeout;
+	   int countdown = timeout*1000;
            int actorIdx = SAL__SALData_command_[set i]_ACTOR;
 	   ackcmdSeqHolder ackcmd = new ackcmdSeqHolder();
 
@@ -446,7 +446,7 @@ global CMD_ALIASES CMDS SYSDIC
 	      \}
 	      try
 		\{
-	 	  Thread.sleep(100*timeout);
+	 	  Thread.sleep(timeout);
 		\}
 		catch(InterruptedException ie)
 		\{
