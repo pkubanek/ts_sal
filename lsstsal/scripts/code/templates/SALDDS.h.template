@@ -150,7 +150,7 @@
       double getCurrentTime();
       double getRcvdTime();
       void setTuneableQos(char *topicName);
-
+      void setDefaultQos(char *topicName);
       salReturn getResponse(SALData::ackcmdSeq data);
       void salShutdown();
 #ifdef SAL_SUBSYSTEM_ID_IS_KEYED
