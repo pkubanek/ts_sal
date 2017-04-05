@@ -7,7 +7,7 @@ proc calcshmid { subsys } {
 }
 
 
-set SYSDIC(systems) "auxscope calibration camera dm  dome domeADB domeAPS domeLouvers domeLWS domeMONCS domeTHCS environment hexapod lasercal m1m3 m2ms MTMount network ocs operations power rotator scheduler seeing skycam system tcs"
+set SYSDIC(systems) "archiver auxscope calibration camera catchuparchiver dm dome domeADB domeAPS domeLouvers domeLWS domeMONCS domeTHCS environment hexapod lasercal m1m3 m2ms MTMount network ocs operations power processingcluster rotator scheduler seeing sequencer skycam system tcs"
 foreach s $SYSDIC(systems) {set SYSDIC($s,type) system}
 
 set SYSDIC(datatypes) "byte short int long float string int64 double ubyte ushort uint ulong"
@@ -40,7 +40,9 @@ are completed to increasing levels of detail.
 <P>
 <H2>Systems and Subsystems</H2><P>"
 
-set SYSDIC(subsystems) "auxscope - Auxiliary telescope
+set SYSDIC(subsystems) "archiver - Data management archiver (*items not confirmed)
+archiver.system - system overview*
+auxscope - Auxiliary telescope
 auxscope.Application - Derived metadata
 auxscope.Electrical - Electrical system monitoring
 auxscope.Metrology - Positional information
@@ -101,6 +103,8 @@ camera.WDS - Wavefront data system
 camera.WFS - Wavefront sensing system
 camera.WTCM - Wavefront sensors timing control
 camera.XCAL - Sensor calibration system*
+catchuparchiver - Data management catchup archiver (*items not confirmed)
+catchuparchiver.system - system overview*
 dm - Data management subsystems
 dm.derived - Derived data quality
 dm.ALERT - Alert events
@@ -207,6 +211,8 @@ power.Noncritical - Other power systems
 power.Main - Main power monitoring/control , mission critical
 power.TC - Thermal monitoring/control
 power.UPSs - Uninterruptible power supplies
+processingcluster - Data management processing cluster (*items not confirmed)
+processingcluster.system - system overview*
 rotator - Camera rotator system
 scheduler - Observation scheduling subsystem
 scheduler.Application - Derived metadata
@@ -229,6 +235,8 @@ seeing.mass.Imager - Sensor configuration and readout
 seeing.mass.Policy - Configuration and operations
 seeing.mass.Status - Summary data
 seeing.mass.Telescope - Telescope mount control
+sequencer - OCS sequencer (*items not confirmed)
+sequencer.system - system overview*
 skycam - All-sky monitoring cameras
 skycam.Application - Derived metadata
 skycam.Electrical - Electrical system monitoring
