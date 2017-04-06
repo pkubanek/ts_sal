@@ -260,7 +260,9 @@ salReturn SAL_SALData::getResponse_[set i](SALData::ackcmdSeq data)
     sal\[actorIdxCmd\].error = data\[j\].error;
     strcpy(sal\[actorIdxCmd\].result,DDS::string_dup(data\[j\].result));
    \} else \{
-      cout << \"=== \[getResponse_[set i]\] No ack yet!\" << endl;
+      if (debugLevel > 8) \{
+         cout << \"=== \[getResponse_[set i]\] No ack yet!\" << endl;
+      \}
       status = SAL__CMD_NOACK;
    \}
   \}
@@ -495,7 +497,9 @@ global CMD_ALIASES CMDS SYSDIC
 	  	sal\[actorIdxCmd\].rcvSeqNum = data.value\[lastsample\].private_seqNum;
 	  	sal\[actorIdxCmd\].rcvOrigin = data.value\[lastsample\].private_origin;
 	  \} else \{
-	        System.out.println(\"=== \[getResponse_[set i]\] No ack yet!\"); 
+                if ( debugLevel > 8) \{
+	            System.out.println(\"=== \[getResponse_[set i]\] No ack yet!\"); 
+                \}
 	        status = SAL__CMD_NOACK;
 	  \}
     	  SALReader.return_loan(data, infoSeq);

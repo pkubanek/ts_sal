@@ -64,7 +64,7 @@
       double getCurrentTime();
       double getRcvdTime();
       void setTuneableQos(char *topicName);
-
+      void setDefaultQos(char *topicName);
       void salShutdown();
 #ifdef SAL_SUBSYSTEM_ID_IS_KEYED
       void salInitialize(int aKey);

@@ -25,6 +25,7 @@ global SQLREC KEYRANGE
       set type [lindex [split $i .] 0]
       set name [lindex [split $i .] 1]
       set isarray [lindex [split $i .] 2]
+###puts stdout "$i $type $name $isarray"
       if { [info exists KEYRANGE($name)] } {
          set i 1
          while { $i <= $KEYRANGE($name) } {
@@ -34,7 +35,7 @@ global SQLREC KEYRANGE
          return
       } else {
           set generic [lindex [split $name _] 0]
-          if { $isarray != "" } {
+          if { $isarray == "" } {
              if { [info command simulate_[set generic]_value] != "" } {
                 set value [simulate_[set generic]_value $topic]
              } else {
@@ -56,6 +57,7 @@ global SQLREC KEYRANGE
           }
          
       }
+###puts stdout "$cmd , $value"
       set cmd "$cmd ,$value"
   }
   puts $handle "$cmd);"
@@ -68,11 +70,11 @@ global REVCODE
 }
 
 proc simulate_sndStamp_value { topic } {
-   return [clock seconds]
+   return [expr [clock microseconds]/1000000.]
 }
 
 proc simulate_rcvStamp_value { topic } {
-   return [expr [clock seconds] + 1]
+   return [expr [clock microseconds]/1000000. +1.0]
 }
 
 proc simulate_origin_value { topic } {
@@ -161,12 +163,12 @@ proc simulate_byte_value { } {
 }
 
 proc simulate_float_value { } {
-  set v [expr rand()*20.+90.]
+  set v [string trim [format %20.4f [expr rand()*20.+90.]]]
   return $v
 }
 
 proc simulate_double_value { } {
-  set v [expr rand()*20.+90.]
+  set v [string trim [format %20.4f [expr rand()*20.+90.]]]
   return $v
 }
 
