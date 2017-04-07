@@ -7,6 +7,7 @@ proc calcshmid { subsys } {
 }
 
 
+
 set SYSDIC(systems) "accl archiver auxscope calibration camera catchuparchiver dm  dome domeADB domeAPS domeLouvers domeLWS domeMONCS domeTHCS environment EXA hexapod lasercal m1m3 m2ms MTMount network ocs operations power processingcluster rotator sequencer scheduler seeing skycam system tcs"
 foreach s $SYSDIC(systems) {set SYSDIC($s,type) system}
 
