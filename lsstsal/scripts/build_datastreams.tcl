@@ -1,7 +1,7 @@
 #!/usr/bin/tclsh
 
 puts stdout "Building datastreams.html"
-set scriptdir /usr/local/scripts/tcl
+set scriptdir $env(SAL_HOME)/scripts
 
 source $scriptdir/datastream_desc.tcl
 source $scriptdir/camera-subsysdesc.tcl
@@ -21,8 +21,8 @@ while { [gets $fin rec] > -1 } {
 }
 close $fin
 
-set VERSION 2.0
-set RELEASE "Oct 2013"
+set VERSION 3.2
+set RELEASE "Nov 2016"
 set AUTHOR "D. Mills (NOAO), dmills@noao.edu"
 
 set fout [open datastreams.html w]

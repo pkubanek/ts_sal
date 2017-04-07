@@ -61,14 +61,13 @@ int SAL_SALData::issueCommand_[set i]( SALData_command_[set i]C *data )
 \{
   
   InstanceHandle_t cmdHandle = DDS::HANDLE_NIL;
-  time_t sTime;
   SALData::command_[set i] Instance;
   int actorIdx = SAL__SALData_command_[set i]_ACTOR;
   // create DataWriter :
   if (sal\[actorIdx\].isCommand == false) \{
      salCommand(sal\[actorIdx\].topicName);
      sal\[actorIdx\].isCommand = true;
-     sal\[actorIdx\].sndSeqNum = time(&sTime);
+     sal\[actorIdx\].sndSeqNum = rand();
   \}
   DataWriter_var dwriter = getWriter(actorIdx);
   SALCommand_[set i]DataWriter_var SALWriter = SALCommand_[set i]DataWriter::_narrow(dwriter.in());
@@ -195,7 +194,7 @@ int SAL_SALData::acceptCommand_[set i]( SALData_command_[set i]C *data )
 salReturn SAL_SALData::waitForCompletion_[set i]( int cmdSeqNum , unsigned int timeout )
 \{
    salReturn status = SAL__OK;
-   int countdown = timeout;
+   int countdown = timeout*100;
    SALData::ackcmdSeq response;
    int actorIdx = SAL__SALData_command_[set i]_ACTOR;
 
@@ -257,8 +256,13 @@ salReturn SAL_SALData::getResponse_[set i](SALData::ackcmdSeq data)
     rcvdTime = getCurrentTime();
     sal\[actorIdxCmd\].rcvSeqNum = data\[j\].private_seqNum;
     sal\[actorIdxCmd\].rcvOrigin = data\[j\].private_origin;
+    sal\[actorIdxCmd\].ack = data\[j\].ack;
+    sal\[actorIdxCmd\].error = data\[j\].error;
+    strcpy(sal\[actorIdxCmd\].result,DDS::string_dup(data\[j\].result));
    \} else \{
-      cout << \"=== \[getResponse_[set i]\] No ack yet!\" << endl;
+      if (debugLevel > 8) \{
+         cout << \"=== \[getResponse_[set i]\] No ack yet!\" << endl;
+      \}
       status = SAL__CMD_NOACK;
    \}
   \}
@@ -320,13 +324,14 @@ global CMD_ALIASES CMDS SYSDIC
       puts $fout "
 	public int issueCommand_[set i]( command_[set i] data )
 	\{
+          Random randGen = new java.util.Random();
   	  long cmdHandle = HANDLE_NIL.value;
           int status;
           int actorIdx = SAL__SALData_command_[set i]_ACTOR;
 	  if (sal\[actorIdx\].isCommand == false) \{
 	     salCommand(sal\[actorIdx\].topicName);
 	     sal\[actorIdx\].isCommand = true;
-	     sal\[actorIdx\].sndSeqNum = (int)getCurrentTime();
+	     sal\[actorIdx\].sndSeqNum = (int)randGen.nextInt(99999999);
 	  \}
 	  DataWriter dwriter = getWriter(actorIdx);	
 	  command_[set i]DataWriter SALWriter = command_[set i]DataWriterHelper.narrow(dwriter);
@@ -430,7 +435,7 @@ global CMD_ALIASES CMDS SYSDIC
 	public int waitForCompletion_[set i]( int cmdSeqNum , int timeout )
 	\{
 	   int status = 0;
-	   int countdown = timeout;
+	   int countdown = timeout*1000;
            int actorIdx = SAL__SALData_command_[set i]_ACTOR;
 	   ackcmdSeqHolder ackcmd = new ackcmdSeqHolder();
 
@@ -443,7 +448,7 @@ global CMD_ALIASES CMDS SYSDIC
 	      \}
 	      try
 		\{
-	 	  Thread.sleep(100*timeout);
+	 	  Thread.sleep(timeout);
 		\}
 		catch(InterruptedException ie)
 		\{
@@ -492,7 +497,9 @@ global CMD_ALIASES CMDS SYSDIC
 	  	sal\[actorIdxCmd\].rcvSeqNum = data.value\[lastsample\].private_seqNum;
 	  	sal\[actorIdxCmd\].rcvOrigin = data.value\[lastsample\].private_origin;
 	  \} else \{
-	        System.out.println(\"=== \[getResponse_[set i]\] No ack yet!\"); 
+                if ( debugLevel > 8) \{
+	            System.out.println(\"=== \[getResponse_[set i]\] No ack yet!\"); 
+                \}
 	        status = SAL__CMD_NOACK;
 	  \}
     	  SALReader.return_loan(data, infoSeq);
