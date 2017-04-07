@@ -1,8 +1,8 @@
-This is release 3.5 of the SAL SDK
+This is release 3.5.0 of the SAL SDK
 
 Please refer to the SAL User Guide for installation instructions.
 
-Changes for 3.5
+Changes for 3.5.0
 
 The LabVIEW interface is now based on passing Cluster datatypes which should make
 it easier to use. The VI generation process is a little more involved, so please refer to 
