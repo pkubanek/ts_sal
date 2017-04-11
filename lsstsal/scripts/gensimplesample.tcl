@@ -319,7 +319,7 @@ typedef struct [set subsys]_ackcmdLV
       int       cmdSeqNum;
       int 	ack;
       int 	error;
-      StrHdl	result;
+      StrHdl	result; /* 128 */
 \} [set subsys]_ackcmd_Ctl;
 typedef struct [set subsys]_waitCompleteLV
 \{
@@ -396,9 +396,9 @@ global VPROPS
            int $VPROPS(name)Size = (*(data->$VPROPS(name)))->size ;
            for (int i=0;i<$VPROPS(dim) && i<$VPROPS(name)Size;i++)\{[set VPROPS(base)]_memIO->client\[LVClient\].[set VPROPS(topic)]LV_$VPROPS(name)_bufferOut\[i\] = (*(data->$VPROPS(name)))->data\[i\];\}"
                puts $fcod8 "
-           int $VPROPS(name)Size = $VPROPS(dim);
-           (*(data->$VPROPS(name)))->size = strlen([set VPROPS(base)]_memIO->client\[LVClient\].[set VPROPS(topic)]LV_$VPROPS(name)_bufferIn);
-           for (int i=0;i<$VPROPS(dim);i++)\{(*(data->$VPROPS(name)))->data\[i\] = [set VPROPS(base)]_memIO->client\[LVClient\].[set VPROPS(topic)]LV_$VPROPS(name)_bufferIn\[i\];\}"
+           int $VPROPS(name)Size = strlen([set VPROPS(base)]_memIO->client\[LVClient\].[set VPROPS(topic)]LV_$VPROPS(name)_bufferIn);
+           (*(data->$VPROPS(name)))->size = $VPROPS(name)Size;
+           for (int i=0;i<$VPROPS(name)Size;i++)\{(*(data->$VPROPS(name)))->data\[i\] = [set VPROPS(base)]_memIO->client\[LVClient\].[set VPROPS(topic)]LV_$VPROPS(name)_bufferIn\[i\];\}"
          }
          puts $fcod10 "myData.$VPROPS(name)=sys.argv\[$idx\]"
          puts $fcod11 "myData.$VPROPS(name)=\"LSST\""

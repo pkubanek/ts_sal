@@ -92,10 +92,10 @@ global TYPESUBS VPROPS
    if { [lindex $rec 0] == "string" } {
       set VPROPS(string) 1
       set VPROPS(lvres) 5
-      set VPROPS(dim) 32
+      set VPROPS(dim) 128
       set name [string trim [lindex $rec 1] ";"]
       set VPROPS(name) $name
-      set res "  std::string	$name;[join [lrange $rec 2 end]]\n   char [set name]_buffer\[128\];"
+      set res "  std::string	$name;[join [lrange $rec 2 end]]"
       return $res
    }
    if { [lindex $rec 0] == "unsigned" } {set u "unsigned"; set rec [join [lrange $rec 1 end] " "]}
@@ -156,7 +156,7 @@ global TYPESUBS ATYPESUBS
    set u ""
    if { [lindex $rec 0] == "string" } {
       set name [string trim [lindex $rec 1] ";"]
-      set res "  StrHdl	[set name];[join [lrange $rec 2 end]]"
+      set res "  StrHdl	[set name]; /* 128 */"
       return $res
    }
    if { [lindex $rec 0] == "unsigned" } {set u "unsigned"; set rec [join [lrange $rec 1 end] " "]}
@@ -164,14 +164,14 @@ global TYPESUBS ATYPESUBS
       if { [llength [split $rec "\[("]] > 1 } {
         set s [lindex [split $rec "\[\]()"] 1]
         set name [lindex [lindex [split $rec "\[\]()"] 0] 1]
-        set res "  StrHdl [set name];[join [lrange $rec 2 end]]"
+        set res "  StrHdl [set name]; /* $s */"
         return $res
       }
    }
    if { [llength [split $rec "<"]] > 1 } {
       set s [lindex [split $rec "<>"] 1]
       set name [string trim [lindex $rec 1] ";"]
-      set res "  StrHdl [set name];[join [lrange $rec 2 end]]"
+      set res "  StrHdl [set name]; /* $s */"
    } else {
       if { [llength [split $rec "\[("]] > 1 } {
         set s [lindex [split $rec "\[\]()"] 1]

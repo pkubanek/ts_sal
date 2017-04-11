@@ -39,6 +39,11 @@ global ITEMLIST
                 puts $fo2 "  $name tinyint,"
                 set ITEMLIST "$ITEMLIST,byte.$name"
               }
+       boolean   -
+       bool   { puts $fid "  boolean $name;"
+                puts $fo2 "  $name tinyint,"
+                set ITEMLIST "$ITEMLIST,boolean.$name"
+              }
        float  -
        Float  { puts $fid "  float $name;" 
                 puts $fo2 "  $name float," 
@@ -89,6 +94,10 @@ global ITEMLIST
        byte   -
        Byte   { puts $fid "  octet $name\[$nd\];"
                 expanditem $fo2 $name tinyint $nd ; set ITEMLIST "$ITEMLIST,byte.[set name].$nd"
+              }
+       boolean   -
+       bool   { puts $fid "  boolean $name\[$nd\];"
+                expanditem $fo2 $name tinyint $nd ; set ITEMLIST "$ITEMLIST,boolean.[set name].$nd"
               }
        float  -
        Float  { puts $fid "  float $name\[$nd\];" 
