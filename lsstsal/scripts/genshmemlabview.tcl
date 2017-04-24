@@ -45,8 +45,8 @@ global SAL_DIR SAL_WORK_DIR
   exec ln -sf ../cpp/src/CheckStatus.cpp .
   exec ln -sf ../cpp/src/CheckStatus.h .
   exec rm -fr lib
-  exec make -f Makefile.sacpp_[set subsys]_labview
-  removeshmem 0x[calcshmid $base]
+  set bad [catch {exec make -f Makefile.sacpp_[set subsys]_labview} result]
+  removeshmem [calcshmid $base]
 }
 
 proc genlabviewidl { subsys } {
@@ -804,14 +804,16 @@ global SAL_DIR SAL_WORK_DIR
              [set base]_memIO->client\[LVClient\].hasWriter_[set base]_ackcmd = true;
              [set base]_memIO->client\[LVClient\].hasReader_[set base]_[set name] = true;
           \}
-          status = mgr\[LVClient\].acceptCommand_[set n2](Incoming_[set base]_[set name]);
-          if (status > 0) \{"
+          if ([set base]_memIO->client\[LVClient\].hasIncoming_[set base]_[set name] == false) \{
+            status = mgr\[LVClient\].acceptCommand_[set n2](Incoming_[set base]_[set name]);
+            if (status > 0) \{"
    set frag [open $SAL_WORK_DIR/include/SAL_[set base]_[set name]monin.tmp r]
    while { [gets $frag rec] > -1} {puts $fout $rec}
    close $frag
    puts  $fout "
              [set base]_memIO->client\[LVClient\].hasIncoming_[set base]_[set name] = true;
              [set base]_memIO->client\[LVClient\].shmemIncoming_[set base]_[set name]_rcvSeqNum = status;
+            \}
           \}
        \}
        if ([set base]_memIO->client\[LVClient\].activeCommand == SAL__[set base]_[set name]_ACTOR) \{
@@ -988,7 +990,7 @@ proc removeshmem { id } {
   if { $shmpos > -1 } {
      exec ipcrm -m [lindex $ipcs [expr $shmpos +1]]
   } else {
-     puts stdout "Shared memory segment not present OK"
+     puts stdout "Shared memory segment not present : OK"
      return
   }
   set ipcs [exec ipcs -a]
@@ -996,7 +998,7 @@ proc removeshmem { id } {
   if { $shmpos > -1} {
      puts stdout "WARNING : Failed to remove shared memory segment"
   } else {
-     puts stdout "Shared memory segment removed OK"
+     puts stdout "Shared memory segment removed : OK"
   }
 }
 
