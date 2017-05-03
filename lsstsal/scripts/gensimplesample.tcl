@@ -272,7 +272,7 @@ using namespace std;
       long		private_seqNum;
       long 		ack;
       long 		error;
-      string<32>	result;
+      string<256>	result;
 	\};
 	#pragma keylist ackcmd
 	struct logevent
@@ -319,7 +319,7 @@ typedef struct [set subsys]_ackcmdLV
       int       cmdSeqNum;
       int 	ack;
       int 	error;
-      StrHdl	result; /* 128 */
+      StrHdl	result; /* 256 */
 \} [set subsys]_ackcmd_Ctl;
 typedef struct [set subsys]_waitCompleteLV
 \{
@@ -475,7 +475,7 @@ proc genkeyedidl { fout base } {
 	  short	[set base]ID;
 	  long 		ack;
 	  long 		error;
-	  string<32>	result;
+	  string<256>	result;
 	\};
 	#pragma keylist ackcmd [set base]ID
 	struct logevent
