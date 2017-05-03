@@ -6,8 +6,36 @@ Changes for 3.5.0
 
 The LabVIEW interface is now based on passing Cluster datatypes which should make
 it easier to use. The VI generation process is a little more involved, so please refer to 
-the updated uder guide (chapter 9) for more information.
-           
+the updated user guide (chapter 9) for more information.
+    
+The LabVIEW shared memory Monitor has been upgraded to support multiple (50) simulataneous
+LabVIEW connections per machine and subsystem (due to this change, calling shmRelease prior
+to application exit is now mandatory).
+  
+Removed sample XML object definition files to avoid confusion of versions. The definitive XML
+should always be retreived from the LSST Stash ts_xml repository.
+     
+The Python interface has been modified to incorporate control of the Global Interpreter Lock
+(GIL) to allow the DDS threads sufficient cpu time under high load conditions.
+
+Added new commandable subsystems for DM (archiver, catchuparchiver, and processingcluster)
+and OCS (sequencer).
+
+Added salgenerator error detection for "no language" selected when using sal code generation.
+
+Added hooks for per-topic QoS tuning control in future.
+
+Added bandwidth documentation updater
+
+Enhanced SAL object table html format table output
+
+Added LABVIEW_HOME environment variable to permit user control
+
+Added LSST_DDS_DOMAIN environment variable to allow DDS partitioning to 
+isolate users when testing on the same network.
+
+
+
 Changes for 3.4
 
 Added generic Event types
@@ -23,11 +51,19 @@ Changes for 3.2.1 :
 
 Passed comprehensive Continuous Integration Python tests
 
+Added LSST_[subsystem]_ID environment variable to select required instance
+of subsytem at runtime (used for hexapod and rotator currently)
+
+The Python interface has been modified to incorporate control of the Global Interpreter Lock
+(GIL) to allow the DDS threads sufficient cpu time under high load conditions.
+
 Changes for 3.2.0 : 
 
 Passed initial Continuous Integration Python tests
 
 Changes for 3.1.1 : 
+
+Added SWIG based code generation option.
 
 Passed Continuous Integration C++ tests
 
