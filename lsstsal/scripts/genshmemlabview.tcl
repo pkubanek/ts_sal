@@ -627,7 +627,7 @@ global SAL_WORK_DIR LVSTRINGS
       char *result=(char *)malloc(128);
         
    [set base]_memIO->client\[LVClient\].activeCommand = SAL__[set base]_[set name]_ACTOR;
-//   [set base]_memIO->client\[LVClient\].shmemIncoming_[set base]_[set name]_waitForSeqNum = waitStatus->cmdSeqNum;
+   [set base]_memIO->client\[LVClient\].shmemIncoming_[set base]_[set name]_waitForSeqNum = waitStatus->cmdSeqNum;
    status = SAL__CMD_NOACK;
    while (status != SAL__CMD_COMPLETE && countdown != 0) \{
       status = [set base]_shm_getResponse_[set n2]LV(&response);
@@ -860,7 +860,7 @@ global SAL_DIR SAL_WORK_DIR
        \}
        if ( [set base]_memIO->client\[LVClient\].hasOutgoing_[set base]_[set name]_ackcmd ) \{
           status = mgr\[LVClient\].ackCommand_[set n2](
-				[set base]_memIO->client\[LVClient\].shmemIncoming_[set base]_[set name]_rcvSeqNum,
+				[set base]_memIO->client\[LVClient\].shmemOutgoing_[set base]_[set name]_cmdSeqNum,
 				[set base]_memIO->client\[LVClient\].shmemOutgoing_[set base]_[set name]_cmdStatus,
 				[set base]_memIO->client\[LVClient\].shmemOutgoing_[set base]_[set name]_errorCode,
 				[set base]_memIO->client\[LVClient\].shmemOutgoing_[set base]_[set name]_resultCode
