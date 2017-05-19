@@ -197,6 +197,7 @@ global SAL_DIR SAL_WORK_DIR SYSDIC TELEMETRY_ALIASES LVSTRINGS
         int [set base]_salShmRelease();
         void [set base]_shm_checkCallbacksLV();
         void [set base]_shm_initFlags();
+        double [set base]_getCurrentTimeLV();
 "
   foreach j $ptypes {
      set name [lindex $j 2]
@@ -371,6 +372,17 @@ extern \"C\" \{
       shmdt([set base]_memIO);
       return SAL__OK;
     \}
+
+    double [set base]_getCurrentTimeLV() \{
+      struct timeval now;
+      struct timezone zone;
+      double ts;
+
+      gettimeofday(&now, &zone);
+      ts = (double)now.tv_sec + (double)now.tv_usec/1000000.;
+      return ts;
+    \}
+
 "
   foreach j $ptypes {
      set name [lindex $j 2]
