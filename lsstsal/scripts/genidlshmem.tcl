@@ -30,9 +30,9 @@ global ITEMLIST
               }
        char   -
        Char   {
-                puts $fid "  string<1> $name;"
-                puts $fo2 "  $name tinyint,"
-                set ITEMLIST "$ITEMLIST,byte.$name"
+                puts $fid "  string<32> $name;"
+                puts $fo2 "  $name char(32),"
+                set ITEMLIST "$ITEMLIST,char.$name"
               }
        byte   -
        Byte   { puts $fid "  octet $name;"
@@ -89,7 +89,7 @@ global ITEMLIST
        char   -
        Char   {
                 puts $fid "  string<$nd> $name;"
-                expanditem $fo2 $name varchar($nd) $nd ; set ITEMLIST "$ITEMLIST,byte.[set name].$nd"
+                puts $fo2 "  $name varchar($nd)," ; set ITEMLIST "$ITEMLIST,char.[set name].$nd"
               }
        byte   -
        Byte   { puts $fid "  octet $name\[$nd\];"

@@ -47,7 +47,7 @@ global NEWCONSTS IDLSIZES IDLRESERVED
      }
    }
    if { $type == "char" } {
-     set tid [string trim $id "0123456789\[\]"]
+     set tid [lindex [split $id "\["] 0]
      set v "  string<$siz>	$tid"
    }
 #puts stdout "valid is $v"
