@@ -6,7 +6,7 @@
 #
 
 proc mavenize { subsys } {
-global env SAL_WORK_DIR SAL_DIR SALVERSION
+global env SAL_WORK_DIR SAL_DIR SALVERSION OSPL_VERSION
   exec mkdir -p $SAL_WORK_DIR/maven/[set subsys]_[set SALVERSION]/src/main/java/org/lsst/sal/[set subsys]
   exec mkdir -p $SAL_WORK_DIR/maven/[set subsys]_[set SALVERSION]/src/test/java
   exec mkdir -p $SAL_WORK_DIR/maven/[set subsys]_[set SALVERSION]/src/main/resources
@@ -101,9 +101,9 @@ global env SAL_WORK_DIR SAL_DIR SALVERSION
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>openslice.dds</groupId>
+            <groupId>opensplice.dds</groupId>
             <artifactId>dcpssaj</artifactId>
-            <version>6.4.0</version>
+            <version>$OSPL_VERSION</version>
         </dependency>
     </dependencies>
     <repositories>

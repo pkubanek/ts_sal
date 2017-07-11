@@ -30,14 +30,19 @@ global ITEMLIST
               }
        char   -
        Char   {
-                puts $fid "  string<1> $name;"
-                puts $fo2 "  $name tinyint,"
-                set ITEMLIST "$ITEMLIST,byte.$name"
+                puts $fid "  string<32> $name;"
+                puts $fo2 "  $name char(32),"
+                set ITEMLIST "$ITEMLIST,char.$name"
               }
        byte   -
        Byte   { puts $fid "  octet $name;"
                 puts $fo2 "  $name tinyint,"
                 set ITEMLIST "$ITEMLIST,byte.$name"
+              }
+       boolean   -
+       bool   { puts $fid "  boolean $name;"
+                puts $fo2 "  $name tinyint,"
+                set ITEMLIST "$ITEMLIST,boolean.$name"
               }
        float  -
        Float  { puts $fid "  float $name;" 
@@ -84,11 +89,15 @@ global ITEMLIST
        char   -
        Char   {
                 puts $fid "  string<$nd> $name;"
-                expanditem $fo2 $name varchar($nd) $nd ; set ITEMLIST "$ITEMLIST,byte.[set name].$nd"
+                puts $fo2 "  $name varchar($nd)," ; set ITEMLIST "$ITEMLIST,char.[set name].$nd"
               }
        byte   -
        Byte   { puts $fid "  octet $name\[$nd\];"
                 expanditem $fo2 $name tinyint $nd ; set ITEMLIST "$ITEMLIST,byte.[set name].$nd"
+              }
+       boolean   -
+       bool   { puts $fid "  boolean $name\[$nd\];"
+                expanditem $fo2 $name tinyint $nd ; set ITEMLIST "$ITEMLIST,boolean.[set name].$nd"
               }
        float  -
        Float  { puts $fid "  float $name\[$nd\];" 

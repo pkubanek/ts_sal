@@ -272,7 +272,7 @@ using namespace std;
       long		private_seqNum;
       long 		ack;
       long 		error;
-      string<32>	result;
+      string<256>	result;
 	\};
 	#pragma keylist ackcmd
 	struct logevent
@@ -319,7 +319,7 @@ typedef struct [set subsys]_ackcmdLV
       int       cmdSeqNum;
       int 	ack;
       int 	error;
-      StrHdl	result;
+      StrHdl	result; /* 256 */
 \} [set subsys]_ackcmd_Ctl;
 typedef struct [set subsys]_waitCompleteLV
 \{
@@ -394,11 +394,13 @@ global VPROPS
          if { [lsearch "device property action value" $VPROPS(name)] < 0 } {
               puts $fcod7 "
            int $VPROPS(name)Size = (*(data->$VPROPS(name)))->size ;
-           for (int i=0;i<$VPROPS(dim) && i<$VPROPS(name)Size;i++)\{[set VPROPS(base)]_memIO->client\[LVClient\].[set VPROPS(topic)]LV_$VPROPS(name)_bufferOut\[i\] = (*(data->$VPROPS(name)))->data\[i\];\}"
+           int i[set VPROPS(name)];
+           for (i[set VPROPS(name)]=0;i[set VPROPS(name)]<$VPROPS(dim)-1 && i[set VPROPS(name)]<$VPROPS(name)Size;i[set VPROPS(name)]++)\{[set VPROPS(base)]_memIO->client\[LVClient\].[set VPROPS(topic)]LV_$VPROPS(name)_bufferOut\[i[set VPROPS(name)]\] = (*(data->$VPROPS(name)))->data\[i[set VPROPS(name)]\];\}
+           [set VPROPS(base)]_memIO->client\[LVClient\].[set VPROPS(topic)]LV_$VPROPS(name)_bufferOut\[i[set VPROPS(name)]\] = 0;"
                puts $fcod8 "
-           int $VPROPS(name)Size = $VPROPS(dim);
-           (*(data->$VPROPS(name)))->size = strlen([set VPROPS(base)]_memIO->client\[LVClient\].[set VPROPS(topic)]LV_$VPROPS(name)_bufferIn);
-           for (int i=0;i<$VPROPS(dim);i++)\{(*(data->$VPROPS(name)))->data\[i\] = [set VPROPS(base)]_memIO->client\[LVClient\].[set VPROPS(topic)]LV_$VPROPS(name)_bufferIn\[i\];\}"
+           int $VPROPS(name)Size = strlen([set VPROPS(base)]_memIO->client\[LVClient\].[set VPROPS(topic)]LV_$VPROPS(name)_bufferIn);
+           (*(data->$VPROPS(name)))->size = $VPROPS(name)Size;
+           for (int i=0;i<$VPROPS(name)Size;i++)\{(*(data->$VPROPS(name)))->data\[i\] = [set VPROPS(base)]_memIO->client\[LVClient\].[set VPROPS(topic)]LV_$VPROPS(name)_bufferIn\[i\];\}"
          }
          puts $fcod10 "myData.$VPROPS(name)=sys.argv\[$idx\]"
          puts $fcod11 "myData.$VPROPS(name)=\"LSST\""
@@ -473,7 +475,7 @@ proc genkeyedidl { fout base } {
 	  short	[set base]ID;
 	  long 		ack;
 	  long 		error;
-	  string<32>	result;
+	  string<256>	result;
 	\};
 	#pragma keylist ackcmd [set base]ID
 	struct logevent

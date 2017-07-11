@@ -37,8 +37,8 @@ OBJS1         = .obj/CheckStatus$(OBJEXT) .obj/SAL_SALSubsys$(OBJEXT) .obj/sacpp
 OBJS2         = .obj/CheckStatus$(OBJEXT) .obj/SAL_SALSubsys$(OBJEXT) .obj/sacpp_SALData_telemetry_efdwriter$(OBJEXT)
 OBJS3         = .obj/CheckStatus$(OBJEXT) .obj/SAL_SALSubsys$(OBJEXT) .obj/sacpp_SALData_event_efdwriter$(OBJEXT)
 SRC1          = ../src/CheckStatus.cpp ../src/SAL_SALSubsys.cpp ../src/sacpp_SALData_command_efdwriter.cpp
-SRC1          = ../src/CheckStatus.cpp ../src/SAL_SALSubsys.cpp ../src/sacpp_SALData_telemetry_efdwriter.cpp
-SRC1          = ../src/CheckStatus.cpp ../src/SAL_SALSubsys.cpp ../src/sacpp_SALData_event_efdwriter.cpp
+SRC2          = ../src/CheckStatus.cpp ../src/SAL_SALSubsys.cpp ../src/sacpp_SALData_telemetry_efdwriter.cpp
+SRC3          = ../src/CheckStatus.cpp ../src/SAL_SALSubsys.cpp ../src/sacpp_SALData_event_efdwriter.cpp
 LINK.cc       = $(LD) $(LDFLAGS)
 EXPORTFLAGS   = 
 
@@ -58,7 +58,7 @@ $(BIN2): $(OBJS2)
 
 $(BIN3): $(OBJS3)
 	@$(TESTDIRSTART) "$(BTARGETDIR)" $(TESTDIREND) $(MKDIR) "$(BTARGETDIR)"
-	$(LINK.cc) $(OBJS1) $(LDLIBS) $(OUTPUT_OPTION)
+	$(LINK.cc) $(OBJS3) $(LDLIBS) $(OUTPUT_OPTION)
 
 generated: $(GENERATED_DIRTY)
 	@-:

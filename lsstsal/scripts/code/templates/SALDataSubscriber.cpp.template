@@ -28,8 +28,7 @@ extern "C"
 
 int SALTelemetrySubscriber(char *topic_name)
 {
-  os_time delay_2ms = { 0, 2000000 };
-  os_time delay_200ms = { 0, 200000000 };
+  os_time delay_10ms = { 0, 10000000 };
   SALNAMESTRINGC SALInstance;
 
 
@@ -51,15 +50,13 @@ int SALTelemetrySubscriber(char *topic_name)
   int count = 0;
   while (1)
   {
-    status = mgr.getSample_SALTopic(&SALInstance);
+    status = mgr.getNextSample_SALTopic(&SALInstance);
     if (status == SAL__OK) {
 // INSERT_SAL_SUBC
     }
-    os_nanoSleep(delay_200ms);
+    os_nanoSleep(delay_10ms);
     ++count;
   }
-
-  os_nanoSleep(delay_2ms);
 
   //cleanup
   mgr.salShutdown();

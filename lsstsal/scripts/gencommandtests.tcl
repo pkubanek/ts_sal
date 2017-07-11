@@ -77,8 +77,10 @@ int main (int argc, char *argv\[\])
 
   /* Remove the DataWriters etc */
   mgr.salShutdown();
-
-  return status;
+  if (status != SAL__CMD_COMPLETE) \{
+     exit(1);
+  \}
+  exit(0);
 \}
 
 "

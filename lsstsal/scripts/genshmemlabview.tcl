@@ -45,7 +45,8 @@ global SAL_DIR SAL_WORK_DIR
   exec ln -sf ../cpp/src/CheckStatus.cpp .
   exec ln -sf ../cpp/src/CheckStatus.h .
   exec rm -fr lib
-  exec make -f Makefile.sacpp_[set subsys]_labview
+  set bad [catch {exec make -f Makefile.sacpp_[set subsys]_labview} result]
+  removeshmem [calcshmid $base]
 }
 
 proc genlabviewidl { subsys } {
@@ -94,7 +95,7 @@ global SAL_DIR SAL_WORK_DIR env
 
 
 proc genlabviewincl { base ptypes } {
-global SAL_DIR SAL_WORK_DIR SYSDIC TELEMETRY_ALIASES LVSTRINGS LVSTRPARS
+global SAL_DIR SAL_WORK_DIR SYSDIC TELEMETRY_ALIASES LVSTRINGS
   set idarg ""
   if { [info exists SYSDIC($base,keyedID)] } {
      set idarg "unsigned int [set base]ID"
@@ -105,15 +106,13 @@ global SAL_DIR SAL_WORK_DIR SYSDIC TELEMETRY_ALIASES LVSTRINGS LVSTRPARS
   while  { [gets $fhlv rec] > -1 } {
      if { [string range $rec 0 13] == "typedef struct" } {
         set sname [lindex [string trim $rec "\{"] 2]
-        if { $sname != "" } {set LVSTRPARS([set sname]) ""}
      }
      set crec [string trim $rec "\{\}"]
      if { [lindex $crec 0] == "StrHdl" && $sname != "" } {
        set param [string trim [lindex $crec 1] "*;"]
+       set slen [lindex $crec 3]
        if { [lsearch "device property action value" $param] < 0 } {
-         set LVSTRINGS([set sname]_[set param]) 1
-#       set LVSTRINGS([set sname]) "$LVSTRINGS([set sname]), char *$param"
-         set LVSTRPARS([set sname]) "$LVSTRPARS([set sname]) $param"
+         set LVSTRINGS([set sname]_[set param]) $slen
          puts $fout $rec
        }
      } else {
@@ -174,9 +173,10 @@ global SAL_DIR SAL_WORK_DIR SYSDIC TELEMETRY_ALIASES LVSTRINGS LVSTRPARS
 #     }
   }
   foreach lvs [lsort [array names LVSTRINGS]] {
+     set slen $LVSTRINGS([set lvs])
      puts $fout "
-      char [set lvs]_bufferOut\[128\];
-      char [set lvs]_bufferIn\[128\];
+      char [set lvs]_bufferOut\[[set slen]\];
+      char [set lvs]_bufferIn\[[set slen]\];
     "
   }
   puts $fout "	[set base]_ackcmdC shmemIncoming_ackcmd;"
@@ -197,23 +197,17 @@ global SAL_DIR SAL_WORK_DIR SYSDIC TELEMETRY_ALIASES LVSTRINGS LVSTRPARS
         int [set base]_salShmRelease();
         void [set base]_shm_checkCallbacksLV();
         void [set base]_shm_initFlags();
+        double [set base]_getCurrentTimeLV();
 "
   foreach j $ptypes {
      set name [lindex $j 2]
      set n2 [join [lrange [split $name _] 1 end] _]
      set type [lindex [split $name _] 0]
-#     if { [info exists LVSTRINGS([set base]_[set name]C)] } {
-#        set xtrargs  $LVSTRINGS([set base]_[set name]C)
-#        set xtrargs2 $LVSTRPARS([set base]_[set name]C)
-#     } else {
-        set xtrargs ""
-        set xtrargs2 ""
-#     }
      if { $type == "command" && $name != "command" } {
        puts $fout "
         int [set base]_shm_salProcessor_[set n2]LV();
-        int [set base]_shm_issueCommand_[set n2]LV([set base]_[set name]LV *[set name]_Ctl $xtrargs);
-        int [set base]_shm_acceptCommand_[set n2]LV([set base]_[set name]LV *[set name]_Ctl $xtrargs);
+        int [set base]_shm_issueCommand_[set n2]LV([set base]_[set name]LV *[set name]_Ctl );
+        int [set base]_shm_acceptCommand_[set n2]LV([set base]_[set name]LV *[set name]_Ctl );
         int [set base]_shm_ackCommand_[set n2]LV([set base]_ackcmdLV *ackcmd_Ctl);
         int [set base]_shm_waitForCompletion_[set n2]LV([set base]_waitCompleteLV *waitComplete_Ctl);
         int [set base]_shm_getResponse_[set n2]LV([set base]_ackcmdLV *ackcmd_Ctl);"
@@ -221,8 +215,8 @@ global SAL_DIR SAL_WORK_DIR SYSDIC TELEMETRY_ALIASES LVSTRINGS LVSTRPARS
         if { $type == "logevent" && $name != "logevent" } {
            puts $fout "
         int [set base]_shm_salEvent_[set n2]LV();
-	int [set base]_shm_getEvent_[set n2]LV([set base]_[set name]LV *[set name]_Ctl $xtrargs);
-	int [set base]_shm_logEvent_[set n2]LV([set base]_[set name]LV *[set name]_Ctl $xtrargs);"
+	int [set base]_shm_getEvent_[set n2]LV([set base]_[set name]LV *[set name]_Ctl );
+	int [set base]_shm_logEvent_[set n2]LV([set base]_[set name]LV *[set name]_Ctl );"
         } else {
            if { $name != "ackcmd" && $name != "command" && $name != "logevent" } {
               lappend TELEMETRY_ALIASES($base) $name
@@ -230,9 +224,9 @@ global SAL_DIR SAL_WORK_DIR SYSDIC TELEMETRY_ALIASES LVSTRINGS LVSTRPARS
            if { $name != "command" && $name != "logevent" } {
              puts $fout "
         int [set base]_shm_salTelemetrySub_[set name]LV();
-        int [set base]_shm_getSample_[set name]LV([set base]_[set name]LV *[set name]_Ctl $xtrargs);
-        int [set base]_shm_getNextSample_[set name]LV([set base]_[set name]LV *[set name]_Ctl $xtrargs);
-        int [set base]_shm_putSample_[set name]LV([set base]_[set name]LV *[set name]_Ctl $xtrargs);"
+        int [set base]_shm_getSample_[set name]LV([set base]_[set name]LV *[set name]_Ctl );
+        int [set base]_shm_getNextSample_[set name]LV([set base]_[set name]LV *[set name]_Ctl );
+        int [set base]_shm_putSample_[set name]LV([set base]_[set name]LV *[set name]_Ctl );"
            }
         }
      }   
@@ -261,7 +255,7 @@ global SAL_DIR SAL_WORK_DIR
 }
 
 proc genlabviewcpp { base ptypes } {
-global SAL_DIR SAL_WORK_DIR SYSDIC LVSTRINGS LVSTRPARS
+global SAL_DIR SAL_WORK_DIR SYSDIC LVSTRINGS
   set idarg ""
   set idarg2 ""
   set idarg3 "     unsigned int [set base]ID = 0;"
@@ -378,6 +372,17 @@ extern \"C\" \{
       shmdt([set base]_memIO);
       return SAL__OK;
     \}
+
+    double [set base]_getCurrentTimeLV() \{
+      struct timeval now;
+      struct timezone zone;
+      double ts;
+
+      gettimeofday(&now, &zone);
+      ts = (double)now.tv_sec + (double)now.tv_usec/1000000.;
+      return ts;
+    \}
+
 "
   foreach j $ptypes {
      set name [lindex $j 2]
@@ -492,14 +497,7 @@ proc genlvlaunchcallbacks { fout base ptypes } {
 
 
 proc genlvtelemetry { fout base name } {
-global SAL_WORK_DIR LVSTRINGS LVSTRPARS
-#     if { [info exists LVSTRINGS([set base]_[set name]C)] } {
-#        set xtrargs  [join $LVSTRINGS([set base]_[set name]C)]
-#        set xtrargs2 [join $LVSTRPARS([set base]_[set name]C)]
-#     } else {
-        set xtrargs ""
-        set xtrargs2 ""
-#     }
+global SAL_WORK_DIR LVSTRINGS
    puts $fout "
     int [set base]_shm_salTelemetrySub_[set name]LV() \{
         [set base]_memIO->client\[LVClient\].syncI_[set base]_[set name] = true;
@@ -509,7 +507,7 @@ global SAL_WORK_DIR LVSTRINGS LVSTRPARS
         return SAL__OK;
     \}
 
-    int [set base]_shm_getSample_[set name]LV([set base]_[set name]LV *data $xtrargs) \{
+    int [set base]_shm_getSample_[set name]LV([set base]_[set name]LV *data ) \{
         [set base]_memIO->client\[LVClient\].syncI_[set base]_[set name] = true;
         [set base]_memIO->client\[LVClient\].skipOld_[set base]_[set name] = false;
         while ([set base]_memIO->client\[LVClient\].hasReader_[set base]_[set name] == false) \{
@@ -530,15 +528,15 @@ global SAL_WORK_DIR LVSTRINGS LVSTRPARS
         return SAL__OK;
     \}
 
-    int [set base]_shm_getNextSample_[set name]LV([set base]_[set name]LV *data $xtrargs) \{
+    int [set base]_shm_getNextSample_[set name]LV([set base]_[set name]LV *data ) \{
         int status = SAL__NO_UPDATES;
         [set base]_memIO->client\[LVClient\].syncI_[set base]_[set name] = true;
         [set base]_memIO->client\[LVClient\].skipOld_[set base]_[set name] = true;
-	status = [set base]_shm_getSample_[set name]LV(data $xtrargs2);
+	status = [set base]_shm_getSample_[set name]LV(data);
         return status;
     \}
 
-    int [set base]_shm_putSample_[set name]LV([set base]_[set name]LV *data $xtrargs) \{
+    int [set base]_shm_putSample_[set name]LV([set base]_[set name]LV *data ) \{
         [set base]_memIO->client\[LVClient\].syncO_[set base]_[set name] = true;
         while ([set base]_memIO->client\[LVClient\].hasWriter_[set base]_[set name] == false) \{
            usleep(1000);
@@ -561,17 +559,10 @@ global SAL_WORK_DIR LVSTRINGS LVSTRPARS
 
 
 proc genlvcommand { fout base name } {
-global SAL_WORK_DIR LVSTRINGS LVSTRPARS
-#     if { [info exists LVSTRINGS([set base]_[set name]C)] } {
-#        set xtrargs  [join $LVSTRINGS([set base]_[set name]C)]
-#        set xtrargs2 [join $LVSTRPARS([set base]_[set name]C)]
-#     } else {
-        set xtrargs ""
-        set xtrargs2 ""
-#     }
+global SAL_WORK_DIR LVSTRINGS
    set n2 [join [lrange [split $name _] 1 end] _]
    puts $fout "
-    int [set base]_shm_issueCommand_[set n2]LV([set base]_[set name]LV *data $xtrargs) \{
+    int [set base]_shm_issueCommand_[set n2]LV([set base]_[set name]LV *data ) \{
         int cmdId = 0;
         [set base]_memIO->client\[LVClient\].syncO_[set base]_[set name] = true;
         while ([set base]_memIO->client\[LVClient\].hasWriter_[set base]_[set name] == false) \{
@@ -602,7 +593,7 @@ global SAL_WORK_DIR LVSTRINGS LVSTRPARS
     \}
 
 
-    int [set base]_shm_acceptCommand_[set n2]LV([set base]_[set name]LV *data $xtrargs) \{
+    int [set base]_shm_acceptCommand_[set n2]LV([set base]_[set name]LV *data ) \{
         int cmdId;
         if ( [set base]_memIO->client\[LVClient\].hasIncoming_[set base]_[set name] ) \{"
    set frag [open $SAL_WORK_DIR/include/SAL_[set base]_[set name]shmin.tmp r]
@@ -648,7 +639,7 @@ global SAL_WORK_DIR LVSTRINGS LVSTRPARS
       char *result=(char *)malloc(128);
         
    [set base]_memIO->client\[LVClient\].activeCommand = SAL__[set base]_[set name]_ACTOR;
-//   [set base]_memIO->client\[LVClient\].shmemIncoming_[set base]_[set name]_waitForSeqNum = waitStatus->cmdSeqNum;
+   [set base]_memIO->client\[LVClient\].shmemIncoming_[set base]_[set name]_waitForSeqNum = waitStatus->cmdSeqNum;
    status = SAL__CMD_NOACK;
    while (status != SAL__CMD_COMPLETE && countdown != 0) \{
       status = [set base]_shm_getResponse_[set n2]LV(&response);
@@ -721,14 +712,7 @@ global SAL_WORK_DIR LVSTRINGS LVSTRPARS
 
 
 proc genlvlogevent { fout base name } {
-global SAL_WORK_DIR LVSTRINGS LVSTRPARS
-#     if { [info exists LVSTRINGS([set base]_[set name]C)] } {
-#        set xtrargs  [join $LVSTRINGS([set base]_[set name]C)]
-#        set xtrargs2 [join $LVSTRPARS([set base]_[set name]C)]
-#     } else {
-        set xtrargs ""
-        set xtrargs2 ""
-#     }
+global SAL_WORK_DIR LVSTRINGS
    set n2 [join [lrange [split $name _] 1 end] _]
    puts $fout "
     int [set base]_shm_salEvent_[set n2]LV() \{
@@ -739,7 +723,7 @@ global SAL_WORK_DIR LVSTRINGS LVSTRPARS
         return SAL__OK;
     \}
 
-    int [set base]_shm_getEvent_[set n2]LV([set base]_[set name]LV *data $xtrargs) \{
+    int [set base]_shm_getEvent_[set n2]LV([set base]_[set name]LV *data ) \{
         [set base]_memIO->client\[LVClient\].syncI_[set base]_[set name] = true;
         while ([set base]_memIO->client\[LVClient\].hasReader_[set base]_[set name] == false) \{
            usleep(1000);
@@ -759,7 +743,7 @@ global SAL_WORK_DIR LVSTRINGS LVSTRPARS
         return SAL__OK;
     \}
 
-    int [set base]_shm_logEvent_[set n2]LV([set base]_[set name]LV *data $xtrargs) \{
+    int [set base]_shm_logEvent_[set n2]LV([set base]_[set name]LV *data ) \{
         [set base]_memIO->client\[LVClient\].syncO_[set base]_[set name] = true;
         if ([set base]_memIO->client\[LVClient\].hasOutgoing_[set base]_[set name]) \{ 
            return SAL__ERROR;
@@ -776,7 +760,7 @@ global SAL_WORK_DIR LVSTRINGS LVSTRPARS
 
 
 proc monitortelemetry { fout base name } {
-global SAL_DIR SAL_WORK_DIR LVSTRPARS
+global SAL_DIR SAL_WORK_DIR
    puts $fout "
        if ([set base]_memIO->client\[LVClient\].syncI_[set base]_[set name]) \{
           actorIdx = SAL__[set base]_[set name]_ACTOR;
@@ -822,7 +806,7 @@ global SAL_DIR SAL_WORK_DIR LVSTRPARS
 
 
 proc monitorcommand { fout base name } {
-global SAL_DIR SAL_WORK_DIR LVSTRPARS
+global SAL_DIR SAL_WORK_DIR
    set n2 [join [lrange [split $name _] 1 end] _]
    puts $fout "
        if ([set base]_memIO->client\[LVClient\].syncI_[set base]_[set name]) \{
@@ -832,14 +816,16 @@ global SAL_DIR SAL_WORK_DIR LVSTRPARS
              [set base]_memIO->client\[LVClient\].hasWriter_[set base]_ackcmd = true;
              [set base]_memIO->client\[LVClient\].hasReader_[set base]_[set name] = true;
           \}
-          status = mgr\[LVClient\].acceptCommand_[set n2](Incoming_[set base]_[set name]);
-          if (status > 0) \{"
+          if ([set base]_memIO->client\[LVClient\].hasIncoming_[set base]_[set name] == false) \{
+            status = mgr\[LVClient\].acceptCommand_[set n2](Incoming_[set base]_[set name]);
+            if (status > 0) \{"
    set frag [open $SAL_WORK_DIR/include/SAL_[set base]_[set name]monin.tmp r]
    while { [gets $frag rec] > -1} {puts $fout $rec}
    close $frag
    puts  $fout "
              [set base]_memIO->client\[LVClient\].hasIncoming_[set base]_[set name] = true;
              [set base]_memIO->client\[LVClient\].shmemIncoming_[set base]_[set name]_rcvSeqNum = status;
+            \}
           \}
        \}
        if ([set base]_memIO->client\[LVClient\].activeCommand == SAL__[set base]_[set name]_ACTOR) \{
@@ -886,7 +872,7 @@ global SAL_DIR SAL_WORK_DIR LVSTRPARS
        \}
        if ( [set base]_memIO->client\[LVClient\].hasOutgoing_[set base]_[set name]_ackcmd ) \{
           status = mgr\[LVClient\].ackCommand_[set n2](
-				[set base]_memIO->client\[LVClient\].shmemIncoming_[set base]_[set name]_rcvSeqNum,
+				[set base]_memIO->client\[LVClient\].shmemOutgoing_[set base]_[set name]_cmdSeqNum,
 				[set base]_memIO->client\[LVClient\].shmemOutgoing_[set base]_[set name]_cmdStatus,
 				[set base]_memIO->client\[LVClient\].shmemOutgoing_[set base]_[set name]_errorCode,
 				[set base]_memIO->client\[LVClient\].shmemOutgoing_[set base]_[set name]_resultCode
@@ -900,7 +886,7 @@ global SAL_DIR SAL_WORK_DIR LVSTRPARS
 
 
 proc monitorlogevent { fout base name } {
-global SAL_DIR SAL_WORK_DIR LVSTRPARS
+global SAL_DIR SAL_WORK_DIR
    set n2 [join [lrange [split $name _] 1 end] _]
    puts $fout "
        if ([set base]_memIO->client\[LVClient\].syncI_[set base]_[set name]) \{
@@ -1007,6 +993,29 @@ global SAL_DIR SAL_WORK_DIR
   close $fin
   close $fout
 }
+
+
+proc removeshmem { id } {
+  set lid "0x[format %8.8x 0x[set id]]"
+  set ipcs [exec ipcs -a]
+  set shmpos [lsearch $ipcs $lid]
+  if { $shmpos > -1 } {
+     exec ipcrm -m [lindex $ipcs [expr $shmpos +1]]
+  } else {
+     puts stdout "Shared memory segment not present : OK"
+     return
+  }
+  set ipcs [exec ipcs -a]
+  set shmpos [lsearch $ipcs $lid]
+  if { $shmpos > -1} {
+     puts stdout "WARNING : Failed to remove shared memory segment"
+  } else {
+     puts stdout "Shared memory segment removed : OK"
+  }
+}
+
+
+
 
 
 

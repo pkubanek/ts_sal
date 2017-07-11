@@ -25,6 +25,7 @@ proc blogsum { f t s {url no} } {
 set scriptdir $env(SAL_DIR)
 source $scriptdir/datastream_desc.tcl
 source $scriptdir/camera-subsysdesc.tcl
+source $scriptdir/stream_frequencies.tcl
 
 exec mkdir -p bandwidth
 set fin  [open datastreams.html r]
@@ -61,9 +62,10 @@ while { [gets $fin rec] > -1 } {
    }
    if { [string trim [lindex $s 5]] == "Frequency" } {
       set freq($top) [string trim [lindex [lindex $s 6] 0]]
-if { $freq($top) < 1 } {set freq($top) 0.5}
+      if { $freq($top) < 1 } {set freq($top) 0.5}
       if { $freq($top) == "Infrequent" } {set freq($top) 0.001}
    }
+   if { [info exists FREQUENCY($top)] } {set freq($top) $FREQUENCY($top)}
    set sour($top) 1
    if { [string trim [lindex $s 5]] == "Number of sources" } {
       set sour($top) [string trim [lindex [lindex $s 6] 0]]
@@ -145,10 +147,12 @@ foreach s [lsort [array names BLOBS]] {
     set sdot [join [split $s _] .]
     set sour($sdot) 1
     set freq($sdot) 0.054
+    if { [info exists FREQUENCY($sdot)] } {set freq($sdot) $FREQUENCY($sdot)}
     set bpp [expr [string trim [lindex $BLOBS($s) 1] bit] / 8]
     set siz [split [lindex $BLOBS($s) 0] x]
     set bbytes [expr $bpp*$sour($sdot)*$freq($sdot)*[lindex $siz 0]*[lindex $siz 1]*[lindex $siz 2]]
     set bsum($s) $bbytes
+puts stdout "BLOB : $sdot $freq($sdot) $bbytes"
     logsum $fo4 $s $bsum($s)
     set bgt [expr $bgt + $bsum($s)]
 }

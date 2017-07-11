@@ -47,8 +47,8 @@ global NEWCONSTS IDLSIZES IDLRESERVED
      }
    }
    if { $type == "char" } {
-     set tid [string trim $id "0123456789\[\]"]
-     set v "  string<$siz>    $tid"
+     set tid [lindex [split $id "\["] 0]
+     set v "  string<$siz>	$tid"
    }
 #puts stdout "valid is $v"
    if { [lsearch $IDLRESERVED [string tolower $id]] > -1 } {errorexit "Invalid use of IDL reserved token $id"}

@@ -17,7 +17,7 @@ foreach s $all {
         puts stdout "No SID for $subsys"
      } else {
        set ssid $SID($subsys)
-       set cmd "tar cvzf [set ssid]_[set subsys].tgz [glob $s/*-streamdef.html]"
+       set cmd "exec tar cvzf [set ssid]_[set subsys].tgz [glob $s/*-streamdef.html]"
        eval $cmd
      }
    }
