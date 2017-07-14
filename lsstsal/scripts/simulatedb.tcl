@@ -1,3 +1,9 @@
+#
+#  sample usage via salgenerator 
+# 
+#    salgenerator environment db 2020-01-01 18:00:00 2020-01-01 19:00:00 10 
+#
+
 
 proc generaterecs { handle pkey topic freq } {
 global SQLREC
@@ -159,6 +165,11 @@ proc simulate_short_value { } {
 
 proc simulate_byte_value { } {
   set v [expr int(rand()*20)+90]
+  return $v
+}
+
+proc simulate_boolean_value { } {
+  set v [expr int(rand()*1.9)]
   return $v
 }
 

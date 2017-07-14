@@ -392,6 +392,11 @@ if { $OPTIONS(db) } {
   stdlog "   Start time = $dbstart"
   stdlog "   End time   = $dbend"
   stdlog "   Interval   = $dbfreq"
+  set sid [lindex [split [lindex $TARGETS 0] _] 0]
+  if { [file exists $SAL_WORK_DIR/[set sid]_telemetry_simulation.tcl] } {
+     stdlog "Loading simulation routines from $SAL_WORK_DIR/[set sid]_telemetry_simulation.tcl"
+     source $SAL_WORK_DIR/[set sid]_telemetry_simulation.tcl
+  }
   foreach subsys $TARGETS {
      set topic [file rootname $subsys]
      stdlog "Generating simulated facility database table for $topic"
