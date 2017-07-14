@@ -132,6 +132,7 @@ if { $OPTIONS(validate) } {
   foreach i $all {
     foreach t "Telemetry Commands Events" {
       if { [file exists [set i]_[set t].xml] } {
+       if { [file size [set i]_[set t].xml] > 0 } {
         foreach d "idl-templates idl-templates/validated" {
           set old ""
           switch $t {
@@ -150,6 +151,7 @@ if { $OPTIONS(validate) } {
         }
         parseXMLtoidl [set i]_[set t].xml
         stdlog "Imported $i $t interface definitions"
+       }
       }
       if { $t == "Commands" } {
         stdlog "Add lifecycle commands"
@@ -313,6 +315,9 @@ if { $OPTIONS(lib) } {
      }
      if { [file exists $SAL_WORK_DIR/[set s]/labview/SALLV_[set s].so] } {
        exec cp $SAL_WORK_DIR/[set s]/labview/SALLV_[set s].so $SAL_WORK_DIR/lib/.
+     }
+     if { [file exists $SAL_WORK_DIR/[set s]/cpp/libsacpp_[set s]_types.so] } {
+       exec cp $SAL_WORK_DIR/[set s]/cpp/libsacpp_[set s]_types.so $SAL_WORK_DIR/lib/.
      }
    }
 }

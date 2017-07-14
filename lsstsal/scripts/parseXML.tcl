@@ -7,6 +7,8 @@ global TLMS TLM_ALIASES
    set fout ""
    set ctype ""
    set subsys ""
+   set tname none
+   set itemid none
    while { [gets $fin rec] > -1 } {
       set tag   [lindex [split $rec "<>"] 1]
       set value [lindex [split $rec "<>"] 2]
