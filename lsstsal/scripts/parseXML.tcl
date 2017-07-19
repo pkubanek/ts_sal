@@ -115,7 +115,7 @@ global TLMS TLM_ALIASES
       if { $tag == "Count"}           {set idim $value}
       if { $tag == "Units"}           {set unit $value}
       if { $tag == "/item" } {
-         if { $type == "string" } {
+         if { $type == "string" || $type == "char" } {
             if { $sdim > 1 } {
                set declare "   string<[set sdim]> $item;"
             } else {
