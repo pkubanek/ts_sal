@@ -148,7 +148,7 @@ global SAL_DIR SAL_WORK_DIR SYSDIC TELEMETRY_ALIASES LVSTRINGS
      if { $type == "command" && $name != "command" } {
         puts $fout "    bool syncI_[set base]_[set name]_ackcmd;"
         puts $fout "    bool syncO_[set base]_[set name]_ackcmd;"
-        puts $fout "	bool  skipOld_[set base]_[set name]_ackcmd;"	
+        puts $fout "	bool skipOld_[set base]_[set name]_ackcmd;"	
         puts $fout "	bool hasIncoming_[set base]_[set name]_ackcmd;"	
         puts $fout "	bool hasOutgoing_[set base]_[set name]_ackcmd;"
         puts $fout "	bool hasCallback_[set base]_[set name]_ackcmd;"	
@@ -339,6 +339,8 @@ using namespace [set base];
   puts $fout "
 #include <sys/ipc.h>
 #include <sys/shm.h>
+#include <sys/syscall.h>
+#include <thread>
 #include \"extcode.h\"
 #include \"SAL_[set base].h\"
 extern \"C\" \{
@@ -352,7 +354,7 @@ extern \"C\" \{
   puts $fout "
     [set idarg3]
     [set base]_shmem *[set base]_memIO;
-    int LVClient;
+    __thread int LVClient;
     int [set base]_salShmConnect ([set idarg]) \{
       LVClient = 0;
       lShmId = shmget([set base]_shmid + [set idoff], shmSize , IPC_CREAT|0666);
@@ -363,7 +365,7 @@ extern \"C\" \{
       if (LVClient == 20) \{ return SAL__ERROR; \}
       [set base]_shm_initFlags();
       [set base]_memIO->client\[LVClient\].inUse = true;
-      return SAL__OK;
+      return syscall(SYS_gettid);
     \}
 
     int [set base]_salShmRelease() \{
@@ -628,6 +630,9 @@ global SAL_WORK_DIR LVSTRINGS
         int resultSize = (*(theack->result))->size;
         strncpy([set base]_memIO->client\[LVClient\].shmemOutgoing_[set base]_[set name]_resultCode, (*(theack->result))->data, resultSize);
         [set base]_memIO->client\[LVClient\].hasOutgoing_[set base]_[set name]_ackcmd = true;
+        while ([set base]_memIO->client\[LVClient\].hasOutgoing_[set base]_[set name]_ackcmd == true) \{
+           usleep(1000);
+        \}
         return SAL__OK;
     \}"
    puts $fout "
