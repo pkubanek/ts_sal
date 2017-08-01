@@ -11,9 +11,15 @@ global TYPESUBS
                         string64  { return " string<64> $name;" }
                         string1k  { return " string<1024> $name;" }
                         byte      -
+                        octet     { set s "unsigned char $name"
+                                    if { $size > 1 } {
+                                       return "$s\[$size\];"
+                                    } else {
+                                       return "$s;"
+                                    }
+                                  }
                         short     -
                         int       -
-                        octet     -
                         long      -
                         float     -
                         double    { set s "$ltyp $name"
@@ -33,7 +39,13 @@ global TYPESUBS
                         string64  { return " char $name\[64\];" }
                         string1k  { return " char $name\[1024\];" }
                         byte      -
-                        octet     -
+                        octet     { set s "unsigned char $name"
+                                    if { $size > 1 } {
+                                       return "$s\[$size\];"
+                                    } else {
+                                       return "$s;"
+                                    }
+                                  }
                         short     -
                         int       -
                         long      -
@@ -55,6 +67,19 @@ global TYPESUBS
                         string64  { return "$name char\[64\];" }
                         string1k  { return "$name char\[1024\];" }
                         byte      -
+                        octet     {set s "$name TINYINT"
+                                    if { $size > 1 } {
+                                       set s ""
+                                       set i 0
+                                       while { $i < $size } {
+                                         incr i 1
+                                         set s "$s\n[set name]_$i TINYINT;"
+                                       }
+                                       return "$s"
+                                    } else {
+                                       return "$s;"
+                                    }
+                                  }
                         short     -
                         int       -
                         long      -
@@ -86,6 +111,7 @@ global TYPESUBS VPROPS
    set VPROPS(long) 0
    set VPROPS(boolean) 0
    set VPROPS(short) 0
+   set VPROPS(byte) 0
    set VPROPS(double) 0
    set VPROPS(lvres) 0
    set VPROPS(name) ""
@@ -122,6 +148,8 @@ global TYPESUBS VPROPS
    } else {
       if { [lindex $rec 0] != "float" && [lindex $rec 0] != "double" } {set VPROPS(int) 1; set VPROPS(lvres) 9}
       if { [lindex $rec 0] == "double" } {set VPROPS(double) 1; set VPROPS(lvres) 10 }
+      if { [lindex $rec 0] == "byte" } {set VPROPS(byte) 1; set VPROPS(lvres) 1  }
+      if { [lindex $rec 0] == "octet" } {set VPROPS(byte) 1; set VPROPS(lvres) 1  }
       if { [lindex $rec 0] == "short" } {set VPROPS(short) 1; set VPROPS(lvres) 2  }
       if { [lindex $rec 0] == "long" } {set VPROPS(int) 1; set VPROPS(lvres) 3  }
       if { [lindex $rec 0] == "boolean" } {set VPROPS(boolean) 1; set VPROPS(lvres) 5  }
@@ -399,11 +427,12 @@ proc lvtypebuilder { base op name type size } {
 
 set TYPESUBS(string) char
 set TYPESUBS(String) char
-set TYPESUBS(byte)   char
+set TYPESUBS(byte)   "unsigned char"
 set TYPESUBS(char)   char
-set TYPESUBS(octet)  char
+set TYPESUBS(octet)  "unsigned char"
 set TYPESUBS(int)    int
 set TYPESUBS(short)  short
+set TYPESUBS(int8)   "unsigned char"
 set TYPESUBS(int16)  short
 set TYPESUBS(int32)  long
 set TYPESUBS(long)   int
@@ -421,11 +450,12 @@ set TYPESUBS(unsignedlong)   int
 set TYPESUBS(unsignedlonglong) long
 set ATYPESUBS(string) StrHdl
 set ATYPESUBS(String) StrHdl
-set ATYPESUBS(byte)   StrHdl
+set ATYPESUBS(byte)   I8ArrayHdl
 set ATYPESUBS(char)   StrHdl
-set ATYPESUBS(octet)  StrHdl
+set ATYPESUBS(octet)  U8ArrayHdl
 set ATYPESUBS(int)    I32ArrayHdl
 set ATYPESUBS(short)  I16ArrayHdl
+set ATYPESUBS(int8)   I8ArrayHdl
 set ATYPESUBS(int16)  I16ArrayHdl
 set ATYPESUBS(int32)  I32ArrayHdl
 set ATYPESUBS(long)   I32ArrayHdl
@@ -433,8 +463,10 @@ set ATYPESUBS(float)  SGLArrayHdl
 set ATYPESUBS(double) DBLArrayHdl
 set ATYPESUBS(bool)   BooleanArrayHdl
 set ATYPESUBS(boolean) 		BooleanArrayHdl
+set ATYPESUBS(unsignedbyte)     U8ArrayHdl
 set ATYPESUBS(unsignedint)      U32ArrayHdl
 set ATYPESUBS(unsignedshort)    U16ArrayHdl
+set ATYPESUBS(unsignedint8)     U8ArrayHdl
 set ATYPESUBS(unsignedint16)    U16ArrayHdl
 set ATYPESUBS(unsignedint32)    U32ArrayHdl
 set ATYPESUBS(unsignedlong)     U32ArrayHdl
@@ -445,6 +477,7 @@ set TYPESIZE(char)   1
 set TYPESIZE(byte)   1
 set TYPESIZE(octet)  1
 set TYPESIZE(short)  2
+set TYPESIZE(int8)   1
 set TYPESIZE(int16)  2
 set TYPESIZE(int)    4
 set TYPESIZE(int32)  4
@@ -455,6 +488,7 @@ set TYPESIZE(int64)  8
 set TYPESIZE(bool)   4
 set TYPESIZE(boolean) 4
 set TYPESIZE(longlong) 8
+set TYPESIZE(unsignedbyte)   1
 set TYPESIZE(unsignedshort)  2
 set TYPESIZE(unsignedint16)  2
 set TYPESIZE(unsignedint)    4
@@ -462,12 +496,13 @@ set TYPESIZE(unsignedint32)  4
 set TYPESIZE(unsignedlong)   4
 set TYPESIZE(unsignedlonglong) 8
 
-set TYPEFORMAT(byte)   "%d"
+set TYPEFORMAT(byte)   "%hhu"
 set TYPEFORMAT(char)   "%s"
-set TYPEFORMAT(octet)  "%d"
+set TYPEFORMAT(octet)  "%hhu"
 set TYPEFORMAT(short)  "%d"
 set TYPEFORMAT(int16)  "%d"
 set TYPEFORMAT(int)    "%d"
+set TYPEFORMAT(int8)   "%hhu"
 set TYPEFORMAT(int32)  "%d"
 set TYPEFORMAT(bool)   "%d"
 set TYPEFORMAT(boolean) "%d"
@@ -475,7 +510,8 @@ set TYPEFORMAT(long)   "%d"
 set TYPEFORMAT(float)  "%f"
 set TYPEFORMAT(double) "%lf"
 set TYPEFORMAT(int64)  "%ld"
-set TYPEFORMAT(longlong)   "%ld"
+set TYPEFORMAT(longlong)      "%ld"
+set TYPEFORMAT(unsignedbyte)   "%d"
 set TYPEFORMAT(unsignedshort)  "%d"
 set TYPEFORMAT(unsignedint16)  "%d"
 set TYPEFORMAT(unsignedint)    "%d"

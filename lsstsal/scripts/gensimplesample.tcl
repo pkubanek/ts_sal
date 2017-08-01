@@ -368,7 +368,11 @@ global VPROPS
               if { $VPROPS(short) } { 
                  puts $fcod5 "    sscanf(argv\[$idx\], \"%hd\", &myData.$VPROPS(name)\[$myidx\]);"
               } else {
-                 puts $fcod5 "    sscanf(argv\[$idx\], \"%d\", &myData.$VPROPS(name)\[$myidx\]);"
+                 if { $VPROPS(byte) } { 
+                    puts $fcod5 "    sscanf(argv\[$idx\], \"%hhu\", &myData.$VPROPS(name)\[$myidx\]);"
+                 } else {
+                    puts $fcod5 "    sscanf(argv\[$idx\], \"%d\", &myData.$VPROPS(name)\[$myidx\]);"
+                 }
               }
               puts $fcod10 "myData.$VPROPS(name)\[$myidx\] = int(sys.argv\[$idx\])"
            }
@@ -429,7 +433,11 @@ global VPROPS
             if { $VPROPS(short) } {
                puts $fcod5 "    sscanf(argv\[$idx\], \"%hd\", &myData.$VPROPS(name));"
             } else {
-               puts $fcod5 "    sscanf(argv\[$idx\], \"%d\", &myData.$VPROPS(name));"
+               if { $VPROPS(byte) } {
+                  puts $fcod5 "    sscanf(argv\[$idx\], \"%hhu\", &myData.$VPROPS(name));"
+               } else {
+                  puts $fcod5 "    sscanf(argv\[$idx\], \"%d\", &myData.$VPROPS(name));"
+               }
             }
             puts $fcod10 "myData.$VPROPS(name)=int(sys.argv\[$idx\])"
           }
