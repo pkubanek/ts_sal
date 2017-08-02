@@ -659,13 +659,8 @@ public class SAL_SALData {
 	  registerType2(mtr);
 
 	  //create Topics
-#ifdef SAL_SUBSYSTEM_ID_IS_KEYED
-	  createTopic(stopic1);
-	  createTopic2(stopic2);
-#else
 	  createTopic(scommand);
 	  createTopic2(sresponse);
-#endif
 	
 	  //create a reader for responses
 #ifdef SAL_SUBSYSTEM_ID_IS_KEYED
@@ -704,13 +699,8 @@ public class SAL_SALData {
 	  registerType2(SAL__SALData_ackcmd_ACTOR,mtr);
 
 	  //create Topics
-#ifdef SAL_SUBSYSTEM_ID_IS_KEYED
-	  createTopic(actorIdx,stopic1);
-	  createTopic2(SAL__SALData_ackcmd_ACTOR,stopic2);
-#else
 	  createTopic(actorIdx,cmdAlias);
 	  createTopic2(SAL__SALData_ackcmd_ACTOR,sresponse);
-#endif
 	
 	  //create a reader for responses
 #ifdef SAL_SUBSYSTEM_ID_IS_KEYED
@@ -756,13 +746,8 @@ public class SAL_SALData {
 	  registerType2(mtr);
 
 	  //create Topics
-#ifdef SAL_SUBSYSTEM_ID_IS_KEYED
-	  createTopic(stopic1);
-	  createTopic2(stopic2);
-#else
 	  createTopic(scommand);
 	  createTopic2(sresponse);
-#endif
 
 	  //create a reader for commands
 #ifdef SAL_SUBSYSTEM_ID_IS_KEYED
@@ -801,13 +786,8 @@ public class SAL_SALData {
 	  registerType2(SAL__SALData_ackcmd_ACTOR,mtr);
 
 	  //create Topics
-#ifdef SAL_SUBSYSTEM_ID_IS_KEYED
-	  createTopic(actorIdx,stopic1);
-	  createTopic2(SAL__SALData_ackcmd_ACTOR,stopic2);
-#else
 	  createTopic(actorIdx,cmdAlias);
 	  createTopic2(SAL__SALData_ackcmd_ACTOR,sresponse);
-#endif
 
 	  //create a reader for commands
 #ifdef SAL_SUBSYSTEM_ID_IS_KEYED
