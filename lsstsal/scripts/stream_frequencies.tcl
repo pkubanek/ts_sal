@@ -2,14 +2,15 @@
 source $env(SAL_DIR)/add_system_dictionary.tcl
 foreach i $SYSDIC(systems) {set FREQUENCY($i) 1}
 
-set FREQUENCY(auxscope.Application) 0.054
-set FREQUENCY(auxscope.Camera) 0.0003
+set FREQUENCY(atMonochromator) 0.054
+set FREQUENCY(atWhiteLight) 0.054
 set FREQUENCY(auxscope.Electrical) 0.054
 set FREQUENCY(auxscope.Metrology) 0.054
 set FREQUENCY(auxscope.Spectrometer) 0.0003
 set FREQUENCY(auxscope.TC) 0.054
 set FREQUENCY(auxscope.TCS) 0.054
-set FREQUENCY(calibration.Application) 0.054
+set FREQUENCY(calibrationSpectrometer) 0.054
+set FREQUENCY(calibrationElectrometer) 0.054
 set FREQUENCY(calibration.Electrical) 0.054
 set FREQUENCY(calibration.Metrology) 0.054
 set FREQUENCY(calibration.TC) 0.054

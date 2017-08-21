@@ -1,8 +1,11 @@
 set SALVERSION 3.5.1
 set SAL_BASE_DIR $env(SAL_DIR)/scripts
 set SAL_CMAKE_DIR $SAL_BASE_DIR/code/simd/cmake
+set SAL_SID(atMonochromator)     100
+set SAL_SID(atWhiteLight)        200
 set SAL_SID(auxscope) 		1000
-set SAL_SID(calibration)	2000
+set SAL_SID(calibrationSpectrometer)	2000
+set SAL_SID(calibrationElectrometer)	2100
 set SAL_SID(camera) 		3000
 set SAL_SID(dm) 		4000
 set SAL_SID(dome) 		5000

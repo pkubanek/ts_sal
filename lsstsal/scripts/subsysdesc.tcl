@@ -425,6 +425,12 @@ monitoring the performance of all telescope subsystems"
 
 set DESC(eec) "Enclosure Environment Conditioning"
 
+set DESC(atSpectrometer) "Auxillary telescope spectrometer"
+set DESC(atWhiteLight) "Auxillary telescope spectrometer calibration source"
+
+set DESC(calibrationSpectrometer) "Calibration screen Spectrometer"
+set DESC(calibrationElectrometer) "Calibration screen Electormeter"
+
 set DESC(camera.Dewar_Cooler) ""
 set DESC(seeing_dimm.TC) ""
 set DESC(seeing_dimm.Electrical) ""
