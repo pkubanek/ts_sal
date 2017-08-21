@@ -21,6 +21,7 @@ global TYPESUBS
                         short     -
                         int       -
                         long      -
+                        longlong   -
                         float     -
                         double    { set s "$ltyp $name"
                                     if { $size > 1 } {
@@ -49,6 +50,7 @@ global TYPESUBS
                         short     -
                         int       -
                         long      -
+                        longlong   -
                         float     -
                         double    { set s "$TYPESUBS($ltyp) $name"
                                     if { $size > 1 } {
@@ -82,6 +84,7 @@ global TYPESUBS
                                   }
                         short     -
                         int       -
+                        longlong   -
                         long      -
                         float     -
                         double    { set s "$name $TYPESUBS($ltyp)"
@@ -110,6 +113,7 @@ global TYPESUBS VPROPS
    set VPROPS(int) 0
    set VPROPS(long) 0
    set VPROPS(boolean) 0
+   set VPROPS(longlong) 0
    set VPROPS(short) 0
    set VPROPS(byte) 0
    set VPROPS(double) 0
@@ -151,7 +155,8 @@ global TYPESUBS VPROPS
       if { [lindex $rec 0] == "byte" } {set VPROPS(byte) 1; set VPROPS(lvres) 1  }
       if { [lindex $rec 0] == "octet" } {set VPROPS(byte) 1; set VPROPS(lvres) 1  }
       if { [lindex $rec 0] == "short" } {set VPROPS(short) 1; set VPROPS(lvres) 2  }
-      if { [lindex $rec 0] == "long" } {set VPROPS(int) 1; set VPROPS(lvres) 3  }
+      if { [lindex $rec 0] == "long" } {set VPROPS(int) 1; set VPROPS(long); set VPROPS(lvres) 3  }
+      if { [lindex $rec 1] == "long" } {set VPROPS(int) 1; set VPROPS(longlong) 1; set VPROPS(lvres) 4  }
       if { [lindex $rec 0] == "boolean" } {set VPROPS(boolean) 1; set VPROPS(lvres) 5  }
       if { $u == "unsigned" } { set VPROPS(lvres) [expr $VPROPS(lvres) +4] }
       if { [llength [split $rec "\[("]] > 1 } {
@@ -160,10 +165,20 @@ global TYPESUBS VPROPS
         set VPROPS(name) $n
         set VPROPS(array) 1
         set VPROPS(dim) [string trim $s "\\"]
-        set res "  [set u] $TYPESUBS([lindex $rec 0]) $n\[$s\];"
+        if { $VPROPS(longlong) } {
+          set VPROPS(name) [lindex [lindex [split $rec "\[\]()"] 0] 2]
+          set res "  [set u] long long $VPROPS(name)\[$s\];"
+        } else {
+          set res "  [set u] $TYPESUBS([lindex $rec 0]) $n\[$s\];"
+        }
       } else {
-        set res " [set u] $TYPESUBS([lindex $rec 0]) [join [lrange $rec 1 end]]"
         set VPROPS(name) [string trim [join [lrange $rec 1 end]] ";"]
+        if { $VPROPS(longlong) } {
+          set VPROPS(name) [string trim [join [lrange $rec 2 end]] ";"]
+          set res "  [set u] long long $VPROPS(name);"
+        } else {
+          set res " [set u] $TYPESUBS([lindex $rec 0]) [join [lrange $rec 1 end]]"
+        }
       }
    }
    return $res
@@ -180,7 +195,7 @@ proc testsimpletypecode { } {
 }
 
 proc typeidltolv { rec } {
-global TYPESUBS ATYPESUBS
+global TYPESUBS ATYPESUBS VPROPS
    set u ""
    if { [lindex $rec 0] == "string" } {
       set name [string trim [lindex $rec 1] ";"]
@@ -188,6 +203,7 @@ global TYPESUBS ATYPESUBS
       return $res
    }
    if { [lindex $rec 0] == "unsigned" } {set u "unsigned"; set rec [join [lrange $rec 1 end] " "]}
+   if { [lrange $rec 0 1] == "long long"} {set rec "longlong [lindex $rec 2]"}
    if { [lindex $rec 0] == "char" } {
       if { [llength [split $rec "\[("]] > 1 } {
         set s [lindex [split $rec "\[\]()"] 1]
@@ -241,6 +257,7 @@ global TYPESIZE TYPEFORMAT
                     short  -
                     int    -
                     long   -
+                    longlong   -
                     float  -
                     double {
                               if { $size > 1 } {
@@ -261,6 +278,7 @@ global TYPESIZE TYPEFORMAT
                     short  -
                     int    -
                     long   -
+                    longlong   -
                     float  -
                     double {
                               if { $size > 1 } {
@@ -285,6 +303,7 @@ global TYPESIZE TYPEFORMAT
                     short  -
                     int    -
                     long   -
+                    longlong   -
                     float  -
                     double {
                               if { $size > 1 } {
@@ -307,6 +326,7 @@ global TYPESIZE TYPEFORMAT
                     short  -
                     int    -
                     long   -
+                    longlong   -
                     float  -
                     double {  set result ""
                               if { $size > 1 } {
@@ -327,6 +347,7 @@ global TYPESIZE TYPEFORMAT
                     short  -
                     int    -
                     long   -
+                    longlong   -
                     float  -
                     double {
                               if { $size > 1 } {
@@ -345,6 +366,7 @@ global TYPESIZE TYPEFORMAT
                     short  -
                     int    -
                     long   -
+                    longlong   -
                     float  -
                     double {
                               if { $size > 1 } {
@@ -363,6 +385,7 @@ global TYPESIZE TYPEFORMAT
                     short  -
                     int    -
                     long   -
+                    longlong   -
                     float  -
                     double {
                               if { $size > 1 } {
@@ -382,6 +405,7 @@ global TYPESIZE TYPEFORMAT
                     short  -
                     int    -
                     long   -
+                    longlong   -
                     float  -
                     double {
                               if { $size > 1 } {
@@ -446,8 +470,8 @@ set TYPESUBS(unsignedshort)  short
 set TYPESUBS(unsignedint16)  short
 set TYPESUBS(unsignedint32)  int
 set TYPESUBS(unsignedlong)   int
-
 set TYPESUBS(unsignedlonglong) long
+
 set ATYPESUBS(string) StrHdl
 set ATYPESUBS(String) StrHdl
 set ATYPESUBS(byte)   I8ArrayHdl
@@ -459,6 +483,7 @@ set ATYPESUBS(int8)   I8ArrayHdl
 set ATYPESUBS(int16)  I16ArrayHdl
 set ATYPESUBS(int32)  I32ArrayHdl
 set ATYPESUBS(long)   I32ArrayHdl
+set ATYPESUBS(longlong)  I64ArrayHdl
 set ATYPESUBS(float)  SGLArrayHdl
 set ATYPESUBS(double) DBLArrayHdl
 set ATYPESUBS(bool)   BooleanArrayHdl
@@ -470,6 +495,7 @@ set ATYPESUBS(unsignedint8)     U8ArrayHdl
 set ATYPESUBS(unsignedint16)    U16ArrayHdl
 set ATYPESUBS(unsignedint32)    U32ArrayHdl
 set ATYPESUBS(unsignedlong)     U32ArrayHdl
+set ATYPESUBS(unsignedlonglong) U64ArrayHdl
 
 set TYPESIZE(String) 1
 set TYPESIZE(string) 1
@@ -516,7 +542,7 @@ set TYPEFORMAT(unsignedshort)  "%d"
 set TYPEFORMAT(unsignedint16)  "%d"
 set TYPEFORMAT(unsignedint)    "%d"
 set TYPEFORMAT(unsignedint32)  "%d"
-set TYPEFORMAT(unsignedlong)   "%d"
+set TYPEFORMAT(unsignedlong)   "%ld"
 set TYPEFORMAT(unsignedlonglong)   "%ld"
 
 

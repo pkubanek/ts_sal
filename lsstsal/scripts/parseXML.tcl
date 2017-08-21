@@ -106,7 +106,11 @@ global TLMS TLM_ALIASES
            exit 1
         }
       }
-      if { $tag == "IDL_Type"}        {set type $value}
+      if { $tag == "IDL_Type"} {
+         set type $value
+         if { $type == "long long" } {set type "longlong"}
+         if { $type == "unsigned long long" } {set type "unsigned longlong"}
+      }
       if { $tag == "IDL_Size"}        {set sdim $value}
       if { $tag == "Description"}     {set desc $value}
       if { $tag == "Frequency"}       {set freq $value}

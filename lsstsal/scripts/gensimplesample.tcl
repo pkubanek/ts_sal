@@ -361,7 +361,7 @@ global VPROPS
       while { $idx < $idlim } {
 
         if { $VPROPS(int) }  {
-           if { $VPROPS(long) } {
+           if { $VPROPS(long) || $VPROPS(longlong) } {
               puts $fcod5 "    sscanf(argv\[$idx\], \"%ld\", &myData.$VPROPS(name)\[$myidx\]);"
               puts $fcod10 "myData.$VPROPS(name)\[$myidx\] = long(sys.argv\[$idx\])"
            } else {
@@ -424,7 +424,7 @@ global VPROPS
          puts $fcod13 "           [set VPROPS(base)]_memIO->client\[LVClient\].shmemIncoming_[set VPROPS(topic)].$VPROPS(name)=Incoming_[set VPROPS(topic)]->$VPROPS(name);"
          if { $VPROPS(int) } {
           puts $fcod11 "myData.$VPROPS(name) = 1";
-          if { $VPROPS(long) } {
+          if { $VPROPS(long) || $VPROPS(longlong) } {
             puts $fcod4 "    myData.$VPROPS(name) = 1;";
             puts $fcod5 "    sscanf(argv\[$idx\], \"%ld\", &myData.$VPROPS(name));"
             puts $fcod10 "myData.$VPROPS(name)=long(sys.argv\[$idx\])"

@@ -21,6 +21,7 @@ proc validitem { type item {op all} } {
 global NEWCONSTS IDLSIZES IDLRESERVED
   if { $type == "int" } {set type "long"}
   if { $type == "byte" } {set type "octet"}
+  if { $type == "longlong" } {set type "long long"}
   if { [string range $type 0 5] == "string" } { 
       set id [string trim $item "\;"]
       set siz  [lindex [split $type "<>"] 1]
@@ -396,6 +397,7 @@ set IDLSIZES(int)      4
 set IDLSIZES(long)     4
 set IDLSIZES(longlong) 8
 set IDLSIZES(float)    4
+set IDLSIZES(long\ long) 8
 set IDLSIZES(double)   8
 set IDLRESERVED "abstract any attribute boolean case char component const consumes context custom default double emits enum eventtype exception factory false finder fixed float getraises home import in inout interface local long module multiple native object octet oneway out primarykey private provides public publishes raises readonly sequence setraises short string struct supports switch true truncatable typedef typeid typeprefix union unsigned uses valuebase valuetype void wchar wstring"
 
