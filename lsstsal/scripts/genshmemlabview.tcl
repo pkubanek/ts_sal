@@ -24,6 +24,9 @@ source $SAL_DIR/geneventlabviewtests.tcl
 source $SAL_DIR/gentelemetrylabviewtests.tcl 
 source $SAL_DIR/utilities.tcl 
 
+set LVCMDSUBSCRIBE(rotator_command_track) 1
+
+
 proc genshmemlabview { subsys } {
 global SAL_DIR SAL_WORK_DIR
   exec mkdir -p $SAL_WORK_DIR/[set subsys]/labview
@@ -95,7 +98,7 @@ global SAL_DIR SAL_WORK_DIR env
 
 
 proc genlabviewincl { base ptypes } {
-global SAL_DIR SAL_WORK_DIR SYSDIC TELEMETRY_ALIASES LVSTRINGS
+global SAL_DIR SAL_WORK_DIR SYSDIC TELEMETRY_ALIASES LVSTRINGS LVCMDSUBSCRIBE
   set idarg ""
   if { [info exists SYSDIC($base,keyedID)] } {
      set idarg "unsigned int [set base]ID"
@@ -146,9 +149,10 @@ global SAL_DIR SAL_WORK_DIR SYSDIC TELEMETRY_ALIASES LVSTRINGS
        puts $fout "	[set base]_[set name]C  shmemOutgoing_[set base]_[set name];"
      }
      if { $type == "command" && $name != "command" } {
+       if { [info exists LVCMDSUBSCRIBE([set base]_[set name])] == 0 } {
         puts $fout "    bool syncI_[set base]_[set name]_ackcmd;"
         puts $fout "    bool syncO_[set base]_[set name]_ackcmd;"
-        puts $fout "	bool skipOld_[set base]_[set name]_ackcmd;"	
+        puts $fout "	bool  skipOld_[set base]_[set name]_ackcmd;"	
         puts $fout "	bool hasIncoming_[set base]_[set name]_ackcmd;"	
         puts $fout "	bool hasOutgoing_[set base]_[set name]_ackcmd;"
         puts $fout "	bool hasCallback_[set base]_[set name]_ackcmd;"	
@@ -162,6 +166,7 @@ global SAL_DIR SAL_WORK_DIR SYSDIC TELEMETRY_ALIASES LVSTRINGS
         puts $fout "	int  shmemIncoming_[set base]_[set name]_waitForSeqNum;"
         puts $fout "	char shmemOutgoing_[set base]_[set name]_resultCode\[128\];"
         puts $fout "	char shmemIncoming_[set base]_[set name]_resultCode\[128\];"
+       }
      }
 #puts stdout "reading  $SAL_WORK_DIR/include/SAL_[set base]_[set name]shmstr.tmp"
 #     if { $name != "ackcmd" && $name != "command" && $name != "logevent" } {
@@ -204,13 +209,15 @@ global SAL_DIR SAL_WORK_DIR SYSDIC TELEMETRY_ALIASES LVSTRINGS
      set n2 [join [lrange [split $name _] 1 end] _]
      set type [lindex [split $name _] 0]
      if { $type == "command" && $name != "command" } {
-       puts $fout "
+       if { [info exists LVCMDSUBSCRIBE([set base]_[set name])] == 0 } {
+         puts $fout "
         int [set base]_shm_salProcessor_[set n2]LV();
         int [set base]_shm_issueCommand_[set n2]LV([set base]_[set name]LV *[set name]_Ctl );
         int [set base]_shm_acceptCommand_[set n2]LV([set base]_[set name]LV *[set name]_Ctl );
         int [set base]_shm_ackCommand_[set n2]LV([set base]_ackcmdLV *ackcmd_Ctl);
         int [set base]_shm_waitForCompletion_[set n2]LV([set base]_waitCompleteLV *waitComplete_Ctl);
         int [set base]_shm_getResponse_[set n2]LV([set base]_ackcmdLV *ackcmd_Ctl);"
+       }
      } else {
         if { $type == "logevent" && $name != "logevent" } {
            puts $fout "
@@ -229,7 +236,14 @@ global SAL_DIR SAL_WORK_DIR SYSDIC TELEMETRY_ALIASES LVSTRINGS
         int [set base]_shm_putSample_[set name]LV([set base]_[set name]LV *[set name]_Ctl );"
            }
         }
-     }   
+     }
+     if { [info exists LVCMDSUBSCRIBE([set base]_[set name])] } {
+       puts $fout "
+        int [set base]_shm_salTelemetrySub_[set name]LV();
+        int [set base]_shm_getSample_[set name]LV([set base]_[set name]LV *[set name]_Ctl );
+        int [set base]_shm_getNextSample_[set name]LV([set base]_[set name]LV *[set name]_Ctl );
+        int [set base]_shm_putSample_[set name]LV([set base]_[set name]LV *[set name]_Ctl );"
+     }
      puts $fout "        int [set base]_shm_registerCallback_[set name]LV(int handle, bool skipOld);"
      puts $fout "        int [set base]_shm_cancelCallback_[set name]LV();"
      if { $name != "command" && $name != "logevent" } {
@@ -255,7 +269,7 @@ global SAL_DIR SAL_WORK_DIR
 }
 
 proc genlabviewcpp { base ptypes } {
-global SAL_DIR SAL_WORK_DIR SYSDIC LVSTRINGS
+global SAL_DIR SAL_WORK_DIR SYSDIC LVSTRINGS LVCMDSUBSCRIBE
   set idarg ""
   set idarg2 ""
   set idarg3 "     unsigned int [set base]ID = 0;"
@@ -308,7 +322,9 @@ using namespace [set base];
      set name [lindex $j 2]
      set type [lindex [split $name _] 0]
      if { $type == "command" && $name != "command" } {
-       monitorcommand $fout $base $name
+       if { [info exists LVCMDSUBSCRIBE([set base]_[set name])] == 0 } {
+          monitorcommand $fout $base $name
+       }
      } else {
         if { $type == "logevent" && $name != "logevent" } {
            monitorlogevent $fout $base $name
@@ -318,6 +334,9 @@ using namespace [set base];
            }
         }
      }   
+     if { [info exists LVCMDSUBSCRIBE([set base]_[set name])] } {
+        monitortelemetry $fout $base $name 
+     }
    }
   puts $fout "
         if ([set base]_memIO->client\[LVClient\].shutdown) \{
@@ -339,8 +358,6 @@ using namespace [set base];
   puts $fout "
 #include <sys/ipc.h>
 #include <sys/shm.h>
-#include <sys/syscall.h>
-#include <thread>
 #include \"extcode.h\"
 #include \"SAL_[set base].h\"
 extern \"C\" \{
@@ -354,7 +371,7 @@ extern \"C\" \{
   puts $fout "
     [set idarg3]
     [set base]_shmem *[set base]_memIO;
-    __thread int LVClient;
+    int LVClient;
     int [set base]_salShmConnect ([set idarg]) \{
       LVClient = 0;
       lShmId = shmget([set base]_shmid + [set idoff], shmSize , IPC_CREAT|0666);
@@ -365,7 +382,7 @@ extern \"C\" \{
       if (LVClient == 20) \{ return SAL__ERROR; \}
       [set base]_shm_initFlags();
       [set base]_memIO->client\[LVClient\].inUse = true;
-      return syscall(SYS_gettid);
+      return SAL__OK;
     \}
 
     int [set base]_salShmRelease() \{
@@ -390,7 +407,11 @@ extern \"C\" \{
      set name [lindex $j 2]
      set type [lindex [split $name _] 0]
      if { $type == "command" && $name != "command" } {
-       genlvcommand $fout $base $name
+       if { [info exists LVCMDSUBSCRIBE([set base]_[set name])] == 0 } {
+         genlvcommand $fout $base $name
+       } else {
+         genlvtelemetry $fout $base $name
+       }
      }
      if { $type == "logevent" && $name != "logevent"} {
        genlvlogevent $fout $base $name
@@ -427,6 +448,7 @@ extern \"C\" \{
 #
 
 proc genlvcallback { fout base name } {
+global LVCMDSUBSCRIBE
    puts $fout "
     int [set base]_shm_registerCallback_[set name]LV(int handle, bool skipOld) \{
         [set base]_memIO->client\[LVClient\].syncI_[set base]_[set name] = true;
@@ -446,7 +468,8 @@ proc genlvcallback { fout base name } {
 "
     set type [lindex [split $name _] 0]
     if { $type == "command" && $name != "command" } {
-   puts $fout "
+     if { [info exists LVCMDSUBSCRIBE([set base]_[set name])] == 0 } {
+      puts $fout "
     int [set base]_shm_registerCallback_[set name]_ackcmdLV(int handle, bool skipOld) \{
         [set base]_memIO->client\[LVClient\].syncI_[set base]_[set name]_ackcmd = true;
         [set base]_memIO->client\[LVClient\].skipOld_[set base]_[set name]_ackcmd = skipOld;
@@ -460,11 +483,13 @@ proc genlvcallback { fout base name } {
         return SAL__OK;
     \}
 "
+     }
     }
 }
 
 
 proc genlvlaunchcallbacks { fout base ptypes } {
+global LVCMDSUBSCRIBE
    puts $fout "
     void [set base]_shm_checkCallbacksLV() \{
        int salActorIdx=0;"
@@ -480,6 +505,7 @@ proc genlvlaunchcallbacks { fout base ptypes } {
            \}
         \}"
         if { $type == "command" && $name != "command" } {
+         if { [info exists LVCMDSUBSCRIBE([set base]_[set name])] == 0 } {
            puts $fout "
         if ( [set base]_memIO->client\[LVClient\].hasCallback_[set base]_[set name]_ackcmd ) \{
            if ( [set base]_memIO->client\[LVClient\].hasIncoming_[set base]_[set name]_ackcmd ) \{
@@ -488,6 +514,7 @@ proc genlvlaunchcallbacks { fout base ptypes } {
               PostLVUserEvent([set base]_memIO->client\[LVClient\].callbackHdl_[set base]_[set name]_ackcmd, &salActorIdx);
            \}
         \}"
+         }
         }
    }
    puts $fout "
@@ -630,9 +657,6 @@ global SAL_WORK_DIR LVSTRINGS
         int resultSize = (*(theack->result))->size;
         strncpy([set base]_memIO->client\[LVClient\].shmemOutgoing_[set base]_[set name]_resultCode, (*(theack->result))->data, resultSize);
         [set base]_memIO->client\[LVClient\].hasOutgoing_[set base]_[set name]_ackcmd = true;
-        while ([set base]_memIO->client\[LVClient\].hasOutgoing_[set base]_[set name]_ackcmd == true) \{
-           usleep(1000);
-        \}
         return SAL__OK;
     \}"
    puts $fout "
@@ -932,7 +956,7 @@ global SAL_DIR SAL_WORK_DIR
 
 
 proc shmemsyncinit { fout base name } {
-global SAL_DIR SAL_WORK_DIR
+global SAL_DIR SAL_WORK_DIR LVCMDSUBSCRIBE
    set n2 [join [lrange [split $name _] 1 end] _]
    set type [lindex [split $name _] 0]
    puts $fout "
@@ -948,7 +972,8 @@ global SAL_DIR SAL_WORK_DIR
        [set base]_[set name]C *Incoming_[set base]_[set name] = new [set base]_[set name]C;
        [set base]_[set name]C *Outgoing_[set base]_[set name] = new [set base]_[set name]C;"
      if { $type == "command" && $name != "command" } {
-       puts $fout "    
+       if { [info exists LVCMDSUBSCRIBE([set base]_[set name])] == 0 } {
+         puts $fout "    
        [set base]_memIO->client\[LVClient\].syncI_[set base]_[set name]_ackcmd = false;
        [set base]_memIO->client\[LVClient\].syncO_[set base]_[set name]_ackcmd = false;
        [set base]_memIO->client\[LVClient\].hasIncoming_[set base]_[set name]_ackcmd = false;
@@ -957,6 +982,7 @@ global SAL_DIR SAL_WORK_DIR
        [set base]_memIO->client\[LVClient\].callbackHdl_[set base]_[set name]_ackcmd = 0;
        [set base]_memIO->client\[LVClient\].activeCommand = 0;
 "
+       }
      }
 }
 
