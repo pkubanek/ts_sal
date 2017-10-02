@@ -134,6 +134,7 @@ global SAL_DIR SAL_WORK_DIR SYSDIC TELEMETRY_ALIASES LVSTRINGS
      set type [lindex [split $name _] 0]
      puts $fout "	bool  syncI_[set base]_[set name];"	
      puts $fout "	bool  syncO_[set base]_[set name];"	
+     puts $fout "	bool  flush_[set base]_[set name];"	
      puts $fout "	bool  skipOld_[set base]_[set name];"	
      puts $fout "	bool  hasIncoming_[set base]_[set name];"	
      puts $fout "	bool  hasOutgoing_[set base]_[set name];"
@@ -738,7 +739,12 @@ global SAL_WORK_DIR LVSTRINGS
         if ([set base]_memIO->client\[LVClient\].callbackHdl_[set base]_[set name] != 0) \{
            [set base]_memIO->client\[LVClient\].hasCallback_[set base]_[set name] = true;
         \}
-        if ( [set base]_memIO->client\[LVClient\].hasIncoming_[set base]_[set name] ) \{"
+        if ( [set base]_memIO->client\[LVClient\].hasIncoming_[set base]_[set name] ) \{
+          if ([set base]_memIO->client\[LVClient\].flush_[set base]_[set name]) \{
+             [set base]_memIO->client\[LVClient\].hasIncoming_[set base]_[set name] = false;
+             [set base]_memIO->client\[LVClient\].flush_[set base]_[set name] = false;
+             return SAL__NO_UPDATES;
+          \}"
    set frag [open $SAL_WORK_DIR/include/SAL_[set base]_[set name]shmin.tmp r]
    while { [gets $frag rec] > -1} {puts $fout $rec}
    close $frag
@@ -767,13 +773,7 @@ global SAL_WORK_DIR LVSTRINGS
         int status;
         [set base]_memIO->client\[LVClient\].syncI_[set base]_[set name] = true;
         [set base]_memIO->client\[LVClient\].skipOld_[set base]_[set name] = true;
-        while ([set base]_memIO->client\[LVClient\].hasReader_[set base]_[set name] == false) \{
-           usleep(1000);
-        \}
-        usleep(500000);
-        if ( [set base]_memIO->client\[LVClient\].hasIncoming_[set base]_[set name] ) \{
-           [set base]_memIO->client\[LVClient\].hasIncoming_[set base]_[set name] = false;
-        \}
+        [set base]_memIO->client\[LVClient\].flush_[set base]_[set name] = true;
         return SAL__OK;
     \}
 "
