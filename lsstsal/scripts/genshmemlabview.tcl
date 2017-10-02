@@ -770,7 +770,7 @@ global SAL_WORK_DIR LVSTRINGS
         while ([set base]_memIO->client\[LVClient\].hasReader_[set base]_[set name] == false) \{
            usleep(1000);
         \}
-        usleep(5000);
+        usleep(500000);
         if ( [set base]_memIO->client\[LVClient\].hasIncoming_[set base]_[set name] ) \{
            [set base]_memIO->client\[LVClient\].hasIncoming_[set base]_[set name] = false;
         \}
