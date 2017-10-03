@@ -766,6 +766,9 @@ global SAL_WORK_DIR LVSTRINGS
    close $frag
    puts $fout "
         [set base]_memIO->client\[LVClient\].hasOutgoing_[set base]_[set name] = true;
+        while ([set base]_memIO->client\[LVClient\].hasOutgoing_[set base]_[set name] == true) \{
+           usleep(1000);
+        \}
         return SAL__OK;
     \}
 
