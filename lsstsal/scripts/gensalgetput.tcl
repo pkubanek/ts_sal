@@ -79,7 +79,7 @@ salReturn SAL_[set base]::getSample_[set name]([set base]_[set name]C *data)
   DataReader_var dreader = getReader(actorIdx);
   [set base]::[set name]DataReader_var SALReader = [set base]::[set name]DataReader::_narrow(dreader.in());
   checkHandle(SALReader.in(), \"[set base]::[set name]DataReader::_narrow\");
-  status = SALReader->take(Instances, info, sal\[SAL__[set base]_[set name]_ACTOR\].maxSamples , ANY_SAMPLE_STATE, ANY_VIEW_STATE, ANY_INSTANCE_STATE);
+  status = SALReader->take(Instances, info, sal\[SAL__[set base]_[set name]_ACTOR\].maxSamples , ANY_SAMPLE_STATE, ANY_VIEW_STATE, ALIVE_INSTANCE_STATE);
   checkStatus(status, \"[set base]::[set name]DataReader::take\");
   numsamp = Instances.length();
   for (DDS::ULong j = 0; j < numsamp; j++)
@@ -311,6 +311,7 @@ puts $fout "
 	  [set name]DataWriter SALWriter = [set name]DataWriterHelper.narrow(dwriter);
 	  data.private_revCode = \"LSST TEST REVCODE\";
           data.private_sndStamp = getCurrentTime();
+          data.private_origin = 1;
 	  if (debugLevel > 0) \{
 	    System.out.println(\"=== \[putSample $name\] writing a message containing :\");
 	    System.out.println(\"    revCode  : \" + data.private_revCode);
@@ -361,7 +362,7 @@ puts $fout "
   	  SampleInfoSeqHolder infoSeq = new SampleInfoSeqHolder();
 	  SALReader.take(SALInstance, infoSeq, sal\[actorIdx\].maxSamples,
 					ANY_SAMPLE_STATE.value, ANY_VIEW_STATE.value,
-					ANY_INSTANCE_STATE.value);
+					ALIVE_INSTANCE_STATE.value);
           numsamp = SALInstance.value.length;
           if (numsamp > 0) \{
  	    if (debugLevel > 0) \{
@@ -520,7 +521,7 @@ salReturn SAL_[set base]::getSample([set base]::[set name]Seq data)
   DataReader_var dreader = getReader();
   [set base]::[set name]DataReader_var SALReader = [set base]::[set name]DataReader::_narrow(dreader.in());
   checkHandle(SALReader.in(), \"[set base]::[set name]DataReader::_narrow\");
-  status = SALReader->take(data, infoSeq, LENGTH_UNLIMITED, ANY_SAMPLE_STATE, ANY_VIEW_STATE, ANY_INSTANCE_STATE);
+  status = SALReader->take(data, infoSeq, LENGTH_UNLIMITED, ANY_SAMPLE_STATE, ANY_VIEW_STATE, ALIVE_INSTANCE_STATE);
   checkStatus(status, \"[set base]::[set name]DataReader::take\");
   numsamp = data.length();
   for (DDS::ULong j = 0; j < numsamp; j++)
