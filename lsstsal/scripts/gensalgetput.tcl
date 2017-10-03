@@ -241,7 +241,7 @@ proc addActorIndexesJava { idlfile base fout } {
 
 
 proc addSALDDStypes { idlfile id lang base } {
-global env SAL_DIR SAL_WORK_DIR SYSDIC
+global env SAL_DIR SAL_WORK_DIR SYSDIC TLMS EVTS
  set atypes $idlfile
  if { $lang == "java" } {
   exec cp $SAL_DIR/code/templates/salActor.java [set id]/java/src/org/lsst/sal/.
@@ -282,7 +282,7 @@ global env SAL_DIR SAL_WORK_DIR SYSDIC
            set ptypes [split [exec grep pragma $i] \n]
            foreach j $ptypes {
                set name [lindex $j 2]
-#               puts stdout "	for $base $name"
+               puts stdout "	for $base $name"
                puts $fout "
                     if ( actorIdx == SAL__[set base]_[set name]_ACTOR ) \{
 			[set name]TypeSupport [set name]TS = new [set name]TypeSupport();
@@ -298,6 +298,7 @@ global env SAL_DIR SAL_WORK_DIR SYSDIC
            set ptypes [split [exec grep pragma $i] \n]
            foreach j $ptypes {
                set name [lindex $j 2]
+               set alias [string range $name 9 end]
 puts $fout "
 	public int putSample([set base].[set name] data)
 	\{
@@ -376,9 +377,30 @@ puts $fout "
             if (last > 0) \{
     		double rcvdTime = getCurrentTime();
 		double dTime = rcvdTime - SALInstance.value\[0\].private_sndStamp;
-    		if ( dTime < sal\[actorIdx\].sampleAge ) \{
-                   data = SALInstance.value\[last-1\];
-                   last = SAL__OK;
+    		if ( dTime < sal\[actorIdx\].sampleAge ) \{"
+    		if { [info exists TLMS($base,$name,param)] } {
+    		  foreach p $TLMS($base,$name,param) {
+    		    set apar [lindex [split [lindex [string trim $p "\{\}"] 1] "()"] 0] 
+    		    set arr [lindex [split $p "()"] 1]
+    		    if { $arr != "" } {
+    		      puts $fout "                      System.arraycopy(SALInstance.value\[0\].$apar,1,data.$apar,1,$arr);"
+    		    } else {
+    		      puts $fout "                      data.$apar = SALInstance.value\[0\].$apar;"
+    		    }
+    		  }
+    		}
+    		if { [info exists EVTS($base,$alias,param)] } {
+    		  foreach p $EVTS($base,$alias,param) {
+    		    set apar [lindex [split [lindex [string trim $p "\{\}"] 1] "()"] 0] 
+    		    set arr [lindex [split $p "()"] 1]
+    		    if { $arr != "" } {
+    		      puts $fout "                      System.arraycopy(SALInstance.value\[0\].$apar,1,data.$apar,1,$arr);"
+    		    } else {
+    		      puts $fout "                      data.$apar = SALInstance.value\[0\].$apar;"
+    		    }
+    		  }
+    		}
+         puts $fout "                   last = SAL__OK;
                 \} else \{
                    last = SAL__NO_UPDATES;
                 \}
