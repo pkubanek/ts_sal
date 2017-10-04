@@ -95,13 +95,24 @@ public class [set subsys]Event_[set alias]Test extends TestCase \{
       stdlog "	: event logger for = $alias"
       set fcmd [open $SAL_WORK_DIR/$subsys/java/src/[set subsys]EventLogger_[set alias]Test.java w]
       puts $fcmd "
+// This file contains the implementation for the [set subsys]_[set alias] event logger test.
+package org.lsst.sal.junit.[set subsys];
+
+import junit.framework.TestCase;
 import [set subsys].*;
 import org.lsst.sal.SAL_[set subsys];
 
-public class [set subsys]EventLogger_[set alias]Test \{
+public class [set subsys]EventLogger_[set alias]Test extends TestCase \{
 
-	public static void main(String\[\] args) \{
+   	public [set subsys]EventLogger_[set alias]Test(String name) \{
+   	   super(name);
+   	\}
+
+	public void test[set subsys]EventLogger_[set alias] () \{
+
+
 	  int status   = SAL_[set subsys].SAL__OK;
+          int count = 0;
 	  boolean finished=false;
 
 	  // Initialize
@@ -114,6 +125,11 @@ public class [set subsys]EventLogger_[set alias]Test \{
 	     status = evt.getEvent_[set alias](event);
 	     if (status == SAL_[set subsys].SAL__OK) \{
                 System.out.println(\"=== Event Logged : \" + event);
+                finished = true;
+             \}
+             count++;
+             if ( count > 99 ) \{
+                finished=true;
              \}
  	     try \{Thread.sleep(100);\} catch (InterruptedException e)  \{ e.printStackTrace(); \}
 	  \}
