@@ -380,7 +380,12 @@ puts $fout "
     		if ( dTime < sal\[actorIdx\].sampleAge ) \{"
     		if { [info exists TLMS($base,$name,param)] } {
     		  foreach p $TLMS($base,$name,param) {
-    		    set apar [lindex [split [lindex [string trim $p "\{\}"] 1] "()"] 0] 
+                    set tpar [lindex [string trim $p "\{\}"]]
+                    if { [lindex $tpar 0] == "unsigned" } {
+         	      set apar [lindex [split [lindex $tpar 2] "()"] 0] 
+                    } else {
+         	      set apar [lindex [split [lindex $tpar 1] "()"] 0] 
+                    }
     		    set arr [lindex [split $p "()"] 1]
     		    if { $arr != "" } {
     		      puts $fout "                      System.arraycopy(SALInstance.value\[0\].$apar,1,data.$apar,1,$arr);"
@@ -391,7 +396,12 @@ puts $fout "
     		}
     		if { [info exists EVTS($base,$alias,param)] } {
     		  foreach p $EVTS($base,$alias,param) {
-    		    set apar [lindex [split [lindex [string trim $p "\{\}"] 1] "()"] 0] 
+                    set tpar [lindex [string trim $p "\{\}"]]
+                    if { [lindex $tpar 0] == "unsigned" } {
+         	      set apar [lindex [split [lindex $tpar 2] "()"] 0] 
+                    } else {
+         	      set apar [lindex [split [lindex $tpar 1] "()"] 0] 
+                    }
     		    set arr [lindex [split $p "()"] 1]
     		    if { $arr != "" } {
     		      puts $fout "                      System.arraycopy(SALInstance.value\[0\].$apar,1,data.$apar,1,$arr);"
