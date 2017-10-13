@@ -336,7 +336,7 @@ typedef struct [set subsys]_waitCompleteLV
 }
 
 proc updatecfragments { fcod1 fcod2 fcod3 fcod4 fcod5 fcod6 fcod7 fcod8 fcod10 fcod11 fcod12 fcod13 } {
-global VPROPS
+global VPROPS TYPEFORMAT
    set idx $VPROPS(idx)
    if { $VPROPS(iscommand) } {set idx [expr $idx - 4]}
    if { $VPROPS(array) } {
@@ -362,7 +362,11 @@ global VPROPS
 
         if { $VPROPS(int) }  {
            if { $VPROPS(long) || $VPROPS(longlong) } {
-              puts $fcod5 "    sscanf(argv\[$idx\], \"%ld\", &myData.$VPROPS(name)\[$myidx\]);"
+              if { $VPROPS(long) } {
+                 puts $fcod5 "    sscanf(argv\[$idx\], \"%ld\", &myData.$VPROPS(name)\[$myidx\]);"
+              } else {
+                 puts $fcod5 "    sscanf(argv\[$idx\], \"%lld\", &myData.$VPROPS(name)\[$myidx\]);"
+              }
               puts $fcod10 "myData.$VPROPS(name)\[$myidx\] = long(sys.argv\[$idx\])"
            } else {
               if { $VPROPS(short) } { 
@@ -426,7 +430,11 @@ global VPROPS
           puts $fcod11 "myData.$VPROPS(name) = 1";
           if { $VPROPS(long) || $VPROPS(longlong) } {
             puts $fcod4 "    myData.$VPROPS(name) = 1;";
-            puts $fcod5 "    sscanf(argv\[$idx\], \"%ld\", &myData.$VPROPS(name));"
+            if { $VPROPS(long) } {
+               puts $fcod5 "    sscanf(argv\[$idx\], \"%ld\", &myData.$VPROPS(name));"
+            } else {
+               puts $fcod5 "    sscanf(argv\[$idx\], \"%lld\", &myData.$VPROPS(name));"
+            }
             puts $fcod10 "myData.$VPROPS(name)=long(sys.argv\[$idx\])"
           } else {
             puts $fcod4 "    myData.$VPROPS(name) = 1;";

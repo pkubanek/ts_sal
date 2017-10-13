@@ -535,15 +535,15 @@ set TYPEFORMAT(boolean) "%d"
 set TYPEFORMAT(long)   "%d"
 set TYPEFORMAT(float)  "%f"
 set TYPEFORMAT(double) "%lf"
-set TYPEFORMAT(int64)  "%ld"
-set TYPEFORMAT(longlong)      "%ld"
+set TYPEFORMAT(int64)  "%lld"
+set TYPEFORMAT(longlong)      "%lld"
 set TYPEFORMAT(unsignedbyte)   "%d"
 set TYPEFORMAT(unsignedshort)  "%d"
 set TYPEFORMAT(unsignedint16)  "%d"
 set TYPEFORMAT(unsignedint)    "%d"
 set TYPEFORMAT(unsignedint32)  "%d"
 set TYPEFORMAT(unsignedlong)   "%ld"
-set TYPEFORMAT(unsignedlonglong)   "%ld"
+set TYPEFORMAT(unsignedlonglong)   "%lld"
 
 
 
