@@ -153,6 +153,7 @@ global SAL_DIR SAL_WORK_DIR SYSDIC TELEMETRY_ALIASES LVSTRINGS
         puts $fout "	bool hasIncoming_[set base]_[set name]_ackcmd;"	
         puts $fout "	bool hasOutgoing_[set base]_[set name]_ackcmd;"
         puts $fout "	bool hasCallback_[set base]_[set name]_ackcmd;"	
+        puts $fout "	bool ackIt_[set base]_[set name];"	
         puts $fout "	int  callbackHdl_[set base]_[set name]_ackcmd;"	
         puts $fout "	int  shmemOutgoing_[set base]_[set name]_cmdSeqNum;"
         puts $fout "	int  shmemIncoming_[set base]_[set name]_rcvSeqNum;"
@@ -207,9 +208,11 @@ global SAL_DIR SAL_WORK_DIR SYSDIC TELEMETRY_ALIASES LVSTRINGS
      if { $type == "command" && $name != "command" } {
        puts $fout "
         int [set base]_shm_salProcessor_[set n2]LV();
+        int [set base]_shm_salCommander_[set n2]LV();
         int [set base]_shm_issueCommand_[set n2]LV([set base]_[set name]LV *[set name]_Ctl );
         int [set base]_shm_acceptCommand_[set n2]LV([set base]_[set name]LV *[set name]_Ctl );
         int [set base]_shm_ackCommand_[set n2]LV([set base]_ackcmdLV *ackcmd_Ctl);
+        int [set base]_shm_monitorCommand_[set n2]LV([set base]_[set name]LV *[set name]_Ctl );
         int [set base]_shm_waitForCompletion_[set n2]LV([set base]_waitCompleteLV *waitComplete_Ctl);
         int [set base]_shm_getResponse_[set n2]LV([set base]_ackcmdLV *ackcmd_Ctl);"
      } else {
@@ -597,6 +600,37 @@ global SAL_WORK_DIR LVSTRINGS
         return SAL__OK;
     \}
 
+    int [set base]_shm_salCommander_[set n2]LV() \{
+        [set base]_memIO->client\[LVClient\].syncO_[set base]_[set name] = true;
+        while ([set base]_memIO->client\[LVClient\].hasWriter_[set base]_[set name] == false) \{
+           usleep(1000);
+        \}
+        return SAL__OK;
+    \}
+
+    int [set base]_shm_monitorCommand_[set n2]LV([set base]_[set name]LV *data ) \{
+        int cmdId;
+        if ( [set base]_memIO->client\[LVClient\].hasIncoming_[set base]_[set name] ) \{"
+   set frag [open $SAL_WORK_DIR/include/SAL_[set base]_[set name]shmin.tmp r]
+   while { [gets $frag rec] > -1} {puts $fout $rec}
+   close $frag
+   puts $fout "
+           cmdId = [set base]_memIO->client\[LVClient\].shmemIncoming_[set base]_[set name]_rcvSeqNum;
+           [set base]_memIO->client\[LVClient\].hasIncoming_[set base]_[set name] = false;
+           [set base]_memIO->client\[LVClient\].ackIt_[set base]_[set name] = false;
+           if ([set base]_memIO->client\[LVClient\].callbackHdl_[set base]_[set name] != 0) \{
+              [set base]_memIO->client\[LVClient\].hasCallback_[set base]_[set name] = true;
+           \}
+           if (cmdId != 0) \{
+//              [set base]_memIO->client\[LVClient\].shmemIncoming_[set base]_[set name]_rcvSeqNum = 0;
+//   cout << \"monitored a command \" << cmdId << endl;
+              return cmdId;
+           \}
+        \} else \{
+           return SAL__NO_UPDATES;
+        \}
+        return SAL__OK;
+    \}
 
     int [set base]_shm_acceptCommand_[set n2]LV([set base]_[set name]LV *data ) \{
         int cmdId;
@@ -607,6 +641,7 @@ global SAL_WORK_DIR LVSTRINGS
    puts $fout "
            cmdId = [set base]_memIO->client\[LVClient\].shmemIncoming_[set base]_[set name]_rcvSeqNum;
            [set base]_memIO->client\[LVClient\].hasIncoming_[set base]_[set name] = false;
+           [set base]_memIO->client\[LVClient\].ackIt_[set base]_[set name] = true;
            if ([set base]_memIO->client\[LVClient\].callbackHdl_[set base]_[set name] != 0) \{
               [set base]_memIO->client\[LVClient\].hasCallback_[set base]_[set name] = true;
            \}
@@ -841,7 +876,14 @@ global SAL_DIR SAL_WORK_DIR
              [set base]_memIO->client\[LVClient\].hasReader_[set base]_[set name] = true;
           \}
           if ([set base]_memIO->client\[LVClient\].hasIncoming_[set base]_[set name] == false) \{
-            status = mgr\[LVClient\].acceptCommand_[set n2](Incoming_[set base]_[set name]);
+            if ( [set base]_memIO->client\[LVClient\].ackIt_[set base]_[set name] ) \{
+               status = mgr\[LVClient\].acceptCommand_[set n2](Incoming_[set base]_[set name]);
+            \} else \{
+               status = mgr\[LVClient\].getNextSample_[set name](Incoming_[set base]_[set name]);
+               if ( status > 0 ) \{
+                  [set base]_memIO->client\[LVClient\].shmemIncoming_[set base]_[set name]_rcvSeqNum = status;
+               \}
+            \}
             if (status > 0) \{"
    set frag [open $SAL_WORK_DIR/include/SAL_[set base]_[set name]monin.tmp r]
    while { [gets $frag rec] > -1} {puts $fout $rec}
@@ -974,6 +1016,7 @@ global SAL_DIR SAL_WORK_DIR
        [set base]_memIO->client\[LVClient\].hasOutgoing_[set base]_[set name]_ackcmd = false;
        [set base]_memIO->client\[LVClient\].hasCallback_[set base]_[set name]_ackcmd = false;
        [set base]_memIO->client\[LVClient\].callbackHdl_[set base]_[set name]_ackcmd = 0;
+       [set base]_memIO->client\[LVClient\].ackIt_[set base]_[set name] = false;
        [set base]_memIO->client\[LVClient\].activeCommand = 0;
 "
      }

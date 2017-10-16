@@ -97,9 +97,12 @@ salReturn SAL_[set base]::getSample_[set name]([set base]_[set name]C *data)
   set frag [open $SAL_WORK_DIR/include/SAL_[set base]_[set name]Cget.tmp r]
   while { [gets $frag rec] > -1} {puts $fout $rec}
   close $frag
+  if { [lindex [split $name _] 0] == "command" } {
+    puts $fout "     istatus = Instances\[j\].private_seqNum;"
+  } else {
+    puts $fout "     istatus = SAL__OK;"
+  }
   puts $fout "
-
-    istatus = SAL__OK;
    \} else \{
      istatus = SAL__NO_UPDATES;
    \}
