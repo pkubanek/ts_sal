@@ -634,6 +634,7 @@ global SAL_WORK_DIR LVSTRINGS
 
     int [set base]_shm_acceptCommand_[set n2]LV([set base]_[set name]LV *data ) \{
         int cmdId;
+        [set base]_memIO->client\[LVClient\].ackIt_[set base]_[set name] = true;
         if ( [set base]_memIO->client\[LVClient\].hasIncoming_[set base]_[set name] ) \{"
    set frag [open $SAL_WORK_DIR/include/SAL_[set base]_[set name]shmin.tmp r]
    while { [gets $frag rec] > -1} {puts $fout $rec}
@@ -641,7 +642,6 @@ global SAL_WORK_DIR LVSTRINGS
    puts $fout "
            cmdId = [set base]_memIO->client\[LVClient\].shmemIncoming_[set base]_[set name]_rcvSeqNum;
            [set base]_memIO->client\[LVClient\].hasIncoming_[set base]_[set name] = false;
-           [set base]_memIO->client\[LVClient\].ackIt_[set base]_[set name] = true;
            if ([set base]_memIO->client\[LVClient\].callbackHdl_[set base]_[set name] != 0) \{
               [set base]_memIO->client\[LVClient\].hasCallback_[set base]_[set name] = true;
            \}
@@ -880,9 +880,6 @@ global SAL_DIR SAL_WORK_DIR
                status = mgr\[LVClient\].acceptCommand_[set n2](Incoming_[set base]_[set name]);
             \} else \{
                status = mgr\[LVClient\].getNextSample_[set name](Incoming_[set base]_[set name]);
-               if ( status > 0 ) \{
-                  [set base]_memIO->client\[LVClient\].shmemIncoming_[set base]_[set name]_rcvSeqNum = status;
-               \}
             \}
             if (status > 0) \{"
    set frag [open $SAL_WORK_DIR/include/SAL_[set base]_[set name]monin.tmp r]
@@ -1016,7 +1013,7 @@ global SAL_DIR SAL_WORK_DIR
        [set base]_memIO->client\[LVClient\].hasOutgoing_[set base]_[set name]_ackcmd = false;
        [set base]_memIO->client\[LVClient\].hasCallback_[set base]_[set name]_ackcmd = false;
        [set base]_memIO->client\[LVClient\].callbackHdl_[set base]_[set name]_ackcmd = 0;
-       [set base]_memIO->client\[LVClient\].ackIt_[set base]_[set name] = false;
+       [set base]_memIO->client\[LVClient\].ackIt_[set base]_[set name] = true;
        [set base]_memIO->client\[LVClient\].activeCommand = 0;
 "
      }
