@@ -169,6 +169,10 @@ global XMLTOPICS XMLTLM IDLRESERVED XMLITEMS
            puts stdout "end of topic"
            puts $fout "\};"
            puts $fout "#pragma keylist $topicid"
+           catch {
+              set addc [exec grep const $SAL_WORK_DIR/idl-templates/$f]
+              puts $fout $addc
+           }
            close $fout
            close $fdet
            close $fcmt
@@ -256,13 +260,15 @@ global XMLTOPICS XMLTLM IDLRESERVED XMLITEMS
            if { [lsearch $IDLTYPES $type] < 0 } {
               errorexit "ERROR : $rec\nType $type not supported"
            }
-           set vitem [validitem [lindex $rec 0] [lindex $rec 1]]
-           set siz [validitem [lindex $rec 0] [lindex $rec 1] dim ]
-           if { $siz == "" }  {set siz 32}
-           set type [validitem [lindex $rec 0] [lindex $rec 1] type ]
-           set id [validitem [lindex $rec 0] [lindex $rec 1] id ]
-           if { [lindex [split $id _] 0] == "private" } {
-              puts stdout "Skipping private item $id"
+           if { $type != "const" } {
+             set vitem [validitem [lindex $rec 0] [lindex $rec 1]]
+             set siz [validitem [lindex $rec 0] [lindex $rec 1] dim ]
+             if { $siz == "" }  {set siz 32}
+             set type [validitem [lindex $rec 0] [lindex $rec 1] type ]
+             set id [validitem [lindex $rec 0] [lindex $rec 1] id ]
+           }
+           if { [lindex [split $id _] 0] == "private" || $type == "const" } {
+             puts stdout "Skipping private item $id or const"
            } else {
              set m1 [lindex [split $rec "/"] 2]
              set meta [split $m1 "|"]
@@ -386,7 +392,7 @@ source $env(SAL_DIR)/utilities.tcl
 source $env(SAL_DIR)/SALTopicTemplateXML.tcl
 source $env(SAL_DIR)/add_system_dictionary.tcl
 
-set IDLTYPES "boolean char byte octet short int long longlong float double string unsigned"
+set IDLTYPES "boolean char byte octet short int long longlong float double string unsigned const"
 set IDLSIZES(byte)     1
 set IDLSIZES(char)     1
 set IDLSIZES(octet)    1

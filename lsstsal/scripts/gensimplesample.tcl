@@ -205,7 +205,8 @@ using namespace std;
            puts $fbst "      ;"
          } else {
             puts $fout "	$rec"
-            if { [string range [lindex $rec 1] 0 7] != "private_" && [llength $rec] > 1 } {
+            if { [lindex $rec 0] != "const" } {
+             if { [string range [lindex $rec 1] 0 7] != "private_" && [llength $rec] > 1 } {
                puts $fhdr [typeidltoc $rec]
                if { $VPROPS(iscommand) } {
                   if { [lsearch "device property action value" $VPROPS(name)] < 0 } {
@@ -229,6 +230,7 @@ using namespace std;
                } else {
                  incr argidx 1
                }
+             }
             }
          }
       }

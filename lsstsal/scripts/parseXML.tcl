@@ -2,7 +2,7 @@
 
 proc parseXMLtoidl { fname } { 
 global IDLRESERVED SAL_WORK_DIR SAL_DIR CMDS CMD_ALIASES EVTS EVENT_ALIASES
-global TLMS TLM_ALIASES
+global TLMS TLM_ALIASES EVENT_ENUM
    set fin [open $fname r]
    set fout ""
    set ctype ""
@@ -36,6 +36,7 @@ global TLMS TLM_ALIASES
       if { $tag == "Action" }          {set action $value}
       if { $tag == "Value" }           {set vvalue $value}
       if { $tag == "Subsystem" }       {set subsys $value}
+      if { $tag == "Enumeration" }     {set EVENT_ENUM($alias) $value}
       if { $tag == "/SALEvent" } {
          set EVTS($subsys,$alias) $alias
          set EVENT_ALIASES($subsys) [lappend EVENT_ALIASES($subsys) $alias]
@@ -68,10 +69,18 @@ global TLMS TLM_ALIASES
          if { $fout != "" } {
            puts $fout "\};"
            puts $fout "#pragma keylist $tname"
+           if { [info exists EVENT_ENUM($alias)] } {
+              set i 1
+              foreach id [split $EVENT_ENUM($alias) ,] {
+                 puts $fout "	const long [set alias]_[string trim $id " "]=$i;"
+                 incr i 1
+              }
+           }
            close $fout
            if { $ctype == "telemetry" } {
              close $fsql
            }
+           set alias ""
         }
         set itemid 0
         if { [info exists topics($value)] } { 
@@ -154,10 +163,18 @@ global TLMS TLM_ALIASES
    if { $fout != "" } {
       puts $fout "\};"
       puts $fout "#pragma keylist $tname"
+      if { [info exists EVENT_ENUM($alias)] } {
+          set i 1
+          foreach id [split $EVENT_ENUM($alias) ,] {
+             puts $fout "	const long [set alias]_[string trim $id " "]=$i;"
+             incr i 1
+          }
+      }
       close $fout
       if { $ctype == "telemetry" } {
         close $fsql
       }
+      set alias ""
    }
    close $fin
    puts stdout "itemid for $SAL_WORK_DIR/idl-templates/[set tname].idl=  $itemid"
@@ -180,6 +197,9 @@ global TLMS TLM_ALIASES
      puts $fout "set EVENT_ALIASES($subsys) \"$EVENT_ALIASES($subsys)\""
      foreach c [array names EVTS] {
         puts $fout "set EVTS($c) \"$EVTS($c)\""
+     }
+     foreach c [array names EVENT_ENUM] {
+        puts $fout "set EVENT_ENUM($c) \"$EVENT_ENUM($c)\""
      }
      close $fout
      genhtmleventtable $subsys
