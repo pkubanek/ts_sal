@@ -124,8 +124,15 @@ public class [set subsys]EventLogger_[set alias]Test extends TestCase \{
 	  while (!finished) \{
 	     status = evt.getEvent_[set alias](event);
 	     if (status == SAL_[set subsys].SAL__OK) \{
-                System.out.println(\"=== Event Logged : \" + event);
-                finished = true;
+                System.out.println(\"=== Event Logged : \" + event);"
+       if { [file exists $SAL_WORK_DIR/include/SAL_[set subsys]_logevent_[set alias]Jsub.tmp] } {
+         set fjsub [open $SAL_WORK_DIR/include/SAL_[set subsys]_logevent_[set alias]Jsub.tmp r]
+         while { [gets $fjsub rec] > -1 } {
+            puts $fcmd $rec
+         }
+         close $fjsub
+       }
+       puts $fcmd "                finished = true;
              \}
              count++;
              if ( count > 99 ) \{

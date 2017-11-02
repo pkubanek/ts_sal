@@ -131,7 +131,7 @@ typedef StrArray** StrArrayHdl;
 
 
 proc makesalidl { subsys } {
-global SAL_DIR SAL_WORK_DIR SYSDIC VPROPS
+global SAL_DIR SAL_WORK_DIR SYSDIC VPROPS EVENT_ENUM
    set all [lsort [glob $SAL_WORK_DIR/idl-templates/validated/[set subsys]_*.idl]]
    exec mkdir -p $SAL_WORK_DIR/idl-templates/validated/sal
    set fout [open $SAL_WORK_DIR/idl-templates/validated/sal/sal_[set subsys].idl w]
@@ -169,11 +169,12 @@ using namespace std;
       set fcod11 [open $SAL_WORK_DIR/include/SAL_[set subsys]_[set name]Ppub.tmp w]
       set fcod12 [open $SAL_WORK_DIR/include/SAL_[set subsys]_[set name]monout.tmp w]
       set fcod13 [open $SAL_WORK_DIR/include/SAL_[set subsys]_[set name]monin.tmp w]
+      set fcod14 [open $SAL_WORK_DIR/include/SAL_[set subsys]_[set name]Jsub.tmp w]
       puts $fout "	struct $name \{"
       puts $fhdr "struct [set subsys]_[set name]C
 \{"
       puts $fhlv "typedef struct [set subsys]_[set name]LV \{"
-      puts $fbst "   bp::class_<[set subsys]_[set name]C>(\"[set subsys]_[set name]C\")"
+      puts $fbst "   bp::class_<[set subsys]_[set name]C>(m,\"[set subsys]_[set name]C\")"
       if {[string range $name 0 7] != "command_" && [string range $name 0 8] != "logevent_"}  {
         puts $fbst2 "
   .def(
@@ -221,7 +222,7 @@ using namespace std;
                updatecfragments $fcod1 $fcod2 $fcod3 $fcod4 $fcod5 $fcod6 $fcod7 $fcod8 $fcod10 $fcod11 $fcod12 $fcod13
                set vname $VPROPS(name)
                if { $VPROPS(array) } {
-                  puts $fbst "      .add_property(\"$vname\", make_array(&[set subsys]_[set name]C::$vname))"
+                  puts $fbst "      .def_property_readonly(\"$vname\", make_array(&[set subsys]_[set name]C::$vname))"
                } else {
                   puts $fbst "      .def_readwrite(\"$vname\", &[set subsys]_[set name]C::$vname)"
                }
@@ -230,6 +231,20 @@ using namespace std;
                } else {
                  incr argidx 1
                }
+             }
+            } else {
+             set v [split [lindex $rec 2] =]
+             puts $fbst "	m.attr(\"[lindex $v 0]\") = [lindex $v 1]"
+             set ename [string range $name 9 end]
+             if { [info exists EVENT_ENUM($ename)] && [info exists enumdone($ename)] == 0 } {
+                set vname [lindex [split $EVENT_ENUM($ename) :] 0]
+                set cnst [lindex [split $EVENT_ENUM($ename) :] 1]
+                foreach id [split $cnst ,] {
+                   set sid [string trim $id]
+                   puts $fcod3 "    if (SALInstance.[set vname] == camera::[set ename]_[set sid]) cout << \"    $vname : [set sid]\" << endl;"
+                   puts $fcod14 "                if (event.[set vname] == camera.[set ename]_[set sid].value) System.out.println(\"    $vname : [set sid]\");"
+                }
+                set enumdone($ename) 1
              }
             }
          }
@@ -245,6 +260,9 @@ using namespace std;
       close $fcod8
       close $fcod10
       close $fcod11
+      close $fcod12
+      close $fcod13
+      close $fcod14
    }
    if { [info exists SYSDIC($subsys,keyedID)] } {
        genkeyedidl $fout $subsys

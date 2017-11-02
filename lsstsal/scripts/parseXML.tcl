@@ -36,7 +36,7 @@ global TLMS TLM_ALIASES EVENT_ENUM
       if { $tag == "Action" }          {set action $value}
       if { $tag == "Value" }           {set vvalue $value}
       if { $tag == "Subsystem" }       {set subsys $value}
-      if { $tag == "Enumeration" }     {set EVENT_ENUM($alias) $value}
+      if { $tag == "Enumeration" }     {set EVENT_ENUM($alias) "$item:$value"}
       if { $tag == "/SALEvent" } {
          set EVTS($subsys,$alias) $alias
          set EVENT_ALIASES($subsys) [lappend EVENT_ALIASES($subsys) $alias]
@@ -71,7 +71,9 @@ global TLMS TLM_ALIASES EVENT_ENUM
            puts $fout "#pragma keylist $tname"
            if { [info exists EVENT_ENUM($alias)] } {
               set i 1
-              foreach id [split $EVENT_ENUM($alias) ,] {
+              set cnst [lindex [split $EVENT_ENUM($alias) :] 1]
+              foreach id [split $cnst ,] {
+                 set cnst [lindex [split $id :] 1]
                  puts $fout "	const long [set alias]_[string trim $id " "]=$i;"
                  incr i 1
               }
@@ -165,9 +167,11 @@ global TLMS TLM_ALIASES EVENT_ENUM
       puts $fout "#pragma keylist $tname"
       if { [info exists EVENT_ENUM($alias)] } {
           set i 1
-          foreach id [split $EVENT_ENUM($alias) ,] {
-             puts $fout "	const long [set alias]_[string trim $id " "]=$i;"
-             incr i 1
+          set cnst [lindex [split $EVENT_ENUM($alias) :] 1]
+          foreach id [split $cnst ,] {
+              set cnst [lindex [split $id :] 1]
+              puts $fout "	const long [set alias]_[string trim $id " "]=$i;"
+              incr i 1
           }
       }
       close $fout
