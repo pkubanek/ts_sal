@@ -1,4 +1,0 @@
-struct camera_Prot {
-  long	Status[2];	// 0.010 | Volts | xxx | none | Control room | 2 | 864  | 3,456 
-};
-#pragma keylist camera_Prot 

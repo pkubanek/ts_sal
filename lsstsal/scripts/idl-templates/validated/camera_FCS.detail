@@ -1,3 +1,0 @@
-camera.FCS.motion_profile 2400 float 0.1
-camera.FCS.algorithm 32 string<32> 0.1
-camera.FCS.flags 1 long 0.1

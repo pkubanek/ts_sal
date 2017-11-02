@@ -1,4 +1,0 @@
-struct environment_TC {
-  long Raw[64];
-  float Calibrated[64];
-};

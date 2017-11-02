@@ -1,9 +1,0 @@
-struct camera_Cold_power {
-  string<32> private_revCode;  //private
-  double     private_sndStamp; //private
-  double     private_rcvStamp; //private
-  long       private_seqNum;   //private
-  long       private_origin;   //private
-  float	Compressor load[6];	// 0.010 | Watts | Compressor electrical load | none | Utility room | 6 | 2,592  | 10,368 
-};
-#pragma keylist camera_Cold_power 

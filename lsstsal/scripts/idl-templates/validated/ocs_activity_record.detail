@@ -1,5 +1,0 @@
-ocs.activity.record.type 128 string<128> 0.1
-ocs.activity.record.subsystem 128 string<128> 0.1
-ocs.activity.record.part 128 string<128> 0.1
-ocs.activity.record.supervid 128 string<128> 0.1
-ocs.activity.record.uuid 32 string<32> 0.1

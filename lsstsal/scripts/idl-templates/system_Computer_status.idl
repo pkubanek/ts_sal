@@ -1,4 +1,0 @@
-struct system_Computer_status {
-  long Raw[16];
-  float Calibrated[32];
-};

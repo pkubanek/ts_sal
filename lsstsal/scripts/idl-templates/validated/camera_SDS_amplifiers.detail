@@ -1,7 +1,0 @@
-camera.SDS.amplifiers.raftID 1 short 0.1
-camera.SDS.amplifiers.flags 132 long 0.1
-camera.SDS.amplifiers.status 132 long 0.1
-camera.SDS.amplifiers.voltage1 132 float 0.1
-camera.SDS.amplifiers.voltage2 132 float 0.1
-camera.SDS.amplifiers.voltage3 132 float 0.1
-camera.SDS.amplifiers.voltage4 132 float 0.1

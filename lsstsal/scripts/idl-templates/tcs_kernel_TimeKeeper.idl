@@ -1,8 +1,0 @@
-struct tcs_kernel_TimeKeeper {
-  float Tai;
-  float Tt;
-  float Cst;
-  float Sst;
-  float Dcst;
-  float Dsst;
-};

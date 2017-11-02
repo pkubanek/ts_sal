@@ -1,5 +1,0 @@
-struct skycam_Application {
-  float Sky_parms[32];
-  float Data[64];
-  float Error[4];
-};

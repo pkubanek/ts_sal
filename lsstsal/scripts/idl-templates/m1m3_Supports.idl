@@ -1,5 +1,0 @@
-struct m1m3_Supports {
-  long targetpos[6];
-  long stepcnt[6];
-  float force[6];
-};

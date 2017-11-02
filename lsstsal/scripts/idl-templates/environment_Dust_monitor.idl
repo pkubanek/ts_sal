@@ -1,4 +1,0 @@
-struct environment_Dust_monitor {
-  long Raw[16];
-  float Calibrated[32];
-};

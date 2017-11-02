@@ -1,3 +1,0 @@
-struct ocs_system_configuration {
-  long stationid;
-};

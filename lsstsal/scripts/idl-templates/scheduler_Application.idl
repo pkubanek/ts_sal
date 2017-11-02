@@ -1,3 +1,0 @@
-struct scheduler_Application {
-  float data[200];
-};

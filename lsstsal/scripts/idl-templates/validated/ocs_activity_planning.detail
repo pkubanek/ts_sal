@@ -1,5 +1,0 @@
-ocs.activity.planning.type 128 string<128> 0.1
-ocs.activity.planning.subsystem 128 string<128> 0.1
-ocs.activity.planning.part 128 string<128> 0.1
-ocs.activity.planning.supervid 128 string<128> 0.1
-ocs.activity.planning.uuid 32 string<32> 0.1

@@ -1,4 +1,0 @@
-struct ocs_activity_record {
-  long activity_code;
-  long result_code;
-};

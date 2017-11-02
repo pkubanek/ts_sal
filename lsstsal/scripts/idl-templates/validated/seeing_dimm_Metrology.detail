@@ -1,4 +1,0 @@
-seeing.dimm.Metrology.Raw 16 long 0.1
-seeing.dimm.Metrology.Calibrated 15 float 0.1
-seeing.dimm.Metrology.Limits 63 octet 0.1
-seeing.dimm.Metrology.Status 63 octet 0.1

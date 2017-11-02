@@ -1,3 +1,0 @@
-struct tcs_AOCS {
-  string<32>  result;
-};

@@ -1,3 +1,0 @@
-camera.TC.control.temperature 10 float 0.1
-camera.TC.control.setpoint 10 float 0.1
-camera.TC.control.status 10 long 0.1

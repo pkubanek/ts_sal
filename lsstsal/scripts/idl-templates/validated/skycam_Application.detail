@@ -1,5 +1,0 @@
-skycam.Application.Sky_parms 32 float 0.1
-skycam.Application.Catalog 4096 string<4096> 0.1
-skycam.Application.Data 64 float 0.1
-skycam.Application.Error 4 float 0.1
-skycam.Application.Status 16 string<16> 0.1

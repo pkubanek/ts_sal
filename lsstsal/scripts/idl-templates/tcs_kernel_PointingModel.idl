@@ -1,7 +1,0 @@
-struct tcs_kernel_PointingModel {
-  long Model[30];
-  float Coeffv[100];
-  long Nterml;
-  long Ntermx;
-  long Nterms;
-};

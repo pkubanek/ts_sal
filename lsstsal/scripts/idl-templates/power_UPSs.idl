@@ -1,4 +1,0 @@
-struct power_UPSs {
-  long Raw[16];
-  float Calibrated[32];
-};

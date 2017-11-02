@@ -1,5 +1,0 @@
-struct ocs_system_networking {
-  long ip[4];
-  long rx[6];
-  long tx[6];
-};

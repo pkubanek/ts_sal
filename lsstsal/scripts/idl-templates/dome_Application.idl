@@ -1,9 +1,0 @@
-struct dome_Application {
-  float elevError;
-  float scrTarget;
-  float scrPosition;
-  float scrError;
-  float lvTarget[72];
-  float lvPosition[72];
-  float lvError[72];
-};

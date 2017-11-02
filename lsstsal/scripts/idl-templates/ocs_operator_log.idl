@@ -1,4 +1,0 @@
-struct ocs_operator_log {
-  long opid;
-  long stationid;
-};

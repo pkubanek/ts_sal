@@ -1,3 +1,0 @@
-struct system_Command_history {
-  float Data[16];
-};

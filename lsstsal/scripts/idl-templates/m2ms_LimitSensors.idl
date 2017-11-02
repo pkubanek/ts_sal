@@ -1,4 +1,0 @@
-struct m2ms_LimitSensors {
-  short liftoff[64];
-  short limit[64];
-};

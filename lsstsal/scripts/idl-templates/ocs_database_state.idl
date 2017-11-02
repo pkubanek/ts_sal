@@ -1,7 +1,0 @@
-struct ocs_database_state {
-  long status[32];
-  long recin[32];
-  long recout[32];
-  long capacity[32];
-  long lastrep[32];
-};

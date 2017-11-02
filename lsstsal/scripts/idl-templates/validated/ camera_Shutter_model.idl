@@ -1,9 +1,0 @@
-struct _Shutter_model {
-  string<32> private_revCode;  //private
-  double     private_sndStamp; //private
-  double     private_rcvStamp; //private
-  long       private_seqNum;   //private
-  long       private_origin;   //private
-  string<32>	Profile_function;	// 0.054 | none | Name of Motion profile configuration | none | Camera body | 1 |  2,335  |  74,724 
-};
-#pragma keylist _Shutter_model

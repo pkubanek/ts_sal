@@ -1,4 +1,0 @@
-struct tcs_kernel_OpticsVt {
-  float tip;
-  float tilt;
-};

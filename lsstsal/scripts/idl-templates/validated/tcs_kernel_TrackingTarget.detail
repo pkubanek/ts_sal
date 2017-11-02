@@ -1,5 +1,0 @@
-tcs.kernel.TrackingTarget.PositionX 1 float 0.1
-tcs.kernel.TrackingTarget.PositionY 1 float 0.1
-tcs.kernel.TrackingTarget.T0 1 float 0.1
-tcs.kernel.TrackingTarget.VelocityX 1 float 0.1
-tcs.kernel.TrackingTarget.VelocityY 1 float 0.1

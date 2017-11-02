@@ -1,5 +1,0 @@
-struct ocs_pointing_wcs {
-  double ra[200];
-  double dec[200];
-  double coeff[32];
-};

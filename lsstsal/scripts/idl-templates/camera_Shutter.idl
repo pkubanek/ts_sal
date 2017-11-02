@@ -1,5 +1,0 @@
-struct camera_Shutter {
-  float	Open_profile[24];		// 0.054 | seconds | Open Hall probe readings | none | Camera body | 24 | 56,043  | 224,173 
-  float	Close_profile[24];		// 0.054 | seconds | Close Hall probe readings | none | Camera body | 24 | 56,043  | 224,173 
-};
-#pragma keylist camera_Shutter

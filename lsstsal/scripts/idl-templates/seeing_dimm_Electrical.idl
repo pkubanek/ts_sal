@@ -1,4 +1,0 @@
-struct seeing_dimm_Electrical {
-  long Raw[16];
-  float Calibrated[31];
-};

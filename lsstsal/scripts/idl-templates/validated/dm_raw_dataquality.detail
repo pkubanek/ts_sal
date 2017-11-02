@@ -1,7 +1,0 @@
-dm.raw.dataquality.metric1 200 double 0.1
-dm.raw.dataquality.metric2 200 double 0.1
-dm.raw.dataquality.metric3 200 double 0.1
-dm.raw.dataquality.metric4 200 double 0.1
-dm.raw.dataquality.metric5 200 double 0.1
-dm.raw.dataquality.metric6 200 double 0.1
-dm.raw.dataquality.summary 100 double 0.1

@@ -1,4 +1,0 @@
-struct m2ms_Actuators {
-  long Raw[15];
-  float Calibrated[31];
-};

@@ -1,4 +1,0 @@
-struct ocs_activity_planning {
-  long activity_code;
-  double duration;
-};

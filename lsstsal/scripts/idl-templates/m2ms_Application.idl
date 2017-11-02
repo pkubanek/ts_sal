@@ -1,5 +1,0 @@
-struct m2ms_Application {
-  float Demand[2];
-  float Position[2];
-  float Error[2];
-};

@@ -1,4 +1,0 @@
-struct mount_Metrology {
-  long Raw[16];
-  float Calibrated[16];
-};

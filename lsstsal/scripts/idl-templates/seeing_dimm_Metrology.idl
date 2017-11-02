@@ -1,4 +1,0 @@
-struct seeing_dimm_Metrology {
-  long Raw[16];
-  float Calibrated[15];
-};

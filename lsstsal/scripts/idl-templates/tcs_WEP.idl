@@ -1,8 +1,0 @@
-struct tcs_WEP {
-  char basis_set_name[256];
-  long number_of_terms;
-  double z_arr1[64];
-  double z_arr2[64];
-  double z_arr3[64];
-  double z_arr4[64];
-};

@@ -1,6 +1,0 @@
-struct scheduler_program {
-  long id;
-  long priority;
-  long status;
-  float completion;
-};
