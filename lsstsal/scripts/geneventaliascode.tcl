@@ -141,8 +141,8 @@ global EVENT_ALIASES EVTS
     if { [info exists EVTS($subsys,$i,param)] } {
       stdlog "	: alias = $i"
       puts $fout "
-        .def( \"getEvent_[set i]\",  &::SAL_SALData::getEvent_[set i] )
-        .def( \"logEvent_[set i]\",  &::SAL_SALData::logEvent_[set i] )
+        .def( \"getEvent_[set i]\",  &SAL_SALData::getEvent_[set i] )
+        .def( \"logEvent_[set i]\",  &SAL_SALData::logEvent_[set i] )
       "
     } else {
 #      stdlog "Alias $i has no parameters - uses standard [set subsys]_logevent"

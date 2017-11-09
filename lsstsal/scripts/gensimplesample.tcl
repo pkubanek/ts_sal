@@ -149,6 +149,8 @@ using namespace std;
 "
    set fbst [open $SAL_WORK_DIR/include/SAL_[set subsys]C.bp w]
    set fbst2 [open $SAL_WORK_DIR/include/SAL_[set subsys]C.bp2 w]
+   set fpyb [open $SAL_WORK_DIR/include/SAL_[set subsys]C.pyb w]
+   set fpyb2 [open $SAL_WORK_DIR/include/SAL_[set subsys]C.pyb2 w]
    puts $fout "module $subsys \{"
    foreach i $all {
       puts stdout "Adding $i to sal_$subsys.idl"
@@ -175,14 +177,19 @@ using namespace std;
 \{"
       puts $fhlv "typedef struct [set subsys]_[set name]LV \{"
       puts $fbst "   bp::class_<[set subsys]_[set name]C>(m,\"[set subsys]_[set name]C\")"
+      puts $fpyb "   py::class_<[set subsys]_[set name]C>(m,\"[set subsys]_[set name]C\")
+      .def(py::init<>())"
       if {[string range $name 0 7] != "command_" && [string range $name 0 8] != "logevent_"}  {
         puts $fbst2 "
-  .def(
-        \"getSample_[set name]\" ,  &::SAL_[set subsys]::getSample_[set name] )
-  .def(
-        \"getNextSample_[set name]\" ,  &::SAL_[set subsys]::getNextSample_[set name] )
-  .def(
-      \"putSample_[set name]\" ,  &::SAL_[set subsys]::putSample_[set name] )"
+  .def(\"getSample_[set name]\" ,  &SAL_[set subsys]::getSample_[set name] )
+  .def(\"getNextSample_[set name]\" ,  &SAL_[set subsys]::getNextSample_[set name] )
+  .def(\"flushSamples_[set name]\" ,  &SAL_[set subsys]::flushSamples_[set name] )
+  .def(\"putSample_[set name]\" ,  &SAL_[set subsys]::putSample_[set name] )"
+        puts $fpyb2 "
+  .def(\"getSample_[set name]\" ,  &SAL_[set subsys]::getSample_[set name] )
+  .def(\"getNextSample_[set name]\" ,  &SAL_[set subsys]::getNextSample_[set name] )
+  .def(\"flushSamples_[set name]\" ,  &SAL_[set subsys]::flushSamples_[set name] )
+  .def(\"putSample_[set name]\" ,  &SAL_[set subsys]::putSample_[set name] )"
       }
       if { [info exists SYSDIC($subsys,keyedID)] } {
           puts $fout "	  short	[set subsys]ID;"
@@ -204,6 +211,7 @@ using namespace std;
 "
            puts $fhlv "\} [set subsys]_[set name]_Ctl;"
            puts $fbst "      ;"
+           puts $fpyb "      ;"
          } else {
             puts $fout "	$rec"
             if { [lindex $rec 0] != "const" } {
@@ -222,9 +230,11 @@ using namespace std;
                updatecfragments $fcod1 $fcod2 $fcod3 $fcod4 $fcod5 $fcod6 $fcod7 $fcod8 $fcod10 $fcod11 $fcod12 $fcod13
                set vname $VPROPS(name)
                if { $VPROPS(array) } {
-                  puts $fbst "      .def_property_readonly(\"$vname\", make_array(&[set subsys]_[set name]C::$vname))"
+                  puts $fbst "      .def_add_property(\"$vname\", make_array(&[set subsys]_[set name]C::$vname))"
+                  puts $fpyb "      .def_property_readonly(\"$vname\", make_array(&[set subsys]_[set name]C::$vname))"
                } else {
                   puts $fbst "      .def_readwrite(\"$vname\", &[set subsys]_[set name]C::$vname)"
+                  puts $fpyb "      .def_readwrite(\"$vname\", &[set subsys]_[set name]C::$vname)"
                }
                if { $VPROPS(array) } {
                  incr argidx $VPROPS(dim)
@@ -234,7 +244,7 @@ using namespace std;
              }
             } else {
              set v [split [lindex $rec 2] =]
-             puts $fbst "	m.attr(\"[lindex $v 0]\") = [lindex $v 1]"
+             puts $fpyb "	m.attr(\"[lindex $v 0]\") = [lindex $v 1]"
              set ename [string range $name 9 end]
              if { [info exists EVENT_ENUM($ename)] && [info exists enumdone($ename)] == 0 } {
                 set vname [lindex [split $EVENT_ENUM($ename) :] 0]
@@ -352,6 +362,8 @@ typedef struct [set subsys]_waitCompleteLV
    close $fhlv
    close $fbst
    close $fbst2
+   close $fpyb
+   close $fpyb2
    return $SAL_WORK_DIR/idl-templates/validated/sal/sal_$subsys.idl
 }
 
@@ -775,7 +787,7 @@ puts stdout "done salidlgen $base $lang"
          saljavaclassgen $base $id
       }
       if { $lang == "python" } {
-         puts stdout "Generating Boost bindings"
+         puts stdout "Generating Python bindings"
          genpythonbinding $base
          puts stdout "Generating python shared library"
          salpythonshlibgen $base
@@ -905,7 +917,13 @@ global SAL_WORK_DIR OPTIONS DONE_CMDEVT
 
 source $SAL_DIR/add_system_dictionary.tcl
 source $SAL_DIR/gensalgetput.tcl
-source $SAL_DIR/gensimplepython.tcl
+if { [lindex [split $env(PYTHON_BUILD_VERSION) .] 0] == 2} {
+  puts stdout "Enabling Boost::Python bindings for python 2.x"
+  source $env(SAL_DIR)/gensimplepython.tcl
+} else { 
+  puts stdout "Enabling pybind11 bindings for python 3+"
+  source $env(SAL_DIR)/gensimplepybind11.tcl
+}  
 source $SAL_DIR/managetypes.tcl
 
 

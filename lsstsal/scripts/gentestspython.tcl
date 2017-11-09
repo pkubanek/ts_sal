@@ -29,6 +29,7 @@ global SAL_WORK_DIR SYSDIC SAL_DIR
 	 puts $fpub "
 import time
 import sys
+import numpy
 from SALPY_[set subsys] import *
 mgr = SAL_[set subsys][set initializer]
 mgr.salTelemetryPub(\"[set subsys]_[set name]\")
@@ -52,6 +53,7 @@ exit()
 	 puts $fsub "
 import time
 import sys
+import numpy
 from SALPY_[set subsys] import *
 mgr = SAL_[set subsys][set initializer]
 mgr.salTelemetrySub(\"[set subsys]_[set name]\")
@@ -88,6 +90,7 @@ global EVENT_ALIASES EVTS SAL_WORK_DIR SYSDIC SAL_DIR
       puts $fcmd "
 import time
 import sys
+import numpy
 if len(sys.argv) < [expr [llength $EVTS([set subsys],[set alias],plist)] +1]:
   print(\"ERROR : Invalid or missing arguments : $EVTS([set subsys],[set alias],plist)\")
   exit()
@@ -113,6 +116,7 @@ exit()
       puts $fcmd "
 import time
 import sys
+import numpy
 from SALPY_[set subsys] import *
 mgr = SAL_[set subsys][set initializer]
 mgr.salEvent(\"[set subsys]_logevent_[set alias]\")
@@ -150,6 +154,7 @@ global CMD_ALIASES CMDS SAL_WORK_DIR SYSDIC SAL_DIR
       puts $fcmd "
 import time
 import sys
+import numpy
 timeout=5
 if len(sys.argv) < [expr [llength $CMDS([set subsys],[set alias],plist)] +1]:
   print(\"ERROR : Invalid or missing arguments : $CMDS([set subsys],[set alias],plist)\")
@@ -177,6 +182,7 @@ exit()
       puts $fcmd "
 import time
 import sys
+import numpy
 from SALPY_[set subsys] import *
 mgr = SAL_[set subsys][set initializer]
 mgr.salProcessor(\"[set subsys]_command_[set alias]\")
