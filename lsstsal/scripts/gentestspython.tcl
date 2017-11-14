@@ -75,7 +75,7 @@ exit()
 
 
 proc geneventtestspython { subsys } {
-global EVENT_ALIASES EVTS SAL_WORK_DIR SYSDIC SAL_DIR
+global EVENT_ALIASES EVTS SAL_WORK_DIR SYSDIC SAL_DIR EVENT_ENUM
  exec mkdir -p $SAL_WORK_DIR/$subsys/python
  if { [info exists EVENT_ALIASES($subsys)] } {
    if { [info exists SYSDIC($subsys,keyedID)] } {
@@ -125,8 +125,19 @@ event = [set subsys]_logevent_[set alias]C()
 while True:
   retval = mgr.getEvent_[set alias](event)
   if retval==0:
-    print(\"Event $subsys $alias received\")
-  time.sleep(1)
+    print(\"Event $subsys $alias received\")"
+      if { [info exists EVENT_ENUM($alias)] && [info exists enumdone($alias)] == 0 } {
+          foreach e $EVENT_ENUM($alias) {
+                set vname [lindex [split $e :] 0]
+                set cnst [lindex [split $$e :] 1]
+                foreach id [split $cnst ,] {
+                   set sid [string trim $id " "]
+                   puts $fcmd "    if(event.[set vname] == [set alias]_[set sid]): print(\"[set vname] = [set sid]\")"
+                }
+          }
+          set enumdone($alias) 1
+     } 
+     puts $fcmd "  time.sleep(1)
 mgr.salShutdown()
 exit()
 "
