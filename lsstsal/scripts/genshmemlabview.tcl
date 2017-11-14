@@ -50,16 +50,30 @@ global SAL_DIR SAL_WORK_DIR
 }
 
 proc genlabviewidl { subsys } {
-global SAL_WORK_DIR
+global SAL_WORK_DIR EVENT_ENUMS
+   if { [file exists $SAL_WORK_DIR/idl-templates/validated/[set subsys]_evtdef.tcl] } { 
+      source  $SAL_WORK_DIR/idl-templates/validated/[set subsys]_evtdef.tcl
+   }
    set fin  [open $SAL_WORK_DIR/[set subsys]/cpp/sal_[set subsys].idl r]
    set fout [open $SAL_WORK_DIR/[set subsys]/labview/sal_[set subsys].idl w]
+   set topic none
    while { [gets $fin rec] > -1 } {
       set it [string trim $rec "\{\}"]
-      if { [lsearch "ack\;" [lindex $it 1]] > -1 } {
-         puts $fout "      long	cmdSeqNum;"
+      if { [lindex $it 0] == "struct" } {
+         set topic [string range [lindex $it 1] 9 end]
       }
-      if { [lsearch "device\; property\; action\; value\;" [lindex $it 1]] < 0 } {
-         puts $fout $rec
+      if { [lindex $it 0] != "const" } {
+       if { [lsearch "ack\;" [lindex $it 1]] > -1 } {
+         puts $fout "      long	cmdSeqNum;"
+       }
+       if { [lsearch "device\; property\; action\; value\;" [lindex $it 1]] < 0 } {
+         set name [string trim [lindex $it 1] ";"]
+         if { [info exists EVENT_ENUMS($topic,$name)] } {
+           puts $fout "$rec	// $EVENT_ENUMS($topic,$name)"
+         } else {
+           puts $fout $rec
+         }
+       }
       }
    }
    close $fin
@@ -199,7 +213,7 @@ global SAL_DIR SAL_WORK_DIR SYSDIC TELEMETRY_ALIASES LVSTRINGS
         int [set base]_salShmRelease();
         void [set base]_shm_checkCallbacksLV();
         void [set base]_shm_initFlags();
-        double [set base]_getCurrentTimeLV();
+        double [set base]_shm_getCurrentTimeLV();
 "
   foreach j $ptypes {
      set name [lindex $j 2]
@@ -380,7 +394,7 @@ extern \"C\" \{
       return SAL__OK;
     \}
 
-    double [set base]_getCurrentTimeLV() \{
+    double [set base]_shm_getCurrentTimeLV() \{
       struct timeval now;
       struct timezone zone;
       double ts;
