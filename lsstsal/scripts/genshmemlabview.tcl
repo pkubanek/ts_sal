@@ -69,7 +69,7 @@ global SAL_WORK_DIR EVENT_ENUMS
        if { [lsearch "device\; property\; action\; value\;" [lindex $it 1]] < 0 } {
          set name [string trim [lindex $it 1] ";"]
          if { [info exists EVENT_ENUMS($topic,$name)] } {
-           puts $fout "$rec	// $EVENT_ENUMS($topic,$name)"
+           puts $fout "$rec	// enum : $EVENT_ENUMS($topic,$name)"
          } else {
            puts $fout $rec
          }
