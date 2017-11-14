@@ -181,10 +181,10 @@ using namespace std;
       .def(py::init<>())"
       if {[string range $name 0 7] != "command_" && [string range $name 0 8] != "logevent_"}  {
         puts $fbst2 "
-  .def(\"getSample_[set name]\" ,  &SAL_[set subsys]::getSample_[set name] )
-  .def(\"getNextSample_[set name]\" ,  &SAL_[set subsys]::getNextSample_[set name] )
-  .def(\"flushSamples_[set name]\" ,  &SAL_[set subsys]::flushSamples_[set name] )
-  .def(\"putSample_[set name]\" ,  &SAL_[set subsys]::putSample_[set name] )"
+  .def(\"getSample_[set name]\" ,  &::SAL_[set subsys]::getSample_[set name] )
+  .def(\"getNextSample_[set name]\" ,  &::SAL_[set subsys]::getNextSample_[set name] )
+  .def(\"flushSamples_[set name]\" ,  &::SAL_[set subsys]::flushSamples_[set name] )
+  .def(\"putSample_[set name]\" ,  &::SAL_[set subsys]::putSample_[set name] )"
         puts $fpyb2 "
   .def(\"getSample_[set name]\" ,  &SAL_[set subsys]::getSample_[set name] )
   .def(\"getNextSample_[set name]\" ,  &SAL_[set subsys]::getNextSample_[set name] )
@@ -247,14 +247,16 @@ using namespace std;
              puts $fpyb "	m.attr(\"[lindex $v 0]\") = [lindex $v 1]"
              set ename [string range $name 9 end]
              if { [info exists EVENT_ENUM($ename)] && [info exists enumdone($ename)] == 0 } {
-                set vname [lindex [split $EVENT_ENUM($ename) :] 0]
-                set cnst [lindex [split $EVENT_ENUM($ename) :] 1]
+              foreach e $EVENT_ENUM($ename) {
+                set vname [lindex [split $e :] 0]
+                set cnst [lindex [split $$e :] 1]
                 foreach id [split $cnst ,] {
                    set sid [string trim $id]
                    puts $fcod3 "    if (SALInstance.[set vname] == [set subsys]::[set ename]_[set sid]) cout << \"    $vname : [set sid]\" << endl;"
                    puts $fcod14 "                if (event.[set vname] == [set subsys].[set ename]_[set sid].value) System.out.println(\"    $vname : [set sid]\");"
                 }
-                set enumdone($ename) 1
+              }
+              set enumdone($ename) 1
              }
             }
          }
