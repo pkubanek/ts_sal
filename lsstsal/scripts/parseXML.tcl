@@ -2,7 +2,7 @@
 
 proc parseXMLtoidl { fname } { 
 global IDLRESERVED SAL_WORK_DIR SAL_DIR CMDS CMD_ALIASES EVTS EVENT_ALIASES
-global TLMS TLM_ALIASES EVENT_ENUM
+global TLMS TLM_ALIASES EVENT_ENUM EVENT_ENUMS
    set fin [open $fname r]
    set fout ""
    set ctype ""
@@ -36,7 +36,10 @@ global TLMS TLM_ALIASES EVENT_ENUM
       if { $tag == "Action" }          {set action $value}
       if { $tag == "Value" }           {set vvalue $value}
       if { $tag == "Subsystem" }       {set subsys $value}
-      if { $tag == "Enumeration" }     {set EVENT_ENUM($alias) "$item:$value"}
+      if { $tag == "Enumeration" }     {
+         lappend EVENT_ENUM($alias) "$item:$value"
+         set EVENT_ENUMS($alias,$item) "$value"
+      }
       if { $tag == "/SALEvent" } {
          set EVTS($subsys,$alias) $alias
          set EVENT_ALIASES($subsys) [lappend EVENT_ALIASES($subsys) $alias]
@@ -70,13 +73,15 @@ global TLMS TLM_ALIASES EVENT_ENUM
            puts $fout "\};"
            puts $fout "#pragma keylist $tname"
            if { [info exists EVENT_ENUM($alias)] } {
-              set i 1
-              set cnst [lindex [split $EVENT_ENUM($alias) :] 1]
-              foreach id [split $cnst ,] {
-                 set cnst [lindex [split $id :] 1]
-                 puts $fout "	const long [set alias]_[string trim $id " "]=$i;"
-                 incr i 1
-              }
+             foreach e $EVENT_ENUM($alias) {
+               set i 1
+               set enum [string trim $e "\{\}"]
+               set cnst [lindex [split $enum :] 1]
+               foreach id [split $cnst ,] {
+                  puts $fout "	const long [set alias]_[string trim $id " "]=$i;"
+                  incr i 1
+               }
+             }
            }
            close $fout
            if { $ctype == "telemetry" } {
@@ -166,13 +171,15 @@ global TLMS TLM_ALIASES EVENT_ENUM
       puts $fout "\};"
       puts $fout "#pragma keylist $tname"
       if { [info exists EVENT_ENUM($alias)] } {
+        foreach e $EVENT_ENUM($alias) {
           set i 1
-          set cnst [lindex [split $EVENT_ENUM($alias) :] 1]
+          set enum [string trim $e "\{\}"]
+          set cnst [lindex [split $enum :] 1]
           foreach id [split $cnst ,] {
-              set cnst [lindex [split $id :] 1]
               puts $fout "	const long [set alias]_[string trim $id " "]=$i;"
               incr i 1
           }
+        }
       }
       close $fout
       if { $ctype == "telemetry" } {
@@ -204,6 +211,9 @@ global TLMS TLM_ALIASES EVENT_ENUM
      }
      foreach c [array names EVENT_ENUM] {
         puts $fout "set EVENT_ENUM($c) \"$EVENT_ENUM($c)\""
+     }
+     foreach c [array names EVENT_ENUMS] {
+        puts $fout "set EVENT_ENUMS($c) \"$EVENT_ENUMS($c)\""
      }
      close $fout
      genhtmleventtable $subsys
