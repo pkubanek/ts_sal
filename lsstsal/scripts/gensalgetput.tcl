@@ -73,7 +73,7 @@ salReturn SAL_[set base]::getSample_[set name]([set base]_[set name]C *data)
 #endif
   int actorIdx = SAL__[set base]_[set name]_ACTOR;
   if ( sal\[actorIdx\].isReader == false ) \{
-    createReader(actorIdx);
+    createReader(actorIdx,false);
     sal\[actorIdx\].isReader = true;
   \}
   DataReader_var dreader = getReader(actorIdx);
@@ -470,7 +470,7 @@ puts $fout "
      if { [string range $rec 0 22] == "// INSERT TYPE INCLUDES" } {
        puts $fouth "  #include \"ccpp_sal_[lindex [split $id _] 0].h\"
 #ifdef SAL_BUILD_FOR_PYTHON
-#include \"python[set env(PYTHON_BUILD_VERSION)]/Python.h\"
+#include \"Python.h\"
 #endif
 "
        gets $finh rec ; puts $fouth $rec
