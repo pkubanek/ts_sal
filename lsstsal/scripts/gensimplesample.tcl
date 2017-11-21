@@ -176,7 +176,7 @@ using namespace std;
       puts $fhdr "struct [set subsys]_[set name]C
 \{"
       puts $fhlv "typedef struct [set subsys]_[set name]LV \{"
-      puts $fbst "   bp::class_<[set subsys]_[set name]C>(m,\"[set subsys]_[set name]C\")"
+      puts $fbst "   bp::class_<[set subsys]_[set name]C>(\"[set subsys]_[set name]C\")"
       puts $fpyb "   py::class_<[set subsys]_[set name]C>(m,\"[set subsys]_[set name]C\")
       .def(py::init<>())"
       if {[string range $name 0 7] != "command_" && [string range $name 0 8] != "logevent_"}  {
