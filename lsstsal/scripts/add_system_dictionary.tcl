@@ -18,6 +18,7 @@ set SYSDIC(tcsWEP,hasGenerics) 1
 set SYSDIC(m1m3,hasGenerics) 1
 set SYSDIC(eec,hasGenerics) 1
 set SYSDIC(calibrationElectrometer,hasGenerics) 1
+set SYSDIC(vms,hasGenerics) 1
 
 set SYSDIC(systems) "accl archiver atMonochromator atWhiteLight auxscope calibrationSpectrometer calibrationElectrometer camera 
 catchuparchiver dmHeaderService dome domeADB domeAPS domeLouvers domeLWS domeMONCS domeTHCS eec environment EXA hexapod lasercal m1m3 m2ms MTMount network ocs operations power processingcluster rotator sequencer scheduler seeing skycam system tcs tcsAOCS tcsWEP vms"
@@ -261,7 +262,10 @@ system.Software - Modification logs
 tcs - Telescope control system
 tcs.kernel - Telescope pointing kernel
 tcs.MTMount - Mount interface
-tcs.optics - Active optics interface"
+tcs.optics - Active optics interface
+vms.m1m3 - Main mirror accellerometers
+vms.m2ms - M2 mirror accellerometers
+vms.tma - Mount accellerometers"
 
 foreach i [split $SYSDIC(subsystems) "\n" ] {
    set t [split $i "-"]
