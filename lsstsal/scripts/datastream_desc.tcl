@@ -1185,14 +1185,18 @@ set DESC(tcs.kernel.Site) "This subsystem is internal to the tcs pointing kernel
 set DESC(tcs.kernel.TimeKeeper) "This subsystem is internal to the tcs pointing kernel"
 set DESC(tcs.kernel.TrackingTarget) "This subsystem is internal to the tcs pointing kernel"
 
+set DESC(vms) "The Vibration Monitoring Subsystem consists of a set of accellerometers, some fixed
+and some mobile which are attached to the major telescope components, plus computer hardware to 
+collect the vibration data and publish it as Telemetry"
 
 set BLOBS(camera.WDS.wfsRaft) "100x100x8 32bit analysis images"
-set BLOBS(camera.GAS)  "64x64x1 16bit images"
+set BLOBS(camera.GAS)  "64x64x8 16bit images"
 #deprecated , these go to the DAQ
 #set BLOBS(auxscope.Spectrometer) "4096x2048x1 16bit images"
 #set BLOBS(auxscope.Camera) "4096x4096x1 16bit images"
 set BLOBS(seeing_dimm.Application) "64x64x4 16bit images"
-set BLOBS(seeing_mass.Application) "64x64x4 16bit images"
+#deprecated, no longer have MASS
+###set BLOBS(seeing_mass.Application) "64x64x4 16bit images"
 set BLOBS(skycam.Application) "1024x1024x4 16bit images"
 set BLOBS(environment.Lightning_detector) "1024x1024x1 8bit history image"
 set BLOBS(environment.Video_cameras) "640x480x16 8bit images"
