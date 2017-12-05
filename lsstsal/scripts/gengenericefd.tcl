@@ -197,8 +197,10 @@ global ACTORTYPE SAL_WORK_DIR BLACKLIST
 "
             }
          }
-         puts $fout "       status = [set topic]_SALReader->return_loan(myData_[set topic], [set topic]_info);
+         if { $topic != "command" && $topic != "logevent" } {
+           puts $fout "       status = [set topic]_SALReader->return_loan(myData_[set topic], [set topic]_info);
 "
+         }
       }
     }
    }
