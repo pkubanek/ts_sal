@@ -230,7 +230,7 @@ using namespace std;
                updatecfragments $fcod1 $fcod2 $fcod3 $fcod4 $fcod5 $fcod6 $fcod7 $fcod8 $fcod10 $fcod11 $fcod12 $fcod13
                set vname $VPROPS(name)
                if { $VPROPS(array) } {
-                  puts $fbst "      .def_add_property(\"$vname\", make_array(&[set subsys]_[set name]C::$vname))"
+                  puts $fbst "      .add_property(\"$vname\", make_array(&[set subsys]_[set name]C::$vname))"
                   puts $fpyb "      .def_property_readonly(\"$vname\", make_array(&[set subsys]_[set name]C::$vname))"
                } else {
                   puts $fbst "      .def_readwrite(\"$vname\", &[set subsys]_[set name]C::$vname)"
