@@ -398,8 +398,6 @@ global VPROPS TYPEFORMAT
            if { $VPROPS(long) || $VPROPS(longlong) } {
               if { $VPROPS(long) } {
                  puts $fcod5 "    sscanf(argv\[$idx\], \"%ld\", &myData.$VPROPS(name)\[$myidx\]);"
-              } else {
-                 puts $fcod5 "    sscanf(argv\[$idx\], \"%lld\", &myData.$VPROPS(name)\[$myidx\]);"
               }
               puts $fcod10 "myData.$VPROPS(name)\[$myidx\] = long(sys.argv\[$idx\])"
            } else {
@@ -466,8 +464,6 @@ global VPROPS TYPEFORMAT
             puts $fcod4 "    myData.$VPROPS(name) = 1;";
             if { $VPROPS(long) } {
                puts $fcod5 "    sscanf(argv\[$idx\], \"%ld\", &myData.$VPROPS(name));"
-            } else {
-               puts $fcod5 "    sscanf(argv\[$idx\], \"%lld\", &myData.$VPROPS(name));"
             }
             puts $fcod10 "myData.$VPROPS(name)=long(sys.argv\[$idx\])"
           } else {

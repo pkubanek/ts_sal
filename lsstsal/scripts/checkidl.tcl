@@ -170,7 +170,7 @@ global XMLTOPICS XMLTLM IDLRESERVED XMLITEMS
            puts $fout "\};"
            puts $fout "#pragma keylist $topicid"
            catch {
-              set addc [exec grep "const " $SAL_WORK_DIR/idl-templates/$f]
+              set addc [exec grep "const long " $SAL_WORK_DIR/idl-templates/$f]
               puts $fout $addc
            }
            close $fout
@@ -289,7 +289,11 @@ global XMLTOPICS XMLTLM IDLRESERVED XMLITEMS
                  set FREQUENCY($hid) [getfrequency $hid]
              }
              if { $FREQUENCY($hid) < 0.001 } {set FREQUENCY($hid) 0.001}
-             puts $fdet "$hid.$id $siz $type $FREQUENCY($hid)"
+             if { $type == "long long" } {
+                puts $fdet "$hid.$id $siz longlong $FREQUENCY($hid)"
+             } else {
+                puts $fdet "$hid.$id $siz $type $FREQUENCY($hid)"
+             }
              lappend tnames $id
              incr iinum 1
              set props($id,num) "$iinum"
