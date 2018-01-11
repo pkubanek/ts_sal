@@ -1120,6 +1120,9 @@ salReturn SAL_SALData::salEvent(char *topicName)
 
   //create Topic
   createTopic(actorIdx);
+  createSubscriber(actorIdx);
+  createReader(actorIdx,true);
+  sal[actorIdx].isReader = true;
   return SAL__OK;
 }
 
