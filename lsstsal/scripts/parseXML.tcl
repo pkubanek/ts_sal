@@ -118,7 +118,7 @@ global TLMS TLM_ALIASES EVENT_ENUM EVENT_ENUMS
         set desc "" ; set range "" ; set location ""
         set freq 0.054 ; set sdim 1
         if { [lsearch $IDLRESERVED [string tolower $item]] > -1 } {
-           puts stdout "Invalid use of IDL reserved token $id"
+           puts stdout "Invalid use of IDL reserved token $item"
            exit 1
         }
       }
@@ -311,7 +311,7 @@ global IDLRESERVED SAL_WORK_DIR SAL_DIR TLMS TLM_ALIASES
 
 
 
-set IDLRESERVED "abstract any attribute boolean case char component const consumes context custom default double emits enum eventtype exception factory false finder fixed float getraises home import in inout interface local long module multiple native object octet oneway out primarykey private provides public publishes raises readonly sequence setraises short string struct supports switch true truncatable typedef typeid typeprefix union unsigned uses valuebase valuetype void wchar wstring"
+set IDLRESERVED "abstract any attribute boolean case char component const consumes context custom dec default double emits enum eventtype exception exit factory false finder fixed float getraises home import in inout interface limit local long module multiple native object octet oneway out primarykey private provides public publishes raises readonly sequence setraises short string struct supports switch true truncatable typedef typeid typeprefix union unsigned uses valuebase valuetype void wchar wstring"
 set SAL_DIR $env(SAL_DIR)
 set SAL_WORK_DIR $env(SAL_WORK_DIR)
 source $SAL_DIR/add_private_idl.tcl
