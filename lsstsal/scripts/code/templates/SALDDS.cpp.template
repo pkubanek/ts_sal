@@ -1121,9 +1121,26 @@ salReturn SAL_SALData::salEvent(char *topicName)
   //create Topic
   createTopic(actorIdx);
   createSubscriber(actorIdx);
-  createReader(actorIdx,true);
-  sal[actorIdx].isReader = true;
-  return SAL__OK;
+
+#ifdef SAL_SUBSYSTEM_ID_IS_KEYED
+   // Filter expr
+   char buf[64];
+   sprintf(buf, "SALDataID = %d", subsystemID);
+   DDS::String_var sFilter = DDS::string_dup(buf);
+   // Filter expr
+   StringSeq sSeqExpr;
+   sSeqExpr.length(0);
+   // create topic
+   char ftopicName[128];
+   sprintf(ftopicName,"%s_%s","filtered",sal[actorIdx].topicName);
+   createContentFilteredTopic(actorIdx,ftopicName, sFilter.in(), sSeqExpr);
+   // create DataReader
+   createReader(actorIdx,true);
+#else
+   createReader(actorIdx,false);
+#endif
+   sal[actorIdx].isReader = true;
+   return SAL__OK;
 }
 
 
