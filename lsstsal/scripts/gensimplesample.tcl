@@ -253,7 +253,7 @@ using namespace std;
                 foreach id [split $cnst ,] {
                    set sid [string trim $id]
                    puts $fcod3 "    if (SALInstance.[set vname] == [set subsys]::[set ename]_[set sid]) cout << \"    $vname : [set sid]\" << endl;"
-                   puts $fcod14 "                if (event.[set vname] == [set subsys].[set ename]_[set sid].value) System.out.println(\"    $vname : [set sid]\");"
+                   puts $fcod14 "                if (evt.[set vname] == [set subsys].[set ename]_[set sid].value) System.out.println(\"    $vname : [set sid]\");"
                 }
               }
               set enumdone($ename) 1
