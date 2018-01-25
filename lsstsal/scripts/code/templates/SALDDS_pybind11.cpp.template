@@ -81,6 +81,9 @@ PYBIND11_PLUGIN(SALPY_SALData){
             "logError"
             , (void ( ::SAL_SALData::* )( ::salReturn ) )( &::SAL_SALData::logError )
             , ( py::arg("status") ) )    
+        .def( 
+            "getCurrentTime"
+            , (double ( ::SAL_SALData::* )(  ) )( &::SAL_SALData::getCurrentTime ) )
 // INSERT EVENTALIAS SUPPORT 
         .def( 
             "setTuneableQos"
