@@ -7,26 +7,28 @@ public class SALNAMESTRINGDataSubscriber {
 
 	public static void main(String[] args) {
                 short aKey=1;
+                int samples = 0;
 		SAL_SALData mgr = new SAL_SALData(SALSUBSYSID);
 		mgr.salTelemetrySub("SALNAMESTRING");
 
 		SALData.SALTopic SALInstance = new SALData.SALTopic();
+                samples = mgr.flushSamples(SALInstance);
                 System.out.println ("=== [SALTopic Subscriber] Ready ...");
 
 		boolean terminate = false;
 		int count = 0;
-                int samples = 0;
-		while (!terminate && count < 1500) { // We dont want the example to run indefinitely
+		int iloop = 0;
+		while (iloop < 200) { // We dont want the example to run indefinitely
+                        iloop++;
                         samples = mgr.getSample(SALInstance);
-                        if (samples > 0) {
+                        if (samples == SAL_SALData.SAL__OK) {
                            count++;
-  			   System.out.println("=== [SALTopic Subscriber] samples");
-			   System.out.println("=== [SALTopic Subscriber] message received :" + count + "(" + samples + ")");
-			   System.out.println("    revCode  : "+ SALInstance.private_revCode);
+  			   System.out.println("=== [SALTopic Subscriber] samples " + SALInstance.private_sndStamp);
+			   System.out.println("=== [SALTopic Subscriber] message received :" + count);
 			}
 			try
 			{
-				Thread.sleep(200);
+				Thread.sleep(10);
 			}
 			catch(InterruptedException ie)
 			{

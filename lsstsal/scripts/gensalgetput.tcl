@@ -92,7 +92,7 @@ salReturn SAL_[set base]::getSample_[set name]([set base]_[set name]C *data)
       cout << \"    origin  : \" << Instances\[j\].private_origin << endl;
       cout << \"    host  : \" << Instances\[j\].private_host << endl;
     \}
-    if ( (rcvdTime - Instances\[j\].private_sndStamp) < sal\[actorIdx\].sampleAge && (Instances\[0\].private_origin != 0)) \{
+    if ( (rcvdTime - Instances\[j\].private_sndStamp) < sal\[actorIdx\].sampleAge && (Instances\[j\].private_origin != 0)) \{
 "
   set frag [open $SAL_WORK_DIR/include/SAL_[set base]_[set name]Cget.tmp r]
   while { [gets $frag rec] > -1} {puts $fout $rec}
@@ -319,6 +319,7 @@ puts $fout "
 	  if (debugLevel > 0) \{
 	    System.out.println(\"=== \[putSample $name\] writing a message containing :\");
 	    System.out.println(\"    revCode  : \" + data.private_revCode);
+	    System.out.println(\"    sndStamp  : \" + data.private_sndStamp);
 	  \}"
         if { [info exists SYSDIC($base,keyedID)] } { 
           puts $fout "
@@ -343,7 +344,7 @@ puts $fout "
 	public int getSample([set base].[set name] data)
 	\{
 	  int status =  -1;
-          int last = 0;
+          int last = SAL__NO_UPDATES;
           int numsamp;
           [set name]SeqHolder SALInstance = new [set name]SeqHolder();
 	  int actorIdx = SAL__[set base]_[set name]_ACTOR;
@@ -365,22 +366,27 @@ puts $fout "
 	  [set name]DataReader SALReader = [set name]DataReaderHelper.narrow(dreader);
   	  SampleInfoSeqHolder infoSeq = new SampleInfoSeqHolder();
 	  SALReader.take(SALInstance, infoSeq, sal\[actorIdx\].maxSamples,
-					ANY_SAMPLE_STATE.value, ANY_VIEW_STATE.value,
+					NOT_READ_SAMPLE_STATE.value, ANY_VIEW_STATE.value,
 					ALIVE_INSTANCE_STATE.value);
           numsamp = SALInstance.value.length;
           if (numsamp > 0) \{
  	    if (debugLevel > 0) \{
 		for (int i = 0; i < numsamp; i++) \{
-				System.out.println(\"=== \[getSample $name \] message received :\");
+				System.out.println(\"=== \[getSample $name \] message received :\" + i);
 				System.out.println(\"    revCode  : \"
 						+ SALInstance.value\[i\].private_revCode);
-                   last = i+1;
+			        System.out.println(\"     sndStamp  : \" + SALInstance.value\[i\].private_sndStamp);
+				System.out.println(\"  sample_state : \" + infoSeq.value\[i\].sample_state);
+				System.out.println(\"    view_state : \" + infoSeq.value\[i\].view_state);
+				System.out.println(\"instance_state : \" + infoSeq.value\[i\].instance_state);
 		\}
 	    \}
-            if (last > 0) \{
+            int j=numsamp-1;
+            if (infoSeq.value\[j\].valid_data) \{
     		double rcvdTime = getCurrentTime();
-		double dTime = rcvdTime - SALInstance.value\[0\].private_sndStamp;
-    		if ( dTime < sal\[actorIdx\].sampleAge ) \{"
+		double dTime = rcvdTime - SALInstance.value\[j\].private_sndStamp;
+    		if ( dTime < sal\[actorIdx\].sampleAge ) \{
+                   data.private_sndStamp = SALInstance.value\[j\].private_sndStamp;"
     		if { [info exists TLMS($base,$name,param)] } {
     		  foreach p $TLMS($base,$name,param) {
                     set tpar [lindex [string trim $p "\{\}"]]
@@ -391,9 +397,9 @@ puts $fout "
                     }
     		    set arr [lindex [split $p "()"] 1]
     		    if { $arr != "" } {
-    		      puts $fout "                      System.arraycopy(SALInstance.value\[0\].$apar,1,data.$apar,1,$arr);"
+    		      puts $fout "                      System.arraycopy(SALInstance.value\[j\].$apar,0,data.$apar,0,$arr);"
     		    } else {
-    		      puts $fout "                      data.$apar = SALInstance.value\[0\].$apar;"
+    		      puts $fout "                      data.$apar = SALInstance.value\[j\].$apar;"
     		    }
     		  }
     		}
@@ -407,9 +413,9 @@ puts $fout "
                     }
     		    set arr [lindex [split $p "()"] 1]
     		    if { $arr != "" } {
-    		      puts $fout "                      System.arraycopy(SALInstance.value\[0\].$apar,1,data.$apar,1,$arr);"
+    		      puts $fout "                      System.arraycopy(SALInstance.value\[j\].$apar,0,data.$apar,0,$arr);"
     		    } else {
-    		      puts $fout "                      data.$apar = SALInstance.value\[0\].$apar;"
+    		      puts $fout "                      data.$apar = SALInstance.value\[j\].$apar;"
     		    }
     		  }
     		}
