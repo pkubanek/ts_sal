@@ -694,7 +694,8 @@ global SAL_WORK_DIR LVSTRINGS
       int countdown = waitStatus->timeout;
       [set base]_ackcmdLV response;
       char *result=(char *)malloc(128);
-        
+
+   response.result=(Str **)&result;     
    [set base]_memIO->client\[LVClient\].activeCommand = SAL__[set base]_[set name]_ACTOR;
    [set base]_memIO->client\[LVClient\].shmemIncoming_[set base]_[set name]_waitForSeqNum = waitStatus->cmdSeqNum;
    status = SAL__CMD_NOACK;
