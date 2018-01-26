@@ -693,39 +693,17 @@ global SAL_WORK_DIR LVSTRINGS
       salReturn status = SAL__OK;
       int countdown = waitStatus->timeout;
       [set base]_ackcmdLV response;
-      char *result=(char *)malloc(128);
 
-   response.result=(Str **)&result;     
+   response.result=0;     
    [set base]_memIO->client\[LVClient\].activeCommand = SAL__[set base]_[set name]_ACTOR;
    [set base]_memIO->client\[LVClient\].shmemIncoming_[set base]_[set name]_waitForSeqNum = waitStatus->cmdSeqNum;
    status = SAL__CMD_NOACK;
    while (status != SAL__CMD_COMPLETE && countdown != 0) \{
       status = [set base]_shm_getResponse_[set n2]LV(&response);
-//      if (status != SAL__CMD_NOACK) \{
-//        if ([set base]_memIO->client\[LVClient\].shmemIncoming_[set base]_[set name]_rcvSeqNum != 0) \{ 
-//          if ([set base]_memIO->client\[LVClient\].shmemIncoming_[set base]_[set name]_rcvSeqNum != waitStatus->cmdSeqNum) \{ 
-//            status = SAL__CMD_NOACK;
-//          \}
-//        \}
-//      \}
-//   cout << \"waiting for completion\" << countdown << endl;
-//   cout << \"waiting for completion status\" << status << endl;
       usleep(SAL__SLOWPOLL);
       countdown--;
    \}
-//   [set base]_memIO->client\[LVClient\].shmemIncoming_[set base]_[set name]_rcvSeqNum = 0;
    [set base]_memIO->client\[LVClient\].hasIncoming_[set base]_[set name]_ackcmd = false;
-//   [set base]_memIO->client\[LVClient\].shmemIncoming_[set base]_[set name]_waitForSeqNum = 0;
-   if (status != SAL__CMD_COMPLETE) \{
-      if (debugLevel > 0) \{
-//         cout << \"=== \[waitForCompletion\]_[set n2] command \" << cmdSeqNum <<  \" timed out :\" << endl;
-      \} 
-   \} else \{
-      if (debugLevel > 0) \{
-//         cout << \"=== \[waitForCompletion\]_[set n2] command \" << cmdSeqNum << \" completed ok :\" << endl;
-      \} 
-   \}
-   free(result);
    return status;
     \}
 "
