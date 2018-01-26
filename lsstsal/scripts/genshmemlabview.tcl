@@ -746,7 +746,9 @@ global SAL_WORK_DIR LVSTRINGS
            data->ack = [set base]_memIO->client\[LVClient\].shmemIncoming_[set base]_[set name]_cmdStatus;
            data->error = [set base]_memIO->client\[LVClient\].shmemIncoming_[set base]_[set name]_errorCode;
            data->cmdSeqNum = [set base]_memIO->client\[LVClient\].shmemIncoming_[set base]_[set name]_rcvSeqNum;
-           int resultSize = (*(data->result))->size ;
+           int resultSize = strlen([set base]_memIO->client\[LVClient\].[set base]_ackcmdLV_result_bufferIn);
+           NumericArrayResize(5, 1, (UHandle*)(&(data->result)), resultSize);
+           (*(data->result))->size = resultSize;
            for (int i=0;i<resultSize;i++)\{(*(data->result))->data\[i\] = [set base]_memIO->client\[LVClient\].[set base]_ackcmdLV_result_bufferIn\[i\];\}
            status = [set base]_memIO->client\[LVClient\].shmemIncoming_[set base]_[set name]_cmdStatus;
            if (data->ack == SAL__CMD_COMPLETE) \{
