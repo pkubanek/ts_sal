@@ -223,6 +223,8 @@
       salReturn salTelemetryPub(int actorIdx);
       salReturn salTelemetrySub(int actorIdx);
       salReturn salEvent(char *topicName);
+      salReturn salEventSub(char *topicName);
+      salReturn salEventPub(char *topicName);
       int getActorIndex(char *topic);
       salReturn salTypeSupport(int actorIdx);
       salReturn salCommand(char *cmdAlias);

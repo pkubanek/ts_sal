@@ -1139,10 +1139,57 @@ salReturn SAL_SALData::salEvent(char *topicName)
 #else
    createReader(actorIdx,false);
 #endif
-   sal[actorIdx].isReader = true;
+   sal[actorIdx].isEventReader = true;
    return SAL__OK;
 }
 
+salReturn SAL_SALData::salEventPub(char *topicName)
+{
+  int actorIdx = getActorIndex(topicName);
+
+  if ( actorIdx < 0) {return SAL__ERROR;}
+  salTelemetryPub(actorIdx);
+  sal[actorIdx].isEventWriter = true;
+  return SAL__OK;
+}
+
+
+salReturn SAL_SALData::salEventSub(char *topicName)
+{
+  int actorIdx = getActorIndex(topicName);
+
+  if ( actorIdx < 0) {return SAL__ERROR;}
+
+  // create domain participant
+  createParticipant(domainName);
+
+  //create type
+  salTypeSupport(actorIdx);
+
+  //create Topic
+  createTopic(actorIdx);
+  createSubscriber(actorIdx);
+
+#ifdef SAL_SUBSYSTEM_ID_IS_KEYED
+   // Filter expr
+   char buf[64];
+   sprintf(buf, "SALDataID = %d", subsystemID);
+   DDS::String_var sFilter = DDS::string_dup(buf);
+   // Filter expr
+   StringSeq sSeqExpr;
+   sSeqExpr.length(0);
+   // create topic
+   char ftopicName[128];
+   sprintf(ftopicName,"%s_%s","filtered",sal[actorIdx].topicName);
+   createContentFilteredTopic(actorIdx,ftopicName, sFilter.in(), sSeqExpr);
+   // create DataReader
+   createReader(actorIdx,true);
+#else
+   createReader(actorIdx,false);
+#endif
+   sal[actorIdx].isEventReader = true;
+   return SAL__OK;
+}
 
 
 void SAL_SALData::salShutdown()

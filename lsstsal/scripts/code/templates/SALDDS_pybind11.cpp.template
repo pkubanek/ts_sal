@@ -117,6 +117,14 @@ PYBIND11_PLUGIN(SALPY_SALData){
             , (::salReturn ( ::SAL_SALData::* )( char * ) )( &::SAL_SALData::salEvent )
             , ( py::arg("topicName") ) )    
         .def( 
+            "salEventSub"
+            , (::salReturn ( ::SAL_SALData::* )( char * ) )( &::SAL_SALData::salEventSub )
+            , ( py::arg("topicName") ) )    
+        .def( 
+            "salEventPub"
+            , (::salReturn ( ::SAL_SALData::* )( char * ) )( &::SAL_SALData::salEventPub )
+            , ( py::arg("topicName") ) )    
+        .def( 
             "setDebugLevel"
             , (::salReturn ( ::SAL_SALData::* )( int ) )( &::SAL_SALData::setDebugLevel )
             , ( py::arg("level") ) )    

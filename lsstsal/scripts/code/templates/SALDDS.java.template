@@ -121,7 +121,8 @@ public class SAL_SALData {
 	}
 
 
-        public void salTelemetryPub(int actorIdx) {
+        public int salTelemetryPub(int actorIdx)
+	{
 		String partitionName = domainName;
 
 		// create Domain Participant
@@ -139,12 +140,14 @@ public class SAL_SALData {
 		// create DataWriter
 		createWriter(actorIdx,false);
 		sal[actorIdx].isWriter = true;
+                return SAL__OK;
         }
 
 
 
 
-        public void salTelemetrySub(int actorIdx) {
+        public int salTelemetrySub(int actorIdx)
+	{
 		String partitionName = domainName;
 		// create Domain Participant
 		createParticipant(partitionName);
@@ -173,6 +176,7 @@ public class SAL_SALData {
 		createReader(actorIdx,false);
 #endif
                 sal[actorIdx].isReader = true;
+                return SAL__OK;
 	}
 
 
@@ -828,14 +832,20 @@ public class SAL_SALData {
 	public int salEventSub(String topicName)
 	{
 		int status = SAL__ERROR;
-		status = salTelemetrySub(topicName);
+                int actorIdx = getActorIndex(topicName);
+                if ( actorIdx < 0) {return SAL__ERROR;}
+		status = salTelemetrySub(actorIdx);
+                sal[actorIdx].isEventReader = true;
 		return status;
 	}
 
 	public int salEventPub(String topicName)
 	{
 		int status = SAL__ERROR;
-		status = salTelemetryPub(topicName);
+                int actorIdx = getActorIndex(topicName);
+                if ( actorIdx < 0) {return SAL__ERROR;}
+		status = salTelemetryPub(actorIdx);
+                sal[actorIdx].isEventWriter = true;
 		return status;
 	}
 
