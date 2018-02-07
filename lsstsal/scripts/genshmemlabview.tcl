@@ -950,7 +950,7 @@ global SAL_DIR SAL_WORK_DIR
        if ([set base]_memIO->client\[LVClient\].syncI_[set base]_[set name]) \{
           actorIdx = SAL__[set base]_[set name]_ACTOR;
           if (mgr\[LVClient\].actorEventReader(actorIdx) == false) \{
-             mgr\[LVClient\].salEvent(\"[set base]_[set name]\");
+             mgr\[LVClient\].salEventSub(\"[set base]_[set name]\");
              [set base]_memIO->client\[LVClient\].hasReader_[set base]_[set name] = true;
           \}
           if ( [set base]_memIO->client\[LVClient\].hasIncoming_[set base]_[set name] == false ) \{
@@ -967,7 +967,7 @@ global SAL_DIR SAL_WORK_DIR
        if ([set base]_memIO->client\[LVClient\].syncO_[set base]_[set name]) \{
           actorIdx = SAL__[set base]_[set name]_ACTOR;
           if (mgr\[LVClient\].actorEventWriter(actorIdx) == false) \{
-             mgr\[LVClient\].salEvent(\"[set base]_[set name]\");
+             mgr\[LVClient\].salEventPub(\"[set base]_[set name]\");
              [set base]_memIO->client\[LVClient\].hasWriter_[set base]_[set name] = true;
           \}
        \}
