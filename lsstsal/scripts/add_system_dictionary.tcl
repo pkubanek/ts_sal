@@ -21,6 +21,7 @@ set SYSDIC(calibrationCBP,hasGenerics) 1
 set SYSDIC(calibrationElectrometer,hasGenerics) 1
 set SYSDIC(calibrationMonochromator,hasGenerics) 1
 set SYSDIC(calibrationElectrometer,hasGenerics) 1
+set SYSDIC(calibrationSpectrometer,hasGenerics) 1
 set SYSDIC(vms,hasGenerics) 1
 set SYSDIC(summitFacility,hasGenerics) 1
 set SYSDIC(efd,hasGenerics) 1
