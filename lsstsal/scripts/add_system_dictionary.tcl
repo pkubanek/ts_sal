@@ -25,9 +25,10 @@ set SYSDIC(calibrationSpectrometer,hasGenerics) 1
 set SYSDIC(vms,hasGenerics) 1
 set SYSDIC(summitFacility,hasGenerics) 1
 set SYSDIC(efd,hasGenerics) 1
+set SYSDIC(tcsOfc,hasGenerics) 1
 
 set SYSDIC(systems) "accl archiver atMonochromator atWhiteLight auxscope calibrationCBP calibrationMonochromator calibrationSpectrometer calibrationElectrometer camera 
-catchuparchiver dmHeaderService dome domeADB domeAPS domeLouvers domeLWS domeMONCS domeTHCS eec efd environment EXA hexapod lasercal m1m3 m2ms MTMount network ocs operations power processingcluster rotator sequencer scheduler seeing skycam summitFacility system tcs tcsAOCS tcsWEP vms"
+catchuparchiver dmHeaderService dome domeADB domeAPS domeLouvers domeLWS domeMONCS domeTHCS eec efd environment EXA hexapod lasercal m1m3 m2ms MTMount network ocs operations power processingcluster rotator sequencer scheduler seeing skycam summitFacility system tcs tcsAOCS tcsOfc tcsWEP vms"
 foreach s $SYSDIC(systems) {set SYSDIC($s,type) system}
 
 set SYSDIC(datatypes) "byte short int long float string int64 double ubyte ushort uint ulong"
