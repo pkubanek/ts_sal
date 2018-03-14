@@ -17,6 +17,7 @@ set SYSDIC(tcsAOCS,hasGenerics) 1
 set SYSDIC(tcsWEP,hasGenerics) 1
 set SYSDIC(m1m3,hasGenerics) 1
 set SYSDIC(eec,hasGenerics) 1
+set SYSDIC(atMonochromator,hasGenerics) 1
 set SYSDIC(calibrationCBP,hasGenerics) 1
 set SYSDIC(calibrationElectrometer,hasGenerics) 1
 set SYSDIC(calibrationMonochromator,hasGenerics) 1
