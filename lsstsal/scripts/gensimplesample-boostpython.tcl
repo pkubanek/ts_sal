@@ -131,7 +131,7 @@ typedef StrArray** StrArrayHdl;
 
 
 proc makesalidl { subsys } {
-global SAL_DIR SAL_WORK_DIR SYSDIC VPROPS EVENT_ENUM
+global SAL_DIR SAL_WORK_DIR SYSDIC VPROPS
    set all [lsort [glob $SAL_WORK_DIR/idl-templates/validated/[set subsys]_*.idl]]
    exec mkdir -p $SAL_WORK_DIR/idl-templates/validated/sal
    set fout [open $SAL_WORK_DIR/idl-templates/validated/sal/sal_[set subsys].idl w]
@@ -149,8 +149,6 @@ using namespace std;
 "
    set fbst [open $SAL_WORK_DIR/include/SAL_[set subsys]C.bp w]
    set fbst2 [open $SAL_WORK_DIR/include/SAL_[set subsys]C.bp2 w]
-   set fpyb [open $SAL_WORK_DIR/include/SAL_[set subsys]C.pyb w]
-   set fpyb2 [open $SAL_WORK_DIR/include/SAL_[set subsys]C.pyb2 w]
    puts $fout "module $subsys \{"
    foreach i $all {
       puts stdout "Adding $i to sal_$subsys.idl"
@@ -171,31 +169,19 @@ using namespace std;
       set fcod11 [open $SAL_WORK_DIR/include/SAL_[set subsys]_[set name]Ppub.tmp w]
       set fcod12 [open $SAL_WORK_DIR/include/SAL_[set subsys]_[set name]monout.tmp w]
       set fcod13 [open $SAL_WORK_DIR/include/SAL_[set subsys]_[set name]monin.tmp w]
-      set fcod14 [open $SAL_WORK_DIR/include/SAL_[set subsys]_[set name]Jsub.tmp w]
       puts $fout "	struct $name \{"
       puts $fhdr "struct [set subsys]_[set name]C
 \{"
       puts $fhlv "typedef struct [set subsys]_[set name]LV \{"
       puts $fbst "   bp::class_<[set subsys]_[set name]C>(\"[set subsys]_[set name]C\")"
-      puts $fpyb "   py::class_<[set subsys]_[set name]C>(m,\"[set subsys]_[set name]C\")
-      .def(py::init<>())"
       if {[string range $name 0 7] != "command_" && [string range $name 0 8] != "logevent_"}  {
         puts $fbst2 "
-  .def(\"getSample_[set name]\" ,  &::SAL_[set subsys]::getSample_[set name] )
-  .def(\"getNextSample_[set name]\" ,  &::SAL_[set subsys]::getNextSample_[set name] )
-  .def(\"flushSamples_[set name]\" ,  &::SAL_[set subsys]::flushSamples_[set name] )
-  .def(\"putSample_[set name]\" ,  &::SAL_[set subsys]::putSample_[set name] )"
-        puts $fpyb2 "
-  .def(\"getSample_[set name]\" ,  &SAL_[set subsys]::getSample_[set name] )
-  .def(\"getNextSample_[set name]\" ,  &SAL_[set subsys]::getNextSample_[set name] )
-  .def(\"flushSamples_[set name]\" ,  &SAL_[set subsys]::flushSamples_[set name] )
-  .def(\"putSample_[set name]\" ,  &SAL_[set subsys]::putSample_[set name] )"
-      }
-      if {[string range $name 0 8] == "logevent_"}  {
-        puts $fbst2 "
-  .def(\"flushSamples_[set name]\" ,  &::SAL_[set subsys]::flushSamples_[set name] )"
-        puts $fpyb2 "
-  .def(\"flushSamples_[set name]\" ,  &SAL_[set subsys]::flushSamples_[set name] )"
+  .def(
+        \"getSample_[set name]\" ,  &::SAL_[set subsys]::getSample_[set name] )
+  .def(
+        \"getNextSample_[set name]\" ,  &::SAL_[set subsys]::getNextSample_[set name] )
+  .def(
+      \"putSample_[set name]\" ,  &::SAL_[set subsys]::putSample_[set name] )"
       }
       if { [info exists SYSDIC($subsys,keyedID)] } {
           puts $fout "	  short	[set subsys]ID;"
@@ -217,7 +203,6 @@ using namespace std;
 "
            puts $fhlv "\} [set subsys]_[set name]_Ctl;"
            puts $fbst "      ;"
-           puts $fpyb "      ;"
          } else {
             puts $fout "	$rec"
             if { [lindex $rec 0] != "const" } {
@@ -237,32 +222,14 @@ using namespace std;
                set vname $VPROPS(name)
                if { $VPROPS(array) } {
                   puts $fbst "      .add_property(\"$vname\", make_array(&[set subsys]_[set name]C::$vname))"
-                  puts $fpyb "      .def_property_readonly(\"$vname\", make_array(&[set subsys]_[set name]C::$vname))"
                } else {
                   puts $fbst "      .def_readwrite(\"$vname\", &[set subsys]_[set name]C::$vname)"
-                  puts $fpyb "      .def_readwrite(\"$vname\", &[set subsys]_[set name]C::$vname)"
                }
                if { $VPROPS(array) } {
                  incr argidx $VPROPS(dim)
                } else {
                  incr argidx 1
                }
-             }
-            } else {
-             set v [split [lindex $rec 2] =]
-             puts $fpyb "	m.attr(\"[lindex $v 0]\") = [lindex $v 1]"
-             set ename [string range $name 9 end]
-             if { [info exists EVENT_ENUM($ename)] && [info exists enumdone($ename)] == 0 } {
-              foreach e $EVENT_ENUM($ename) {
-                set vname [lindex [split $e :] 0]
-                set cnst [lindex [split $$e :] 1]
-                foreach id [split $cnst ,] {
-                   set sid [string trim $id]
-                   puts $fcod3 "    if (SALInstance.[set vname] == [set subsys]::[set ename]_[set sid]) cout << \"    $vname : [set sid]\" << endl;"
-                   puts $fcod14 "                if (event.[set vname] == [set subsys].[set ename]_[set sid].value) System.out.println(\"    $vname : [set sid]\");"
-                }
-              }
-              set enumdone($ename) 1
              }
             }
          }
@@ -278,9 +245,6 @@ using namespace std;
       close $fcod8
       close $fcod10
       close $fcod11
-      close $fcod12
-      close $fcod13
-      close $fcod14
    }
    if { [info exists SYSDIC($subsys,keyedID)] } {
        genkeyedidl $fout $subsys
@@ -370,8 +334,6 @@ typedef struct [set subsys]_waitCompleteLV
    close $fhlv
    close $fbst
    close $fbst2
-   close $fpyb
-   close $fpyb2
    return $SAL_WORK_DIR/idl-templates/validated/sal/sal_$subsys.idl
 }
 
@@ -404,6 +366,8 @@ global VPROPS TYPEFORMAT
            if { $VPROPS(long) || $VPROPS(longlong) } {
               if { $VPROPS(long) } {
                  puts $fcod5 "    sscanf(argv\[$idx\], \"%ld\", &myData.$VPROPS(name)\[$myidx\]);"
+              } else {
+                 puts $fcod5 "    sscanf(argv\[$idx\], \"%lld\", &myData.$VPROPS(name)\[$myidx\]);"
               }
               puts $fcod10 "myData.$VPROPS(name)\[$myidx\] = long(sys.argv\[$idx\])"
            } else {
@@ -470,6 +434,8 @@ global VPROPS TYPEFORMAT
             puts $fcod4 "    myData.$VPROPS(name) = 1;";
             if { $VPROPS(long) } {
                puts $fcod5 "    sscanf(argv\[$idx\], \"%ld\", &myData.$VPROPS(name));"
+            } else {
+               puts $fcod5 "    sscanf(argv\[$idx\], \"%lld\", &myData.$VPROPS(name));"
             }
             puts $fcod10 "myData.$VPROPS(name)=long(sys.argv\[$idx\])"
           } else {
@@ -791,7 +757,7 @@ puts stdout "done salidlgen $base $lang"
          saljavaclassgen $base $id
       }
       if { $lang == "python" } {
-         puts stdout "Generating Python bindings"
+         puts stdout "Generating Boost bindings"
          genpythonbinding $base
          puts stdout "Generating python shared library"
          salpythonshlibgen $base
@@ -921,13 +887,7 @@ global SAL_WORK_DIR OPTIONS DONE_CMDEVT
 
 source $SAL_DIR/add_system_dictionary.tcl
 source $SAL_DIR/gensalgetput.tcl
-if { [lindex [split $env(PYTHON_BUILD_VERSION) .] 0] == 2} {
-  puts stdout "Enabling Boost::Python bindings for python 2.x"
-  source $env(SAL_DIR)/gensimplepython.tcl
-} else { 
-  puts stdout "Enabling pybind11 bindings for python 3+"
-  source $env(SAL_DIR)/gensimplepybind11.tcl
-}  
+source $SAL_DIR/gensimplepython.tcl
 source $SAL_DIR/managetypes.tcl
 
 

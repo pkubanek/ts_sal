@@ -9,10 +9,13 @@ source $SAL_DIR/add_system_dictionary.tcl
 source $SAL_DIR/sal_version.tcl
 
 set DEST /data/staging/ts_visit_simulator
+
 exec mkdir -p $DEST/test/tcs
+exec mkdir -p $DEST/test/lib
+exec mkdir -p $DEST/test/include
 
 puts stdout "Copying tcs simulator"
-exec cp -rv /data/gitrepo/ts_visit_simulator/test/tcs/tcs $DEST/test/tcs/.
+exec cp -rv $SAL_WORK_DIR/tcs/tcs $DEST/test/tcs/.
 
 puts stdout "Copying lsstsal baseline"
 exec cp -rv /data/gitrepo/ts_visit_simulator/lsstsal $DEST/.
@@ -33,27 +36,27 @@ puts stdout "Updating libsacpp"
 set all [glob $SAL_WORK_DIR/*/cpp/libsacpp_*.so]
 foreach i $all {
 puts stdout $i
-   exec cp -v $i $DEST/lsstsal/lib/.
+   exec cp -v $i $DEST/test/lib/.
 }
 
 puts stdout "Updating includes"
 set all [glob $SAL_WORK_DIR/*/cpp/src/SAL_*.h]
 foreach i $all {
 puts stdout $i
-   exec cp -v $i $DEST/lsstsal/include/.
+   exec cp -v $i $DEST/test/include/.
 }
 
 puts stdout "Updating libSAL"
 set all [glob $SAL_WORK_DIR/lib/libSAL_*.so]
 foreach i $all {
-   exec cp -v $i $DEST/lsstsal/lib/.
+   exec cp -v $i $DEST/test/lib/.
 }
 
 if {0}
 puts stdout "Updating libSALLV"
 set all [glob $SAL_WORK_DIR/lib/SALLV_*.so]
 foreach i $all {
-   exec cp -v $i $DEST/lsstsal/lib/.
+   exec cp -v $i $DEST/test/lib/.
 }
 set all [glob $SAL_WORK_DIR/*/labview]
 foreach i $all {
@@ -64,19 +67,19 @@ foreach i $all {
 puts stdout "Updating libSALPY"
 set all [glob $SAL_DIR/../lib/SALPY_*.so]
 foreach i $all {
-   exec cp -v $i $DEST/lsstsal/lib/.
+   exec cp -v $i $DEST/test/lib/.
 }
 
 puts stdout "Updating saj"
 set all [glob $SAL_WORK_DIR/*/java/saj_*.jar]
 foreach i $all {
-   exec cp -v $i $DEST/lsstsal/lib/.
+   exec cp -v $i $DEST/test/lib/.
 }
 
 puts stdout "Updating sal java"
 set all [glob $SAL_WORK_DIR/maven/*_$SALVERSION/target/sal_*$SALVERSION.jar]
 foreach i $all {
-   exec cp -v $i $DEST/lsstsal/lib/.
+   exec cp -v $i $DEST/test/lib/.
 }
 
 puts stdout "Updating Telemetry tests"
@@ -101,10 +104,12 @@ foreach subsys $SYSDIC(systems) {
    set all [glob $SAL_WORK_DIR/[set subsys]/cpp/src/*_commander]
    foreach i $all {
       exec cp -v $i $DEST/test/[set subsys]/cpp/src/.
+      puts stdout "copied $i"
    }
    set all [glob $SAL_WORK_DIR/[set subsys]/cpp/src/*_controller]
    foreach i $all {
       exec cp -v $i $DEST/test/[set subsys]/cpp/src/.
+      puts stdout "copied $i"
    }
   }
 }
@@ -115,10 +120,12 @@ foreach subsys $SYSDIC(systems) {
    set all [glob $SAL_WORK_DIR/[set subsys]/cpp/src/*_log]
    foreach i $all {
       exec cp -v $i $DEST/test/[set subsys]/cpp/src/.
+      puts stdout "copied $i"
    }
    set all [glob $SAL_WORK_DIR/[set subsys]/cpp/src/*_send]
    foreach i $all {
       exec cp -v $i $DEST/test/[set subsys]/cpp/src/.
+      puts stdout "copied $i"
    }
   }
 }
@@ -127,13 +134,13 @@ foreach subsys $SYSDIC(systems) {
 puts stdout "Updating EFD clients"
 source $env(SAL_DIR)/gengenericefd.tcl
 
-updateefdtables
 updateefdschema
 foreach subsys $SYSDIC(systems) {
   catch {
    set all [glob $SAL_WORK_DIR/[set subsys]/cpp/src/sacpp_*_efdwriter]
    foreach i $all {
       exec cp -v $i $DEST/test/[set subsys]/cpp/src/.
+      puts stdout "copied $i"
    }
   }
 }
@@ -145,6 +152,7 @@ foreach i "command_test_gui hexapod_sim.tcl simulate_controllers simulate-visits
 }
 
 
+puts stdout "*******Remember to delete unused OpenSpliceDDS versions********"
 
 
 

@@ -39,6 +39,7 @@ set SAL_GENERIC_EVENTS "
       <EFDB_Name>SummaryStateValue</EFDB_Name>
       <Description>Enumerated state id</Description>
        <IDL_Type>long</IDL_Type>
+      <Enumeration>DisabledState,EnabledState,FaultState,OfflineState,StandbyState</Enumeration>
       <Units> </Units>
       <Count>1</Count>
     </item>

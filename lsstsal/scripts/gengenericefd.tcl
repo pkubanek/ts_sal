@@ -133,8 +133,8 @@ global ACTORTYPE SAL_WORK_DIR BLACKLIST
 "
       }
       if { $ctype == "getsamples" } {
-         if { $topic != "command" && $topic != "logevent" } {
-       puts $fout "  
+        if { $topic != "command" && $topic != "logevent" } {
+        puts $fout "  
        [set base]::[set topic]Seq myData_[set topic];
        SampleInfoSeq_var [set topic]_info = new SampleInfoSeq;
        status = [set topic]_SALReader->take(myData_[set topic], [set topic]_info, 1, ANY_SAMPLE_STATE, ANY_VIEW_STATE, ANY_INSTANCE_STATE);
@@ -150,8 +150,9 @@ global ACTORTYPE SAL_WORK_DIR BLACKLIST
           if (mstatus) \{
              fprintf(stderr,\"MYSQL INSERT ERROR : %d\\n\",mstatus);
           \}"
-       }
-       puts $fout "       \}"
+         }
+         puts $fout "       \}"
+           checkLFO $fout $topic
          }
          if { $type == "command" && $ttype == "command" && $topic != "ackcmd" } {
            set alias "'[join [lrange [split $topic _] 1 end] _]'"
@@ -181,11 +182,21 @@ global ACTORTYPE SAL_WORK_DIR BLACKLIST
           \}
        \}"
          }
-         if { $ttype == "logevent" } {
-            set alias [join [lrange [split $topic _] 1 end] _]
-            if { $alias == "logevent_LargeFileObjectAvailable" } {
-               set alias "'[join [lrange [split $topic _] 1 end] _]'"
-               puts $fout "
+         if { $topic != "command" && $topic != "logevent" } {
+           puts $fout "       status = [set topic]_SALReader->return_loan(myData_[set topic], [set topic]_info);
+"
+         }
+      }
+    }
+   }
+}
+
+
+proc checkLFO { fout topic } {
+  set alias [join [lrange [split $topic _] 1 end] _]
+  if { $alias == "LargeFileObjectAvailable" } {
+     set alias "'[join [lrange [split $topic _] 1 end] _]'"
+     puts $fout "
        if (status == SAL__OK && numsamp > 0) \{
            printf(\"EFD TBD : Large File Object Announcement Event $topic received\\n\");
            sprintf(thequery,\"process_LFO_logevent  %d '%s' '%s' '%s' '%s' %f\"  ,  myData_[set topic]\[0\].Byte_Size , myData_[set topic]\[0\].Checksum.m_ptr , myData_[set topic]\[0\].Generator.m_ptr , myData_[set topic]\[0\].Mime.m_ptr , myData_[set topic]\[0\].URL.m_ptr , myData_[set topic]\[0\].Version );
@@ -195,16 +206,9 @@ global ACTORTYPE SAL_WORK_DIR BLACKLIST
           \}
       \}
 "
-            }
-         }
-         if { $topic != "command" && $topic != "logevent" } {
-           puts $fout "       status = [set topic]_SALReader->return_loan(myData_[set topic], [set topic]_info);
-"
-         }
-      }
-    }
-   }
+  }
 }
+
 
 proc genefdwritermake { base } {
 global SAL_DIR SAL_WORK_DIR env
