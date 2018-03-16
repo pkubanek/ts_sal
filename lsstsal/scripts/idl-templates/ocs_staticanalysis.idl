@@ -1,6 +1,0 @@
-struct ocs_staticanalysis {
-  float start;
-  float end;
-  long result;
-  long action;
-};

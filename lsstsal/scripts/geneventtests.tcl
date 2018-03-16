@@ -38,7 +38,7 @@ int main (int argc, char *argv\[\])
    set fidl [open $SAL_WORK_DIR/idl-templates/validated/[set subsys]_logevent_[set alias].idl r]
    gets $fidl rec ; gets $fidl rec ;gets $fidl rec ;gets $fidl rec ;gets $fidl rec ;gets $fidl rec ;gets $fidl rec
    while { [gets $fidl rec] > -1 } {
-      if { [lindex $rec 0] != "#pragma" && [lindex $rec 0]!= "\};" } {
+      if { [lindex $rec 0] != "#pragma" && [lindex $rec 0]!= "\};" && [lindex $rec 0] != "const" } {
          puts $fevt "     printf(\"$rec\\n\");"
       }
    }
@@ -213,7 +213,7 @@ SRC           = ../src/CheckStatus.cpp ../src/SAL_[set subsys].cpp ../src/[set s
    }
    close $fin
    close $fout
-   exec mv /tmp/Makefile.sacpp_[set subsys]_testevents $SAL_WORK_DIR/$subsys/cpp/src/Makefile.sacpp_[set subsys]_testevents
+   exec cp /tmp/Makefile.sacpp_[set subsys]_testevents $SAL_WORK_DIR/$subsys/cpp/src/Makefile.sacpp_[set subsys]_testevents
  }
 }
 

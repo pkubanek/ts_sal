@@ -1,5 +1,0 @@
-struct m1m3_Metrology {
-  long distance[16];
-  long error[16];
-  short status[16];
-};

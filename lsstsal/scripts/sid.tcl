@@ -10,6 +10,9 @@ set SID(network) 4.5.1
 set SID(camera) 3.5
 set SID(dm) 2.5
 
+set SID(atMonochromator) 4.5.10.1
+set SID(atWhiteLight) 4.5.10.2
+
 set SID(camera_BEE_biases) 3.5
 set SID(camera_SDS) 3.5
 set SID(camera_BEE_clocks) 3.5
@@ -67,7 +70,8 @@ set SID(power.TC) 6.1
 set SID(power.Electrical) 6.2
 set SID(power.UPSs) 6.3
 
-set SID(calibration) 4.5.6.1
+set SID(calibrationSpectrometer) 4.5.6.1
+set SID(calibrationElectrometer) 4.5.6.2
 set SID(calibration.TC) 7.1
 set SID(calibration.Electrical) 7.2
 set SID(calibration.Metrology) 7.3

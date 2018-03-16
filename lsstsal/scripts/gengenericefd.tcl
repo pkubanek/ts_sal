@@ -21,6 +21,7 @@
 #  set efd [mysqlconnect -host localhost -user efduser -password lssttest -db EFD]
 #  mysqlinfo $efd tables
 #  set x [mysqlsel $efd "SELECT * FROM archiver_commandLog" -list]
+#  set y [mysqlsel $efd "SELECT * FROM archiver_commandLog ORDER BY date_time LIMIT 10" -list]
 #  mysqlclose $efd
 # 
 #   mysqlsel $db {select lname, fname, area, phone from friends order by lname, fname}
@@ -132,8 +133,8 @@ global ACTORTYPE SAL_WORK_DIR BLACKLIST
 "
       }
       if { $ctype == "getsamples" } {
-         if { $topic != "command" && $topic != "logevent" } {
-       puts $fout "  
+        if { $topic != "command" && $topic != "logevent" } {
+        puts $fout "  
        [set base]::[set topic]Seq myData_[set topic];
        SampleInfoSeq_var [set topic]_info = new SampleInfoSeq;
        status = [set topic]_SALReader->take(myData_[set topic], [set topic]_info, 1, ANY_SAMPLE_STATE, ANY_VIEW_STATE, ANY_INSTANCE_STATE);
@@ -149,8 +150,9 @@ global ACTORTYPE SAL_WORK_DIR BLACKLIST
           if (mstatus) \{
              fprintf(stderr,\"MYSQL INSERT ERROR : %d\\n\",mstatus);
           \}"
-       }
-       puts $fout "       \}"
+         }
+         puts $fout "       \}"
+           checkLFO $fout $topic
          }
          if { $type == "command" && $ttype == "command" && $topic != "ackcmd" } {
            set alias "'[join [lrange [split $topic _] 1 end] _]'"
@@ -180,31 +182,33 @@ global ACTORTYPE SAL_WORK_DIR BLACKLIST
           \}
        \}"
          }
-         if { $ttype == "logevent" } {
-            set alias [join [lrange [split $topic _] 1 end] _]
-            if { [string range $alias 0 2] == "LFO_" } {
-               set alias "'[join [lrange [split $topic _] 1 end] _]'"
-               puts $fout "
-       if (status == SAL__OK && numsamp > 0) \{
-           printf(\"EFD TBD : Large File Object Announcement Event $topic received\n\");
-           sprintf(thequery,\"INSERT INTO [set base]_logeventLFO VALUES (NOW(6), '%s', %lf, %d, $alias, '%s', '%s', '%s', '%s', '%s', %ld )\" , 
-                    myData_[set topic]\[0\].private_revCode.m_ptr, myData_[set topic]\[0\].private_sndStamp, myData_[set topic]\[0\].private_seqNum,
-                    myData_[set topic]\[0\].URL, myData_[set topic]\[0\].Generator, myData_[set topic]\[0\].Version,
-                    myData_[set topic]\[0\].Checksum, myData_[set topic]\[0\].Mime_Type, myData_[set topic]\[0\].Byte_Size);
-           mstatus = mysql_query(con,thequery);
-           cout << thequery << endl;
-           if (mstatus) \{
-             fprintf(stderr,\"MYSQL INSERT ERROR : %d\\n\",mstatus);
-           \}
-      \}
-       status = [set topic]_SALReader->return_loan(myData_[set topic], [set topic]_info);"
+         if { $topic != "command" && $topic != "logevent" } {
+           puts $fout "       status = [set topic]_SALReader->return_loan(myData_[set topic], [set topic]_info);
 "
-           }
          }
       }
     }
    }
 }
+
+
+proc checkLFO { fout topic } {
+  set alias [join [lrange [split $topic _] 1 end] _]
+  if { $alias == "LargeFileObjectAvailable" } {
+     set alias "'[join [lrange [split $topic _] 1 end] _]'"
+     puts $fout "
+       if (status == SAL__OK && numsamp > 0) \{
+           printf(\"EFD TBD : Large File Object Announcement Event $topic received\\n\");
+           sprintf(thequery,\"process_LFO_logevent  %d '%s' '%s' '%s' '%s' %f\"  ,  myData_[set topic]\[0\].Byte_Size , myData_[set topic]\[0\].Checksum.m_ptr , myData_[set topic]\[0\].Generator.m_ptr , myData_[set topic]\[0\].Mime.m_ptr , myData_[set topic]\[0\].URL.m_ptr , myData_[set topic]\[0\].Version );
+          mstatus = system(thequery);
+          if (mstatus < 0) \{
+             fprintf(stderr,\"LFO Processor ERROR : %d\\n\",mstatus);
+          \}
+      \}
+"
+  }
+}
+
 
 proc genefdwritermake { base } {
 global SAL_DIR SAL_WORK_DIR env
@@ -468,10 +472,12 @@ password=lssttest
 
 proc updateefdschema { } {
 global SYSDIC SAL_WORK_DIR
+   set bad 0
    foreach subsys $SYSDIC(systems) {
       if { [file exists $SAL_WORK_DIR/idl-templates/validated/sal/sal_[set subsys].idl] } {
         puts stdout "Updating schema for $subsys"
-        genefdwriters $subsys
+        set bad [catch {genefdwriters $subsys} res]
+        if { $bad } {puts stdout $res}
       } else {
         puts stdout "WARNING : No IDL for $subsys available"
       }

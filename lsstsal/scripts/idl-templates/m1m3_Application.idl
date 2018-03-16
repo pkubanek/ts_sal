@@ -1,6 +1,0 @@
-struct m1m3_Application {
-  float demand[6];
-  float position[6];
-  float error[6];
-  short status[16];
-};

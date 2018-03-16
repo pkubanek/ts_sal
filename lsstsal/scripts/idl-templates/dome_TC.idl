@@ -1,4 +1,0 @@
-struct dome_TC {
-  float glycolTemperature[4];
-  float boosterSpeed[4];
-};

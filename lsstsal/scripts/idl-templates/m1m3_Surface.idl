@@ -1,4 +1,0 @@
-struct m1m3_Surface {
-  long Raw[1024];
-  float Calibrated[1024];
-};

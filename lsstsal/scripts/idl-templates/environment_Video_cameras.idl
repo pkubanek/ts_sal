@@ -1,4 +1,0 @@
-struct environment_Video_cameras {
-  long Raw[16];
-  float Calibrated[32];
-};

@@ -1,3 +1,0 @@
-struct system_Hardware_revision_history {
-  long Version[3];
-};

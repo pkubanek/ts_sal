@@ -1,4 +1,0 @@
-camera.TC.zone5.flow_rate 10 float 0.1
-camera.TC.zone5.temperature 10 float 0.1
-camera.TC.zone5.setpoint 10 float 0.1
-camera.TC.zone5.status 10 long 0.1

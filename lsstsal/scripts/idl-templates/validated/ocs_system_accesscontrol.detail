@@ -1,5 +1,0 @@
-ocs.system.accesscontrol.subssystem 128 string<128> 0.1
-ocs.system.accesscontrol.device 128 string<128> 0.1
-ocs.system.accesscontrol.bystation 500 string<500> 0.1
-ocs.system.accesscontrol.byoperator 500 string<500> 0.1
-ocs.system.accesscontrol.bypolicy 500 string<500> 0.1

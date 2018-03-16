@@ -2,11 +2,13 @@
 
 proc parseXMLtoidl { fname } { 
 global IDLRESERVED SAL_WORK_DIR SAL_DIR CMDS CMD_ALIASES EVTS EVENT_ALIASES
-global TLMS TLM_ALIASES
+global TLMS TLM_ALIASES EVENT_ENUM EVENT_ENUMS
    set fin [open $fname r]
    set fout ""
    set ctype ""
    set subsys ""
+   set tname none
+   set itemid none
    while { [gets $fin rec] > -1 } {
       set tag   [lindex [split $rec "<>"] 1]
       set value [lindex [split $rec "<>"] 2]
@@ -34,6 +36,10 @@ global TLMS TLM_ALIASES
       if { $tag == "Action" }          {set action $value}
       if { $tag == "Value" }           {set vvalue $value}
       if { $tag == "Subsystem" }       {set subsys $value}
+      if { $tag == "Enumeration" }     {
+         lappend EVENT_ENUM($alias) "$item:$value"
+         set EVENT_ENUMS($alias,$item) "$value"
+      }
       if { $tag == "/SALEvent" } {
          set EVTS($subsys,$alias) $alias
          set EVENT_ALIASES($subsys) [lappend EVENT_ALIASES($subsys) $alias]
@@ -66,10 +72,22 @@ global TLMS TLM_ALIASES
          if { $fout != "" } {
            puts $fout "\};"
            puts $fout "#pragma keylist $tname"
+           if { [info exists EVENT_ENUM($alias)] } {
+             foreach e $EVENT_ENUM($alias) {
+               set i 1
+               set enum [string trim $e "\{\}"]
+               set cnst [lindex [split $enum :] 1]
+               foreach id [split $cnst ,] {
+                  puts $fout "	const long [set alias]_[string trim $id " "]=$i;"
+                  incr i 1
+               }
+             }
+           }
            close $fout
            if { $ctype == "telemetry" } {
              close $fsql
            }
+           set alias ""
         }
         set itemid 0
         if { [info exists topics($value)] } { 
@@ -100,11 +118,15 @@ global TLMS TLM_ALIASES
         set desc "" ; set range "" ; set location ""
         set freq 0.054 ; set sdim 1
         if { [lsearch $IDLRESERVED [string tolower $item]] > -1 } {
-           puts stdout "Invalid use of IDL reserved token $id"
+           puts stdout "Invalid use of IDL reserved token $item"
            exit 1
         }
       }
-      if { $tag == "IDL_Type"}        {set type $value}
+      if { $tag == "IDL_Type"} {
+         set type $value
+         if { $type == "long long" } {set type "longlong"}
+         if { $type == "unsigned long long" } {set type "unsigned longlong"}
+      }
       if { $tag == "IDL_Size"}        {set sdim $value}
       if { $tag == "Description"}     {set desc $value}
       if { $tag == "Frequency"}       {set freq $value}
@@ -113,7 +135,7 @@ global TLMS TLM_ALIASES
       if { $tag == "Count"}           {set idim $value}
       if { $tag == "Units"}           {set unit $value}
       if { $tag == "/item" } {
-         if { $type == "string" } {
+         if { $type == "string" || $type == "char" } {
             if { $sdim > 1 } {
                set declare "   string<[set sdim]> $item;"
             } else {
@@ -148,10 +170,22 @@ global TLMS TLM_ALIASES
    if { $fout != "" } {
       puts $fout "\};"
       puts $fout "#pragma keylist $tname"
+      if { [info exists EVENT_ENUM($alias)] } {
+        foreach e $EVENT_ENUM($alias) {
+          set i 1
+          set enum [string trim $e "\{\}"]
+          set cnst [lindex [split $enum :] 1]
+          foreach id [split $cnst ,] {
+              puts $fout "	const long [set alias]_[string trim $id " "]=$i;"
+              incr i 1
+          }
+        }
+      }
       close $fout
       if { $ctype == "telemetry" } {
         close $fsql
       }
+      set alias ""
    }
    close $fin
    puts stdout "itemid for $SAL_WORK_DIR/idl-templates/[set tname].idl=  $itemid"
@@ -174,6 +208,12 @@ global TLMS TLM_ALIASES
      puts $fout "set EVENT_ALIASES($subsys) \"$EVENT_ALIASES($subsys)\""
      foreach c [array names EVTS] {
         puts $fout "set EVTS($c) \"$EVTS($c)\""
+     }
+     foreach c [array names EVENT_ENUM] {
+        puts $fout "set EVENT_ENUM($c) \"$EVENT_ENUM($c)\""
+     }
+     foreach c [array names EVENT_ENUMS] {
+        puts $fout "set EVENT_ENUMS($c) \"$EVENT_ENUMS($c)\""
      }
      close $fout
      genhtmleventtable $subsys
@@ -271,7 +311,7 @@ global IDLRESERVED SAL_WORK_DIR SAL_DIR TLMS TLM_ALIASES
 
 
 
-set IDLRESERVED "abstract any attribute boolean case char component const consumes context custom default double emits enum eventtype exception factory false finder fixed float getraises home import in inout interface local long module multiple native object octet oneway out primarykey private provides public publishes raises readonly sequence setraises short string struct supports switch true truncatable typedef typeid typeprefix union unsigned uses valuebase valuetype void wchar wstring"
+set IDLRESERVED "abstract any attribute boolean case char component const consumes context custom dec default double emits enum eventtype exception exit factory false finder fixed float getraises home import in inout interface limit local long module multiple native object octet oneway out primarykey private provides public publishes raises readonly sequence setraises short string struct supports switch true truncatable typedef typeid typeprefix union unsigned uses valuebase valuetype void wchar wstring"
 set SAL_DIR $env(SAL_DIR)
 set SAL_WORK_DIR $env(SAL_WORK_DIR)
 source $SAL_DIR/add_private_idl.tcl

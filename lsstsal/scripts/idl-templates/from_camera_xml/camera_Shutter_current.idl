@@ -1,9 +1,0 @@
-struct camera_Shutter_current {
-  string<32> private_revCode;  //private
-  double     private_sndStamp; //private
-  double     private_rcvStamp; //private
-  long       private_seqNum;   //private
-  long       private_origin;   //private
-  float	Motor_current[2];	// 0.054 | none | Shutter motor currents | none | Camera body | 2 | 4,670  | 18,681 
-};
-#pragma keylist camera_Shutter_current 

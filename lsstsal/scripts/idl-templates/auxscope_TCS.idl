@@ -1,4 +1,0 @@
-struct auxscope_TCS {
-  long Raw[200];
-  float Calibrated[200];
-};

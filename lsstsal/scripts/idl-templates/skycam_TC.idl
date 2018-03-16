@@ -1,4 +1,0 @@
-struct skycam_TC {
-  long Raw[16];
-  float Calibrated[16];
-};

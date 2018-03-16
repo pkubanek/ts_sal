@@ -1,5 +1,0 @@
-camera.TC.zone1.cold_plate 25 float 0.1
-camera.TC.zone1.flow_rate 25 float 0.1
-camera.TC.zone1.temperature 25 float 0.1
-camera.TC.zone1.setpoint 25 float 0.1
-camera.TC.zone1.status 25 long 0.1

@@ -1,7 +1,0 @@
-struct dome_Bogies {
-  float rpmMeasured[12];
-  float temperature[12];
-  long  status[12];
-}
-
-

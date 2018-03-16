@@ -1,6 +1,0 @@
-struct tcs_kernel_PointingControl {
-  float AGuide;
-  float BGuide;
-  float ALocal;
-  float BLocal;
-};

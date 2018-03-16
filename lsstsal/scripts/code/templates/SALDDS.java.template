@@ -121,7 +121,8 @@ public class SAL_SALData {
 	}
 
 
-        public void salTelemetryPub(int actorIdx) {
+        public int salTelemetryPub(int actorIdx)
+	{
 		String partitionName = domainName;
 
 		// create Domain Participant
@@ -139,12 +140,14 @@ public class SAL_SALData {
 		// create DataWriter
 		createWriter(actorIdx,false);
 		sal[actorIdx].isWriter = true;
+                return SAL__OK;
         }
 
 
 
 
-        public void salTelemetrySub(int actorIdx) {
+        public int salTelemetrySub(int actorIdx)
+	{
 		String partitionName = domainName;
 		// create Domain Participant
 		createParticipant(partitionName);
@@ -173,6 +176,7 @@ public class SAL_SALData {
 		createReader(actorIdx,false);
 #endif
                 sal[actorIdx].isReader = true;
+                return SAL__OK;
 	}
 
 
@@ -194,7 +198,7 @@ public class SAL_SALData {
                 }
 		hasReader = false;
 		hasWriter = false;
-		debugLevel = 1;
+		debugLevel = 0;
 		hasCommand = false;
 		hasProcessor = false;
 		hasEventReader = false;
@@ -218,7 +222,7 @@ public class SAL_SALData {
 		hasEventReader = false;
 		hasEventWriter = false;
 		subsystemID = aKey;
-		debugLevel = 1;
+		debugLevel = 0;
                 rcvOrigin = 0;
                 initSalActors();
 	}
@@ -233,7 +237,7 @@ public class SAL_SALData {
                 }
 		hasReader = false;
 		hasWriter = false;
-		debugLevel = 1;
+		debugLevel = 0;
 		hasCommand = false;
 		hasProcessor = false;
 		hasEventReader = false;
@@ -257,7 +261,7 @@ public class SAL_SALData {
 		hasEventWriter = false;
 		hasProcessor = false;
 		subsystemID = 0;
-		debugLevel = 1;
+		debugLevel = 0;
                 rcvOrigin = 0;
                 initSalActors();
 	}
@@ -479,13 +483,6 @@ public class SAL_SALData {
         public static final int SAL__LIVELINESS_CHG =	404;
         public static final int SAL__SAMPLELOST	=	405;
         public static final int SAL__SUBSCR_MATCH =	406;
-        public static final int SAL__STANDBYSTATE =	500;
-        public static final int SAL__DISABLEDSTATE =	510;
-        public static final int SAL__ENABLEDSTATE =	520;
-        public static final int SAL__OFFLINESTATE =	530;
-        public static final int SAL__PUBLISHONLYSTATE =	531;
-        public static final int SAL__AVAILABLESTATE =	532;
-        public static final int SAL__FAULTSTATE	=	540;
 
 
 	public int waitForCompletion( int cmdSeqNum , int timeout )
@@ -659,13 +656,8 @@ public class SAL_SALData {
 	  registerType2(mtr);
 
 	  //create Topics
-#ifdef SAL_SUBSYSTEM_ID_IS_KEYED
-	  createTopic(stopic1);
-	  createTopic2(stopic2);
-#else
 	  createTopic(scommand);
 	  createTopic2(sresponse);
-#endif
 	
 	  //create a reader for responses
 #ifdef SAL_SUBSYSTEM_ID_IS_KEYED
@@ -704,13 +696,8 @@ public class SAL_SALData {
 	  registerType2(SAL__SALData_ackcmd_ACTOR,mtr);
 
 	  //create Topics
-#ifdef SAL_SUBSYSTEM_ID_IS_KEYED
-	  createTopic(actorIdx,stopic1);
-	  createTopic2(SAL__SALData_ackcmd_ACTOR,stopic2);
-#else
 	  createTopic(actorIdx,cmdAlias);
 	  createTopic2(SAL__SALData_ackcmd_ACTOR,sresponse);
-#endif
 	
 	  //create a reader for responses
 #ifdef SAL_SUBSYSTEM_ID_IS_KEYED
@@ -756,13 +743,8 @@ public class SAL_SALData {
 	  registerType2(mtr);
 
 	  //create Topics
-#ifdef SAL_SUBSYSTEM_ID_IS_KEYED
-	  createTopic(stopic1);
-	  createTopic2(stopic2);
-#else
 	  createTopic(scommand);
 	  createTopic2(sresponse);
-#endif
 
 	  //create a reader for commands
 #ifdef SAL_SUBSYSTEM_ID_IS_KEYED
@@ -801,13 +783,8 @@ public class SAL_SALData {
 	  registerType2(SAL__SALData_ackcmd_ACTOR,mtr);
 
 	  //create Topics
-#ifdef SAL_SUBSYSTEM_ID_IS_KEYED
-	  createTopic(actorIdx,stopic1);
-	  createTopic2(SAL__SALData_ackcmd_ACTOR,stopic2);
-#else
 	  createTopic(actorIdx,cmdAlias);
 	  createTopic2(SAL__SALData_ackcmd_ACTOR,sresponse);
-#endif
 
 	  //create a reader for commands
 #ifdef SAL_SUBSYSTEM_ID_IS_KEYED
@@ -850,6 +827,26 @@ public class SAL_SALData {
 		// create Topic
 		createTopic(actorIdx);
                 return SAL__OK;
+	}
+
+	public int salEventSub(String topicName)
+	{
+		int status = SAL__ERROR;
+                int actorIdx = getActorIndex(topicName);
+                if ( actorIdx < 0) {return SAL__ERROR;}
+		status = salTelemetrySub(actorIdx);
+                sal[actorIdx].isEventReader = true;
+		return status;
+	}
+
+	public int salEventPub(String topicName)
+	{
+		int status = SAL__ERROR;
+                int actorIdx = getActorIndex(topicName);
+                if ( actorIdx < 0) {return SAL__ERROR;}
+		status = salTelemetryPub(actorIdx);
+                sal[actorIdx].isEventWriter = true;
+		return status;
 	}
 
 	public void createParticipant(String partitionName) {

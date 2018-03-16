@@ -1,4 +1,0 @@
-struct environment_Lightning_detector {
-  long Raw[16];
-  float Calibrated[32];
-};

@@ -73,13 +73,13 @@ salReturn SAL_[set base]::getSample_[set name]([set base]_[set name]C *data)
 #endif
   int actorIdx = SAL__[set base]_[set name]_ACTOR;
   if ( sal\[actorIdx\].isReader == false ) \{
-    createReader(actorIdx);
+    createReader(actorIdx,false);
     sal\[actorIdx\].isReader = true;
   \}
   DataReader_var dreader = getReader(actorIdx);
   [set base]::[set name]DataReader_var SALReader = [set base]::[set name]DataReader::_narrow(dreader.in());
   checkHandle(SALReader.in(), \"[set base]::[set name]DataReader::_narrow\");
-  status = SALReader->take(Instances, info, sal\[SAL__[set base]_[set name]_ACTOR\].maxSamples , ANY_SAMPLE_STATE, ANY_VIEW_STATE, ANY_INSTANCE_STATE);
+  status = SALReader->take(Instances, info, sal\[SAL__[set base]_[set name]_ACTOR\].maxSamples , ANY_SAMPLE_STATE, ANY_VIEW_STATE, ALIVE_INSTANCE_STATE);
   checkStatus(status, \"[set base]::[set name]DataReader::take\");
   numsamp = Instances.length();
   for (DDS::ULong j = 0; j < numsamp; j++)
@@ -92,14 +92,17 @@ salReturn SAL_[set base]::getSample_[set name]([set base]_[set name]C *data)
       cout << \"    origin  : \" << Instances\[j\].private_origin << endl;
       cout << \"    host  : \" << Instances\[j\].private_host << endl;
     \}
-    if ( (rcvdTime - Instances\[j\].private_sndStamp) < sal\[actorIdx\].sampleAge && (Instances\[0\].private_origin != 0)) \{
+    if ( (rcvdTime - Instances\[j\].private_sndStamp) < sal\[actorIdx\].sampleAge && (Instances\[j\].private_origin != 0)) \{
 "
   set frag [open $SAL_WORK_DIR/include/SAL_[set base]_[set name]Cget.tmp r]
   while { [gets $frag rec] > -1} {puts $fout $rec}
   close $frag
+  if { [lindex [split $name _] 0] == "command" } {
+    puts $fout "     istatus = Instances\[j\].private_seqNum;"
+  } else {
+    puts $fout "     istatus = SAL__OK;"
+  }
   puts $fout "
-
-    istatus = SAL__OK;
    \} else \{
      istatus = SAL__NO_UPDATES;
    \}
@@ -241,7 +244,7 @@ proc addActorIndexesJava { idlfile base fout } {
 
 
 proc addSALDDStypes { idlfile id lang base } {
-global env SAL_DIR SAL_WORK_DIR SYSDIC
+global env SAL_DIR SAL_WORK_DIR SYSDIC TLMS EVTS
  set atypes $idlfile
  if { $lang == "java" } {
   exec cp $SAL_DIR/code/templates/salActor.java [set id]/java/src/org/lsst/sal/.
@@ -282,7 +285,7 @@ global env SAL_DIR SAL_WORK_DIR SYSDIC
            set ptypes [split [exec grep pragma $i] \n]
            foreach j $ptypes {
                set name [lindex $j 2]
-#               puts stdout "	for $base $name"
+               puts stdout "	for $base $name"
                puts $fout "
                     if ( actorIdx == SAL__[set base]_[set name]_ACTOR ) \{
 			[set name]TypeSupport [set name]TS = new [set name]TypeSupport();
@@ -298,6 +301,7 @@ global env SAL_DIR SAL_WORK_DIR SYSDIC
            set ptypes [split [exec grep pragma $i] \n]
            foreach j $ptypes {
                set name [lindex $j 2]
+               set alias [string range $name 9 end]
 puts $fout "
 	public int putSample([set base].[set name] data)
 	\{
@@ -311,9 +315,11 @@ puts $fout "
 	  [set name]DataWriter SALWriter = [set name]DataWriterHelper.narrow(dwriter);
 	  data.private_revCode = \"LSST TEST REVCODE\";
           data.private_sndStamp = getCurrentTime();
+          data.private_origin = 1;
 	  if (debugLevel > 0) \{
 	    System.out.println(\"=== \[putSample $name\] writing a message containing :\");
 	    System.out.println(\"    revCode  : \" + data.private_revCode);
+	    System.out.println(\"    sndStamp  : \" + data.private_sndStamp);
 	  \}"
         if { [info exists SYSDIC($base,keyedID)] } { 
           puts $fout "
@@ -338,7 +344,7 @@ puts $fout "
 	public int getSample([set base].[set name] data)
 	\{
 	  int status =  -1;
-          int last = 0;
+          int last = SAL__NO_UPDATES;
           int numsamp;
           [set name]SeqHolder SALInstance = new [set name]SeqHolder();
 	  int actorIdx = SAL__[set base]_[set name]_ACTOR;
@@ -360,24 +366,60 @@ puts $fout "
 	  [set name]DataReader SALReader = [set name]DataReaderHelper.narrow(dreader);
   	  SampleInfoSeqHolder infoSeq = new SampleInfoSeqHolder();
 	  SALReader.take(SALInstance, infoSeq, sal\[actorIdx\].maxSamples,
-					ANY_SAMPLE_STATE.value, ANY_VIEW_STATE.value,
-					ANY_INSTANCE_STATE.value);
+					NOT_READ_SAMPLE_STATE.value, ANY_VIEW_STATE.value,
+					ALIVE_INSTANCE_STATE.value);
           numsamp = SALInstance.value.length;
           if (numsamp > 0) \{
  	    if (debugLevel > 0) \{
 		for (int i = 0; i < numsamp; i++) \{
-				System.out.println(\"=== \[getSample $name \] message received :\");
+				System.out.println(\"=== \[getSample $name \] message received :\" + i);
 				System.out.println(\"    revCode  : \"
 						+ SALInstance.value\[i\].private_revCode);
-                   last = i+1;
+			        System.out.println(\"     sndStamp  : \" + SALInstance.value\[i\].private_sndStamp);
+				System.out.println(\"  sample_state : \" + infoSeq.value\[i\].sample_state);
+				System.out.println(\"    view_state : \" + infoSeq.value\[i\].view_state);
+				System.out.println(\"instance_state : \" + infoSeq.value\[i\].instance_state);
 		\}
 	    \}
-            if (last > 0) \{
+            int j=numsamp-1;
+            if (infoSeq.value\[j\].valid_data) \{
     		double rcvdTime = getCurrentTime();
-		double dTime = rcvdTime - SALInstance.value\[0\].private_sndStamp;
+		double dTime = rcvdTime - SALInstance.value\[j\].private_sndStamp;
     		if ( dTime < sal\[actorIdx\].sampleAge ) \{
-                   data = SALInstance.value\[last-1\];
-                   last = SAL__OK;
+                   data.private_sndStamp = SALInstance.value\[j\].private_sndStamp;"
+    		if { [info exists TLMS($base,$name,param)] } {
+    		  foreach p $TLMS($base,$name,param) {
+                    set tpar [lindex [string trim $p "\{\}"]]
+                    if { [lindex $tpar 0] == "unsigned" } {
+         	      set apar [lindex [split [lindex $tpar 2] "()"] 0] 
+                    } else {
+         	      set apar [lindex [split [lindex $tpar 1] "()"] 0] 
+                    }
+    		    set arr [lindex [split $p "()"] 1]
+    		    if { $arr != "" } {
+    		      puts $fout "                      System.arraycopy(SALInstance.value\[j\].$apar,0,data.$apar,0,$arr);"
+    		    } else {
+    		      puts $fout "                      data.$apar = SALInstance.value\[j\].$apar;"
+    		    }
+    		  }
+    		}
+    		if { [info exists EVTS($base,$alias,param)] } {
+    		  foreach p $EVTS($base,$alias,param) {
+                    set tpar [lindex [string trim $p "\{\}"]]
+                    if { [lindex $tpar 0] == "unsigned" } {
+         	      set apar [lindex [split [lindex $tpar 2] "()"] 0] 
+                    } else {
+         	      set apar [lindex [split [lindex $tpar 1] "()"] 0] 
+                    }
+    		    set arr [lindex [split $p "()"] 1]
+    		    if { $arr != "" } {
+    		      puts $fout "                      System.arraycopy(SALInstance.value\[j\].$apar,0,data.$apar,0,$arr);"
+    		    } else {
+    		      puts $fout "                      data.$apar = SALInstance.value\[j\].$apar;"
+    		    }
+    		  }
+    		}
+         puts $fout "                   last = SAL__OK;
                 \} else \{
                    last = SAL__NO_UPDATES;
                 \}
@@ -434,7 +476,7 @@ puts $fout "
      if { [string range $rec 0 22] == "// INSERT TYPE INCLUDES" } {
        puts $fouth "  #include \"ccpp_sal_[lindex [split $id _] 0].h\"
 #ifdef SAL_BUILD_FOR_PYTHON
-#include \"python[set env(PYTHON_BUILD_VERSION)]/Python.h\"
+#include \"Python.h\"
 #endif
 "
        gets $finh rec ; puts $fouth $rec
@@ -520,7 +562,7 @@ salReturn SAL_[set base]::getSample([set base]::[set name]Seq data)
   DataReader_var dreader = getReader();
   [set base]::[set name]DataReader_var SALReader = [set base]::[set name]DataReader::_narrow(dreader.in());
   checkHandle(SALReader.in(), \"[set base]::[set name]DataReader::_narrow\");
-  status = SALReader->take(data, infoSeq, LENGTH_UNLIMITED, ANY_SAMPLE_STATE, ANY_VIEW_STATE, ANY_INSTANCE_STATE);
+  status = SALReader->take(data, infoSeq, LENGTH_UNLIMITED, ANY_SAMPLE_STATE, ANY_VIEW_STATE, ALIVE_INSTANCE_STATE);
   checkStatus(status, \"[set base]::[set name]DataReader::take\");
   numsamp = data.length();
   for (DDS::ULong j = 0; j < numsamp; j++)

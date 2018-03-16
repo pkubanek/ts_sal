@@ -1,6 +1,7 @@
 #!/usr/bin/tclsh
 
-foreach subsys "camera dm dome domeADB domeAPS domeLouvers domeLWS domeMONCS domeTHCS environment hexapod m1m3 m2ms MTMount network ocs operations power rotator scheduler seeing skycam system tcs" {
+source $env(SAL_DIR)/add_system_dictionary.tcl
+foreach SYSDIC(subsystems) {
     set all [glob [set subsys]_*/cpp]
     foreach i $all {
        set tlm [lindex [split $i "/"] 0]

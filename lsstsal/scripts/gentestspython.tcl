@@ -29,6 +29,7 @@ global SAL_WORK_DIR SYSDIC SAL_DIR
 	 puts $fpub "
 import time
 import sys
+import numpy
 from SALPY_[set subsys] import *
 mgr = SAL_[set subsys][set initializer]
 mgr.salTelemetryPub(\"[set subsys]_[set name]\")
@@ -52,6 +53,7 @@ exit()
 	 puts $fsub "
 import time
 import sys
+import numpy
 from SALPY_[set subsys] import *
 mgr = SAL_[set subsys][set initializer]
 mgr.salTelemetrySub(\"[set subsys]_[set name]\")
@@ -73,7 +75,7 @@ exit()
 
 
 proc geneventtestspython { subsys } {
-global EVENT_ALIASES EVTS SAL_WORK_DIR SYSDIC SAL_DIR
+global EVENT_ALIASES EVTS SAL_WORK_DIR SYSDIC SAL_DIR EVENT_ENUM
  exec mkdir -p $SAL_WORK_DIR/$subsys/python
  if { [info exists EVENT_ALIASES($subsys)] } {
    if { [info exists SYSDIC($subsys,keyedID)] } {
@@ -88,6 +90,7 @@ global EVENT_ALIASES EVTS SAL_WORK_DIR SYSDIC SAL_DIR
       puts $fcmd "
 import time
 import sys
+import numpy
 if len(sys.argv) < [expr [llength $EVTS([set subsys],[set alias],plist)] +1]:
   print(\"ERROR : Invalid or missing arguments : $EVTS([set subsys],[set alias],plist)\")
   exit()
@@ -113,6 +116,7 @@ exit()
       puts $fcmd "
 import time
 import sys
+import numpy
 from SALPY_[set subsys] import *
 mgr = SAL_[set subsys][set initializer]
 mgr.salEvent(\"[set subsys]_logevent_[set alias]\")
@@ -121,8 +125,19 @@ event = [set subsys]_logevent_[set alias]C()
 while True:
   retval = mgr.getEvent_[set alias](event)
   if retval==0:
-    print(\"Event $subsys $alias received\")
-  time.sleep(1)
+    print(\"Event $subsys $alias received\")"
+      if { [info exists EVENT_ENUM($alias)] && [info exists enumdone($alias)] == 0 } {
+          foreach e $EVENT_ENUM($alias) {
+                set vname [lindex [split $e :] 0]
+                set cnst [lindex [split $$e :] 1]
+                foreach id [split $cnst ,] {
+                   set sid [string trim $id " "]
+                   puts $fcmd "    if(event.[set vname] == [set alias]_[set sid]): print(\"[set vname] = [set sid]\")"
+                }
+          }
+          set enumdone($alias) 1
+     } 
+     puts $fcmd "  time.sleep(1)
 mgr.salShutdown()
 exit()
 "
@@ -150,6 +165,7 @@ global CMD_ALIASES CMDS SAL_WORK_DIR SYSDIC SAL_DIR
       puts $fcmd "
 import time
 import sys
+import numpy
 timeout=5
 if len(sys.argv) < [expr [llength $CMDS([set subsys],[set alias],plist)] +1]:
   print(\"ERROR : Invalid or missing arguments : $CMDS([set subsys],[set alias],plist)\")
@@ -177,6 +193,7 @@ exit()
       puts $fcmd "
 import time
 import sys
+import numpy
 from SALPY_[set subsys] import *
 mgr = SAL_[set subsys][set initializer]
 mgr.salProcessor(\"[set subsys]_command_[set alias]\")

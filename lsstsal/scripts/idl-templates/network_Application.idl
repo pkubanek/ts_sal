@@ -1,3 +1,0 @@
-struct network_Application {
-  long Data[63];
-};

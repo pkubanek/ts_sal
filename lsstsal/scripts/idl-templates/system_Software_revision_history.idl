@@ -1,3 +1,0 @@
-struct system_Software_revision_history {
-  long Version[3];
-};

@@ -1,4 +1,0 @@
-struct seeing_mass_Temps {
-  long Raw[15];
-  float Calibrated[15];
-};

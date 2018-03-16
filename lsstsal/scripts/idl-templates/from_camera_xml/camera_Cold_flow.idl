@@ -1,9 +1,0 @@
-struct camera_Cold_flow {
-  string<32> private_revCode;  //private
-  double     private_sndStamp; //private
-  double     private_rcvStamp; //private
-  long       private_seqNum;   //private
-  long       private_origin;   //private
-  float	Intake_flow[6];	// 0.010 | lps | Compressor intake  flow | none | Utility room | 6 | 2,592  | 10,368 
-};
-#pragma keylist camera_Cold_flow 

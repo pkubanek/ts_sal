@@ -1,9 +1,0 @@
-struct camera_Cryo_interlock {
-  string<32> private_revCode;  //private
-  double     private_sndStamp; //private
-  double     private_rcvStamp; //private
-  long       private_seqNum;   //private
-  long       private_origin;   //private
-  short	Flow_interlock[2];	// 0.010 | none | Compressor  flow interlock | none | Utility room | 2 | 864  | 1,728 
-};
-#pragma keylist camera_Cryo_interlock 

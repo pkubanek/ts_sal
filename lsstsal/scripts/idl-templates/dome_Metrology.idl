@@ -1,4 +1,0 @@
-struct dome_Metrology {
-  long  shutterL[4];
-  long  shutterR[4];
-};

@@ -1,5 +1,0 @@
-struct seeing_mass_Application {
-  float Demand[2];
-  float Position[2];
-  float Error[2];
-};

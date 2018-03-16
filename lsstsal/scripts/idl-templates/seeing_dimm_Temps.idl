@@ -1,4 +1,0 @@
-struct seeing_dimm_Temps {
-  long Raw[15];
-  float Calibrated[15];
-};

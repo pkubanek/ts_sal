@@ -1,3 +1,0 @@
-ocs.system.configuration.subssystem 128 string<128> 0.1
-ocs.system.configuration.device 128 string<128> 0.1
-ocs.system.configuration.stationid 1 long 0.1

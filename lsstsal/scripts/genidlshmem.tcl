@@ -17,6 +17,10 @@ global ITEMLIST
                 puts $fo2 "  $name char(32),"
                 set ITEMLIST "$ITEMLIST,char.$name"
               }
+       longlong    { puts $fid "  long $name;" 
+                puts $fo2 "  $name bigint,"
+                set ITEMLIST "$ITEMLIST,longlong.$name"
+              }
        int    -
        long   -
        Int    { puts $fid "  long $name;" 
@@ -80,7 +84,7 @@ global ITEMLIST
                 expanditem $fo2 $name int $nd ; set ITEMLIST "$ITEMLIST,int.[set name].$nd"
               }
        longlong    { puts $fid "  longlong $name\[$nd\];" 
-                expanditem $fo2 $name bigint $nd ; set ITEMLIST "$ITEMLIST,int.[set name].$nd"
+                expanditem $fo2 $name bigint $nd ; set ITEMLIST "$ITEMLIST,longlong.[set name].$nd"
               }
        short  -
        Short  { puts $fid "  short $name\[$nd\];" 

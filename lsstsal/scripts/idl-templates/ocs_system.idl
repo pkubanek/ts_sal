@@ -1,5 +1,0 @@
-struct ocs_system {
-  long health[500];
-  long power[500];
-  long thermal[500];
-};

@@ -558,10 +558,10 @@ global CMD_ALIASES CMDS
     if { [info exists CMDS($subsys,$i,param)] } {
       stdlog "	: alias = $i"
       puts $fout "
-        .def( \"issueCommand_[set i]\",       &::SAL_SALData::issueCommand_[set i] )
-        .def( \"acceptCommand_[set i]\",      &::SAL_SALData::acceptCommand_[set i] )
-        .def( \"ackCommand_[set i]\",         &::SAL_SALData::ackCommand_[set i] )
-        .def( \"waitForCompletion_[set i]\",  &::SAL_SALData::waitForCompletion_[set i] )
+        .def( \"issueCommand_[set i]\",       &SAL_SALData::issueCommand_[set i] )
+        .def( \"acceptCommand_[set i]\",      &SAL_SALData::acceptCommand_[set i] )
+        .def( \"ackCommand_[set i]\",         &SAL_SALData::ackCommand_[set i] )
+        .def( \"waitForCompletion_[set i]\",  &SAL_SALData::waitForCompletion_[set i] )
       "
     } else {
       stdlog "Alias $i has no parameters - uses standard [set subsys]_command"

@@ -2,7 +2,7 @@
 set SAL_DIR $env(SAL_DIR)
 set SAL_WORK_DIR $env(SAL_WORK_DIR)
 
-source $env(SAL_DIR)/gengenricefd.tcl
+source $env(SAL_DIR)/gengenericefd.tcl
 set staging /data/staging/efd-base
 source $env(SAL_DIR)/sal_version.tcl
 

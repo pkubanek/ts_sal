@@ -5,6 +5,30 @@
 # source $SAL_DIR/versioning.tcl
 #
 
+#  Add this to pom when we have integration level tests
+#    <build>
+#        <plugins>
+#            <plugin>
+#                <artifactId>maven-invoker-plugin</artifactId>
+#                <version>1.9</version>
+#                <configuration>
+#                    <debug>true</debug>
+#                    <projectsDirectory>src/test</projectsDirectory>
+#                    <preBuildHookScript>setup.tcl</preBuildHookScript>
+#                    <postBuildHookScript>runtests.tcl</postBuildHookScript>
+#                </configuration>
+#                <executions>
+#                    <execution>
+#                        <id>integration-test</id>
+#                        <goals>
+#                            <goal>run</goal>
+#                        </goals>
+#                    </execution>
+#                </executions>
+#            </plugin>
+#        </plugins>
+#    </build>
+
 proc mavenize { subsys } {
 global env SAL_WORK_DIR SAL_DIR SALVERSION OSPL_VERSION
   exec mkdir -p $SAL_WORK_DIR/maven/[set subsys]_[set SALVERSION]/src/main/java/org/lsst/sal/[set subsys]
@@ -51,28 +75,6 @@ global env SAL_WORK_DIR SAL_DIR SALVERSION OSPL_VERSION
   <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
-    <build>
-        <plugins>
-            <plugin>
-                <artifactId>maven-invoker-plugin</artifactId>
-                <version>1.9</version>
-                <configuration>
-                    <debug>true</debug>
-                    <projectsDirectory>src/test</projectsDirectory>
-                    <preBuildHookScript>setup.tcl</preBuildHookScript>
-                    <postBuildHookScript>runtests.tcl</postBuildHookScript>
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>integration-test</id>
-                        <goals>
-                            <goal>run</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
-    </build>
     <reporting>                                                                              
         <plugins>                                                                            
             <plugin>                                                                         
@@ -103,7 +105,7 @@ global env SAL_WORK_DIR SAL_DIR SALVERSION OSPL_VERSION
         <dependency>
             <groupId>opensplice.dds</groupId>
             <artifactId>dcpssaj</artifactId>
-            <version>$OSPL_VERSION</version>
+            <version>6.4.1</version>
         </dependency>
     </dependencies>
     <repositories>

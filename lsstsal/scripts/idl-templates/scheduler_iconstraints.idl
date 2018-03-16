@@ -1,3 +1,0 @@
-struct scheduler_iconstraints {
-  long codes[32];
-};

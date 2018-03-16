@@ -21,8 +21,20 @@ while { [gets $fin rec] > -1 }  {
       }
     }
    }
+   if { [lindex $rec 0] == "angle" }    {set ang [lindex $rec 2]}
+   if { [lindex $rec 0] == "velocity" } {set vel [lindex $rec 2]
+      set idx [expr int($vel*1000)]
+      incr VELS($idx) 1
+   }
+   if { [lindex $rec 0] == "tai" }      {
+      set tai [lindex $rec 2]
+      puts $fout "$tai $ang $vel"  
+   }
 }
 close $fin
 close $fout
 
+set fout [open rot_velocity_dist w]
+foreach i [array names VELS] {puts $fout "$i $VELS($i)"}
+close $fout 
 

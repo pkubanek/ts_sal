@@ -1,4 +1,0 @@
-calibration.Application.Demand 4 float 0.1
-calibration.Application.Position 4 float 0.1
-calibration.Application.Error 4 float 0.1
-calibration.Application.Status 16 string<16> 0.1

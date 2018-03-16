@@ -1,4 +1,0 @@
-struct m2ms_Surface {
-  long Raw[200];
-  float Calibrated[200];
-};

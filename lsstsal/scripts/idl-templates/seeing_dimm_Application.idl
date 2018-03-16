@@ -1,5 +1,0 @@
-struct seeing_dimm_Application {
-  long Raw[16];
-  float Calibrated[32];
-  float Error[4];
-};

@@ -1,4 +1,0 @@
-struct mount_Az {
-  long Raw[16];
-  float Calibrated[32];
-};

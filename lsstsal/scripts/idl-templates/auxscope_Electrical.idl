@@ -1,4 +1,0 @@
-struct auxscope_Electrical {
-  long Raw[16];
-  float Calibrated[32];
-};

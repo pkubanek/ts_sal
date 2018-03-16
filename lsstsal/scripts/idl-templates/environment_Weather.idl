@@ -1,4 +1,0 @@
-struct environment_Weather {
-  long Raw[128];
-  float Calibrated[256];
-};

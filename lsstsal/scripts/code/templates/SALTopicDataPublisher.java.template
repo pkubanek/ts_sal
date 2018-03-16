@@ -10,21 +10,21 @@ public class SALNAMESTRINGDataPublisher {
 		SAL_SALData mgr = new SAL_SALData(SALSUBSYSID);
 
 		// Publish Telemetry
-		int count=0;
+		int count=1;
 		mgr.salTelemetryPub("SALNAMESTRING");
 		SALData.SALTopic theTopicInstance = new SALData.SALTopic();
-		while (count < 5) {
+		while (count < 6) {
 			mgr.putSample(theTopicInstance);
 			System.out.println("=== [SALTopic Publisher] message sent" + count);
+			++count;
 			try {
 				Thread.sleep(1000);
 			} catch (InterruptedException e) {
-				e.printStackTrace();
+				// nothing
 			}
-			++count;
 		}
 		// clean up
-		//mgr.salShutdown();
+		mgr.salShutdown();
 	}
 }
 

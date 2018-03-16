@@ -423,6 +423,14 @@ set DESC(OCS) "
 <P>Observatory Control System is reponsible for issuing command and 
 monitoring the performance of all telescope subsystems"
 
+set DESC(eec) "Enclosure Environment Conditioning"
+
+set DESC(atSpectrometer) "Auxillary telescope spectrometer"
+set DESC(atWhiteLight) "Auxillary telescope spectrometer calibration source"
+
+set DESC(calibrationSpectrometer) "Calibration screen Spectrometer"
+set DESC(calibrationElectrometer) "Calibration screen Electormeter"
+
 set DESC(camera.Dewar_Cooler) ""
 set DESC(seeing_dimm.TC) ""
 set DESC(seeing_dimm.Electrical) ""
@@ -537,13 +545,15 @@ set SID(seeing_mass.Metrology) 12.3
 
 set SID(tcs) 13
 
-set SID(heaxpod) 14
-set SID(heaxpod.Actuators) 14.1
-set SID(heaxpod.Application) 14.2
-set SID(heaxpod.Electrical) 14.3
-set SID(heaxpod.LimitSensors) 14.4
-set SID(heaxpod.Metrology) 14.5
-set SID(heaxpod.TC) 14.6
+set SID(heaxpod) 15
+set SID(heaxpod.Actuators) 15.1
+set SID(heaxpod.Application) 15.2
+set SID(heaxpod.Electrical) 15.3
+set SID(heaxpod.LimitSensors) 15.4
+set SID(heaxpod.Metrology) 15.5
+set SID(heaxpod.TC) 15.6
+
+set SID(eec) 16
 
 
 
@@ -553,6 +563,8 @@ set DOCO(m1) Document-3167
 set DOCO(m2ms) Document-3167
 set DOCO(m3) Document-3167
 set DOCO(dome) Document-341,Document-342,Document-2389
+set DOCO(eec) TSS-1797
+
 
 set DESC(auxscope) "Auxiallary telescope, 1.5 m photometric telescope with LSST TCS"
 

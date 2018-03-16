@@ -21,6 +21,7 @@ proc validitem { type item {op all} } {
 global NEWCONSTS IDLSIZES IDLRESERVED
   if { $type == "int" } {set type "long"}
   if { $type == "byte" } {set type "octet"}
+  if { $type == "longlong" } {set type "long long"}
   if { [string range $type 0 5] == "string" } { 
       set id [string trim $item "\;"]
       set siz  [lindex [split $type "<>"] 1]
@@ -168,6 +169,10 @@ global XMLTOPICS XMLTLM IDLRESERVED XMLITEMS
            puts stdout "end of topic"
            puts $fout "\};"
            puts $fout "#pragma keylist $topicid"
+           catch {
+              set addc [exec grep "const long " $SAL_WORK_DIR/idl-templates/$f]
+              puts $fout $addc
+           }
            close $fout
            close $fdet
            close $fcmt
@@ -255,13 +260,15 @@ global XMLTOPICS XMLTLM IDLRESERVED XMLITEMS
            if { [lsearch $IDLTYPES $type] < 0 } {
               errorexit "ERROR : $rec\nType $type not supported"
            }
-           set vitem [validitem [lindex $rec 0] [lindex $rec 1]]
-           set siz [validitem [lindex $rec 0] [lindex $rec 1] dim ]
-           if { $siz == "" }  {set siz 32}
-           set type [validitem [lindex $rec 0] [lindex $rec 1] type ]
-           set id [validitem [lindex $rec 0] [lindex $rec 1] id ]
-           if { [lindex [split $id _] 0] == "private" } {
-              puts stdout "Skipping private item $id"
+           if { $type != "const" } {
+             set vitem [validitem [lindex $rec 0] [lindex $rec 1]]
+             set siz [validitem [lindex $rec 0] [lindex $rec 1] dim ]
+             if { $siz == "" }  {set siz 32}
+             set type [validitem [lindex $rec 0] [lindex $rec 1] type ]
+             set id [validitem [lindex $rec 0] [lindex $rec 1] id ]
+           }
+           if { [lindex [split $id _] 0] == "private" || $type == "const" } {
+             puts stdout "Skipping private item $id or const"
            } else {
              set m1 [lindex [split $rec "/"] 2]
              set meta [split $m1 "|"]
@@ -282,7 +289,11 @@ global XMLTOPICS XMLTLM IDLRESERVED XMLITEMS
                  set FREQUENCY($hid) [getfrequency $hid]
              }
              if { $FREQUENCY($hid) < 0.001 } {set FREQUENCY($hid) 0.001}
-             puts $fdet "$hid.$id $siz $type $FREQUENCY($hid)"
+             if { $type == "long long" } {
+                puts $fdet "$hid.$id $siz longlong $FREQUENCY($hid)"
+             } else {
+                puts $fdet "$hid.$id $siz $type $FREQUENCY($hid)"
+             }
              lappend tnames $id
              incr iinum 1
              set props($id,num) "$iinum"
@@ -385,7 +396,7 @@ source $env(SAL_DIR)/utilities.tcl
 source $env(SAL_DIR)/SALTopicTemplateXML.tcl
 source $env(SAL_DIR)/add_system_dictionary.tcl
 
-set IDLTYPES "boolean char byte octet short int long longlong float double string unsigned"
+set IDLTYPES "boolean char byte octet short int long longlong float double string unsigned const"
 set IDLSIZES(byte)     1
 set IDLSIZES(char)     1
 set IDLSIZES(octet)    1
@@ -396,8 +407,9 @@ set IDLSIZES(int)      4
 set IDLSIZES(long)     4
 set IDLSIZES(longlong) 8
 set IDLSIZES(float)    4
+set IDLSIZES(long\ long) 8
 set IDLSIZES(double)   8
-set IDLRESERVED "abstract any attribute boolean case char component const consumes context custom default double emits enum eventtype exception factory false finder fixed float getraises home import in inout interface local long module multiple native object octet oneway out primarykey private provides public publishes raises readonly sequence setraises short string struct supports switch true truncatable typedef typeid typeprefix union unsigned uses valuebase valuetype void wchar wstring"
+set IDLRESERVED "abstract any attribute boolean case char component const consumes context custom dec default double emits enum eventtype exception exit factory false finder fixed float getraises home import in inout interface limit local long module multiple native object octet oneway out primarykey private provides public publishes raises readonly sequence setraises short string struct supports switch true truncatable typedef typeid typeprefix union unsigned uses valuebase valuetype void wchar wstring"
 
 
 

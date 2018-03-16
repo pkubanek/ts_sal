@@ -1,4 +1,0 @@
-ocs.scheduler.program.id 1 long 0.1
-ocs.scheduler.program.priority 1 long 0.1
-ocs.scheduler.program.status 1 long 0.1
-ocs.scheduler.program.completion 1 float 0.1

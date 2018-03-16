@@ -1,6 +1,0 @@
-struct scheduler_progress {
-  long taskid[32];
-  long priority[32];
-  double completion[32];
-  long projection[32];
-};

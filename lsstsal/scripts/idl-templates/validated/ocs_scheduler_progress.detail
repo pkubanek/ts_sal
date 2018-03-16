@@ -1,4 +1,0 @@
-ocs.scheduler.progress.taskid 32 long 0.1
-ocs.scheduler.progress.priority 32 long 0.1
-ocs.scheduler.progress.completion 32 double 0.1
-ocs.scheduler.progress.projection 32 long 0.1

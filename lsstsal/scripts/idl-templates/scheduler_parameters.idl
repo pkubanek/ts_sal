@@ -1,3 +1,0 @@
-struct scheduler_parameters {
-  long parameters[128];
-};

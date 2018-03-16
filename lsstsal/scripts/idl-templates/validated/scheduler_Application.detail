@@ -1,2 +1,0 @@
-scheduler.Application.Status 50 string<50> 0.1
-scheduler.Application.data 200 float 0.1

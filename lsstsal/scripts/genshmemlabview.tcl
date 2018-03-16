@@ -50,16 +50,30 @@ global SAL_DIR SAL_WORK_DIR
 }
 
 proc genlabviewidl { subsys } {
-global SAL_WORK_DIR
+global SAL_WORK_DIR EVENT_ENUMS
+   if { [file exists $SAL_WORK_DIR/idl-templates/validated/[set subsys]_evtdef.tcl] } { 
+      source  $SAL_WORK_DIR/idl-templates/validated/[set subsys]_evtdef.tcl
+   }
    set fin  [open $SAL_WORK_DIR/[set subsys]/cpp/sal_[set subsys].idl r]
    set fout [open $SAL_WORK_DIR/[set subsys]/labview/sal_[set subsys].idl w]
+   set topic none
    while { [gets $fin rec] > -1 } {
       set it [string trim $rec "\{\}"]
-      if { [lsearch "ack\;" [lindex $it 1]] > -1 } {
-         puts $fout "      long	cmdSeqNum;"
+      if { [lindex $it 0] == "struct" } {
+         set topic [string range [lindex $it 1] 9 end]
       }
-      if { [lsearch "device\; property\; action\; value\;" [lindex $it 1]] < 0 } {
-         puts $fout $rec
+      if { [lindex $it 0] != "const" } {
+       if { [lsearch "ack\;" [lindex $it 1]] > -1 } {
+         puts $fout "      long	cmdSeqNum;"
+       }
+       if { [lsearch "device\; property\; action\; value\;" [lindex $it 1]] < 0 } {
+         set name [string trim [lindex $it 1] ";"]
+         if { [info exists EVENT_ENUMS($topic,$name)] } {
+           puts $fout "$rec	// enum : $EVENT_ENUMS($topic,$name)"
+         } else {
+           puts $fout $rec
+         }
+       }
       }
    }
    close $fin
@@ -134,6 +148,7 @@ global SAL_DIR SAL_WORK_DIR SYSDIC TELEMETRY_ALIASES LVSTRINGS
      set type [lindex [split $name _] 0]
      puts $fout "	bool  syncI_[set base]_[set name];"	
      puts $fout "	bool  syncO_[set base]_[set name];"	
+     puts $fout "	bool  flush_[set base]_[set name];"	
      puts $fout "	bool  skipOld_[set base]_[set name];"	
      puts $fout "	bool  hasIncoming_[set base]_[set name];"	
      puts $fout "	bool  hasOutgoing_[set base]_[set name];"
@@ -148,10 +163,11 @@ global SAL_DIR SAL_WORK_DIR SYSDIC TELEMETRY_ALIASES LVSTRINGS
      if { $type == "command" && $name != "command" } {
         puts $fout "    bool syncI_[set base]_[set name]_ackcmd;"
         puts $fout "    bool syncO_[set base]_[set name]_ackcmd;"
-        puts $fout "	bool  skipOld_[set base]_[set name]_ackcmd;"	
+        puts $fout "	bool skipOld_[set base]_[set name]_ackcmd;"	
         puts $fout "	bool hasIncoming_[set base]_[set name]_ackcmd;"	
         puts $fout "	bool hasOutgoing_[set base]_[set name]_ackcmd;"
         puts $fout "	bool hasCallback_[set base]_[set name]_ackcmd;"	
+        puts $fout "	bool ackIt_[set base]_[set name];"	
         puts $fout "	int  callbackHdl_[set base]_[set name]_ackcmd;"	
         puts $fout "	int  shmemOutgoing_[set base]_[set name]_cmdSeqNum;"
         puts $fout "	int  shmemIncoming_[set base]_[set name]_rcvSeqNum;"
@@ -197,7 +213,7 @@ global SAL_DIR SAL_WORK_DIR SYSDIC TELEMETRY_ALIASES LVSTRINGS
         int [set base]_salShmRelease();
         void [set base]_shm_checkCallbacksLV();
         void [set base]_shm_initFlags();
-        double [set base]_getCurrentTimeLV();
+        double [set base]_shm_getCurrentTimeLV();
 "
   foreach j $ptypes {
      set name [lindex $j 2]
@@ -206,15 +222,18 @@ global SAL_DIR SAL_WORK_DIR SYSDIC TELEMETRY_ALIASES LVSTRINGS
      if { $type == "command" && $name != "command" } {
        puts $fout "
         int [set base]_shm_salProcessor_[set n2]LV();
+        int [set base]_shm_salCommander_[set n2]LV();
         int [set base]_shm_issueCommand_[set n2]LV([set base]_[set name]LV *[set name]_Ctl );
         int [set base]_shm_acceptCommand_[set n2]LV([set base]_[set name]LV *[set name]_Ctl );
         int [set base]_shm_ackCommand_[set n2]LV([set base]_ackcmdLV *ackcmd_Ctl);
+        int [set base]_shm_monitorCommand_[set n2]LV([set base]_[set name]LV *[set name]_Ctl );
         int [set base]_shm_waitForCompletion_[set n2]LV([set base]_waitCompleteLV *waitComplete_Ctl);
         int [set base]_shm_getResponse_[set n2]LV([set base]_ackcmdLV *ackcmd_Ctl);"
      } else {
         if { $type == "logevent" && $name != "logevent" } {
            puts $fout "
         int [set base]_shm_salEvent_[set n2]LV();
+	int [set base]_shm_flushSamplesEvent_[set n2]LV();
 	int [set base]_shm_getEvent_[set n2]LV([set base]_[set name]LV *[set name]_Ctl );
 	int [set base]_shm_logEvent_[set n2]LV([set base]_[set name]LV *[set name]_Ctl );"
         } else {
@@ -339,6 +358,8 @@ using namespace [set base];
   puts $fout "
 #include <sys/ipc.h>
 #include <sys/shm.h>
+#include <sys/syscall.h>
+#include <thread>
 #include \"extcode.h\"
 #include \"SAL_[set base].h\"
 extern \"C\" \{
@@ -352,7 +373,7 @@ extern \"C\" \{
   puts $fout "
     [set idarg3]
     [set base]_shmem *[set base]_memIO;
-    int LVClient;
+    __thread int LVClient;
     int [set base]_salShmConnect ([set idarg]) \{
       LVClient = 0;
       lShmId = shmget([set base]_shmid + [set idoff], shmSize , IPC_CREAT|0666);
@@ -363,7 +384,7 @@ extern \"C\" \{
       if (LVClient == 20) \{ return SAL__ERROR; \}
       [set base]_shm_initFlags();
       [set base]_memIO->client\[LVClient\].inUse = true;
-      return SAL__OK;
+      return syscall(SYS_gettid);
     \}
 
     int [set base]_salShmRelease() \{
@@ -373,7 +394,7 @@ extern \"C\" \{
       return SAL__OK;
     \}
 
-    double [set base]_getCurrentTimeLV() \{
+    double [set base]_shm_getCurrentTimeLV() \{
       struct timeval now;
       struct timezone zone;
       double ts;
@@ -509,7 +530,6 @@ global SAL_WORK_DIR LVSTRINGS
 
     int [set base]_shm_getSample_[set name]LV([set base]_[set name]LV *data ) \{
         [set base]_memIO->client\[LVClient\].syncI_[set base]_[set name] = true;
-        [set base]_memIO->client\[LVClient\].skipOld_[set base]_[set name] = false;
         while ([set base]_memIO->client\[LVClient\].hasReader_[set base]_[set name] == false) \{
            usleep(1000);
         \}
@@ -523,15 +543,17 @@ global SAL_WORK_DIR LVSTRINGS
    puts $fout "
            [set base]_memIO->client\[LVClient\].hasIncoming_[set base]_[set name] = false;
         \} else \{
+           [set base]_memIO->client\[LVClient\].skipOld_[set base]_[set name] = true;
            return SAL__NO_UPDATES;
         \}
+        [set base]_memIO->client\[LVClient\].skipOld_[set base]_[set name] = true;
         return SAL__OK;
     \}
 
     int [set base]_shm_getNextSample_[set name]LV([set base]_[set name]LV *data ) \{
         int status = SAL__NO_UPDATES;
         [set base]_memIO->client\[LVClient\].syncI_[set base]_[set name] = true;
-        [set base]_memIO->client\[LVClient\].skipOld_[set base]_[set name] = true;
+        [set base]_memIO->client\[LVClient\].skipOld_[set base]_[set name] = false;
 	status = [set base]_shm_getSample_[set name]LV(data);
         return status;
     \}
@@ -592,9 +614,41 @@ global SAL_WORK_DIR LVSTRINGS
         return SAL__OK;
     \}
 
+    int [set base]_shm_salCommander_[set n2]LV() \{
+        [set base]_memIO->client\[LVClient\].syncO_[set base]_[set name] = true;
+        while ([set base]_memIO->client\[LVClient\].hasWriter_[set base]_[set name] == false) \{
+           usleep(1000);
+        \}
+        return SAL__OK;
+    \}
+
+    int [set base]_shm_monitorCommand_[set n2]LV([set base]_[set name]LV *data ) \{
+        int cmdId;
+        if ( [set base]_memIO->client\[LVClient\].hasIncoming_[set base]_[set name] ) \{"
+   set frag [open $SAL_WORK_DIR/include/SAL_[set base]_[set name]shmin.tmp r]
+   while { [gets $frag rec] > -1} {puts $fout $rec}
+   close $frag
+   puts $fout "
+           cmdId = [set base]_memIO->client\[LVClient\].shmemIncoming_[set base]_[set name]_rcvSeqNum;
+           [set base]_memIO->client\[LVClient\].hasIncoming_[set base]_[set name] = false;
+           [set base]_memIO->client\[LVClient\].ackIt_[set base]_[set name] = false;
+           if ([set base]_memIO->client\[LVClient\].callbackHdl_[set base]_[set name] != 0) \{
+              [set base]_memIO->client\[LVClient\].hasCallback_[set base]_[set name] = true;
+           \}
+           if (cmdId != 0) \{
+//              [set base]_memIO->client\[LVClient\].shmemIncoming_[set base]_[set name]_rcvSeqNum = 0;
+//   cout << \"monitored a command \" << cmdId << endl;
+              return cmdId;
+           \}
+        \} else \{
+           return SAL__NO_UPDATES;
+        \}
+        return SAL__OK;
+    \}
 
     int [set base]_shm_acceptCommand_[set n2]LV([set base]_[set name]LV *data ) \{
         int cmdId;
+        [set base]_memIO->client\[LVClient\].ackIt_[set base]_[set name] = true;
         if ( [set base]_memIO->client\[LVClient\].hasIncoming_[set base]_[set name] ) \{"
    set frag [open $SAL_WORK_DIR/include/SAL_[set base]_[set name]shmin.tmp r]
    while { [gets $frag rec] > -1} {puts $fout $rec}
@@ -628,6 +682,9 @@ global SAL_WORK_DIR LVSTRINGS
         int resultSize = (*(theack->result))->size;
         strncpy([set base]_memIO->client\[LVClient\].shmemOutgoing_[set base]_[set name]_resultCode, (*(theack->result))->data, resultSize);
         [set base]_memIO->client\[LVClient\].hasOutgoing_[set base]_[set name]_ackcmd = true;
+        while ([set base]_memIO->client\[LVClient\].hasOutgoing_[set base]_[set name]_ackcmd == true) \{
+           usleep(1000);
+        \}
         return SAL__OK;
     \}"
    puts $fout "
@@ -636,38 +693,17 @@ global SAL_WORK_DIR LVSTRINGS
       salReturn status = SAL__OK;
       int countdown = waitStatus->timeout;
       [set base]_ackcmdLV response;
-      char *result=(char *)malloc(128);
-        
+
+   response.result=0;     
    [set base]_memIO->client\[LVClient\].activeCommand = SAL__[set base]_[set name]_ACTOR;
    [set base]_memIO->client\[LVClient\].shmemIncoming_[set base]_[set name]_waitForSeqNum = waitStatus->cmdSeqNum;
    status = SAL__CMD_NOACK;
    while (status != SAL__CMD_COMPLETE && countdown != 0) \{
       status = [set base]_shm_getResponse_[set n2]LV(&response);
-//      if (status != SAL__CMD_NOACK) \{
-//        if ([set base]_memIO->client\[LVClient\].shmemIncoming_[set base]_[set name]_rcvSeqNum != 0) \{ 
-//          if ([set base]_memIO->client\[LVClient\].shmemIncoming_[set base]_[set name]_rcvSeqNum != waitStatus->cmdSeqNum) \{ 
-//            status = SAL__CMD_NOACK;
-//          \}
-//        \}
-//      \}
-//   cout << \"waiting for completion\" << countdown << endl;
-//   cout << \"waiting for completion status\" << status << endl;
       usleep(SAL__SLOWPOLL);
       countdown--;
    \}
-//   [set base]_memIO->client\[LVClient\].shmemIncoming_[set base]_[set name]_rcvSeqNum = 0;
    [set base]_memIO->client\[LVClient\].hasIncoming_[set base]_[set name]_ackcmd = false;
-//   [set base]_memIO->client\[LVClient\].shmemIncoming_[set base]_[set name]_waitForSeqNum = 0;
-   if (status != SAL__CMD_COMPLETE) \{
-      if (debugLevel > 0) \{
-//         cout << \"=== \[waitForCompletion\]_[set n2] command \" << cmdSeqNum <<  \" timed out :\" << endl;
-      \} 
-   \} else \{
-      if (debugLevel > 0) \{
-//         cout << \"=== \[waitForCompletion\]_[set n2] command \" << cmdSeqNum << \" completed ok :\" << endl;
-      \} 
-   \}
-   free(result);
    return status;
     \}
 "
@@ -689,7 +725,9 @@ global SAL_WORK_DIR LVSTRINGS
            data->ack = [set base]_memIO->client\[LVClient\].shmemIncoming_[set base]_[set name]_cmdStatus;
            data->error = [set base]_memIO->client\[LVClient\].shmemIncoming_[set base]_[set name]_errorCode;
            data->cmdSeqNum = [set base]_memIO->client\[LVClient\].shmemIncoming_[set base]_[set name]_rcvSeqNum;
-           int resultSize = (*(data->result))->size ;
+           int resultSize = strlen([set base]_memIO->client\[LVClient\].[set base]_ackcmdLV_result_bufferIn);
+           NumericArrayResize(5, 1, (UHandle*)(&(data->result)), resultSize);
+           (*(data->result))->size = resultSize;
            for (int i=0;i<resultSize;i++)\{(*(data->result))->data\[i\] = [set base]_memIO->client\[LVClient\].[set base]_ackcmdLV_result_bufferIn\[i\];\}
            status = [set base]_memIO->client\[LVClient\].shmemIncoming_[set base]_[set name]_cmdStatus;
            if (data->ack == SAL__CMD_COMPLETE) \{
@@ -731,7 +769,12 @@ global SAL_WORK_DIR LVSTRINGS
         if ([set base]_memIO->client\[LVClient\].callbackHdl_[set base]_[set name] != 0) \{
            [set base]_memIO->client\[LVClient\].hasCallback_[set base]_[set name] = true;
         \}
-        if ( [set base]_memIO->client\[LVClient\].hasIncoming_[set base]_[set name] ) \{"
+        if ( [set base]_memIO->client\[LVClient\].hasIncoming_[set base]_[set name] ) \{
+          if ([set base]_memIO->client\[LVClient\].flush_[set base]_[set name]) \{
+             [set base]_memIO->client\[LVClient\].hasIncoming_[set base]_[set name] = false;
+             [set base]_memIO->client\[LVClient\].flush_[set base]_[set name] = false;
+             return SAL__NO_UPDATES;
+          \}"
    set frag [open $SAL_WORK_DIR/include/SAL_[set base]_[set name]shmin.tmp r]
    while { [gets $frag rec] > -1} {puts $fout $rec}
    close $frag
@@ -753,6 +796,17 @@ global SAL_WORK_DIR LVSTRINGS
    close $frag
    puts $fout "
         [set base]_memIO->client\[LVClient\].hasOutgoing_[set base]_[set name] = true;
+        while ([set base]_memIO->client\[LVClient\].hasOutgoing_[set base]_[set name] == true) \{
+           usleep(1000);
+        \}
+        return SAL__OK;
+    \}
+
+    int [set base]_shm_flushSamplesEvent_[set n2]LV() \{
+        int status;
+        [set base]_memIO->client\[LVClient\].syncI_[set base]_[set name] = true;
+        [set base]_memIO->client\[LVClient\].skipOld_[set base]_[set name] = true;
+        [set base]_memIO->client\[LVClient\].flush_[set base]_[set name] = true;
         return SAL__OK;
     \}
 "
@@ -817,7 +871,11 @@ global SAL_DIR SAL_WORK_DIR
              [set base]_memIO->client\[LVClient\].hasReader_[set base]_[set name] = true;
           \}
           if ([set base]_memIO->client\[LVClient\].hasIncoming_[set base]_[set name] == false) \{
-            status = mgr\[LVClient\].acceptCommand_[set n2](Incoming_[set base]_[set name]);
+            if ( [set base]_memIO->client\[LVClient\].ackIt_[set base]_[set name] ) \{
+               status = mgr\[LVClient\].acceptCommand_[set n2](Incoming_[set base]_[set name]);
+            \} else \{
+               status = mgr\[LVClient\].getNextSample_[set name](Incoming_[set base]_[set name]);
+            \}
             if (status > 0) \{"
    set frag [open $SAL_WORK_DIR/include/SAL_[set base]_[set name]monin.tmp r]
    while { [gets $frag rec] > -1} {puts $fout $rec}
@@ -892,7 +950,7 @@ global SAL_DIR SAL_WORK_DIR
        if ([set base]_memIO->client\[LVClient\].syncI_[set base]_[set name]) \{
           actorIdx = SAL__[set base]_[set name]_ACTOR;
           if (mgr\[LVClient\].actorEventReader(actorIdx) == false) \{
-             mgr\[LVClient\].salEvent(\"[set base]_[set name]\");
+             mgr\[LVClient\].salEventSub(\"[set base]_[set name]\");
              [set base]_memIO->client\[LVClient\].hasReader_[set base]_[set name] = true;
           \}
           if ( [set base]_memIO->client\[LVClient\].hasIncoming_[set base]_[set name] == false ) \{
@@ -909,7 +967,7 @@ global SAL_DIR SAL_WORK_DIR
        if ([set base]_memIO->client\[LVClient\].syncO_[set base]_[set name]) \{
           actorIdx = SAL__[set base]_[set name]_ACTOR;
           if (mgr\[LVClient\].actorEventWriter(actorIdx) == false) \{
-             mgr\[LVClient\].salEvent(\"[set base]_[set name]\");
+             mgr\[LVClient\].salEventPub(\"[set base]_[set name]\");
              [set base]_memIO->client\[LVClient\].hasWriter_[set base]_[set name] = true;
           \}
        \}
@@ -950,6 +1008,7 @@ global SAL_DIR SAL_WORK_DIR
        [set base]_memIO->client\[LVClient\].hasOutgoing_[set base]_[set name]_ackcmd = false;
        [set base]_memIO->client\[LVClient\].hasCallback_[set base]_[set name]_ackcmd = false;
        [set base]_memIO->client\[LVClient\].callbackHdl_[set base]_[set name]_ackcmd = 0;
+       [set base]_memIO->client\[LVClient\].ackIt_[set base]_[set name] = true;
        [set base]_memIO->client\[LVClient\].activeCommand = 0;
 "
      }

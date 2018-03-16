@@ -1,3 +1,0 @@
-m1m3.Electrical.voltage 16 long 0.1
-m1m3.Electrical.error 16 long 0.1
-m1m3.Electrical.status 16 short 0.1

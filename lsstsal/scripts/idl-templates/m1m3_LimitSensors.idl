@@ -1,4 +1,0 @@
-struct m1m3_LimitSensors {
-  short liftoff[64];
-  short limit[64];
-};

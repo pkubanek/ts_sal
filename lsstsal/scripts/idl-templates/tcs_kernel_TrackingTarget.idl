@@ -1,7 +1,0 @@
-struct tcs_kernel_TrackingTarget {
-  float PositionX;
-  float PositionY;
-  float T0;
-  float VelocityX;
-  float VelocityY;
-};

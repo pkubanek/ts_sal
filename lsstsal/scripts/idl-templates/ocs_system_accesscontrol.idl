@@ -1,4 +1,0 @@
-struct ocs_system_accesscontrol {
-  long accept[128];
-  long deny[128];
-};

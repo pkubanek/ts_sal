@@ -1,4 +1,0 @@
-struct environment_Seismometer {
-  long Raw[16];
-  float Calibrated[32];
-};

@@ -1,9 +1,0 @@
-struct Purge_status {
-  string<32> private_revCode;  //private
-  double     private_sndStamp; //private
-  double     private_rcvStamp; //private
-  long       private_seqNum;   //private
-  long       private_origin;   //private
-  long	Valves;	// 0.017 | none | Valve statuses  |  | Camera body | ?? | ?? | ??
-};
-#pragma keylist Purge_status
