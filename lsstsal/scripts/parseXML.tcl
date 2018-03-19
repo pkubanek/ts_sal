@@ -6,18 +6,19 @@ global TLMS TLM_ALIASES EVENT_ENUM EVENT_ENUMS
    set fin [open $fname r]
    set fout ""
    set ctype ""
-   set subsys ""
+   set subsys [lindex [split [file tail $fname] _] 0]
    set tname none
    set itemid none
+   set intopic 0
    while { [gets $fin rec] > -1 } {
       set tag   [lindex [split $rec "<>"] 1]
       set value [lindex [split $rec "<>"] 2]
-      if { $tag == "SALTelemetry" }    {set ctype "telemetry"}
+      if { $tag == "SALTelemetry" }    {set ctype "telemetry" ; set intopic 1}
       if { $tag == "SALCommand" }      {
-          set ctype "command"
+          set ctype "command" ; set intopic 1
           set device ""; set property ""; set action "" ; set vvalue ""
       }
-      if { $tag == "SALEvent" }        {set ctype "event"}
+      if { $tag == "SALEvent" }        {set ctype "event" ; set intopic 1}
       if { $tag == "SALTelemetrySet" } {set ctype "telemetry"}
       if { $tag == "SALCommandSet" }   {set ctype "command"}
       if { $tag == "SALEventSet" }     {set ctype "event"}
@@ -37,10 +38,16 @@ global TLMS TLM_ALIASES EVENT_ENUM EVENT_ENUMS
       if { $tag == "Value" }           {set vvalue $value}
       if { $tag == "Subsystem" }       {set subsys $value}
       if { $tag == "Enumeration" }     {
-         lappend EVENT_ENUM($alias) "$item:$value"
-         set EVENT_ENUMS($alias,$item) "$value"
+         if { $intopic } {
+           lappend EVENT_ENUM($alias) "$item:$value"
+           set EVENT_ENUMS($alias,$item) "$value"
+         } else {
+           lappend EVENT_ENUM([set subsys]_shared) "generic_shared:$value"
+           set EVENT_ENUMS([set subsys]_shared,generic_shared) "$value"
+         }
       }
       if { $tag == "/SALEvent" } {
+         set intopic 0
          set EVTS($subsys,$alias) $alias
          set EVENT_ALIASES($subsys) [lappend EVENT_ALIASES($subsys) $alias]
          if { [info exists EVTS($subsys,$alias,plist)] } {
@@ -56,6 +63,7 @@ global TLMS TLM_ALIASES EVENT_ENUM EVENT_ENUMS
          }
       }
       if { $tag == "/SALCommand" } {
+         set intopic 0
          set CMDS($subsys,$alias) "$device $property $action $value"
          set CMD_ALIASES($subsys) [lappend CMD_ALIASES($subsys) $alias]
          if { $itemid == 0 } {
@@ -67,6 +75,7 @@ global TLMS TLM_ALIASES EVENT_ENUM EVENT_ENUMS
       }
       if { $tag == "/SALTelemetry" } {
          set TLM_ALIASES($subsys) [lappend TLM_ALIASES($subsys) $alias]
+         set intopic 0
       }
       if { $tag == "EFDB_Topic" } {
          if { $fout != "" } {
@@ -78,10 +87,22 @@ global TLMS TLM_ALIASES EVENT_ENUM EVENT_ENUMS
                set enum [string trim $e "\{\}"]
                set cnst [lindex [split $enum :] 1]
                foreach id [split $cnst ,] {
-                  puts $fout "	const long [set alias]_[string trim $id " "]=$i;"
+                  puts $fout " const long [set alias]_[string trim $id " "]=$i;"
                   incr i 1
                }
              }
+           }
+           if { [info exists EVENT_ENUM([set subsys]_shared)] } {
+             foreach e $EVENT_ENUM([set subsys]_shared) {
+               set i 1
+               set enum [string trim $e "\{\}"]
+               set cnst [lindex [split $enum :] 1]
+               foreach id [split $cnst ,] {
+                   puts $fout "	const long [set subsys]_shared_[string trim $id " "]=$i;"
+                   incr i 1
+               }
+             }
+             unset EVENT_ENUM([set subsys]_shared)
            }
            close $fout
            if { $ctype == "telemetry" } {
@@ -176,7 +197,18 @@ global TLMS TLM_ALIASES EVENT_ENUM EVENT_ENUMS
           set enum [string trim $e "\{\}"]
           set cnst [lindex [split $enum :] 1]
           foreach id [split $cnst ,] {
-              puts $fout "	const long [set alias]_[string trim $id " "]=$i;"
+              puts $fout " const long [set alias]_[string trim $id " "]=$i;"
+              incr i 1
+          }
+        }
+      }
+      if { [info exists EVENT_ENUM([set subsys]_shared)] } {
+        foreach e $EVENT_ENUM([set subsys]_shared) {
+          set i 1
+          set enum [string trim $e "\{\}"]
+          set cnst [lindex [split $enum :] 1]
+          foreach id [split $cnst ,] {
+              puts $fout " const long [set subsys]_shared_[string trim $id " "]=$i;"
               incr i 1
           }
         }
@@ -241,11 +273,10 @@ global IDLRESERVED SAL_WORK_DIR SAL_DIR CMDS CMD_ALIASES EVTS EVENT_ALIASES
   puts stdout "Generating html command table $subsys"
   puts $fout "<H3>$subsys Commands</H3><P><UL>"
   puts $fout "<TABLE BORDER=3 CELLPADDING=5 BGCOLOR=LightBlue  WIDTH=600>
-<TR BGCOLOR=Yellow><B><TD>Command Alias</TD><TD>Device</TD><TD>Property
-</TD><TD>Action</TD><TD>Parameter</TD></B></TR>"
+<TR BGCOLOR=Yellow><B><TD>Command Alias</TD><TD>Parameter</TD></B></TR>"
   foreach i [lsort $CMD_ALIASES($subsys)] {
       set cmd "$CMDS($subsys,$i) - - -"
-      puts $fout "<TR><TD>$subsys<BR>$i</TD><TD>[lindex $cmd 0] </TD><TD>[lindex $cmd 1] </TD><TD> [lindex $cmd 2]</TD><TD> "
+      puts $fout "<TR><TD>$subsys<BR>$i</TD><TD> "
       if { [info exists CMDS($subsys,$i,param)] } {
         foreach p $CMDS($subsys,$i,param) {
           puts $fout "$p<BR>"

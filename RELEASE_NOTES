@@ -1,10 +1,17 @@
-Special feature branch for use in Pathfinder 5a
+Special feature branch for use in Pathfinder
 
 
-This is release 3.5.1 of the SAL SDK (July 11, 2017)
+This is release 3.5.2 of the SAL SDK (Mar 16th, 2017)
 
 
 Please refer to the SAL User Guide for installation instructions.
+
+Changes for 3.5.2
+
+New CSC's for Auxillary Telesope (accs) and instrumentation
+Default to Python3 compatability
+Enumeration support in XML and downstream
+
 
 Changes for 3.5.1
 
