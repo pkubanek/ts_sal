@@ -172,13 +172,13 @@ while { [gets $fin rec] > -1 } {
       set ITEMLIST "char.private_revCode,double.private_sndStamp,double.private_rcvStamp,int.private_seqNum,int.private_origin,int.private_host"
    }
    set name [lindex [split [lindex $rec 1] .] end]
-   set type [lindex $rec 3]
+   set type [string trim [lindex $rec 3] "0123456789<>"]
    if { [lindex $rec 2] > 1 } {
       set nd [lindex $rec 2]
-#puts stdout "nditem $fout $fo2 $name $type $nd"
+##puts stdout "nditem $fout $fo2 $name $type $nd"
       nditem $flog $fo2 $name $type $nd
    } else {
-#puts stdout "olddoitem $fout $fo2 $name $type"
+##puts stdout "olddoitem $fout $fo2 $name $type"
       olddoitem $flog $fo2 $name $type
    }
    puts $flog "Added $name to $topic"
