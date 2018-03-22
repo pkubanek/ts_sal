@@ -172,7 +172,7 @@ while { [gets $fin rec] > -1 } {
       set ITEMLIST "char.private_revCode,double.private_sndStamp,double.private_rcvStamp,int.private_seqNum,int.private_origin,int.private_host"
    }
    set name [lindex [split [lindex $rec 1] .] end]
-   set type [string trim [lindex $rec 3] "0123456789<>"]
+   set type [lindex [split [lindex $rec 3] "<"] 0]
    if { [lindex $rec 2] > 1 } {
       set nd [lindex $rec 2]
 ##puts stdout "nditem $fout $fo2 $name $type $nd"
