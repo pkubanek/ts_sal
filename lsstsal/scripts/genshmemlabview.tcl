@@ -62,8 +62,7 @@ global SAL_WORK_DIR EVENT_ENUMS
       if { [lindex $it 0] == "struct" } {
          set topic [string range [lindex $it 1] 9 end]
       }
-      if { [lindex $it 0] != "const" } {
-       if { [lsearch "ack\;" [lindex $it 1]] > -1 } {
+      if { [lsearch "ack\;" [lindex $it 1]] > -1 } {
          puts $fout "      long	cmdSeqNum;"
        }
        if { [lsearch "device\; property\; action\; value\;" [lindex $it 1]] < 0 } {
@@ -73,7 +72,6 @@ global SAL_WORK_DIR EVENT_ENUMS
          } else {
            puts $fout $rec
          }
-       }
       }
    }
    close $fin
