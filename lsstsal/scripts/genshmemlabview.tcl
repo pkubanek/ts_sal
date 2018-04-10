@@ -60,12 +60,12 @@ global SAL_WORK_DIR EVENT_ENUMS
    while { [gets $fin rec] > -1 } {
       set it [string trim $rec "\{\}"]
       if { [lindex $it 0] == "struct" } {
-         set topic [string range [lindex $it 1] 9 end]
+         set topic [join [lrange [split [lindex $it 1] "_"] 1 end] "_"]
       }
       if { [lsearch "ack\;" [lindex $it 1]] > -1 } {
          puts $fout "      long	cmdSeqNum;"
-       }
-       if { [lsearch "device\; property\; action\; value\;" [lindex $it 1]] < 0 } {
+      }
+      if { [lsearch "device\; property\; action\; value\;" [lindex $it 1]] < 0 } {
          set name [string trim [lindex $it 1] ";"]
          if { [info exists EVENT_ENUMS($topic,$name)] } {
            puts $fout "$rec	// enum : $EVENT_ENUMS($topic,$name)"
