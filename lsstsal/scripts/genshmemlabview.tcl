@@ -60,7 +60,12 @@ global SAL_WORK_DIR EVENT_ENUMS
    while { [gets $fin rec] > -1 } {
       set it [string trim $rec "\{\}"]
       if { [lindex $it 0] == "struct" } {
-         set topic [join [lrange [split [lindex $it 1] "_"] 1 end] "_"]
+         set ttype [lindex [split [lindex $it 1] "_"] 0]
+         if { $ttype == "command" || $ttype == "logevent" } {
+            set topic [join [lrange [split [lindex $it 1] "_"] 1 end] "_"]
+         } else {
+            set topic [lindex $it 1]
+         }
       }
       if { [lsearch "ack\;" [lindex $it 1]] > -1 } {
          puts $fout "      long	cmdSeqNum;"
