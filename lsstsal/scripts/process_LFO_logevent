@@ -7,13 +7,17 @@ global FLOG
    exit $code
 }
 
-set basedir .
+set basedir EFD_LFO
 set Byte_Size [lindex $argv 0]
+if { $Byte_Size == 0 } {
+   exit 0
+}
 set Checksum [string trim [lindex $argv 1] "'"]
 set Generator [string trim [lindex $argv 2] "'"]
 set Mime [string trim [lindex $argv 3] "'"]
 set URL [string trim [lindex $argv 4] "'"]
 set Version  [lindex $argv 5]
+set ID [string trim [lindex $argv 6] "'"]
 set fname  [file tail $URL]
 set destination  $basedir/$Generator/[join [split [exec date -I] "-"] "/"]
 exec mkdir -p $destination
@@ -25,7 +29,7 @@ if { [file exists $destination/$fname] } {
 }
 
 
-catch { exec wget $URL } res
+catch { exec curl -k -o $fname $URL } res
 set fname  [file tail $URL]
 if { [file exists $fname] } {
     if { [file size $fname] != $Byte_Size } {
@@ -45,6 +49,13 @@ set mtype [lindex [exec file --mime-type  $destination/$fname] 1]
 if { $mtype != $Mime } {
    puts $FLOG "Warning : $URL mime type not verfiable $mtype != $Mime"
 }
+
+set efdurl http://$env(LSST_EFD_HOST)/$destination/$fname
+
+####create http link and rebbuild announcer with ID
+
+exec $env(SAL_WORK_DIR)/efd/cpp/src/sacpp_efd_LargeFileObjectAvailable_send $Byte_Size $Checksum $Generator $Mime $efdurl $Version $ID 1
+puts $FLOG "Published EFD LFO Announcement for $URL"
 
 close $FLOG
 exit 0

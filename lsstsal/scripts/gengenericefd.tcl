@@ -101,6 +101,11 @@ global ACTORTYPE SAL_WORK_DIR BLACKLIST
       exit(1);
   \}
 
+  char *efdb_host = getenv(\"LSST_EFD_SYSLOG\");
+  if (efdb_host == NULL) \{
+     isyslog = 0;
+  \}
+
   if (mysql_real_connect(con, efdb_host, \"efduser\" , \"lssttest\", \"EFD\", 0 , NULL, 0) == NULL) \{
       fprintf(stderr,\"MYSQL Failed to connect %s\\n\",mysql_error(con));
       exit(1);
@@ -148,10 +153,12 @@ global ACTORTYPE SAL_WORK_DIR BLACKLIST
           mstatus = mysql_query(con,thequery);
 //          cout << thequery << endl;
           if (mstatus) \{
-             fprintf(stderr,\"MYSQL INSERT ERROR : %d\\n\",mstatus);
+             fprintf(stderr,\"MYSQL INSERT ERROR : %d : %s\\n\",mstatus,thequery);
           \}
           if (myData_[set topic]\[0\].private_origin > 0) \{
-            syslog(NULL,\"%s\",thequery);
+            if (isyslog > 0) \{
+               syslog(NULL,\"%s\",thequery);
+            \}
           \}"
          }
          puts $fout "       \}"
@@ -167,7 +174,7 @@ global ACTORTYPE SAL_WORK_DIR BLACKLIST
           mstatus = mysql_query(con,thequery);
 //          cout << thequery << endl;
           if (mstatus) \{
-             fprintf(stderr,\"MYSQL INSERT ERROR : %d\\n\",mstatus);
+             fprintf(stderr,\"MYSQL INSERT ERROR : %d : %s\\n\",mstatus,thequery);
           \}
        \}"
           }
@@ -181,7 +188,7 @@ global ACTORTYPE SAL_WORK_DIR BLACKLIST
           mstatus = mysql_query(con,thequery);
 //          cout << thequery << endl;
           if (mstatus) \{
-             fprintf(stderr,\"MYSQL INSERT ERROR : %d\\n\",mstatus);
+             fprintf(stderr,\"MYSQL INSERT ERROR : %d : %s\\n\",mstatus,thequery);
           \}
        \}"
          }
@@ -202,7 +209,7 @@ proc checkLFO { fout topic } {
      puts $fout "
        if (status == SAL__OK && numsamp > 0) \{
            printf(\"EFD TBD : Large File Object Announcement Event $topic received\\n\");
-           sprintf(thequery,\"process_LFO_logevent  %d '%s' '%s' '%s' '%s' %f '%s'\"  ,  myData_[set topic]\[0\].Byte_Size , myData_[set topic]\[0\].Checksum.m_ptr , myData_[set topic]\[0\].Generator.m_ptr , myData_[set topic]\[0\].Mime.m_ptr , myData_[set topic]\[0\].URL.m_ptr , myData_[set topic]\[0\].Version, myData_[set topic]\[0\].ID);
+           sprintf(thequery,\"process_LFO_logevent  %d '%s' '%s' '%s' '%s' %f '%s'\"  ,  myData_[set topic]\[0\].Byte_Size , myData_[set topic]\[0\].Checksum.m_ptr , myData_[set topic]\[0\].Generator.m_ptr , myData_[set topic]\[0\].Mime.m_ptr , myData_[set topic]\[0\].URL.m_ptr , myData_[set topic]\[0\].Version, myData_[set topic]\[0\].ID.m_ptr);
           mstatus = system(thequery);
           if (mstatus < 0) \{
              fprintf(stderr,\"LFO Processor ERROR : %d\\n\",mstatus);
@@ -269,6 +276,7 @@ int test_[set base]_telemetry_efdwriter()
   os_time delay_1ms = \{ 0, 1000000 \};
   int numsamp = 0;
   int actorIdx = 0;
+  int isyslog = 1;
   int mstatus = 0;
   int status = 0;"
   genericefdfragment $fout $base telemetry subscriber
@@ -339,6 +347,7 @@ int test_[set base]_event_efdwriter()
   os_time delay_1ms = \{ 0, 1000000 \};
   int numsamp = 0;
   int actorIdx = 0;
+  int isyslog = 1;
   int mstatus = 0;
   int status=0;"
   genericefdfragment $fout $base logevent subscriber
@@ -407,6 +416,7 @@ int test_[set base]_command_efdwriter()
   os_time delay_1ms = \{ 0, 1000000 \};
   int numsamp = 0;
   int actorIdx = 0;
+  int isyslog = 1;
   int mstatus = 0;
   int status=0;"
   genericefdfragment $fout $base command subscriber

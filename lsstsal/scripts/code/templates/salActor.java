@@ -64,6 +64,7 @@ public class salActor {
         public int error;
         public int ack;
         public String result;
+        public double timeRemaining;
         public double sndStamp;
         public double rcvStamp;
 	public double sampleAge;

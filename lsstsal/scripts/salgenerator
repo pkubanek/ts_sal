@@ -102,6 +102,15 @@ if { $OPTIONS(validate) } {
   set all $TSUBSYSTEMS
   stdlog "Processing $all"
   foreach i $all {
+    if { [file exists [set i]_Telemetry.xml] == 0 } {
+        stdlog "Add lifecycle commands"
+        set SALSubsys $i
+        source $SAL_DIR/generateMinimalTelemetry.tcl
+        set fxml [open /tmp/telemetry.xml w]
+        puts $fxml $SAL_MIN_TELEMETRY 
+        close $fxml
+        parseXMLtoidl /tmp/telemetry.xml
+    }
     foreach t "Telemetry Commands Events" {
       if { [file exists [set i]_[set t].xml] } {
        if { [file size [set i]_[set t].xml] > 0 } {
@@ -124,6 +133,10 @@ if { $OPTIONS(validate) } {
         parseXMLtoidl [set i]_[set t].xml
         stdlog "Imported $i $t interface definitions"
        }
+      }
+      catch {
+         set gchk [exec grep "_command_start<" [set i]_Commands.xml]
+         set SYSDIC($i,hasGenerics) 1
       }
       if { [info exists SYSDIC($i,hasGenerics)] } {
         stdlog "Generic Commands/Events included in XML"
@@ -153,7 +166,6 @@ if { $OPTIONS(validate) } {
     foreach n $new {
       checkidl [file tail $n]
     }
-    exec $SAL_DIR/parse_telemetry_list.tcl $i
     stdlog "Completed $i validation\n\n"
   }
 }

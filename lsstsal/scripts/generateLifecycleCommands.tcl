@@ -1,8 +1,8 @@
 set SAL_LIFECYCLE_COMMANDS "
 <?xml version=\"1.0\" encoding=\"UTF-8\"?>
-<?xml-stylesheet type=\"text/xsl\" href=\"http://lsst-sal.tuc.noao.edu/schema/SALCommandSet.xsl\"?>
+<?xml-stylesheet type=\"text/xsl\" href=\"http://project.lsst.org/ts/sal_objects/schema/SALCommandSet.xsl\"?>
 <SALCommandSet xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"
-	xsi:noNamespaceSchemaLocation=\"http://lsst-sal.tuc.noao.edu/schema/SALCommandSet.xsd\">
+	xsi:noNamespaceSchemaLocation=\"http://project.lsst.org/ts/sal_objects/schema/SALCommandSet.xsd\">
 
 <SALCommand>
  <Subsystem>[set SALSubsys]</Subsystem>
@@ -14,7 +14,7 @@ set SAL_LIFECYCLE_COMMANDS "
  <Property>set</Property>
  <Action>apply</Action>
  <Value></Value>
- <Explanation>http://sal.lsst.org/SAL/Commands/[set SALSubsys]_command_start.html</Explanation>
+ <Explanation>http://project.lsst.org/ts/sal_objects/help/[set SALSubsys]_command_start.html</Explanation>
     <item>
       <EFDB_Name>configuration</EFDB_Name>
       <Description>Subsystem Configuration to apply at start</Description>
@@ -34,7 +34,7 @@ set SAL_LIFECYCLE_COMMANDS "
  <Property>motion</Property>
  <Action>stop</Action>
  <Value></Value>
- <Explanation>http://sal.lsst.org/SAL/Commands/[set SALSubsys]_command_stop.html</Explanation>
+ <Explanation>http://project.lsst.org/ts/sal_objects/help/[set SALSubsys]_command_stop.html</Explanation>
     <item>
       <EFDB_Name>state</EFDB_Name>
       <Description>Subsystem state</Description>
@@ -54,7 +54,7 @@ set SAL_LIFECYCLE_COMMANDS "
  <Property></Property>
  <Action>abort</Action>
  <Value></Value>
- <Explanation>http://sal.lsst.org/SAL/Commands/[set SALSubsys]_command_abort.html</Explanation>
+ <Explanation>http://project.lsst.org/ts/sal_objects/help/[set SALSubsys]_command_abort.html</Explanation>
     <item>
       <EFDB_Name>state</EFDB_Name>
       <Description>Subsystem state</Description>
@@ -74,7 +74,7 @@ set SAL_LIFECYCLE_COMMANDS "
  <Property>command</Property>
  <Action></Action>
  <Value></Value>
- <Explanation>http://sal.lsst.org/SAL/Commands/[set SALSubsys]_command_enable.html</Explanation>
+ <Explanation>http://project.lsst.org/ts/sal_objects/help/[set SALSubsys]_command_enable.html</Explanation>
     <item>
       <EFDB_Name>state</EFDB_Name>
       <Description>Subsystem state</Description>
@@ -94,7 +94,7 @@ set SAL_LIFECYCLE_COMMANDS "
  <Property>command</Property>
  <Action></Action>
  <Value></Value>
- <Explanation>http://sal.lsst.org/SAL/Commands/[set SALSubsys]_command_disable.html</Explanation>
+ <Explanation>http://project.lsst.org/ts/sal_objects/help/[set SALSubsys]_command_disable.html</Explanation>
     <item>
       <EFDB_Name>state</EFDB_Name>
       <Description>Subsystem state</Description>
@@ -114,7 +114,7 @@ set SAL_LIFECYCLE_COMMANDS "
  <Property>command</Property>
  <Action>stop</Action>
  <Value></Value>
- <Explanation>http://sal.lsst.org/SAL/Commands/[set SALSubsys]_command_standby.html</Explanation>
+ <Explanation>http://project.lsst.org/ts/sal_objects/help/[set SALSubsys]_command_standby.html</Explanation>
     <item>
       <EFDB_Name>state</EFDB_Name>
       <Description>Subsystem state</Description>
@@ -134,7 +134,7 @@ set SAL_LIFECYCLE_COMMANDS "
  <Property>command</Property>
  <Action>exit</Action>
  <Value></Value>
- <Explanation>http://sal.lsst.org/SAL/Commands/[set SALSubsys]_command_exitControl.html</Explanation>
+ <Explanation>http://project.lsst.org/ts/sal_objects/help/[set SALSubsys]_command_exitControl.html</Explanation>
     <item>
       <EFDB_Name>state</EFDB_Name>
       <Description>Subsystem state</Description>
@@ -154,7 +154,7 @@ set SAL_LIFECYCLE_COMMANDS "
  <Property>command</Property>
  <Action>allow</Action>
  <Value>network</Value>
- <Explanation>http://sal.lsst.org/SAL/Commands/[set SALSubsys]_command_enterControl.html</Explanation>
+ <Explanation>http://project.lsst.org/ts/sal_objects/help/[set SALSubsys]_command_enterControl.html</Explanation>
     <item>
       <EFDB_Name>state</EFDB_Name>
       <Description>Subsystem state</Description>
@@ -174,7 +174,7 @@ set SAL_LIFECYCLE_COMMANDS "
  <Property>configuration</Property>
  <Action>set</Action>
  <Value></Value>
- <Explanation>http://sal.lsst.org/SAL/Commands/[set SALSubsys]_command_SetValue.html</Explanation>
+ <Explanation>http://project.lsst.org/ts/sal_objects/help/[set SALSubsys]_command_SetValue.html</Explanation>
     <item>
       <EFDB_Name>json_parameters</EFDB_Name>
       <Description>JSON string describing the parameter(s) to be set and their values</Description>

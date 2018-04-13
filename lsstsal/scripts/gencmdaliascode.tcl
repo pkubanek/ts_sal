@@ -435,11 +435,11 @@ global CMD_ALIASES CMDS SYSDIC
 	public int waitForCompletion_[set i]( int cmdSeqNum , int timeout )
 	\{
 	   int status = 0;
-	   int countdown = timeout*1000;
            int actorIdx = SAL__SALData_command_[set i]_ACTOR;
 	   ackcmdSeqHolder ackcmd = new ackcmdSeqHolder();
+           long finishBy = System.currentTimeMillis() + timeout*1000;
 
-	   while (status != SAL__CMD_COMPLETE && countdown != 0) \{
+	   while (status != SAL__CMD_COMPLETE && System.currentTimeMillis() < finishBy ) \{
 	      status = getResponse_[set i](ackcmd);
 	      if (status != SAL__CMD_NOACK) \{
 	        if (sal\[actorIdx\].rcvSeqNum != cmdSeqNum) \{ 
@@ -448,13 +448,12 @@ global CMD_ALIASES CMDS SYSDIC
 	      \}
 	      try
 		\{
-	 	  Thread.sleep(timeout);
+	 	  Thread.sleep(1);
 		\}
 		catch(InterruptedException ie)
 		\{
 			// nothing to do
 	      \}
-	      countdown--;
 	   \}
 	   if (status != SAL__CMD_COMPLETE) \{
 	      if (debugLevel > 0) \{
@@ -469,7 +468,38 @@ global CMD_ALIASES CMDS SYSDIC
  	   return status;
 	\}
 "
-   puts $fout "
+    puts $fout "
+	public int waitForAck_[set i]( int timeout , ackcmd ack)
+	\{
+	   int status = 0;
+           int actorIdx = SAL__SALData_ackcmd_ACTOR;
+	   ackcmdSeqHolder ackcmd = new ackcmdSeqHolder();
+           long finishBy = System.currentTimeMillis() + timeout*1000;
+
+	   while (status == SAL__CMD_NOACK && System.currentTimeMillis() < finishBy ) \{
+	      status = getResponse_[set i](ackcmd);
+	      if (status != SAL__CMD_NOACK) \{
+  		ack.private_seqNum = sal\[actorIdx\].rcvSeqNum;
+   		ack.error = sal\[actorIdx\].error;
+   		ack.ack = sal\[actorIdx\].ack;
+   		ack.result = sal\[actorIdx\].result;
+	      \}
+	      try
+		\{
+	 	  Thread.sleep(1);
+		\}
+		catch(InterruptedException ie)
+		\{
+			// nothing to do
+	      \}
+	   \}
+	   if (debugLevel > 0) \{
+	      System.out.println( \"=== \[waitForAck_[set i]\] ack \" + status);
+	   \} 
+ 	   return status;
+	\}
+"
+  puts $fout "
 	public int getResponse_[set i](ackcmdSeqHolder data)
 	\{
 	  int status =  -1;

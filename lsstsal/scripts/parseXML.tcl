@@ -2,7 +2,7 @@
 
 proc parseXMLtoidl { fname } { 
 global IDLRESERVED SAL_WORK_DIR SAL_DIR CMDS CMD_ALIASES EVTS EVENT_ALIASES
-global TLMS TLM_ALIASES EVENT_ENUM EVENT_ENUMS
+global TLMS TLM_ALIASES EVENT_ENUM EVENT_ENUMS UNITS
    set fin [open $fname r]
    set fout ""
    set ctype ""
@@ -154,7 +154,7 @@ global TLMS TLM_ALIASES EVENT_ENUM EVENT_ENUMS
       if { $tag == "Range"}           {set range $value}
       if { $tag == "Sensor_location"} {set location $value}
       if { $tag == "Count"}           {set idim $value}
-      if { $tag == "Units"}           {set unit $value}
+      if { $tag == "Units"}           {set unit [string trim $value]}
       if { $tag == "/item" } {
          if { $type == "string" || $type == "char" } {
             if { $sdim > 1 } {
@@ -176,6 +176,7 @@ global TLMS TLM_ALIASES EVENT_ENUM EVENT_ENUMS
          if { $ctype == "command" } {
             lappend CMDS($subsys,$alias,param) "$declare"
             lappend CMDS($subsys,$alias,plist)  $item
+            if { $unit != "" } {set UNITS($subsys,$alias,$item) $unit}
          }
          if { $ctype == "event" } {
             lappend EVTS($subsys,$alias,param) "$declare"
@@ -261,13 +262,14 @@ global TLMS TLM_ALIASES EVENT_ENUM EVENT_ENUMS
       }
       close $fout
     }
+    genhtmltelemetrytable $subsys
    }
 }
 
 
 
 proc genhtmlcommandtable { subsys } {
-global IDLRESERVED SAL_WORK_DIR SAL_DIR CMDS CMD_ALIASES EVTS EVENT_ALIASES
+global IDLRESERVED SAL_WORK_DIR SAL_DIR CMDS CMD_ALIASES EVTS EVENT_ALIASES UNITS
   exec mkdir -p $SAL_WORK_DIR/html/[set subsys]
   set fout [open $SAL_WORK_DIR/html/[set subsys]/[set subsys]_Commands.html w]
   puts stdout "Generating html command table $subsys"
@@ -279,7 +281,12 @@ global IDLRESERVED SAL_WORK_DIR SAL_DIR CMDS CMD_ALIASES EVTS EVENT_ALIASES
       puts $fout "<TR><TD>$subsys<BR>$i</TD><TD> "
       if { [info exists CMDS($subsys,$i,param)] } {
         foreach p $CMDS($subsys,$i,param) {
-          puts $fout "$p<BR>"
+          set id [lindex [split [lindex $p 1] "()"] 0]
+          if { [info exists UNITS($subsys,$i,$id)] } {
+             puts $fout "$p : $UNITS($subsys,$i,$id)<BR>"
+          } else {
+             puts $fout "$p<BR>"
+          }
         } 
         puts $fout "</TD></TR>"
       } else {
@@ -291,7 +298,7 @@ global IDLRESERVED SAL_WORK_DIR SAL_DIR CMDS CMD_ALIASES EVTS EVENT_ALIASES
 }
 
 proc genhtmleventtable { subsys } {
-global IDLRESERVED SAL_WORK_DIR SAL_DIR CMDS CMD_ALIASES EVTS EVENT_ALIASES
+global IDLRESERVED SAL_WORK_DIR SAL_DIR CMDS CMD_ALIASES EVTS EVENT_ALIASES UNITS
   exec mkdir -p $SAL_WORK_DIR/html/[set subsys]
   set fout [open $SAL_WORK_DIR/html/[set subsys]/[set subsys]_Events.html w]
   puts stdout "Generating html logevent table $subsys"
@@ -304,7 +311,12 @@ global IDLRESERVED SAL_WORK_DIR SAL_DIR CMDS CMD_ALIASES EVTS EVENT_ALIASES
       puts $fout "<TR><TD>$subsys<BR>$i</TD><TD>[lindex $evt 0] </TD><TD>[lindex $evt 1] </TD><TD> "
       if { [info exists EVTS($subsys,$i,param)] } {
         foreach p $EVTS($subsys,$i,param) {
-          puts $fout "$p<BR>"
+          set id [lindex [split [lindex $p 1] "()"] 0]
+          if { [info exists UNITS($subsys,$i,$id)] } {
+             puts $fout "$p : $UNITS($subsys,$i,$id)<BR>"
+          } else {
+             puts $fout "$p<BR>"
+          }
         } 
         puts $fout "</TD></TR>"
       } else {
@@ -317,8 +329,8 @@ global IDLRESERVED SAL_WORK_DIR SAL_DIR CMDS CMD_ALIASES EVTS EVENT_ALIASES
 
 
 
-proc oldgenhtmltelemetrytable { subsys } {
-global IDLRESERVED SAL_WORK_DIR SAL_DIR TLMS TLM_ALIASES
+proc genhtmltelemetrytable { subsys } {
+global IDLRESERVED SAL_WORK_DIR SAL_DIR TLMS TLM_ALIASES UNITS
   exec mkdir -p $SAL_WORK_DIR/html/[set subsys]
   set fout [open $SAL_WORK_DIR/html/[set subsys]/[set subsys]_Telemetry.html w]
   puts stdout "Generating html telemetry table $subsys"
@@ -326,10 +338,15 @@ global IDLRESERVED SAL_WORK_DIR SAL_DIR TLMS TLM_ALIASES
   puts $fout "<TABLE BORDER=3 CELLPADDING=5 BGCOLOR=LightBlue  WIDTH=600>
 <TR BGCOLOR=Yellow><B><TD>Telemetry Stream</TD><TD>Parameter(s)</TD></B></TR>"
   foreach i [lsort $TLM_ALIASES($subsys)] {
-      puts $fout "<TR><TD>$subsys<BR>$i</TD><TD> "
+      puts $fout "<TR><TD>[set subsys]_[set i]</TD><TD> "
       if { [info exists TLMS($subsys,$i,param)] } {
         foreach p $TLMS($subsys,$i,param) {
-          puts $fout "$p<BR>"
+         set id [lindex [split [lindex $p 1] "()"] 0]
+         if { [info exists UNITS($subsys,$i,$id)] } {
+             puts $fout "$p : $UNITS($subsys,$i,$id)<BR>"
+          } else {
+             puts $fout "$p<BR>"
+          }
         } 
         puts $fout "</TD></TR>"
       } else {
