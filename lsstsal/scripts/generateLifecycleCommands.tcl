@@ -10,7 +10,7 @@ set SAL_LIFECYCLE_COMMANDS "
  <Author>salgenerator</Author>
  <EFDB_Topic>[set SALSubsys]_command_start</EFDB_Topic>
  <Alias>start</Alias>
- <Device>configuration</Device>
+ <Device>SettingsToApply</Device>
  <Property>set</Property>
  <Action>apply</Action>
  <Value></Value>
