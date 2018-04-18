@@ -56,9 +56,8 @@ auto make_array(T array) -> std::function<py::array(typename array_trait<T>::obj
 
 
 
-PYBIND11_PLUGIN(SALPY_SALData){
-       py::module m("SALPY_SALData");
-
+PYBIND11_MODULE(SALPY_SALData,m){
+ 
 
 // INSERT_SAL_PYTHON_DATATYPES
 
@@ -181,9 +180,6 @@ PYBIND11_PLUGIN(SALPY_SALData){
 	m.attr("SAL__SAMPLELOST")	= SAL__SAMPLELOST;
 	m.attr("SAL__SUBSCR_MATCH") 	= SAL__SUBSCR_MATCH;
 	
-
-    return m.ptr();
-
 }
 
 
