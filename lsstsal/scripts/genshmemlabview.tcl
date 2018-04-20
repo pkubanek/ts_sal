@@ -301,10 +301,14 @@ using namespace [set base];
       int status = 0;
       int lpriority = 0;
       int [set idoff] = 0;
+      int ipollusecs = 100;
       int LVClient = 0;
 
       if (argc > 1) \{
          sscanf(argv\[1\], \"%d\", &[set idoff]);
+      \}
+      if (getenv(\"LSST_[string toupper [set base]]_LVPOLL\") != NULL) \{
+         sscanf(getenv(\"LSST_[string toupper [set base]]_LVPOLL\"),\"%d\",&ipollusecs);
       \}
       shutdown_shmem = false;
       int actorIdx = 0;
@@ -350,7 +354,7 @@ using namespace [set base];
         \}
        \}
       \}
-      usleep(100);
+      usleep(ipollusecs);
       \}
       shmdt([set base]_memIO);
       exit(0);
