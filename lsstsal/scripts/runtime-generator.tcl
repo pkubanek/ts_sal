@@ -1,5 +1,8 @@
 #!/usr/bin/tclsh
 
+puts stdout "Removing old idl-templates"
+exec rm -fr idl-templates
+
 source $env(SAL_DIR)/add_system_dictionary.tcl 
 foreach subsys $SYSDIC(systems) {
    catch {

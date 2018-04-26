@@ -31,7 +31,7 @@ set lastfilter r
 
 proc shutdown { } {
 global env
-   catch {exec $env(SAL_WORK_DIR)/MTMount/cpp/src/sacpp_MTMount_stop_commander 1}
+   catch {exec $env(SAL_WORK_DIR)bin/sacpp_MTMount_stop_commander 1}
    after 2000
    exit
 }
@@ -44,7 +44,10 @@ global TARGETS numvisits fin lastfield lastfilter env db1 idx
     if { $n > 4999 } {set n 5}
     set field [lindex $rec $idx(Field_fieldID)]
     if { $field != $lastfield } {
-puts stdout "Field $field"
+     set exptime 15.0
+     set slewtime 5.0
+     puts stdout "Field $field"
+     catch {
       set lastfield $field
       set filter [lindex $rec $idx(filter)]
       set mjd [lindex $rec $idx(expMJD)]
@@ -74,23 +77,24 @@ puts stdout "Field $field"
 ##         after 130000 "simvisits $n"
          set lastfilter $filter
          if { [info exists env(TCSSIM_QUIET)] } {
-            $env(SAL_HOME)/scripts/standardvisit_commands.tcl $az $alt $filter &
+            exec $env(SAL_HOME)/scripts/standardvisit_commands.tcl $az $alt $filter &
          } else {
-            exec gnome-terminal --geometry 130x24 -t "Visit with filter change" -e "$env(SAL_HOME)/scripts/standardvisit_commands.tcl $az $alt $filter" &
+            exec gnome-terminal --geometry 800x300 -t "Visit with filter change" -e "$env(SAL_HOME)/scripts/standardvisit_commands.tcl $az $alt $filter" &
          }
       } else {
          if { [info exists env(TCSSIM_QUIET)] } {
-            $env(SAL_HOME)/scripts/standardvisit_commands.tcl $az $alt &
+            exec $env(SAL_HOME)/scripts/standardvisit_commands.tcl $az $alt &
          } else {
-            exec gnome-terminal --geometry 130x24+30+30 -t "Standard Visit" -e "$env(SAL_HOME)/scripts/standardvisit_commands.tcl $az $alt" &
+            exec gnome-terminal --geometry 800x300 -t "Standard Visit" -e "$env(SAL_HOME)/scripts/standardvisit_commands.tcl $az $alt" &
          }
       }
 ##      after [expr int($slewtime*1000)] {puts stdout "command -> camera imager expose numimages=2 expTime=15 shutter=true guide=true wfs=true"}
       incr n 1
       set lastfilter $filter
-      if { $n < $numvisits } {
-        after [expr int(($exptime+$slewtime+14) * 1000)] "simvisits $n"
-      }
+     }
+     if { $n < $numvisits } {
+       after [expr int(($exptime+$slewtime+20) * 1000)] "simvisits $n"
+     }
     } else {
       after 10 "simvisits $n"
     }

@@ -60,20 +60,23 @@ global SAL_WORK_DIR EVENT_ENUMS
    while { [gets $fin rec] > -1 } {
       set it [string trim $rec "\{\}"]
       if { [lindex $it 0] == "struct" } {
-         set topic [string range [lindex $it 1] 9 end]
+         set ttype [lindex [split [lindex $it 1] "_"] 0]
+         if { $ttype == "command" || $ttype == "logevent" } {
+            set topic [join [lrange [split [lindex $it 1] "_"] 1 end] "_"]
+         } else {
+            set topic [lindex $it 1]
+         }
       }
-      if { [lindex $it 0] != "const" } {
-       if { [lsearch "ack\;" [lindex $it 1]] > -1 } {
+      if { [lsearch "ack\;" [lindex $it 1]] > -1 } {
          puts $fout "      long	cmdSeqNum;"
-       }
-       if { [lsearch "device\; property\; action\; value\;" [lindex $it 1]] < 0 } {
+      }
+      if { [lsearch "device\; property\; action\; value\;" [lindex $it 1]] < 0 } {
          set name [string trim [lindex $it 1] ";"]
          if { [info exists EVENT_ENUMS($topic,$name)] } {
            puts $fout "$rec	// enum : $EVENT_ENUMS($topic,$name)"
          } else {
            puts $fout $rec
          }
-       }
       }
    }
    close $fin
@@ -298,10 +301,14 @@ using namespace [set base];
       int status = 0;
       int lpriority = 0;
       int [set idoff] = 0;
+      int ipollusecs = 100;
       int LVClient = 0;
 
       if (argc > 1) \{
          sscanf(argv\[1\], \"%d\", &[set idoff]);
+      \}
+      if (getenv(\"LSST_[string toupper [set base]]_LVPOLL\") != NULL) \{
+         sscanf(getenv(\"LSST_[string toupper [set base]]_LVPOLL\"),\"%d\",&ipollusecs);
       \}
       shutdown_shmem = false;
       int actorIdx = 0;
@@ -347,7 +354,7 @@ using namespace [set base];
         \}
        \}
       \}
-      usleep(100);
+      usleep(ipollusecs);
       \}
       shmdt([set base]_memIO);
       exit(0);

@@ -10,8 +10,7 @@ to subsystem communications. Primary support is for C++ and Java.
 
 Python bindings are also included which wrap the SAL API.
 
-The recommended development platform is CentOS 7.0 (x86_64 6t4-bit), 
-and a compatible JDK is included in the kit.
+The recommended development platform is CentOS 7.4 (x86_64 64-bit)
 
 To get started, unpack the salSDK archive in the /opt directory
 of your system disk and read the User Guide from the /opt/doc dirfectory.

@@ -132,7 +132,7 @@ while True:
                 set cnst [lindex [split $$e :] 1]
                 foreach id [split $cnst ,] {
                    set sid [string trim $id " "]
-                   puts $fcmd "    if(event.[set vname] == [set alias]_[set sid]): print(\"[set vname] = [set sid]\")"
+###                   puts $fcmd "    if(event.[set vname] == [set alias]_[set sid]): print(\"[set vname] = [set sid]\")"
                 }
           }
           set enumdone($alias) 1

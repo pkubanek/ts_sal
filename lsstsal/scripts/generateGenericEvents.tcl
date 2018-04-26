@@ -1,9 +1,9 @@
 set SAL_GENERIC_EVENTS "
 <?xml version=\"1.0\" encoding=\"UTF-8\"?>
-<?xml-stylesheet type=\"text/xsl\" href=\"http://lsst-sal.tuc.noao.edu/schema/SALEventSet.xsl\"?>
+<?xml-stylesheet type=\"text/xsl\" href=\"http://project.lsst.org/ts/sal_objects/schema/SALEventSet.xsl\"?>
 <SALEventSet xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"
-	xsi:noNamespaceSchemaLocation=\"http://lsst-sal.tuc.noao.edu/schema/SALEventSet.xsd\">
-
+	xsi:noNamespaceSchemaLocation=\"http://project.lsst.org/ts/sal_objects/schema/SALEventSet.xsd\">
+<Enumeration>DisabledState,EnabledState,FaultState,OfflineState,StandbyState</Enumeration>
 <SALEvent>
  <Subsystem>[set SALSubsys]</Subsystem>
  <Version>$SALVERSION</Version>
@@ -14,7 +14,7 @@ set SAL_GENERIC_EVENTS "
  <Property>settings</Property>
  <Action>list</Action>
  <Value></Value>
- <Explanation>http://sal.lsst.org/SAL/Events/[set SALSubsys]_logevent_SettingVersions.html</Explanation>
+ <Explanation>http://project.lsst.org/ts/sal_objects/help/[set SALSubsys]_logevent_SettingVersions.html</Explanation>
     <item>
       <EFDB_Name>recommendedSettingVersion</EFDB_Name>
       <Description>Comma delimited set of available Setting Sets</Description>
@@ -34,7 +34,7 @@ set SAL_GENERIC_EVENTS "
  <Property>state</Property>
  <Action></Action>
  <Value></Value>
- <Explanation>http://sal.lsst.org/SAL/Events/[set SALSubsys]_logevent_SummaryState.html</Explanation>
+ <Explanation>http://project.lsst.org/ts/sal_objects/help/[set SALSubsys]_logevent_SummaryState.html</Explanation>
     <item>
       <EFDB_Name>SummaryStateValue</EFDB_Name>
       <Description>Enumerated state id</Description>
@@ -55,7 +55,7 @@ set SAL_GENERIC_EVENTS "
  <Property>error</Property>
  <Action></Action>
  <Value></Value>
- <Explanation>http://sal.lsst.org/SAL/Events/[set SALSubsys]_logevent_ErrorCode.html</Explanation>
+ <Explanation>http://project.lsst.org/ts/sal_objects/help/[set SALSubsys]_logevent_ErrorCode.html</Explanation>
     <item>
       <EFDB_Name>errorCode</EFDB_Name>
       <Description>Error code value</Description>
@@ -75,7 +75,7 @@ set SAL_GENERIC_EVENTS "
  <Property>state</Property>
  <Action></Action>
  <Value></Value>
- <Explanation>http://sal.lsst.org/SAL/Events/[set SALSubsys]_logevent_AppliedSettingsMatchStart.html</Explanation>
+ <Explanation>http://project.lsst.org/ts/sal_objects/help/[set SALSubsys]_logevent_AppliedSettingsMatchStart.html</Explanation>
     <item>
       <EFDB_Name>appliedSettingsMatchStartIsTrue</EFDB_Name>
       <Description>Confirmation that required settings have been achieved</Description>

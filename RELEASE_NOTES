@@ -1,10 +1,43 @@
-Special feature branch for use in Pathfinder
-
-
-This is release 3.5.2 of the SAL SDK (Mar 16th, 2017)
-
+This is release 3.7.0 of the SAL SDK (April 10th, 2018)
 
 Please refer to the SAL User Guide for installation instructions.
+Changes for 3.7.0.
+
+Added support for Enumerations, either per item , or globally
+(code support in C++,Java,Python,LabVIEW)
+
+Bug fixes for Java code generation.
+
+Add support for pybind11 based python wrappers. Boost::Python support
+is now deprecated and will be removed in version 4.0.0
+
+Add support for LargeFileObject announcment events
+
+Update SAL User Guide
+
+Add support for automatic creation of EFD writer processes.
+
+Add script to automate updating of https://project.lsst.org/ts/sal_objects website
+
+Fix LabVIEW Event handling
+
+Add new CSC's for headerService's, ecc, summitFacility, atcs, vms
+
+Add monitorCommand method for LabVIEW API
+
+Upgrade Event Junit tests
+
+Bug fixes for LabVIEW Monitor process
+
+Add minimal Telemetry generation to  XML parser
+
+Default to adding generic Commands and Events in XML parser if not preset in 
+incoming XML files (temporary exception for m1m3 to use non-compliant generic command set)
+
+
+
+Release 3.6 deprecated - do not use
+
 
 Changes for 3.5.2
 

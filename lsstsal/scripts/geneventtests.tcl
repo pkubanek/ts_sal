@@ -48,8 +48,8 @@ int main (int argc, char *argv\[\])
 
 #ifdef SAL_SUBSYSTEM_ID_IS_KEYED
   int [set subsys]ID = 1;
-  if (getenv(\"LSST_[set subsys]_ID\") != NULL) \{
-     sscanf(getenv(\"LSST_[set subsys]_ID\"),\"%d\",&[set subsys]ID);
+  if (getenv(\"LSST_[string toupper [set subsys]]_ID\") != NULL) \{
+     sscanf(getenv(\"LSST_[string toupper [set subsys]]_ID\"),\"%d\",&[set subsys]ID);
   \} 
   SAL_[set subsys] mgr = SAL_[set subsys]([set subsys]ID);
 #else
@@ -114,8 +114,8 @@ int test_[set subsys]_[set alias]_Log()
   [set subsys]_logevent_[set alias]C SALInstance;
 #ifdef SAL_SUBSYSTEM_ID_IS_KEYED
   int [set subsys]ID = 1;
-  if (getenv(\"LSST_[set subsys]_ID\") != NULL) \{
-     sscanf(getenv(\"LSST_[set subsys]_ID\"),\"%d\",&[set subsys]ID);
+  if (getenv(\"LSST_[string toupper [set subsys]]_ID\") != NULL) \{
+     sscanf(getenv(\"LSST_[string toupper [set subsys]]_ID\"),\"%d\",&[set subsys]ID);
   \} 
   SAL_[set subsys] mgr = SAL_[set subsys]([set subsys]ID);
 #else

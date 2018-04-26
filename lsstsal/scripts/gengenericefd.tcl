@@ -101,6 +101,11 @@ global ACTORTYPE SAL_WORK_DIR BLACKLIST
       exit(1);
   \}
 
+  char *efdb_log = getenv(\"LSST_EFD_SYSLOG\");
+  if (efdb_log == NULL) \{
+     isyslog = 0;
+  \}
+
   if (mysql_real_connect(con, efdb_host, \"efduser\" , \"lssttest\", \"EFD\", 0 , NULL, 0) == NULL) \{
       fprintf(stderr,\"MYSQL Failed to connect %s\\n\",mysql_error(con));
       exit(1);
@@ -146,9 +151,14 @@ global ACTORTYPE SAL_WORK_DIR BLACKLIST
          puts $fout "
           [writetoefd [set base]_[set topic]]
           mstatus = mysql_query(con,thequery);
-          cout << thequery << endl;
+//          cout << thequery << endl;
           if (mstatus) \{
-             fprintf(stderr,\"MYSQL INSERT ERROR : %d\\n\",mstatus);
+             fprintf(stderr,\"MYSQL INSERT ERROR : %d : %s\\n\",mstatus,thequery);
+          \}
+          if (myData_[set topic]\[0\].private_origin > 0) \{
+            if (isyslog > 0) \{
+               syslog(NULL,\"%s\",thequery);
+            \}
           \}"
          }
          puts $fout "       \}"
@@ -162,9 +172,9 @@ global ACTORTYPE SAL_WORK_DIR BLACKLIST
           sprintf(thequery,\"INSERT INTO [set base]_commandLog VALUES (NOW(6),'%s', %lf, %d, $alias, 0, 0 )\" , 
                     myData_[set topic]\[0\].private_revCode.m_ptr, myData_[set topic]\[0\].private_sndStamp, myData_[set topic]\[0\].private_seqNum);
           mstatus = mysql_query(con,thequery);
-          cout << thequery << endl;
+//          cout << thequery << endl;
           if (mstatus) \{
-             fprintf(stderr,\"MYSQL INSERT ERROR : %d\\n\",mstatus);
+             fprintf(stderr,\"MYSQL INSERT ERROR : %d : %s\\n\",mstatus,thequery);
           \}
        \}"
           }
@@ -176,9 +186,9 @@ global ACTORTYPE SAL_WORK_DIR BLACKLIST
           sprintf(thequery,\"INSERT INTO [set base]_commandLog VALUES (NOW(6), '%s', %lf, %d, $alias, %d, %d )\" , 
                     myData_[set topic]\[0\].private_revCode.m_ptr, myData_[set topic]\[0\].private_sndStamp, myData_[set topic]\[0\].private_seqNum,myData_[set topic]\[0\].ack,myData_[set topic]\[0\].error);
           mstatus = mysql_query(con,thequery);
-          cout << thequery << endl;
+//          cout << thequery << endl;
           if (mstatus) \{
-             fprintf(stderr,\"MYSQL INSERT ERROR : %d\\n\",mstatus);
+             fprintf(stderr,\"MYSQL INSERT ERROR : %d : %s\\n\",mstatus,thequery);
           \}
        \}"
          }
@@ -199,7 +209,7 @@ proc checkLFO { fout topic } {
      puts $fout "
        if (status == SAL__OK && numsamp > 0) \{
            printf(\"EFD TBD : Large File Object Announcement Event $topic received\\n\");
-           sprintf(thequery,\"process_LFO_logevent  %d '%s' '%s' '%s' '%s' %f\"  ,  myData_[set topic]\[0\].Byte_Size , myData_[set topic]\[0\].Checksum.m_ptr , myData_[set topic]\[0\].Generator.m_ptr , myData_[set topic]\[0\].Mime.m_ptr , myData_[set topic]\[0\].URL.m_ptr , myData_[set topic]\[0\].Version );
+           sprintf(thequery,\"process_LFO_logevent  %d '%s' '%s' '%s' '%s' %f '%s'\"  ,  myData_[set topic]\[0\].Byte_Size , myData_[set topic]\[0\].Checksum.m_ptr , myData_[set topic]\[0\].Generator.m_ptr , myData_[set topic]\[0\].Mime.m_ptr , myData_[set topic]\[0\].URL.m_ptr , myData_[set topic]\[0\].Version, myData_[set topic]\[0\].ID.m_ptr);
           mstatus = system(thequery);
           if (mstatus < 0) \{
              fprintf(stderr,\"LFO Processor ERROR : %d\\n\",mstatus);
@@ -240,6 +250,7 @@ global SAL_WORK_DIR SYSDIC
 #include <iostream>
 #include <stdlib.h>
 #include <mysql.h>
+#include <syslog.h>
 #include \"SAL_[set base].h\"
 #include \"SAL_actors.h\"
 #include \"ccpp_sal_[set base].h\"
@@ -265,6 +276,7 @@ int test_[set base]_telemetry_efdwriter()
   os_time delay_1ms = \{ 0, 1000000 \};
   int numsamp = 0;
   int actorIdx = 0;
+  int isyslog = 1;
   int mstatus = 0;
   int status = 0;"
   genericefdfragment $fout $base telemetry subscriber
@@ -308,6 +320,7 @@ global SAL_WORK_DIR SYSDIC
 #include <iostream>
 #include <stdlib.h>
 #include <mysql.h>
+#include <syslog.h>
 #include \"SAL_[set base].h\"
 #include \"SAL_actors.h\"
 #include \"ccpp_sal_[set base].h\"
@@ -334,6 +347,7 @@ int test_[set base]_event_efdwriter()
   os_time delay_1ms = \{ 0, 1000000 \};
   int numsamp = 0;
   int actorIdx = 0;
+  int isyslog = 1;
   int mstatus = 0;
   int status=0;"
   genericefdfragment $fout $base logevent subscriber
@@ -376,6 +390,7 @@ global SAL_WORK_DIR SYSDIC
 #include <iostream>
 #include <stdlib.h>
 #include <mysql.h>
+#include <syslog.h>
 #include \"SAL_[set base].h\"
 #include \"SAL_actors.h\"
 #include \"ccpp_sal_[set base].h\"
@@ -401,6 +416,7 @@ int test_[set base]_command_efdwriter()
   os_time delay_1ms = \{ 0, 1000000 \};
   int numsamp = 0;
   int actorIdx = 0;
+  int isyslog = 1;
   int mstatus = 0;
   int status=0;"
   genericefdfragment $fout $base command subscriber
@@ -499,6 +515,7 @@ CREATE TABLE [set subsys]_logeventLFO (
   Version varchar(32),
   Checksum char(32),
   Mime_Type varchar(64),
+  ID varchar(32),
   Byte_Size long,
   PRIMARY KEY (date_time)
 );
@@ -525,7 +542,7 @@ proc genefdwriters { base } {
 global SQLREC SAL_WORK_DIR
    set SQLREC([set base]_ackcmd)  "char.private_revCode,double.private_sndStamp,double.private_rcvStamp,int.private_seqNum,int.private_origin,int.private_host,int.ack,int.error,char.result"
    set SQLREC([set base]_commandLog)  "char.private_revCode,double.private_sndStamp,int.private_seqNum,char.name,int.ack,int.error"
-   set SQLREC([set base]_logeventLFO)  "char.private_revCode,double.private_sndStamp,int.private_seqNum,char.alias,char.URL,char.Generator,char.Version,char.Checksum,char.Mime_Type,int.Byte_size"
+   set SQLREC([set base]_logeventLFO)  "char.private_revCode,double.private_sndStamp,int.private_seqNum,char.alias,char.URL,char.Generator,char.Version,char.Checksum,char.Mime_Type,char.ID,int.Byte_size"
    makesummarytables  $base
    gentelemetryreader $base
    gencommandreader   $base
