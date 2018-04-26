@@ -24,16 +24,16 @@ proc cmdok { result } {
 
 set az  [lindex $argv 0]
 set alt [lindex $argv 1]
-set cameraCommander_initImage   $env(SAL_WORK_DIR)/camera/cpp/src/sacpp_camera_initImage_commander
-set cameraCommander_setFilter   $env(SAL_WORK_DIR)/camera/cpp/src/sacpp_camera_setFilter_commander
-set cameraCommander_takeImages  $env(SAL_WORK_DIR)/camera/cpp/src/sacpp_camera_takeImages_commander
-set domeCommander     		$env(SAL_WORK_DIR)/dome/cpp/src/sacpp_dome_Move_commander
-set domeCrawlCommander     	$env(SAL_WORK_DIR)/dome/cpp/src/sacpp_dome_Crawl_commander
-set hexapodCommander1 		$env(SAL_WORK_DIR)/hexapod/cpp/src/sacpp_hexapod_move_commander
-set hexapodCommander2 		$env(SAL_WORK_DIR)/hexapod/cpp/src/sacpp_hexapod_move2_commander
-set m2msCommander     		$env(SAL_WORK_DIR)/m2ms/cpp/src/sacpp_m2ms_ApplyBendingMode_commander
-set startIntegration 		$env(SAL_WORK_DIR)/camera/cpp/src/sacpp_camera_startIntegration_send
-set startReadout		$env(SAL_WORK_DIR)/camera/cpp/src/sacpp_camera_startReadout_send
+set cameraCommander_initImage   $env(SAL_WORK_DIR)/bin/sacpp_camera_initImage_commander
+set cameraCommander_setFilter   $env(SAL_WORK_DIR)/bin/sacpp_camera_setFilter_commander
+set cameraCommander_takeImages  $env(SAL_WORK_DIR)/bin/sacpp_camera_takeImages_commander
+set domeCommander     		$env(SAL_WORK_DIR)/bin/sacpp_dome_Move_commander
+set domeCrawlCommander     	$env(SAL_WORK_DIR)/bin/sacpp_dome_Crawl_commander
+set hexapodCommander 		$env(SAL_WORK_DIR)/bin/sacpp_hexapod_positionSet_commander
+set m2msCommander     		$env(SAL_WORK_DIR)/bin/sacpp_m2ms_ApplyBendingMode_commander
+set hexapodCommander_move 	$env(SAL_WORK_DIR)/bin/sacpp_hexapod_move_commander
+set startIntegration 		$env(SAL_WORK_DIR)/bin/sacpp_camera_startIntegration_send
+set startReadout		$env(SAL_WORK_DIR)/bin/sacpp_camera_startReadout_send
 
 puts stdout "----- Start of visit -----------------------------------------"
 if { $argc > 2 } {
@@ -64,25 +64,24 @@ set bx6 [lindex $m2hex 5]
 set k [expr 15.04106858 * cos(-30.7494/180.*3.14159365) / 86400.]
 set rotrate [expr $k * cos($az) / cos($alt)]
 
-###puts stdout "Moving dome : target position set altaz azimuth=$az elevation=$alt"
-###set status [domeTrack $az $alt]
-###set status [domeCrawl $azvel $altvel]
-###puts stdout "Adjusting camera hexapod : actuators position absolute coords x=$ax1 y=$ax2 z=$ax3 v=$ax4 w=$ax5 z=$ax6"
-###set status [cameraHexapodMove $alt]
-###puts stdout "Adjusting m2 hexapod : actuators position absolute coords x=$bx1 y=$bx2 z=$bx3 v=$bx4 w=$bx5 z=$bx6"
-###set status [m2HexapodMove $alt]
+puts stdout "Moving dome : target position set altaz azimuth=$az elevation=$alt"
 
 set status [catch {exec $domeCommander $az $alt} result]
 puts stdout [cmdok $result]
+###set status [domeCrawl $azvel $altvel]
 
 ###puts stdout "Moving m2   : target position azimuth=$az elevation=$alt"
 ###set status [catch {exec $m2msCommander 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0} result]
 ###puts stdout [cmdok $result]
 
-set status [catch {exec $hexapodCommander1 $ax1 $ax2 $ax3 $ax4 $ax5 $ax6 0} result]
+puts stdout "Adjusting camera hexapod : actuators position absolute coords x=$ax1 y=$ax2 z=$ax3 v=$ax4 w=$ax5 z=$ax6"
+set status [catch {exec /usr/bin/env LSST_HEXAPOD_ID=1 $hexapodCommander $ax1 $ax2 $ax3 $ax4 $ax5 $ax6 1} result]
 puts stdout [cmdok $result]
-set status [catch {exec $hexapodCommander2 $bx1 $bx2 $bx3 $bx4 $bx5 $bx6 0} result]
+puts stdout "Adjusting m2 hexapod : actuators position absolute coords x=$bx1 y=$bx2 z=$bx3 v=$bx4 w=$bx5 z=$bx6"
+set status [catch {exec /usr/bin/env LSST_HEXAPOD_ID=2 $hexapodCommander $bx1 $bx2 $bx3 $bx4 $bx5 $bx6 1} result]
 puts stdout [cmdok $result]
+set status [catch {exec /usr/bin/env LSST_HEXAPOD_ID=1 $hexapodCommander_move 1} result]
+set status [catch {exec /usr/bin/env LSST_HEXAPOD_ID=2 $hexapodCommander_move 1} result]
 
 #puts stdout "Sending guide star ROI's : guiders roi set position xpos=1,1,1,1,1,1,1,1 ypos=2,2,2,2,2,2,2,2 roiSize=32,32,32,32,32,32,32,32"
 #set status [catch {exec $cameraCommander   1 guiders roi set position "xpos=1,1,1,1,1,1,1,1 ypos=2,2,2,2,2,2,2,2 roiSize=32,32,32,32,32,32,32,32"} result]

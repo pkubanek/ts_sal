@@ -5,7 +5,7 @@ PYTHONVER     = $(PYTHON_BUILD_VERSION)
 CC            = gcc
 CXX           = g++
 CPPFLAGS      = $(PICFLAGS) $(GENFLAGS) $(SAL_CPPFLAGS) -std=c++11 -D_REENTRANT -Wall -I"." -I"$(OSPL_HOME)/examples/include" -I"$(OSPL_HOME)/examples" -I"$(OSPL_HOME)/include" -I"$(OSPL_HOME)/include/sys" -I"$(OSPL_HOME)/include/dcps/C++/SACPP" -I"$(PYTHON_BUILD_LOCATION)/include/python$(PYTHONVER)" -I"$(SAL_HOME)/include" -I"$(PYTHON_BUILD_LOCATION)/include/python$(PYTHONVER)" -I../../../SALSubsys/cpp/src -I../../../SALSubsys/cpp -DSAL_BUILD_FOR_PYTHON #-DSAL_SUBSYSTEM_ID_IS_KEYED
-LD            = $(CXX) $(CCFLAGS) $(CPPFLAGS) -Wwrite-strings
+LD            = $(CXX) $(CCFLAGS) $(CPPFLAGS) -Wno-write-strings
 AR            = ar
 PICFLAGS      = -fPIC
 OBJEXT        = .o

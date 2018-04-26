@@ -101,8 +101,8 @@ global ACTORTYPE SAL_WORK_DIR BLACKLIST
       exit(1);
   \}
 
-  char *efdb_host = getenv(\"LSST_EFD_SYSLOG\");
-  if (efdb_host == NULL) \{
+  char *efdb_log = getenv(\"LSST_EFD_SYSLOG\");
+  if (efdb_log == NULL) \{
      isyslog = 0;
   \}
 

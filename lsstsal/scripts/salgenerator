@@ -136,10 +136,14 @@ if { $OPTIONS(validate) } {
       }
       catch {
          set gchk [exec grep "_command_start<" [set i]_Commands.xml]
-         set SYSDIC($i,hasGenerics) 1
+         set SYSDIC($i,hasGenericCommands) 1
       }
-      if { [info exists SYSDIC($i,hasGenerics)] } {
-        stdlog "Generic Commands/Events included in XML"
+      catch {
+         set gchk [exec grep "_logevent_SummaryState<" [set i]_Events.xml]
+         set SYSDIC($i,hasGenericEvents) 1
+      }
+      if { [info exists SYSDIC($i,hasGenericCommands)] } {
+        stdlog "Generic Commands included in XML"
       } else {
        if { $t == "Commands" } {
         stdlog "Add lifecycle commands"
@@ -150,6 +154,10 @@ if { $OPTIONS(validate) } {
         close $fxml
         parseXMLtoidl /tmp/lifecycle.xml
        }
+      }
+      if { [info exists SYSDIC($i,hasGenericEvents)] } {
+        stdlog "Generic Events included in XML"
+      } else {
        if { $t == "Events" } {
         stdlog "Add generic statemachine events"
         set SALSubsys $i

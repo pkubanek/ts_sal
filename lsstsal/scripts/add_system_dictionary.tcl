@@ -33,7 +33,8 @@ proc calcshmid { subsys } {
 #  WARNING, m1m3 is still using the Start,Stop etc variant for the lifecycle 
 #           commands, this will change to match the other CSC's eventually
 #
-set SYSDIC(m1m3,hasGenerics) 1
+set SYSDIC(m1m3,hasGenericCommands) 1
+set SYSDIC(m1m3,hasGenericEvents) 1
 #
 #
 #set SYSDIC(processingcluster,hasGenerics) 1
@@ -44,14 +45,19 @@ set SYSDIC(m1m3,hasGenerics) 1
 #set SYSDIC(tcsWEP,hasGenerics) 1
 #set SYSDIC(vms,hasGenerics) 1
 
-set SYSDIC(systems) "atcamera atHeaderService accl archiver atcs atMonochromator atScheduler atWhiteLight auxscope calibrationCBP calibrationMonochromator calibrationSpectrometer calibrationElectrometer camera 
-catchuparchiver comcam headerService dome domeADB domeAPS domeLouvers domeLWS domeMONCS domeTHCS eec efd environment EXA hexapod lasercal m1m3 m2ms MTMount network ocs operations power processingcluster rotator sedSpectrometer sequencer scheduler seeing skycam summitFacility system tcs tcsAOCS tcsOfc tcsWEP vms"
+set SYSDIC(systems) "atcamera atHeaderService accl archiver atcs atMonochromator atScheduler atWhiteLight calibrationCBP calibrationMonochromator calibrationSpectrometer camera 
+catchuparchiver comcam headerService dome domeADB domeAPS domeLouvers domeLWS domeMONCS domeTHCS eec efd electrometer environment EXA hexapod lasercal m1m3 m2ms MTMount network ocs operations power processingcluster rotator sedSpectrometer sequencer scheduler seeing skycam summitFacility system tcs tcsOfc tcsWEP vms"
 
 foreach s $SYSDIC(systems) {set SYSDIC($s,type) system}
 
 set SYSDIC(datatypes) "byte short int long float string int64 double ubyte ushort uint ulong"
-set SYSDIC(hexapod,keyedID) 1
 
+
+set SYSDIC(electrometer,keyedID) 1
+set SYSDIC(electrometer,1) "calibrationElectrometer"
+
+
+set SYSDIC(hexapod,keyedID) 1
 set SYSDIC(hexapod,1) "cameraHexapod"
 set SYSDIC(hexapod,2) "m2msHexapod"
 

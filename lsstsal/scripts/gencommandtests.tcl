@@ -49,8 +49,8 @@ int main (int argc, char *argv\[\])
    if { [info exists SYSDIC($subsys,keyedID)] } {
       puts $fcmd "
   int [set subsys]ID = 1;
-  if (getenv(\"LSST_[set subsys]_ID\") != NULL) \{
-     sscanf(getenv(\"LSST_[set subsys]_ID\"),\"%d\",&[set subsys]ID);
+  if (getenv(\"LSST_[string toupper [set subsys]]_ID\") != NULL) \{
+     sscanf(getenv(\"LSST_[string toupper [set subsys]]_ID\"),\"%d\",&[set subsys]ID);
   \} 
   SAL_[set subsys] mgr = SAL_[set subsys]([set subsys]ID);"
    } else {
@@ -120,8 +120,8 @@ int test_[set subsys]_[set alias]_controller()
    if { [info exists SYSDIC($subsys,keyedID)] } {
       puts $fcmd "
   int [set subsys]ID = 1;
-  if (getenv(\"LSST_[set subsys]_ID\") != NULL) \{
-     sscanf(getenv(\"LSST_[set subsys]_ID\"),\"%d\",&[set subsys]ID);
+  if (getenv(\"LSST_[string toupper [set subsys]]_ID\") != NULL) \{
+     sscanf(getenv(\"LSST_[string toupper [set subsys]]_ID\"),\"%d\",&[set subsys]ID);
   \} 
   SAL_[set subsys] mgr = SAL_[set subsys]([set subsys]ID);"
    } else {

@@ -3,7 +3,7 @@ set SAL_GENERIC_EVENTS "
 <?xml-stylesheet type=\"text/xsl\" href=\"http://project.lsst.org/ts/sal_objects/schema/SALEventSet.xsl\"?>
 <SALEventSet xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"
 	xsi:noNamespaceSchemaLocation=\"http://project.lsst.org/ts/sal_objects/schema/SALEventSet.xsd\">
-
+<Enumeration>DisabledState,EnabledState,FaultState,OfflineState,StandbyState</Enumeration>
 <SALEvent>
  <Subsystem>[set SALSubsys]</Subsystem>
  <Version>$SALVERSION</Version>
