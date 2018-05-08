@@ -190,6 +190,8 @@ global SAL_WORK_DIR
       incr idx 1 
    }
    close $fact
+   set tuneableQos true
+   if { $base == "m1m3" } {set tuneableQos false}
    puts $fout "
 void SAL_SALData::initSalActors ()
 \{
@@ -205,7 +207,7 @@ void SAL_SALData::initSalActors ()
       sal\[i\].maxSamples = LENGTH_UNLIMITED;
       sal\[i\].sampleAge = 100.0;
       sal\[i\].historyDepth = 10000;
-      sal\[i\].tuneableQos = true;
+      sal\[i\].tuneableQos = [set tuneableQos];
     \}
 "
    set idx 0
