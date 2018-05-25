@@ -327,7 +327,7 @@ puts $fout "
 	   SALWriter.register_instance(data);
 	   status = SALWriter.write(data, dataHandle);
 	   checkStatus(status, \"[set name]DataWriter.write\");
-           SALWriter.dispose(data, dataHandle);
+           SALWriter.dispose(data, dataHandle);"
         } else { 
           puts $fout "
            long dataHandle = HANDLE_NIL.value;
