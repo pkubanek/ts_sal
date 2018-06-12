@@ -45,17 +45,17 @@ set SYSDIC(m1m3,hasGenericEvents) 1
 #set SYSDIC(tcsWEP,hasGenerics) 1
 #set SYSDIC(vms,hasGenerics) 1
 
-set SYSDIC(systems) "atArchiver atcamera atHeaderService accl archiver atcs atMonochromator atScheduler atWhiteLight calibrationCBP calibrationMonochromator calibrationSpectrometer camera 
-catchuparchiver comcam headerService dome domeADB domeAPS domeLouvers domeLWS domeMONCS domeTHCS eec efd electrometer environment EXA hexapod lasercal m1m3 m2ms MTMount network ocs operations power promptProcessing rotator sedSpectrometer sequencer scheduler seeing skycam summitFacility system tcs tcsOfc tcsWEP vms"
+set SYSDIC(systems) "atArchiver atcamera atHeaderService accl archiver atcs atMonochromator atScheduler atWhiteLight calibrationCBP calibrationElectrometer calibrationMonochromator calibrationSpectrometer camera 
+catchuparchiver comcam headerService dome domeADB domeAPS domeLouvers domeLWS domeMONCS domeTHCS eec efd environment EXA hexapod lasercal m1m3 m2ms MTMount network ocs operations power promptProcessing PTG rotator sedSpectrometer sequencer scheduler seeing skycam summitFacility system tcs tcsOfc tcsWEP vms"
 
 foreach s $SYSDIC(systems) {set SYSDIC($s,type) system}
 
 set SYSDIC(datatypes) "byte short int long float string int64 double ubyte ushort uint ulong"
 
 
-set SYSDIC(electrometer,keyedID) 1
-set SYSDIC(electrometer,1) "calibrationElectrometer"
-
+#set SYSDIC(calibrationElectrometer,keyedID) 1
+#set SYSDIC(calibrationElectrometer,1) "mtElectrometer"
+#set SYSDIC(calibrationElectrometer,2) "atElectrometer"
 
 set SYSDIC(hexapod,keyedID) 1
 set SYSDIC(hexapod,1) "cameraHexapod"
