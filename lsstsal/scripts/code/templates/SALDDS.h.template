@@ -14,7 +14,6 @@
   #include "SAL_defines.h"
   #include "ccpp_dds_dcps.h"
 // INSERT TYPE INCLUDES
-  #include "CheckStatus.h"
   #include "SAL_SALDataC.h"
 
   using namespace std;
@@ -24,6 +23,17 @@
   #define _SAL_SALActorMGR_
   #define SAL__ACTORS_MAXCOUNT	128
   #define SAL__ACTORS_NAMESIZE	128
+
+/* Array to hold the names for all ReturnCodes. */
+  static string RetCodeName[13] = 
+  {
+	    "DDS_RETCODE_OK", "DDS_RETCODE_ERROR", "DDS_RETCODE_UNSUPPORTED", 
+	    "DDS_RETCODE_BAD_PARAMETER", "DDS_RETCODE_PRECONDITION_NOT_MET", 
+	    "DDS_RETCODE_OUT_OF_RESOURCES", "DDS_RETCODE_NOT_ENABLED", 
+	    "DDS_RETCODE_IMMUTABLE_POLICY", "DDS_RETCODE_INCONSISTENT_POLICY", 
+	    "DDS_RETCODE_ALREADY_DELETED", "DDS_RETCODE_TIMEOUT", "DDS_RETCODE_NO_DATA",
+	    "DDS_RETCODE_ILLEGAL_OPERATION"
+  };
 
 
   struct salActor {
@@ -147,10 +157,17 @@
 //      salReturn putSample(SALData::SALTopic data);
 //      salReturn getSample(SALData::SALTopicSeq data);
 
+      string getErrorName(DDS::ReturnCode_t status);
+      void checkStatus(DDS::ReturnCode_t status, const char *info);
+      void checkHandle(void *handle, string info);
+
+
       double getCurrentTime();
       double getRcvdTime();
       void setTuneableQos(char *topicName);
       void setDefaultQos(char *topicName);
+
+
       salReturn getResponse(SALData::ackcmdSeq data);
       void salShutdown();
 #ifdef SAL_SUBSYSTEM_ID_IS_KEYED

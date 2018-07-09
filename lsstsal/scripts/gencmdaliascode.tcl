@@ -592,6 +592,7 @@ global CMD_ALIASES CMDS
         .def( \"acceptCommand_[set i]\",      &SAL_SALData::acceptCommand_[set i] )
         .def( \"ackCommand_[set i]\",         &SAL_SALData::ackCommand_[set i] )
         .def( \"waitForCompletion_[set i]\",  &SAL_SALData::waitForCompletion_[set i] )
+        .def( \"getResponse_[set i]\",        &SAL_SALData::getResponse_[set i] )
       "
     } else {
       stdlog "Alias $i has no parameters - uses standard [set subsys]_command"

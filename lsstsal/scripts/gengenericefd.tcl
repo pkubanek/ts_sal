@@ -57,17 +57,17 @@ global SQLREC TYPEFORMAT
       } 
 ###puts stdout "$i $type $name $isarray"
       if { $isarray == "" } {
-              set value "[set ldata]\[0\].[set name]"
+              set value "[set ldata]\[iloop\].[set name]"
               set vform $TYPEFORMAT($type)
               if { $type == "char" } {
                  set vform "'$TYPEFORMAT($type)'"
               }
       } else {
-             set value "[set ldata]\[0\].[set name]\[0\]"
+             set value "[set ldata]\[iloop\].[set name]\[0\]"
              set vform "$TYPEFORMAT($type)"
              set j 1
              while { $j <= [expr $isarray -1] } {
-                set value "$value,[set ldata]\[0\].[set name]\[$j\]"
+                set value "$value,[set ldata]\[iloop\].[set name]\[$j\]"
                 set vform "$vform, $TYPEFORMAT($type)"
                 incr j 1
              }
@@ -83,6 +83,65 @@ global SQLREC TYPEFORMAT
 }
 
 
+proc readfromefd { topic irow } {
+global SQLREC TYPEFORMAT
+  set flds [split $SQLREC($topic) ,]
+  set record "sscanf(row\[irow-1\],\""
+  set rformat ""
+  set rvars ""
+  set ldata "myData_[join [lrange [split $topic _] 1 end] _]"
+  while { [llength $flds] != 0 } {
+      set i [lindex $flds 0]
+      set flds [lrange $flds 1 end]
+      set type [lindex [split $i .] 0]
+      set name [lindex [split $i .] 1]
+      set isarray [lindex [split $i .] 2]
+      if { $type == "char" } {
+             set name "[set name].m_ptr"
+             set isarray ""
+      } 
+###puts stdout "$i $type $name $isarray"
+      if { $isarray == "" } {
+              set value "[set ldata]->[set name]"
+              set vform $TYPEFORMAT($type)
+              if { $type == "char" } {
+                 set vform "'$TYPEFORMAT($type)'"
+              }
+      } else {
+             set value "[set ldata]->[set name]\[0\]"
+             set vform "$TYPEFORMAT($type)"
+             set j 1
+             while { $j <= [expr $isarray -1] } {
+                set value "$value,[set ldata]->[set name]\[$j\]"
+                set vform "$vform, $TYPEFORMAT($type)"
+                incr j 1
+             }
+             set value [string trim $value ","]
+      }
+      set rvars "$rvars , $value"
+      set rformat "$rformat , $vform"
+###puts stdout $rvars
+###puts stdout $rformat
+  }
+  set record "$record [set rformat]\", $rvars );"
+  return $record
+}
+
+
+proc genSALefdqueries { base } {
+global SAL_WORK_DIR
+   set fout [open $SAL_WORK_DIR/[set base]/cpp/src/SAL_[set base]_efdqueries.cpp w]
+   set idlfile $SAL_WORK_DIR/idl-templates/validated/sal/sal_[set base].idl
+   set ptypes [lsort [split [exec grep pragma $idlfile] \n]]
+   foreach j $ptypes {
+     set topic [lindex $j 2]
+     set type [lindex [split $topic _] 0]
+     if { $topic != "ackcmd" && $topic != "command" && $topic != "logevent"} {
+        genqueryefd $fout $base $topic last
+     }
+   }
+   close $fout
+}
 
 
 proc genericefdfragment { fout base ttype ctype } {
@@ -120,9 +179,13 @@ global ACTORTYPE SAL_WORK_DIR BLACKLIST
      set topic [lindex $j 2]
      set type [lindex [split $topic _] 0]
      set doit 0
+     set trail  [string range $topic [expr [string bytelength $topic]-9] end]
+     set trail2 [string range $topic [expr [string bytelength $topic]-15] end]
      if { $ttype == "command" && $type == "command" || $topic == "ackcmd"} {set doit 1}
      if { $ttype == "logevent" && $type == "logevent" && $topic != "ackcmd"} {set doit 1}
      if { $ttype == "telemetry" && $type != "command" && $type != "logevent" && $topic != "ackcmd" } {set doit 1}
+     if { $trail == "Heartbeat" || $trail2 == "InternalCommand" } {set doit 0}
+     if { $ttype != "command" && $topic == "ackcmd" } {set doit 0}
      if { [info exists BLACKLIST([set topic])] } {set doit 0}
      if { $doit } {
 #      if { $ctype == "init" } {
@@ -134,7 +197,7 @@ global ACTORTYPE SAL_WORK_DIR BLACKLIST
   actorIdx = SAL__[set base]_[set topic]_ACTOR;
   DataReader_var [set topic]_dreader = mgr.getReader(actorIdx);
   [set base]::[set topic]DataReader_var [set topic]_SALReader = [set base]::[set topic]DataReader::_narrow([set topic]_dreader.in());
-  checkHandle([set topic]_SALReader.in(), \"[set base]::[set topic]DataReader::_narrow\");
+  mgr.checkHandle([set topic]_SALReader.in(), \"[set base]::[set topic]DataReader::_narrow\");
 "
       }
       if { $ctype == "getsamples" } {
@@ -142,11 +205,13 @@ global ACTORTYPE SAL_WORK_DIR BLACKLIST
         puts $fout "  
        [set base]::[set topic]Seq myData_[set topic];
        SampleInfoSeq_var [set topic]_info = new SampleInfoSeq;
-       status = [set topic]_SALReader->take(myData_[set topic], [set topic]_info, 1, ANY_SAMPLE_STATE, ANY_VIEW_STATE, ANY_INSTANCE_STATE);
-       checkStatus(status,\"[set base]::[set topic]DataReader::take\");
+       status = [set topic]_SALReader->take(myData_[set topic], [set topic]_info, 100, ANY_SAMPLE_STATE, ANY_VIEW_STATE, ANY_INSTANCE_STATE);
+       mgr.checkStatus(status,\"[set base]::[set topic]DataReader::take\");
        numsamp = myData_[set topic].length();
        if (status == SAL__OK && numsamp > 0) \{
-          myData_[set topic]\[0\].private_rcvStamp = mgr.getCurrentTime();"
+        for (iloop=0;iloop<numsamp;iloop++) \{
+         if (myData_[set topic]\[iloop\].private_origin != 0) \{
+          myData_[set topic]\[iloop\].private_rcvStamp = mgr.getCurrentTime();"
        if { $topic != "ackcmd" } {
          puts $fout "
           [writetoefd [set base]_[set topic]]
@@ -155,51 +220,88 @@ global ACTORTYPE SAL_WORK_DIR BLACKLIST
           if (mstatus) \{
              fprintf(stderr,\"MYSQL INSERT ERROR : %d : %s\\n\",mstatus,thequery);
           \}
-          if (myData_[set topic]\[0\].private_origin > 0) \{
+          if (myData_[set topic]\[iloop\].private_origin > 0) \{
             if (isyslog > 0) \{
                syslog(NULL,\"%s\",thequery);
             \}
           \}"
          }
-         puts $fout "       \}"
+###         puts $fout "       \}"
            checkLFO $fout $topic
          }
          if { $type == "command" && $ttype == "command" && $topic != "ackcmd" } {
            set alias "'[join [lrange [split $topic _] 1 end] _]'"
            if { $alias != "''" } {
             puts $fout "
-       if (status == SAL__OK && numsamp > 0) \{
           sprintf(thequery,\"INSERT INTO [set base]_commandLog VALUES (NOW(6),'%s', %lf, %d, $alias, 0, 0 )\" , 
-                    myData_[set topic]\[0\].private_revCode.m_ptr, myData_[set topic]\[0\].private_sndStamp, myData_[set topic]\[0\].private_seqNum);
+                    myData_[set topic]\[iloop\].private_revCode.m_ptr, myData_[set topic]\[iloop\].private_sndStamp, myData_[set topic]\[iloop\].private_seqNum);
           mstatus = mysql_query(con,thequery);
 //          cout << thequery << endl;
           if (mstatus) \{
              fprintf(stderr,\"MYSQL INSERT ERROR : %d : %s\\n\",mstatus,thequery);
-          \}
-       \}"
+          \}"
           }
          }
          if { $ttype == "command" && $topic == "ackcmd" } {
            set alias "'ackcmd'"
            puts $fout "
-       if (status == SAL__OK && numsamp > 0) \{
           sprintf(thequery,\"INSERT INTO [set base]_commandLog VALUES (NOW(6), '%s', %lf, %d, $alias, %d, %d )\" , 
-                    myData_[set topic]\[0\].private_revCode.m_ptr, myData_[set topic]\[0\].private_sndStamp, myData_[set topic]\[0\].private_seqNum,myData_[set topic]\[0\].ack,myData_[set topic]\[0\].error);
+                    myData_[set topic]\[iloop\].private_revCode.m_ptr, myData_[set topic]\[iloop\].private_sndStamp, myData_[set topic]\[iloop\].private_seqNum,myData_[set topic]\[iloop\].ack,myData_[set topic]\[iloop\].error);
           mstatus = mysql_query(con,thequery);
 //          cout << thequery << endl;
           if (mstatus) \{
              fprintf(stderr,\"MYSQL INSERT ERROR : %d : %s\\n\",mstatus,thequery);
-          \}
-       \}"
+          \}"
          }
          if { $topic != "command" && $topic != "logevent" } {
-           puts $fout "       status = [set topic]_SALReader->return_loan(myData_[set topic], [set topic]_info);
+           puts $fout "         \}
+        \}
+       \}
+       status = [set topic]_SALReader->return_loan(myData_[set topic], [set topic]_info);
 "
          }
       }
     }
    }
 }
+
+
+proc genqueryefd { fout base topic key } {
+   if { $key == "last" } {
+      puts $fout "
+#include <sys/time.h>
+#include <time.h>
+#include \"SAL_[set base].h\"
+using namespace [set base];
+
+int SAL_[set base]::getLastSample_[set topic] ([set base]_[set topic]C *mydata) \{
+
+      int num_fields=0;
+      int mstatus=0;
+      char *thequery = (char *) malloc(sizeof(char)*4000);
+      MYSQL_RES *result;
+      MYSQL_ROW *row;
+
+      if ( getSample_[set topic] ([set base]_[set topic]C *mydata) == SAL__NO_UPDATES) \{
+        sprintf(thequery,\"SELECT * FROM [set base]_[set topic] LIMIT 1;\");
+        mstatus = mysql_query(efdConnection,thequery);
+        if (mstatus != 0) \{
+             return SAL__NO_UPDATES;
+        \}
+        result = mysql_store_result(efdConnection);
+        int num_fields = mysql_num_fields(result);
+        row = mysql_fetch_row(result);
+        [readfromefd [set base]_[set topic] 1]
+"
+      puts $fout "
+        mysql_free_result(result);
+      \}
+      return SAL__OK;
+\}
+"
+   }
+}
+
 
 
 proc checkLFO { fout topic } {
@@ -209,7 +311,7 @@ proc checkLFO { fout topic } {
      puts $fout "
        if (status == SAL__OK && numsamp > 0) \{
            printf(\"EFD TBD : Large File Object Announcement Event $topic received\\n\");
-           sprintf(thequery,\"process_LFO_logevent  %d '%s' '%s' '%s' '%s' %f '%s'\"  ,  myData_[set topic]\[0\].Byte_Size , myData_[set topic]\[0\].Checksum.m_ptr , myData_[set topic]\[0\].Generator.m_ptr , myData_[set topic]\[0\].Mime.m_ptr , myData_[set topic]\[0\].URL.m_ptr , myData_[set topic]\[0\].Version, myData_[set topic]\[0\].ID.m_ptr);
+           sprintf(thequery,\"process_LFO_logevent  %d '%s' '%s' '%s' '%s' %f '%s'\"  ,  myData_[set topic]\[iloop\].Byte_Size , myData_[set topic]\[iloop\].Checksum.m_ptr , myData_[set topic]\[iloop\].Generator.m_ptr , myData_[set topic]\[iloop\].Mime_Type.m_ptr , myData_[set topic]\[iloop\].URL.m_ptr , myData_[set topic]\[iloop\].Version, myData_[set topic]\[iloop\].ID.m_ptr);
           mstatus = system(thequery);
           if (mstatus < 0) \{
              fprintf(stderr,\"LFO Processor ERROR : %d\\n\",mstatus);
@@ -273,10 +375,11 @@ int test_[set base]_telemetry_efdwriter()
 "
   genericefdfragment $fout $base telemetry init
   puts $fout "
-  os_time delay_1ms = \{ 0, 1000000 \};
+  os_time delay_10us = \{ 0, 10000 \};
   int numsamp = 0;
   int actorIdx = 0;
   int isyslog = 1;
+  int iloop = 0;
   int mstatus = 0;
   int status = 0;"
   genericefdfragment $fout $base telemetry subscriber
@@ -286,7 +389,7 @@ int test_[set base]_telemetry_efdwriter()
 "
   genericefdfragment $fout $base telemetry getsamples
    puts $fout "
-          os_nanoSleep(delay_1ms);
+          os_nanoSleep(delay_10us);
       \}
 
   /* Remove the DataWriters etc */
@@ -344,10 +447,11 @@ int test_[set base]_event_efdwriter()
   genericefdfragment $fout $base logevent init
 
   puts $fout "
-  os_time delay_1ms = \{ 0, 1000000 \};
+  os_time delay_10us = \{ 0, 10000 \};
   int numsamp = 0;
   int actorIdx = 0;
   int isyslog = 1;
+  int iloop = 0;
   int mstatus = 0;
   int status=0;"
   genericefdfragment $fout $base logevent subscriber
@@ -357,7 +461,7 @@ int test_[set base]_event_efdwriter()
 "
   genericefdfragment $fout $base logevent getsamples
    puts $fout "
-     os_nanoSleep(delay_1ms);
+     os_nanoSleep(delay_10us);
   \}
 
   /* Remove the DataWriters etc */
@@ -413,10 +517,11 @@ int test_[set base]_command_efdwriter()
 "
   genericefdfragment $fout $base command init
   puts $fout "
-  os_time delay_1ms = \{ 0, 1000000 \};
+  os_time delay_10us = \{ 0, 10000 \};
   int numsamp = 0;
   int actorIdx = 0;
   int isyslog = 1;
+  int iloop = 0;
   int mstatus = 0;
   int status=0;"
   genericefdfragment $fout $base command subscriber
@@ -426,7 +531,7 @@ int test_[set base]_command_efdwriter()
 "
   genericefdfragment $fout $base command getsamples
    puts $fout "
-     os_nanoSleep(delay_1ms);
+     os_nanoSleep(delay_10us);
   \}
 
   /* Remove the DataWriters etc */
@@ -499,6 +604,21 @@ global SYSDIC SAL_WORK_DIR
       }
    }
 }
+
+proc updateSALqueries { } {
+global SYSDIC SAL_WORK_DIR
+   set bad 0
+   foreach subsys $SYSDIC(systems) {
+      if { [file exists $SAL_WORK_DIR/idl-templates/validated/sal/sal_[set subsys].idl] } {
+        puts stdout "Updating SAL queries for $subsys"
+        set bad [catch {genSALefdqueries $subsys} res]
+        if { $bad } {puts stdout $res}
+      } else {
+        puts stdout "WARNING : No IDL for $subsys available"
+      }
+   }
+}
+
 
 proc makesummarytables { subsys } {
 global SAL_WORK_DIR
