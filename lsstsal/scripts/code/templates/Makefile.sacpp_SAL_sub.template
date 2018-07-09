@@ -14,7 +14,7 @@ OBJEXT        = .o
 OUTPUT_OPTION = -o "$@"
 COMPILE.c     = $(CC) $(CFLAGS) $(CPPFLAGS) -c
 COMPILE.cc    = $(CXX) $(CCFLAGS) $(CPPFLAGS) -c
-LDFLAGS       = -L"." -L"$(OSPL_HOME)/lib" -Wl,-rpath,\$$ORIGIN -Wl,-rpath,\$$ORIGIN/$(OSPL_HOME)/lib -L"$(SAL_HOME)/lib"
+LDFLAGS       = -L"." -L"$(OSPL_HOME)/lib" -Wl,-rpath,\$$ORIGIN -Wl,-rpath,\$$ORIGIN/$(OSPL_HOME)/lib -L"$(SAL_WORK_DIR)/lib"
 CCC           = $(CXX)
 MAKEFILE      = Makefile.sacpp_SALData_sub
 DEPENDENCIES  =
@@ -34,8 +34,8 @@ LIBPREFIX     = lib
 LIBSUFFIX     = 
 GENFLAGS      = -g
 LDLIBS        = -l"sacpp_SAL_types$(LIBSUFFIX)" -l"dcpssacpp" -l"dcpsgapi" -l"ddsuser" -l"ddskernel" -l"ddsserialization" -l"ddsconfparser" -l"ddsconf" -l"ddsdatabase" -l"ddsutil" -l"ddsos" -ldl $(subst lib,-l,$(sort $(basename $(notdir $(wildcard /usr/lib/librt.so /lib/librt.so))))) -lpthread
-OBJS          = .obj/CheckStatus$(OBJEXT) .obj/SAL_SALSubsys$(OBJEXT) .obj/SALDataDataSubscriber$(OBJEXT)
-SRC           = ../src/CheckStatus.cpp ../src/SAL_SALSubsys.cpp ../src/SALDataDataSubscriber.cpp
+OBJS          =  .obj/SAL_SALSubsys$(OBJEXT) .obj/SALDataDataSubscriber$(OBJEXT)
+SRC           = ../src/SAL_SALSubsys.cpp ../src/SALDataDataSubscriber.cpp
 LINK.cc       = $(LD) $(LDFLAGS)
 EXPORTFLAGS   = 
 endif
@@ -50,7 +50,7 @@ OBJEXT        = .o
 OUTPUT_OPTION = -o "$@"
 COMPILE.c     = $(CC) $(CFLAGS) $(CPPFLAGS) -c
 COMPILE.cc    = $(CXX) $(CCFLAGS) $(CPPFLAGS) -c
-LDFLAGS       = -L"." -L"$(OSPL_HOME)/lib" -Wl,-rpath,\$$ORIGIN -Wl,-rpath,\$$ORIGIN/$(OSPL_HOME)/lib -L$(SAL_HOME)/lib
+LDFLAGS       = -L"." -L"$(OSPL_HOME)/lib" -Wl,-rpath,\$$ORIGIN -Wl,-rpath,\$$ORIGIN/$(OSPL_HOME)/lib -L$(SAL_WORK_DIR)/lib
 CCC           = $(CXX)
 MAKEFILE      = Makefile.sacpp_SAL_sub
 DEPENDENCIES  =
@@ -70,8 +70,8 @@ LIBPREFIX     = lib
 LIBSUFFIX     = 
 GENFLAGS      = -g
 LDLIBS        = -l"sacpp_SAL_types$(LIBSUFFIX)" -l"dcpssacpp" -l"dcpsgapi" -l"ddsuser" -l"ddskernel" -l"ddsserialization" -l"ddsconfparser" -l"ddsconf" -l"ddsdatabase" -l"ddsutil" -l"ddsos" -ldl $(subst lib,-l,$(sort $(basename $(notdir $(wildcard /usr/lib/librt.so /lib/librt.so))))) -lpthread
-OBJS          = .obj/CheckStatus$(OBJEXT) .obj/SAL_SALSubsys$(OBJEXT) .obj/SALDataDataSubscriber$(OBJEXT)
-SRC           = ../src/CheckStatus.cpp ../src/SAL_SALSubsy.cpp ../src/SALDataDataSubscriber.cpp
+OBJS          =  .obj/SAL_SALSubsys$(OBJEXT) .obj/SALDataDataSubscriber$(OBJEXT)
+SRC           =  ../src/SAL_SALSubsy.cpp ../src/SALDataDataSubscriber.cpp
 LINK.cc       = $(LD) $(LDFLAGS)
 EXPORTFLAGS   = 
 endif
@@ -89,9 +89,6 @@ $(BIN): $(OBJS)
 generated: $(GENERATED_DIRTY)
 	@-:
 
-.obj/CheckStatus$(OBJEXT): ../src/CheckStatus.cpp
-	@$(TESTDIRSTART) ".obj/../src" $(TESTDIREND) $(MKDIR) ".obj/../src"
-	$(COMPILE.cc) $(EXPORTFLAGS) $(OUTPUT_OPTION) ../src/CheckStatus.cpp
 
 .obj/SAL_SALSubsys$(OBJEXT): ../src/SAL_SALSubsys.cpp
 	@$(TESTDIRSTART) ".obj/../src" $(TESTDIREND) $(MKDIR) ".obj/../src"

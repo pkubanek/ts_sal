@@ -11,7 +11,7 @@ OBJEXT        = .o
 OUTPUT_OPTION = -o "$@"
 COMPILE.c     = $(CC) $(CFLAGS) $(CPPFLAGS) -c
 COMPILE.cc    = $(CXX) $(CCFLAGS) $(CPPFLAGS) -c
-LDFLAGS       = -L"." -L"$(OSPL_HOME)/lib" -Wl,-rpath,\$$ORIGIN -Wl,-rpath,\$$ORIGIN/$(OSPL_HOME)/lib -L"$(SAL_HOME)/lib"
+LDFLAGS       = -L"." -L"$(OSPL_HOME)/lib" -Wl,-rpath,\$$ORIGIN -Wl,-rpath,\$$ORIGIN/$(OSPL_HOME)/lib -L"$(SAL_WORK_DIR)/lib"
 CCC           = $(CXX)
 MAKEFILE      = Makefile.sacpp_SALData_efdwriter
 DEPENDENCIES  =
@@ -33,12 +33,12 @@ LIBPREFIX     = lib
 LIBSUFFIX     = 
 GENFLAGS      = -g `mysql_config --cflags`
 LDLIBS        = -l"sacpp_SAL_types$(LIBSUFFIX)" -l"dcpssacpp" -l"dcpsgapi" -l"ddsuser" -l"ddskernel" -l"ddsserialization" -l"ddsconfparser" -l"ddsconf" -l"ddsdatabase" -l"ddsutil" -l"ddsos" -ldl $(subst lib,-l,$(sort $(basename $(notdir $(wildcard /usr/lib/librt.so /lib/librt.so))))) -lpthread `mysql_config --libs`
-OBJS1         = .obj/CheckStatus$(OBJEXT) .obj/SAL_SALSubsys$(OBJEXT) .obj/sacpp_SALData_command_efdwriter$(OBJEXT)
-OBJS2         = .obj/CheckStatus$(OBJEXT) .obj/SAL_SALSubsys$(OBJEXT) .obj/sacpp_SALData_telemetry_efdwriter$(OBJEXT)
-OBJS3         = .obj/CheckStatus$(OBJEXT) .obj/SAL_SALSubsys$(OBJEXT) .obj/sacpp_SALData_event_efdwriter$(OBJEXT)
-SRC1          = ../src/CheckStatus.cpp ../src/SAL_SALSubsys.cpp ../src/sacpp_SALData_command_efdwriter.cpp
-SRC2          = ../src/CheckStatus.cpp ../src/SAL_SALSubsys.cpp ../src/sacpp_SALData_telemetry_efdwriter.cpp
-SRC3          = ../src/CheckStatus.cpp ../src/SAL_SALSubsys.cpp ../src/sacpp_SALData_event_efdwriter.cpp
+OBJS1         = .obj/SAL_SALSubsys$(OBJEXT) .obj/sacpp_SALData_command_efdwriter$(OBJEXT)
+OBJS2         = .obj/SAL_SALSubsys$(OBJEXT) .obj/sacpp_SALData_telemetry_efdwriter$(OBJEXT)
+OBJS3         = .obj/SAL_SALSubsys$(OBJEXT) .obj/sacpp_SALData_event_efdwriter$(OBJEXT)
+SRC1          =  ../src/SAL_SALSubsys.cpp ../src/sacpp_SALData_command_efdwriter.cpp
+SRC2          =  ../src/SAL_SALSubsys.cpp ../src/sacpp_SALData_telemetry_efdwriter.cpp
+SRC3          =  ../src/SAL_SALSubsys.cpp ../src/sacpp_SALData_event_efdwriter.cpp
 LINK.cc       = $(LD) $(LDFLAGS)
 EXPORTFLAGS   = 
 
@@ -63,9 +63,6 @@ $(BIN3): $(OBJS3)
 generated: $(GENERATED_DIRTY)
 	@-:
 
-.obj/CheckStatus$(OBJEXT): ../src/CheckStatus.cpp
-	@$(TESTDIRSTART) ".obj/../src" $(TESTDIREND) $(MKDIR) ".obj/../src"
-	$(COMPILE.cc) $(EXPORTFLAGS) $(OUTPUT_OPTION) ../src/CheckStatus.cpp
 
 .obj/SAL_SALSubsys$(OBJEXT): ../src/SAL_SALSubsys.cpp
 	@$(TESTDIRSTART) ".obj/../src" $(TESTDIREND) $(MKDIR) ".obj/../src"

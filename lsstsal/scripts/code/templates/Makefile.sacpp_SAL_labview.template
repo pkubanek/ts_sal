@@ -17,9 +17,9 @@ OUTPUT_OPTION = -o "$@"
 COMPILE.c     = $(CC) $(CFLAGS) $(CPPFLAGS) -c
 COMPILE.cc    = $(CXX) $(CCFLAGS) $(CPPFLAGS) -c
 LDFLAGS       = -g -shared -fPIC -L"." -L"$(OSPL_HOME)/lib" -Wl,-rpath,\$$ORIGIN -Wl,-rpath,\$$ORIGIN/$(OSPL_HOME)/lib -L../cpp
-# -L"$(SAL_HOME)/lib" -llibSAL_SALData
+# -L"$(SAL_WORK_DIR)/lib" -llibSAL_SALData
 EXEFLAGS      = -g -fPIC -L"." -L"$(OSPL_HOME)/lib" -Wl,-rpath,\$$ORIGIN -Wl,-rpath,\$$ORIGIN/$(OSPL_HOME)/lib -L../cpp
-# -L"$(SAL_HOME)/lib" -llibSAL_SALData
+# -L"$(SAL_WORK_DIR)/lib" -llibSAL_SALData
 CCC           = $(CXX)
 MAKEFILE      = Makefile.sacpp_SALData_labview
 DEPENDENCIES  = 
@@ -42,8 +42,8 @@ GENFLAGS      = -g
 LDLIBS        = -lpthread
 LDLIBS2        = -l"sacpp_SAL_types$(LIBSUFFIX)" -l"dcpssacpp" -l"dcpsgapi" -l"ddsuser" -l"ddskernel" -l"ddsserialization" -l"ddsconfparser" -l"ddsconf" -l"ddsdatabase" -l"ddsutil" -l"ddsos" -ldl $(subst lib,-l,$(sort $(basename $(notdir $(wildcard /usr/lib/librt.so /lib/librt.so))))) -lpthread
 OBJS1          = .obj/SAL_SALData_salShm$(OBJEXT)
-OBJS2          = .obj/CheckStatus$(OBJEXT) .obj/SAL_SALSubsys$(OBJEXT) .obj/SAL_SALData_salShmMonitor$(OBJEXT)
-SRC           = CheckStatus.cpp SAL_SALSubsys.cpp SAL_SALData_salShm.cpp SAL_SALData_salShmMonitor.cpp
+OBJS2          = .obj/SAL_SALSubsys$(OBJEXT) .obj/SAL_SALData_salShmMonitor$(OBJEXT)
+SRC           =  SAL_SALSubsys.cpp SAL_SALData_salShm.cpp SAL_SALData_salShmMonitor.cpp
 LINK.cc       = $(LD) $(LDFLAGS)
 LINK2.cc       = $(CXX) $(EXEFLAGS)
 EXPORTFLAGS   = 
@@ -97,9 +97,6 @@ $(DAEMON): $(OBJS2)
 generated: $(GENERATED_DIRTY)
 	@-:
 
-.obj/CheckStatus$(OBJEXT): CheckStatus.cpp
-	@$(TESTDIRSTART) ".obj" $(TESTDIREND) $(MKDIR) ".obj"
-	$(COMPILE.cc) $(EXPORTFLAGS) $(OUTPUT_OPTION) CheckStatus.cpp
 
 .obj/SAL_SALSubsys$(OBJEXT): SAL_SALSubsys.cpp
 	@$(TESTDIRSTART) ".obj" $(TESTDIREND) $(MKDIR) ".obj"

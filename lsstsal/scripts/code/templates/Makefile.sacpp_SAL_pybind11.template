@@ -13,9 +13,9 @@ SHLIBEXT      = .so
 OUTPUT_OPTION = -o "$@"
 COMPILE.c     = $(CC) $(CFLAGS) $(CPPFLAGS) -c
 COMPILE.cc    = $(CXX) $(CCFLAGS) $(CPPFLAGS) -c
-LDFLAGS       = -shared -fPIC -L"." -L"$(OSPL_HOME)/lib" -Wl,-rpath,\$$ORIGIN -Wl,-rpath,\$$ORIGIN/$(OSPL_HOME)/lib -L"$(SAL_HOME)/lib" -L"$(PYTHON_BUILD_LOCATION)/lib" -l"python$(PYTHONVER)"
+LDFLAGS       = -shared -fPIC -L"." -L"$(OSPL_HOME)/lib" -Wl,-rpath,\$$ORIGIN -Wl,-rpath,\$$ORIGIN/$(OSPL_HOME)/lib -L"$(SAL_WORK_DIR)/lib" -L"$(PYTHON_BUILD_LOCATION)/lib" -l"python$(PYTHONVER)"
 CCC           = $(CXX)
-MAKEFILE      = Makefile.sacpp_SALData_python
+MAKEFILE      = Makefile.sacpp_SALData_pybind11
 DEPENDENCIES  = 
 BTARGETDIR    = ./
 BIN           = $(BTARGETDIR)SALPY_SALData$(SHLIBEXT)
@@ -33,8 +33,8 @@ LIBPREFIX     = lib
 LIBSUFFIX     = 
 GENFLAGS      = -g
 LDLIBS        = -l"sacpp_SAL_types$(LIBSUFFIX)" -l"dcpssacpp" -l"dcpsgapi" -l"ddsuser" -l"ddskernel" -l"ddsserialization" -l"ddsconfparser" -l"ddsconf" -l"ddsdatabase" -l"ddsutil" -l"ddsos" -ldl $(subst lib,-l,$(sort $(basename $(notdir $(wildcard /usr/lib/librt.so /lib/librt.so))))) -lpthread
-OBJS          = .obj/CheckStatus$(OBJEXT) .obj/SAL_SALSubsys$(OBJEXT) .obj/SALPY_SALData$(OBJEXT)
-SRC           = ../src/CheckStatus.cpp ../src/SAL_SALSubsys.cpp ../src/SALPY_SALData.cpp
+OBJS          =  .obj/SAL_SALSubsys_python$(OBJEXT) .obj/SALPY_SALData$(OBJEXT)
+SRC           =  ../src/SAL_SALSubsys.cpp ../src/SALPY_SALData.cpp
 LINK.cc       = $(LD) $(LDFLAGS)
 EXPORTFLAGS   = 
 
@@ -51,11 +51,8 @@ $(BIN): $(OBJS)
 generated: $(GENERATED_DIRTY)
 	@-:
 
-.obj/CheckStatus$(OBJEXT): ../src/CheckStatus.cpp
-	@$(TESTDIRSTART) ".obj/../src" $(TESTDIREND) $(MKDIR) ".obj/../src"
-	$(COMPILE.cc) $(EXPORTFLAGS) $(OUTPUT_OPTION) ../src/CheckStatus.cpp
 
-.obj/SAL_SALSubsys$(OBJEXT): ../src/SAL_SALSubsys.cpp
+.obj/SAL_SALSubsys_python$(OBJEXT): ../src/SAL_SALSubsys.cpp
 	@$(TESTDIRSTART) ".obj/../src" $(TESTDIREND) $(MKDIR) ".obj/../src"
 	$(COMPILE.cc) $(EXPORTFLAGS) $(OUTPUT_OPTION) ../src/SAL_SALSubsys.cpp
 

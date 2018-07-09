@@ -34,8 +34,8 @@ LIBPREFIX     = lib
 LIBSUFFIX     = 
 GENFLAGS      = -g `mysql_config --cflags`
 LDLIBS        = $(SAL_WORK_DIR)/lib/libsacpp_*_types.so $(SAL_WORK_DIR)/lib/libSAL_*.so -l"dcpssacpp" -l"dcpsgapi" -l"ddsuser" -l"ddskernel" -l"ddsserialization" -l"ddsconfparser" -l"ddsconf" -l"ddsdatabase" -l"ddsutil" -l"ddsos" -ldl $(subst lib,-l,$(sort $(basename $(notdir $(wildcard /usr/lib/librt.so /lib/librt.so))))) -lpthread `mysql_config --libs`
-OBJS          = .obj/CheckStatus$(OBJEXT) .obj/sacpp_SALCLIENT$(OBJEXT)
-SRC           = ../src/CheckStatus.cpp ../src/sacpp_SALCLIENT.cpp
+OBJS          = .obj/sacpp_SALCLIENT$(OBJEXT)
+SRC           = ../src/sacpp_SALCLIENT.cpp
 LINK.cc       = $(LD) $(LDFLAGS)
 EXPORTFLAGS   = 
 endif
@@ -50,7 +50,7 @@ OBJEXT        = .o
 OUTPUT_OPTION = -o "$@"
 COMPILE.c     = $(CC) $(CFLAGS) $(CPPFLAGS) -c
 COMPILE.cc    = $(CXX) $(CCFLAGS) $(CPPFLAGS) -c
-LDFLAGS       = -L"." -L"$(OSPL_HOME)/lib" -Wl,-rpath,\$$ORIGIN -Wl,-rpath,\$$ORIGIN/$(OSPL_HOME)/lib -L$(SAL_HOME)/lib
+LDFLAGS       = -L"." -L"$(OSPL_HOME)/lib" -Wl,-rpath,\$$ORIGIN -Wl,-rpath,\$$ORIGIN/$(OSPL_HOME)/lib -L$(SAL_WORK_DIR)/lib
 CCC           = $(CXX)
 MAKEFILE      = Makefile.sacpp_SALCLIENT
 DEPENDENCIES  =
@@ -70,8 +70,8 @@ LIBPREFIX     = lib
 LIBSUFFIX     = 
 GENFLAGS      = -g
 LDLIBS        = -l"sacpp_SAL_types$(LIBSUFFIX)" -lSAL_complete -l"dcpssacpp" -l"dcpsgapi" -l"ddsuser" -l"ddskernel" -l"ddsserialization" -l"ddsconfparser" -l"ddsconf" -l"ddsdatabase" -l"ddsutil" -l"ddsos" -ldl $(subst lib,-l,$(sort $(basename $(notdir $(wildcard /usr/lib/librt.so /lib/librt.so))))) -lpthread
-OBJS          = .obj/CheckStatus$(OBJEXT)  .obj/sacpp_SALCLIENT$(OBJEXT)
-SRC           = ../src/CheckStatus.cpp ../src/sacpp_SALCLIENT.cpp
+OBJS          = .obj/sacpp_SALCLIENT$(OBJEXT)
+SRC           =  ../src/sacpp_SALCLIENT.cpp
 LINK.cc       = $(LD) $(LDFLAGS)
 EXPORTFLAGS   = 
 endif
@@ -89,9 +89,6 @@ $(BIN): $(OBJS)
 generated: $(GENERATED_DIRTY)
 	@-:
 
-.obj/CheckStatus$(OBJEXT): ../src/CheckStatus.cpp
-	@$(TESTDIRSTART) ".obj/../src" $(TESTDIREND) $(MKDIR) ".obj/../src"
-	$(COMPILE.cc) $(EXPORTFLAGS) $(OUTPUT_OPTION) ../src/CheckStatus.cpp
 
 .obj/sacpp_SALCLIENT$(OBJEXT): ../src/sacpp_SALCLIENT.cpp
 	@$(TESTDIRSTART) ".obj/../src" $(TESTDIREND) $(MKDIR) ".obj/../src"
