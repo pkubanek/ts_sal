@@ -267,6 +267,26 @@ public class SAL_SALData {
 	}
 #endif
 
+	public void setTuneableQos (String topicName)
+	{
+	    int actorIdx;
+	    actorIdx = getActorIndex(topicName);
+	    if (actorIdx > 0) {
+	       sal[actorIdx].tuneableQos = true;
+	    }
+	}
+
+
+	public void setDefaultQos (String topicName)
+	{
+	    int actorIdx;
+	    actorIdx = getActorIndex(topicName);
+	    if (actorIdx > 0) {
+	       sal[actorIdx].tuneableQos = false;
+	    }
+	}
+
+
 	public double getCurrentTime()
 	{
 		long ms = System.currentTimeMillis();
@@ -929,13 +949,15 @@ public class SAL_SALData {
 	public void createTopic(int actorIdx) {
 		int status = -1;
 		participant.get_default_topic_qos(sal[actorIdx].topicQos);
-		sal[actorIdx].topicQos.value.reliability.kind = ReliabilityQosPolicyKind.RELIABLE_RELIABILITY_QOS;
-		sal[actorIdx].topicQos.value.durability.kind = DurabilityQosPolicyKind.TRANSIENT_DURABILITY_QOS;
-		sal[actorIdx].topicQos.value.history.kind = HistoryQosPolicyKind.KEEP_LAST_HISTORY_QOS;
-		sal[actorIdx].topicQos.value.history.depth = 10000;
-		status = participant.set_default_topic_qos(sal[actorIdx].topicQos.value);
-		checkStatus(status,
+		if (sal[actorIdx].tuneableQos) {
+			sal[actorIdx].topicQos.value.reliability.kind = ReliabilityQosPolicyKind.RELIABLE_RELIABILITY_QOS;
+			sal[actorIdx].topicQos.value.durability.kind = DurabilityQosPolicyKind.TRANSIENT_DURABILITY_QOS;
+			sal[actorIdx].topicQos.value.history.kind = HistoryQosPolicyKind.KEEP_LAST_HISTORY_QOS;
+			sal[actorIdx].topicQos.value.history.depth = 10000;
+			status = participant.set_default_topic_qos(sal[actorIdx].topicQos.value);
+			checkStatus(status,
 				"DomainParticipant.set_default_topic_qos");
+		}
 		System.out.println("=== [createTopic] : topicName " + sal[actorIdx].topicName + " type = " + sal[actorIdx].typeName);
 		sal[actorIdx].topic = participant.create_topic(sal[actorIdx].topicName, sal[actorIdx].typeName, sal[actorIdx].topicQos.value,
 				null, STATUS_MASK_NONE.value);
@@ -945,13 +967,15 @@ public class SAL_SALData {
 	public void createTopic2(int actorIdx) {
 		int status = -1;
 		participant.get_default_topic_qos(sal[actorIdx].topicQos2);
-		sal[actorIdx].topicQos2.value.reliability.kind = ReliabilityQosPolicyKind.RELIABLE_RELIABILITY_QOS;
-		sal[actorIdx].topicQos2.value.durability.kind = DurabilityQosPolicyKind.TRANSIENT_DURABILITY_QOS;
-		sal[actorIdx].topicQos2.value.history.kind = HistoryQosPolicyKind.KEEP_LAST_HISTORY_QOS;
-		sal[actorIdx].topicQos2.value.history.depth = 10000;
-		status = participant.set_default_topic_qos(sal[actorIdx].topicQos2.value);
-		checkStatus(status,
+		if (sal[actorIdx].tuneableQos) {
+			sal[actorIdx].topicQos2.value.reliability.kind = ReliabilityQosPolicyKind.RELIABLE_RELIABILITY_QOS;
+			sal[actorIdx].topicQos2.value.durability.kind = DurabilityQosPolicyKind.TRANSIENT_DURABILITY_QOS;
+			sal[actorIdx].topicQos2.value.history.kind = HistoryQosPolicyKind.KEEP_LAST_HISTORY_QOS;
+			sal[actorIdx].topicQos2.value.history.depth = 10000;
+			status = participant.set_default_topic_qos(sal[actorIdx].topicQos2.value);
+			checkStatus(status,
 				"DomainParticipant.set_default_topic_qos");
+		}
 		System.out.println("=== [createTopic2] : topicName " + sal[actorIdx].topicName + " type = " + sal[actorIdx].typeName2);
 
 		sal[actorIdx].topic2 = participant.create_topic(sal[actorIdx].topicName, sal[actorIdx].typeName2, sal[actorIdx].topicQos2.value,
@@ -962,13 +986,15 @@ public class SAL_SALData {
 	public void createTopic(int actorIdx, String topicName) {
 		int status = -1;
 		participant.get_default_topic_qos(sal[actorIdx].topicQos);
-		sal[actorIdx].topicQos.value.reliability.kind = ReliabilityQosPolicyKind.RELIABLE_RELIABILITY_QOS;
-		sal[actorIdx].topicQos.value.durability.kind = DurabilityQosPolicyKind.TRANSIENT_DURABILITY_QOS;
-		sal[actorIdx].topicQos.value.history.kind = HistoryQosPolicyKind.KEEP_LAST_HISTORY_QOS;
-		sal[actorIdx].topicQos.value.history.depth = 10000;
-		status = participant.set_default_topic_qos(sal[actorIdx].topicQos.value);
-		checkStatus(status,
+		if (sal[actorIdx].tuneableQos) {
+			sal[actorIdx].topicQos.value.reliability.kind = ReliabilityQosPolicyKind.RELIABLE_RELIABILITY_QOS;
+			sal[actorIdx].topicQos.value.durability.kind = DurabilityQosPolicyKind.TRANSIENT_DURABILITY_QOS;
+			sal[actorIdx].topicQos.value.history.kind = HistoryQosPolicyKind.KEEP_LAST_HISTORY_QOS;
+			sal[actorIdx].topicQos.value.history.depth = 10000;
+			status = participant.set_default_topic_qos(sal[actorIdx].topicQos.value);
+			checkStatus(status,
 				"DomainParticipant.set_default_topic_qos");
+		}
 		System.out.println("=== [createTopic] : topicName " + topicName + " type = " + sal[actorIdx].typeName);
 		sal[actorIdx].topic = participant.create_topic(topicName, sal[actorIdx].typeName, sal[actorIdx].topicQos.value,
 				null, STATUS_MASK_NONE.value);
@@ -978,13 +1004,15 @@ public class SAL_SALData {
 	public void createTopic2(int actorIdx, String topicName) {
 		int status = -1;
 		participant.get_default_topic_qos(sal[actorIdx].topicQos2);
-		sal[actorIdx].topicQos2.value.reliability.kind = ReliabilityQosPolicyKind.RELIABLE_RELIABILITY_QOS;
-		sal[actorIdx].topicQos2.value.durability.kind = DurabilityQosPolicyKind.TRANSIENT_DURABILITY_QOS;
-		sal[actorIdx].topicQos2.value.history.kind = HistoryQosPolicyKind.KEEP_LAST_HISTORY_QOS;
-		sal[actorIdx].topicQos2.value.history.depth = 10000;
-		status = participant.set_default_topic_qos(sal[actorIdx].topicQos2.value);
-		checkStatus(status,
+		if (sal[actorIdx].tuneableQos) {
+			sal[actorIdx].topicQos2.value.reliability.kind = ReliabilityQosPolicyKind.RELIABLE_RELIABILITY_QOS;
+			sal[actorIdx].topicQos2.value.durability.kind = DurabilityQosPolicyKind.TRANSIENT_DURABILITY_QOS;
+			sal[actorIdx].topicQos2.value.history.kind = HistoryQosPolicyKind.KEEP_LAST_HISTORY_QOS;
+			sal[actorIdx].topicQos2.value.history.depth = 10000;
+			status = participant.set_default_topic_qos(sal[actorIdx].topicQos2.value);
+			checkStatus(status,
 				"DomainParticipant.set_default_topic_qos");
+		}
 		System.out.println("=== [createTopic2] : topicName " + topicName + " type = " + sal[actorIdx].typeName2);
 
 		sal[actorIdx].topic2 = participant.create_topic(topicName, sal[actorIdx].typeName2, sal[actorIdx].topicQos2.value,

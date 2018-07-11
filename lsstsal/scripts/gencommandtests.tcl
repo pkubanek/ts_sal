@@ -179,13 +179,13 @@ int main (int argc, char *argv\[\])
              incr n 1
              puts $fout "
 BIN$n           = \$(BTARGETDIR)sacpp_[set subsys]_[set alias]_commander
-OBJS$n          = .obj/CheckStatus.o .obj/SAL_[set subsys].o .obj/sacpp_[set subsys]_[set alias]_commander.o
+OBJS$n          = .obj/SAL_[set subsys].o .obj/sacpp_[set subsys]_[set alias]_commander.o
 "
              set allbin "$allbin \$\(BIN$n\)"
              incr n 1
              puts $fout "
 BIN$n           = \$(BTARGETDIR)sacpp_[set subsys]_[set alias]_controller
-OBJS$n          = .obj/CheckStatus.o .obj/SAL_[set subsys].o .obj/sacpp_[set subsys]_[set alias]_controller.o
+OBJS$n          = .obj/SAL_[set subsys].o .obj/sacpp_[set subsys]_[set alias]_controller.o
 "
              set extrasrc "$extrasrc sacpp_[set subsys]_[set alias]_commander.cpp sacpp_[set subsys]_[set alias]_controller.cpp"
              set allbin "$allbin \$\(BIN$n\)"
@@ -193,7 +193,7 @@ OBJS$n          = .obj/CheckStatus.o .obj/SAL_[set subsys].o .obj/sacpp_[set sub
          }
          set nbin $n
          puts $fout "
-SRC           = ../src/CheckStatus.cpp ../src/SAL_[set subsys].cpp $extrasrc"
+SRC           = ../src/SAL_[set subsys].cpp $extrasrc"
       }
       if { [string range $rec 0 26] == "## INSERT COMMANDS TEST BIN" } {
          set n 2

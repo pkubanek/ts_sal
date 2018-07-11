@@ -144,13 +144,13 @@ int main (int argc, char *argv\[\])
              incr n 1
              puts $fout "
 BIN$n           = \$(BTARGETDIR)sacpp_[set subsys]_[set alias]_LVsend
-OBJS$n          = .obj/CheckStatus.o .obj/SAL_[set subsys]_shmem.o .obj/sacpp_[set subsys]_[set alias]_LVsend.o
+OBJS$n          = .obj/SAL_[set subsys]_shmem.o .obj/sacpp_[set subsys]_[set alias]_LVsend.o
 "
              set allbin "$allbin \$\(BIN$n\)"
              incr n 1
              puts $fout "
 BIN$n           = \$(BTARGETDIR)sacpp_[set subsys]_[set alias]_LVlog
-OBJS$n          = .obj/CheckStatus.o .obj/SAL_[set subsys].o .obj/sacpp_[set subsys]_[set alias]_LVlog.o
+OBJS$n          = .obj/SAL_[set subsys].o .obj/sacpp_[set subsys]_[set alias]_LVlog.o
 "
              set extrasrc "$extrasrc sacpp_[set subsys]_[set alias]_LVsend.cpp sacpp_[set subsys]_[set alias]_LVlog.cpp"
              set allbin "$allbin \$\(BIN$n\)"

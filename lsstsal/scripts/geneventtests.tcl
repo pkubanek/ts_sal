@@ -55,7 +55,7 @@ int main (int argc, char *argv\[\])
 #else
   SAL_[set subsys] mgr = SAL_[set subsys]();
 #endif
-  mgr.salEvent(\"[set subsys]_logevent_[set alias]\");
+  mgr.salEventPub(\"[set subsys]_logevent_[set alias]\");
 "
   set fin [open $SAL_WORK_DIR/include/SAL_[set subsys]_logevent_[set alias]Cargs.tmp r]
   while { [gets $fin rec] > -1 } {
@@ -121,7 +121,7 @@ int test_[set subsys]_[set alias]_Log()
 #else
   SAL_[set subsys] mgr = SAL_[set subsys]();
 #endif
-  mgr.salEvent(\"[set subsys]_logevent_[set alias]\");
+  mgr.salEventSub(\"[set subsys]_logevent_[set alias]\");
   cout << \"=== Event $alias logger ready = \" << endl;
 
   while (1) \{
@@ -167,13 +167,13 @@ int OSPL_MAIN (int argc, char *argv\[\])
              incr n 1
              puts $fout "
 BIN$n           = \$(BTARGETDIR)sacpp_[set subsys]_[set alias]_send
-OBJS$n          = .obj/CheckStatus.o .obj/SAL_[set subsys].o .obj/sacpp_[set subsys]_[set alias]_send.o
+OBJS$n          =  .obj/SAL_[set subsys].o .obj/sacpp_[set subsys]_[set alias]_send.o
 "
              set allbin "$allbin \$\(BIN$n\)"
              incr n 1
              puts $fout "
 BIN$n           = \$(BTARGETDIR)sacpp_[set subsys]_[set alias]_log
-OBJS$n          = .obj/CheckStatus.o .obj/SAL_[set subsys].o .obj/sacpp_[set subsys]_[set alias]_log.o
+OBJS$n          =  .obj/SAL_[set subsys].o .obj/sacpp_[set subsys]_[set alias]_log.o
 "
              set extrasrc "$extrasrc sacpp_[set subsys]_[set alias]_send.cpp sacpp_[set subsys]_[set alias]_log.cpp"
              set allbin "$allbin \$\(BIN$n\)"
@@ -181,7 +181,7 @@ OBJS$n          = .obj/CheckStatus.o .obj/SAL_[set subsys].o .obj/sacpp_[set sub
          }
          set nbin $n
          puts $fout "
-SRC           = ../src/CheckStatus.cpp ../src/SAL_[set subsys].cpp ../src/[set subsys]Event.cpp ../src/[set subsys]EventLogger.cpp $extrasrc"
+SRC           = ../src/SAL_[set subsys].cpp ../src/[set subsys]Event.cpp ../src/[set subsys]EventLogger.cpp $extrasrc"
       }
       if { [string range $rec 0 24] == "## INSERT EVENTS TEST BIN" } {
          set n 2
