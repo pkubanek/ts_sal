@@ -14,15 +14,15 @@ OBJEXT        = .o
 OUTPUT_OPTION = -o "$@"
 COMPILE.c     = $(CC) $(CFLAGS) $(CPPFLAGS) -c
 COMPILE.cc    = $(CXX) $(CCFLAGS) $(CPPFLAGS) -c
-LDFLAGS       = -L"." -L"$(OSPL_HOME)/lib" -Wl,-rpath,\$$ORIGIN -Wl,-rpath,\$$ORIGIN/$(OSPL_HOME)/lib -L"$(SAL_HOME)/lib"
+LDFLAGS       = -L"." -L"$(OSPL_HOME)/lib" -Wl,-rpath,\$$ORIGIN -Wl,-rpath,\$$ORIGIN/$(OSPL_HOME)/lib -L"$(SAL_WORK_DIR)/lib"
 CCC           = $(CXX)
 MAKEFILE      = Makefile.sacpp_SAL_testevents
 DEPENDENCIES  =
 BTARGETDIR    = ./
 BIN1           = $(BTARGETDIR)sacpp_SAL_event$(EXESUFFIX)$(EXEEXT)
 BIN2           = $(BTARGETDIR)sacpp_SAL_eventlog$(EXESUFFIX)$(EXEEXT)
-OBJS1          = .obj/CheckStatus$(OBJEXT) .obj/SAL_SALSubsys$(OBJEXT) .obj/SALDataEvent$(OBJEXT)
-OBJS2          = .obj/CheckStatus$(OBJEXT) .obj/SAL_SALSubsys$(OBJEXT) .obj/SALDataEventLogger$(OBJEXT)
+OBJS1          =  .obj/SAL_SALSubsys$(OBJEXT) .obj/SALDataEvent$(OBJEXT)
+OBJS2          =  .obj/SAL_SALSubsys$(OBJEXT) .obj/SALDataEventLogger$(OBJEXT)
 ## INSERT EVENTS TEST SRC
 CAT           = cat
 MV            = mv -f
@@ -71,7 +71,7 @@ LIBPREFIX     = lib
 LIBSUFFIX     = 
 GENFLAGS      = -g
 LDLIBS        = -l"sacpp_SAL_types$(LIBSUFFIX)" -l"dcpssacpp" -l"dcpsgapi" -l"ddsuser" -l"ddskernel" -l"ddsserialization" -l"ddsconfparser" -l"ddsconf" -l"ddsdatabase" -l"ddsutil" -l"ddsos" -ldl $(subst lib,-l,$(sort $(basename $(notdir $(wildcard /usr/lib/librt.so /lib/librt.so))))) -lpthread
-SRC           = ../src/CheckStatus.cpp ../src/SAL_SALSubsys.cpp ../src/SALDataEvent.cpp ../src/SALDataEventLogger.cpp
+SRC           =  ../src/SAL_SALSubsys.cpp ../src/SALDataEvent.cpp ../src/SALDataEventLogger.cpp
 LINK.cc       = $(LD) $(LDFLAGS)
 EXPORTFLAGS   = 
 endif
@@ -90,10 +90,6 @@ $(BIN2): $(OBJS2)
 	@$(TESTDIRSTART) "$(BTARGETDIR)" $(TESTDIREND) $(MKDIR) "$(BTARGETDIR)"
 	$(LINK.cc) $(OBJS2) $(LDLIBS) $(OUTPUT_OPTION)
 
-
-.obj/CheckStatus$(OBJEXT): ../src/CheckStatus.cpp
-	@$(TESTDIRSTART) ".obj/../src" $(TESTDIREND) $(MKDIR) ".obj/../src"
-	$(COMPILE.cc) $(EXPORTFLAGS) $(OUTPUT_OPTION) ../src/CheckStatus.cpp
 
 .obj/SAL_SALData$(OBJEXT): ../src/SAL_SALSubsys.cpp
 	@$(TESTDIRSTART) ".obj/../src" $(TESTDIREND) $(MKDIR) ".obj/../src"

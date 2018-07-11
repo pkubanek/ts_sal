@@ -48,8 +48,8 @@ global SQLREC KEYRANGE
                 set value [simulate_[set type]_value]
              }
           } else {
-             set astr "'\{"
-             set j 0
+             set astr ""
+             set j 1
              while { $j <= $isarray } {
                 if { [info command simulate_[set generic]_value] != "" } {
                   set value [simulate_[set generic]_value $topic]
@@ -59,7 +59,7 @@ global SQLREC KEYRANGE
                 set astr "$astr,$value"
                 incr j 1
              }
-             set value "$astr\}'"
+             set value [string trim $astr ,]
           }
          
       }
@@ -151,6 +151,16 @@ proc simulate_parallel_value { topic } {
 }
 
 
+proc simulate_long_value { } {
+  set v [expr int(rand()*20)+90]
+  return $v
+}
+
+
+proc simulate_longlong_value { } {
+  set v [expr int(rand()*20)+90]
+  return $v
+}
 
 
 proc simulate_int_value { } {

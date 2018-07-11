@@ -14,7 +14,7 @@ OBJEXT        = .o
 OUTPUT_OPTION = -o "$@"
 COMPILE.c     = $(CC) $(CFLAGS) $(CPPFLAGS) -c
 COMPILE.cc    = $(CXX) $(CCFLAGS) $(CPPFLAGS) -c
-LDFLAGS       = -L"." -L"$(OSPL_HOME)/lib" -Wl,-rpath,\$$ORIGIN -Wl,-rpath,\$$ORIGIN/$(OSPL_HOME)/lib -L"$(SAL_HOME)/lib"
+LDFLAGS       = -L"." -L"$(OSPL_HOME)/lib" -Wl,-rpath,\$$ORIGIN -Wl,-rpath,\$$ORIGIN/$(OSPL_HOME)/lib -L"$(SAL_WORK_DIR)/lib"
 CCC           = $(CXX)
 MAKEFILE      = Makefile.sacpp_SAL_cmd
 DEPENDENCIES  =
@@ -35,9 +35,9 @@ LIBPREFIX     = lib
 LIBSUFFIX     = 
 GENFLAGS      = 
 LDLIBS        = -l"sacpp_SAL_types$(LIBSUFFIX)" -l"dcpssacpp" -l"dcpsgapi" -l"ddsuser" -l"ddskernel" -l"ddsserialization" -l"ddsconfparser" -l"ddsconf" -l"ddsdatabase" -l"ddsutil" -l"ddsos" -ldl $(subst lib,-l,$(sort $(basename $(notdir $(wildcard /usr/lib/librt.so /lib/librt.so))))) -lpthread
-OBJS1          = .obj/CheckStatus$(OBJEXT) .obj/SAL_SALSubsys$(OBJEXT) .obj/SALDataCommander$(OBJEXT)
-OBJS2          = .obj/CheckStatus$(OBJEXT) .obj/SAL_SALSubsys$(OBJEXT) .obj/SALDataController$(OBJEXT)
-SRC           = ../src/CheckStatus.cpp ../src/SAL_SALSubsys.cpp ../src/SALDataCommander.cpp ../src/SALDataController.cpp
+OBJS1          = .obj/SAL_SALSubsys$(OBJEXT) .obj/SALDataCommander$(OBJEXT)
+OBJS2          =  .obj/SAL_SALSubsys$(OBJEXT) .obj/SALDataController$(OBJEXT)
+SRC           =  ../src/SAL_SALSubsys.cpp ../src/SALDataCommander.cpp ../src/SALDataController.cpp
 LINK.cc       = $(LD) $(LDFLAGS)
 EXPORTFLAGS   = 
 endif
@@ -73,7 +73,7 @@ LIBPREFIX     = lib
 LIBSUFFIX     = 
 GENFLAGS      = -g
 LDLIBS        = -l"sacpp_SAL_types$(LIBSUFFIX)" -l"dcpssacpp" -l"dcpsgapi" -l"ddsuser" -l"ddskernel" -l"ddsserialization" -l"ddsconfparser" -l"ddsconf" -l"ddsdatabase" -l"ddsutil" -l"ddsos" -ldl $(subst lib,-l,$(sort $(basename $(notdir $(wildcard /usr/lib/librt.so /lib/librt.so))))) -lpthread
-SRC           = ../src/CheckStatus.cpp ../src/SAL_SALSubsys.cpp ../src/SALDataCommander.cpp ../src/SALDataController.cpp
+SRC           =  ../src/SAL_SALSubsys.cpp ../src/SALDataCommander.cpp ../src/SALDataController.cpp
 LINK.cc       = $(LD) $(LDFLAGS)
 EXPORTFLAGS   = 
 endif
@@ -95,9 +95,6 @@ $(BIN2): $(OBJS2)
 generated: $(GENERATED_DIRTY)
 	@-:
 
-.obj/CheckStatus$(OBJEXT): ../src/CheckStatus.cpp
-	@$(TESTDIRSTART) ".obj/../src" $(TESTDIREND) $(MKDIR) ".obj/../src"
-	$(COMPILE.cc) $(EXPORTFLAGS) $(OUTPUT_OPTION) ../src/CheckStatus.cpp
 
 .obj/SAL_SALData$(OBJEXT): ../src/SAL_SALSubsys.cpp
 	@$(TESTDIRSTART) ".obj/../src" $(TESTDIREND) $(MKDIR) ".obj/../src"

@@ -86,6 +86,42 @@ void SAL_SALData::salInitialize()
 }
 #endif
 
+/**
+ * Returns the name of an error code.
+ **/
+string SAL_SALData::getErrorName(DDS::ReturnCode_t status)
+{
+  return RetCodeName[status];
+}
+
+/**
+ * Check the return status for errors. If there is an error, then terminate.
+ **/
+void SAL_SALData::checkStatus(DDS::ReturnCode_t status, const char *info)
+{
+
+
+  if (status != DDS::RETCODE_OK && status != DDS::RETCODE_NO_DATA)
+  {
+    cerr << "Error in " << info << ": " << getErrorName(status).c_str() << endl;
+    exit(1);
+  }
+}
+
+/**
+ * Check whether a valid handle has been returned. If not, then terminate.
+ **/
+void SAL_SALData::checkHandle(void *handle, string info)
+{
+
+  if (!handle)
+  {
+    cerr << "Error in " << info.c_str() << ": Creation failed: invalid handle" << endl;
+    exit(1);
+  }
+}
+
+
 double SAL_SALData::getCurrentTime()
 {
      struct timeval now;
@@ -275,7 +311,7 @@ salReturn SAL_SALData::salTelemetrySub(int actorIdx)
    sSeqExpr.length(0);
    // create topic
    char ftopicName[128];
-   sprintf(ftopicName,"%s_%s","filtered",sal[actorIdx].topicName);
+   sprintf(ftopicName,"%s_%d","filtered",actorIdx);
    createContentFilteredTopic(actorIdx,ftopicName, sFilter.in(), sSeqExpr);
    // create DataReader
    createReader(actorIdx,true);
@@ -1180,7 +1216,7 @@ salReturn SAL_SALData::salEventSub(char *topicName)
    sSeqExpr.length(0);
    // create topic
    char ftopicName[128];
-   sprintf(ftopicName,"%s_%s","filtered",sal[actorIdx].topicName);
+   sprintf(ftopicName,"%s_%d","filtered",actorIdx);
    createContentFilteredTopic(actorIdx,ftopicName, sFilter.in(), sSeqExpr);
    // create DataReader
    createReader(actorIdx,true);

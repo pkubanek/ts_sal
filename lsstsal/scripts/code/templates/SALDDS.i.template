@@ -18,7 +18,6 @@
   #include <string.h>
   #include <stdlib.h>
   #include "SAL_defines.h"
-  #include "CheckStatus.h"
   #include "SAL_SALData.h"
 
 %}
@@ -60,6 +59,9 @@
       salReturn salTelemetryPub(char *topicName);
       salReturn salTelemetrySub(char *topicName);
 
+      string getErrorName(DDS::ReturnCode_t status);
+      void checkStatus(DDS::ReturnCode_t status, const char *info);
+      void checkHandle(void *handle, string info);
 
       double getCurrentTime();
       double getRcvdTime();

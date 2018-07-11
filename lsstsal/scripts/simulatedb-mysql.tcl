@@ -126,6 +126,17 @@ proc simulate_parallel_value { topic } {
 }
 
 
+proc simulate_long_value { } {
+  set v [expr int(rand()*20000)+90]
+  return $v
+}
+
+
+proc simulate_longlong_value { } {
+  set v [expr int(rand()*2000000)+90]
+  return $v
+}
+
 
 
 proc simulate_int_value { } {

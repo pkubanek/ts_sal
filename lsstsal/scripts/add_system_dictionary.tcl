@@ -16,34 +16,13 @@ proc calcshmid { subsys } {
 #
 #  e.g. set SYSDIC(m2,hasGenerics) 1
 #
-#set SYSDIC(archiver,hasGenerics) 1
-#set SYSDIC(atHeaderService,hasGenerics) 1
-#set SYSDIC(atcs,hasGenerics) 1
-#set SYSDIC(atMonochromator,hasGenerics) 1
-#set SYSDIC(calibrationCBP,hasGenerics) 1
-#set SYSDIC(calibrationMonochromator,hasGenerics) 1
-#set SYSDIC(calibrationElectrometer,hasGenerics) 1
-#set SYSDIC(calibrationSpectrometer,hasGenerics) 1
-#set SYSDIC(catchuparchiver,hasGenerics) 1
-#set SYSDIC(eec,hasGenerics) 1
-#set SYSDIC(efd,hasGenerics) 1
-#set SYSDIC(headerService,hasGenerics) 1
-#set SYSDIC(hexapod,hasGenerics) 1
+
 #
 #  WARNING, m1m3 is still using the Start,Stop etc variant for the lifecycle 
 #           commands, this will change to match the other CSC's eventually
 #
 set SYSDIC(m1m3,hasGenericCommands) 1
 set SYSDIC(m1m3,hasGenericEvents) 1
-#
-#
-#set SYSDIC(processingcluster,hasGenerics) 1
-#set SYSDIC(rotator,hasGenerics) 1
-#set SYSDIC(summitFacility,hasGenerics) 1
-#set SYSDIC(tcsAOCS,hasGenerics) 1
-#set SYSDIC(tcsOfc,hasGenerics) 1
-#set SYSDIC(tcsWEP,hasGenerics) 1
-#set SYSDIC(vms,hasGenerics) 1
 
 set SYSDIC(systems) "atArchiver atcamera atHeaderService accl archiver atcs atMonochromator atScheduler atWhiteLight calibrationCBP calibrationElectrometer calibrationMonochromator calibrationSpectrometer camera 
 catchuparchiver comcam headerService dome domeADB domeAPS domeLouvers domeLWS domeMONCS domeTHCS eec efd environment EXA hexapod lasercal m1m3 m2ms MTMount network ocs operations power promptProcessing PTG rotator sedSpectrometer sequencer scheduler seeing skycam summitFacility system tcs tcsOfc tcsWEP vms"
@@ -53,9 +32,6 @@ foreach s $SYSDIC(systems) {set SYSDIC($s,type) system}
 set SYSDIC(datatypes) "byte short int long float string int64 double ubyte ushort uint ulong"
 
 
-#set SYSDIC(calibrationElectrometer,keyedID) 1
-#set SYSDIC(calibrationElectrometer,1) "mtElectrometer"
-#set SYSDIC(calibrationElectrometer,2) "atElectrometer"
 
 set SYSDIC(hexapod,keyedID) 1
 set SYSDIC(hexapod,1) "cameraHexapod"

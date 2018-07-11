@@ -190,6 +190,34 @@ global TLMS TLM_ALIASES EVENT_ENUM
 "
    close $fin
    close $fout
+   set fout [open [file root $fname]_enums_to_UML.xml w]
+   puts $fout "<?xml version=\"1.0\" encoding=\"windows-1252\"?>
+<XMI xmi.version=\"1.1\" xmlns:UML=\"omg.org/UML1.3\" timestamp=\"2017-11-09 11:42:06\">
+	<XMI.header>
+		<XMI.documentation>
+			<XMI.exporter>salgenerator</XMI.exporter>
+		</XMI.documentation>
+	</XMI.header>
+	<XMI.content>
+"
+   set enumid 10000
+   set evts [array names EVENT_ENUM]
+   foreach e $evts {
+          incr enumid 1
+          set i 1
+          set enum [string trim $e "\{\}"]
+          puts $fout "		<packagedElement xmi:type='uml:Enumeration' xmi:id='_enum_[set enumid]' name='[set enum]'>"
+          set cnst [lindex [split $enum :] 1]
+          foreach id [split $cnst ,] {
+              puts $fout "			<ownedLiteral xmi:type='uml:EnumerationLiteral' xmi:id='_enum_[set enumid]_[set i]' name='[set id]'/>"
+              incr i 1
+          }
+   }
+   puts $fout "		</packagedElement>
+	</XMI.content>
+</XMI>
+"
+   close $fout
 }
 
 

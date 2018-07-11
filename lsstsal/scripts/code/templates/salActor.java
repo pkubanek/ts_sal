@@ -55,6 +55,8 @@ public class salActor {
         public Boolean isEventWriter;
         public Boolean isProcessor;
         public Boolean isCommand;
+        public Boolean tuneableQos;
+        public int historyDepth;
         public int debugLevel;
         public int maxSamples;
         public int sndSeqNum;
@@ -77,6 +79,8 @@ public class salActor {
 	this.isEventReader = false;
 	this.isEventWriter = false;
 	this.isProcessor = false;
+        this.tuneableQos = true;
+        this.historyDepth = 1000;
         this.maxSamples = 999999999;
     }
 }
