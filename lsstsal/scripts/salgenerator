@@ -134,40 +134,6 @@ if { $OPTIONS(validate) } {
         stdlog "Imported $i $t interface definitions"
        }
       }
-      catch {
-         set gchk [exec grep "_command_start<" [set i]_Commands.xml]
-         set SYSDIC($i,hasGenericCommands) 1
-      }
-      catch {
-         set gchk [exec grep "_logevent_SummaryState<" [set i]_Events.xml]
-         set SYSDIC($i,hasGenericEvents) 1
-      }
-      if { [info exists SYSDIC($i,hasGenericCommands)] } {
-        stdlog "Generic Commands included in XML"
-      } else {
-       if { $t == "Commands" } {
-        stdlog "Add lifecycle commands"
-        set SALSubsys $i
-        source $SAL_DIR/generateLifecycleCommands.tcl
-        set fxml [open /tmp/lifecycle.xml w]
-        puts $fxml $SAL_LIFECYCLE_COMMANDS 
-        close $fxml
-        parseXMLtoidl /tmp/lifecycle.xml
-       }
-      }
-      if { [info exists SYSDIC($i,hasGenericEvents)] } {
-        stdlog "Generic Events included in XML"
-      } else {
-       if { $t == "Events" } {
-        stdlog "Add generic statemachine events"
-        set SALSubsys $i
-        source $SAL_DIR/generateGenericEvents.tcl
-        set fxml [open /tmp/genericevent.xml w]
-        puts $fxml $SAL_GENERIC_EVENTS 
-        close $fxml
-        parseXMLtoidl /tmp/genericevent.xml
-       }
-      }
     }
     stdlog "Validating $i interface IDL format definitions"
     set new [lsort [glob $SAL_WORK_DIR/idl-templates/[set i]_*.idl]]
@@ -409,12 +375,14 @@ if { $OPTIONS(db) } {
   }
   foreach subsys $TARGETS {
      set topic [file rootname $subsys]
-     stdlog "Generating simulated facility database table for $topic"
-     set fout [open $SAL_WORK_DIR/sql/$topic-[join $dbstart -]_to_[join $dbend -].sql w]
-     simulateperiod $fout $topic "$dbstart" "$dbend" $dbfreq
-     close $fout
-     stdlog "   data in $SAL_WORK_DIR/sql/$topic-[join $dbstart -]_to_[join $dbend -].sql"
-  }
+     if { [file exists $SAL_WORK_DIR/sql/[set topic].sqldef] } {
+       stdlog "Generating simulated facility database table for $topic"
+       set fout [open $SAL_WORK_DIR/sql/$topic-[join $dbstart -]_to_[join $dbend -].sql w]
+       simulateperiod $fout $topic "$dbstart" "$dbend" $dbfreq
+       close $fout
+       stdlog "   data in $SAL_WORK_DIR/sql/$topic-[join $dbstart -]_to_[join $dbend -].sql"
+     }
+   }
 }
 
 

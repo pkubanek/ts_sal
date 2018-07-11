@@ -2,7 +2,7 @@
 
 proc parseXMLtoidl { fname } { 
 global IDLRESERVED SAL_WORK_DIR SAL_DIR CMDS CMD_ALIASES EVTS EVENT_ALIASES
-global TLMS TLM_ALIASES EVENT_ENUM EVENT_ENUMS UNITS
+global TLMS TLM_ALIASES EVENT_ENUM EVENT_ENUMS UNITS ENUM_DONE
    set fin [open $fname r]
    set fout ""
    set ctype ""
@@ -38,6 +38,8 @@ global TLMS TLM_ALIASES EVENT_ENUM EVENT_ENUMS UNITS
       if { $tag == "Value" }           {set vvalue $value}
       if { $tag == "Subsystem" }       {set subsys $value}
       if { $tag == "Enumeration" }     {
+       if { [info exists ENUM_DONE($value)] == 0 } {
+         set ENUM_DONE($value) 1
          if { $intopic } {
            lappend EVENT_ENUM($alias) "$item:$value"
            set EVENT_ENUMS($alias,$item) "$value"
@@ -45,6 +47,7 @@ global TLMS TLM_ALIASES EVENT_ENUM EVENT_ENUMS UNITS
            lappend EVENT_ENUM([set subsys]_shared) "generic_shared:$value"
            set EVENT_ENUMS([set subsys]_shared,generic_shared) "$value"
          }
+       }
       }
       if { $tag == "/SALEvent" } {
          set intopic 0
