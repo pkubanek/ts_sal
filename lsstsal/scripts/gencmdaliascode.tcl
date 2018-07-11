@@ -15,7 +15,8 @@ global CMD_ALIASES CMDS DONE_CMDEVT
       int acceptCommand_[set i]( SALData_command_[set i]C *data);
       salReturn waitForCompletion_[set i]( int cmdSeqNum , unsigned int timeout );
       salReturn ackCommand_[set i]( int cmdSeqNum, salLONG  ack, salLONG error, char *result );
-      salReturn getResponse_[set i](SALData::ackcmdSeq data);"
+      salReturn getResponse_[set i](SALData::ackcmdSeq data);
+      salReturn getResponse_[set i]C(SALData_ackcmdC *data);"
        }
      }
   }
@@ -262,6 +263,58 @@ salReturn SAL_SALData::getResponse_[set i](SALData::ackcmdSeq data)
    \} else \{
       if (debugLevel > 8) \{
          cout << \"=== \[getResponse_[set i]\] No ack yet!\" << endl;
+      \}
+      status = SAL__CMD_NOACK;
+   \}
+  \}
+  istatus = SALReader->return_loan(data, info);
+  checkStatus(istatus, \"SALData::ackcmdDataReader::return_loan\");
+  return status;
+\}
+"
+   puts $fout "
+salReturn SAL_SALData::getResponse_[set i]C(SALData_ackcmdC *response)
+\{
+  int actorIdx = SAL__SALData_ackcmd_ACTOR;
+  int actorIdxCmd = SAL__SALData_command_[set i]_ACTOR;
+  SampleInfoSeq info;
+  SALData::ackcmdSeq data;
+  ReturnCode_t status = SAL__CMD_NOACK;
+  ReturnCode_t istatus =  -1;
+  int j=0;
+  DataReader_var dreader = getReader2(actorIdx);
+  SALData::ackcmdDataReader_var SALReader = SALData::ackcmdDataReader::_narrow(dreader.in());
+  checkHandle(SALReader.in(), \"SALData::ackcmdDataReader::_narrow\");
+  istatus = SALReader->take(data, info, 1,ANY_SAMPLE_STATE, ANY_VIEW_STATE, ANY_INSTANCE_STATE);
+  sal\[actorIdxCmd\].rcvSeqNum = 0;
+  sal\[actorIdxCmd\].rcvOrigin = 0;
+  checkStatus(istatus, \"SALData::ackcmdDataReader::take\");
+  if (data.length() > 0) \{
+   j = data.length()-1;
+   if (data\[j\].private_seqNum > 0) \{
+    if (debugLevel > 8) \{
+      cout << \"=== \[getResponse_[set i]\] reading a message containing :\" << endl;
+      cout << \"    seqNum   : \" << data\[j\].private_seqNum << endl;
+      cout << \"    error    : \" << data\[j\].error << endl;
+      cout << \"    ack      : \" << data\[j\].ack << endl;
+      cout << \"    result   : \" << data\[j\].result << endl;
+      cout << \"    sample-state : \" << info\[j\].sample_state << endl;
+      cout << \"    view-state : \" << info\[j\].view_state << endl;
+      cout << \"    instance-state : \" << info\[j\].instance_state << endl;
+    \}
+    status = data\[j\].private_seqNum;;
+    rcvdTime = getCurrentTime();
+    sal\[actorIdxCmd\].rcvSeqNum = data\[j\].private_seqNum;
+    sal\[actorIdxCmd\].rcvOrigin = data\[j\].private_origin;
+    sal\[actorIdxCmd\].ack = data\[j\].ack;
+    sal\[actorIdxCmd\].error = data\[j\].error;
+    strcpy(sal\[actorIdxCmd\].result,DDS::string_dup(data\[j\].result));
+    response->ack = data\[j\].ack;
+    response->error = data\[j\].error;
+    response->result= DDS::string_dup(data\[j\].result);
+   \} else \{
+      if (debugLevel > 8) \{
+         cout << \"=== \[getResponse_[set i]C\] No ack yet!\" << endl;
       \}
       status = SAL__CMD_NOACK;
    \}
@@ -592,7 +645,7 @@ global CMD_ALIASES CMDS
         .def( \"acceptCommand_[set i]\",      &SAL_SALData::acceptCommand_[set i] )
         .def( \"ackCommand_[set i]\",         &SAL_SALData::ackCommand_[set i] )
         .def( \"waitForCompletion_[set i]\",  &SAL_SALData::waitForCompletion_[set i] )
-        .def( \"getResponse_[set i]\",        &SAL_SALData::getResponse_[set i] )
+        .def( \"getResponse_[set i]\",        &SAL_SALData::getResponse_[set i]C )
       "
     } else {
       stdlog "Alias $i has no parameters - uses standard [set subsys]_command"

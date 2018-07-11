@@ -60,6 +60,12 @@ PYBIND11_MODULE(SALPY_SALData,m){
  
 
 // INSERT_SAL_PYTHON_DATATYPES
+    py::class_<SALData_ackcmdC>(m,"SALData_ackcmdC" )    
+        .def(py::init<>())
+        .def_readwrite( "ack", &SALData_ackcmdC::ack )    
+        .def_readwrite( "error", &SALData_ackcmdC::error )    
+        .def_readwrite( "result", &SALData_ackcmdC::result )    
+        ;
 
 #ifdef SAL_SUBSYSTEM_ID_IS_KEYED
     py::class_<SAL_SALData>(m,"SAL_SALData")    
@@ -139,11 +145,6 @@ PYBIND11_MODULE(SALPY_SALData,m){
 // INSERT_SAL_PYTHON_GETPUT
         ;
 
-    py::class_< SALData_ackcmdC >(m, "SALData_ackcmdC" )    
-        .def_readwrite( "ack", &SALData_ackcmdC::ack )    
-        .def_readwrite( "error", &SALData_ackcmdC::error )    
-        .def_readwrite( "result", &SALData_ackcmdC::result )    
-        ;
 
         m.attr("SAL__OK") 		= SAL__OK;
 	m.attr("SAL__ERR") 		= SAL__ERR;

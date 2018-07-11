@@ -778,13 +778,13 @@ puts stdout "done salidlgen $base $lang"
          set incfiles [glob [set base]/cpp/*.h]
          puts stdout "Updating include files : $incfiles"
          catch { foreach i $incfiles {  exec cp $i $SAL_DIR/include/. } }
-         exec cp [set base]/cpp/libsacpp_[set base]_types.so $SAL_DIR/../lib/.
+         exec cp [set base]/cpp/libsacpp_[set base]_types.so $SAL_WORK_DIR/lib/.
          exec ln -sf $SAL_WORK_DIR/[set base]/cpp/src/SAL_[set base].cpp $SAL_WORK_DIR/[set id]/cpp/src/.
          exec ln -sf $SAL_WORK_DIR/[set base]/cpp/src/SAL_[set base].h $SAL_WORK_DIR/[set id]/cpp/src/.
          salcpptestgen $base $id
       }
       if { $lang == "java" } {
-         exec cp [set base]/java/saj_[set base]_types.jar $SAL_DIR/../lib/.
+         exec cp [set base]/java/saj_[set base]_types.jar $SAL_WORK_DIR/lib/.
          saljavaclassgen $base $id
       }
       if { $lang == "python" } {
