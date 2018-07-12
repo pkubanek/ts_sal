@@ -456,7 +456,7 @@ global CMD_ALIASES CMDS SYSDIC
                       data.action    = aCmd.value\[0\].action;
                       data.value     = aCmd.value\[0\].value;"
            foreach p $CMDS($subsys,$i,param) {
-              set apar [lindex [split [lindex [string trim $p "\{\}"] 1] "()"] 0] 
+              set apar [lindex [split [lindex [string trim $p "\{\}"] end] "()"] 0] 
               puts $fout "                      data.$apar = aCmd.value\[0\].$apar;"
            }
            puts $fout "

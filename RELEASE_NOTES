@@ -1,4 +1,10 @@
-This is release 3.7.0 of the SAL SDK (April 10th, 2018)
+This is release 3.7.1RC1 of the SAL SDK (April 10th, 2018)
+
+
+Changes for 3.7.1
+
+The salgenerator will no longer auto-generate generic commands or events, they must now 
+be defined in the UML mode and flow down to the XML from there.
 
 Please refer to the SAL User Guide for installation instructions.
 Changes for 3.7.0.
