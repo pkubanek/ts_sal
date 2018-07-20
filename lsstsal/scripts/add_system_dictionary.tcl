@@ -31,7 +31,7 @@ foreach s $SYSDIC(systems) {set SYSDIC($s,type) system}
 
 set SYSDIC(datatypes) "byte short int long float string int64 double ubyte ushort uint ulong"
 
-
+set SYSDIC(calibrationElectrometer,keyedID) 1
 
 set SYSDIC(hexapod,keyedID) 1
 set SYSDIC(hexapod,1) "cameraHexapod"
