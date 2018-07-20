@@ -170,7 +170,7 @@ if { $OPTIONS(maven) } {
 #     puts stdout "$result"
      cd maven/[set subsys]_[set SALVERSION]  
      puts stdout "Running maven install"
-     catch { set result [exec mvn -Dmaven.javadoc.skip=true test] } bad
+     catch { set result [exec mvn -Dmaven.javadoc.skip=true -DskipTests install] } bad
      puts stdout "$result"
 #     puts stdout "Updating local repository"
 #     catch { set result [exec mvn install -DperformRelease=true -DcreateChecksum=true] } bad

@@ -228,7 +228,7 @@ using namespace std;
              if { [string range [lindex $rec 1] 0 7] != "private_" && [llength $rec] > 1 } {
                puts $fhdr [typeidltoc $rec]
                if { $VPROPS(iscommand) } {
-                  if { [lsearch "device property action value" $VPROPS(name)] < 0 } {
+                  if { [lsearch "device property action itemValue" $VPROPS(name)] < 0 } {
                      puts $fhlv [typeidltolv $rec]
                   }
                } else {
@@ -300,7 +300,7 @@ using namespace std;
       string<32>	device;
       string<32>	property;
       string<32>	action;
-      string<32>	value;
+      string<32>	itemValue;
       string<128>	modifiers;
 	\};
 	#pragma keylist command
@@ -336,7 +336,7 @@ struct [set subsys]_commandC
       std::string	device;
       std::string	property;
       std::string	action;
-      std::string	value;
+      std::string	itemValue;
       std::string	modifiers;
 
 \};
@@ -441,7 +441,7 @@ global VPROPS TYPEFORMAT
          puts $fcod4 "    myData.$VPROPS(name)=\"LSST\";"
          puts $fcod5 "    myData.$VPROPS(name)=argv\[$idx\];"
          puts $fcod6 "    cout << \"    $VPROPS(name) : \" << data->$VPROPS(name) << endl;"
-         if { [lsearch "device property action value" $VPROPS(name)] < 0 } {
+         if { [lsearch "device property action itemValue" $VPROPS(name)] < 0 } {
               puts $fcod7 "
            int $VPROPS(name)Size = (*(data->$VPROPS(name)))->size ;
            int i[set VPROPS(name)];
@@ -455,7 +455,7 @@ global VPROPS TYPEFORMAT
          }
          puts $fcod10 "myData.$VPROPS(name)=sys.argv\[$idx\]"
          puts $fcod11 "myData.$VPROPS(name)=\"LSST\""
-         if { [lsearch "device property action value" $VPROPS(name)] < 0 } {
+         if { [lsearch "device property action itemValue" $VPROPS(name)] < 0 } {
                puts $fcod12 "             Outgoing_[set VPROPS(topic)]->[set VPROPS(name)]=[set VPROPS(base)]_memIO->client\[LVClient\].[set VPROPS(topic)]LV_[set VPROPS(name)]_bufferOut;"
                puts $fcod13 "             strcpy([set VPROPS(base)]_memIO->client\[LVClient\].[set VPROPS(topic)]LV_[set VPROPS(name)]_bufferIn,Incoming_[set VPROPS(topic)]->[set VPROPS(name)].c_str());"
          }
@@ -517,7 +517,7 @@ proc genkeyedidl { fout base } {
 	  string<32>	device;
 	  string<32>	property;
 	  string<32>	action;
-	  string<32>	value;
+	  string<32>	itemValue;
 	  string<128>	modifiers;
 	\};
 	#pragma keylist command [set base]ID

@@ -11,8 +11,8 @@ source $SAL_DIR/sal_version.tcl
 set DEST /data/gitrepo/ts_sal_runtime
 exec mkdir -p $DEST/tcs
 
-puts stdout "Copying tcs simulator"
-exec cp -rv /data/gitrepo/ts_visit_simulator/test/tcs/tcs $DEST/test/tcs/.
+puts stdout "Copying visit simulator"
+exec cp -rv $SAL_WORK_DIR/visitSimulator $DEST/test/.
 
 puts stdout "Updating XML"
 set all [glob $SAL_WORK_DIR/*.xml]

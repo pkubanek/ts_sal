@@ -144,7 +144,7 @@ int SAL_SALData::acceptCommand_[set i]( SALData_command_[set i]C *data )
       cout << \"    device   : \" << Instances\[j\].device << endl;
       cout << \"    property : \" << Instances\[j\].property << endl;
       cout << \"    action   : \" << Instances\[j\].action << endl;
-      cout << \"    value    : \" << Instances\[j\].value << endl;
+      cout << \"    itemValue: \" << Instances\[j\].itemValue << endl;
       cout << \"    sample-state : \" << info\[j\].sample_state << endl;
       cout << \"    view-state : \" << info\[j\].view_state << endl;
       cout << \"    instance-state : \" << info\[j\].instance_state << endl;
@@ -390,6 +390,7 @@ global CMD_ALIASES CMDS SYSDIC
 	  command_[set i]DataWriter SALWriter = command_[set i]DataWriterHelper.narrow(dwriter);
 	  data.private_revCode = \"LSST TEST COMMAND\";
 	  data.private_seqNum = sal\[actorIdx\].sndSeqNum;
+          data.private_origin = 1;
           data.private_sndStamp = getCurrentTime();"
       if { [info exists SYSDIC($subsys,keyedID)] } {
         puts $fout "	  data.SALDataID = subsystemID;
@@ -400,7 +401,7 @@ global CMD_ALIASES CMDS SYSDIC
       puts $fout "
 	  if (debugLevel > 0) \{
 	    System.out.println( \"=== \[issueCommand\] $i writing a command containing :\");
-	    System.out.println( data.device + \".\" + data.property + \".\" + data.action + \" : \" + data.value);
+	    System.out.println( data.device + \".\" + data.property + \".\" + data.action + \" : \" + data.itemValue);
 	  \}
 	  status = SALWriter.write(data, cmdHandle);
 	  sal\[actorIdx\].sndSeqNum++;
@@ -437,7 +438,7 @@ global CMD_ALIASES CMDS SYSDIC
       			System.out.println(  \"    device   : \" + aCmd.value\[0\].device);
       			System.out.println(  \"    property : \" + aCmd.value\[0\].property);
       			System.out.println(  \"    action   : \" + aCmd.value\[0\].action);
-      			System.out.println(  \"    value    : \" + aCmd.value\[0\].value);
+      			System.out.println(  \"    itemValue: \" + aCmd.value\[0\].itemValue);
     		    \}
     		    status = aCmd.value\[0\].private_seqNum;
     		    double rcvdTime = getCurrentTime();
@@ -454,9 +455,9 @@ global CMD_ALIASES CMDS SYSDIC
                       data.device    = aCmd.value\[0\].device;
                       data.property  = aCmd.value\[0\].property;
                       data.action    = aCmd.value\[0\].action;
-                      data.value     = aCmd.value\[0\].value;"
+                      data.itemValue = aCmd.value\[0\].itemValue;"
            foreach p $CMDS($subsys,$i,param) {
-              set apar [lindex [split [lindex [string trim $p "\{\}"] 1] "()"] 0] 
+              set apar [lindex [split [lindex [string trim $p "\{\}"] end] "()"] 0] 
               puts $fout "                      data.$apar = aCmd.value\[0\].$apar;"
            }
            puts $fout "

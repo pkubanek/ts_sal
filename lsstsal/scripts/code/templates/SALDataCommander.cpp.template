@@ -23,11 +23,11 @@ using namespace SALData;
 extern "C"
 {
   OS_API_EXPORT
-  int SALDataCommander(char *device, char *property, char *action, char *value, char *modifiers);
+  int SALDataCommander(char *device, char *property, char *action, char *itemValue, char *modifiers);
 }
 
 
-int SALDataCommander(unsigned int timeout ,char *device, char *property, char *action, char *value, char *modifiers)
+int SALDataCommander(unsigned int timeout ,char *device, char *property, char *action, char *itemValue, char *modifiers)
 {
   salReturn status = SAL__OK;
   int cmdId;
@@ -50,7 +50,7 @@ int SALDataCommander(unsigned int timeout ,char *device, char *property, char *a
   command.device = DDS::string_dup(device);
   command.property = DDS::string_dup(property);
   command.action = DDS::string_dup(action);
-  command.value = DDS::string_dup(value);
+  command.itemValue = DDS::string_dup(itemValue);
   command.modifiers = DDS::string_dup(modifiers);
   cmdId = cmd.issueCommand(command);
 
