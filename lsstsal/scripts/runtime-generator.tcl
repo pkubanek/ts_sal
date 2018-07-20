@@ -57,20 +57,6 @@ foreach subsys $SYSDIC(systems) {
   }
 }
 
-puts stdout  "Generating C++"
-foreach subsys $SYSDIC(systems) {
-  if { [info exists DO($subsys)] } {
-   set bad ""
-   set result ""
-   catch { set results [exec salgenerator $subsys sal cpp ] } bad
-   puts stdout "$result $bad"
-   set bad ""
-   set result ""
-   catch { set results [exec salgenerator $subsys lib ] } bad
-   puts stdout "$result $bad"
-  }
-}
-
 puts stdout  "Generating Java"
 foreach subsys $SYSDIC(systems) {
   if { [info exists DO($subsys)] } {

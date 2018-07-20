@@ -181,6 +181,7 @@ while { [gets $fin rec] > -1 } {
    if { [lindex $rec 2] > 1 } {
       set nd [lindex $rec 2]
 #puts stdout "nditem $fout $fo2 $name $type $nd"
+      if { [string range $type 0 5] == "string" } { set type string }
       nditem $flog $fo2 $name $type $nd
    } else {
 #puts stdout "olddoitem $fout $fo2 $name $type"

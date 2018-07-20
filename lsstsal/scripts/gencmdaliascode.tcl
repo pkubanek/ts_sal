@@ -390,6 +390,7 @@ global CMD_ALIASES CMDS SYSDIC
 	  command_[set i]DataWriter SALWriter = command_[set i]DataWriterHelper.narrow(dwriter);
 	  data.private_revCode = \"LSST TEST COMMAND\";
 	  data.private_seqNum = sal\[actorIdx\].sndSeqNum;
+          data.private_origin = 1;
           data.private_sndStamp = getCurrentTime();"
       if { [info exists SYSDIC($subsys,keyedID)] } {
         puts $fout "	  data.SALDataID = subsystemID;
