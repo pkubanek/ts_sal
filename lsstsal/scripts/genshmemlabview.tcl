@@ -69,7 +69,7 @@ global SAL_WORK_DIR EVENT_ENUMS
          puts $fout "      long	cmdSeqNum;"
       }
       if { [string range [lindex $it 1] 0 7] != "private_" && [lindex $it 1] != "[set subsys]ID;" } {
-       if { [lsearch "device\; property\; action\; value\;" [lindex $it 1]] < 0 } {
+       if { [lsearch "device\; property\; action\; itemValue\;" [lindex $it 1]] < 0 } {
          set name [string trim [lindex $it 1] ";"]
          if { [info exists EVENT_ENUMS($topic,$name)] } {
            puts $fout "$rec	// enum : $EVENT_ENUMS($topic,$name)"
@@ -128,7 +128,7 @@ global SAL_DIR SAL_WORK_DIR SYSDIC TELEMETRY_ALIASES LVSTRINGS
      if { [lindex $crec 0] == "StrHdl" && $sname != "" } {
        set param [string trim [lindex $crec 1] "*;"]
        set slen [lindex $crec 3]
-       if { [lsearch "device property action value" $param] < 0 } {
+       if { [lsearch "device property action itemValue" $param] < 0 } {
          set LVSTRINGS([set sname]_[set param]) $slen
          puts $fout $rec
        }
@@ -1090,13 +1090,13 @@ global SAL_DIR SAL_WORK_DIR
                cout << \"Client \" << LVClient << \" got a response \" << status << \" [set name]\" << endl;
           \}
           [set base]_memIO->client\[LVClient\].hasReader_[set base]_ackcmd = true;
-          if (status == SAL__CMD_COMPLETE) \{
+          if (status != SAL__CMD_NOACK) \{
              [set base]_memIO->client\[LVClient\].shmemIncoming_[set base]_[set name]_rcvSeqNum = mgr\[LVClient\].getIntProperty(SAL__[set base]_[set name]_ACTOR , \"rcvSeqNum\");
              [set base]_memIO->client\[LVClient\].shmemIncoming_[set base]_[set name]_cmdStatus = mgr\[LVClient\].getIntProperty(SAL__[set base]_[set name]_ACTOR , \"ack\");
              [set base]_memIO->client\[LVClient\].shmemIncoming_[set base]_[set name]_errorCode = mgr\[LVClient\].getIntProperty(SAL__[set base]_[set name]_ACTOR , \"error\");
              [set base]_memIO->client\[LVClient\].hasIncoming_[set base]_[set name]_ackcmd = true;
              if (iverbose) \{
-                 cout << \"Client \" << LVClient << \" command COMPLETE cmdId= \" << [set base]_memIO->client\[LVClient\].shmemIncoming_[set base]_[set name]_rcvSeqNum << \" [set name]\" << endl;
+                 cout << \"Client \" << LVClient << \" command ack cmdId= \" << [set base]_memIO->client\[LVClient\].shmemIncoming_[set base]_[set name]_rcvSeqNum << \" [set name]\" << \"status = \" << status << endl;
             \}
           \}
         \}

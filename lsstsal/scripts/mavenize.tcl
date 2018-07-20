@@ -199,7 +199,7 @@ public class [set subsys]CommanderTest extends TestCase \{
 	    command.device = \"$alias\";
 	    command.property =  \"\";
 	    command.action =  \"\";
-	    command.value = \"\";
+	    command.itemValue = \"\";
 
 	    cmdId = mgr.issueCommand_[set alias](command);
 
