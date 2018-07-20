@@ -1,6 +1,40 @@
-This is release 3.7.0 of the SAL SDK (April 10th, 2018)
+This is release 3.7.1 of the SAL SDK (July 20th, 2018)
+
+
+Changes for 3.7.1
+
+****************IMPORTANT***************************************************************
+The salgenerator will no longer auto-generate generic commands or events, they must now 
+be defined in the UML model and flow down to the XML from there.
+****************************************************************************************
 
 Please refer to the SAL User Guide for installation instructions.
+
+Fixed java commanders to include an origin field (temporarily a default)
+
+Fixed SQL table generator string handling
+
+Improved runtime generator scripts
+
+Reduced unit test time
+
+Fixed LabVIEW command/response issues
+
+Added missing pybind11 wrappers
+
+Added generic UML generator with Magic Draw support
+
+Moved checkStatus into SAL classes
+
+Added tuneableQos support to java api
+
+Cleaned up c++ with/without python library build
+
+Changed generated Makefiles to use SAL_WORK_DIR for libraries
+
+Speed up maven CI by ommitting no-value tests
+
+
 Changes for 3.7.0.
 
 Added support for Enumerations, either per item , or globally

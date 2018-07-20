@@ -31,7 +31,7 @@ public class SALDataCommander {
 	    command.device =    args[1];
 	    command.property =  args[2];
 	    command.action =    args[3];
-	    command.value =     args[4];
+	    command.itemValue = args[4];
 	    command.modifiers = args[5];
 
 	    cmdId = mgr.issueCommand(command);

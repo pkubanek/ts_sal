@@ -69,7 +69,7 @@ global SAL_WORK_DIR EVENT_ENUMS
          puts $fout "      long	cmdSeqNum;"
       }
       if { [string range [lindex $it 1] 0 7] != "private_" && [lindex $it 1] != "[set subsys]ID;" } {
-       if { [lsearch "device\; property\; action\; value\;" [lindex $it 1]] < 0 } {
+       if { [lsearch "device\; property\; action\; itemValue\;" [lindex $it 1]] < 0 } {
          set name [string trim [lindex $it 1] ";"]
          if { [info exists EVENT_ENUMS($topic,$name)] } {
            puts $fout "$rec	// enum : $EVENT_ENUMS($topic,$name)"
@@ -128,7 +128,7 @@ global SAL_DIR SAL_WORK_DIR SYSDIC TELEMETRY_ALIASES LVSTRINGS
      if { [lindex $crec 0] == "StrHdl" && $sname != "" } {
        set param [string trim [lindex $crec 1] "*;"]
        set slen [lindex $crec 3]
-       if { [lsearch "device property action value" $param] < 0 } {
+       if { [lsearch "device property action itemValue" $param] < 0 } {
          set LVSTRINGS([set sname]_[set param]) $slen
          puts $fout $rec
        }
@@ -209,6 +209,7 @@ global SAL_DIR SAL_WORK_DIR SYSDIC TELEMETRY_ALIASES LVSTRINGS
      int shmSize = sizeof([set base]_shmem);
      int lShmId;
      bool shutdown_shmem;
+     int iverbose;
      int [set base]_shmid = 0x[calcshmid $base];
   
         int [set base]_salShmMonitor($idarg);
@@ -310,6 +311,9 @@ using namespace [set base];
       if (getenv(\"LSST_[string toupper [set base]]_LVPOLL\") != NULL) \{
          sscanf(getenv(\"LSST_[string toupper [set base]]_LVPOLL\"),\"%d\",&ipollusecs);
       \}
+      if (getenv(\"LSST_[string toupper [set base]]_LVDEBUG\") != NULL) \{
+         sscanf(getenv(\"LSST_[string toupper [set base]]_LVDEBUG\"),\"%d\",&iverbose);
+      \}
       shutdown_shmem = false;
       int actorIdx = 0;
       [set base]_shmem *[set base]_memIO;
@@ -362,6 +366,9 @@ using namespace [set base];
             [set base]_memIO->client\[LVClient\].inUse = false;
             [set base]_memIO->client\[LVClient\].initialized = false;
             [set base]_memIO->client\[LVClient\].shutdown = false;
+            if (iverbose) \{
+               cout << \"Client \" << LVClient << \" shutdown\" << endl;
+            \}
         \}
        \}
       \}
@@ -402,6 +409,12 @@ extern \"C\" \{
       if (LVClient == 20) \{ return SAL__ERROR; \}
       [set base]_shm_initFlags();
       [set base]_memIO->client\[LVClient\].inUse = true;
+      if (getenv(\"LSST_[string toupper [set base]]_LVDEBUG\") != NULL) \{
+         sscanf(getenv(\"LSST_[string toupper [set base]]_LVDEBUG\"),\"%d\",&iverbose);
+      \}
+      if (iverbose) \{
+         cout << \"Client \" << LVClient << \" connected\" << endl;
+      \}
       return syscall(SYS_gettid);
     \}
 
@@ -409,6 +422,9 @@ extern \"C\" \{
       [set base]_memIO->client\[LVClient\].shutdown = true;
       [set base]_shm_initFlags();
       shmdt([set base]_memIO);
+      if (iverbose) \{
+         cout << \"Client \" << LVClient << \" shmdt\" << endl;
+      \}
       return SAL__OK;
     \}
 
@@ -469,15 +485,24 @@ proc genlvcallback { fout base name } {
         [set base]_memIO->client\[LVClient\].syncI_[set base]_[set name] = true;
         [set base]_memIO->client\[LVClient\].skipOld_[set base]_[set name] = skipOld;
         while ([set base]_memIO->client\[LVClient\].hasReader_[set base]_[set name] == false) \{
-           usleep(1000);
+            usleep(1000);
+            if (iverbose) \{
+               cout << \"Client \" << LVClient << \" registerCallback in wait for reader [set name]\" << endl;
+            \}
         \}
         [set base]_memIO->client\[LVClient\].hasCallback_[set base]_[set name] = true;
         [set base]_memIO->client\[LVClient\].callbackHdl_[set base]_[set name] = handle;
+        if (iverbose) \{
+               cout << \"Client \" << LVClient << \" registerCallback done [set name]\" << endl;
+        \}
         return SAL__OK;
     \}
     int [set base]_shm_cancelCallback_[set name]LV() \{
         [set base]_memIO->client\[LVClient\].hasCallback_[set base]_[set name] = false;
         [set base]_memIO->client\[LVClient\].callbackHdl_[set base]_[set name] = 0;
+        if (iverbose) \{
+               cout << \"Client \" << LVClient << \" cancelCallback done [set name]\" << endl;
+        \}
         return SAL__OK;
     \}
 "
@@ -489,11 +514,17 @@ proc genlvcallback { fout base name } {
         [set base]_memIO->client\[LVClient\].skipOld_[set base]_[set name]_ackcmd = skipOld;
         [set base]_memIO->client\[LVClient\].hasCallback_[set base]_[set name]_ackcmd = true;
         [set base]_memIO->client\[LVClient\].callbackHdl_[set base]_[set name]_ackcmd = handle;
+        if (iverbose) \{
+            cout << \"Client \" << LVClient << \" registerCallback ackcmd\" << endl;
+        \}
         return SAL__OK;
     \}
     int [set base]_shm_cancelCallback_[set name]_ackcmdLV() \{
         [set base]_memIO->client\[LVClient\].hasCallback_[set base]_[set name]_ackcmd = false;
         [set base]_memIO->client\[LVClient\].callbackHdl_[set base]_[set name]_ackcmd = 0;
+        if (iverbose) \{
+               cout << \"Client \" << LVClient << \" cancelCallback done ackcmd\" << endl;
+        \}
         return SAL__OK;
     \}
 "
@@ -513,6 +544,9 @@ proc genlvlaunchcallbacks { fout base ptypes } {
            if ( [set base]_memIO->client\[LVClient\].hasIncoming_[set base]_[set name] ) \{
               [set base]_memIO->client\[LVClient\].hasCallback_[set base]_[set name] = false;
               salActorIdx=SAL__[set base]_[set name]_ACTOR;
+              if (iverbose) \{
+                 cout << \"Client \" << LVClient << \" doing postUserEvent [set name]\" << endl;
+              \}
               PostLVUserEvent([set base]_memIO->client\[LVClient\].callbackHdl_[set base]_[set name], &salActorIdx);
            \}
         \}"
@@ -522,6 +556,9 @@ proc genlvlaunchcallbacks { fout base ptypes } {
            if ( [set base]_memIO->client\[LVClient\].hasIncoming_[set base]_[set name]_ackcmd ) \{
               [set base]_memIO->client\[LVClient\].hasCallback_[set base]_[set name]_ackcmd = false;
               salActorIdx=SAL__[set base]_[set name]_ACTOR;
+              if (iverbose) \{
+                 cout << \"Client \" << LVClient << \" doing postUserEvent [set name]_ackcmd\" << endl;
+              \}
               PostLVUserEvent([set base]_memIO->client\[LVClient\].callbackHdl_[set base]_[set name]_ackcmd, &salActorIdx);
            \}
         \}"
@@ -541,7 +578,13 @@ global SAL_WORK_DIR LVSTRINGS
     int [set base]_shm_salTelemetrySub_[set name]LV() \{
         [set base]_memIO->client\[LVClient\].syncI_[set base]_[set name] = true;
         while ([set base]_memIO->client\[LVClient\].hasReader_[set base]_[set name] == false) \{
+        if (iverbose) \{
+               cout << \"Client \" << LVClient << \" telemetrySub waiting for reader [set name]\" << endl;
+        \}
            usleep(1000);
+        \}
+        if (iverbose) \{
+               cout << \"Client \" << LVClient << \" telemetrySub has reader [set name]\" << endl;
         \}
         return SAL__OK;
     \}
@@ -549,10 +592,22 @@ global SAL_WORK_DIR LVSTRINGS
     int [set base]_shm_getSample_[set name]LV([set base]_[set name]LV *data ) \{
         [set base]_memIO->client\[LVClient\].syncI_[set base]_[set name] = true;
         while ([set base]_memIO->client\[LVClient\].hasReader_[set base]_[set name] == false) \{
+        if (iverbose) \{
+               cout << \"Client \" << LVClient << \" getSample waiting for reader [set name]\" << endl;
+        \}
            usleep(1000);
+        if (iverbose) \{
+               cout << \"Client \" << LVClient << \" getSample has reader [set name]\" << endl;
+        \}
         \}
         if ([set base]_memIO->client\[LVClient\].callbackHdl_[set base]_[set name] != 0) \{
            [set base]_memIO->client\[LVClient\].hasCallback_[set base]_[set name] = true;
+           if (iverbose) \{
+               cout << \"Client \" << LVClient << \" getSample setting hasCallback [set name]\" << endl;
+           \}
+        \}
+        if (iverbose) \{
+               cout << \"Client \" << LVClient << \" getSample hasIncoming [set name]\" << endl;
         \}
         if ( [set base]_memIO->client\[LVClient\].hasIncoming_[set base]_[set name] ) \{"
    set frag [open $SAL_WORK_DIR/include/SAL_[set base]_[set name]shmin.tmp r]
@@ -562,6 +617,9 @@ global SAL_WORK_DIR LVSTRINGS
            [set base]_memIO->client\[LVClient\].hasIncoming_[set base]_[set name] = false;
         \} else \{
            [set base]_memIO->client\[LVClient\].skipOld_[set base]_[set name] = true;
+           if (iverbose) \{
+               cout << \"Client \" << LVClient << \" getSample skipping old [set name]\" << endl;
+           \}
            return SAL__NO_UPDATES;
         \}
         [set base]_memIO->client\[LVClient\].skipOld_[set base]_[set name] = true;
@@ -572,6 +630,9 @@ global SAL_WORK_DIR LVSTRINGS
         int status = SAL__NO_UPDATES;
         [set base]_memIO->client\[LVClient\].syncI_[set base]_[set name] = true;
         [set base]_memIO->client\[LVClient\].skipOld_[set base]_[set name] = false;
+        if (iverbose) \{
+               cout << \"Client \" << LVClient << \" getNextSample [set name]\" << endl;
+        \}
 	status = [set base]_shm_getSample_[set name]LV(data);
         return status;
     \}
@@ -579,9 +640,18 @@ global SAL_WORK_DIR LVSTRINGS
     int [set base]_shm_putSample_[set name]LV([set base]_[set name]LV *data ) \{
         [set base]_memIO->client\[LVClient\].syncO_[set base]_[set name] = true;
         while ([set base]_memIO->client\[LVClient\].hasWriter_[set base]_[set name] == false) \{
+        if (iverbose) \{
+               cout << \"Client \" << LVClient << \" putSample waiting for writer [set name]\" << endl;
+        \}
            usleep(1000);
         \}
+        if (iverbose) \{
+               cout << \"Client \" << LVClient << \" putSample has writer [set name]\" << endl;
+        \}
         if ([set base]_memIO->client\[LVClient\].hasOutgoing_[set base]_[set name]) \{ 
+           if (iverbose) \{
+               cout << \"Client \" << LVClient << \" putSample already have outGoing - error [set name]\" << endl;
+           \}
            return SAL__ERROR;
         \}"
    set frag [open $SAL_WORK_DIR/include/SAL_[set base]_[set name]shmout.tmp r]
@@ -590,7 +660,10 @@ global SAL_WORK_DIR LVSTRINGS
    puts $fout "
         [set base]_memIO->client\[LVClient\].hasOutgoing_[set base]_[set name] = true;
         while ([set base]_memIO->client\[LVClient\].hasOutgoing_[set base]_[set name] == true) \{
-           usleep(1000);
+            if (iverbose) \{
+               cout << \"Client \" << LVClient << \" putSample waiting for written [set name]\" << endl;
+            \}
+            usleep(1000);
         \}
         return SAL__OK;
     \}
@@ -606,20 +679,33 @@ global SAL_WORK_DIR LVSTRINGS
         int cmdId = 0;
         [set base]_memIO->client\[LVClient\].syncO_[set base]_[set name] = true;
         while ([set base]_memIO->client\[LVClient\].hasWriter_[set base]_[set name] == false) \{
+           if (iverbose) \{
+               cout << \"Client \" << LVClient << \" issueCommand waiting for writer [set name]\" << endl;
+            \}
            usleep(1000);
         \}"
    set frag [open $SAL_WORK_DIR/include/SAL_[set base]_[set name]shmout.tmp r]
    while { [gets $frag rec] > -1} {puts $fout $rec}
    close $frag
    puts $fout "
-        [set base]_memIO->client\[LVClient\].hasOutgoing_[set base]_[set name] = true;
+       if (iverbose) \{
+            cout << \"Client \" << LVClient << \" issueCommand has writer [set name]\" << endl;
+       \}
+       [set base]_memIO->client\[LVClient\].hasOutgoing_[set base]_[set name] = true;
         [set base]_memIO->client\[LVClient\].shmemOutgoing_[set base]_[set name]_cmdSeqNum = 0;
         while (cmdId == 0) \{
-           cmdId = [set base]_memIO->client\[LVClient\].shmemOutgoing_[set base]_[set name]_cmdSeqNum;
+          if (iverbose) \{
+               cout << \"Client \" << LVClient << \" issueCommand waiting for cmdId [set name]\" << endl;
+          \}
+          cmdId = [set base]_memIO->client\[LVClient\].shmemOutgoing_[set base]_[set name]_cmdSeqNum;
            usleep(1000);
         \}
         [set base]_memIO->client\[LVClient\].shmemIncoming_[set base]_[set name]_waitForSeqNum = cmdId;
+        [set base]_memIO->client\[LVClient\].activeCommand = SAL__[set base]_[set name]_ACTOR;
         [set base]_memIO->client\[LVClient\].shmemOutgoing_[set base]_[set name]_cmdSeqNum = 0;
+        if (iverbose) \{
+               cout << \"Client \" << LVClient << \" issueCommand got cmdId \" << cmdId << \" [set name]\" << endl;
+        \}
         return cmdId;
     \}"
    puts $fout "
@@ -627,7 +713,13 @@ global SAL_WORK_DIR LVSTRINGS
     int [set base]_shm_salProcessor_[set n2]LV() \{
         [set base]_memIO->client\[LVClient\].syncI_[set base]_[set name] = true;
         while ([set base]_memIO->client\[LVClient\].hasReader_[set base]_[set name] == false) \{
+           if (iverbose) \{
+               cout << \"Client \" << LVClient << \" processor waiting for reader [set name]\" << endl;
+           \}
            usleep(1000);
+        \}
+        if (iverbose) \{
+               cout << \"Client \" << LVClient << \" processor has reader [set name]\" << endl;
         \}
         return SAL__OK;
     \}
@@ -635,7 +727,13 @@ global SAL_WORK_DIR LVSTRINGS
     int [set base]_shm_salCommander_[set n2]LV() \{
         [set base]_memIO->client\[LVClient\].syncO_[set base]_[set name] = true;
         while ([set base]_memIO->client\[LVClient\].hasWriter_[set base]_[set name] == false) \{
+           if (iverbose) \{
+               cout << \"Client \" << LVClient << \" commander waiting for writer [set name]\" << endl;
+           \}
            usleep(1000);
+        \}
+        if (iverbose) \{
+              cout << \"Client \" << LVClient << \" commander has writer [set name]\" << endl;
         \}
         return SAL__OK;
     \}
@@ -656,6 +754,9 @@ global SAL_WORK_DIR LVSTRINGS
            if (cmdId != 0) \{
 //              [set base]_memIO->client\[LVClient\].shmemIncoming_[set base]_[set name]_rcvSeqNum = 0;
 //   cout << \"monitored a command \" << cmdId << endl;
+              if (iverbose) \{
+               cout << \"Client \" << LVClient << \" monitorCommand got cmdId \" << cmdId << \" [set name]\" << endl;
+              \}
               return cmdId;
            \}
         \} else \{
@@ -680,6 +781,9 @@ global SAL_WORK_DIR LVSTRINGS
            if (cmdId != 0) \{
 //              [set base]_memIO->client\[LVClient\].shmemIncoming_[set base]_[set name]_rcvSeqNum = 0;
 //   cout << \"accepted a command \" << cmdId << endl;
+              if (iverbose) \{
+               cout << \"Client \" << LVClient << \" acceptCommand got cmdId \" << cmdId << \" [set name]\" << endl;
+              \}
               return cmdId;
            \}
         \} else \{
@@ -691,9 +795,15 @@ global SAL_WORK_DIR LVSTRINGS
     int [set base]_shm_ackCommand_[set n2]LV([set base]_ackcmdLV *theack) \{
         [set base]_memIO->client\[LVClient\].syncO_[set base]_[set name]_ackcmd = true;
         while ([set base]_memIO->client\[LVClient\].hasWriter_[set base]_ackcmd == false) \{
+           if (iverbose) \{
+               cout << \"Client \" << LVClient << \" ackcmd waiting for writer [set name]\" << endl;
+           \}
            usleep(1000);
         \}"
    puts $fout "
+        if (iverbose) \{
+               cout << \"Client \" << LVClient << \" ackcmd has writer [set name]\" << endl;
+        \}
         [set base]_memIO->client\[LVClient\].shmemOutgoing_[set base]_[set name]_cmdSeqNum = theack->cmdSeqNum;
         [set base]_memIO->client\[LVClient\].shmemOutgoing_[set base]_[set name]_cmdStatus = theack->ack;
         [set base]_memIO->client\[LVClient\].shmemOutgoing_[set base]_[set name]_errorCode = theack->error;
@@ -701,7 +811,13 @@ global SAL_WORK_DIR LVSTRINGS
         strncpy([set base]_memIO->client\[LVClient\].shmemOutgoing_[set base]_[set name]_resultCode, (*(theack->result))->data, resultSize);
         [set base]_memIO->client\[LVClient\].hasOutgoing_[set base]_[set name]_ackcmd = true;
         while ([set base]_memIO->client\[LVClient\].hasOutgoing_[set base]_[set name]_ackcmd == true) \{
+          if (iverbose) \{
+               cout << \"Client \" << LVClient << \" waiting for written [set name]\" << endl;
+           \}
            usleep(1000);
+        \}
+        if (iverbose) \{
+               cout << \"Client \" << LVClient << \" ackcmd written [set name]\" << endl;
         \}
         return SAL__OK;
     \}"
@@ -718,6 +834,9 @@ global SAL_WORK_DIR LVSTRINGS
    status = SAL__CMD_NOACK;
    while (status != SAL__CMD_COMPLETE && countdown != 0) \{
       status = [set base]_shm_getResponse_[set n2]LV(&response);
+      if (iverbose) \{
+           cout << \"Client \" << LVClient << \" waitForCompletion status=\" << status << \" [set name]\" << endl;
+      \}
       usleep(SAL__SLOWPOLL);
       countdown--;
    \}
@@ -730,7 +849,13 @@ global SAL_WORK_DIR LVSTRINGS
         ReturnCode_t status = SAL__CMD_NOACK;
         [set base]_memIO->client\[LVClient\].syncI_[set base]_[set name]_ackcmd = true;
         while ([set base]_memIO->client\[LVClient\].hasReader_[set base]_ackcmd == false) \{
+           if (iverbose) \{
+               cout << \"Client \" << LVClient << \" waiting for reader [set name]\" << endl;
+           \}
            usleep(1000);
+        \}
+        if (iverbose) \{
+               cout << \"Client \" << LVClient << \" has reader [set name]\" << endl;
         \}
         if ([set base]_memIO->client\[LVClient\].hasIncoming_[set base]_[set name]_ackcmd ) \{
         if ([set base]_memIO->client\[LVClient\].shmemIncoming_[set base]_[set name]_rcvSeqNum != 0) \{
@@ -743,17 +868,23 @@ global SAL_WORK_DIR LVSTRINGS
            data->ack = [set base]_memIO->client\[LVClient\].shmemIncoming_[set base]_[set name]_cmdStatus;
            data->error = [set base]_memIO->client\[LVClient\].shmemIncoming_[set base]_[set name]_errorCode;
            data->cmdSeqNum = [set base]_memIO->client\[LVClient\].shmemIncoming_[set base]_[set name]_rcvSeqNum;
+           if (iverbose) \{
+               cout << \"Client \" << LVClient << \" got response cmdId=\" << data->cmdSeqNum << \" [set name]\" << endl;
+           \}
            int resultSize = strlen([set base]_memIO->client\[LVClient\].[set base]_ackcmdLV_result_bufferIn);
            NumericArrayResize(5, 1, (UHandle*)(&(data->result)), resultSize);
            (*(data->result))->size = resultSize;
            for (int i=0;i<resultSize;i++)\{(*(data->result))->data\[i\] = [set base]_memIO->client\[LVClient\].[set base]_ackcmdLV_result_bufferIn\[i\];\}
+           printf(\"client %ld - got ack = %d, error = %d id = %d\\n\",LVClient,data->ack,data->error,data->cmdSeqNum);
            status = [set base]_memIO->client\[LVClient\].shmemIncoming_[set base]_[set name]_cmdStatus;
            if (data->ack == SAL__CMD_COMPLETE) \{
+              if (iverbose) \{
+                  cout << \"Client \" << LVClient << \" ack = COMPLETE [set name]\" << endl;
+              \}
               [set base]_memIO->client\[LVClient\].shmemIncoming_[set base]_[set name]_waitForSeqNum = 0;
               [set base]_memIO->client\[LVClient\].shmemIncoming_[set base]_[set name]_rcvSeqNum = 0;
               [set base]_memIO->client\[LVClient\].activeCommand = 0;
            \}
-//    cout << \"got an ack\" << status << endl;
          \}
         \}
         \}
@@ -774,7 +905,13 @@ global SAL_WORK_DIR LVSTRINGS
     int [set base]_shm_salEvent_[set n2]LV() \{
         [set base]_memIO->client\[LVClient\].syncI_[set base]_[set name] = true;
         while ([set base]_memIO->client\[LVClient\].hasReader_[set base]_[set name] == false) \{
+           if (iverbose) \{
+               cout << \"Client \" << LVClient << \"salEvent waiting for reader [set name]\" << endl;
+           \}
            usleep(1000);
+        \}
+        if (iverbose) \{
+            cout << \"Client \" << LVClient << \"salEvent got reader [set name]\" << endl;
         \}
         return SAL__OK;
     \}
@@ -782,7 +919,13 @@ global SAL_WORK_DIR LVSTRINGS
     int [set base]_shm_getEvent_[set n2]LV([set base]_[set name]LV *data ) \{
         [set base]_memIO->client\[LVClient\].syncI_[set base]_[set name] = true;
         while ([set base]_memIO->client\[LVClient\].hasReader_[set base]_[set name] == false) \{
+          if (iverbose) \{
+               cout << \"Client \" << LVClient << \"getEvent waiting for reader [set name]\" << endl;
+           \}
            usleep(1000);
+        \}
+        if (iverbose) \{
+            cout << \"Client \" << LVClient << \"getEvent got reader [set name]\" << endl;
         \}
         if ([set base]_memIO->client\[LVClient\].callbackHdl_[set base]_[set name] != 0) \{
            [set base]_memIO->client\[LVClient\].hasCallback_[set base]_[set name] = true;
@@ -791,12 +934,18 @@ global SAL_WORK_DIR LVSTRINGS
           if ([set base]_memIO->client\[LVClient\].flush_[set base]_[set name]) \{
              [set base]_memIO->client\[LVClient\].hasIncoming_[set base]_[set name] = false;
              [set base]_memIO->client\[LVClient\].flush_[set base]_[set name] = false;
+             if (iverbose) \{
+                 cout << \"Client \" << LVClient << \"getEvent flushed [set name]\" << endl;
+             \}
              return SAL__NO_UPDATES;
           \}"
    set frag [open $SAL_WORK_DIR/include/SAL_[set base]_[set name]shmin.tmp r]
    while { [gets $frag rec] > -1} {puts $fout $rec}
    close $frag
    puts $fout "
+           if (iverbose) \{
+              cout << \"Client \" << LVClient << \"getEvent got event [set name]\" << endl;
+           \}
            [set base]_memIO->client\[LVClient\].hasIncoming_[set base]_[set name] = false;
         \} else \{
            return SAL__NO_UPDATES;
@@ -815,8 +964,14 @@ global SAL_WORK_DIR LVSTRINGS
    puts $fout "
         [set base]_memIO->client\[LVClient\].hasOutgoing_[set base]_[set name] = true;
         while ([set base]_memIO->client\[LVClient\].hasOutgoing_[set base]_[set name] == true) \{
-           usleep(1000);
+          if (iverbose) \{
+               cout << \"Client \" << LVClient << \"logEvent waiting for writer [set name]\" << endl;
+          \}
+          usleep(1000);
         \}
+          if (iverbose) \{
+               cout << \"Client \" << LVClient << \"logEvent has writer [set name]\" << endl;
+          \}
         return SAL__OK;
     \}
 
@@ -825,6 +980,9 @@ global SAL_WORK_DIR LVSTRINGS
         [set base]_memIO->client\[LVClient\].syncI_[set base]_[set name] = true;
         [set base]_memIO->client\[LVClient\].skipOld_[set base]_[set name] = true;
         [set base]_memIO->client\[LVClient\].flush_[set base]_[set name] = true;
+        if (iverbose) \{
+               cout << \"Client \" << LVClient << \"flushSamples [set name]\" << endl;
+        \}
         return SAL__OK;
     \}
 "
@@ -837,7 +995,10 @@ global SAL_DIR SAL_WORK_DIR
        if ([set base]_memIO->client\[LVClient\].syncI_[set base]_[set name]) \{
           actorIdx = SAL__[set base]_[set name]_ACTOR;
           if (mgr\[LVClient\].actorReader(actorIdx) == false) \{
-             mgr\[LVClient\].salTelemetrySub(actorIdx);
+            if (iverbose) \{
+                cout << \"Client \" << LVClient << \" salTelemetrySub [set name]\" << endl;
+            \}
+            mgr\[LVClient\].salTelemetrySub(actorIdx);
              [set base]_memIO->client\[LVClient\].hasReader_[set base]_[set name] = true;
           \}
           if ( [set base]_memIO->client\[LVClient\].hasIncoming_[set base]_[set name] == false ) \{
@@ -845,13 +1006,16 @@ global SAL_DIR SAL_WORK_DIR
                 mgr\[LVClient\].setMaxSamples(actorIdx,-1);
                 status = mgr\[LVClient\].getSample_[set name](Incoming_[set base]_[set name]);
              \} else \{
-                status = mgr\[LVClient\].getNextSample_[set name](Incoming_[set base]_[set name]);
+               status = mgr\[LVClient\].getNextSample_[set name](Incoming_[set base]_[set name]);
              \}
              if (status == SAL__OK) \{"
    set frag [open $SAL_WORK_DIR/include/SAL_[set base]_[set name]monin.tmp r]
    while { [gets $frag rec] > -1} {puts $fout $rec}
    close $frag
    puts $fout "
+                if (iverbose) \{
+                   cout << \"Client \" << LVClient << \" getSample got a sample [set name]\" << endl;
+                \}
                 [set base]_memIO->client\[LVClient\].hasIncoming_[set base]_[set name] = true;
              \}
           \}
@@ -859,6 +1023,9 @@ global SAL_DIR SAL_WORK_DIR
        if ([set base]_memIO->client\[LVClient\].syncO_[set base]_[set name]) \{
           actorIdx = SAL__[set base]_[set name]_ACTOR;
           if (mgr\[LVClient\].actorWriter(actorIdx) == false) \{
+             if (iverbose) \{
+                 cout << \"Client \" << LVClient << \" salTelemetryPub [set name]\" << endl;
+              \}
              mgr\[LVClient\].salTelemetryPub(actorIdx);
              [set base]_memIO->client\[LVClient\].hasWriter_[set base]_[set name] = true;
           \}
@@ -868,7 +1035,10 @@ global SAL_DIR SAL_WORK_DIR
    while { [gets $frag rec] > -1} {puts $fout $rec}
    close $frag
    puts $fout "
-          status = mgr\[LVClient\].putSample_[set name](Outgoing_[set base]_[set name]);
+         if (iverbose) \{
+              cout << \"Client \" << LVClient << \" putSample [set name]\" << endl;
+         \}
+         status = mgr\[LVClient\].putSample_[set name](Outgoing_[set base]_[set name]);
           [set base]_memIO->client\[LVClient\].hasOutgoing_[set base]_[set name] = false;
        \}
 "
@@ -884,15 +1054,18 @@ global SAL_DIR SAL_WORK_DIR
        if ([set base]_memIO->client\[LVClient\].syncI_[set base]_[set name]) \{
           actorIdx = SAL__[set base]_[set name]_ACTOR;
           if (mgr\[LVClient\].actorProcessor(actorIdx) == false) \{
+             if (iverbose) \{
+                cout << \"Client \" << LVClient << \" salProcessor [set name]\" << endl;
+             \}
              mgr\[LVClient\].salProcessor(\"[set base]_[set name]\");
              [set base]_memIO->client\[LVClient\].hasWriter_[set base]_ackcmd = true;
              [set base]_memIO->client\[LVClient\].hasReader_[set base]_[set name] = true;
           \}
           if ([set base]_memIO->client\[LVClient\].hasIncoming_[set base]_[set name] == false) \{
             if ( [set base]_memIO->client\[LVClient\].ackIt_[set base]_[set name] ) \{
-               status = mgr\[LVClient\].acceptCommand_[set n2](Incoming_[set base]_[set name]);
+                status = mgr\[LVClient\].acceptCommand_[set n2](Incoming_[set base]_[set name]);
             \} else \{
-               status = mgr\[LVClient\].getNextSample_[set name](Incoming_[set base]_[set name]);
+                status = mgr\[LVClient\].getNextSample_[set name](Incoming_[set base]_[set name]);
             \}
             if (status > 0) \{"
    set frag [open $SAL_WORK_DIR/include/SAL_[set base]_[set name]monin.tmp r]
@@ -901,6 +1074,9 @@ global SAL_DIR SAL_WORK_DIR
    puts  $fout "
              [set base]_memIO->client\[LVClient\].hasIncoming_[set base]_[set name] = true;
              [set base]_memIO->client\[LVClient\].shmemIncoming_[set base]_[set name]_rcvSeqNum = status;
+             if (iverbose) \{
+                  cout << \"Client \" << LVClient << \" got a command cmdId=\" << status << \" [set name]\" << endl;
+              \}
             \}
           \}
        \}
@@ -910,19 +1086,28 @@ global SAL_DIR SAL_WORK_DIR
           [set base]::ackcmdSeq response;
           actorIdx = SAL__[set base]_ackcmd_ACTOR;
           status = mgr\[LVClient\].getResponse_[set n2](response);
+          if (iverbose && status != SAL__CMD_NOACK) \{
+               cout << \"Client \" << LVClient << \" got a response \" << status << \" [set name]\" << endl;
+          \}
           [set base]_memIO->client\[LVClient\].hasReader_[set base]_ackcmd = true;
-          if (status == SAL__CMD_COMPLETE) \{
+          if (status != SAL__CMD_NOACK) \{
              [set base]_memIO->client\[LVClient\].shmemIncoming_[set base]_[set name]_rcvSeqNum = mgr\[LVClient\].getIntProperty(SAL__[set base]_[set name]_ACTOR , \"rcvSeqNum\");
              [set base]_memIO->client\[LVClient\].shmemIncoming_[set base]_[set name]_cmdStatus = mgr\[LVClient\].getIntProperty(SAL__[set base]_[set name]_ACTOR , \"ack\");
              [set base]_memIO->client\[LVClient\].shmemIncoming_[set base]_[set name]_errorCode = mgr\[LVClient\].getIntProperty(SAL__[set base]_[set name]_ACTOR , \"error\");
              [set base]_memIO->client\[LVClient\].hasIncoming_[set base]_[set name]_ackcmd = true;
-           \}
+             if (iverbose) \{
+                 cout << \"Client \" << LVClient << \" command ack cmdId= \" << [set base]_memIO->client\[LVClient\].shmemIncoming_[set base]_[set name]_rcvSeqNum << \" [set name]\" << \"status = \" << status << endl;
+            \}
+          \}
         \}
        \}
        \}
        if ([set base]_memIO->client\[LVClient\].syncO_[set base]_[set name]) \{
           actorIdx = SAL__[set base]_[set name]_ACTOR;
           if (mgr\[LVClient\].actorCommand(actorIdx) == false) \{
+             if (iverbose) \{
+                  cout << \"Client \" << LVClient << \" salCommand [set name]\" << endl;
+              \}
              mgr\[LVClient\].salCommand(\"[set base]_[set name]\");
              [set base]_memIO->client\[LVClient\].hasReader_[set base]_ackcmd = true;
              [set base]_memIO->client\[LVClient\].hasWriter_[set base]_[set name] = true;
@@ -937,16 +1122,25 @@ global SAL_DIR SAL_WORK_DIR
           [set base]_memIO->client\[LVClient\].shmemOutgoing_[set base]_[set name]_cmdSeqNum = status;
           [set base]_memIO->client\[LVClient\].hasOutgoing_[set base]_[set name] = false;
           [set base]_memIO->client\[LVClient\].hasWriter_[set base]_[set name] = true;
+          if (iverbose) \{
+              cout << \"Client \" << LVClient << \" issueCommand cmdId=\" << status << \" [set name]\" << endl;
+          \}
        \}
        if ([set base]_memIO->client\[LVClient\].syncO_[set base]_[set name]_ackcmd) \{
             actorIdx = SAL__[set base]_[set name]_ACTOR;
             if (mgr\[LVClient\].actorProcessor(actorIdx) == false) \{
-              mgr\[LVClient\].salProcessor(\"[set base]_[set name]\");
+              if (iverbose) \{
+                  cout << \"Client \" << LVClient << \" salProcessor [set name]\" << endl;
+              \}
+             mgr\[LVClient\].salProcessor(\"[set base]_[set name]\");
               [set base]_memIO->client\[LVClient\].hasWriter_[set base]_ackcmd = true;
               [set base]_memIO->client\[LVClient\].hasReader_[set base]_[set name] = true;
             \}
        \}
        if ( [set base]_memIO->client\[LVClient\].hasOutgoing_[set base]_[set name]_ackcmd ) \{
+          if (iverbose) \{
+              cout << \"Client \" << LVClient << \" ackCommand [set name]\" << endl;
+          \}
           status = mgr\[LVClient\].ackCommand_[set n2](
 				[set base]_memIO->client\[LVClient\].shmemOutgoing_[set base]_[set name]_cmdSeqNum,
 				[set base]_memIO->client\[LVClient\].shmemOutgoing_[set base]_[set name]_cmdStatus,
@@ -968,7 +1162,10 @@ global SAL_DIR SAL_WORK_DIR
        if ([set base]_memIO->client\[LVClient\].syncI_[set base]_[set name]) \{
           actorIdx = SAL__[set base]_[set name]_ACTOR;
           if (mgr\[LVClient\].actorEventReader(actorIdx) == false) \{
-             mgr\[LVClient\].salEventSub(\"[set base]_[set name]\");
+             if (iverbose) \{
+                 cout << \"Client \" << LVClient << \" salEventSub [set name]\" << endl;
+            \}
+            mgr\[LVClient\].salEventSub(\"[set base]_[set name]\");
              [set base]_memIO->client\[LVClient\].hasReader_[set base]_[set name] = true;
           \}
           if ( [set base]_memIO->client\[LVClient\].hasIncoming_[set base]_[set name] == false ) \{
@@ -979,12 +1176,18 @@ global SAL_DIR SAL_WORK_DIR
    close $frag
    puts $fout "
              [set base]_memIO->client\[LVClient\].hasIncoming_[set base]_[set name] = true;
+             if (iverbose) \{
+                 cout << \"Client \" << LVClient << \" got an event [set name]\" << endl;
+             \}
            \}
           \}
        \}
        if ([set base]_memIO->client\[LVClient\].syncO_[set base]_[set name]) \{
           actorIdx = SAL__[set base]_[set name]_ACTOR;
           if (mgr\[LVClient\].actorEventWriter(actorIdx) == false) \{
+             if (iverbose) \{
+                 cout << \"Client \" << LVClient << \" salEventPub [set name]\" << endl;
+             \}
              mgr\[LVClient\].salEventPub(\"[set base]_[set name]\");
              [set base]_memIO->client\[LVClient\].hasWriter_[set base]_[set name] = true;
           \}
@@ -995,7 +1198,10 @@ global SAL_DIR SAL_WORK_DIR
    while { [gets $frag rec] > -1} {puts $fout $rec}
    close $frag
    puts $fout "
-          status = mgr\[LVClient\].logEvent_[set n2](Outgoing_[set base]_[set name],lpriority);
+         if (iverbose) \{
+            cout << \"Client \" << LVClient << \" publish an event [set name]\" << endl;
+         \}
+         status = mgr\[LVClient\].logEvent_[set n2](Outgoing_[set base]_[set name],lpriority);
           [set base]_memIO->client\[LVClient\].hasOutgoing_[set base]_[set name] = false;
        \}
 "

@@ -315,7 +315,7 @@ public class SAL_SALData {
 #endif
 	  if (debugLevel > 0) {
 	    System.out.println( "=== [issueCommand] writing a command containing :");
-	    System.out.println( " " + data.device + "." + data.property + "." + data.action + " : " + data.value);
+	    System.out.println( " " + data.device + "." + data.property + "." + data.action + " : " + data.itemValue);
 	  }
 	  status = SALWriter.write(data, cmdHandle);
 	  sndSeqNum++;
@@ -390,7 +390,7 @@ public class SAL_SALData {
       			System.out.println(  "    device   : " + aCmd.value[0].device);
       			System.out.println(  "    property : " + aCmd.value[0].property);
       			System.out.println(  "    action   : " + aCmd.value[0].action);
-      			System.out.println(  "    value    : " + aCmd.value[0].value);
+      			System.out.println(  "    itemValue: " + aCmd.value[0].itemValue);
       			System.out.println(  "    modifiers: " + aCmd.value[0].modifiers);
     		    }
                     ackdata = new SALData.ackcmd();
@@ -404,7 +404,7 @@ public class SAL_SALData {
                     data.device    = aCmd.value[0].device;
                     data.property  = aCmd.value[0].property;
                     data.action    = aCmd.value[0].action;
-                    data.value     = aCmd.value[0].value;
+                    data.itemValue = aCmd.value[0].itemValue;
                     data.modifiers = aCmd.value[0].modifiers;
 		    status = aCmd.value[0].private_seqNum;
 		    rcvSeqNum = status;

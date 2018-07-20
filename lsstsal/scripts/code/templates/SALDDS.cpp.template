@@ -367,7 +367,7 @@ int SAL_SALData::issueCommand( SALData::command data )
 #endif
   if (debugLevel > 0) {
     cout << "=== [issueCommand] writing a command containing :" << endl;
-    cout << " " << data.device << "." << data.property << "." << data.action << " : " << data.value << endl;
+    cout << " " << data.device << "." << data.property << "." << data.action << " : " << data.itemValue << endl;
   }
   data.private_sndStamp = getCurrentTime();
   ReturnCode_t status = SALWriter->write(data, cmdHandle);
@@ -416,12 +416,12 @@ int SAL_SALData::issueCommandC( SALData_commandC *data )
   Instance.device =           DDS::string_dup(data->device.c_str());
   Instance.property =         DDS::string_dup(data->property.c_str());
   Instance.action =           DDS::string_dup(data->action.c_str());
-  Instance.value =            DDS::string_dup(data->value.c_str());
+  Instance.itemValue =        DDS::string_dup(data->itemValue.c_str());
   Instance.modifiers =        DDS::string_dup(data->modifiers.c_str());
 
   if (debugLevel > 0) {
     cout << "=== [issueCommandC] writing a command containing :" << endl;
-    cout << " " << Instance.device << "." << Instance.property << "." << Instance.action << " : " << Instance.value << endl;
+    cout << " " << Instance.device << "." << Instance.property << "." << Instance.action << " : " << Instance.itemValue << endl;
   }  
   Instance.private_sndStamp = getCurrentTime();
   ReturnCode_t status = SALWriter->write(Instance, cmdHandle);
@@ -471,7 +471,7 @@ salReturn SAL_SALData::acceptCommand( SALData::commandSeq data )
       cout << "    device   : " << data[0].device << endl;
       cout << "    property : " << data[0].property << endl;
       cout << "    action   : " << data[0].action << endl;
-      cout << "    value    : " << data[0].value << endl;
+      cout << "    itemValue: " << data[0].itemValue << endl;
       cout << "    modifiers: " << data[0].modifiers << endl;
     }
 #ifdef SAL_SUBSYSTEM_ID_IS_KEYED
@@ -539,7 +539,7 @@ int SAL_SALData::acceptCommandC( SALData_commandC *data )
       cout << "    device   : " << cmd[0].device << endl;
       cout << "    property : " << cmd[0].property << endl;
       cout << "    action   : " << cmd[0].action << endl;
-      cout << "    value    : " << cmd[0].value << endl;
+      cout << "    itemValue: " << cmd[0].itemValue << endl;
       cout << "    modifiers: " << cmd[0].modifiers << endl;
     }
 #ifdef SAL_SUBSYSTEM_ID_IS_KEYED
@@ -558,7 +558,7 @@ int SAL_SALData::acceptCommandC( SALData_commandC *data )
     data->device = cmd[0].device;
     data->property = cmd[0].property;
     data->action = cmd[0].action;
-    data->value = cmd[0].value;
+    data->itemValue = cmd[0].itemValue;
     data->modifiers = cmd[0].modifiers;
 
     istatus = SALReader->return_loan(cmd, info);

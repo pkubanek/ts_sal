@@ -67,7 +67,7 @@ global TLMS TLM_ALIASES EVENT_ENUM EVENT_ENUMS UNITS ENUM_DONE
       }
       if { $tag == "/SALCommand" } {
          set intopic 0
-         set CMDS($subsys,$alias) "$device $property $action $value"
+         set CMDS($subsys,$alias) "$device $property $action $vvalue"
          set CMD_ALIASES($subsys) [lappend CMD_ALIASES($subsys) $alias]
          if { $itemid == 0 } {
             puts stdout "WARNING : Command $alias has no data fields , adding default state item"
@@ -128,7 +128,7 @@ global TLMS TLM_ALIASES EVENT_ENUM EVENT_ENUMS UNITS ENUM_DONE
            puts $fout "   string<32>	device;
    string<32>	property;
    string<32>	action;
-   string<32>	value;"
+   string<32>	itemValue;"
         }
         if { $ctype == "telemetry" } {
            gentopicdefsql $tname

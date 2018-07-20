@@ -227,7 +227,9 @@ global ACTORTYPE SAL_WORK_DIR BLACKLIST
           \}"
          }
 ###         puts $fout "       \}"
-           checkLFO $fout $topic
+           if { $base != "efd" } {
+             checkLFO $fout $topic
+           }
          }
          if { $type == "command" && $ttype == "command" && $topic != "ackcmd" } {
            set alias "'[join [lrange [split $topic _] 1 end] _]'"
