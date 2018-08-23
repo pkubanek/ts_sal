@@ -1,5 +1,19 @@
 # EupsPkg config file. Sourced by 'eupspkg'
 
+_ensure_exists()
+{
+        hash "$1" 2>/dev/null || die "need '$1' to install this product. please install it and try again."
+}
+
+prep()
+{
+        # check for system prerequisites
+        _ensure_exists gfortran
+
+        default_prep
+}
+
+
 config()
 {
         # Copy XML topics into test directory, for SAL to wrap into C++.
@@ -40,12 +54,21 @@ build()
 	 
 	    for subsys in $(echo $SUBSYSTEMS)
             do
-	       	cp ${SAL_WORK_DIR}/$subsys/cpp/src/*.so ${SAL_WORK_DIR}/lib/.
-		cp ${SAL_WORK_DIR}/$subsys/cpp/*.so ${SAL_WORK_DIR}/lib/.
+	       	cp "${SAL_WORK_DIR}"/$subsys/cpp/src/*.so "${SAL_WORK_DIR}"/lib/.
+		cp "${SAL_WORK_DIR}"/$subsys/cpp/*.so "${SAL_WORK_DIR}"/lib/.
 	    done
 	    sal_version=`grep -i version $SAL_DIR/sal_version.tcl | awk '{print $3}'`
 	    export SAL_VERSION=$sal_version
 	    echo "LSST middleware toolset environment v"$sal_version" libraries have been built."
 	)
 
+}
+
+install()
+{
+        clean_old_install
+        
+        make PREFIX="$PREFIX" install
+
+        install_ups
 }
