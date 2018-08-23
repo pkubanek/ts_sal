@@ -3,7 +3,7 @@ setupRequired(ts_xml)
 
 # Set up environment variables for DDS and SAL.
 envSet(PYTHON_BUILD_VERSION, 3.6m)
-envSet(PYTHON_BUILD_LOCATION, ${_CONDA_ROOT})
+envSet(PYTHON_BUILD_LOCATION, ${CONDA_PREFIX})
 envSet(LSST_SDK_INSTALL, ${PRODUCT_DIR})
 
 # Set the environment variables otherwise set in setup.env
