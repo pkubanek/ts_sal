@@ -1,0 +1,35 @@
+setupRequired(ts_opensplice)
+setupRequired(ts_xml)
+
+# Set up environment variables for DDS and SAL.
+envSet(PYTHON_BUILD_VERSION, 3.6m)
+envSet(PYTHON_BUILD_LOCATION, ${_CONDA_ROOT})
+envSet(LSST_SDK_INSTALL, ${PRODUCT_DIR})
+
+# Set the environment variables otherwise set in setup.env
+envSet(SAL_HOME, ${LSST_SDK_INSTALL}/lsstsal)
+envSet(SAL_WORK_DIR, ${LSST_SDK_INSTALL}/test)
+envSet(SAL_DIR, ${SAL_HOME}/scripts)
+
+envSet(SAL_CPPFLAGS, -m64)
+#envSet(SAL_VERSION, `grep -i version $SAL_DIR/sal_version.tcl | awk '{print $3}'`)
+envSet(SAL_VERSION, 3.7.1)
+print(<<< SAL version 3.7.1 // check @ $SAL_DIR/sal_version.tcl though >>>)
+
+# Add JAVA support
+envSet(JAVA_HOME, /etc/alternatives/java_sdk_openjdk)
+envSet(LD_PRELOAD, ${JAVA_HOME}/jre/lib/amd64/libjsig.so)
+envPrepend(PATH, ${JAVA_HOME}/bin)
+
+# Opensplice gateway 
+# (Note that variables from $OSPL_HOME/release.com set as part of ts_opensplice setup).
+envSet(RLM_HOME, ${SAL_HOME}/.m2/repository/org/opensplice/gateway/rlm/9.1.3)
+
+# Extend paths
+envPrepend(PATH, ${SAL_DIR}:${SAL_HOME}/bin)
+envPrepend(PYTHONPATH, ${SAL_WORK_DIR}/lib)
+
+# Extend and add library paths
+envPrepend(LD_LIBRARY_PATH, ${SAL_WORK_DIR}/lib:${SAL_DIR}/lib:${SAL_HOME}/lib)
+envSet(TCL_LIBRARY, ${SAL_HOME}/lib/tcl8.5)
+envSet(TK_LIBRARY, ${SAL_HOME}/lib/tk8.5)
