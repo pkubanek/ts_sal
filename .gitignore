@@ -27,3 +27,7 @@ xml_test/scheduler*/
 xml_test/sequencer*/
 xml_test/sql
 xml_test/tcs*/
+xml_test/lib
+tests/.tests
+tests/pytest_session.txt
+__pycache__
