@@ -81,9 +81,5 @@ build()
 
 install()
 {
-        clean_old_install
-        
-        make PREFIX="$PREFIX" install
-
-        install_ups
+         default_install
 }
