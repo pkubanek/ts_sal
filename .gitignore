@@ -31,3 +31,6 @@ xml_test/lib
 tests/.tests
 tests/pytest_session.txt
 __pycache__
+# Project
+version.py
+config_*
