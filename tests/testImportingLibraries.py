@@ -9,11 +9,11 @@ class TestImportingLibraries(unittest.TestCase):
     def testImporting(self):
         subsystems = os.getenv('SUBSYSTEMS')
         if subsystems is None:
-            subsystems = ('archiver', 'camera', 'catchuparchiver', 'dome', 
+            subsystems = ['archiver', 'camera', 'catchuparchiver', 'dome', 
                           'domeADB', 'domeAPS', 'domeLouvers', 'domeLWS',
                           'domeMONCS', 'domeTHCS', 'hexapod', 'm1m3', 'm2ms',
                           'MTMount', 'ocs', 'processingcluster',
-                          'rotator', 'scheduler', 'tcs')
+                          'rotator', 'scheduler', 'tcs']
         else:
             subsystems = subsystems.split(' ')
         print('Testing subsystems: %s' % (subsystems))
