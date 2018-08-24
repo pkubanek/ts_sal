@@ -66,6 +66,7 @@ build()
 	(
             mkdir -p ${LSST_SDK_INSTALL}/lsstsal/lib
 	 
+	    mkdir -p ${SAL_WORK_DIR}/lib
 	    for subsys in $(echo $SUBSYSTEMS)
             do
 	       	cp "${SAL_WORK_DIR}"/$subsys/cpp/src/*.so "${SAL_WORK_DIR}"/lib/.
