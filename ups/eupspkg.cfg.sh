@@ -8,8 +8,20 @@ _ensure_exists()
 prep()
 {
         # check for system prerequisites
-        _ensure_exists gfortran
+        _ensure_exists java
 
+	JAVA_HOME=`java -XshowSettings 2>&1 > /dev/null | grep java.home | sed 's/.*= //'`
+	JAVA_LIB=`find $JAVA_HOME -name "libjsig.so" | grep -v server`
+	echo $JAVA_HOME
+	echo $JAVA_LIB
+	# Add the java information to the ts_sal.table file.
+        java_home_line='envSet(JAVA_HOME, '${JAVA_HOME}')'
+	java_ld_preload_line='envSet(JAVA_HOME, '${JAVA_LIB}')'
+	java_path_line='envPrepend(PATH, ${JAVA_HOME}/bin)'
+	echo $java_home_line >> ${TS_SAL_DIR}/ups/ts_sal.table
+	echo $java_ld_preload_line >> ${TS_SAL_DIR}/ups/ts_sal.table
+	echo $java_path_line >> ${TS_SAL_DIR}/ups/ts_sal.table
+	
         default_prep
 }
 
