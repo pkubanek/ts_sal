@@ -8,7 +8,7 @@ envSet(LSST_SDK_INSTALL, ${PRODUCT_DIR})
 
 # Set the environment variables otherwise set in setup.env
 envSet(SAL_HOME, ${LSST_SDK_INSTALL}/lsstsal)
-envSet(SAL_WORK_DIR, ${LSST_SDK_INSTALL}/test)
+envSet(SAL_WORK_DIR, ${LSST_SDK_INSTALL}/xml_test)
 envSet(SAL_DIR, ${SAL_HOME}/scripts)
 
 envSet(SAL_CPPFLAGS, -m64)
