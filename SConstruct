@@ -1,3 +1,3 @@
 # -*- python -*-
 from lsst.sconsUtils import scripts
-scripts.BasicSConstruct("sims_maf")
+scripts.BasicSConstruct("ts_sal")
