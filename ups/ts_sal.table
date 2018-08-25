@@ -1,4 +1,7 @@
+# LSST packages for build and unit test
 setupRequired(sconsUtils)
+setupRequired(utils)
+# TS_SAL related packages
 setupRequired(ts_opensplice)
 setupRequired(ts_xml)
 
@@ -35,3 +38,6 @@ envSet(TK_LIBRARY, ${SAL_HOME}/lib/tk8.5)
 # JAVA_HOME can be found by:
 #  java -XshowSettings 2>&1 > /dev/null | grep java.home | sed 's/.*= //'
 # and LD_PRELOAD should point to the libjsig.so library under that directory.
+envSet(JAVA_HOME, /usr/lib/jvm/java-1.8.0-openjdk-1.8.0.171-8.b10.el7_5.x86_64/jre)
+envSet(JAVA_HOME, /usr/lib/jvm/java-1.8.0-openjdk-1.8.0.171-8.b10.el7_5.x86_64/jre/lib/amd64/libjsig.so)
+envPrepend(PATH, ${JAVA_HOME}/bin)

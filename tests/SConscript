@@ -2,5 +2,9 @@
 import os
 from lsst.sconsUtils import scripts, env
 
-env.AppendENVPath('SUBSYSTEMS', os.environ['SUBSYSTEMS'])
+try:
+    env.AppendENVPath('SUBSYSTEMS', os.environ['SUBSYSTEMS'])
+except:
+    pass
+
 scripts.BasicSConscript.tests()
