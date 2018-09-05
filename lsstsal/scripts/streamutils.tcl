@@ -38,17 +38,7 @@ global SAL_WORK_DIR SAL_DIR
    while { [gets $fs rec] > -1 } {
       set spl [split $rec "_"]
       if { $subsys == "all" || $subsys == [lindex $spl 0] } {
-        if { [lindex $spl 1] != "command" &&  [lindex $spl 1] != "ackcmd" } {
-          set s [join [lrange $spl 0 1] "_"]
-          set sname($s) 1
-        }
-      }
-   } 
-   set fs [open $SAL_DIR/datastreams.names r]
-   while { [gets $fs rec] > -1 } {
-      set spl [split $rec "_"]
-      if { $subsys == "all" || $subsys == [lindex $spl 0] } {
-        if { [lindex $spl 1] != "command" &&  [lindex $spl 1] != "ackcmd" } {
+        if { [lindex $spl 1] != "command" &&  [lindex $spl 1] != "ackcmd" && [lindex $spl 1] != "logevent"} {
           set s [join [lrange $spl 0 1] "_"]
           set sname($s) 1
         }
