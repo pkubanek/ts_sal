@@ -126,7 +126,7 @@ set last ""
 set fin [open $SAL_WORK_DIR/.salwork/datastreams.detail r]
 while { [gets $fin rec] > -1 } {
   set cmdresp [lindex [split $rec "_ "] 1]
-  if { $cmdresp != "command" && $cmdresp != "ackcmd" } {
+  if { $cmdresp != "command" && $cmdresp != "ackcmd" && $cmdresp != "logevent" } {
    set d [split [lindex $rec 0] "./_"]
    set id [join [lrange $d 0 1] .]
    if { $id == "" } {set id [lindex $rec 0]}
