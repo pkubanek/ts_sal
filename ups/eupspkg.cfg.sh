@@ -64,13 +64,12 @@ build()
 
         # copy libraries to workdir/lib location.
 	(
-            mkdir -p ${LSST_SDK_INSTALL}/lsstsal/lib
-	 
+
+
 	    mkdir -p ${SAL_WORK_DIR}/lib
 	    for subsys in $(echo $SUBSYSTEMS)
-            do
-	       	cp "${SAL_WORK_DIR}"/$subsys/cpp/src/*.so "${SAL_WORK_DIR}"/lib/.
-		cp "${SAL_WORK_DIR}"/$subsys/cpp/*.so "${SAL_WORK_DIR}"/lib/.
+	    do
+		(cp -f "${SAL_WORK_DIR}/$subsys/cpp/"*.so "${SAL_WORK_DIR}/lib"/. && cp -f "${SAL_WORK_DIR}/$subsys/cpp/src"/*.so "${SAL_WORK_DIR}/lib"/.) 
 	    done
 	    sal_version=`grep -i version $SAL_DIR/sal_version.tcl | awk '{print $3}'`
 	    export SAL_VERSION=$sal_version
