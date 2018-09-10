@@ -25,6 +25,7 @@ envPrepend(PYTHONPATH, ${SAL_WORK_DIR}/lib)
 
 # Extend and add library paths
 envPrepend(LD_LIBRARY_PATH, ${SAL_WORK_DIR}/lib:${SAL_DIR}/lib:${SAL_HOME}/lib)
+envPrepend(LSST_LIBRARY_PATH, ${SAL_WORK_DIR}/lib:${SAL_DIR}/lib:${SAL_HOME}/lib)
 envSet(TCL_LIBRARY, ${SAL_HOME}/lib/tcl8.5)
 envSet(TK_LIBRARY, ${SAL_HOME}/lib/tk8.5)
 
