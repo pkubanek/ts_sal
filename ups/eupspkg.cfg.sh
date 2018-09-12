@@ -55,7 +55,7 @@ build()
 		echo "Set SUBSYSTEM to "$SUBSYSTEMS
 	    fi
 
-	    for subsys in $(echo $SUBSYSTEMS)
+	    for subsys in $SUBSYSTEMS
 	    do
 		echo "Building topics for "$subsys"."
 		( salgenerator $subsys validate && salgenerator $subsys sal cpp  && salgenerator $subsys sal python ) || echo "Skipping "$subsys
@@ -67,14 +67,14 @@ build()
 
 
 	    mkdir -p ${SAL_WORK_DIR}/lib
-	    for subsys in $(echo $SUBSYSTEMS)
+	    for subsys in $SUBSYSTEMS
 	    do
-		(cp -f "${SAL_WORK_DIR}/$subsys/cpp/"*.so "${SAL_WORK_DIR}/lib"/. && cp -f "${SAL_WORK_DIR}/$subsys/cpp/src"/*.so "${SAL_WORK_DIR}/lib"/.) 
+		cp "${SAL_WORK_DIR}/$subsys"/{cpp,cpp/src}/*.so "${SAL_WORK_DIR}"/lib/
 	    done
 	    sal_version=`grep -i version $SAL_DIR/sal_version.tcl | awk '{print $3}'`
 	    export SAL_VERSION=$sal_version
 	    echo "LSST middleware toolset environment v"$sal_version" libraries have been built."
-	)
+	)  || echo "Failed to copy libraries"
 
 }
 
