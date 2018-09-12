@@ -31,8 +31,7 @@ prep()
 config()
 {
         # Copy XML topics into test directory, for SAL to wrap into C++.
-        if [ -d "${SAL_WORK_DIR}" ] 
-	then
+        if [ -d "${SAL_WORK_DIR}" ] ; then
 	    /bin/rm -r "${SAL_WORK_DIR}"
 	fi
 	mkdir "${SAL_WORK_DIR}"
@@ -62,8 +61,10 @@ build()
 	    done
 
             # copy libraries to workdir/lib location.
+	    if [ ! -d "$DIRECTORY" ]; then
+		mkdir lib
+	    fi
 
-	    mkdir lib
 	    for subsys in $SUBSYSTEMS
 	    do
 		( cp $subsys/{cpp,cpp/src}/*.so lib/. ) || echo "Failed to copy libraries for "$subsys
