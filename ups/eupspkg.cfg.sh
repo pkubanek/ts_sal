@@ -52,7 +52,7 @@ build()
 		export SUBSYSTEMS="archiver camera catchuparchiver dome domeADB domeAPS domeLouvers 
                      domeLWS domeMONCS domeTHCS hexapod m1m3 m2ms MTMount ocs processingcluster
                      rotator scheduler tcs"
-		echo "Set SUBSYSTEM to "$SUBSYSTEMS
+		echo "Set SUBSYSTEMS to "$SUBSYSTEMS
 	    fi
 
 	    for subsys in $SUBSYSTEMS
@@ -65,11 +65,11 @@ build()
         # copy libraries to workdir/lib location.
 	(
 
-
-	    mkdir -p ${SAL_WORK_DIR}/lib
+	    cd "${SAL_WORK_DIR}"
+	    mkdir lib
 	    for subsys in $SUBSYSTEMS
 	    do
-		cp "${SAL_WORK_DIR}/$subsys"/{cpp,cpp/src}/*.so "${SAL_WORK_DIR}"/lib/
+		cp $subsys/{cpp,cpp/src}/*.so lib/.
 	    done
 	    sal_version=`grep -i version $SAL_DIR/sal_version.tcl | awk '{print $3}'`
 	    export SAL_VERSION=$sal_version
