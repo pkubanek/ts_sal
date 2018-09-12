@@ -73,7 +73,9 @@ build()
 	    export SAL_VERSION=$sal_version
 	    echo "LSST middleware toolset environment v"$sal_version" libraries have been built."
 
-	)  
+	)
+	
+	default_build
 
 }
 
