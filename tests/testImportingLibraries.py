@@ -19,13 +19,11 @@ class TestImportingLibraries(unittest.TestCase):
         print('Testing subsystems: %s' % (subsystems))
 
         for subsys in subsystems:
-            try:
-                libname = 'SALPY_%s' % (subsys)
-                mylib = importlib.import_module(libname)
-            except ImportError:
-                self.fail("Could not import %s library" % (libname))
-            except ModuleNotFoundError:
-                self.fail("Could not find %s library" % (libname))
+            # If the library was not copied to the correct location, 
+            # then this will trigger an exception and unit test will fail.
+            libname = 'SALPY_%s' % (subsys)
+            mylib = importlib.import_module(libname)
+
 
 class TestMemory(lsst.utils.tests.MemoryTestCase):
     pass
