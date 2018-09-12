@@ -60,21 +60,19 @@ build()
 		echo "Building topics for "$subsys"."
 		( salgenerator $subsys validate && salgenerator $subsys sal cpp  && salgenerator $subsys sal python ) || echo "Skipping "$subsys
 	    done
-	)
 
-        # copy libraries to workdir/lib location.
-	(
+            # copy libraries to workdir/lib location.
 
-	    cd "${SAL_WORK_DIR}"
 	    mkdir lib
 	    for subsys in $SUBSYSTEMS
 	    do
-		cp $subsys/{cpp,cpp/src}/*.so lib/.
+		( cp $subsys/{cpp,cpp/src}/*.so lib/. ) || echo "Failed to copy libraries for "$subsys
 	    done
 	    sal_version=`grep -i version $SAL_DIR/sal_version.tcl | awk '{print $3}'`
 	    export SAL_VERSION=$sal_version
 	    echo "LSST middleware toolset environment v"$sal_version" libraries have been built."
-	)  || echo "Failed to copy libraries"
+
+	)  
 
 }
 
