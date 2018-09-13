@@ -61,7 +61,7 @@ build()
 	    done
 
             # copy libraries to workdir/lib location.
-	    if [ ! -d "$DIRECTORY" ]; then
+	    if [ ! -d lib ]; then
 		mkdir lib
 	    fi
 
