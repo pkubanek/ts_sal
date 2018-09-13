@@ -48,7 +48,11 @@ build()
 	    
 	    if [ -z "$SUBSYSTEMS" ]
 		then 
-		export SUBSYSTEMS="archiver camera catchuparchiver dome domeADB domeAPS domeLouvers 
+		# export SUBSYSTEMS="archiver camera catchuparchiver dome domeADB domeAPS domeLouvers 
+                #     domeLWS domeMONCS domeTHCS hexapod m1m3 m2ms MTMount ocs processingcluster
+                #     rotator scheduler tcs"
+		#  catchuparchiver does not build properly - incorrect topics
+		export SUBSYSTEMS="archiver camera dome domeADB domeAPS domeLouvers 
                      domeLWS domeMONCS domeTHCS hexapod m1m3 m2ms MTMount ocs processingcluster
                      rotator scheduler tcs"
 		echo "Set SUBSYSTEMS to "$SUBSYSTEMS
