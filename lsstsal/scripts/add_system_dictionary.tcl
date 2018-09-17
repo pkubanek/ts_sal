@@ -24,7 +24,7 @@ proc calcshmid { subsys } {
 set SYSDIC(m1m3,hasGenericCommands) 1
 set SYSDIC(m1m3,hasGenericEvents) 1
 
-set SYSDIC(systems) "ATPtg atArchiver atcamera atHeaderService accl archiver atcs AtMCS AtPneumatics AtWhiteLightChiller AtWhiteLight AtDome AtHexapod atMonochromator atScheduler calibrationCBP calibrationElectrometer calibrationMonochromator calibrationSpectrometer camera catchupArchiver comcam headerService dome domeADB domeAPS domeLouvers domeLWS domeMONCS domeTHCS eec efd environment EXA hexapod lasercal m1m3 m2ms MTMount MTPtg network ocs operations power promptProcessing rotator sedSpectrometer sequencer scheduler seeing Spectrograph skycam summitFacility system tcs tcsOfc tcsWEP vms"
+set SYSDIC(systems) "ATPtg atArchiver atcamera atHeaderService accl archiver atcs AtMCS AtPneumatics AtSpectrograph AtWhiteLightChiller AtWhiteLight AtDome AtHexapod atMonochromator atScheduler calibrationCBP calibrationElectrometer calibrationMonochromator calibrationSpectrometer camera catchupArchiver comcam headerService dome domeADB domeAPS domeLouvers domeLWS domeMONCS domeTHCS eec efd environment EXA hexapod lasercal m1m3 m2ms MTMount MTPtg network ocs operations power promptProcessing rotator sedSpectrometer sequencer scheduler seeing skycam summitFacility system tcs tcsOfc tcsWEP vms"
 
 foreach s $SYSDIC(systems) {set SYSDIC($s,type) system}
 
