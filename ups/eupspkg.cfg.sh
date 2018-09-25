@@ -18,10 +18,12 @@ prep()
 	echo $JAVA_LIB
 	# Add the java information to the ts_sal.table file.
         java_home_line='envSet(JAVA_HOME, '${JAVA_HOME}')'
-	java_ld_preload_line='envSet(JAVA_HOME, '${JAVA_LIB}')'
+	java_ld_preload_line='envSet(LD_PRELOAD, '${JAVA_LIB}')'
+	java_ld_preload_line_mac='envSet(DYLD_INSERT_LIBRARIES, '${JAVA_LIB}')'
 	java_path_line='envPrepend(PATH, ${JAVA_HOME}/bin)'
 	echo $java_home_line >> "$PKGROOT/ups/ts_sal.table"
 	echo $java_ld_preload_line >> "$PKGROOT/ups/ts_sal.table"
+	echo $java_ld_preload_line_mac >> "$PKGROOT/ups/ts_sal.table"
 	echo $java_path_line >> "$PKGROOT/ups/ts_sal.table"
 	
         default_prep
@@ -36,7 +38,7 @@ config()
 	fi
 	mkdir "${SAL_WORK_DIR}"
 
-        cp -r ${TS_XML_DIR}/sal_interfaces/*/*xml "${SAL_WORK_DIR}"/.
+        cp ${TS_XML_DIR}/sal_interfaces/*/*.xml "${SAL_WORK_DIR}"/.
 
 }
 
