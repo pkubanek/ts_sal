@@ -19,7 +19,7 @@ class TestImportingLibraries(unittest.TestCase):
                           'domeADB', 'domeAPS', 'domeLouvers', 'domeLWS',
                           'domeMONCS', 'domeTHCS', 'hexapod', 'm1m3', 'm2ms',
                           'MTMount', 'ocs', 
-                          'rotator', 'scheduler', 'tcs']
+                          'rotator', 'scheduler', 'Test', 'tcs']
         else:
             subsystems = subsystems.split(' ')
         print('Testing subsystems: %s' % (subsystems))

@@ -56,7 +56,7 @@ build()
 		# Remove catchuparchiver and processingcluster from list of topics for now: don't build correctly.
 		export SUBSYSTEMS="archiver camera dome domeADB domeAPS domeLouvers 
                      domeLWS domeMONCS domeTHCS hexapod m1m3 m2ms MTMount ocs 
-                     rotator scheduler tcs"
+                     rotator scheduler Test tcs"
 		echo "Set SUBSYSTEMS to "$SUBSYSTEMS
 	    fi
 
