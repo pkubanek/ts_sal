@@ -199,7 +199,8 @@ using namespace std;
         puts $fbst2 "
   .def(\"flushSamples_[set name]\" ,  &::SAL_[set subsys]::flushSamples_[set name] )"
         puts $fpyb2 "
-  .def(\"flushSamples_[set name]\" ,  &SAL_[set subsys]::flushSamples_[set name] )"
+  .def(\"flushSamples_[set name]\" ,  &SAL_[set subsys]::flushSamples_[set name] )
+  .def(\"getNextSample_[set name]\" ,  &SAL_[set subsys]::getNextSample_[set name] )"
       }
       if { [info exists SYSDIC($subsys,keyedID)] } {
           puts $fout "	  short	[set subsys]ID;"

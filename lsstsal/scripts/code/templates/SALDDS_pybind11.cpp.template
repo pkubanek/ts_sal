@@ -6,6 +6,7 @@
 
 #include <pybind11/pybind11.h>
 #include <pybind11/numpy.h>
+#include <pybind11/stl.h>
 
 namespace py = pybind11;
 
@@ -83,9 +84,24 @@ PYBIND11_MODULE(SALPY_SALData,m){
             "getOrigin"
             , (int ( ::SAL_SALData::* )(  ) )( &::SAL_SALData::getOrigin ) )    
         .def( 
+            "getComponentId"
+            , (unsigned long ( ::SAL_SALData::* )(  ) )( &::SAL_SALData::getComponentId ) )
+        .def( 
             "logError"
             , (void ( ::SAL_SALData::* )( ::salReturn ) )( &::SAL_SALData::logError )
             , ( py::arg("status") ) )    
+        .def( 
+            "getComponentName"
+            , (std::string ( ::SAL_SALData::* )(  ) )( &::SAL_SALData::getComponentName ) )
+        .def( 
+            "getCommandNames"
+            , &::SAL_SALData::getCommandNames )
+        .def( 
+            "getEventNames"
+            , &::SAL_SALData::getEventNames )
+        .def( 
+            "getTelemetryNames"
+            , &::SAL_SALData::getTelemetryNames )
         .def( 
             "getCurrentTime"
             , (double ( ::SAL_SALData::* )(  ) )( &::SAL_SALData::getCurrentTime ) )
