@@ -1,4 +1,4 @@
-#!/usr/bin/tclsh
+#!/usr/bin/env tclsh
 #
 # Generate SALDDS methods for getSample and putSample for all types
 # and generate salTypeSupport routine
@@ -590,7 +590,7 @@ salReturn SAL_[set base]::getSample([set base]::[set name]Seq data)
         gencmdaliascode $base cpp $fout
         geneventaliascode $base include $fouth
         geneventaliascode $base cpp $fout
-        gengenericreader $fout $base 
+###        gengenericreader $fout $base 
      } else {
         if { $rec == "using namespace SALData;" } {
           puts $fout "using namespace [set base];"

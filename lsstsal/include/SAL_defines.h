@@ -43,7 +43,7 @@ typedef int	        salReturn;
 
 
 #define SAL__FASTPOLL			1000
-#define SAL__SLOWPOLL			1000000
+#define SAL__SLOWPOLL			10000
 
 // Generic return codes
 #define SAL__OK   		 0
@@ -52,6 +52,15 @@ typedef int	        salReturn;
 #define SAL__ILLEGAL_REVCODE 	-2
 #define SAL__TOO_MANY_HANDLES   -3
 #define SAL__NOT_DEFINED        -4
+
+// Generic states
+#define SAL__STATE_DISABLED	1
+#define SAL__STATE_ENABLED	2
+#define SAL__STATE_FAULT	3
+#define SAL__STATE_OFFLINE	4
+#define SAL__STATE_STANDBY	5
+#define SAL__STATE_COUNT	5
+
 
 // Timeout return codes
 #define SAL__TIMEOUT            -5

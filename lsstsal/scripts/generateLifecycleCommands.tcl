@@ -1,22 +1,17 @@
-set SAL_LIFECYCLE_COMMANDS "
-<?xml version=\"1.0\" encoding=\"UTF-8\"?>
-<?xml-stylesheet type=\"text/xsl\" href=\"http://project.lsst.org/ts/sal_objects/schema/SALCommandSet.xsl\"?>
-<SALCommandSet xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"
-	xsi:noNamespaceSchemaLocation=\"http://project.lsst.org/ts/sal_objects/schema/SALCommandSet.xsd\">
-
+set SAL_GENERIC_COMMANDS "
 <SALCommand>
  <Subsystem>[set SALSubsys]</Subsystem>
  <Version>$SALVERSION</Version>
  <Author>salgenerator</Author>
  <EFDB_Topic>[set SALSubsys]_command_start</EFDB_Topic>
  <Alias>start</Alias>
- <Device>SettingsToApply</Device>
+ <Device>Settings</Device>
  <Property>set</Property>
  <Action>apply</Action>
  <Value></Value>
  <Explanation>http://project.lsst.org/ts/sal_objects/help/[set SALSubsys]_command_start.html</Explanation>
     <item>
-      <EFDB_Name>configuration</EFDB_Name>
+      <EFDB_Name>settingsToApply</EFDB_Name>
       <Description>Subsystem Configuration to apply at start</Description>
        <IDL_Type>string</IDL_Type>
       <Units> </Units>
@@ -36,8 +31,8 @@ set SAL_LIFECYCLE_COMMANDS "
  <Value></Value>
  <Explanation>http://project.lsst.org/ts/sal_objects/help/[set SALSubsys]_command_stop.html</Explanation>
     <item>
-      <EFDB_Name>state</EFDB_Name>
-      <Description>Subsystem state</Description>
+      <EFDB_Name>value</EFDB_Name>
+      <Description>Subsystem value</Description>
        <IDL_Type>boolean</IDL_Type>
       <Units> </Units>
       <Count>1</Count>
@@ -56,8 +51,8 @@ set SAL_LIFECYCLE_COMMANDS "
  <Value></Value>
  <Explanation>http://project.lsst.org/ts/sal_objects/help/[set SALSubsys]_command_abort.html</Explanation>
     <item>
-      <EFDB_Name>state</EFDB_Name>
-      <Description>Subsystem state</Description>
+      <EFDB_Name>value</EFDB_Name>
+      <Description>Subsystem value</Description>
        <IDL_Type>boolean</IDL_Type>
       <Units> </Units>
       <Count>1</Count>
@@ -76,8 +71,8 @@ set SAL_LIFECYCLE_COMMANDS "
  <Value></Value>
  <Explanation>http://project.lsst.org/ts/sal_objects/help/[set SALSubsys]_command_enable.html</Explanation>
     <item>
-      <EFDB_Name>state</EFDB_Name>
-      <Description>Subsystem state</Description>
+      <EFDB_Name>value</EFDB_Name>
+      <Description>Subsystem value</Description>
        <IDL_Type>boolean</IDL_Type>
       <Units> </Units>
       <Count>1</Count>
@@ -96,8 +91,8 @@ set SAL_LIFECYCLE_COMMANDS "
  <Value></Value>
  <Explanation>http://project.lsst.org/ts/sal_objects/help/[set SALSubsys]_command_disable.html</Explanation>
     <item>
-      <EFDB_Name>state</EFDB_Name>
-      <Description>Subsystem state</Description>
+      <EFDB_Name>value</EFDB_Name>
+      <Description>Subsystem value</Description>
        <IDL_Type>boolean</IDL_Type>
       <Units> </Units>
       <Count>1</Count>
@@ -116,8 +111,8 @@ set SAL_LIFECYCLE_COMMANDS "
  <Value></Value>
  <Explanation>http://project.lsst.org/ts/sal_objects/help/[set SALSubsys]_command_standby.html</Explanation>
     <item>
-      <EFDB_Name>state</EFDB_Name>
-      <Description>Subsystem state</Description>
+      <EFDB_Name>value</EFDB_Name>
+      <Description>Subsystem value</Description>
        <IDL_Type>boolean</IDL_Type>
       <Units> </Units>
       <Count>1</Count>
@@ -136,8 +131,8 @@ set SAL_LIFECYCLE_COMMANDS "
  <Value></Value>
  <Explanation>http://project.lsst.org/ts/sal_objects/help/[set SALSubsys]_command_exitControl.html</Explanation>
     <item>
-      <EFDB_Name>state</EFDB_Name>
-      <Description>Subsystem state</Description>
+      <EFDB_Name>value</EFDB_Name>
+      <Description>Subsystem value</Description>
        <IDL_Type>boolean</IDL_Type>
       <Units> </Units>
       <Count>1</Count>
@@ -156,8 +151,8 @@ set SAL_LIFECYCLE_COMMANDS "
  <Value>network</Value>
  <Explanation>http://project.lsst.org/ts/sal_objects/help/[set SALSubsys]_command_enterControl.html</Explanation>
     <item>
-      <EFDB_Name>state</EFDB_Name>
-      <Description>Subsystem state</Description>
+      <EFDB_Name>value</EFDB_Name>
+      <Description>Subsystem value</Description>
        <IDL_Type>boolean</IDL_Type>
       <Units> </Units>
       <Count>1</Count>
@@ -183,6 +178,5 @@ set SAL_LIFECYCLE_COMMANDS "
       <Count>1</Count>
     </item>
 </SALCommand>
-
-</SALCommandSet>"
+"
 

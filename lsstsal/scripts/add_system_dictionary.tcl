@@ -6,39 +6,42 @@ proc calcshmid { subsys } {
   return $id
 }
 
+#if { [file exists $env(SAL_WORK_DIR)/SALSubsystems.xml] } {
+#   source $env(SAL_DIR)/update_ts_xml_dictionary.tcl
+#   parseSystemDictionary
+#} else {
+#   puts stdout "
+#*******************************************************************************
+#****************** ERROR - missing dictionary *********************************
+#*******************************************************************************
 #
+#	$env(SAL_WORK_DIR)/SALSubsystems.xml not found
 #
-#  THIS STRATEGY IS NOW DEPRECATED, THE salgenerator WILL DETECT IF THE XML HAS
-#  A start COMMAND AND IF NOT IT WILL ADD THE GENERICS AT the validate STEP
+# 	Please copy it from the ts_xml installation
 #
-#  Define SYSDIC(name,hasGenerics) when full UML -> XML generation is available
-#  ts_xml MUST be updated in concert as each CSC is updated 
-#
-#  e.g. set SYSDIC(m2,hasGenerics) 1
-#
+#*******************************************************************************
+#*******************************************************************************"
+#   exit
+#}
+
 
 #
-#  WARNING, m1m3 is still using the Start,Stop etc variant for the lifecycle 
-#           commands, this will change to match the other CSC's eventually
+#  Deprecated , now parse SALSubsystems.xml instead
 #
-set SYSDIC(m1m3,hasGenericCommands) 1
-set SYSDIC(m1m3,hasGenericEvents) 1
-
 set SYSDIC(systems) "ATPtg ATAOS atArchiver atcamera atHeaderService accl archiver atcs AtMCS AtPneumatics AtThermoelectricCooler AtSpectrograph AtWhiteLightChiller AtWhiteLight AtDome AtHexapod atMonochromator atScheduler calibrationCBP calibrationElectrometer calibrationMonochromator calibrationSpectrometer camera catchupArchiver comcam headerService dome domeADB domeAPS domeLouvers domeLWS domeMONCS domeTHCS eec efd EMMWeatherStationMonitor environment EXA hexapod lasercal LinearStage m1m3 m2ms MTMount MTPtg network ocs operations power promptProcessing rotator sedSpectrometer sequencer scheduler seeing skycam summitFacility system tcs tcsOfc tcsWEP Test vms"
+set SYSDIC(calibrationElectrometer,keyedID) 1
+set SYSDIC(hexapod,keyedID) 1
+set SYSDIC(hexapod,1) "cameraHexapod"
+set SYSDIC(hexapod,2) "m2msHexapod"
+set SYSDIC(LinearStage,keyedID) 1
+set SYSDIC(Test,keyedID) 1
+
+
 
 foreach s $SYSDIC(systems) {set SYSDIC($s,type) system}
 
 set SYSDIC(datatypes) "byte short int long float string int64 double ubyte ushort uint ulong"
 
-set SYSDIC(calibrationElectrometer,keyedID) 1
-
-set SYSDIC(hexapod,keyedID) 1
-set SYSDIC(hexapod,1) "cameraHexapod"
-set SYSDIC(hexapod,2) "m2msHexapod"
-
-set SYSDIC(LinearStage,keyedID) 1
-
-set SYSDIC(Test,keyedID) 1
 
 set TSYSDIC(subsystems) "<H2>Appendix A - System Dictionary</H2><P>
 <H2>Contents : </H2>

@@ -1,4 +1,4 @@
-#!/usr/bin/tclsh
+#!/usr/bin/env tclsh
 
 proc parseXMLtoidl { fname } { 
 global IDLRESERVED SAL_WORK_DIR SAL_DIR CMDS CMD_ALIASES EVTS EVENT_ALIASES
@@ -26,7 +26,11 @@ global TLMS TLM_ALIASES EVENT_ENUM EVENT_ENUMS UNITS ENUM_DONE
           set alias $value
           set shouldbe [join [lrange [split $tname _] 2 end] "_"]
           if { $alias != $shouldbe } {
+             puts stdout "****************************************************************"
+             puts stdout "****************************************************************"
              puts stdout "ERROR - Alias does not match EFDB_Topic declaration for $alias"
+             puts stdout "****************************************************************"
+             puts stdout "****************************************************************"
              exit
           }
           if { $ctype == "command" } {set CMDS($subsys,$alias) $alias}
@@ -38,8 +42,6 @@ global TLMS TLM_ALIASES EVENT_ENUM EVENT_ENUMS UNITS ENUM_DONE
       if { $tag == "Value" }           {set vvalue $value}
       if { $tag == "Subsystem" }       {set subsys $value}
       if { $tag == "Enumeration" }     {
-       if { [info exists ENUM_DONE($value)] == 0 } {
-         set ENUM_DONE($value) 1
          if { $intopic } {
            lappend EVENT_ENUM($alias) "$item:$value"
            set EVENT_ENUMS($alias,$item) "$value"
@@ -47,7 +49,6 @@ global TLMS TLM_ALIASES EVENT_ENUM EVENT_ENUMS UNITS ENUM_DONE
            lappend EVENT_ENUM([set subsys]_shared) "generic_shared:$value"
            set EVENT_ENUMS([set subsys]_shared,generic_shared) "$value"
          }
-       }
       }
       if { $tag == "/SALEvent" } {
          set intopic 0
@@ -115,7 +116,11 @@ global TLMS TLM_ALIASES EVENT_ENUM EVENT_ENUMS UNITS ENUM_DONE
         }
         set itemid 0
         if { [info exists topics($value)] } { 
+           puts stdout "****************************************************************"
+           puts stdout "****************************************************************"
            puts stdout "ERROR - duplicate EFDB_Topic = $value"
+           puts stdout "****************************************************************"
+           puts stdout "****************************************************************"
            exit
         }
         set topics($value) 1
@@ -142,7 +147,11 @@ global TLMS TLM_ALIASES EVENT_ENUM EVENT_ENUMS UNITS ENUM_DONE
         set desc "" ; set range "" ; set location ""
         set freq 0.054 ; set sdim 1
         if { [lsearch $IDLRESERVED [string tolower $item]] > -1 } {
+           puts stdout "****************************************************************"
+           puts stdout "****************************************************************"
            puts stdout "Invalid use of IDL reserved token $item"
+           puts stdout "****************************************************************"
+           puts stdout "****************************************************************"
            exit 1
         }
       }
