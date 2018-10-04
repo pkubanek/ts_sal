@@ -1,4 +1,4 @@
-#!/usr/bin/tclsh
+#!/usr/bin/env tclsh
 
 load $env(SAL_DIR)/../lib/libxtcs.so
 load $env(SAL_DIR)/../lib/libsqlite3.22.0.so Sqlite3
@@ -22,7 +22,7 @@ foreach f $s2 {
 puts stdout "Simulating $numvisits visits, starting from record $startrec"
 set count 0
 set ok 0
-sqlite3 db1 $env(SAL_WORK_DIR)/tcs/tcs/bin/mini-minion.db
+sqlite3 db1 $env(SAL_WORK_DIR)/visitSimulator/bin/mini-minion.db
 
 puts stdout "Started visits at record $count"
 set count 0 
@@ -79,13 +79,13 @@ global TARGETS numvisits fin lastfield lastfilter env db1 idx
          if { [info exists env(TCSSIM_QUIET)] } {
             exec $env(SAL_HOME)/scripts/standardvisit_commands.tcl $az $alt $filter &
          } else {
-            exec gnome-terminal --geometry 800x300 -t "Visit with filter change" -e "$env(SAL_HOME)/scripts/standardvisit_commands.tcl $az $alt $filter" &
+            exec gnome-terminal --geometry 800x300 -e "$env(SAL_HOME)/scripts/standardvisit_commands.tcl $az $alt $filter" &
          }
       } else {
          if { [info exists env(TCSSIM_QUIET)] } {
             exec $env(SAL_HOME)/scripts/standardvisit_commands.tcl $az $alt &
          } else {
-            exec gnome-terminal --geometry 800x300 -t "Standard Visit" -e "$env(SAL_HOME)/scripts/standardvisit_commands.tcl $az $alt" &
+            exec gnome-terminal --geometry 800x300  -e "$env(SAL_HOME)/scripts/standardvisit_commands.tcl $az $alt" &
          }
       }
 ##      after [expr int($slewtime*1000)] {puts stdout "command -> camera imager expose numimages=2 expTime=15 shutter=true guide=true wfs=true"}

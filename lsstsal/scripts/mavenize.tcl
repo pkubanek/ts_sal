@@ -1,4 +1,4 @@
-#!/usr/bin/tclsh
+#!/usr/bin/env tclsh
 
 # set SAL_DIR $env(SAL_DIR)
 # set SAL_WORK_DIR $env(SAL_WORK_DIR)
@@ -112,24 +112,24 @@ global env SAL_WORK_DIR SAL_DIR SALVERSION OSPL_VERSION
         <repository>
             <id>ocs-maven2-public</id>
             <name>OCS Maven 2 central repository</name>
-            <url>http://dev.lsstcorp.org:8081/nexus/content/groups/ocs-maven2-public/</url>
+            <url>http://repo-nexus.lsst.org/nexus/content/groups/ocs-maven2-public/</url>
         </repository>
     </repositories>
     <distributionManagement>
         <repository>
             <id>ocs-maven2</id>
             <name>OCS Maven2 Release repository</name>
-            <url>http://dev.lsstcorp.org:8081/nexus/content/repositories/ocs-maven2/</url>
+            <url>http://repo-nexus.lsst.org/nexus/content/repositories/ocs-maven2/</url>
         </repository>
         <snapshotRepository>
             <id>ocs-maven2-snapshots</id>
             <name>OCS Maven2 SNAPSHOTS repository</name>
-            <url>http://dev.lsstcorp.org:8081/nexus/content/repositories/ocs-maven2-snapshots/</url>
+            <url>http://repo-nexus.lsst.org/nexus/content/repositories/ocs-maven2-snapshots/</url>
         </snapshotRepository>
         <site>
             <id>ocs-maven2-site</id>
             <name>OCS Maven2 site repository</name>
-            <url>dav:http://dev.lsstcorp.org:8081/nexus/content/sites/ocs-site/</url>
+            <url>dav:http://repo-nexus.lsst.org/nexus/content/sites/ocs-site/</url>
         </site>
     </distributionManagement>
   </project>

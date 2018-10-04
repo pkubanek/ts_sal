@@ -1,4 +1,4 @@
-#!/usr/bin/tclsh
+#!/usr/bin/env tclsh
 
 # Run runtime-generator.sh and then update_visitsim.tcl firsts
 
@@ -24,11 +24,18 @@ puts stdout "Updating libraries"
 exec cp -r lib $DEST/.
 
 
+source $SAL_DIR/copytelemetrytests.tcl
 puts stdout "Updating executable tests"
 foreach subsys $SYSDIC(systems) {
       if { [file isdirectory $subsys] } {
          puts stdout "Processing $subsys"
-         exec cp -vr $SAL_WORK_DIR/$subsys $DEST/.
+         exec mkdir -p  $DEST/$subsys/cpp
+         exec cp -vr $SAL_WORK_DIR/$subsys/cpp/src $DEST/$subsys/cpp/.
+      }
+      if { [file isdirectory $subsys/python] } {
+         puts stdout "Processing $subsys/python"
+         exec mkdir -p  $DEST/$subsys/python
+         exec cp -vr $SAL_WORK_DIR/$subsys/python $DEST/$subsys/.
       }
 }
 
@@ -38,6 +45,31 @@ foreach subsys $SYSDIC(systems) {
   exec cp -r sql/[set subsys].sqldef $DEST/sql/.
   exec cp -r sql/[set subsys]_items.sql $DEST/sql/.
 }
+
+exec mkdir -p $DEST/html
+puts stdout "Updating html"
+foreach subsys $SYSDIC(systems) {
+  if { [file isdirectory html/$subsys] } {
+    exec cp -r html/[set subsys] $DEST/html/.
+  }
+}
+
+
+exec mkdir -p $DEST/jar
+puts stdout "Updating Java"
+foreach subsys $SYSDIC(systems) {
+  if { [file exists $subsys/java/saj_[set subsys]_types.jar] } {
+     exec cp $subsys/java/saj_[set subsys]_types.jar $DEST/jar/.
+  }
+  catch {
+     set t [glob maven/[set subsys]_*/target/sal_*.jar]
+     exec cp $t $DEST/jar/.
+  }
+  cp maven/libs/junit.jar $DEST/jar/.
+}
+
+
+
 
 #
 #  recipe to rebuild tma software

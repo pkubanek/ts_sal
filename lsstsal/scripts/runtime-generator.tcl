@@ -1,4 +1,4 @@
-#!/usr/bin/tclsh
+#!/usr/bin/env tclsh
 
 puts stdout "Removing old idl-templates"
 exec rm -fr idl-templates
@@ -53,6 +53,16 @@ foreach subsys $SYSDIC(systems) {
    set bad ""
    set result ""
    catch { set results [exec salgenerator $subsys labview ] } bad
+   puts stdout "$result $bad"
+  }
+}
+
+puts stdout  "Updating libraries"
+foreach subsys $SYSDIC(systems) {
+  if { [info exists DO($subsys)] } {
+   set bad ""
+   set result ""
+   catch { set results [exec salgenerator $subsys lib ] } bad
    puts stdout "$result $bad"
   }
 }

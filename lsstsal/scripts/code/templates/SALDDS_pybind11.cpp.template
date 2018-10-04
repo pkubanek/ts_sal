@@ -133,15 +133,15 @@ PYBIND11_MODULE(SALPY_SALData,m){
             "setDebugLevel"
             , (::salReturn ( ::SAL_SALData::* )( int ) )( &::SAL_SALData::setDebugLevel )
             , ( py::arg("level") ) )    
-        .def( 
-            "telemetryAvailable"
-            , (::salReturn ( ::SAL_SALData::* )(  ) )( &::SAL_SALData::telemetryAvailable ) )
-        .def( 
-            "commandAvailable"
-            , (::salReturn ( ::SAL_SALData::* )(  ) )( &::SAL_SALData::commandAvailable ) )
-        .def( 
-            "eventAvailable"
-            , (::salReturn ( ::SAL_SALData::* )(  ) )( &::SAL_SALData::eventAvailable ) )
+//        .def( 
+//            "telemetryAvailable"
+//            , (::salReturn ( ::SAL_SALData::* )(  ) )( &::SAL_SALData::telemetryAvailable ) )
+//        .def( 
+//            "commandAvailable"
+//            , (::salReturn ( ::SAL_SALData::* )(  ) )( &::SAL_SALData::commandAvailable ) )
+//        .def( 
+//            "eventAvailable"
+//            , (::salReturn ( ::SAL_SALData::* )(  ) )( &::SAL_SALData::eventAvailable ) )
 // INSERT_SAL_PYTHON_GETPUT
         ;
 
@@ -180,7 +180,12 @@ PYBIND11_MODULE(SALPY_SALData,m){
 	m.attr("SAL__LIVELINESS_CHG") 	= SAL__LIVELINESS_CHG;
 	m.attr("SAL__SAMPLELOST")	= SAL__SAMPLELOST;
 	m.attr("SAL__SUBSCR_MATCH") 	= SAL__SUBSCR_MATCH;
-	
+        m.attr("SAL__STATE_DISABLED") 	= SAL__STATE_DISABLED;
+        m.attr("SAL__STATE_ENABLED") 	= SAL__STATE_ENABLED;
+        m.attr("SAL__STATE_FAULT") 	= SAL__STATE_FAULT;
+        m.attr("SAL__STATE_OFFLINE") 	= SAL__STATE_OFFLINE;
+        m.attr("SAL__STATE_STANDBY") 	= SAL__STATE_STANDBY;
+        m.attr("SAL__STATE_COUNT") 	= SAL__STATE_COUNT;
 }
 
 

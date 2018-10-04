@@ -146,9 +146,9 @@
       salReturn salTypeSupport(char *topicName);
       salReturn salTelemetryPub(char *topicName);
       salReturn salTelemetrySub(char *topicName);
-      salReturn telemetryAvailable();
-      salReturn commandAvailable();
-      salReturn eventAvailable();
+//      salReturn telemetryAvailable();
+//      salReturn commandAvailable();
+//      salReturn eventAvailable();
 
 //      template <class T1, class T2>
 //      void putSample(T1 data, T2 writer);

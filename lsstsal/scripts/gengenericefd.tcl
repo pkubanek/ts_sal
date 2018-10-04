@@ -308,12 +308,12 @@ int SAL_[set base]::getLastSample_[set topic] ([set base]_[set topic]C *mydata) 
 
 proc checkLFO { fout topic } {
   set alias [join [lrange [split $topic _] 1 end] _]
-  if { $alias == "LargeFileObjectAvailable" } {
+  if { $alias == "largeFileObjectAvailable" } {
      set alias "'[join [lrange [split $topic _] 1 end] _]'"
      puts $fout "
        if (status == SAL__OK && numsamp > 0) \{
            printf(\"EFD TBD : Large File Object Announcement Event $topic received\\n\");
-           sprintf(thequery,\"process_LFO_logevent  %d '%s' '%s' '%s' '%s' %f '%s'\"  ,  myData_[set topic]\[iloop\].Byte_Size , myData_[set topic]\[iloop\].Checksum.m_ptr , myData_[set topic]\[iloop\].Generator.m_ptr , myData_[set topic]\[iloop\].Mime_Type.m_ptr , myData_[set topic]\[iloop\].URL.m_ptr , myData_[set topic]\[iloop\].Version, myData_[set topic]\[iloop\].ID.m_ptr);
+           sprintf(thequery,\"process_LFO_logevent  %d '%s' '%s' '%s' '%s' %f '%s'\"  ,  myData_[set topic]\[iloop\].byteSize , myData_[set topic]\[iloop\].checkSum.m_ptr , myData_[set topic]\[iloop\].generator.m_ptr , myData_[set topic]\[iloop\].mimeType.m_ptr , myData_[set topic]\[iloop\].url.m_ptr , myData_[set topic]\[iloop\].version, myData_[set topic]\[iloop\].id.m_ptr);
           mstatus = system(thequery);
           if (mstatus < 0) \{
              fprintf(stderr,\"LFO Processor ERROR : %d\\n\",mstatus);
@@ -631,14 +631,13 @@ CREATE TABLE [set subsys]_logeventLFO (
   private_revCode char(32),
   private_sndStamp double precision,
   private_seqNum int,
-  alias varchar(128),
-  URL varchar(128),
-  Generator varchar(128),
-  Version varchar(32),
-  Checksum char(32),
-  Mime_Type varchar(64),
-  ID varchar(32),
-  Byte_Size long,
+  url varchar(128),
+  generator varchar(128),
+  version varchar(32),
+  checkSum char(32),
+  mimeType varchar(64),
+  id varchar(32),
+  byteSize long,
   PRIMARY KEY (date_time)
 );
 "
@@ -664,7 +663,7 @@ proc genefdwriters { base } {
 global SQLREC SAL_WORK_DIR
    set SQLREC([set base]_ackcmd)  "char.private_revCode,double.private_sndStamp,double.private_rcvStamp,int.private_seqNum,int.private_origin,int.private_host,int.ack,int.error,char.result"
    set SQLREC([set base]_commandLog)  "char.private_revCode,double.private_sndStamp,int.private_seqNum,char.name,int.ack,int.error"
-   set SQLREC([set base]_logeventLFO)  "char.private_revCode,double.private_sndStamp,int.private_seqNum,char.alias,char.URL,char.Generator,char.Version,char.Checksum,char.Mime_Type,char.ID,int.Byte_size"
+####   set SQLREC([set base]_logevent_largeFileObjectAvailable)  "char.private_revCode,double.private_sndStamp,int.private_seqNum,char.url,char.generator,float.version,char.checkSum,char.mimeType,char.id,int.byteSize"
    makesummarytables  $base
    gentelemetryreader $base
    gencommandreader   $base
