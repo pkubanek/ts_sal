@@ -508,7 +508,7 @@ public class SAL_SALData {
         public static final int SAL__STATE_FAULT = 	3;
         public static final int SAL__STATE_OFFLINE = 	4;
         public static final int SAL__STATE_STANDBY = 	5;
-        public static final int SAL__STATE_COUNT = 	6;
+        public static final int SAL__STATE_COUNT = 	5;
 
 
 	public int waitForCompletion( int cmdSeqNum , int timeout )
