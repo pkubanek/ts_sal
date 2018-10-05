@@ -503,6 +503,12 @@ public class SAL_SALData {
         public static final int SAL__LIVELINESS_CHG =	404;
         public static final int SAL__SAMPLELOST	=	405;
         public static final int SAL__SUBSCR_MATCH =	406;
+        public static final int SAL__STATE_DISABLED = 	1;
+        public static final int SAL__STATE_ENABLED = 	2;
+        public static final int SAL__STATE_FAULT = 	3;
+        public static final int SAL__STATE_OFFLINE = 	4;
+        public static final int SAL__STATE_STANDBY = 	5;
+        public static final int SAL__STATE_COUNT = 	5;
 
 
 	public int waitForCompletion( int cmdSeqNum , int timeout )
@@ -708,36 +714,39 @@ public class SAL_SALData {
 
 	  //create Publisher
 	  createPublisher(actorIdx);
-	  createSubscriber(SAL__SALData_ackcmd_ACTOR);
 
 	  //create types
 	  salTypeSupport(actorIdx);
-	  ackcmdTypeSupport mtr = new ackcmdTypeSupport();
-	  registerType2(SAL__SALData_ackcmd_ACTOR,mtr);
 
 	  //create Topics
 	  createTopic(actorIdx,cmdAlias);
-	  createTopic2(SAL__SALData_ackcmd_ACTOR,sresponse);
-	
-	  //create a reader for responses
-#ifdef SAL_SUBSYSTEM_ID_IS_KEYED
-  	  // Filter expr
-          String expr[] = new String[0];
-          String sFilter = "SALDataID = " + subsystemID;
-    	  createContentFilteredTopic2(SAL__SALData_ackcmd_ACTOR,"filteredResponse", sFilter, expr);
-
-	  // create DataReader
- 	  createReader2(SAL__SALData_ackcmd_ACTOR,false);
-#else
-	  createReader2(SAL__SALData_ackcmd_ACTOR,false);
-#endif
-	  sal[actorIdx].isReader = true;
 	  boolean autodispose_unregistered_instances = false;
 	  createWriter(actorIdx,autodispose_unregistered_instances);
 	  sal[actorIdx].isWriter = true;
 	  sal[actorIdx].isCommand = true;
           sal[actorIdx].sndSeqNum = (int)getCurrentTime();
           sal[SAL__SALData_ackcmd_ACTOR].sampleAge = 1.0;
+	
+          if ( sal[SAL__SALData_ackcmd_ACTOR].isReader == false ) {
+	    createSubscriber(SAL__SALData_ackcmd_ACTOR);
+	    ackcmdTypeSupport mtr = new ackcmdTypeSupport();
+	    registerType2(SAL__SALData_ackcmd_ACTOR,mtr);
+	    createTopic2(SAL__SALData_ackcmd_ACTOR,sresponse);
+	    //create a reader for responses
+#ifdef SAL_SUBSYSTEM_ID_IS_KEYED
+  	    // Filter expr
+            String expr[] = new String[0];
+            String sFilter = "SALDataID = " + subsystemID;
+    	    createContentFilteredTopic2(SAL__SALData_ackcmd_ACTOR,"filteredResponse", sFilter, expr);
+
+	    // create DataReader
+ 	    createReader2(SAL__SALData_ackcmd_ACTOR,false);
+#else
+	    createReader2(SAL__SALData_ackcmd_ACTOR,false);
+#endif
+ 	    sal[SAL__SALData_ackcmd_ACTOR].isReader = true;
+          }
+
 	}
 
 
@@ -793,18 +802,13 @@ public class SAL_SALData {
 	  // create domain participant
 	  createParticipant(domainName);
 
-	  //create Publisher
-	  createPublisher(SAL__SALData_ackcmd_ACTOR);
 	  createSubscriber(actorIdx);
 
 	  //create types
 	  salTypeSupport(actorIdx);
-	  ackcmdTypeSupport mtr = new ackcmdTypeSupport();
-	  registerType2(SAL__SALData_ackcmd_ACTOR,mtr);
 
 	  //create Topics
 	  createTopic(actorIdx,cmdAlias);
-	  createTopic2(SAL__SALData_ackcmd_ACTOR,sresponse);
 
 	  //create a reader for commands
 #ifdef SAL_SUBSYSTEM_ID_IS_KEYED
@@ -816,11 +820,19 @@ public class SAL_SALData {
 #else
 	  createReader(actorIdx,false);
 #endif
-	  boolean autodispose_unregistered_instances = false;
-	  createWriter2(SAL__SALData_ackcmd_ACTOR,autodispose_unregistered_instances);
-	  sal[actorIdx].isWriter = true;
 	  sal[actorIdx].isProcessor = true;
           sal[actorIdx].sampleAge = 1.0;
+
+          if (sal[actorIdx].isProcessor == false) {
+  	    //create Publisher
+	    createPublisher(SAL__SALData_ackcmd_ACTOR);
+	    ackcmdTypeSupport mtr = new ackcmdTypeSupport();
+	    registerType2(SAL__SALData_ackcmd_ACTOR,mtr);
+	    createTopic2(SAL__SALData_ackcmd_ACTOR,sresponse);
+   	    boolean autodispose_unregistered_instances = false;
+	    createWriter2(SAL__SALData_ackcmd_ACTOR,autodispose_unregistered_instances);
+	    sal[SAL__SALData_ackcmd_ACTOR].isWriter = true;
+          }
 	}
 
 	public void salShutdown()

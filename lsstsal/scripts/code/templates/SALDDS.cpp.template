@@ -1,11 +1,11 @@
 
 //#include <chrono>
 #include <sys/time.h>
+#include <stdexcept>
 #include <time.h>
 #include "SAL_SALData.h"
 using namespace SALData;
 
-#ifdef SAL_SUBSYSTEM_ID_IS_KEYED
 SAL_SALData::SAL_SALData(int aKey)
 {
    char *dname = getenv("LSST_DDS_DOMAIN");
@@ -24,7 +24,7 @@ SAL_SALData::SAL_SALData(int aKey)
    debugLevel = 1;
    initSalActors();
 }
-#else
+
 SAL_SALData::SAL_SALData()
 {
    char *dname = getenv("LSST_DDS_DOMAIN");
@@ -43,48 +43,6 @@ SAL_SALData::SAL_SALData()
    debugLevel = 1;
    initSalActors();
 }
-#endif
-
-#ifdef SAL_SUBSYSTEM_ID_IS_KEYED
-void SAL_SALData::salInitialize(int aKey)
-{
-   char *dname = getenv("LSST_DDS_DOMAIN");
-   if ( dname != NULL ) {
-      strncpy(domainName, dname, 128);
-   } else {
-      strncpy(domainName, "LSST", 128);
-   }
-   hasReader = false;
-   hasWriter = false;
-   hasCommand = false;
-   hasProcessor = false;
-   hasEventReader = false;
-   hasEventWriter = false;
-   subsystemID = aKey;
-   debugLevel = 1;
-   initSalActors();
-}
-#else
-void SAL_SALData::salInitialize()
-{
-   char *dname = getenv("LSST_DDS_DOMAIN");
-   if ( dname != NULL ) {
-      strncpy(domainName, dname, 128);
-   } else {
-      strncpy(domainName, "LSST", 128);
-   }
-   hasReader = false;
-   hasWriter = false;
-   hasCommand = false;
-   hasEventReader = false;
-   hasProcessor = false;
-   hasEventReader = false;
-   hasEventWriter = false;
-   subsystemID = 0;
-   debugLevel = 1;
-   initSalActors();
-}
-#endif
 
 /**
  * Returns the name of an error code.
@@ -104,7 +62,7 @@ void SAL_SALData::checkStatus(DDS::ReturnCode_t status, const char *info)
   if (status != DDS::RETCODE_OK && status != DDS::RETCODE_NO_DATA)
   {
     cerr << "Error in " << info << ": " << getErrorName(status).c_str() << endl;
-    exit(1);
+    throw std::runtime_error(getErrorName(status).c_str());
   }
 }
 
@@ -117,7 +75,7 @@ void SAL_SALData::checkHandle(void *handle, string info)
   if (!handle)
   {
     cerr << "Error in " << info.c_str() << ": Creation failed: invalid handle" << endl;
-    exit(1);
+    throw std::runtime_error("Creation failed: invalid handle");
   }
 }
 
