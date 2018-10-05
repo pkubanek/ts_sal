@@ -18,6 +18,7 @@ global env
      }
    }
   }
+  if { [info exists cmds] } {
   puts $fout "
 std::vector<std::string> SAL_[set subsys]::getCommandNames()
 \{
@@ -28,6 +29,8 @@ std::vector<std::string> SAL_[set subsys]::getCommandNames()
   puts $fout "    return it;
 \}
 "
+  }
+  if { [info exists evts] } {
   puts $fout "
 std::vector<std::string> SAL_[set subsys]::getEventNames()
 \{
@@ -38,6 +41,8 @@ std::vector<std::string> SAL_[set subsys]::getEventNames()
   puts $fout "    return it;
 \}
 "
+  }
+  if { [info exists tlms] } {
   puts $fout "
 std::vector<std::string> SAL_[set subsys]::getTelemetryNames()
 \{
@@ -48,6 +53,7 @@ std::vector<std::string> SAL_[set subsys]::getTelemetryNames()
   puts $fout "    return it;
 \}
 "
+  }
   puts $fout "
 std::string SAL_[set subsys]::getComponentName()
 \{
