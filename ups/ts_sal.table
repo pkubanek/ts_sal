@@ -15,11 +15,6 @@ envSet(SAL_HOME, ${LSST_SDK_INSTALL}/lsstsal)
 envSet(SAL_WORK_DIR, ${LSST_SDK_INSTALL}/xml_test)
 envSet(SAL_DIR, ${SAL_HOME}/scripts)
 
-envSet(SAL_CPPFLAGS, -m64)
-#envSet(SAL_VERSION, `grep -i version $SAL_DIR/sal_version.tcl | awk '{print $3}'`)
-envSet(SAL_VERSION, 3.7.1)
-print(<<< SAL version 3.7.1 // check @ $SAL_DIR/sal_version.tcl though >>>)
-
 # Opensplice gateway 
 # (Note that variables from $OSPL_HOME/release.com set as part of ts_opensplice setup).
 envSet(RLM_HOME, ${SAL_HOME}/.m2/repository/org/opensplice/gateway/rlm/9.1.3)
@@ -30,6 +25,7 @@ envPrepend(PYTHONPATH, ${SAL_WORK_DIR}/lib)
 
 # Extend and add library paths
 envPrepend(LD_LIBRARY_PATH, ${SAL_WORK_DIR}/lib:${SAL_DIR}/lib:${SAL_HOME}/lib)
+envPrepend(LSST_LIBRARY_PATH, ${SAL_WORK_DIR}/lib:${SAL_DIR}/lib:${SAL_HOME}/lib)
 envSet(TCL_LIBRARY, ${SAL_HOME}/lib/tcl8.5)
 envSet(TK_LIBRARY, ${SAL_HOME}/lib/tk8.5)
 
