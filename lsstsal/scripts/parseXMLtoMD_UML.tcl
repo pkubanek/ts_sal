@@ -122,7 +122,7 @@ proc genUnits { fid } {
 
 
 
-proc parseXMLtoUML { } { 
+proc parseXMLtoUML { {csclist all } } { 
 global IDLRESERVED SAL_WORK_DIR SAL_DIR CMDS CMD_ALIASES EVTS EVENT_ALIASES SYSDIC TCODE
 global TLMS TLM_ALIASES EVENT_ENUM ENUM EATYPE IGNORE
    set fout [open SALXML_to_UML.xmi w]
@@ -140,6 +140,9 @@ global TLMS TLM_ALIASES EVENT_ENUM ENUM EATYPE IGNORE
 	</xmi:Extension>
 		<uml:Model xmi:type='uml:Model' name='SAL_Model'>
 			<packagedElement xmi:type='uml:Package' name='SAL_Interface'>"
+   if { $csclist != "all" } {
+      set SYSDIC(systems) $csclist
+   }
    foreach subsys $SYSDIC(systems) {
     set ctype ""
     set eaid 1
@@ -198,9 +201,10 @@ global TLMS TLM_ALIASES EVENT_ENUM ENUM EATYPE IGNORE
              gets $fin rec
              if { [string range $rec 0 4] == "</SAL" } {set looking 0}
            }
+        } else {
+          puts stdout "Translating $tname"
+          puts $fout "						<packagedElement xmi:type='uml:Class' name='[set tname]'>"
         }
-        puts stdout "Translating $tname"
-        puts $fout "						<packagedElement xmi:type='uml:Class' name='[set tname]'>"
       }
       if { $tag == "EFDB_Name" } {
         set item $value ; set unit "" ; set ENUM($item) ""
@@ -282,7 +286,7 @@ global TLMS TLM_ALIASES EVENT_ENUM ENUM EATYPE IGNORE
 }
 
 
-set IGNORE "command_start command_stop command_enable command_disable command_standby command_entercontrol command_exitcontrol logevent_settingversions logevent_summarystate logevent_errorcode logevent_appliedsettingsmatchstart"
+set IGNORE "command_start command_stop command_enable command_disable command_standby command_entercontrol command_exitcontrol command_abort logevent_settingversions logevent_summarystate logevent_errorcode logevent_appliedsettingsmatchstart"
 set IDLRESERVED "abstract any attribute boolean case char component const consumes context custom default double emits enum eventtype exception factory false finder fixed float getraises home import in inout interface local long module multiple native object octet oneway out primarykey private provides public publishes raises readonly sequence setraises short string struct supports switch true truncatable typedef typeid typeprefix union unsigned uses valuebase valuetype void wchar wstring"
 set SAL_DIR $env(SAL_DIR)
 set SAL_WORK_DIR $env(SAL_WORK_DIR)

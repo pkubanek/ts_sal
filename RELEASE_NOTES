@@ -1,4 +1,12 @@
-This is release 3.7.2 of the SAL SDK (September 4th, 2018)
+This is release 3.8 of the SAL SDK (October 12th, 2018)
+
+Changes for 3.8
+
+Add SAL__STATE_ defines for generic states
+Add support for Python OO library
+Move CSC dictionary to ts_xml/sal_interfaces/SALSubsystems.xml and change to XML format
+Remove generic Commands/Events from generated MagicDraw XMI importable
+Change location of Nexus repository
 
 Changes for 3.7.2
 

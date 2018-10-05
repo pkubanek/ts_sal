@@ -136,19 +136,16 @@
 
     public:
 
-#ifdef SAL_SUBSYSTEM_ID_IS_KEYED
      SAL_SALData(int aKey);
-#else
      SAL_SALData();
-#endif
 
 // INSERT TYPE SUPPORT      
       salReturn salTypeSupport(char *topicName);
       salReturn salTelemetryPub(char *topicName);
       salReturn salTelemetrySub(char *topicName);
-      salReturn telemetryAvailable();
-      salReturn commandAvailable();
-      salReturn eventAvailable();
+//      salReturn telemetryAvailable();
+//      salReturn commandAvailable();
+//      salReturn eventAvailable();
 
 //      template <class T1, class T2>
 //      void putSample(T1 data, T2 writer);
@@ -166,15 +163,14 @@
       double getRcvdTime();
       void setTuneableQos(char *topicName);
       void setDefaultQos(char *topicName);
-
+      std::vector<std::string> getTelemetryNames();
+      std::vector<std::string> getCommandNames();
+      std::vector<std::string> getEventNames();
+      unsigned long getComponentId();
+      std::string getComponentName();
 
       salReturn getResponse(SALData::ackcmdSeq data);
       void salShutdown();
-#ifdef SAL_SUBSYSTEM_ID_IS_KEYED
-      void salInitialize(int aKey);
-#else
-      void salInitialize();
-#endif
       salReturn salCommand();
       salReturn salProcessor();
       int issueCommand( SALData::command data);

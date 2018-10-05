@@ -57,6 +57,16 @@ foreach subsys $SYSDIC(systems) {
   }
 }
 
+puts stdout  "Updating libraries"
+foreach subsys $SYSDIC(systems) {
+  if { [info exists DO($subsys)] } {
+   set bad ""
+   set result ""
+   catch { set results [exec salgenerator $subsys lib ] } bad
+   puts stdout "$result $bad"
+  }
+}
+
 puts stdout  "Generating Java"
 foreach subsys $SYSDIC(systems) {
   if { [info exists DO($subsys)] } {

@@ -165,19 +165,19 @@ int publish_[set app]()
 \{
   int status;
   int priority;
-  [set subsys]_logevent_LargeFileObjectAvailableC LFOA_sample;
+  [set subsys]_logevent_largeFileObjectAvailableC LFOA_sample;
 
-  strcpy(LFOA_sample.URL,\"http://lsst.summit.efd/2017/12/12/1234567/sample_header.fits\");
-  strcpy(LFOA_sample.Generator,\"DM Header Service\");
-  LFOA_sample.Version = 1.0;
-//  md5sum(&LFOA_sample.Checksum,\"file:///2017/12/12/1234567/sample_header.fits\");
-  strcpy(LFOA_sample.Mime_Type,\"application/fits\");
-//  LFOA_sample.Byte_Size = getFileSize(\"file:///2017/12/12/1234567/sample_header.fits\");
+  strcpy(LFOA_sample.url,\"http://lsst.summit.efd/2017/12/12/1234567/sample_header.fits\");
+  strcpy(LFOA_sample.generator,\"DM Header Service\");
+  LFOA_sample.version = 1.0;
+//  md5sum(&LFOA_sample.checkSum,\"file:///2017/12/12/1234567/sample_header.fits\");
+  strcpy(LFOA_sample.mimeType,\"application/fits\");
+//  LFOA_sample.byteSize = getFileSize(\"file:///2017/12/12/1234567/sample_header.fits\");
   SAL_[set subsys] mgr = SAL_[set subsys]();
-  mgr.salEvent(\"[set subsys]_logevent_LargeFileObjectAvailable\");
+  mgr.salEvent(\"[set subsys]_logevent_largeFileObjectAvailable\");
   priority=1;
-  status = mgr.logEvent_LargeFileObjectAvailable(&LFOA_sample,priority);
-  cout << \"=== Event [set subsys]_logevent_LargeFileObjectAvailable generated = \" << endl;
+  status = mgr.logEvent_largeFileObjectAvailable(&LFOA_sample,priority);
+  cout << \"=== Event [set subsys]_logevent_largeFileObjectAvailable generated = \" << endl;
   sleep(1);
 
   return 0;
@@ -256,7 +256,7 @@ global SALCLIENTS
 client anExample
 subscribe MTMount_MotionParameters
 subscribe camera_Filter
-onevent camera_logevent_endReadout publish dmHeaderService_logevent_LargeFileObjectAvailable
+onevent camera_logevent_endReadout publish dmHeaderService_logevent_largeFileObjectAvailable
 "
    close $fout
    parsesalclients exampleClient.def
