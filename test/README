@@ -2,3 +2,4 @@ This is default directory for salgenerator usage.
 If you wish to use another location, it can be set using the
 environment variable SAL_WORK_DIR.
 
+
