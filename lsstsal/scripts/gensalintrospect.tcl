@@ -54,18 +54,6 @@ std::vector<std::string> SAL_[set subsys]::getTelemetryNames()
 \}
 "
   }
-  puts $fout "
-std::string SAL_[set subsys]::getComponentName()
-\{
-    return \"$subsys\";
-\}
-
-unsigned long SAL_[set subsys]::getComponentId()
-\{
-    return subsystemID;
-\}
-"
-
 }
 
 

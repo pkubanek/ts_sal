@@ -166,8 +166,6 @@
       std::vector<std::string> getTelemetryNames();
       std::vector<std::string> getCommandNames();
       std::vector<std::string> getEventNames();
-      unsigned long getComponentId();
-      std::string getComponentName();
 
       salReturn getResponse(SALData::ackcmdSeq data);
       void salShutdown();
