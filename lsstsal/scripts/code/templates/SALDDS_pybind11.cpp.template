@@ -84,15 +84,9 @@ PYBIND11_MODULE(SALPY_SALData,m){
             "getOrigin"
             , (int ( ::SAL_SALData::* )(  ) )( &::SAL_SALData::getOrigin ) )    
         .def( 
-            "getComponentId"
-            , (unsigned long ( ::SAL_SALData::* )(  ) )( &::SAL_SALData::getComponentId ) )
-        .def( 
             "logError"
             , (void ( ::SAL_SALData::* )( ::salReturn ) )( &::SAL_SALData::logError )
             , ( py::arg("status") ) )    
-        .def( 
-            "getComponentName"
-            , (std::string ( ::SAL_SALData::* )(  ) )( &::SAL_SALData::getComponentName ) )
         .def( 
             "getCommandNames"
             , &::SAL_SALData::getCommandNames )
@@ -161,7 +155,12 @@ PYBIND11_MODULE(SALPY_SALData,m){
 // INSERT_SAL_PYTHON_GETPUT
         ;
 
-
+#ifdef SAL_SUBSYSTEM_ID_IS_KEYED
+        m.attr("componentIsMultiple")   = 1;
+#else 
+        m.attr("componentIsMultiple")   = 0;
+#endif
+        m.attr("componentName")         = "SAL_SALData";
         m.attr("SAL__OK") 		= SAL__OK;
 	m.attr("SAL__ERR") 		= SAL__ERR;
 	m.attr("SAL__ERROR") 		= SAL__ERROR;
