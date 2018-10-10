@@ -6,36 +6,39 @@ proc calcshmid { subsys } {
   return $id
 }
 
-#if { [file exists $env(SAL_WORK_DIR)/SALSubsystems.xml] } {
-#   source $env(SAL_DIR)/update_ts_xml_dictionary.tcl
-#   parseSystemDictionary
-#} else {
-#   puts stdout "
-#*******************************************************************************
-#****************** ERROR - missing dictionary *********************************
-#*******************************************************************************
-#
-#	$env(SAL_WORK_DIR)/SALSubsystems.xml not found
-#
-# 	Please copy it from the ts_xml installation
-#
-#*******************************************************************************
-#*******************************************************************************"
-#   exit
-#}
+if { [file exists $env(SAL_WORK_DIR)/SALSubsystems.xml] } {
+   source $env(SAL_DIR)/update_ts_xml_dictionary.tcl
+   parseSystemDictionary
+} else {
+   puts stdout "
+*******************************************************************************
+****************** WARNING - missing dictionary *******************************
+*******************************************************************************
+
+	$env(SAL_WORK_DIR)/SALSubsystems.xml not found
+
+ 	Please copy it from the ts_xml installation
+
+        Using legacy subsystem list 
+
+*******************************************************************************
+*******************************************************************************"
+
+  exec sleep 4
 
 
 #
 #  Deprecated , now parse SALSubsystems.xml instead
 #
-set SYSDIC(systems) "ATPtg ATAOS atArchiver atcamera atHeaderService accl archiver atcs AtMCS AtPneumatics AtThermoelectricCooler AtSpectrograph AtWhiteLightChiller AtWhiteLight AtDome AtHexapod atMonochromator atScheduler calibrationCBP calibrationElectrometer calibrationMonochromator calibrationSpectrometer camera catchupArchiver comcam headerService dome domeADB domeAPS domeLouvers domeLWS domeMONCS domeTHCS eec efd EMMWeatherStationMonitor environment EXA hexapod lasercal LinearStage m1m3 m2ms MTMount MTPtg network ocs operations power promptProcessing rotator sedSpectrometer sequencer scheduler seeing skycam summitFacility system tcs tcsOfc tcsWEP Test vms"
-set SYSDIC(calibrationElectrometer,keyedID) 1
-set SYSDIC(hexapod,keyedID) 1
-set SYSDIC(hexapod,1) "cameraHexapod"
-set SYSDIC(hexapod,2) "m2msHexapod"
-set SYSDIC(LinearStage,keyedID) 1
-set SYSDIC(Test,keyedID) 1
+  set SYSDIC(systems) "ATPtg ATAOS atArchiver atcamera atHeaderService accl archiver atcs AtMCS AtPneumatics AtThermoelectricCooler AtSpectrograph AtWhiteLightChiller AtWhiteLight AtDome AtHexapod atMonochromator atScheduler calibrationCBP calibrationElectrometer calibrationMonochromator calibrationSpectrometer camera catchupArchiver comcam headerService dome domeADB domeAPS domeLouvers domeLWS domeMONCS domeTHCS eec efd EMMWeatherStationMonitor environment EXA hexapod lasercal LinearStage m1m3 m2ms MTMount MTPtg network ocs operations power promptProcessing rotator Script ScriptLauncher sedSpectrometer sequencer scheduler seeing skycam summitFacility system tcs tcsOfc tcsWEP Test vms"
+  set SYSDIC(calibrationElectrometer,keyedID) 1
+  set SYSDIC(hexapod,keyedID) 1
+  set SYSDIC(hexapod,1) "cameraHexapod"
+  set SYSDIC(hexapod,2) "m2msHexapod"
+  set SYSDIC(LinearStage,keyedID) 1
+  set SYSDIC(Test,keyedID) 1
 
+}
 
 
 foreach s $SYSDIC(systems) {set SYSDIC($s,type) system}
