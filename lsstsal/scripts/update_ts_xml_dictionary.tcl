@@ -41,12 +41,14 @@ global env SYSDIC
          lappend SYSDIC(systems) $name
       }
       if { $tag == "Enumeration" } {
-         set ids [split $value ,]
-         set SYSDIC($name,keyedID) 1
-         set idx 1
-         foreach i $ids { 
-            set SYSDIC($name,$idx) $i
-            incr idx 1
+         if { $value != "" } {
+           set ids [split $value ,]
+           set SYSDIC($name,keyedID) 1
+           set idx 1
+           foreach i $ids { 
+              set SYSDIC($name,$idx) $i
+              incr idx 1
+           }
          }
       }
   } 
