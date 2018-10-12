@@ -68,13 +68,12 @@ PYBIND11_MODULE(SALPY_SALData,m){
         .def_readwrite( "result", &SALData_ackcmdC::result )    
         ;
 
-#ifdef SAL_SUBSYSTEM_ID_IS_KEYED
     py::class_<SAL_SALData>(m,"SAL_SALData")    
          .def(py::init<int>())   
-#else
+
     py::class_<SAL_SALData>(m,"SAL_SALData")    
          .def(py::init<>())   
-#endif
+
 // INSERT CMDALIAS SUPPORT  for issueCommand and acceptCommand  
         .def( 
             "getDebugLevel"
