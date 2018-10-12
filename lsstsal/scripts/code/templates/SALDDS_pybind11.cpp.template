@@ -71,7 +71,6 @@ PYBIND11_MODULE(SALPY_SALData,m){
     py::class_<SAL_SALData>(m,"SAL_SALData")    
          .def(py::init<int>())   
 
-    py::class_<SAL_SALData>(m,"SAL_SALData")    
          .def(py::init<>())   
 
 // INSERT CMDALIAS SUPPORT  for issueCommand and acceptCommand  
