@@ -103,13 +103,24 @@ if { $OPTIONS(validate) } {
   stdlog "Processing $all"
   foreach i $all {
     if { [file exists [set i]_Telemetry.xml] == 0 } {
-        stdlog "Add lifecycle commands"
+        stdlog "Add minimal Telemetry"
         set SALSubsys $i
         source $SAL_DIR/generateMinimalTelemetry.tcl
         set fxml [open /tmp/telemetry.xml w]
         puts $fxml $SAL_MIN_TELEMETRY 
         close $fxml
         parseXMLtoidl /tmp/telemetry.xml
+    }
+    if { [file exists $SAL_WORK_DIR/SALGenerics.xml] } {
+        set x none
+        catch { set x [exec grep command_disable [set i]_Commands.xml] }
+        if { $x == "none" } {
+          puts stdout "Add Generic Commands and Events"
+          set SALSubsys $i
+          source $SAL_DIR/processgenerics.tcl
+          generategenerics $i
+          parseXMLtoidl [set i]_Generics.xml
+        }
     }
     foreach t "Telemetry Commands Events" {
       if { [file exists [set i]_[set t].xml] } {
