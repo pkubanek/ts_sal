@@ -109,7 +109,6 @@ if { $OPTIONS(validate) } {
         set fxml [open /tmp/telemetry.xml w]
         puts $fxml $SAL_MIN_TELEMETRY 
         close $fxml
-        parseXMLtoidl /tmp/telemetry.xml
     }
     if { [file exists $SAL_WORK_DIR/SALGenerics.xml] } {
         set x none
@@ -122,7 +121,7 @@ if { $OPTIONS(validate) } {
           parseXMLtoidl [set i]_Generics.xml
         }
     }
-    foreach t "Telemetry Commands Events" {
+    foreach t "Telemetry Commands Events Generics" {
       if { [file exists [set i]_[set t].xml] } {
        if { [file size [set i]_[set t].xml] > 0 } {
         foreach d "idl-templates idl-templates/validated" {
