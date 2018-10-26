@@ -118,7 +118,6 @@ if { $OPTIONS(validate) } {
           set SALSubsys $i
           source $SAL_DIR/processgenerics.tcl
           generategenerics $i
-          parseXMLtoidl [set i]_Generics.xml
         }
     }
     foreach t "Telemetry Commands Events Generics" {
