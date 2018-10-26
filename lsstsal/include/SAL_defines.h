@@ -53,7 +53,8 @@ typedef int	        salReturn;
 #define SAL__TOO_MANY_HANDLES   -3
 #define SAL__NOT_DEFINED        -4
 
-// Generic states
+
+// Generic State machine states
 #define SAL__STATE_DISABLED	1
 #define SAL__STATE_ENABLED	2
 #define SAL__STATE_FAULT	3
