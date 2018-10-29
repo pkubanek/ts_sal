@@ -46,10 +46,43 @@ puts stdout "SAL generator - V[set SALVERSION]"
 
 set TSUBSYSTEMS ""
 foreach i $argv {
+    if { [lsearch $SYSDIC(systems) $i] < 0 } {
+      puts stdout "
+*******************************************************************************
+******************** ERROR - Subsystem not defined ****************************
+*******************************************************************************
+
+	$env(SAL_WORK_DIR)/SALSubsystems.xml does not include
+
+ 	the $i subsystem, please check spelling, or add it
+
+
+*******************************************************************************
+*******************************************************************************"
+     exit
+   }
+   set xml ""
+   catch { set xml [glob [set i]_*.xml] }
+   if { $xml == "" } {
+      puts stdout "
+*******************************************************************************
+******************** ERROR - Subsystem not defined ****************************
+*******************************************************************************
+
+	$env(SAL_WORK_DIR) has no XML definition files for
+
+ 	the $i subsystem, please check spelling, or add the files
+
+
+*******************************************************************************
+*******************************************************************************"
+     exit
+   }
    if { [lsearch $SYSDIC(systems) $i] > -1 } {
       lappend TSUBSYSTEMS $i
    }
 }
+
 
 set SAL_WORK_DIR [file dirname $TSUBSYSTEMS]
 if { [file exists $SAL_WORK_DIR] == 0 } {
@@ -66,13 +99,31 @@ foreach o "validate efd writers code compile cpp isocpp java jni lib link maven 
 }
 
 
-
 catch {exec mkdir saltemptest} ok
 if { [file exists saltemptest] == 0 } {
    errorexit "Working directory $SAL_WORK_DIR does not have write permission"
 }
 exec mkdir -p $SAL_WORK_DIR/include
 exec mkdir -p $SAL_WORK_DIR/lib
+
+   if { [lsearch $SYSDIC(systems) $subsys] < 0 } {
+      puts stdout "
+*******************************************************************************
+****************** WARNING - Subsystem not defined ****************************
+*******************************************************************************
+
+	$env(SAL_WORK_DIR)/SALSubsystems.xml does not include
+
+ 	the $subsys subsystem, please check spelling, or add it
+
+
+*******************************************************************************
+*******************************************************************************"
+"
+     exit
+  }
+
+
 
 # For html option , process everything
 if { $OPTIONS(html) } {
@@ -110,7 +161,7 @@ if { $OPTIONS(validate) } {
         puts $fxml $SAL_MIN_TELEMETRY 
         close $fxml
     }
-    if { [file exists $SAL_WORK_DIR/SALGenerics.xml] } {
+    if { [file exists $SAL_WORK_DIR/SALGenerics.xml] && [info exists SYSDIC($i,hasGenerics)] } {
         set x none
         catch { set x [exec grep command_standby [set i]_Commands.xml] }
         if { $x == "none" } {
