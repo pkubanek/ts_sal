@@ -11,6 +11,22 @@ global TLMS TLM_ALIASES EVENT_ENUM EVENT_ENUMS UNITS ENUM_DONE
    set itemid none
    set intopic 0
    while { [gets $fin rec] > -1 } {
+      set st [string trim $rec]
+      if { [string range $st 0 3] == "<!--" } {
+         if { [string range [string reverse $st] 0 2] != ">--" } {
+            set skip 1
+            while { $skip } {
+               gets $fin rec
+               set st [string trim $rec]
+               if { [string range [string reverse $st] 0 2] == ">--" } {
+                  set skip 0
+                  gets $fin rec
+                  set st [string trim $rec]
+                  if { [string range $st 0 3] == "<!--" } {set skip 1}
+               }
+            }
+         }
+      }
       set tag   [lindex [split $rec "<>"] 1]
       set value [lindex [split $rec "<>"] 2]
       if { $tag == "SALTelemetry" }    {set ctype "telemetry" ; set intopic 1}

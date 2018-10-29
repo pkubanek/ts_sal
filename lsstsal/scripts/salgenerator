@@ -46,6 +46,7 @@ puts stdout "SAL generator - V[set SALVERSION]"
 
 set TSUBSYSTEMS ""
 foreach i $argv {
+  if { [lsearch "validate efd writers code compile cpp isocpp java jni lib link maven tcl db icd labview python html sal shmem sim simd verbose" $i] < 0 } {
     if { [lsearch $SYSDIC(systems) $i] < 0 } {
       puts stdout "
 *******************************************************************************
@@ -81,6 +82,7 @@ foreach i $argv {
    if { [lsearch $SYSDIC(systems) $i] > -1 } {
       lappend TSUBSYSTEMS $i
    }
+  }
 }
 
 
@@ -106,6 +108,7 @@ if { [file exists saltemptest] == 0 } {
 exec mkdir -p $SAL_WORK_DIR/include
 exec mkdir -p $SAL_WORK_DIR/lib
 
+foreach subsys $TSUBSYSTEMS {
    if { [lsearch $SYSDIC(systems) $subsys] < 0 } {
       puts stdout "
 *******************************************************************************
@@ -122,7 +125,7 @@ exec mkdir -p $SAL_WORK_DIR/lib
 "
      exit
   }
-
+}
 
 
 # For html option , process everything
@@ -157,19 +160,16 @@ if { $OPTIONS(validate) } {
         stdlog "Add minimal Telemetry"
         set SALSubsys $i
         source $SAL_DIR/generateMinimalTelemetry.tcl
-        set fxml [open /tmp/telemetry.xml w]
+        set fxml [open $SAL_WORK_DIR/[set i]_Telemetry.xml w]
         puts $fxml $SAL_MIN_TELEMETRY 
         close $fxml
     }
     if { [file exists $SAL_WORK_DIR/SALGenerics.xml] && [info exists SYSDIC($i,hasGenerics)] } {
         set x none
-        catch { set x [exec grep command_standby [set i]_Commands.xml] }
-        if { $x == "none" } {
-          puts stdout "Add Generic Commands and Events"
-          set SALSubsys $i
-          source $SAL_DIR/processgenerics.tcl
-          generategenerics $i
-        }
+        puts stdout "Add Generic Commands and Events"
+        set SALSubsys $i
+        source $SAL_DIR/processgenerics.tcl
+        generategenerics $i
     }
     foreach t "Telemetry Commands Events Generics" {
       if { [file exists [set i]_[set t].xml] } {
