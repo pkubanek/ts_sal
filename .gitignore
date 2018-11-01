@@ -24,6 +24,7 @@ xml_test/ocs*/
 xml_test/processingcluster*/
 xml_test/rotator*/
 xml_test/scheduler*/
+xml_test/Test*/
 xml_test/sequencer*/
 xml_test/sql
 xml_test/tcs*/
