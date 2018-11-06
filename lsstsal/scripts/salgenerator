@@ -42,7 +42,14 @@ source $SAL_DIR/versioning.tcl
 source $SAL_DIR/utilities.tcl
 source $SAL_DIR/add_system_dictionary.tcl
 
-puts stdout "SAL generator - V[set SALVERSION]"
+puts stdout "argv = $argv"
+if { [string range [lindex $argv end] 0 7] == "version=" } {
+    set SALVERSION [string range [lindex $argv end] 8 end]
+    set argv [lrange $argv 0 [expr [llength $argv]-2]]
+}
+
+
+puts stdout "SAL generator - [set SALVERSION]"
 
 set TSUBSYSTEMS ""
 foreach i $argv {
@@ -213,10 +220,6 @@ if { $OPTIONS(efd) && $OPTIONS(writers) } {
 }
 
 if { $OPTIONS(maven) } {
-  if { [string range [lindex $argv end] 0 7] == "version=" } {
-    set SALVERSION [string range [lindex $argv end] 8 end]
-    puts stdout "Using version $SALVERSION for the maven project"
-  }
   cd $SAL_WORK_DIR
   source $SAL_DIR/mavenize.tcl
   foreach subsys $TSUBSYSTEMS {
