@@ -167,6 +167,7 @@ global TLMS TLM_ALIASES EVENT_ENUM EVENT_ENUMS UNITS ENUM_DONE
                   incr i 1
                }
              }
+             set done($alias) 1
            }
            if { [info exists EVENT_ENUM([set subsys]_shared)] } {
              foreach e $EVENT_ENUM([set subsys]_shared) {
@@ -230,7 +231,7 @@ global TLMS TLM_ALIASES EVENT_ENUM EVENT_ENUMS UNITS ENUM_DONE
    if { $fout != "" } {
       puts $fout "\};"
       puts $fout "#pragma keylist $tname"
-      if { [info exists EVENT_ENUM($alias)] } {
+      if { [info exists EVENT_ENUM($alias)] && [info exists done($alias)] == 0} {
         foreach e $EVENT_ENUM($alias) {
           set i 1
           set enum [string trim $e "\{\}"]
@@ -240,6 +241,7 @@ global TLMS TLM_ALIASES EVENT_ENUM EVENT_ENUMS UNITS ENUM_DONE
               incr i 1
           }
         }
+        set done($alias) 1
       }
       if { [info exists EVENT_ENUM([set subsys]_shared)] } {
         foreach e $EVENT_ENUM([set subsys]_shared) {
