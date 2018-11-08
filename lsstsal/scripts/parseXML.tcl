@@ -107,32 +107,9 @@ global TLMS TLM_ALIASES EVENT_ENUM EVENT_ENUMS UNITS ENUM_DONE
          set intopic 0
       }
       if { $tag == "EFDB_Topic" } {
-         if { $fout != "" } {
+        if { $fout != "" } {
            puts $fout "\};"
            puts $fout "#pragma keylist $tname"
-           if { [info exists EVENT_ENUM($alias)] } {
-             foreach e $EVENT_ENUM($alias) {
-               set i 1
-               set enum [string trim $e "\{\}"]
-               set cnst [lindex [split $enum :] 1]
-               foreach id [split $cnst ,] {
-                  puts $fout " const long [set alias]_[string trim $id " "]=$i;"
-                  incr i 1
-               }
-             }
-           }
-           if { [info exists EVENT_ENUM([set subsys]_shared)] } {
-             foreach e $EVENT_ENUM([set subsys]_shared) {
-               set i 1
-               set enum [string trim $e "\{\}"]
-               set cnst [lindex [split $enum :] 1]
-               foreach id [split $cnst ,] {
-                   puts $fout "	const long [set subsys]_shared_[string trim $id " "]=$i;"
-                   incr i 1
-               }
-             }
-             unset EVENT_ENUM([set subsys]_shared)
-           }
            close $fout
            if { $ctype == "telemetry" } {
              close $fsql
@@ -178,6 +155,31 @@ global TLMS TLM_ALIASES EVENT_ENUM EVENT_ENUMS UNITS ENUM_DONE
            puts stdout "****************************************************************"
            exit 1
         }
+      }
+      if { $tag == "/SALEvent" || $tag == "/SALCommand" } {
+           if { [info exists EVENT_ENUM($alias)] } {
+             foreach e $EVENT_ENUM($alias) {
+               set i 1
+               set enum [string trim $e "\{\}"]
+               set cnst [lindex [split $enum :] 1]
+               foreach id [split $cnst ,] {
+                  puts $fout " const long [set alias]_[string trim $id " "]=$i;"
+                  incr i 1
+               }
+             }
+           }
+           if { [info exists EVENT_ENUM([set subsys]_shared)] } {
+             foreach e $EVENT_ENUM([set subsys]_shared) {
+               set i 1
+               set enum [string trim $e "\{\}"]
+               set cnst [lindex [split $enum :] 1]
+               foreach id [split $cnst ,] {
+                   puts $fout "	const long [set subsys]_shared_[string trim $id " "]=$i;"
+                   incr i 1
+               }
+             }
+             unset EVENT_ENUM([set subsys]_shared)
+           }
       }
       if { $tag == "IDL_Type"} {
          set type $value
