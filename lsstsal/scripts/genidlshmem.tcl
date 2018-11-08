@@ -204,6 +204,7 @@ close $fo3
      
 close $flog
 
+if { $last != "" } {puts $fsum $last}
 
 close $fsum
 set lidl [glob $SAL_WORK_DIR/idl-templates/validated/*.idl]
