@@ -31,24 +31,15 @@ global TLMS TLM_ALIASES EVENT_ENUM EVENT_ENUMS UNITS ENUM_DONE
       set value [lindex [split $rec "<>"] 2]
       if { $tag == "SALTelemetry" }    {set ctype "telemetry" ; set intopic 1}
       if { $tag == "SALCommand" }      {
-          set ctype "command" ; set intopic 1
+          set ctype "command" ; set intopic 1 ; set alias ""
           set device ""; set property ""; set action "" ; set vvalue ""
       }
-      if { $tag == "SALEvent" }        {set ctype "event" ; set intopic 1}
+      if { $tag == "SALEvent" }        {set ctype "event" ; set intopic 1; set alias ""}
       if { $tag == "SALTelemetrySet" } {set ctype "telemetry"}
       if { $tag == "SALCommandSet" }   {set ctype "command"}
       if { $tag == "SALEventSet" }     {set ctype "event"}
       if { $tag == "Alias" }           {
           set alias $value
-          set shouldbe [join [lrange [split $tname _] 2 end] "_"]
-          if { $alias != $shouldbe } {
-             puts stdout "****************************************************************"
-             puts stdout "****************************************************************"
-             puts stdout "ERROR - Alias does not match EFDB_Topic declaration for $alias"
-             puts stdout "****************************************************************"
-             puts stdout "****************************************************************"
-             exit
-          }
           if { $ctype == "command" } {set CMDS($subsys,$alias) $alias}
           if { $ctype == "event" }   {set EVTS($subsys,$alias) $alias}
       }
@@ -68,6 +59,15 @@ global TLMS TLM_ALIASES EVENT_ENUM EVENT_ENUMS UNITS ENUM_DONE
       }
       if { $tag == "/SALEvent" } {
          set intopic 0
+         set shouldbe [join [lrange [split $tname _] 2 end] "_"]
+         if { $alias != $shouldbe } {
+             puts stdout "****************************************************************"
+             puts stdout "****************************************************************"
+             puts stdout "ERROR - Alias does not match EFDB_Topic declaration for $alias"
+             puts stdout "****************************************************************"
+             puts stdout "****************************************************************"
+             exit
+         }
          set EVTS($subsys,$alias) $alias
          set EVENT_ALIASES($subsys) [lappend EVENT_ALIASES($subsys) $alias]
          if { [info exists EVTS($subsys,$alias,plist)] } {
@@ -84,6 +84,15 @@ global TLMS TLM_ALIASES EVENT_ENUM EVENT_ENUMS UNITS ENUM_DONE
       }
       if { $tag == "/SALCommand" } {
          set intopic 0
+         set shouldbe [join [lrange [split $tname _] 2 end] "_"]
+         if { $alias != $shouldbe } {
+             puts stdout "****************************************************************"
+             puts stdout "****************************************************************"
+             puts stdout "ERROR - Alias does not match EFDB_Topic declaration for $alias"
+             puts stdout "****************************************************************"
+             puts stdout "****************************************************************"
+             exit
+         }
          set CMDS($subsys,$alias) "$device $property $action $vvalue"
          set CMD_ALIASES($subsys) [lappend CMD_ALIASES($subsys) $alias]
          if { $itemid == 0 } {
@@ -128,7 +137,6 @@ global TLMS TLM_ALIASES EVENT_ENUM EVENT_ENUMS UNITS ENUM_DONE
            if { $ctype == "telemetry" } {
              close $fsql
            }
-           set alias ""
         }
         set itemid 0
         if { [info exists topics($value)] } { 
