@@ -35,7 +35,6 @@ if { $argc < 2 } {
   exit
 }
 
-set ORIGIN_DIR [pwd]
 set SAL_DIR $env(SAL_DIR)
 set OSPL_HOME $env(OSPL_HOME)
 source $SAL_DIR/versioning.tcl
