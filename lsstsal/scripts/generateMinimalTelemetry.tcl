@@ -1,5 +1,4 @@
-set SAL_MIN_TELEMETRY "
-<?xml version=\"1.0\" encoding=\"UTF-8\"?>
+set SAL_MIN_TELEMETRY "<?xml version=\"1.0\" encoding=\"UTF-8\"?>
 <?xml-stylesheet type=\"text/xsl\" href=\"http://project.lsst.org/ts/sal_objects/schema/SALTelemetrySet.xsl\"?>
 <SALTelemetrySet xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"
 	xsi:noNamespaceSchemaLocation=\"http://project.lsst.org/ts/sal_objects/schema/SALTelemetrySet.xsd\">

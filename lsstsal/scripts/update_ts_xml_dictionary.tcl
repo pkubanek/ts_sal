@@ -33,6 +33,7 @@ global env
 
 proc parseSystemDictionary { } {
 global env SYSDIC
+  set SYSDIC(systems) ""
   set fin [open $env(SAL_WORK_DIR)/SALSubsystems.xml r]
   while { [gets $fin rec] > -1 } {
       set tag   [lindex [split $rec "<>"] 1]

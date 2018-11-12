@@ -3,8 +3,10 @@
 puts stdout "Removing old idl-templates"
 exec rm -fr idl-templates
 
-source $env(SAL_DIR)/add_system_dictionary.tcl 
-foreach subsys $SYSDIC(systems) {
+source $env(SAL_DIR)/add_system_dictionary.tcl
+set EVERYTHING [lsort $SYSDIC(systems)]
+
+foreach subsys $EVERYTHING {
    catch {
       set x [glob $subsys*.xml]
       set DO($subsys) 1
@@ -14,7 +16,7 @@ foreach subsys $SYSDIC(systems) {
 }
 
 puts stdout  "Validating interfaces"
-foreach subsys $SYSDIC(systems) {
+foreach subsys $EVERYTHING {
   if { [info exists DO($subsys)] } {
    set bad ""
    set result ""
@@ -28,7 +30,7 @@ foreach subsys $SYSDIC(systems) {
 }
 
 puts stdout  "Generating C++"
-foreach subsys $SYSDIC(systems) {
+foreach subsys $EVERYTHING {
   if { [info exists DO($subsys)] } {
    set bad ""
    set result ""
@@ -38,7 +40,7 @@ foreach subsys $SYSDIC(systems) {
 }
 
 puts stdout  "Generating Python"
-foreach subsys $SYSDIC(systems) {
+foreach subsys $EVERYTHING {
   if { [info exists DO($subsys)] } {
    set bad ""
    set result ""
@@ -48,7 +50,7 @@ foreach subsys $SYSDIC(systems) {
 }
 
 puts stdout  "Generating LabVIEW"
-foreach subsys $SYSDIC(systems) {
+foreach subsys $EVERYTHING {
   if { [info exists DO($subsys)] } {
    set bad ""
    set result ""
@@ -58,7 +60,7 @@ foreach subsys $SYSDIC(systems) {
 }
 
 puts stdout  "Updating libraries"
-foreach subsys $SYSDIC(systems) {
+foreach subsys $EVERYTHING {
   if { [info exists DO($subsys)] } {
    set bad ""
    set result ""
@@ -68,7 +70,7 @@ foreach subsys $SYSDIC(systems) {
 }
 
 puts stdout  "Generating Java"
-foreach subsys $SYSDIC(systems) {
+foreach subsys $EVERYTHING {
   if { [info exists DO($subsys)] } {
    exec rm -fr [set subsys]/java
    set bad ""

@@ -56,13 +56,14 @@ proc gencmdaliascpp { subsys fout } {
 global CMD_ALIASES CMDS SAL_WORK_DIR
    foreach i $CMD_ALIASES($subsys) {
     if { [info exists CMDS($subsys,$i,param)] } {
-      stdlog "	: command alias = $i"
+      set revcode [getRevCode [set subsys]_command_[set i] short]
+      stdlog "	: command alias = $i , revcode = $revcode"
       puts $fout "
 int SAL_SALData::issueCommand_[set i]( SALData_command_[set i]C *data )
 \{
   
   InstanceHandle_t cmdHandle = DDS::HANDLE_NIL;
-  SALData::command_[set i] Instance;
+  SALData::command_[set i][set revcode] Instance;
   int actorIdx = SAL__SALData_command_[set i]_ACTOR;
   // create DataWriter :
   if (sal\[actorIdx\].isCommand == false) \{
@@ -71,14 +72,14 @@ int SAL_SALData::issueCommand_[set i]( SALData_command_[set i]C *data )
      sal\[actorIdx\].sndSeqNum = rand();
   \}
   DataWriter_var dwriter = getWriter(actorIdx);
-  SALCommand_[set i]DataWriter_var SALWriter = SALCommand_[set i]DataWriter::_narrow(dwriter.in());
+  SALData::command_[set i][set revcode]DataWriter_var SALWriter = SALData::command_[set i][set revcode]DataWriter::_narrow(dwriter.in());
 
 #ifdef SAL_SUBSYSTEM_ID_IS_KEYED
   Instance.SALDataID = subsystemID;
   cmdHandle = SALWriter->register_instance(Instance);
 #endif
 
-  Instance.private_revCode =  DDS::string_dup(\"LSST TEST REVCODE\");
+  Instance.private_revCode =  DDS::string_dup(\"$revcode\");
   Instance.private_sndStamp = getCurrentTime();
   Instance.private_origin =   1;
   Instance.private_seqNum =   sal\[actorIdx\].sndSeqNum;
@@ -101,7 +102,7 @@ int SAL_SALData::issueCommand_[set i]( SALData_command_[set i]C *data )
   Instance.private_sndStamp = getCurrentTime();
   ReturnCode_t status = SALWriter->write(Instance, cmdHandle);
   sal\[actorIdx\].sndSeqNum++;
-  checkStatus(status, \"SALCommand_[set i]DataWriter::write\");  
+  checkStatus(status, \"SALData::command_[set i][set revcode]DataWriter::write\");  
     SALWriter->unregister_instance(Instance, cmdHandle);
   if (status != SAL__OK) \{
       if (debugLevel >= SAL__LOG_ROUTINES) \{
@@ -117,7 +118,7 @@ int SAL_SALData::acceptCommand_[set i]( SALData_command_[set i]C *data )
    SampleInfoSeq info;
    ReturnCode_t status = 0;
    ReturnCode_t istatus =  -1;
-   SALData::command_[set i]Seq Instances;
+   SALData::command_[set i][set revcode]Seq Instances;
    SALData::ackcmd ackdata;
    InstanceHandle_t ackHandle = DDS::HANDLE_NIL;
    int actorIdx = SAL__SALData_command_[set i]_ACTOR;
@@ -131,10 +132,10 @@ int SAL_SALData::acceptCommand_[set i]( SALData_command_[set i]C *data )
   DataWriter_var dwriter = getWriter2(SAL__SALData_ackcmd_ACTOR);
   SALData::ackcmdDataWriter_var SALWriter = SALData::ackcmdDataWriter::_narrow(dwriter.in());
   DataReader_var dreader = getReader(actorIdx);
-  SALData::command_[set i]DataReader_var SALReader = SALData::command_[set i]DataReader::_narrow(dreader.in());
-  checkHandle(SALReader.in(), \"SALData::command_[set i]DataReader::_narrow\");
+  SALData::command_[set i][set revcode]DataReader_var SALReader = SALData::command_[set i][set revcode]DataReader::_narrow(dreader.in());
+  checkHandle(SALReader.in(), \"SALData::command_[set i]_[set revcode]DataReader::_narrow\");
   istatus = SALReader->take(Instances, info, 1,ANY_SAMPLE_STATE, ANY_VIEW_STATE, ANY_INSTANCE_STATE);
-  checkStatus(istatus, \"SALData::command_[set i]DataReader::take\");
+  checkStatus(istatus, \"SALData::command_[set i][set revcode]DataReader::take\");
   if (Instances.length() > 0) \{
    j = Instances.length()-1;
    if (info\[j\].valid_data) \{
@@ -187,7 +188,7 @@ int SAL_SALData::acceptCommand_[set i]( SALData_command_[set i]C *data )
     status = 0;
   \}
   istatus = SALReader->return_loan(Instances, info);
-  checkStatus(istatus, \"SALData::command_[set i]DataReader::return_loan\");
+  checkStatus(istatus, \"SALData::command_[set i][set revcode]DataReader::return_loan\");
   return status;
 \}
 "
@@ -372,13 +373,15 @@ salReturn SAL_SALData::ackCommand_[set i]( int cmdId, salLONG ack, salLONG error
 proc gencmdaliasjava { subsys fout } {
 global CMD_ALIASES CMDS SYSDIC
    foreach i $CMD_ALIASES($subsys) {
-    stdlog "	: alias = $i"
+    set revcode [getRevCode [set subsys]_command_[set i] short]
+    stdlog "	: alias = $i , revCode = $revcode"
     if { [info exists CMDS($subsys,$i,param)] } {
       puts $fout "
 	public int issueCommand_[set i]( command_[set i] data )
 	\{
           Random randGen = new java.util.Random();
   	  long cmdHandle = HANDLE_NIL.value;
+          command_[set i][set revcode] SALInstance = new command_[set i][set revcode]();
           int status;
           int actorIdx = SAL__SALData_command_[set i]_ACTOR;
 	  if (sal\[actorIdx\].isCommand == false) \{
@@ -387,23 +390,24 @@ global CMD_ALIASES CMDS SYSDIC
 	     sal\[actorIdx\].sndSeqNum = (int)randGen.nextInt(99999999);
 	  \}
 	  DataWriter dwriter = getWriter(actorIdx);	
-	  command_[set i]DataWriter SALWriter = command_[set i]DataWriterHelper.narrow(dwriter);
-	  data.private_revCode = \"LSST TEST COMMAND\";
-	  data.private_seqNum = sal\[actorIdx\].sndSeqNum;
-          data.private_origin = 1;
-          data.private_sndStamp = getCurrentTime();"
+	  command_[set i][set revcode]DataWriter SALWriter = command_[set i][set revcode]DataWriterHelper.narrow(dwriter);
+	  SALInstance.private_revCode = \"$revcode\";
+	  SALInstance.private_seqNum = sal\[actorIdx\].sndSeqNum;
+          SALInstance.private_origin = 1;
+          SALInstance.private_sndStamp = getCurrentTime();"
       if { [info exists SYSDIC($subsys,keyedID)] } {
-        puts $fout "	  data.SALDataID = subsystemID;
+        puts $fout "	  SALInstance.SALDataID = subsystemID;
 	  cmdHandle = SALWriter.register_instance(data);"
       } else {
-        puts $fout "	  SALWriter.register_instance(data);"
+        puts $fout "	  SALWriter.register_instance(SALInstance);"
       }
+      copytojavasample $fout $subsys $i
       puts $fout "
 	  if (debugLevel > 0) \{
 	    System.out.println( \"=== \[issueCommand\] $i writing a command containing :\");
-	    System.out.println( data.device + \".\" + data.property + \".\" + data.action + \" : \" + data.itemValue);
+	    System.out.println( SALInstance.device + \".\" + SALInstance.property + \".\" + SALInstance.action + \" : \" + SALInstance.itemValue);
 	  \}
-	  status = SALWriter.write(data, cmdHandle);
+	  status = SALWriter.write(SALInstance, cmdHandle);
 	  sal\[actorIdx\].sndSeqNum++;
 	  return (sal\[actorIdx\].sndSeqNum-1);
 	\}
@@ -411,7 +415,7 @@ global CMD_ALIASES CMDS SYSDIC
       puts $fout "
 	public int acceptCommand_[set i]( SALData.command_[set i] data )
 	\{
-                command_[set i]SeqHolder aCmd = new command_[set i]SeqHolder();
+                command_[set i][set revcode]SeqHolder aCmd = new command_[set i][set revcode]SeqHolder();
    		SampleInfoSeqHolder info;
    		int status = 0;
    		int istatus =  -1;
@@ -427,7 +431,7 @@ global CMD_ALIASES CMDS SYSDIC
   		DataWriter dwriter = getWriter2(SAL__SALData_ackcmd_ACTOR);
   		ackcmdDataWriter SALWriter = ackcmdDataWriterHelper.narrow(dwriter);
   		DataReader dreader = getReader(actorIdx);
-  		command_[set i]DataReader SALReader = command_[set i]DataReaderHelper.narrow(dreader);
+  		command_[set i][set revcode]DataReader SALReader = command_[set i][set revcode]DataReaderHelper.narrow(dreader);
                 info = new SampleInfoSeqHolder();
   		istatus = SALReader.take(aCmd, info, 1,ANY_SAMPLE_STATE.value, ANY_VIEW_STATE.value, ANY_INSTANCE_STATE.value);
 		if (aCmd.value.length > 0) \{

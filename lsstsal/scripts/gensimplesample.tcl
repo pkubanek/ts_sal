@@ -27,8 +27,8 @@ global SAL_WORK_DIR
    exec touch $SAL_WORK_DIR/[set base]/cpp/src/.depend.Makefile.sacpp_[set base]_testcommands
    exec touch $SAL_WORK_DIR/[set base]/cpp/src/.depend.Makefile.sacpp_[set base]_testevents
 ###   exec mkdir -p $SAL_WORK_DIR/SAL_[set base]/cpp/src
-   exec ln -sf $SAL_WORK_DIR/idl-templates/validated/sal/sal_$base.idl $SAL_WORK_DIR/$base/cpp/.
-   exec ln -sf $SAL_WORK_DIR/idl-templates/validated/sal/sal_$base.idl $SAL_WORK_DIR/$base/isocpp/.
+   exec ln -sf $SAL_WORK_DIR/idl-templates/validated/sal/sal_revCoded_$base.idl $SAL_WORK_DIR/$base/cpp/sal_$base.idl
+   exec ln -sf $SAL_WORK_DIR/idl-templates/validated/sal/sal_revCoded_$base.idl $SAL_WORK_DIR/$base/isocpp/sal_$base.idl
    exec ln -sf $SAL_WORK_DIR/idl-templates/validated/sal/sal_$base.idl $SAL_WORK_DIR/$base/java/.
    exec touch $SAL_WORK_DIR/[set base]/cpp/.depend.Makefile.sacpp_[set base]_types
    exec touch $SAL_WORK_DIR/[set base]/java/.depend.Makefile.saj_[set base]_types
@@ -164,6 +164,7 @@ using namespace std;
       set VPROPS(iscommand) 0
       if { [string range $name 0 7] == "command_" } {set VPROPS(iscommand) 1}
       set fcod1 [open $SAL_WORK_DIR/include/SAL_[set subsys]_[set name]Cget.tmp w]
+      set fcod1b [open $SAL_WORK_DIR/include/SAL_[set subsys]_[set name]LCget.tmp w]
       set fcod2 [open $SAL_WORK_DIR/include/SAL_[set subsys]_[set name]Cput.tmp w]
       set fcod3 [open $SAL_WORK_DIR/include/SAL_[set subsys]_[set name]Csub.tmp w]
       set fcod4 [open $SAL_WORK_DIR/include/SAL_[set subsys]_[set name]Cpub.tmp w]
@@ -192,6 +193,7 @@ using namespace std;
         puts $fpyb2 "
   .def(\"getSample_[set name]\" ,  &SAL_[set subsys]::getSample_[set name] )
   .def(\"getNextSample_[set name]\" ,  &SAL_[set subsys]::getNextSample_[set name] )
+  .def(\"getLastSample_[set name]\" ,  &SAL_[set subsys]::getLastSample_[set name] )
   .def(\"flushSamples_[set name]\" ,  &SAL_[set subsys]::flushSamples_[set name] )
   .def(\"putSample_[set name]\" ,  &SAL_[set subsys]::putSample_[set name] )"
       }
@@ -200,10 +202,12 @@ using namespace std;
   .def(\"flushSamples_[set name]\" ,  &::SAL_[set subsys]::flushSamples_[set name] )"
         puts $fpyb2 "
   .def(\"flushSamples_[set name]\" ,  &SAL_[set subsys]::flushSamples_[set name] )
+  .def(\"getSample_[set name]\" ,  &SAL_[set subsys]::getSample_[set name] )
+  .def(\"getLastSample_[set name]\" ,  &SAL_[set subsys]::getLastSample_[set name] )
   .def(\"getNextSample_[set name]\" ,  &SAL_[set subsys]::getNextSample_[set name] )"
       }
       if { [info exists SYSDIC($subsys,keyedID)] } {
-          puts $fout "	  short	[set subsys]ID;"
+          puts $fout "	  long	[set subsys]ID;"
       }
       set argidx 1
       while { [gets $fin rec] > -1 } {
@@ -238,7 +242,7 @@ using namespace std;
                set VPROPS(idx) $argidx
                set VPROPS(base) $subsys
                set VPROPS(topic) "[set subsys]_[set name]"
-               updatecfragments $fcod1 $fcod2 $fcod3 $fcod4 $fcod5 $fcod6 $fcod7 $fcod8 $fcod10 $fcod11 $fcod12 $fcod13
+               updatecfragments $fcod1 $fcod1b $fcod2 $fcod3 $fcod4 $fcod5 $fcod6 $fcod7 $fcod8 $fcod10 $fcod11 $fcod12 $fcod13
                set vname $VPROPS(name)
                if { $VPROPS(array) } {
                   puts $fbst "      .add_property(\"$vname\", make_array(&[set subsys]_[set name]C::$vname))"
@@ -274,6 +278,7 @@ using namespace std;
       }
       close $fin
       close $fcod1
+      close $fcod1b
       close $fcod2
       close $fcod3
       close $fcod4
@@ -292,7 +297,7 @@ using namespace std;
    } else {
      puts $fout "	struct command
 	\{
-      string<32>	private_revCode;
+      string<8>	private_revCode;
       double		private_sndStamp;
       double		private_rcvStamp;
       long		private_origin;
@@ -307,7 +312,7 @@ using namespace std;
 	#pragma keylist command
 	struct ackcmd
 	\{
-      string<32>	private_revCode;
+      string<8>	private_revCode;
       double		private_sndStamp;
       double		private_rcvStamp;
       long		private_origin;
@@ -320,7 +325,7 @@ using namespace std;
 	#pragma keylist ackcmd
 	struct logevent
 	\{
-      string<32>	private_revCode;
+      string<8>	private_revCode;
       double		private_sndStamp;
       double		private_rcvStamp;
       long		private_origin;
@@ -377,15 +382,18 @@ typedef struct [set subsys]_waitCompleteLV
    close $fbst2
    close $fpyb
    close $fpyb2
+   activeRevCodes $subsys
    return $SAL_WORK_DIR/idl-templates/validated/sal/sal_$subsys.idl
 }
 
-proc updatecfragments { fcod1 fcod2 fcod3 fcod4 fcod5 fcod6 fcod7 fcod8 fcod10 fcod11 fcod12 fcod13 } {
+proc updatecfragments { fcod1 fcod1b fcod2 fcod3 fcod4 fcod5 fcod6 fcod7 fcod8 fcod10 fcod11 fcod12 fcod13 } {
 global VPROPS TYPEFORMAT
    set idx $VPROPS(idx)
    if { $VPROPS(iscommand) } {set idx [expr $idx - 4]}
    if { $VPROPS(array) } {
       puts $fcod1 "    for (int iseq=0;iseq<$VPROPS(dim);iseq++) \{data->$VPROPS(name)\[iseq\] = Instances\[j\].$VPROPS(name)\[iseq\];\}"
+      puts $fcod1 "    for (int iseq=0;iseq<$VPROPS(dim);iseq++) \{lastSample_[set VPROPS(topic)].$VPROPS(name)\[iseq\] = Instances\[j\].$VPROPS(name)\[iseq\];\}"
+      puts $fcod1b "    for (int iseq=0;iseq<$VPROPS(dim);iseq++) \{data->$VPROPS(name) = lastSample_[set VPROPS(topic)].$VPROPS(name);\}"
       puts $fcod2 "    for (int iseq=0;iseq<$VPROPS(dim);iseq++) \{Instance.$VPROPS(name)\[iseq\] = data->$VPROPS(name)\[iseq\];\}"
       puts $fcod3 "       cout << \"    $VPROPS(name) : \" << SALInstance.$VPROPS(name)\[0\] << endl;"
       puts $fcod4 "    for (int i=0;i<$VPROPS(dim);i++)\{myData.$VPROPS(name)\[i\] = i+iseq;\}"
@@ -437,6 +445,8 @@ global VPROPS TYPEFORMAT
    } else {
       if { $VPROPS(string) } {
          puts $fcod1 "    data->$VPROPS(name)=Instances\[j\].$VPROPS(name).m_ptr;"
+         puts $fcod1 "    lastSample_[set VPROPS(topic)].$VPROPS(name)=Instances\[j\].$VPROPS(name).m_ptr;"
+         puts $fcod1b "   data->$VPROPS(name) = lastSample_[set VPROPS(topic)].$VPROPS(name);"
          puts $fcod2 "    Instance.$VPROPS(name) = DDS::string_dup(data->$VPROPS(name).c_str());"
          puts $fcod3 "    cout << \"    $VPROPS(name) : \" << SALInstance.$VPROPS(name) << endl;"
          puts $fcod4 "    myData.$VPROPS(name)=\"LSST\";"
@@ -462,6 +472,8 @@ global VPROPS TYPEFORMAT
          }
       } else {
          puts $fcod1 "    data->$VPROPS(name) = Instances\[j\].$VPROPS(name);"
+         puts $fcod1 "    lastSample_[set VPROPS(topic)].$VPROPS(name) = Instances\[j\].$VPROPS(name);"
+         puts $fcod1b "   data->$VPROPS(name) = lastSample_[set VPROPS(topic)].$VPROPS(name);"
          puts $fcod2 "    Instance.$VPROPS(name) = data->$VPROPS(name);"
          puts $fcod3 "    cout << \"    $VPROPS(name) : \" << SALInstance.$VPROPS(name) << endl;"
          puts $fcod6 "    cout << \"    $VPROPS(name) : \" << data->$VPROPS(name) << endl;"
@@ -508,13 +520,13 @@ global VPROPS TYPEFORMAT
 proc genkeyedidl { fout base } {
      puts $fout "	struct command
 	\{
-	  string<32>	private_revCode;
+	  string<8>	private_revCode;
 	  double	private_sndStamp;
 	  double	private_rcvStamp;
 	  long		private_origin;
 	  long 		private_host;
 	  long		private_seqNum;
-	  short	[set base]ID;
+	  long	[set base]ID;
 	  string<32>	device;
 	  string<32>	property;
 	  string<32>	action;
@@ -524,13 +536,13 @@ proc genkeyedidl { fout base } {
 	#pragma keylist command [set base]ID
 	struct ackcmd
 	\{
-	  string<32>	private_revCode;
+	  string<8>	private_revCode;
 	  double	private_sndStamp;
 	  double	private_rcvStamp;
 	  long		private_origin;
 	  long 		private_host;
 	  long		private_seqNum;
-	  short	[set base]ID;
+	  long	[set base]ID;
 	  long 		ack;
 	  long 		error;
 	  string<256>	result;
@@ -538,13 +550,13 @@ proc genkeyedidl { fout base } {
 	#pragma keylist ackcmd [set base]ID
 	struct logevent
 	\{
-	  string<32>	private_revCode;
+	  string<8>	private_revCode;
 	  double	private_sndStamp;
 	  double	private_rcvStamp;
 	  long		private_origin;
 	  long 		private_host;
 	  long		private_seqNum;
-	  short	[set base]ID;
+	  long	[set base]ID;
 	  string<128>	message;
 	\};
 	#pragma keylist logevent [set base]ID"
@@ -562,12 +574,12 @@ global SAL_DIR SAL_WORK_DIR SYSDIC ONEPYTHON
       set frep [open /tmp/sreplace.sal w]
       puts $frep "#!/bin/sh"
       if { $lang == "cpp" } {
-        exec cp $SAL_DIR/code/templates/SAL_defines.h $SAL_DIR/../include/.
         exec cp $SAL_DIR/code/templates/Makefile-cpp.template [set id]/cpp/standalone/Makefile
         puts $frep "perl -pi -w -e 's/sacpp_SAL_types/sacpp_[set base]_types/g;' [set id]/cpp/standalone/Makefile"
         puts $frep "perl -pi -w -e 's/_SAL_/_[set id]_/g;' [set id]/cpp/standalone/Makefile"
         exec cp $SAL_DIR/code/templates/Makefile.sacpp_SAL_types.template [set base]/cpp/Makefile.sacpp_[set base]_types
-        puts $frep "perl -pi -w -e 's/SALDATA.idl/[file tail $idlfile]/g;' [set base]/cpp/Makefile.sacpp_[set base]_types"
+        puts $frep "perl -pi -w -e 's/SALDATA.idl/sal_[set base].idl/g;' [set base]/cpp/Makefile.sacpp_[set base]_types"
+###        puts $frep "perl -pi -w -e 's/SALDATA.idl/[file tail $idlfile]/g;' [set base]/cpp/Makefile.sacpp_[set base]_types"
         puts $frep "perl -pi -w -e 's/SALData/sal_[set base]/g;' [set base]/cpp/Makefile.sacpp_[set base]_types"
         puts $frep "perl -pi -w -e 's/sacpp_SAL_types/sacpp_[set base]_types/g;' [set base]/cpp/Makefile.sacpp_[set base]_types"
         exec cp $SAL_DIR/code/templates/Makefile.sacpp_SAL_sub.template [set id]/cpp/standalone/Makefile.sacpp_[set id]_sub
@@ -840,7 +852,11 @@ global SAL_WORK_DIR OPTIONS ONEDDSGEN
        puts stdout "Generating $lang type support for $base"
        if { $lang == "cpp" }     {catch { set result [exec make -f Makefile.sacpp_[set base]_types] } bad; puts stdout $bad}
        if { $lang == "isocpp" }  {catch { set result [exec make -f Makefile.ISO_Cxx_[set base]_Typesupport] } bad; puts stdout $bad}
-       if { $lang == "java"}     {catch { set result [exec make -f Makefile.saj_[set base]_types] } bad; puts stdout $bad}
+       if { $lang == "java"}     {
+          modidlforjava $base
+          catch { set result [exec make -f Makefile.saj_[set base]_types] } bad
+          puts stdout $bad
+       }
        puts stdout "idl : $result"
        cd $SAL_WORK_DIR
        set ONEDDSGEN 1
@@ -927,5 +943,6 @@ if { [lindex [split $env(PYTHON_BUILD_VERSION) .] 0] == 2} {
   source $env(SAL_DIR)/gensimplepybind11.tcl
 }  
 source $SAL_DIR/managetypes.tcl
+source $SAL_DIR/activaterevcodes.tcl
 
 
