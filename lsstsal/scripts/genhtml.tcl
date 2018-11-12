@@ -260,7 +260,8 @@ read and/or write access.<P>
 
 
 foreach sname [liststreams $s] {
-   set id [join [split $sname "_"] "."]
+#   set id [join [split $sname "_"] "."]
+   set id $sname
    dogen $fgen $id no
    puts stdout "Added sal-generator-$id to form"
 }

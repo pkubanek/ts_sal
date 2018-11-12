@@ -39,7 +39,7 @@ global SAL_WORK_DIR SAL_DIR
       set spl [split $rec "_"]
       if { $subsys == "all" || $subsys == [lindex $spl 0] } {
         if { [lindex $spl 1] != "command" &&  [lindex $spl 1] != "ackcmd" && [lindex $spl 1] != "logevent"} {
-          set s [join [lrange $spl 0 1] "_"]
+          set s [lindex $spl 0].[join [lrange $spl 1 end] "_"]
           set sname($s) 1
         }
       }
@@ -80,7 +80,7 @@ proc dogen { fid id {cmd yes} } {
 
 proc idlpreamble { fid id } {
   puts $fid "struct [join [split $id .] _] \{
-  string<32>	private_revCode; //private
+  string<8>	private_revCode; //private
   double	private_sndStamp; //private
   double	private_rcvStamp; //private
   long		private_seqNum; //private
@@ -91,7 +91,7 @@ proc idlpreamble { fid id } {
 proc sqlpreamble { fid id } {
   puts $fid  "CREATE TABLE $id \{"
   puts $fid  "  date_time date time NOT NULL,
-  private_revCode char(32),
+  private_revCode char(8),
   private_sndStamp double,
   private_rcvStamp double,
   private_seqNum int,
