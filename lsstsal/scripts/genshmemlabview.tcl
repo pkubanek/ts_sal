@@ -55,6 +55,7 @@ global SAL_WORK_DIR EVENT_ENUMS
    set fin  [open $SAL_WORK_DIR/[set subsys]/cpp/sal_[set subsys].idl r]
    set fout [open $SAL_WORK_DIR/[set subsys]/labview/sal_[set subsys].idl w]
    set topic none
+   set addedSummaryEnum 1
    while { [gets $fin rec] > -1 } {
       set it [string trim $rec "\{\}"]
       if { [lindex $it 0] == "struct" } {
@@ -78,7 +79,18 @@ global SAL_WORK_DIR EVENT_ENUMS
          }
        }
       }
+      if { $addedSummaryEnum == 1 } {
+	   #add the generic summary state constants:
+	   set i 1
+	   foreach id "DisabledState EnabledState FaultState OfflineState StandbyState" {
+	       puts $fout "	 const long [set subsys]_shared_SummaryState_[string trim $id " "]=$i;"
+	       incr i 1
+	   }
+	   set addedSummaryEnum 0
+     }
+       
    }
+
    close $fin
    close $fout
 }
