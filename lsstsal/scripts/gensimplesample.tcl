@@ -393,7 +393,7 @@ global VPROPS TYPEFORMAT
    if { $VPROPS(array) } {
       puts $fcod1 "    for (int iseq=0;iseq<$VPROPS(dim);iseq++) \{data->$VPROPS(name)\[iseq\] = Instances\[j\].$VPROPS(name)\[iseq\];\}"
       puts $fcod1 "    for (int iseq=0;iseq<$VPROPS(dim);iseq++) \{lastSample_[set VPROPS(topic)].$VPROPS(name)\[iseq\] = Instances\[j\].$VPROPS(name)\[iseq\];\}"
-      puts $fcod1b "    for (int iseq=0;iseq<$VPROPS(dim);iseq++) \{data->$VPROPS(name) = lastSample_[set VPROPS(topic)].$VPROPS(name);\}"
+      puts $fcod1b "    for (int iseq=0;iseq<$VPROPS(dim);iseq++) \{data->$VPROPS(name)\[iseq\] = lastSample_[set VPROPS(topic)].$VPROPS(name)\[iseq\];\}"
       puts $fcod2 "    for (int iseq=0;iseq<$VPROPS(dim);iseq++) \{Instance.$VPROPS(name)\[iseq\] = data->$VPROPS(name)\[iseq\];\}"
       puts $fcod3 "       cout << \"    $VPROPS(name) : \" << SALInstance.$VPROPS(name)\[0\] << endl;"
       puts $fcod4 "    for (int i=0;i<$VPROPS(dim);i++)\{myData.$VPROPS(name)\[i\] = i+iseq;\}"
