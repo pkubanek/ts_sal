@@ -1203,6 +1203,7 @@ void SAL_SALData::salShutdown()
   if (participant != NULL) {
     participant->delete_contained_entities();
     deleteParticipant();
+    participant = NULL;
   }
 }
 
