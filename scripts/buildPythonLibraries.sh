@@ -56,7 +56,7 @@ printf "\nCleaning directory, leaving $1 folder\n"
 printf '%*s\n' "${COLUMNS:-$(tput cols)}" '' | tr ' ' -
 rm ${SAL_WORK_DIR}/SALGenerics.xml
 rm ${SAL_WORK_DIR}/SALSubsystems.xml
-rm -rf ${SAL_WORK_DIR}/Scheduler_*
+rm -rf ${SAL_WORK_DIR}/$1_*
 rm -rf ${SAL_WORK_DIR}/html
 rm -rf ${SAL_WORK_DIR}/idl-templates
 rm -rf ${SAL_WORK_DIR}/sql
