@@ -79,7 +79,7 @@ int SAL_SALData::issueCommand_[set i]( SALData_command_[set i]C *data )
   cmdHandle = SALWriter->register_instance(Instance);
 #endif
 
-  Instance.private_revCode =  DDS::string_dup(\"$revcode\");
+  Instance.private_revCode =  DDS::string_dup(\"[string trim $revcode _]\");
   Instance.private_sndStamp = getCurrentTime();
   Instance.private_origin =   1;
   Instance.private_seqNum =   sal\[actorIdx\].sndSeqNum;

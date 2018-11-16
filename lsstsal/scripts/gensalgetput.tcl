@@ -30,7 +30,7 @@ salReturn SAL_[set base]::putSample_[set name]([set base]_[set name]C *data)
   [set base]::[set name][set revcode]DataWriter_var SALWriter = [set base]::[set name][set revcode]DataWriter::_narrow(dwriter.in());
   [set base]::[set name][set revcode] Instance;
 
-  Instance.private_revCode = DDS::string_dup(\"$revcode\");
+  Instance.private_revCode = DDS::string_dup(\"[string trim $revcode _]\");
   Instance.private_sndStamp = getCurrentTime();
   Instance.private_origin = 1;
   Instance.private_seqNum = sndSeqNum;
@@ -440,7 +440,7 @@ puts $fout "
 	  \}
 	  DataWriter dwriter = getWriter(actorIdx);
 	  [set name][set revcode]DataWriter SALWriter = [set name][set revcode]DataWriterHelper.narrow(dwriter);
-	  SALInstance.private_revCode = \"$revcode\";
+	  SALInstance.private_revCode = \"[string trim $revcode _]\";
           SALInstance.private_sndStamp = getCurrentTime();
           SALInstance.private_origin = 1;
 	  if (debugLevel > 0) \{
@@ -634,7 +634,7 @@ salReturn SAL_[set base]::putSample([set base]::[set name][set revcode] data)
 \{
   DataWriter_var dwriter = getWriter();
   [set base]::[set name][set revcode]DataWriter_var SALWriter = [set base]::[set name][set revcode]DataWriter::_narrow(dwriter.in());
-  data.private_revCode = DDS::string_dup(\"$revcode\");
+  data.private_revCode = DDS::string_dup(\"[string trim $revcode _]\");
   if (debugLevel > 0) \{
     cout << \"=== \[putSample\] [set base]::[set name][set revcode] writing a message containing :\" << endl;
     cout << \"    revCode  : \" << data.private_revCode << endl;

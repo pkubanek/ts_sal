@@ -105,7 +105,7 @@ global env SAL_WORK_DIR SAL_DIR SALVERSION OSPL_VERSION
         <dependency>
             <groupId>opensplice.dds</groupId>
             <artifactId>dcpssaj</artifactId>
-            <version>6.4.1</version>
+            <version>6.7.1</version>
         </dependency>
     </dependencies>
     <repositories>
@@ -196,7 +196,7 @@ public class [set subsys]CommanderTest extends TestCase \{
   	    mgr.salCommand(\"[set subsys]_command_[set alias]\");
 	    [set subsys].command_[set alias] command  = new [set subsys].command_[set alias]();
 
-	    command.private_revCode = \"$revcode\";
+	    command.private_revCode = \"[string trim $revcode _]\";
 	    command.device = \"$alias\";
 	    command.property =  \"\";
 	    command.action =  \"\";
