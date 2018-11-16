@@ -325,7 +325,7 @@ global CMDS TLMS EVTS
                     }
     		    set arr [lindex [split $p "()"] 1]
     		    if { $arr != "" } {
-    		      puts $fout "           System.arraycopy(data.$apar,0,$arr),SALInstance.$apar,0);"
+    		      puts $fout "           System.arraycopy(data.$apar,0,SALInstance.$apar,0,$arr);"
     		    } else {
     		      puts $fout "           SALInstance.$apar = data.$apar ;"
     		    }
@@ -341,7 +341,7 @@ global CMDS TLMS EVTS
                     }
     		    set arr [lindex [split $p "()"] 1]
     		    if { $arr != "" } {
-    		      puts $fout "           System.arraycopy(data.$apar,0,$arr),SALInstance.$apar,0);"
+    		      puts $fout "           System.arraycopy(data.$apar,0,SALInstance.$apar,0,$arr);"
     		    } else {
     		      puts $fout "           SALInstance.$apar = data.$apar;"
     		    }
@@ -357,7 +357,7 @@ global CMDS TLMS EVTS
                     }
     		    set arr [lindex [split $p "()"] 1]
     		    if { $arr != "" } {
-    		      puts $fout "          System.arraycopy(data.$apar,0,$arr),SALInstance.$apar,0);"
+    		      puts $fout "          System.arraycopy(data.$apar,0,SALInstance.$apar,0,$arr);"
     		    } else {
     		      puts $fout "          SALInstance.$apar = data.$apar;"
     		    }
