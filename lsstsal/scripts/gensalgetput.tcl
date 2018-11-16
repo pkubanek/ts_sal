@@ -452,7 +452,7 @@ puts $fout "
         if { [info exists SYSDIC($base,keyedID)] } { 
           puts $fout "
            SALInstance.[set base]ID = subsystemID;
-           long dataHandle = SALWriter.register_SALInstance(SALInstance);
+           long dataHandle = SALWriter.register_instance(SALInstance);
 	   status = SALWriter.write(SALInstance, dataHandle);
 	   checkStatus(status, \"[set name][set revcode]DataWriter.write\");
            SALWriter.dispose(SALInstance, dataHandle);"

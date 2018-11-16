@@ -397,7 +397,7 @@ global CMD_ALIASES CMDS SYSDIC
           SALInstance.private_sndStamp = getCurrentTime();"
       if { [info exists SYSDIC($subsys,keyedID)] } {
         puts $fout "	  SALInstance.SALDataID = subsystemID;
-	  cmdHandle = SALWriter.register_instance(data);"
+	  cmdHandle = SALWriter.register_instance(SALInstance);"
       } else {
         puts $fout "	  SALWriter.register_instance(SALInstance);"
       }
