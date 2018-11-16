@@ -1207,6 +1207,7 @@ public class SAL_SALData {
 		sal[actorIdx].writer = sal[actorIdx].publisher.create_datawriter(sal[actorIdx].topic, sal[actorIdx].WQosH.value, null,STATUS_MASK_NONE.value);
 		checkHandle(sal[actorIdx].writer, "Publisher.create_datawriter");
 		System.out.println("=== [createwriter idx] : topic " + sal[actorIdx].topic + " writer = " + sal[actorIdx].writer);
+                sal[actorIdx].isWriter = true;
 	}
         
 	public void createWriter2(int actorIdx, boolean autodispose) {
@@ -1216,6 +1217,7 @@ public class SAL_SALData {
 		sal[actorIdx].writer2 = sal[actorIdx].publisher.create_datawriter(sal[actorIdx].topic2, sal[actorIdx].WQosH.value, null,STATUS_MASK_NONE.value);
 		checkHandle(sal[actorIdx].writer2, "Publisher.create_datawriter");
 		System.out.println("=== [createwriter2 idx] : topic " + sal[actorIdx].topic2 + " writer = " + sal[actorIdx].writer2);
+                sal[actorIdx].isWriter = true;
 	}
 
 
@@ -1303,6 +1305,7 @@ public class SAL_SALData {
 	  a_timeout.nanosec = 0;
           sal[actorIdx].sampleAge = 100.0;
 	  sal[actorIdx].reader.wait_for_historical_data(a_timeout);
+          sal[actorIdx].isReader = true;
 	}
 
 	public void createReader2(int actorIdx,boolean filtered) {
@@ -1321,6 +1324,7 @@ public class SAL_SALData {
 	  a_timeout.nanosec = 0;
           sal[actorIdx].sampleAge = 100.0;
 	  sal[actorIdx].reader2.wait_for_historical_data(a_timeout);
+          sal[actorIdx].isReader = true;
 	}
 
 	public DataReader getReader() {

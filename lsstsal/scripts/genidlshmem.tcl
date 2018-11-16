@@ -154,7 +154,7 @@ while { [gets $fin rec] > -1 } {
       set fo2  [open $id.sqldef w]
       set fo3  [open $id.sqlwrt w]
 ###      puts $fout "struct $topic \{
-###  string<32> private_revCode; //private
+###  string<8> private_revCode; //private
 ###  double private_sndStamp; //private
 ###  double private_rcvStamp; //private
 ###  long private_seqNum; //private
@@ -163,7 +163,7 @@ while { [gets $fin rec] > -1 } {
       puts $fo2  "DROP TABLE IF EXISTS $topic;"
       puts $fo2  "CREATE TABLE $topic ("
       puts $fo2  "  date_time DATETIME(6),
-  private_revCode char(32),
+  private_revCode char(8),
   private_sndStamp double precision,
   private_rcvStamp double precision,
   private_seqNum int,

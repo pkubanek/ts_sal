@@ -1,12 +1,13 @@
 #!/usr/bin/env tclsh
 
 set SAL_HOME $env(SAL_HOME)
+set SAL_WORK_DIR $env(SAL_WORK_DIR)
 puts stdout "Rebuilding bandwidth estimates"
 source $SAL_HOME/scripts/make_descpubsub.tcl
 source $SAL_HOME/scripts/build_datastreams.tcl
+source $SAL_HOME/scripts/update_sidfreq.tcl
+source $env(SAL_WORK_DIR)/.salwork/sid.tcl 
 source $SAL_HOME/scripts/parse-ds.tcl
-source $SAL_HOME/scripts/sid.tcl
-
 source $SAL_HOME/scripts/sal_version.tcl
 
 set all [glob html/salgenerator/*]

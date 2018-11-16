@@ -183,6 +183,7 @@ global XMLTOPICS XMLTLM IDLRESERVED XMLITEMS
            if { [info exists tnames] } {
             foreach t $tnames {
               set ps $props($t,size)
+              incr topicsize [expr $ps * $IDLSIZES([string trim $props($t,type)])]
               if { $ps > 1 && $props($t,type) != "string" } {
                  incr ps 1
               }
@@ -190,6 +191,7 @@ global XMLTOPICS XMLTLM IDLRESERVED XMLITEMS
               incr tid 1
             }
            }
+           puts $fsql "#TOPICSIZE $topicsize"
            close $fsql
            puts $fhtm "</TABLE><P>Click here to update: <input type=\"submit\" value=\"Submit\" name=\"update\"></FORM><P></BODY></HTML>"
            close $fhtm
@@ -214,6 +216,7 @@ global XMLTOPICS XMLTLM IDLRESERVED XMLITEMS
            if { [lsearch $IDLRESERVED [string tolower $topicid]] > -1 } {errorexit "Invalid use of IDL reserved token $topicid"}
            if { [lindex $status 0] == "OK" } {
               catch {unset tnames}
+              set topicsize 0
               set nt [lindex $status 1]
               if { [info exists NEWTOPICS($nt)] } {
                  return "errorexit : $rec\nDuplicate struct definition"
@@ -236,7 +239,7 @@ global XMLTOPICS XMLTLM IDLRESERVED XMLITEMS
               idlpreamble $fout $nt
 # use streamutils version
 #              puts $fout "struct $nt \{
-#  string<32> private_revCode;  //private
+#  string<8> private_revCode;  //private
 #  double     private_sndStamp; //private
 #  double     private_rcvStamp; //private
 #  long       private_seqNum;   //private
@@ -399,13 +402,17 @@ source $env(SAL_DIR)/add_system_dictionary.tcl
 set IDLTYPES "boolean char byte octet short int long longlong float double string unsigned const"
 set IDLSIZES(byte)     1
 set IDLSIZES(char)     1
+set IDLSIZES(unsignedbyte)     1
 set IDLSIZES(octet)    1
 set IDLSIZES(boolean)  2
 set IDLSIZES(string)   1
 set IDLSIZES(short)    2
 set IDLSIZES(int)      4
+set IDLSIZES(unsignedshort)    2
+set IDLSIZES(unsignedint)      4
 set IDLSIZES(long)     4
 set IDLSIZES(longlong) 8
+set IDLSIZES(unsignedlong)     4
 set IDLSIZES(float)    4
 set IDLSIZES(long\ long) 8
 set IDLSIZES(double)   8

@@ -12,7 +12,7 @@ source $scriptdir/qosdesc.tcl
 set fin [open .salwork/datastreams.detail r]
 while { [gets $fin rec] > -1 } {
    set s [split [lindex $rec 1] .]
-   if { [lindex $s 1] != "command" &&  [lindex $s 1] != "ackcmd" } {
+   if { [lindex $s 1] != "ackcmd" } {
      set SYSTEMS([lindex $s 0]) 1
      set topic [join [lrange $s 0 [expr [llength $s]-2]] .]
      lappend T($topic) [lindex $s end]
@@ -21,9 +21,9 @@ while { [gets $fin rec] > -1 } {
 }
 close $fin
 
-set VERSION 3.2
-set RELEASE "Nov 2016"
-set AUTHOR "D. Mills (NOAO), dmills@noao.edu"
+set VERSION 3.8
+set RELEASE "November 2018"
+set AUTHOR "D. Mills (NOAO), dmills@lsst.edu"
 
 set fout [open datastreams.html w]
 
@@ -48,9 +48,9 @@ puts $fout "
 <P><FONT SIZE=4><B>Date – $RELEASE</B></FONT></P>
 <P><FONT SIZE=4><B>Author – $AUTHOR</B></FONT></P>
 <H2>Introduction</H2>
-<P>This document describes a strawman set of datastream prototypes
-which<BR>will be used to evaluate the capability of various software
-components<BR>(middleware) for use in the LSST software
+<P>This document describes a current set of datastream definitions
+which<BR>will be used to evaluate the storage and bandwidth requirements
+of various software components<BR>(middleware) for use in the LSST software
 infrastructure. 
 </P>
 <P>For each datastream type, we provide a brief description of the
@@ -122,7 +122,7 @@ foreach s $subs {
   puts $fout "</UL><P>"
 }
 
-puts $fout "<HR><H1>Appendix A - Prototype Datastreams</H1><UL>"
+puts $fout "<HR><H1>Appendix A - Current Datastreams</H1><UL>"
 foreach s $subs {
   puts $fout "        <LI><P STYLE=\"margin-bottom: 0in\">$s</P>"
 }

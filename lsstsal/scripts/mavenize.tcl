@@ -105,7 +105,7 @@ global env SAL_WORK_DIR SAL_DIR SALVERSION OSPL_VERSION
         <dependency>
             <groupId>opensplice.dds</groupId>
             <artifactId>dcpssaj</artifactId>
-            <version>6.4.1</version>
+            <version>6.7.1</version>
         </dependency>
     </dependencies>
     <repositories>
@@ -183,6 +183,7 @@ public class [set subsys]CommanderTest extends TestCase \{
   set cmds [split [exec grep "pragma keylist command_" $SAL_WORK_DIR/idl-templates/validated/sal/sal_[set subsys].idl] \n]
   foreach i $cmds {
      set alias [lindex [split [lindex $i 2] _] 1]
+     set revcode [getRevCode [set subsys]_command_[set alias] short]
      puts $fout "
   public void test[set subsys]Commander_[set alias]() \{
 	    SAL_[set subsys] mgr = new SAL_[set subsys][set initializer];
@@ -195,7 +196,7 @@ public class [set subsys]CommanderTest extends TestCase \{
   	    mgr.salCommand(\"[set subsys]_command_[set alias]\");
 	    [set subsys].command_[set alias] command  = new [set subsys].command_[set alias]();
 
-	    command.private_revCode = \"LSST TEST COMMAND\";
+	    command.private_revCode = \"[string trim $revcode _]\";
 	    command.device = \"$alias\";
 	    command.property =  \"\";
 	    command.action =  \"\";
@@ -281,5 +282,6 @@ public class [set subsys]Controller_[set alias]Test extends TestCase \{
   close $fout
 }
 
+source $env(SAL_DIR)/activaterevcodes.tcl
 
 

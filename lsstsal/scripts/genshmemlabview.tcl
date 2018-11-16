@@ -52,7 +52,7 @@ global SAL_WORK_DIR EVENT_ENUMS
    if { [file exists $SAL_WORK_DIR/idl-templates/validated/[set subsys]_evtdef.tcl] } { 
       source  $SAL_WORK_DIR/idl-templates/validated/[set subsys]_evtdef.tcl
    }
-   set fin  [open $SAL_WORK_DIR/[set subsys]/cpp/sal_[set subsys].idl r]
+   set fin  [open $SAL_WORK_DIR//idl-templates/validated/sal/sal_[set subsys].idl r]
    set fout [open $SAL_WORK_DIR/[set subsys]/labview/sal_[set subsys].idl w]
    set topic none
    while { [gets $fin rec] > -1 } {

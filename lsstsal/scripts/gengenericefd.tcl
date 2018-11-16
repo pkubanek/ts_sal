@@ -177,6 +177,7 @@ global ACTORTYPE SAL_WORK_DIR BLACKLIST
    set ptypes [lsort [split [exec grep pragma $idlfile] \n]]
    foreach j $ptypes {
      set topic [lindex $j 2]
+     set revcode [getRevCode [set base]_[set topic] short]
      set type [lindex [split $topic _] 0]
      set doit 0
      set trail  [string range $topic [expr [string bytelength $topic]-9] end]
@@ -189,24 +190,24 @@ global ACTORTYPE SAL_WORK_DIR BLACKLIST
      if { [info exists BLACKLIST([set topic])] } {set doit 0}
      if { $doit } {
 #      if { $ctype == "init" } {
-#       puts $fout "  [set base]::[set topic]Seq myData_[set topic];
-#  SampleInfoSeq_var [set topic]_info = new SampleInfoSeq;"
+#       puts $fout "  [set base]::[set topic][set revcode]Seq myData_[set topic][set revcode];
+#  SampleInfoSeq_var [set topic][set revcode]_info = new SampleInfoSeq;"
 #      }
       if { $ctype == "subscriber" } {
        puts $fout "  mgr.salTelemetrySub(\"[set base]_[set topic]\");
   actorIdx = SAL__[set base]_[set topic]_ACTOR;
-  DataReader_var [set topic]_dreader = mgr.getReader(actorIdx);
-  [set base]::[set topic]DataReader_var [set topic]_SALReader = [set base]::[set topic]DataReader::_narrow([set topic]_dreader.in());
-  mgr.checkHandle([set topic]_SALReader.in(), \"[set base]::[set topic]DataReader::_narrow\");
+  DataReader_var [set topic][set revcode]_dreader = mgr.getReader(actorIdx);
+  [set base]::[set topic][set revcode]DataReader_var [set topic]_SALReader = [set base]::[set topic][set revcode]DataReader::_narrow([set topic][set revcode]_dreader.in());
+  mgr.checkHandle([set topic]_SALReader.in(), \"[set base]::[set topic][set revcode]DataReader::_narrow\");
 "
       }
       if { $ctype == "getsamples" } {
         if { $topic != "command" && $topic != "logevent" } {
         puts $fout "  
-       [set base]::[set topic]Seq myData_[set topic];
+       [set base]::[set topic][set revcode]Seq myData_[set topic];
        SampleInfoSeq_var [set topic]_info = new SampleInfoSeq;
        status = [set topic]_SALReader->take(myData_[set topic], [set topic]_info, 100, ANY_SAMPLE_STATE, ANY_VIEW_STATE, ANY_INSTANCE_STATE);
-       mgr.checkStatus(status,\"[set base]::[set topic]DataReader::take\");
+       mgr.checkStatus(status,\"[set base]::[set topic][set revcode]DataReader::take\");
        numsamp = myData_[set topic].length();
        if (status == SAL__OK && numsamp > 0) \{
         for (iloop=0;iloop<numsamp;iloop++) \{
@@ -628,7 +629,7 @@ global SAL_WORK_DIR
    puts $fout "DROP TABLE IF EXISTS [set subsys]_logeventLFO;
 CREATE TABLE [set subsys]_logeventLFO (
   date_time DATETIME(6),
-  private_revCode char(32),
+  private_revCode char(8),
   private_sndStamp double precision,
   private_seqNum int,
   url varchar(128),
@@ -646,7 +647,7 @@ CREATE TABLE [set subsys]_logeventLFO (
    puts $fout "DROP TABLE IF EXISTS [set subsys]_commandLog;
 CREATE TABLE [set subsys]_commandLog (
   date_time DATETIME(6),
-  private_revCode char(32),
+  private_revCode char(8),
   private_sndStamp double precision,
   private_seqNum int,
   name varchar(128),
@@ -727,6 +728,7 @@ set BLACKLIST(Surface) 1
 
 source $SAL_DIR/add_system_dictionary.tcl
 source $SAL_DIR/revCodes.tcl
-source $SAL_WORK_DIR/.salwork/revCodes.tcl
 source $SAL_DIR/managetypes.tcl
+source $SAL_DIR/activaterevcodes.tcl
+
 

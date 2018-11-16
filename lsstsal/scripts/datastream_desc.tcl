@@ -1189,17 +1189,30 @@ set DESC(vms) "The Vibration Monitoring Subsystem consists of a set of accellero
 and some mobile which are attached to the major telescope components, plus computer hardware to 
 collect the vibration data and publish it as Telemetry"
 
-set BLOBS(camera.WDS.wfsRaft) "100x100x8 32bit analysis images"
-set BLOBS(camera.GAS)  "64x64x8 16bit images"
+set BLOBS(Camera.WDS.wfsRaft) "800x100x8 32bit analysis images"
+# 4 x in+out
+set BLOBS(Camera.WDS.optPathDiff) "800x100x8 32bit analysis images" 
+set BLOBS(Camera.GAS)  "400x50x8 16bit images"
+# 8 x 9hz
 #deprecated , these go to the DAQ
 #set BLOBS(auxscope.Spectrometer) "4096x2048x1 16bit images"
 #set BLOBS(auxscope.Camera) "4096x4096x1 16bit images"
-set BLOBS(seeing_dimm.Application) "64x64x4 16bit images"
+set BLOBS(SeeingDimm.Application) "64x64x4 16bit images"
 #deprecated, no longer have MASS
 ###set BLOBS(seeing_mass.Application) "64x64x4 16bit images"
-set BLOBS(skycam.Application) "1024x1024x4 16bit images"
-set BLOBS(environment.Lightning_detector) "1024x1024x1 8bit history image"
-set BLOBS(environment.Video_cameras) "640x480x16 8bit images"
-
-
+set BLOBS(Skycam.Application) "1024x1024x4 16bit images"
+set BLOBS(Environment.LightningDetector) "1024x1024x1 8bit history image"
+set BLOBS(Environment.VideoCameras) "640x480x16 8bit images"
+set BLOBS(ATCamera.headers) "40x80x8 400 80 byte lines"
+set BLOBS(Comcam.headers) "450x80x8 80 byte lines"
+# 9 40 lines each
+set BLOBS(Camera.headers) "1340x80x8 80 byte lines"
+# 189 40 lines each
+set BLOBS(VMS.reduced)   "1024x100x4 16bit images"
+set BLOBS(Environment.anemometers)  "1024x100x4 16bit images"
+set BLOBS(Environment.domeSeeing)  "1024x100x4 16bit images"
+set BLOBS(Environment.starTracker)  "114x2048x2 16bit images"
+#only once per exposure
+set BLOBS(Environment.CMOSCamera)  "470x470x112 16bit images"
+# 1arcmin sq at 200Hz for 10 seconds, once per exposure period
 

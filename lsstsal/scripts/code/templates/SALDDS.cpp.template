@@ -123,6 +123,7 @@ int SAL_SALData::getActorIndex (char *topicName)
        }
      }
   }
+  throw std::runtime_error("Unknown topic");
   return SAL__ERROR;
 }
 
@@ -199,6 +200,7 @@ salReturn SAL_SALData::salTelemetryPub(char *topicName)
      status = salTelemetryPub(actorIdx);
   } else {
      status = SAL__ERROR;
+     throw std::runtime_error("Unknown topic");
   }
   return status;
 }
@@ -213,6 +215,7 @@ salReturn SAL_SALData::salTelemetrySub(char *topicName)
      status = salTelemetrySub(actorIdx);
   } else {
      status = SAL__ERROR;
+     throw std::runtime_error("Unknown topic");
   }
   return status;
 }
@@ -1200,6 +1203,7 @@ void SAL_SALData::salShutdown()
   if (participant != NULL) {
     participant->delete_contained_entities();
     deleteParticipant();
+    participant = NULL;
   }
 }
 
@@ -1824,7 +1828,7 @@ DomainParticipant_ptr SAL_SALData::getParticipant()
 }
 
 SAL_SALData::~SAL_SALData(){
-
+    salShutdown();
 }
 
 
