@@ -146,42 +146,45 @@ def set_random_lsst_dds_domain():
 class TestWrapper:
     """Wrap Test and provide access to the commands and topics.
     """
+    __test__ = False  # stop pytest from warning that this is not a test
+
     def __init__(self, salinfo):
         self.salinfo = salinfo
+        lib = salinfo.lib
         manager = salinfo.manager
 
         for name in manager.getCommandNames():
             topic = f"Test_command_{name}"
-            manager.salCommand(topic)
-            manager.salProcessor(topic)
+            assert manager.salCommand(topic) == lib.SAL__OK
+            assert manager.salProcessor(topic) == lib.SAL__OK
 
         for name in manager.getEventNames():
             topic = f"Test_logevent_{name}"
-            manager.salEventPub(topic)
-            manager.salEventSub(topic)
+            assert manager.salEventPub(topic) == lib.SAL__OK
+            assert manager.salEventSub(topic) == lib.SAL__OK
 
         for name in manager.getTelemetryNames():
             topic = f"Test_{name}"
-            manager.salTelemetryPub(topic)
-            manager.salTelemetrySub(topic)
+            assert manager.salTelemetryPub(topic) == lib.SAL__OK
+            assert manager.salTelemetrySub(topic) == lib.SAL__OK
 
     @property
     def arrays_fields(self):
         """Get a tuple of the fields in an arrays struct."""
         return (
-            "boolean1", "byte1", "char1", "short1",
-            "int1", "long1", "longLong1", "octet1",
-            "unsignedShort1", "unsignedInt1", "unsignedLong1",
-            "float1", "double1")
+            "boolean0", "byte0", "char0", "short0",
+            "int0", "long0", "longLong0", "octet0",
+            "unsignedShort0", "unsignedInt0", "unsignedLong0",
+            "float0", "double0")
 
     @property
     def scalars_fields(self):
         """Get a tuple of the fields in a scalars struct."""
         return (
-            "boolean1", "byte1", "char1", "short1",
-            "int1", "long1", "longLong1", "octet1",
-            "unsignedShort1", "unsignedInt1", "unsignedLong1",
-            "float1", "double1", "string1")
+            "boolean0", "byte0", "char0", "short0",
+            "int0", "long0", "longLong0", "octet0",
+            "unsignedShort0", "unsignedInt0", "unsignedLong0",
+            "float0", "double0", "string0")
 
     def assert_arrays_equal(self, arrays1, arrays2):
         """Assert that two arrays data structs are equal.
@@ -239,15 +242,15 @@ class TestWrapper:
         printable_chars = [c for c in string.ascii_letters + string.digits]
         data.char1 = "".join(np.random.choice(printable_chars, size=(nelts,)))
         for field_name in (
-            "byte1",
-            "octet1",
-            "short1",
-            "int1",
-            "long1",
-            "longLong1",
-            "unsignedShort1",
-            "unsignedInt1",
-            "unsignedLong1",
+            "byte0",
+            "octet0",
+            "short0",
+            "int0",
+            "long0",
+            "longLong0",
+            "unsignedShort0",
+            "unsignedInt0",
+            "unsignedLong0",
         ):
             field = getattr(data, field_name)
             iinfo = np.iinfo(field.dtype)
@@ -268,15 +271,15 @@ class TestWrapper:
         data.char1 = np.random.choice(printable_chars)
         data.string1 = "".join(np.random.choice(printable_chars, size=(20,)))
         for field_name in (
-            "byte1",
-            "octet1",
-            "short1",
-            "int1",
-            "long1",
-            "longLong1",
-            "unsignedShort1",
-            "unsignedInt1",
-            "unsignedLong1",
+            "byte0",
+            "octet0",
+            "short0",
+            "int0",
+            "long0",
+            "longLong0",
+            "unsignedShort0",
+            "unsignedInt0",
+            "unsignedLong0",
         ):
             dtype = getattr(empty_arrays, field_name).dtype
             # work around a bug in numpy 1.14.5 that causes
