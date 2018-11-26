@@ -205,7 +205,7 @@ global SAL_WORK_DIR
       incr idx 1 
    }
    close $fact
-   set tuneableQos false
+   set tuneableQos true
 ###   if { $base == "m1m3" } {set tuneableQos false}
    puts $fout "
 void SAL_SALData::initSalActors ()
