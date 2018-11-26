@@ -213,31 +213,6 @@ class ErrorProtectionTestCase(unittest.TestCase):
     def next_index(self):
         return next(index_gen)
 
-    def test_invalid_topic_names(self):
-        """Test registering invalid topic names for commands,
-        events and telemetry.
-
-        TODO TSS-3235: change these tests to use
-        `with self.assertRaises(...):`
-        """
-        bad_cmd_name = "Test_command_nonexistent"
-        with self.assertRaises(RuntimeError):
-            self.manager.salCommand(bad_cmd_name)
-        with self.assertRaises(RuntimeError):
-            self.manager.salProcessor(bad_cmd_name)
-
-        bad_evt_name = "Test_logevent_nonexistent"
-        with self.assertRaises(RuntimeError):
-            self.manager.salEventPub(bad_evt_name)
-        with self.assertRaises(RuntimeError):
-            self.manager.salEventSub(bad_evt_name)
-
-        bad_tel_name = "Test_nonexistent"
-        with self.assertRaises(RuntimeError):
-            self.manager.salTelemetryPub(bad_tel_name)
-        with self.assertRaises(RuntimeError):
-            self.manager.salTelemetrySub(bad_tel_name)
-
     @unittest.skip("this segfaults instead of raising")
     def test_evt_no_registration(self):
         """Test getting and putting topics without registering them first.
