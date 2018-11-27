@@ -69,7 +69,7 @@ public class SAL_SALData {
         private int sndSeqNum;
         private int rcvSeqNum;
         private int rcvOrigin;
-        private short subsystemID;
+        private int subsystemID;
         private long origin;
         private String domainName;
         private int lastActor_telemetry;
@@ -188,7 +188,7 @@ public class SAL_SALData {
 
         
 #ifdef SAL_SUBSYSTEM_ID_IS_KEYED
-        public void salInitialize(short aKey)
+        public void salInitialize(int aKey)
 	{
                 String dname = System.getenv("LSST_DDS_DOMAIN");
                 if (dname != null) {
@@ -207,7 +207,7 @@ public class SAL_SALData {
                 rcvOrigin = 0;
 	}
 
-        public SAL_SALData(short aKey)
+        public SAL_SALData(int aKey)
 	{
                 String dname = System.getenv("LSST_DDS_DOMAIN");
                 if (dname != null) {
@@ -820,8 +820,6 @@ public class SAL_SALData {
 #else
 	  createReader(actorIdx,false);
 #endif
-	  sal[actorIdx].isProcessor = true;
-          sal[actorIdx].sampleAge = 1.0;
 
           if (sal[actorIdx].isProcessor == false) {
   	    //create Publisher
@@ -833,6 +831,8 @@ public class SAL_SALData {
 	    createWriter2(SAL__SALData_ackcmd_ACTOR,autodispose_unregistered_instances);
 	    sal[SAL__SALData_ackcmd_ACTOR].isWriter = true;
           }
+	  sal[actorIdx].isProcessor = true;
+          sal[actorIdx].sampleAge = 1.0;
 	}
 
 	public void salShutdown()

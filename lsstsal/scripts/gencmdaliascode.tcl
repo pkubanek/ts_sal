@@ -391,7 +391,7 @@ global CMD_ALIASES CMDS SYSDIC
 	  \}
 	  DataWriter dwriter = getWriter(actorIdx);	
 	  command_[set i][set revcode]DataWriter SALWriter = command_[set i][set revcode]DataWriterHelper.narrow(dwriter);
-	  SALInstance.private_revCode = \"$revcode\";
+	  SALInstance.private_revCode = \"[string trim $revcode _]\";
 	  SALInstance.private_seqNum = sal\[actorIdx\].sndSeqNum;
           SALInstance.private_origin = 1;
           SALInstance.private_sndStamp = getCurrentTime();"
@@ -416,10 +416,10 @@ global CMD_ALIASES CMDS SYSDIC
 	public int acceptCommand_[set i]( SALData.command_[set i] data )
 	\{
                 command_[set i][set revcode]SeqHolder aCmd = new command_[set i][set revcode]SeqHolder();
+                SALData.ackcmd ackdata;
    		SampleInfoSeqHolder info;
    		int status = 0;
    		int istatus =  -1;
-   		SALData.ackcmd ackdata;
    		long ackHandle = HANDLE_NIL.value;
                 int actorIdx = SAL__SALData_command_[set i]_ACTOR;
 
@@ -476,7 +476,7 @@ global CMD_ALIASES CMDS SYSDIC
       puts $fout "
 		      istatus = SALWriter.write(ackdata, ackHandle);
 		      SALWriter.unregister_instance(ackdata, ackHandle);"
-      puts $fout "  \} else \{
+      puts $fout "
     		     if (debugLevel > 8) \{
       			System.out.println(  \"    Old command ignored :   \" + dTime );
                      \}
