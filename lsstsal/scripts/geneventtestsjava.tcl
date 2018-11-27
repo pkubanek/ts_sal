@@ -20,6 +20,7 @@ global EVENT_ALIASES EVTS EVENT_ALIASES EVTS SAL_WORK_DIR SYSDIC SAL_DIR
   foreach alias $EVENT_ALIASES($subsys) {
     if { [info exists EVTS($subsys,$alias,param)] } {
       stdlog "	: event test send for = $alias"
+      set revcode [getRevCode [set subsys]_logevent_[set alias] short]
       set fcmd [open $SAL_WORK_DIR/$subsys/java/src/[set subsys]Event_[set alias]Test.java w]
       puts $fcmd "
 
@@ -48,7 +49,7 @@ public class [set subsys]Event_[set alias]Test extends TestCase \{
             mgr.salEvent(\"[set subsys]_logevent_[set alias]\");
             int priority=1;
 	    [set subsys].logevent_[set alias] event  = new [set subsys].logevent_[set alias]();
-	    event.private_revCode = \"LSST TEST EVENT\";"
+	    event.private_revCode = \"[string trim $revcode _]\";"
      set narg 1
      foreach p $EVTS($subsys,$alias,param) {
        set pname [lindex $p 1]

@@ -20,6 +20,7 @@ global CMD_ALIASES CMDS EVENT_ALIASES EVTS SAL_WORK_DIR SYSDIC SAL_DIR
    foreach alias $CMD_ALIASES($subsys) {
     if { [info exists CMDS($subsys,$alias,param)] } {
       stdlog "	: command test send for = $alias"
+      set revcode [getRevCode [set subsys]_command_[set alias] short]
       set fcmd [open $SAL_WORK_DIR/$subsys/java/src/[set subsys]Commander_[set alias]Test.java w]
       puts $fcmd "
 
@@ -52,7 +53,7 @@ public class [set subsys]Commander_[set alias]Test extends TestCase \{
   	    mgr.salCommand(\"[set subsys]_command_[set alias]\");
 	    [set subsys].command_[set alias] command  = new [set subsys].command_[set alias]();
 
-	    command.private_revCode = \"LSST TEST COMMAND\";"
+	    command.private_revCode = \"[string trim $revcode _]\";"
   set cpars $CMDS($subsys,$alias)
   puts $fcmd "            command.device   = \"[lindex $cpars 0]\";"
   puts $fcmd "            command.property = \"[lindex $cpars 1]\";"

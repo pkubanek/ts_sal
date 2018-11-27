@@ -10,7 +10,6 @@ global SAL_WORK_DIR
    exec mkdir -p $SAL_WORK_DIR/[set base]_[set name]/isocpp
    exec mkdir -p $SAL_WORK_DIR/[set base]_[set name]/java/src/org/lsst/sal
    exec mkdir -p $SAL_WORK_DIR/[set base]_[set name]/java/src/org/lsst/sal/$base/$name
-###   exec mkdir -p $SAL_WORK_DIR/SAL_[set base]/java/src/org/lsst/sal
    exec mkdir -p $SAL_WORK_DIR/[set base]/java/src
    exec mkdir -p $SAL_WORK_DIR/[set base]/java/src/org/lsst/sal
    exec mkdir -p $SAL_WORK_DIR/[set base]/cpp/src
@@ -26,10 +25,8 @@ global SAL_WORK_DIR
    exec touch $SAL_WORK_DIR/[set base]/cpp/src/.depend.Makefile.sacpp_[set base]_event
    exec touch $SAL_WORK_DIR/[set base]/cpp/src/.depend.Makefile.sacpp_[set base]_testcommands
    exec touch $SAL_WORK_DIR/[set base]/cpp/src/.depend.Makefile.sacpp_[set base]_testevents
-###   exec mkdir -p $SAL_WORK_DIR/SAL_[set base]/cpp/src
    exec ln -sf $SAL_WORK_DIR/idl-templates/validated/sal/sal_revCoded_$base.idl $SAL_WORK_DIR/$base/cpp/sal_$base.idl
    exec ln -sf $SAL_WORK_DIR/idl-templates/validated/sal/sal_revCoded_$base.idl $SAL_WORK_DIR/$base/isocpp/sal_$base.idl
-   exec ln -sf $SAL_WORK_DIR/idl-templates/validated/sal/sal_$base.idl $SAL_WORK_DIR/$base/java/.
    exec touch $SAL_WORK_DIR/[set base]/cpp/.depend.Makefile.sacpp_[set base]_types
    exec touch $SAL_WORK_DIR/[set base]/java/.depend.Makefile.saj_[set base]_types
    exec touch $SAL_WORK_DIR/[set base]/isocpp/.depend.Makefile.ISO_Cxx_[set base]_types

@@ -415,6 +415,7 @@ set IDLSIZES(longlong) 8
 set IDLSIZES(unsignedlong)     4
 set IDLSIZES(float)    4
 set IDLSIZES(long\ long) 8
+set IDLSIZES(unisgnedlong\ long) 8
 set IDLSIZES(double)   8
 set IDLRESERVED "abstract any attribute boolean case char component const consumes context custom dec default double emits enum eventtype exception exit factory false finder fixed float getraises home import in inout interface limit local long module multiple native object octet oneway out primarykey private provides public publishes raises readonly sequence setraises short string struct supports switch true truncatable typedef typeid typeprefix union unsigned uses valuebase valuetype void wchar wstring"
 
