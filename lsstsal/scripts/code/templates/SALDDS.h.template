@@ -169,6 +169,7 @@
       std::vector<std::string> getEventNames();
 
       salReturn getResponse(SALData::ackcmdSeq data);
+      salReturn getResponse();
       void salShutdown();
       salReturn salCommand();
       salReturn salProcessor();

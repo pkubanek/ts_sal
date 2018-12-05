@@ -630,6 +630,40 @@ salReturn SAL_SALData::getResponse(SALData::ackcmdSeq data)
   return status;
 }
 
+salReturn SAL_SALData::getResponse()
+{
+  data = SALData::ackcmdSeq;
+  SampleInfoSeq info;
+  ReturnCode_t status =  - 1;
+  ReturnCode_t istatus =  - 1;
+  DataReader_var dreader = getReader2();
+  SALData::ackcmdDataReader_var SALReader = SALData::ackcmdDataReader::_narrow(dreader.in());
+  checkHandle(SALReader.in(), "SALData::ackcmdDataReader::_narrow");
+  istatus = SALReader->take(data, info, 1,ANY_SAMPLE_STATE, ANY_VIEW_STATE, ANY_INSTANCE_STATE);
+  rcvSeqNum = 0;
+  rcvOrigin = 0;
+  checkStatus(istatus, "SALData::ackcmdDataReader::take");
+  if (info.length() > 0) {
+    if (debugLevel > 0) {
+      cout << "=== [getResponse] reading a message containing :" << endl;
+      cout << "    revCode  : " << data[0].private_seqNum << endl;
+      cout << "    error    : " << data[0].error << endl;
+      cout << "    ack      : " << data[0].ack << endl;
+      cout << "    result   : " << data[0].result << endl;
+    }
+    status = data[0].ack;
+    rcvdTime = getCurrentTime();
+    rcvSeqNum = data[0].private_seqNum;
+    rcvOrigin = data[0].private_origin;
+    istatus = SALReader->return_loan(data, info);
+    checkStatus(istatus, "SALData::ackcmdDataReader::return_loan");
+  } else {
+      cout << "=== [getResponse] No ack yet!" << endl;
+      status = SAL__CMD_NOACK;
+  }
+  return status;
+}
+
 
 salReturn SAL_SALData::cancelCommand( int cmdSeqNum )
 {
