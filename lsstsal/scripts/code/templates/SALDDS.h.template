@@ -85,6 +85,13 @@
   };
 #endif
 
+  class AckCmd
+  {
+    public:
+      SALData_ackcmdC ackData;
+      AckCmd(int ack, int error, std::string result);
+  };
+
   class SAL_SALData
   {
       /* Generic DDS entities */
@@ -169,7 +176,6 @@
       std::vector<std::string> getEventNames();
 
       salReturn getResponse(SALData::ackcmdSeq data);
-      salReturn getResponse();
       void salShutdown();
       salReturn salCommand();
       salReturn salProcessor();
