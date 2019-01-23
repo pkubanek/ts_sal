@@ -211,17 +211,17 @@ int test_[set subsys]_[set alias]_controller()
   int cmdId = -1;
   int timeout = 1;
   [set subsys]_command_[set alias]C SALInstance;"
-    if { [info exists SYSDIC($subsys,keyedID)] } {
-        puts $file_writer "
+        if { [info exists SYSDIC($subsys,keyedID)] } {
+            puts $file_writer "
   int [set subsys]ID = 1;
   if (getenv(\"LSST_[string toupper [set subsys]]_ID\") != NULL) \{
      sscanf(getenv(\"LSST_[string toupper [set subsys]]_ID\"),\"%d\",&[set subsys]ID);
   \} 
   SAL_[set subsys] mgr = SAL_[set subsys]([set subsys]ID);"
-    } else {
-        puts $file_writer "  SAL_[set subsys] mgr = SAL_[set subsys]();"
-    }
-    puts $file_writer "
+        } else {
+            puts $file_writer "  SAL_[set subsys] mgr = SAL_[set subsys]();"
+        }
+            puts $file_writer "
   mgr.salProcessor(\"[set subsys]_command_[set alias]\");
   cout << \"=== [set subsys]_[set alias] controller ready \" << endl;
 
@@ -232,12 +232,12 @@ int test_[set subsys]_[set alias]_controller()
     if (cmdId > 0) \{
        cout << \"=== command $alias received = \" << endl;
 "
-  set fin [open $SAL_WORK_DIR/include/SAL_[set subsys]_command_[set alias]Csub.tmp r]
-  while { [gets $fin rec] > -1 } {
-     puts $file_writer "    $rec"
-  }
-  close $fin
-  puts $file_writer "
+            set fin [open $SAL_WORK_DIR/include/SAL_[set subsys]_command_[set alias]Csub.tmp r]
+            while { [gets $fin rec] > -1 } {
+                puts $file_writer "    $rec"
+            }
+                close $fin
+            puts $file_writer "
        if (timeout > 0) \{
           mgr.ackCommand_[set alias](cmdId, SAL__CMD_INPROGRESS, 0, \"Ack : OK\");
           os_nanoSleep(delay_10ms);
@@ -254,12 +254,13 @@ int test_[set subsys]_[set alias]_controller()
 \}
     "
     }
+
+    puts $file_writer "void main (int argc, char *argv\[\])\{"
+    foreach alias $CMD_ALIASES($subsys) {
+        puts $file_writer "  int x = test_[set subsys]_[set alias]_controller();"
+    }
+    puts $file_writer "\}"
 }
 
 
 
-# int main (int argc, char *argv\[\])
-# \{
-#   return test_[set subsys]_[set alias]_controller();
-# \}
-# "
