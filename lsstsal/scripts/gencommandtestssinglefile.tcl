@@ -7,7 +7,7 @@ proc gencommandtestsinglefilescpp { subsys } {
     # Create the file writers for the commanders, controllers and makefiles.
     set commander_cpp_file_writer [open $SAL_WORK_DIR/$subsys/cpp/src/sacpp_[set subsys]_all_commander.cpp w]
     set commander_makefile_file_writer [open $SAL_WORK_DIR/$subsys/cpp/src/taco.txt w]
-    # set controller_cpp_file_writer [open $SAL_WORK_DIR/$subsys/cpp/src/sacpp_[set subsys]_all_controller.cpp w]
+    set controller_cpp_file_writer [open $SAL_WORK_DIR/$subsys/cpp/src/sacpp_[set subsys]_all_controller.cpp w]
     # set controller_makefile_file_writer [open $SAL_WORK_DIR/$subsys/cpp/src/Makefile.sacpp_[set subsys]_all_testcontrollers w]
     
     # Insert content into the commander
@@ -15,17 +15,17 @@ proc gencommandtestsinglefilescpp { subsys } {
     insertCommanders $subsys $commander_cpp_file_writer
 
     # Insert content into the controller
-    # insertHeader $subsys $controller_cpp_file_writer
-    # insertControllers $subsys $controller_cpp_file_writer
+    insertHeader $subsys $controller_cpp_file_writer
+    insertControllers $subsys $controller_cpp_file_writer
 
     # Inserts content into the makefiles
     insertCommanderMakeFile $subsys $commander_makefile_file_writer
     # insertControllerMakeFile $subsys $controller_makefile_file_writer
-    exit
+
     # Close all the file writers
     close $commander_cpp_file_writer
     close $commander_makefile_file_writer
-    # close $controller_cpp_file_writer
+    close $controller_cpp_file_writer
     # close $controller_makefile_file_writer
 
     exit
@@ -36,7 +36,7 @@ proc insertHeader { subsys file_writer } {
     global CMD_ALIASES  
     puts $file_writer "
 /*
- * This file contains 
+ * This file contains template code for SAL Topics
  *
  ***/
 
@@ -48,9 +48,7 @@ proc insertHeader { subsys file_writer } {
 #include \"ccpp_sal_[set subsys].h\"
 #include \"os.h\"
 using namespace DDS;
-using namespace [set subsys]
-
-"
+using namespace [set subsys]"
 }
 
 proc insertCommanders { subsys file_writer } {
@@ -191,3 +189,77 @@ depend:
 include \$(DEPENDENCIES)
 "
 }
+
+proc insertControllers { subsys file_writer } {
+    # Inserts the controllers for this subsys into the file_writer    
+    global CMD_ALIASES SAL_WORK_DIR
+
+    puts $file_writer "
+/* entry point exported and demangled so symbol can be found in shared library */
+extern \"C\""
+
+    foreach alias $CMD_ALIASES($subsys) {
+        puts $file_writer "
+\{
+  OS_API_EXPORT
+  int test_[set subsys]_[set alias]_controller();
+\}
+
+int test_[set subsys]_[set alias]_controller()
+\{ 
+  os_time delay_10ms = \{ 0, 10000000 \};
+  int cmdId = -1;
+  int timeout = 1;
+  [set subsys]_command_[set alias]C SALInstance;"
+    if { [info exists SYSDIC($subsys,keyedID)] } {
+        puts $file_writer "
+  int [set subsys]ID = 1;
+  if (getenv(\"LSST_[string toupper [set subsys]]_ID\") != NULL) \{
+     sscanf(getenv(\"LSST_[string toupper [set subsys]]_ID\"),\"%d\",&[set subsys]ID);
+  \} 
+  SAL_[set subsys] mgr = SAL_[set subsys]([set subsys]ID);"
+    } else {
+        puts $file_writer "  SAL_[set subsys] mgr = SAL_[set subsys]();"
+    }
+    puts $file_writer "
+  mgr.salProcessor(\"[set subsys]_command_[set alias]\");
+  cout << \"=== [set subsys]_[set alias] controller ready \" << endl;
+
+
+  while (1) \{
+    // receive command
+    cmdId = mgr.acceptCommand_[set alias](&SALInstance);
+    if (cmdId > 0) \{
+       cout << \"=== command $alias received = \" << endl;
+"
+  set fin [open $SAL_WORK_DIR/include/SAL_[set subsys]_command_[set alias]Csub.tmp r]
+  while { [gets $fin rec] > -1 } {
+     puts $file_writer "    $rec"
+  }
+  close $fin
+  puts $file_writer "
+       if (timeout > 0) \{
+          mgr.ackCommand_[set alias](cmdId, SAL__CMD_INPROGRESS, 0, \"Ack : OK\");
+          os_nanoSleep(delay_10ms);
+       \}       
+       mgr.ackCommand_[set alias](cmdId, SAL__CMD_COMPLETE, 0, \"Done : OK\");
+    \}
+    os_nanoSleep(delay_10ms);
+  \}
+
+  /* Remove the DataWriters etc */
+  mgr.salShutdown();
+
+  return 0;
+\}
+    "
+    }
+}
+
+
+
+# int main (int argc, char *argv\[\])
+# \{
+#   return test_[set subsys]_[set alias]_controller();
+# \}
+# "
