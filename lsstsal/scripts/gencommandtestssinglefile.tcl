@@ -6,10 +6,9 @@ proc gencommandtestsinglefilescpp { subsys } {
 
     # Create the file writers for the commanders, controllers and makefiles.
     set commander_cpp_file_writer [open $SAL_WORK_DIR/$subsys/cpp/src/sacpp_[set subsys]_all_commander.cpp w]
-    set commander_makefile_file_writer [open $SAL_WORK_DIR/$subsys/cpp/src/taco.txt w]
     set controller_cpp_file_writer [open $SAL_WORK_DIR/$subsys/cpp/src/sacpp_[set subsys]_all_controller.cpp w]
-    # set controller_makefile_file_writer [open $SAL_WORK_DIR/$subsys/cpp/src/Makefile.sacpp_[set subsys]_all_testcontrollers w]
-    
+    set makefile_file_writer [open $SAL_WORK_DIR/$subsys/cpp/src/Makefile.sacpp_[set subsys]_all_tests w]
+
     # Insert content into the commander
     insertHeader $subsys $commander_cpp_file_writer
     insertCommanders $subsys $commander_cpp_file_writer
@@ -19,21 +18,20 @@ proc gencommandtestsinglefilescpp { subsys } {
     insertControllers $subsys $controller_cpp_file_writer
 
     # Inserts content into the makefiles
-    insertCommanderMakeFile $subsys $commander_makefile_file_writer
-    # insertControllerMakeFile $subsys $controller_makefile_file_writer
+    insertMakeFile $subsys $makefile_file_writer
 
     # Close all the file writers
     close $commander_cpp_file_writer
-    close $commander_makefile_file_writer
     close $controller_cpp_file_writer
-    # close $controller_makefile_file_writer
-
+    close $makefile_file_writer
+    cd $SAL_WORK_DIR/$subsys/cpp/src
+    # exec make -f $SAL_WORK_DIR/$subsys/cpp/src/Makefile.sacpp_[set subsys]_all_tests
     exit
 }
 
 proc insertHeader { subsys file_writer } {
     # Creates the file and adds necessary "# include"'s.
-    global CMD_ALIASES  
+    global CMD_ALIASES
     puts $file_writer "
 /*
  * This file contains template code for SAL Topics
@@ -42,7 +40,7 @@ proc insertHeader { subsys file_writer } {
 
 #include <string>
 #include <sstream>
-#include <iosteam>
+#include <iostream>
 #include <stdlib.h>
 #include \"SAL_[set subsys].h\"
 #include \"ccpp_sal_[set subsys].h\"
@@ -73,7 +71,7 @@ int main (int argc, char *argv\[\])
   SAL_[set subsys] mgr = SAL_[set subsys]([set subsys]ID);"
 
     foreach alias $CMD_ALIASES($subsys) {
-        puts $file_writer "
+       puts $file_writer "
   cmdId = mgr.issueCommand_[set alias](&[set alias]Data);
   cout << \"=== command $alias issued = \" << endl;
   status = mgr.waitForCompletion_[set alias](cmdId, timeout);
@@ -91,15 +89,14 @@ int main (int argc, char *argv\[\])
 "
 }
 
-proc insertCommanderMakeFile { subsys file_writer } {
-    puts $file_writer " 
+proc insertMakeFile { subsys file_writer } {
+    puts $file_writer "
 #----------------------------------------------------------------------------
 #       Macros
 #----------------------------------------------------------------------------
 CFG = Release
 
-
-// all boilerplate
+# Boilerplate macros
 ifeq (\$(CFG), Release)
 CC            = gcc
 CXX           = g++
@@ -114,17 +111,19 @@ COMPILE.cc    = \$(CXX) \$(CCFLAGS) \$(CPPFLAGS) -c
 LDFLAGS       = -L\".\" -L\"\$(OSPL_HOME)/lib\" -Wl,-rpath,\$\$ORIGIN -Wl,-rpath,\$\$ORIGIN/\$(OSPL_HOME)/lib -L\"\$(SAL_WORK_DIR)/lib\" // -L say all the places to look for libraries
 CCC           = \$(CXX)
 MAKEFILE      = Makefile.sacpp_[set subsys]_testcommands // may be not needed
-DEPENDENCIES  = 
+DEPENDENCIES  =
 BTARGETDIR    = ./
-// till here
 
-
-// This actually doesnt need to be dynamic, but we will need another set for the controller
+# Dynamically created object files for the controller and commander of this subsystem
 BIN1           = \$(BTARGETDIR)sacpp_[set subsys]_all_commander
 OBJS1          = .obj/SAL_[set subsys].o .obj/sacpp_[set subsys]_all_commander.o
-SRC           = ../src/SAL_[set subsys].cpp    sacpp_[set subsys]_all_commanderc 
+SRC           = ../src/SAL_[set subsys].cpp    sacpp_[set subsys]_all_commanderc
 
-// More boiler plate to keep
+BIN2          = \$(BTARGETDIR)sacpp_[set subsys]_all_controller
+OBJS2         = .obj/SAL_[set subsys].o .obj/sacpp_[set subsys]_all_commander.o
+SRC           = ../src/SAL_[set subsys].cpp    sacpp_[set subsys]_all_controllerc
+
+# More boilerplate macros
 CAT           = cat
 MV            = mv -f
 RM            = rm -rf
@@ -134,64 +133,67 @@ MKDIR         = mkdir -p
 TESTDIRSTART  = test -d
 TESTDIREND    = ||
 TOUCH         = touch
-EXEEXT        = 
+EXEEXT        =
 LIBPREFIX     = lib
-LIBSUFFIX     = 
-GENFLAGS      = -g   // This bit  needs to be done dynamically                    // -l says to look for this library within the -L locations
+LIBSUFFIX     =
+GENFLAGS      = -g                     # -l says to look for this library within the -L locations
 LDLIBS        = -l\"sacpp_[set subsys]_types\$(LIBSUFFIX)\" -l\"dcpssacpp\" -l\"dcpsgapi\" -l\"ddsuser\" -l\"ddskernel\" -l\"ddsserialization\" -l\"ddsconfparser\" -l\"ddsconf\" -l\"ddsdatabase\" -l\"ddsutil\" -l\"ddsos\" -ldl \$(subst lib,-l,\$(sort \$(basename \$(notdir \$(wildcard /usr/lib/librt.so /lib/librt.so))))) -lpthread
-// until here
-
 LINK.cc       = \$(LD) \$(LDFLAGS)
-EXPORTFLAGS   = 
+EXPORTFLAGS   =
+endif
 
 #----------------------------------------------------------------------------
 #       Local targets
 #----------------------------------------------------------------------------
 
-// The name of the subsystem here needs to be dynamic. ABd I also need a copy of
+# Needs to be dynamicall for the subsystem and another copy for the controller
+all: \$(BIN1) \$(BIN2)
 
-all: \$(BIN1) // Need to add the controller target here
-
-            // These subsystem names needs to be dynamic
-.obj/sacpp_[set subsys]_all_commander.o: ../src/sacpp_[set subsys]_abort_commander.cpp
-    @\$(TESTDIRSTART) \".obj/../src\" \$(TESTDIREND) \$(MKDIR) \".obj/../src\"
-    \$(COMPILE.cc) \$(EXPORTFLAGS) \$(OUTPUT_OPTION) ../src/sacpp_[set subsys]_abort_commander.cpp
+.obj/sacpp_[set subsys]_all_commander.o: ../src/sacpp_[set subsys]_all_commander.cpp
+	@\$(TESTDIRSTART) \".obj/../src\" \$(TESTDIREND) \$(MKDIR) \".obj/../src\"
+	\$(COMPILE.cc) \$(EXPORTFLAGS) \$(OUTPUT_OPTION) ../src/sacpp_[set subsys]_all_commander.cpp
 
 \$(BIN1): \$(OBJS1)
-    @\$(TESTDIRSTART) \"\$(BTARGETDIR)\" \$(TESTDIREND) \$(MKDIR) \"\$(BTARGETDIR)\"
-    \$(LINK.cc) \$(OBJS1) \$(LDLIBS) \$(OUTPUT_OPTION)
-// Need another set of the above 2 stanzas for the controller, call it BIN2 and OBJS2. They will look identical to the command, but will be for the controller
+	@\$(TESTDIRSTART) \"\$(BTARGETDIR)\" \$(TESTDIREND) \$(MKDIR) \"\$(BTARGETDIR)\"
+	\$(LINK.cc) \$(OBJS1) \$(LDLIBS) \$(OUTPUT_OPTION)
 
-// All hardocded boiler plate
+.obj/sacpp_[set subsys]_all_commander.o: ../src/sacpp_[set subsys]_all_commander.cpp
+	@\$(TESTDIRSTART) \".obj/../src\" \$(TESTDIREND) \$(MKDIR) \".obj/../src\"
+    \$(COMPILE.cc) \$(EXPORTFLAGS) \$(OUTPUT_OPTION) ../src/sacpp_[set subsys]_all_commaner.cpp
+
+\$(BIN2): \$(OBJS2)
+	@\$(TESTDIRSTART) \"\$(BTARGETDIR)\" \$(TESTDIREND) \$(MKDIR) \"\$(BTARGETDIR)\"
+    \$(LINK.cc) \$(OBJS2) \$(LDLIBS) \$(OUTPUT_OPTION)
+
 generated: \$(GENERATED_DIRTY)
-    @-:
+	@-:
 
 clean:
-    -\$(RM) \$(OBJS)
+	-\$(RM) \$(OBJS)
 
 realclean: clean
-    -\$(RM) \$(BIN)
-    -\$(RM) .obj/
+	-\$(RM) \$(BIN)
+	-\$(RM) .obj/
 
 check-syntax:
-    \$(COMPILE.cc) \$(EXPORTFLAGS) -Wall -Wextra -pedantic -fsyntax-only \$(CHK_SOURCES)
+	\$(COMPILE.cc) \$(EXPORTFLAGS) -Wall -Wextra -pedantic -fsyntax-only \$(CHK_SOURCES)
 
 #----------------------------------------------------------------------------
 #       Dependencies
 #----------------------------------------------------------------------------
 
 \$(DEPENDENCIES):
-    @\$(TOUCH) \$(DEPENDENCIES)
+	@\$(TOUCH) \$(DEPENDENCIES)
 
 depend:
-    -VDIR=.obj/ \$(MPC_ROOT)/depgen.pl  \$(CFLAGS) \$(CCFLAGS) \$(CPPFLAGS) -f \$(DEPENDENCIES) \$(SRC) 2> \$(NUL)
+	-VDIR=.obj/ \$(MPC_ROOT)/depgen.pl  \$(CFLAGS) \$(CCFLAGS) \$(CPPFLAGS) -f \$(DEPENDENCIES) \$(SRC) 2> \$(NUL)
 
 include \$(DEPENDENCIES)
 "
 }
 
 proc insertControllers { subsys file_writer } {
-    # Inserts the controllers for this subsys into the file_writer    
+    # Inserts the controllers for this subsys into the file_writer
     global CMD_ALIASES SAL_WORK_DIR
 
     puts $file_writer "
@@ -206,7 +208,7 @@ extern \"C\""
 \}
 
 int test_[set subsys]_[set alias]_controller()
-\{ 
+\{
   os_time delay_10ms = \{ 0, 10000000 \};
   int cmdId = -1;
   int timeout = 1;
@@ -216,7 +218,7 @@ int test_[set subsys]_[set alias]_controller()
   int [set subsys]ID = 1;
   if (getenv(\"LSST_[string toupper [set subsys]]_ID\") != NULL) \{
      sscanf(getenv(\"LSST_[string toupper [set subsys]]_ID\"),\"%d\",&[set subsys]ID);
-  \} 
+  \}
   SAL_[set subsys] mgr = SAL_[set subsys]([set subsys]ID);"
         } else {
             puts $file_writer "  SAL_[set subsys] mgr = SAL_[set subsys]();"
@@ -241,7 +243,7 @@ int test_[set subsys]_[set alias]_controller()
        if (timeout > 0) \{
           mgr.ackCommand_[set alias](cmdId, SAL__CMD_INPROGRESS, 0, \"Ack : OK\");
           os_nanoSleep(delay_10ms);
-       \}       
+       \}
        mgr.ackCommand_[set alias](cmdId, SAL__CMD_COMPLETE, 0, \"Done : OK\");
     \}
     os_nanoSleep(delay_10ms);
@@ -261,6 +263,4 @@ int test_[set subsys]_[set alias]_controller()
     }
     puts $file_writer "\}"
 }
-
-
 
