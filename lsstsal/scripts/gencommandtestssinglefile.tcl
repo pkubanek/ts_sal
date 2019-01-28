@@ -46,7 +46,7 @@ proc insertHeader { subsys file_writer } {
 #include \"ccpp_sal_[set subsys].h\"
 #include \"os.h\"
 using namespace DDS;
-using namespace [set subsys]"
+using namespace [set subsys];"
 }
 
 proc insertCommanders { subsys file_writer } {
@@ -67,7 +67,11 @@ int main (int argc, char *argv\[\])
     }
 
     puts $file_writer "
-  // Create the SAL Manager for our subsystem
+  int [set subsys]ID = 1;
+  if (getenv(\"LSST_[string toupper [set subsys]]_ID\") != NULL) \{
+    sscanf(getenv(\"LSST_[string toupper [set subsys]]_ID\"), \"&d\", &[set subsys]ID);
+  \}
+  //Create the SAL Manager for our subsystem
   SAL_[set subsys] mgr = SAL_[set subsys]([set subsys]ID);"
 
     foreach alias $CMD_ALIASES($subsys) {
@@ -108,7 +112,7 @@ OBJEXT        = .o
 OUTPUT_OPTION = -o \"\$@\"
 COMPILE.c     = \$(CC) \$(CFLAGS) \$(CPPFLAGS) -c
 COMPILE.cc    = \$(CXX) \$(CCFLAGS) \$(CPPFLAGS) -c
-LDFLAGS       = -L\".\" -L\"\$(OSPL_HOME)/lib\" -Wl,-rpath,\$\$ORIGIN -Wl,-rpath,\$\$ORIGIN/\$(OSPL_HOME)/lib -L\"\$(SAL_WORK_DIR)/lib\" // -L say all the places to look for libraries
+LDFLAGS       = -L\".\" -L\"\$(OSPL_HOME)/lib\" -Wl,-rpath,\$\$ORIGIN -Wl,-rpath,\$\$ORIGIN/\$(OSPL_HOME)/lib -L\"\$(SAL_WORK_DIR)/lib\"
 CCC           = \$(CXX)
 MAKEFILE      = Makefile.sacpp_[set subsys]_testcommands // may be not needed
 DEPENDENCIES  =
@@ -120,7 +124,7 @@ OBJS1          = .obj/SAL_[set subsys].o .obj/sacpp_[set subsys]_all_commander.o
 SRC           = ../src/SAL_[set subsys].cpp    sacpp_[set subsys]_all_commanderc
 
 BIN2          = \$(BTARGETDIR)sacpp_[set subsys]_all_controller
-OBJS2         = .obj/SAL_[set subsys].o .obj/sacpp_[set subsys]_all_commander.o
+OBJS2         = .obj/SAL_[set subsys].o .obj/sacpp_[set subsys]_all_controller.o
 SRC           = ../src/SAL_[set subsys].cpp    sacpp_[set subsys]_all_controllerc
 
 # More boilerplate macros
@@ -157,13 +161,13 @@ all: \$(BIN1) \$(BIN2)
 	@\$(TESTDIRSTART) \"\$(BTARGETDIR)\" \$(TESTDIREND) \$(MKDIR) \"\$(BTARGETDIR)\"
 	\$(LINK.cc) \$(OBJS1) \$(LDLIBS) \$(OUTPUT_OPTION)
 
-.obj/sacpp_[set subsys]_all_commander.o: ../src/sacpp_[set subsys]_all_commander.cpp
+.obj/sacpp_[set subsys]_all_controller.o: ../src/sacpp_[set subsys]_all_controller.cpp
 	@\$(TESTDIRSTART) \".obj/../src\" \$(TESTDIREND) \$(MKDIR) \".obj/../src\"
-    \$(COMPILE.cc) \$(EXPORTFLAGS) \$(OUTPUT_OPTION) ../src/sacpp_[set subsys]_all_commaner.cpp
+	\$(COMPILE.cc) \$(EXPORTFLAGS) \$(OUTPUT_OPTION) ../src/sacpp_[set subsys]_all_controller.cpp
 
 \$(BIN2): \$(OBJS2)
 	@\$(TESTDIRSTART) \"\$(BTARGETDIR)\" \$(TESTDIREND) \$(MKDIR) \"\$(BTARGETDIR)\"
-    \$(LINK.cc) \$(OBJS2) \$(LDLIBS) \$(OUTPUT_OPTION)
+	\$(LINK.cc) \$(OBJS2) \$(LDLIBS) \$(OUTPUT_OPTION)
 
 generated: \$(GENERATED_DIRTY)
 	@-:
@@ -198,69 +202,67 @@ proc insertControllers { subsys file_writer } {
 
     puts $file_writer "
 /* entry point exported and demangled so symbol can be found in shared library */
-extern \"C\""
-
-    foreach alias $CMD_ALIASES($subsys) {
-        puts $file_writer "
+extern \"C\"
 \{
   OS_API_EXPORT
-  int test_[set subsys]_[set alias]_controller();
+  int test_[set subsys]_all_controller();
 \}
 
-int test_[set subsys]_[set alias]_controller()
+int test_[set subsys]_all_controller()
 \{
   os_time delay_10ms = \{ 0, 10000000 \};
   int cmdId = -1;
-  int timeout = 1;
-  [set subsys]_command_[set alias]C SALInstance;"
-        if { [info exists SYSDIC($subsys,keyedID)] } {
-            puts $file_writer "
+  int timeout = 1;"
+    if { [info exists SYSDIC($subsys,keyedID)] } {
+        puts $file_writer "
   int [set subsys]ID = 1;
   if (getenv(\"LSST_[string toupper [set subsys]]_ID\") != NULL) \{
      sscanf(getenv(\"LSST_[string toupper [set subsys]]_ID\"),\"%d\",&[set subsys]ID);
   \}
   SAL_[set subsys] mgr = SAL_[set subsys]([set subsys]ID);"
-        } else {
-            puts $file_writer "  SAL_[set subsys] mgr = SAL_[set subsys]();"
-        }
-            puts $file_writer "
-  mgr.salProcessor(\"[set subsys]_command_[set alias]\");
-  cout << \"=== [set subsys]_[set alias] controller ready \" << endl;
+    } else {
+        puts $file_writer "  SAL_[set subsys] mgr = SAL_[set subsys]();"
+    }
 
+    # Register the managers for each alias ie (abort, stop, start...)
+    foreach alias $CMD_ALIASES($subsys) {
+        puts $file_writer "  mgr.salProcessor(\"[set subsys]_command_[set alias]\");"
+    }
+    puts $file_writer "  cout << \"=== [set subsys] controllers ready \" << endl;"
 
-  while (1) \{
-    // receive command
+    foreach alias $CMD_ALIASES($subsys) {
+        puts $file_writer "
+  while (1) 
+  \{
+    [set subsys]_command_[set alias]C SALInstance;
     cmdId = mgr.acceptCommand_[set alias](&SALInstance);
     if (cmdId > 0) \{
-       cout << \"=== command $alias received = \" << endl;
-"
-            set fin [open $SAL_WORK_DIR/include/SAL_[set subsys]_command_[set alias]Csub.tmp r]
+      cout << \"=== command [set alias] received = \" << endl;"
+
+        set fin [open $SAL_WORK_DIR/include/SAL_[set subsys]_command_[set alias]Csub.tmp r]
             while { [gets $fin rec] > -1 } {
-                puts $file_writer "    $rec"
+                puts $file_writer "  $rec"
             }
                 close $fin
             puts $file_writer "
-       if (timeout > 0) \{
-          mgr.ackCommand_[set alias](cmdId, SAL__CMD_INPROGRESS, 0, \"Ack : OK\");
-          os_nanoSleep(delay_10ms);
-       \}
-       mgr.ackCommand_[set alias](cmdId, SAL__CMD_COMPLETE, 0, \"Done : OK\");
+      if (timeout > 0) \{
+        mgr.ackCommand_[set alias](cmdId, SAL__CMD_INPROGRESS, 0, \"Ack : OK\");
+        os_nanoSleep(delay_10ms);
+      \}
+      mgr.ackCommand_[set alias](cmdId, SAL__CMD_COMPLETE, 0, \"Done : OK\");
     \}
     os_nanoSleep(delay_10ms);
-  \}
+  \}"
+    }
 
-  /* Remove the DataWriters etc */
+    puts $file_writer "
+/* Remove the DataWriters etc */
   mgr.salShutdown();
-
   return 0;
 \}
-    "
-    }
 
-    puts $file_writer "void main (int argc, char *argv\[\])\{"
-    foreach alias $CMD_ALIASES($subsys) {
-        puts $file_writer "  int x = test_[set subsys]_[set alias]_controller();"
-    }
-    puts $file_writer "\}"
+int main (int argc, char *argv\[\])\{
+    return test_[set subsys]_all_controller();
+    
+\}"
 }
-
