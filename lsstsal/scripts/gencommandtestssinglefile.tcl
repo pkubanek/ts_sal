@@ -250,6 +250,7 @@ int test_[set subsys]_all_controller()
         os_nanoSleep(delay_10ms);
       \}
       mgr.ackCommand_[set alias](cmdId, SAL__CMD_COMPLETE, 0, \"Done : OK\");
+      break;
     \}
     os_nanoSleep(delay_10ms);
   \}"
