@@ -61,8 +61,15 @@ proc insertSenders { subsys file_writer } {
 
     puts $file_writer "
 int main (int argc, char *argv\[\])
-\{ 
-  int priority = SAL__EVENT_INFO;"
+\{
+  /**
+    This file is generated from 
+
+    @author Ed Parrish
+    @version 1.1 01/03/17 
+  */ 
+  int priority = SAL__EVENT_INFO;
+  int iseq;"
 
   # Create the SAL manager 
     if { [info exists SYSDIC($subsys,keyedID)] } {
@@ -77,9 +84,15 @@ int main (int argc, char *argv\[\])
       puts $file_writer "  SAL_[set subsys] mgr = SAL_[set subsys]();"
     }
 
+    foreach alias $EVENT_ALIASES($subsys) {
+        puts $file_writer "  mgr.salEventSub(\"[set subsys]_logevent_[set alias]\");"
+    }
+
     # Most work done in this loop
-    foreach alias $EVENT_ALIASES($subsys) { 
+    foreach alias $EVENT_ALIASES($subsys) {
+        puts $file_writer "\{" 
         puts $file_writer "  [set subsys]_logevent_[set alias]C myData;"
+        puts $file_writer "  iseq = 0;"
         puts $SAL_WORK_DIR/include/SAL_[set subsys]_logevent_[set alias]Cpub.tmp
 
         # Open file with code fragment with data, copy this data into cpp file
@@ -91,7 +104,7 @@ int main (int argc, char *argv\[\])
         puts $file_writer "  priority = myData.priority;
   mgr.logEvent_[set alias](&myData, priority);
   cout << \"=== Event $alias generated = \" << endl;
-  sleep(1);\n"
+  sleep(1);\n\}"
     }
 
     puts $file_writer "
@@ -143,6 +156,7 @@ int test_[set subsys]_all_logger()
         puts $file_writer "
   while (1) 
   \{
+    int status = -1;
     [set subsys]_logevent_[set alias]C SALInstance;
     status = mgr.getEvent_[set alias](&SALInstance);
     if (status == SAL__OK) \{
@@ -163,7 +177,7 @@ int test_[set subsys]_all_logger()
 
 int main (int argc, char *argv\[\])
 \{
-  return test_[set subsys]_all_controller();
+  return test_[set subsys]_all_logger();
 \}"
 }
 
