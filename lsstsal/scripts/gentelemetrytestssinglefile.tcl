@@ -1,12 +1,7 @@
-# source $env(SAL_WORK_DIR)/idl-templates/validated/Scheduler_tlmdef.tcl
-
 proc gentelemetrytestsinglefilescpp { subsys } {
     # Creates multiple files which contains an implementation of all the
     # telemtry defined within this subsys.
-
-    puts $subsys
     
-
     global SAL_WORK_DIR
 
     # Create the file writers for the publisher, subscriber and makefile.
@@ -15,11 +10,11 @@ proc gentelemetrytestsinglefilescpp { subsys } {
     set makefile_file_writer [open $SAL_WORK_DIR/$subsys/cpp/src/Makefile.sacpp_[set subsys]_all_testtelemetry w]
 
     # Insert content into the publisher.
-    insertHeader $subsys $publisher_cpp_file_writer
+    insertTelemetryHeader $subsys $publisher_cpp_file_writer
     insertPublishers $subsys $publisher_cpp_file_writer
 
-    # Insert content into the Subscriber.
-    insertHeader $subsys $subscriber_cpp_file_writer
+    # Insert content into the subscriber.
+    insertTelemetryHeader $subsys $subscriber_cpp_file_writer
     insertSubscribers $subsys $subscriber_cpp_file_writer
 
     # Insert content into the makefile.
@@ -31,18 +26,15 @@ proc gentelemetrytestsinglefilescpp { subsys } {
     close $makefile_file_writer
 
     # Execute the makefile. 
-    # cd $SAL_WORK_DIR/$subsys/cpp/src
-    # exec make -f $SAL_WORK_DIR/$subsys/cpp/src/Makefile.sacpp_[set subsys]_all_testcommands
-
-    exit
-
+    cd $SAL_WORK_DIR/$subsys/cpp/src
+    exec make -f $SAL_WORK_DIR/$subsys/cpp/src/Makefile.sacpp_[set subsys]_all_testtelemetry
 }
 
-proc insertHeader { subsys file_writer } {
+proc insertTelemetryHeader { subsys file_writer } {
 
     puts $file_writer "/*"
     puts $file_writer " * This file contains an implementation of all the commands defined within the"
-    puts $file_writer " * [set subsys] subsystem."
+    puts $file_writer " * [set subsys] subsystem generated via gentelemetrytestsinglefilescpp.tcl."
     puts $file_writer " *"
     puts $file_writer " ***/"
 
@@ -53,7 +45,6 @@ proc insertHeader { subsys file_writer } {
     puts $file_writer "#include \"SAL_[set subsys].h\""
     puts $file_writer "#include \"ccpp_sal_[set subsys].h\""
     puts $file_writer "#include \"os.h\""
-    puts $file_writer "#include \"example_main.h\""
     puts $file_writer "using namespace DDS;"
     puts $file_writer "using namespace [set subsys];"
 }
