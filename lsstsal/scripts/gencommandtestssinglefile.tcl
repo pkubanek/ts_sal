@@ -88,7 +88,6 @@ proc insertCommanders { subsys file_writer } {
     puts $file_writer "  \}"
     puts $file_writer "  exit(0);"
     puts $file_writer "\}"
-
 }
 
 proc insertControllers { subsys file_writer } {
@@ -231,10 +230,10 @@ proc insertMakeFile { subsys file_writer } {
     puts $file_writer "	\$(LINK.cc) \$(OBJS2) \$(LDLIBS) \$(OUTPUT_OPTION)"
 
     puts $file_writer "generated: \$(GENERATED_DIRTY)"
-	  puts $file_writer "@-:"
+	puts $file_writer "@-:"
 
     puts $file_writer "clean:"
-	  puts $file_writer "	-\$(RM) \$(OBJS)"
+	puts $file_writer "	-\$(RM) \$(OBJS)"
 
     puts $file_writer "realclean: clean"
     puts $file_writer "	-\$(RM) \$(BIN)"
