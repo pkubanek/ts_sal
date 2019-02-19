@@ -92,7 +92,7 @@ proc insertPublishers { subsys file_writer } {
     foreach alias $TLM_ALIASES($subsys) {
         puts $file_writer "\n  \{" 
         puts $file_writer "    [set subsys]_[set alias]C myData;"
-        puts $file_writer "    int iseq = 1;"
+        puts $file_writer "    int iseq = 0;"
         puts $file_writer "    os_time delay_1s = { 1, 0 };"
         
         set fragment_reader [open $SAL_WORK_DIR/include/SAL_[set subsys]_[set alias]Cpub.tmp r]
@@ -146,7 +146,7 @@ proc insertSubscribers { subsys file_writer } {
 
     # Subsribe to all telemetry topic in our sal manager
     foreach alias $TLM_ALIASES($subsys) {
-        puts $file_writer "  mgr.salTelemetrySub(\"[set subsys]_[set alias]\")"
+        puts $file_writer "  mgr.salTelemetrySub(\"[set subsys]_[set alias]\");"
     }
 
     # Most work done in this loop
@@ -154,10 +154,11 @@ proc insertSubscribers { subsys file_writer } {
         puts $file_writer "\n  \{" 
         puts $file_writer "    [set subsys]_[set alias]C SALInstance;"
         puts $file_writer "    ReturnCode_t status = -1;"
-        puts $file_writer "    int count = 0"
+        puts $file_writer "    int count = 0;"
+        puts $file_writer "    os_time delay_10ms = \{ 0, 10000000 \};"
 
         puts $file_writer "    while (count < 10) \{"
-        puts $file_writer "      status mgr.getNextSample_[set alias](&SALInstance);"
+        puts $file_writer "      status = mgr.getNextSample_[set alias](&SALInstance);"
         puts $file_writer "      if (status == SAL__OK) \{"
 
         set fragment_reader [open $SAL_WORK_DIR/include/SAL_[set subsys]_[set alias]Csub.tmp r]
@@ -179,7 +180,7 @@ proc insertSubscribers { subsys file_writer } {
 
     puts $file_writer "int OSPL_MAIN (int argc, char *argv\[\])"
     puts $file_writer "\{"
-    puts $file_writer "  return SALTelemetrySubscriberer();"
+    puts $file_writer "  return SALTelemetrySubscriber();"
     puts $file_writer "\}"
 }
 
