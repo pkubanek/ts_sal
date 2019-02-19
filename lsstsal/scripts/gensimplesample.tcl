@@ -417,10 +417,10 @@ global VPROPS TYPEFORMAT
               }
               puts $fcod10 "myData.$VPROPS(name)\[$myidx\] = long(sys.argv\[$idx\])"
            } else {
-              if { $VPROPS(short) } { 
+              if { $VPROPS(short) } {
                  puts $fcod5 "    sscanf(argv\[$idx\], \"%hd\", &myData.$VPROPS(name)\[$myidx\]);"
               } else {
-                 if { $VPROPS(byte) } { 
+                 if { $VPROPS(byte) } {
                     puts $fcod5 "    sscanf(argv\[$idx\], \"%hhu\", &myData.$VPROPS(name)\[$myidx\]);"
                  } else {
                     puts $fcod5 "    sscanf(argv\[$idx\], \"%d\", &myData.$VPROPS(name)\[$myidx\]);"
@@ -561,7 +561,6 @@ proc genkeyedidl { fout base } {
 "
 }
 
-
 proc makesalcode { idlfile base name lang } {
 global SAL_DIR SAL_WORK_DIR SYSDIC ONEPYTHON
       puts stdout "Processing $base $name in $SAL_WORK_DIR"
@@ -607,7 +606,8 @@ global SAL_DIR SAL_WORK_DIR SYSDIC ONEPYTHON
         if { [info exists SYSDIC($base,keyedID)] } {
           puts $frep "perl -pi -w -e 's/#-DSAL_SUBSYSTEM/-DSAL_SUBSYSTEM/g;' [set base]/cpp/src/Makefile.sacpp_[set base]_testcommands"
         }
-        modpubsubexamples $id
+        modpubsubexamples $id $base
+
         puts $frep "perl -pi -w -e 's/SALTopic/[set name]/g;' [set id]/cpp/src/[set id]DataPublisher.cpp"
         puts $frep "perl -pi -w -e 's/SALNAMESTRING/[set base]_[set name]/g;' [set id]/cpp/src/[set id]DataPublisher.cpp"
         puts $frep "perl -pi -w -e 's/SALData/$base/g;' [set id]/cpp/src/[set id]DataPublisher.cpp"
@@ -784,7 +784,7 @@ puts stdout "done addSALDDStypes $idlfile $id $lang"
 puts stdout "calling salidlgen $base $lang"
       salidlgen $base $lang
 puts stdout "done salidlgen $base $lang"
-      if { $lang == "cpp" } { 
+      if { $lang == "cpp" } {
          set incfiles [glob [set base]/cpp/*.h]
          puts stdout "Updating include files : $incfiles"
          catch { foreach i $incfiles {  exec cp $i $SAL_DIR/include/. } }
@@ -935,11 +935,9 @@ source $SAL_DIR/gensalgetput.tcl
 if { [lindex [split $env(PYTHON_BUILD_VERSION) .] 0] == 2} {
   puts stdout "Enabling Boost::Python bindings for python 2.x"
   source $env(SAL_DIR)/gensimplepython.tcl
-} else { 
+} else {
   puts stdout "Enabling pybind11 bindings for python 3+"
   source $env(SAL_DIR)/gensimplepybind11.tcl
-}  
+}
 source $SAL_DIR/managetypes.tcl
 source $SAL_DIR/activaterevcodes.tcl
-
-

@@ -2,13 +2,14 @@
 #
 # Generate SALDDS methods for getSample and putSample for all types
 # and generate salTypeSupport routine
-#  
+#
 
 source $env(SAL_DIR)/geneventaliascode.tcl
 source $env(SAL_DIR)/gencmdaliascode.tcl
 source $env(SAL_DIR)/gengenericreader.tcl
 source $env(SAL_DIR)/gensalintrospect.tcl
 source $env(SAL_DIR)/activaterevcodes.tcl
+source $env(SAL_DIR)/gentelemetrytestssinglefile.tcl
 
 proc insertcfragments { fout base name } {
 global SAL_WORK_DIR
@@ -54,7 +55,7 @@ salReturn SAL_[set base]::putSample_[set name]([set base]_[set name]C *data)
 #endif
   Instance.private_sndStamp = getCurrentTime();
   ReturnCode_t status = SALWriter->write(Instance, dataHandle);
-  checkStatus(status, \"[set base]::[set name][set revcode]DataWriter::write\");  
+  checkStatus(status, \"[set base]::[set name][set revcode]DataWriter::write\");
 #ifdef SAL_BUILD_FOR_PYTHON
   Py_END_ALLOW_THREADS
 #endif
@@ -127,7 +128,7 @@ salReturn SAL_[set base]::getNextSample_[set name]([set base]_[set name]C *data)
     istatus = getSample_[set name](data);
     return istatus;
 \}
-      
+
 salReturn SAL_[set base]::getLastSample_[set name]([set base]_[set name]C *data)
 \{
     salReturn istatus = -1;
@@ -176,12 +177,12 @@ global SYSDIC
 
 proc processifdefregion { fin fout base } {
 global SYSDIC
-   if { [info exists SYSDIC($base,keyedID)] } { 
+   if { [info exists SYSDIC($base,keyedID)] } {
       gets $fin rec
       while { $rec != "#endif" && $rec != "#else" } {
            puts $fout $rec
            gets $fin rec
-      }          
+      }
       while { $rec != "#endif" } {gets $fin rec}
    } else {
       gets $fin rec
@@ -202,7 +203,7 @@ global SAL_WORK_DIR
       set name [lindex $j 2]
       puts $fout "#define SAL__[set base]_[set name]_ACTOR		$idx"
       puts $fact "#define SAL__[set base]_[set name]_ACTOR		$idx"
-      incr idx 1 
+      incr idx 1
    }
    close $fact
 ############################ IMPORTANT ####################################
@@ -234,8 +235,8 @@ void SAL_SALData::initSalActors ()
       set revcode [getRevCode [set base]_[set name] short]
       puts $fout "    strcpy(sal\[$idx\].topicHandle,\"[set base]_[set name][set revcode]\");"
       puts $fout "    strcpy(sal\[$idx\].topicName,\"[set base]_[set name]\");"
-      incr idx 1 
-   }  
+      incr idx 1
+   }
   puts $fout "
 \}"
 }
@@ -246,7 +247,7 @@ proc addActorIndexesJava { idlfile base fout } {
    foreach j $ptypes {
       set name [lindex $j 2]
       puts $fout "	public static final int SAL__[set base]_[set name]_ACTOR = $idx;"
-      incr idx 1 
+      incr idx 1
    }
    puts $fout "	public static final int SAL__ACTORS_MAXCOUNT = $idx;"
    puts $fout "
@@ -260,8 +261,8 @@ proc addActorIndexesJava { idlfile base fout } {
       puts $fout "		sal\[$idx\]=new salActor();" 
       puts $fout "		sal\[$idx\].topicHandle=\"[set base]_[set name][set revcode]\";"
       puts $fout "		sal\[$idx\].topicName=\"[set base]_[set name]\";"
-      incr idx 1 
-   }  
+      incr idx 1
+   }
   puts $fout "
 	\}"
 }
@@ -273,9 +274,9 @@ global CMDS TLMS EVTS
     		  foreach p $TLMS($base,$name,param) {
                     set tpar [lindex [string trim $p "\{\}"]]
                     if { [lindex $tpar 0] == "unsigned" } {
-         	      set apar [lindex [split [lindex $tpar 2] "()"] 0] 
+         	      set apar [lindex [split [lindex $tpar 2] "()"] 0]
                     } else {
-         	      set apar [lindex [split [lindex $tpar 1] "()"] 0] 
+         	      set apar [lindex [split [lindex $tpar 1] "()"] 0]
                     }
     		    set arr [lindex [split $p "()"] 1]
     		    if { $arr != "" } {
@@ -289,9 +290,9 @@ global CMDS TLMS EVTS
     		  foreach p $EVTS($base,$alias,param) {
                     set tpar [lindex [string trim $p "\{\}"]]
                     if { [lindex $tpar 0] == "unsigned" } {
-         	      set apar [lindex [split [lindex $tpar 2] "()"] 0] 
+         	      set apar [lindex [split [lindex $tpar 2] "()"] 0]
                     } else {
-         	      set apar [lindex [split [lindex $tpar 1] "()"] 0] 
+         	      set apar [lindex [split [lindex $tpar 1] "()"] 0]
                     }
     		    set arr [lindex [split $p "()"] 1]
     		    if { $arr != "" } {
@@ -305,9 +306,9 @@ global CMDS TLMS EVTS
     		  foreach p $CMDS($base,$name,param) {
                     set tpar [lindex [string trim $p "\{\}"]]
                     if { [lindex $tpar 0] == "unsigned" } {
-         	      set apar [lindex [split [lindex $tpar 2] "()"] 0] 
+         	      set apar [lindex [split [lindex $tpar 2] "()"] 0]
                     } else {
-         	      set apar [lindex [split [lindex $tpar 1] "()"] 0] 
+         	      set apar [lindex [split [lindex $tpar 1] "()"] 0]
                     }
     		    set arr [lindex [split $p "()"] 1]
     		    if { $arr != "" } {
@@ -326,9 +327,9 @@ global CMDS TLMS EVTS
     		  foreach p $TLMS($base,$name,param) {
                     set tpar [lindex [string trim $p "\{\}"]]
                     if { [lindex $tpar 0] == "unsigned" } {
-         	      set apar [lindex [split [lindex $tpar 2] "()"] 0] 
+         	      set apar [lindex [split [lindex $tpar 2] "()"] 0]
                     } else {
-         	      set apar [lindex [split [lindex $tpar 1] "()"] 0] 
+         	      set apar [lindex [split [lindex $tpar 1] "()"] 0]
                     }
     		    set arr [lindex [split $p "()"] 1]
     		    if { $arr != "" } {
@@ -342,9 +343,9 @@ global CMDS TLMS EVTS
     		  foreach p $EVTS($base,$alias,param) {
                     set tpar [lindex [string trim $p "\{\}"]]
                     if { [lindex $tpar 0] == "unsigned" } {
-         	      set apar [lindex [split [lindex $tpar 2] "()"] 0] 
+         	      set apar [lindex [split [lindex $tpar 2] "()"] 0]
                     } else {
-         	      set apar [lindex [split [lindex $tpar 1] "()"] 0] 
+         	      set apar [lindex [split [lindex $tpar 1] "()"] 0]
                     }
     		    set arr [lindex [split $p "()"] 1]
     		    if { $arr != "" } {
@@ -358,9 +359,9 @@ global CMDS TLMS EVTS
     		  foreach p $CMDS($base,$name,param) {
                     set tpar [lindex [string trim $p "\{\}"]]
                     if { [lindex $tpar 0] == "unsigned" } {
-         	      set apar [lindex [split [lindex $tpar 2] "()"] 0] 
+         	      set apar [lindex [split [lindex $tpar 2] "()"] 0]
                     } else {
-         	      set apar [lindex [split [lindex $tpar 1] "()"] 0] 
+         	      set apar [lindex [split [lindex $tpar 1] "()"] 0]
                     }
     		    set arr [lindex [split $p "()"] 1]
     		    if { $arr != "" } {
@@ -456,14 +457,14 @@ puts $fout "
 	    System.out.println(\"    sndStamp  : \" + SALInstance.private_sndStamp);
 	  \}"
         copytojavasample $fout $base $name
-        if { [info exists SYSDIC($base,keyedID)] } { 
+        if { [info exists SYSDIC($base,keyedID)] } {
           puts $fout "
            SALInstance.[set base]ID = subsystemID;
            long dataHandle = SALWriter.register_instance(SALInstance);
 	   status = SALWriter.write(SALInstance, dataHandle);
 	   checkStatus(status, \"[set name][set revcode]DataWriter.write\");
            SALWriter.dispose(SALInstance, dataHandle);"
-        } else { 
+        } else {
           puts $fout "
            long dataHandle = HANDLE_NIL.value;
 	   status = SALWriter.write(SALInstance, dataHandle);
@@ -482,7 +483,7 @@ puts $fout "
           [set name][set revcode]SeqHolder SALInstance = new [set name][set revcode]SeqHolder();
 	  int actorIdx = SAL__[set base]_[set name]_ACTOR;
 	  if ( sal\[actorIdx\].isReader == false ) \{"
-        if { [info exists SYSDIC($base,keyedID)] } { 
+        if { [info exists SYSDIC($base,keyedID)] } {
           puts $fout "  		// Filter expr
                 String expr\[\] = new String\[0\];
                 String sFilter = \"[set base]ID = \" + subsystemID;
@@ -567,7 +568,7 @@ puts $fout "
      }
 
   }
-  close $fin 
+  close $fin
   close $fout
   exec cp [set id]/java/src/org/lsst/sal/SAL_[set base].java [set base]/java/src/org/lsst/sal/.
  }
@@ -594,7 +595,7 @@ puts $fout "
   while { [gets $fin rec] > -1 } {
      if { [string range $rec 0 21] == "// INSERT TYPE SUPPORT" } {
         addActorIndexesCPP $idlfile $base $fout
-        puts $fout " salReturn SAL_[set base]::salTypeSupport(char *topicName) 
+        puts $fout " salReturn SAL_[set base]::salTypeSupport(char *topicName)
 \{"
         foreach i $atypes {
            puts $fout "    if (strncmp(\"$base\",topicName,[string length $base]) == 0) \{"
@@ -613,7 +614,7 @@ puts $fout "
         }
         puts $fout "  return SAL__ERR;
 \}"
-        puts $fout " salReturn SAL_[set base]::salTypeSupport(int actorIdx) 
+        puts $fout " salReturn SAL_[set base]::salTypeSupport(int actorIdx)
 \{"
         foreach i $atypes {
            set ptypes [split [exec grep pragma $i] \n]
@@ -634,7 +635,7 @@ puts $fout "
         foreach i $atypes {
            set ptypes [split [exec grep pragma $i] \n]
            foreach j $ptypes {
-              set name [lindex $j 2]        
+              set name [lindex $j 2]
               set revcode [getRevCode [set base]_[set name] short]
 puts $fout "
 salReturn SAL_[set base]::putSample([set base]::[set name][set revcode] data)
@@ -654,7 +655,7 @@ salReturn SAL_[set base]::putSample([set base]::[set name][set revcode] data)
 #endif
   data.private_sndStamp = getCurrentTime();
   ReturnCode_t status = SALWriter->write(data, dataHandle);
-  checkStatus(status, \"[set base]::[set name][set revcode]DataWriter::write\");  
+  checkStatus(status, \"[set base]::[set name][set revcode]DataWriter::write\");
   return status;
 \}
 
@@ -701,7 +702,7 @@ salReturn SAL_[set base]::getSample([set base]::[set name][set revcode]Seq data)
         gencmdaliascode $base cpp $fout
         geneventaliascode $base include $fouth
         geneventaliascode $base cpp $fout
-###        gengenericreader $fout $base 
+###        gengenericreader $fout $base
      } else {
         if { $rec == "using namespace SALData;" } {
           puts $fout "using namespace [set base];"
@@ -710,7 +711,7 @@ salReturn SAL_[set base]::getSample([set base]::[set name][set revcode]Seq data)
         }
      }
   }
-  close $fin 
+  close $fin
   close $fout
   while { [gets $finh rec] > -1 } {puts $fouth $rec}
   close $finh
@@ -718,7 +719,7 @@ salReturn SAL_[set base]::getSample([set base]::[set name][set revcode]Seq data)
  }
 }
 
-proc modpubsubexamples { id } {
+proc modpubsubexamples { id base } {
 global SAL_DIR SAL_WORK_DIR
   set fin [open $SAL_DIR/code/templates/SALDataPublisher.cpp.template r]
   set fout [open $SAL_WORK_DIR/[set id]/cpp/src/[set id]DataPublisher.cpp w]
@@ -727,7 +728,7 @@ global SAL_DIR SAL_WORK_DIR
       if { [string range $rec 0 17] == "// INSERT_SAL_PUBC" } {
          set frag [open $SAL_WORK_DIR/include/SAL_[set id]Cpub.tmp r]
          while { [gets $frag r2] > -1 } {puts $fout $r2}
-         close $frag         
+         close $frag
       }
   }
   close $fin
@@ -739,13 +740,11 @@ global SAL_DIR SAL_WORK_DIR
       if { [string range $rec 0 17] == "// INSERT_SAL_SUBC" } {
          set frag [open $SAL_WORK_DIR/include/SAL_[set id]Csub.tmp r]
          while { [gets $frag r2] > -1 } {puts $fout $r2}
-         close $frag         
+         close $frag
       }
   }
   close $fin
   close $fout
+
+  gentelemetrytestsinglefilescpp $base
 }
-
-
-
-
