@@ -339,6 +339,7 @@ puts stdout $idlfile
      set DONE_CMDEVT 1
    }
   }
+  gentelemetrytestsinglefilescpp $base
 }
 
 if { $OPTIONS(lib) } {

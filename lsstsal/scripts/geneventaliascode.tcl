@@ -1,6 +1,7 @@
 
 
 source $SAL_DIR/geneventtests.tcl 
+source $SAL_DIR/geneventtestssinglefile.tcl
 source $SAL_DIR/geneventtestsjava.tcl 
 source $SAL_DIR/gentestspython.tcl 
 
@@ -21,7 +22,10 @@ global EVENT_ALIASES EVTS DONE_CMDEVT
      catch { set result [geneventaliascpp $subsys $fout] } bad
      stdlog "$result"
      if { $DONE_CMDEVT == 0} {
+
        catch { set result [geneventtestscpp $subsys] } bad
+       catch { set result [geneventtestssinglefilescpp $subsys] } bad
+       
        stdlog "$result"
      }
    }
