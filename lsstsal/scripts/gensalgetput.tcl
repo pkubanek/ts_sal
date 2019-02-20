@@ -80,7 +80,7 @@ salReturn SAL_[set base]::getSample_[set name]([set base]_[set name]C *data)
   DataReader_var dreader = getReader(actorIdx);
   [set base]::[set name][set revcode]DataReader_var SALReader = [set base]::[set name][set revcode]DataReader::_narrow(dreader.in());
   checkHandle(SALReader.in(), \"[set base]::[set name][set revcode]DataReader::_narrow\");
-  status = SALReader->take(Instances, info, sal\[SAL__[set base]_[set name]_ACTOR\].maxSamples , ANY_SAMPLE_STATE, ANY_VIEW_STATE, ALIVE_INSTANCE_STATE);
+  status = SALReader->take(Instances, info, sal\[SAL__[set base]_[set name]_ACTOR\].maxSamples , ANY_SAMPLE_STATE, ANY_VIEW_STATE, ANY_INSTANCE_STATE);
   checkStatus(status, \"[set base]::[set name][set revcode]DataReader::take\");
   numsamp = Instances.length();
   for (DDS::ULong j = 0; j < numsamp; j++)
@@ -205,8 +205,11 @@ global SAL_WORK_DIR
       incr idx 1 
    }
    close $fact
-   set tuneableQos true
+############################ IMPORTANT ####################################
+##### If you change this, change it in code/templates/SALActor.java
+   set tuneableQos false
 ###   if { $base == "m1m3" } {set tuneableQos false}
+############################ IMPORTANT ####################################
    puts $fout "
 void SAL_SALData::initSalActors ()
 \{
@@ -221,13 +224,15 @@ void SAL_SALData::initSalActors ()
       sal\[i\].isActive = false;
       sal\[i\].maxSamples = LENGTH_UNLIMITED;
       sal\[i\].sampleAge = 100.0;
-      sal\[i\].historyDepth = 10000;
+      sal\[i\].historyDepth = 1000;
       sal\[i\].tuneableQos = [set tuneableQos];
     \}
 "
    set idx 0
    foreach j $ptypes {
       set name [lindex $j 2]
+      set revcode [getRevCode [set base]_[set name] short]
+      puts $fout "    strcpy(sal\[$idx\].topicHandle,\"[set base]_[set name][set revcode]\");"
       puts $fout "    strcpy(sal\[$idx\].topicName,\"[set base]_[set name]\");"
       incr idx 1 
    }  
@@ -251,7 +256,9 @@ proc addActorIndexesJava { idlfile base fout } {
    set idx 0
    foreach j $ptypes {
       set name [lindex $j 2]
+      set revcode [getRevCode [set base]_[set name] short]
       puts $fout "		sal\[$idx\]=new salActor();" 
+      puts $fout "		sal\[$idx\].topicHandle=\"[set base]_[set name][set revcode]\";"
       puts $fout "		sal\[$idx\].topicName=\"[set base]_[set name]\";"
       incr idx 1 
    }  
@@ -493,7 +500,7 @@ puts $fout "
   	  SampleInfoSeqHolder infoSeq = new SampleInfoSeqHolder();
 	  SALReader.take(SALInstance, infoSeq, sal\[actorIdx\].maxSamples,
 					ANY_SAMPLE_STATE.value, ANY_VIEW_STATE.value,
-					ALIVE_INSTANCE_STATE.value);
+					ANY_INSTANCE_STATE.value);
           numsamp = SALInstance.value.length;
           if (numsamp > 0) \{
  	    if (debugLevel > 0) \{
@@ -659,7 +666,7 @@ salReturn SAL_[set base]::getSample([set base]::[set name][set revcode]Seq data)
   DataReader_var dreader = getReader();
   [set base]::[set name][set revcode]DataReader_var SALReader = [set base]::[set name][set revcode]DataReader::_narrow(dreader.in());
   checkHandle(SALReader.in(), \"[set base]::[set name][set revcode]DataReader::_narrow\");
-  status = SALReader->take(data, infoSeq, LENGTH_UNLIMITED, ANY_SAMPLE_STATE, ANY_VIEW_STATE, ALIVE_INSTANCE_STATE);
+  status = SALReader->take(data, infoSeq, LENGTH_UNLIMITED, ANY_SAMPLE_STATE, ANY_VIEW_STATE, ANY_INSTANCE_STATE);
   checkStatus(status, \"[set base]::[set name][set revcode]DataReader::take\");
   numsamp = data.length();
   for (DDS::ULong j = 0; j < numsamp; j++)

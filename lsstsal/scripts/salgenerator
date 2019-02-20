@@ -30,6 +30,7 @@ if { $argc < 2 } {
 		sim      - generate simulation configuration
 		icd      - generate ICD document
 		link     - link a SAL program
+                rpm	 - generate runtime RPM
 		verbose  - be more verbose ;-)
 "
   exit
@@ -52,7 +53,7 @@ puts stdout "SAL generator - [set SALVERSION]"
 
 set TSUBSYSTEMS ""
 foreach i $argv {
-  if { [lsearch "validate efd writers code compile cpp isocpp java jni lib link maven tcl db icd labview python html sal shmem sim simd verbose" $i] < 0 } {
+  if { [lsearch "validate efd writers code compile cpp isocpp java jni lib link maven tcl db icd labview python html rpm sal shmem sim simd verbose" $i] < 0 } {
     if { [lsearch $SYSDIC(systems) $i] < 0 } {
       puts stdout "
 *******************************************************************************
@@ -99,7 +100,7 @@ if { [file exists $SAL_WORK_DIR] == 0 } {
 
 cd $SAL_WORK_DIR
 set SAL_WORK_DIR [file normalize .]
-foreach o "validate efd writers code compile cpp isocpp java jni lib link maven tcl db icd labview python html sal shmem sim simd  verbose" {
+foreach o "validate efd writers code compile cpp isocpp java jni lib link maven tcl db icd labview python html rpm sal shmem sim simd  verbose" {
   set OPTIONS($o) 0
   if { [lsearch [string tolower $argv] $o] > -1 } {
      set OPTIONS($o) 1
@@ -355,6 +356,18 @@ if { $OPTIONS(lib) } {
      }
      if { [file exists $SAL_WORK_DIR/[set s]/cpp/libsacpp_[set s]_types.so] } {
        exec cp $SAL_WORK_DIR/[set s]/cpp/libsacpp_[set s]_types.so $SAL_WORK_DIR/lib/.
+     }
+   }
+}
+
+
+if { $OPTIONS(rpm) } {
+   source $SAL_DIR/gensalrpms.tcl
+   foreach s $TSUBSYSTEMS {
+     if { $s != "rpm" } {
+       stdlog "Building runtime RPM for $s subsystem"
+       catch { set result [updateruntime $s] } bad
+       if { $OPTIONS(verbose) } {stdlog $result}
      }
    }
 }

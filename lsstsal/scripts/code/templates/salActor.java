@@ -31,6 +31,7 @@ import DDS.SampleInfoSeqHolder;
 public class salActor {
 	public String baseName;
 	public String topicName;
+	public String topicHandle;
 	public Topic topic;
         public Topic topic2;
         public ContentFilteredTopic filteredtopic;
@@ -79,7 +80,7 @@ public class salActor {
 	this.isEventReader = false;
 	this.isEventWriter = false;
 	this.isProcessor = false;
-        this.tuneableQos = true;
+        this.tuneableQos = false;
         this.historyDepth = 1000;
         this.maxSamples = 999999999;
     }
