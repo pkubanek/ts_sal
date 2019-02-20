@@ -121,6 +121,8 @@ proc insertSubscribers { subsys file_writer } {
     foreach alias $TLM_ALIASES($subsys) {
         puts $file_writer "  mgr.salTelemetrySub(\"[set subsys]_[set alias]\");"
     }
+    puts $file_writer " cout << \"=== [set subsys] subscriber Ready ...\" << endl;"
+
 
     foreach alias $TLM_ALIASES($subsys) {
         puts $file_writer "  \{" 
