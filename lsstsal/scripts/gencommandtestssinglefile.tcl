@@ -28,7 +28,6 @@ proc gencommandtestsinglefilescpp { subsys } {
     # Execute the makefile. 
     cd $SAL_WORK_DIR/$subsys/cpp/src
     exec make -f $SAL_WORK_DIR/$subsys/cpp/src/Makefile.sacpp_[set subsys]_all_testcommands
-
 }
 
 proc insertCommandHeader { subsys file_writer } {
@@ -52,13 +51,12 @@ proc insertCommandHeader { subsys file_writer } {
 
 proc insertCommanders { subsys file_writer } {
 
-    global SYSDIC CMD_ALIASES SAL_WORK_DIR
+    global SYSDIC CMD_ALIASES 
 
     puts $file_writer "int main (int argc, char *argv\[\])"
     puts $file_writer "\{"
 
     if { [info exists SYSDIC($subsys,keyedID)] } {
-        puts $file_writer "  // Creating SAL manager"
         puts $file_writer "  int [set subsys]ID = 1;"
         puts $file_writer "  if (getenv(\"LSST_[string toupper [set subsys]]_ID\") != NULL) \{"
         puts $file_writer "    sscanf(getenv(\"LSST_[string toupper [set subsys]]_ID\"),\"%d\",&[set subsys]ID);"
@@ -79,26 +77,21 @@ proc insertCommanders { subsys file_writer } {
         puts $file_writer "    int timeout=10;"
         puts $file_writer "    int status=0;"
         puts $file_writer "    [set subsys]_command_[set alias]C myData;"
+        
         puts $file_writer "    cmdId = mgr.issueCommand_[set alias](&myData);"
         puts $file_writer "    cout << \"=== command $alias issued = \" << endl;"
         puts $file_writer "    status = mgr.waitForCompletion_[set alias](cmdId, timeout);"
         puts $file_writer "    cout << status << endl;"
         puts $file_writer "  \}\n"
     }
-
-    puts $file_writer "  // Remove the DataWriters and shutdown"
     puts $file_writer "  mgr.salShutdown();"
-    puts $file_writer "  if (status != SAL__CMD_COMPLETE) \{"
-    puts $file_writer "    exit(1);"
-    puts $file_writer "  \}"
     puts $file_writer "  exit(0);"
     puts $file_writer "\}"
-
 }
 
 proc insertControllers { subsys file_writer } {
 
-    global CMD_ALIASES SAL_WORK_DIR SYSDIC
+    global SYSDIC SAL_WORK_DIR CMD_ALIASES 
 
     puts $file_writer "/* entry point exported and demangled so symbol can be found in shared library */"
     puts $file_writer "extern \"C\""
@@ -114,7 +107,6 @@ proc insertControllers { subsys file_writer } {
     puts $file_writer "  int timeout = 1;"
 
     if { [info exists SYSDIC($subsys,keyedID)] } {
-        puts $file_writer "  // Creating SAL manager"
         puts $file_writer "  int [set subsys]ID = 1;"
         puts $file_writer "  if (getenv(\"LSST_[string toupper [set subsys]]_ID\") != NULL) \{"
         puts $file_writer "    sscanf(getenv(\"LSST_[string toupper [set subsys]]_ID\"),\"%d\",&[set subsys]ID);"
@@ -137,11 +129,11 @@ proc insertControllers { subsys file_writer } {
         puts $file_writer "    if (cmdId > 0) \{"
         puts $file_writer "      cout << \"=== command [set alias] received = \" << endl;"
 
-        set fin [open $SAL_WORK_DIR/include/SAL_[set subsys]_command_[set alias]Csub.tmp r]
-            while { [gets $fin rec] > -1 } {
-            puts $file_writer "  $rec"
+        set fragment_reader [open $SAL_WORK_DIR/include/SAL_[set subsys]_command_[set alias]Csub.tmp r]
+        while { [gets $fragment_reader line] > -1 } {
+            puts $file_writer "  $line"
         }
-        close $fin
+        close $fragment_reader
 
         puts $file_writer "      if (timeout > 0) \{"
         puts $file_writer "        mgr.ackCommand_[set alias](cmdId, SAL__CMD_INPROGRESS, 0, \"Ack : OK\");"

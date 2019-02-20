@@ -12,7 +12,7 @@ proc gentelemetrytestsinglefilescpp { subsys } {
     # Insert content into the publisher.
     insertTelemetryHeader $subsys $publisher_cpp_file_writer
     insertPublishers $subsys $publisher_cpp_file_writer
-    
+
     # Insert content into the subscriber.
     insertTelemetryHeader $subsys $subscriber_cpp_file_writer
     insertSubscribers $subsys $subscriber_cpp_file_writer
@@ -51,7 +51,7 @@ proc insertTelemetryHeader { subsys file_writer } {
 
 proc insertPublishers { subsys file_writer } {
 
-    global TLM_ALIASES SYSDIC SAL_WORK_DIR
+    global SYSDIC SAL_WORK_DIR TLM_ALIASES 
 
     puts $file_writer "int main (int argc, char *argv\[\])"
     puts $file_writer "\{"
@@ -66,18 +66,16 @@ proc insertPublishers { subsys file_writer } {
         puts $file_writer "  SAL_[set subsys] mgr = SAL_[set subsys]();"
     }
 
-    # Subsribe to all telemetry topic in our sal manager
     foreach alias $TLM_ALIASES($subsys) {
         puts $file_writer "  mgr.salTelemetryPub(\"[set subsys]_[set alias]\");"
     }
 
-    # Most work done in this loop
     foreach alias $TLM_ALIASES($subsys) {
         puts $file_writer "\n  \{" 
-        puts $file_writer "    [set subsys]_[set alias]C myData;"
         puts $file_writer "    int iseq = 0;"
         puts $file_writer "    os_time delay_1s = { 1, 0 };"
-        
+        puts $file_writer "    [set subsys]_[set alias]C myData;"
+
         set fragment_reader [open $SAL_WORK_DIR/include/SAL_[set subsys]_[set alias]Cpub.tmp r]
         while { [gets $fragment_reader line] > -1 } {
             puts $file_writer "    [string trim $line ]"
@@ -91,7 +89,6 @@ proc insertPublishers { subsys file_writer } {
         puts $file_writer "  \}"
     }
 
-    puts $file_writer "  /* Remove the DataWriters etc */"
     puts $file_writer "  mgr.salShutdown();"
     puts $file_writer "  return 0;"
     puts $file_writer "\}"
@@ -99,7 +96,7 @@ proc insertPublishers { subsys file_writer } {
 
 proc insertSubscribers { subsys file_writer } {
 
-    global TLM_ALIASES SYSDIC SAL_WORK_DIR
+    global SYSDIC SAL_WORK_DIR TLM_ALIASES 
 
     puts $file_writer "\n/* entry point exported and demangled so symbol can be found in shared library */"
     puts $file_writer "extern \"C\""
@@ -112,7 +109,6 @@ proc insertSubscribers { subsys file_writer } {
     puts $file_writer "\{"
 
     if { [info exists SYSDIC($subsys,keyedID)] } {
-        puts $file_writer "  // Creating SAL manager"
         puts $file_writer "  int [set subsys]ID = 1;"
         puts $file_writer "  if (getenv(\"LSST_[string toupper [set subsys]]_ID\") != NULL) \{"
         puts $file_writer "    sscanf(getenv(\"LSST_[string toupper [set subsys]]_ID\"),\"%d\",&[set subsys]ID);"
@@ -122,12 +118,10 @@ proc insertSubscribers { subsys file_writer } {
         puts $file_writer "  SAL_[set subsys] mgr = SAL_[set subsys]();"
     }
 
-    # Subsribe to all telemetry topic in our sal manager
     foreach alias $TLM_ALIASES($subsys) {
         puts $file_writer "  mgr.salTelemetrySub(\"[set subsys]_[set alias]\");"
     }
 
-    # Most work done in this loop
     foreach alias $TLM_ALIASES($subsys) {
         puts $file_writer "  \{" 
         puts $file_writer "    [set subsys]_[set alias]C SALInstance;"
@@ -143,6 +137,7 @@ proc insertSubscribers { subsys file_writer } {
         while { [gets $fragment_reader line] > -1 } {
             puts $file_writer "        [string trim $line ]"
         }
+        close $fragment_reader
         puts $file_writer "        os_nanoSleep(delay_10ms);"
         puts $file_writer "        ++count;"
         
@@ -259,4 +254,3 @@ proc insertTelemetryMakeFile { subsys file_writer } {
 
     puts $file_writer "include \$(DEPENDENCIES)"
 }
-

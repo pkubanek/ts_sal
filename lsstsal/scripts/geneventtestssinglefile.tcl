@@ -51,17 +51,12 @@ proc insertEventHeader { subsys file_writer } {
 
 proc insertSenders { subsys file_writer } {
     
-    global EVENT_ALIASES SAL_WORK_DIR SYSDIC
+    global SYSDIC SAL_WORK_DIR EVENT_ALIASES  
 
     puts $file_writer "int main (int argc, char *argv\[\])"
     puts $file_writer "\{"
  
-    puts $file_writer "  int priority = SAL__EVENT_INFO;"
-    puts $file_writer "  int iseq;"
-
-  # Create the SAL manager 
     if { [info exists SYSDIC($subsys,keyedID)] } {
-        puts $file_writer "  // Creating SAL manager"
         puts $file_writer "  int [set subsys]ID = 1;"
         puts $file_writer "  if (getenv(\"LSST_[string toupper [set subsys]]_ID\") != NULL) \{"
         puts $file_writer "    sscanf(getenv(\"LSST_[string toupper [set subsys]]_ID\"),\"%d\",&[set subsys]ID);"
@@ -75,11 +70,12 @@ proc insertSenders { subsys file_writer } {
         puts $file_writer "  mgr.salEventSub(\"[set subsys]_logevent_[set alias]\");"
     }
 
-    # Most work done in this loop
     foreach alias $EVENT_ALIASES($subsys) {
         puts $file_writer "\{" 
-        puts $file_writer "  [set subsys]_logevent_[set alias]C myData;"
+        puts $file_writer "  int priority = SAL__EVENT_INFO;"
+        puts $file_writer "  int iseq;"
         puts $file_writer "  iseq = 0;"
+        puts $file_writer "  [set subsys]_logevent_[set alias]C myData;"
 
         set fragment_reader [open $SAL_WORK_DIR/include/SAL_[set subsys]_logevent_[set alias]Cpub.tmp r]
         while { [gets $fragment_reader line] > -1 } {
@@ -92,17 +88,14 @@ proc insertSenders { subsys file_writer } {
         puts $file_writer "  sleep(1);\n\}"
     }
 
-        puts $file_writer "  /* Remove the DataWriters etc */"
         puts $file_writer "  mgr.salShutdown();"
-
         puts $file_writer "  return 0;"
         puts $file_writer "\}"
 }
 
 proc insertLoggers { subsys file_writer } {
 
-    global EVENT_ALIASES SAL_WORK_DIR SYSDIC
-
+    global SYSDIC SAL_WORK_DIR EVENT_ALIASES  
     
     puts $file_writer "/* entry point exported and demangled so symbol can be found in shared library */"
     puts $file_writer "extern \"C\""
@@ -116,7 +109,6 @@ proc insertLoggers { subsys file_writer } {
     puts $file_writer "  os_time delay_10ms = \{ 0, 10000000 \};"
     puts $file_writer "  int cmdId = -1;"
     puts $file_writer "  int timeout = 1;"
-
 
     if { [info exists SYSDIC($subsys,keyedID)] } {
         puts $file_writer "  int [set subsys]ID = 1;"
@@ -143,10 +135,11 @@ proc insertLoggers { subsys file_writer } {
         puts $file_writer "    if (status == SAL__OK) \{"
         puts $file_writer "      cout << \"=== Event [set alias] received = \" << endl;"
 
-        set fin [open $SAL_WORK_DIR/include/SAL_[set subsys]_logevent_[set alias]Csub.tmp r]
-        while { [gets $fin rec] > -1 } {
-            puts $file_writer "      [string trim $rec]"
+        set fragment_reader [open $SAL_WORK_DIR/include/SAL_[set subsys]_logevent_[set alias]Csub.tmp r]
+        while { [gets $fragment_reader line] > -1 } {
+            puts $file_writer "      [string trim $line]"
         }
+        close $fragment_reader
         puts $file_writer "      break;\n    \}\n  \}"
     }
 
