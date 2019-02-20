@@ -745,6 +745,4 @@ global SAL_DIR SAL_WORK_DIR
   }
   close $fin
   close $fout
-
-  gentelemetrytestsinglefilescpp $base
 }

@@ -12,7 +12,7 @@ proc gentelemetrytestsinglefilescpp { subsys } {
     # Insert content into the publisher.
     insertTelemetryHeader $subsys $publisher_cpp_file_writer
     insertPublishers $subsys $publisher_cpp_file_writer
-
+    
     # Insert content into the subscriber.
     insertTelemetryHeader $subsys $subscriber_cpp_file_writer
     insertSubscribers $subsys $subscriber_cpp_file_writer
@@ -53,18 +53,10 @@ proc insertPublishers { subsys file_writer } {
 
     global TLM_ALIASES SYSDIC SAL_WORK_DIR
 
-    puts $file_writer "\n/* entry point exported and demangled so symbol can be found in shared library */"
-    puts $file_writer "extern \"C\""
-    puts $file_writer "\{"
-    puts $file_writer "  OS_API_EXPORT"
-    puts $file_writer "  int SALTelemetryPublisher(int argc, char *argv[]);"
-    puts $file_writer "\}"
-
-    puts $file_writer "int SALTelemetryPublisher()"
+    puts $file_writer "int main (int argc, char *argv\[\])"
     puts $file_writer "\{"
 
     if { [info exists SYSDIC($subsys,keyedID)] } {
-        puts $file_writer "  // Creating SAL manager"
         puts $file_writer "  int [set subsys]ID = 1;"
         puts $file_writer "  if (getenv(\"LSST_[string toupper [set subsys]]_ID\") != NULL) \{"
         puts $file_writer "    sscanf(getenv(\"LSST_[string toupper [set subsys]]_ID\"),\"%d\",&[set subsys]ID);"
@@ -103,11 +95,6 @@ proc insertPublishers { subsys file_writer } {
     puts $file_writer "  mgr.salShutdown();"
     puts $file_writer "  return 0;"
     puts $file_writer "\}"
-
-    puts $file_writer "int OSPL_MAIN (int argc, char *argv\[\])"
-    puts $file_writer "\{"
-    puts $file_writer "  return SALTelemetryPublisher();"
-    puts $file_writer "\}"
 }
 
 proc insertSubscribers { subsys file_writer } {
@@ -118,10 +105,10 @@ proc insertSubscribers { subsys file_writer } {
     puts $file_writer "extern \"C\""
     puts $file_writer "\{"
     puts $file_writer "  OS_API_EXPORT"
-    puts $file_writer "  int SALTelemetrySubscriber(int argc, char *argv[]);"
+    puts $file_writer "  int test_[set subsys]_all_telemetry();"
     puts $file_writer "\}"
 
-    puts $file_writer "int SALTelemetrySubscriber()"
+    puts $file_writer "int test_[set subsys]_all_telemetry()"
     puts $file_writer "\{"
 
     if { [info exists SYSDIC($subsys,keyedID)] } {
@@ -142,7 +129,7 @@ proc insertSubscribers { subsys file_writer } {
 
     # Most work done in this loop
     foreach alias $TLM_ALIASES($subsys) {
-        puts $file_writer "\n  \{" 
+        puts $file_writer "  \{" 
         puts $file_writer "    [set subsys]_[set alias]C SALInstance;"
         puts $file_writer "    ReturnCode_t status = -1;"
         puts $file_writer "    int count = 0;"
@@ -169,10 +156,11 @@ proc insertSubscribers { subsys file_writer } {
     puts $file_writer "  return 0;"
     puts $file_writer "\}"
 
-    puts $file_writer "int OSPL_MAIN (int argc, char *argv\[\])"
+    puts $file_writer "int main (int argc, char *argv\[\])"
     puts $file_writer "\{"
-    puts $file_writer "  return SALTelemetrySubscriber();"
+    puts $file_writer "  return test_[set subsys]_all_telemetry();"
     puts $file_writer "\}"
+
 }
 
 proc insertTelemetryMakeFile { subsys file_writer } {
