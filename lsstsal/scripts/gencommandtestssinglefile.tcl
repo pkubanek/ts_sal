@@ -28,6 +28,7 @@ proc gencommandtestsinglefilescpp { subsys } {
     # Execute the makefile. 
     cd $SAL_WORK_DIR/$subsys/cpp/src
     exec make -f $SAL_WORK_DIR/$subsys/cpp/src/Makefile.sacpp_[set subsys]_all_testcommands
+
 }
 
 proc insertCommandHeader { subsys file_writer } {
@@ -51,17 +52,10 @@ proc insertCommandHeader { subsys file_writer } {
 
 proc insertCommanders { subsys file_writer } {
 
-    global SYSDIC CMD_ALIASES
+    global SYSDIC CMD_ALIASES SAL_WORK_DIR
 
     puts $file_writer "int main (int argc, char *argv\[\])"
     puts $file_writer "\{"
-    puts $file_writer "  int cmdId;"
-    puts $file_writer "  int timeout=10;"
-    puts $file_writer "  int status=0;"
-
-    foreach alias $CMD_ALIASES($subsys) {
-        puts $file_writer "  [set subsys]_command_[set alias]C [set alias]Data;"
-    }
 
     if { [info exists SYSDIC($subsys,keyedID)] } {
         puts $file_writer "  // Creating SAL manager"
@@ -75,10 +69,21 @@ proc insertCommanders { subsys file_writer } {
     }
 
     foreach alias $CMD_ALIASES($subsys) {
-        puts $file_writer "  cmdId = mgr.issueCommand_[set alias](&[set alias]Data);"
-        puts $file_writer "  cout << \"=== command $alias issued = \" << endl;"
-        puts $file_writer "  status = mgr.waitForCompletion_[set alias](cmdId, timeout);"
-        puts $file_writer "  cout << status << endl;"
+        puts $file_writer "  mgr.salCommand(\"[set subsys]_command_[set alias]\");"
+    }
+    puts $file_writer "  cout << \"=== [set subsys] controllers ready \" << endl;"
+
+    foreach alias $CMD_ALIASES($subsys) {
+        puts $file_writer "  \{"
+        puts $file_writer "    int cmdId;"
+        puts $file_writer "    int timeout=10;"
+        puts $file_writer "    int status=0;"
+        puts $file_writer "    [set subsys]_command_[set alias]C myData;"
+        puts $file_writer "    cmdId = mgr.issueCommand_[set alias](&myData);"
+        puts $file_writer "    cout << \"=== command $alias issued = \" << endl;"
+        puts $file_writer "    status = mgr.waitForCompletion_[set alias](cmdId, timeout);"
+        puts $file_writer "    cout << status << endl;"
+        puts $file_writer "  \}\n"
     }
 
     puts $file_writer "  // Remove the DataWriters and shutdown"
@@ -88,6 +93,7 @@ proc insertCommanders { subsys file_writer } {
     puts $file_writer "  \}"
     puts $file_writer "  exit(0);"
     puts $file_writer "\}"
+
 }
 
 proc insertControllers { subsys file_writer } {
