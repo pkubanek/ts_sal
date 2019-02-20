@@ -719,7 +719,7 @@ salReturn SAL_[set base]::getSample([set base]::[set name][set revcode]Seq data)
  }
 }
 
-proc modpubsubexamples { id base } {
+proc modpubsubexamples { id } {
 global SAL_DIR SAL_WORK_DIR
   set fin [open $SAL_DIR/code/templates/SALDataPublisher.cpp.template r]
   set fout [open $SAL_WORK_DIR/[set id]/cpp/src/[set id]DataPublisher.cpp w]
