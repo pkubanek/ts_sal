@@ -272,7 +272,7 @@ salReturn SAL_SALData::salTelemetrySub(int actorIdx)
    sSeqExpr.length(0);
    // create topic
    char ftopicName[128];
-   sprintf(ftopicName,"%s_%s","filtered",sal[actorIdx].typeName);
+   sprintf(ftopicName,"%s_%s","filtered",sal[actorIdx].topicHandle);
    createContentFilteredTopic(actorIdx,ftopicName, sFilter.in(), sSeqExpr);
    // create DataReader
    createReader(actorIdx,true);
@@ -1084,7 +1084,7 @@ salReturn SAL_SALData::salProcessor(char *cmdAlias)
   StringSeq sSeqExpr;
   sSeqExpr.length(0);
   // create topic
-   sprintf(buf2, "filteredCmd_%s", sal[actorIdx].typeName);
+   sprintf(buf2, "filteredCmd_%s", sal[actorIdx].topicHandle);
   createContentFilteredTopic(actorIdx,buf2, sFilter.in(), sSeqExpr);
  // create DataReader
   createReader(actorIdx,true);
@@ -1138,7 +1138,7 @@ salReturn SAL_SALData::salEvent(char *topicName)
    sSeqExpr.length(0);
    // create topic
    char ftopicName[128];
-   sprintf(ftopicName,"%s_%s","filtered",sal[actorIdx].typeName);
+   sprintf(ftopicName,"%s_%s","filtered",sal[actorIdx].topicHandle);
    createContentFilteredTopic(actorIdx,ftopicName, sFilter.in(), sSeqExpr);
    // create DataReader
    createReader(actorIdx,true);
@@ -1186,7 +1186,7 @@ salReturn SAL_SALData::salEventSub(char *topicName)
    sSeqExpr.length(0);
    // create topic
    char ftopicName[128];
-   sprintf(ftopicName,"%s_%s","filtered",sal[actorIdx].typeName);
+   sprintf(ftopicName,"%s_%s","filtered",sal[actorIdx].topicHandle);
    createContentFilteredTopic(actorIdx,ftopicName, sFilter.in(), sSeqExpr);
    // create DataReader
    createReader(actorIdx,true);

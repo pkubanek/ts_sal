@@ -9,6 +9,19 @@ set OSPL_HOME $env(OSPL_HOME)
 set SAL_DIR $env(SAL_DIR)
 source $SAL_DIR/sal_version.tcl
 source $SAL_DIR/add_system_dictionary.tcl
+source $SAL_DIR/gengenericefd_array.tcl
+
+set SYSDIC(forEFD) "ATAOS ATArchiver ATBuilding ATCalCS ATCamera ATDome ATDomeTrajectory ATEEC ATHeaderService ATHexapod ATMCS ATMonochromator ATPneumatics ATPtg ATSpectrograph ATTCS ATThermoelectricCooler ATWhiteLight EFD Electrometer"
+
+proc copyasset { asset dest } {
+    if { [file exists $asset] } {
+       exec cp $asset $dest
+    } else {
+       puts stdout "ERROR : Asset required for rpm -  $asset does not exist"
+#       exit
+    }
+}
+
 
 proc updateruntime { subsys } {
 global SAL_WORK_DIR SALVERSION SAL_DIR
@@ -22,49 +35,38 @@ global SAL_WORK_DIR SALVERSION SAL_DIR
   exec mkdir -p [set subsys]-$SALVERSION/opt/lsst/ts_sal
   exec mkdir [set subsys]-$SALVERSION/opt/lsst/ts_sal/include
   exec mkdir [set subsys]-$SALVERSION/opt/lsst/ts_sal/bin
+  exec mkdir [set subsys]-$SALVERSION/opt/lsst/ts_sal/scripts
   exec mkdir [set subsys]-$SALVERSION/opt/lsst/ts_sal/lib
   exec mkdir [set subsys]-$SALVERSION/opt/lsst/ts_sal/doc
-  exec mkdir [set subsys]-$SALVERSION/opt/lsst/ts_sal/sql
   exec mkdir [set subsys]-$SALVERSION/opt/lsst/ts_sal/labview
   exec mkdir [set subsys]-$SALVERSION/opt/lsst/ts_sal/labview/lib
   exec mkdir [set subsys]-$SALVERSION/opt/lsst/ts_sal/jar
   exec mkdir -p [set subsys]-$SALVERSION/opt/lsst/ts_xml/sal_interfaces/[set subsys]
-  exec mkdir -p [set subsys]-$SALVERSION/etc/systemd/system
   foreach lib "libsacpp_[set subsys]_types.so SALPY_[set subsys].so libSAL_[set subsys].so" {
-     exec cp $SAL_WORK_DIR/lib/$lib [set subsys]-$SALVERSION/opt/lsst/ts_sal/lib/.
+     copyasset $SAL_WORK_DIR/lib/$lib [set subsys]-$SALVERSION/opt/lsst/ts_sal/lib/.
   }
   foreach lib "SALLV_[set subsys].so" {
-     exec cp $SAL_WORK_DIR/lib/$lib [set subsys]-$SALVERSION/opt/lsst/ts_sal/lib/.
+     copyasset $SAL_WORK_DIR/lib/$lib [set subsys]-$SALVERSION/opt/lsst/ts_sal/lib/.
   }
   foreach jar "saj_[set subsys]_types.jar" {
-     exec cp $SAL_WORK_DIR/lib/$jar [set subsys]-$SALVERSION/opt/lsst/ts_sal/jar/.
+     copyasset $SAL_WORK_DIR/lib/$jar [set subsys]-$SALVERSION/opt/lsst/ts_sal/jar/.
   }
-  foreach type "command event telemetry" { 
-     exec cp $SAL_WORK_DIR/[set subsys]/cpp/src/sacpp_[set subsys]_[set type]_efdwriter [set subsys]-$SALVERSION/opt/lsst/ts_sal/bin/.
-  }
-  exec cp $SAL_WORK_DIR/[set subsys]/labview/SALLV_[set subsys]_Monitor [set subsys]-$SALVERSION/opt/lsst/ts_sal/bin/.
-  set fsql [open /tmp/dosql w]
-  puts $fsql "cat $SAL_WORK_DIR/sql/[set subsys]_*.sqldef > [set subsys]-$SALVERSION/opt/lsst/ts_sal/sql/[set subsys].sqldef"
-  puts $fsql "cat $SAL_WORK_DIR/sql/[set subsys]_*.sqlwrt > [set subsys]-$SALVERSION/opt/lsst/ts_sal/sql/[set subsys].sqlwrt"
-  puts $fsql "cat $SAL_WORK_DIR/sql/[set subsys]_*.sql > [set subsys]-$SALVERSION/opt/lsst/ts_sal/sql/[set subsys].sql"
-  close $fsql
-  exec chmod 755 /tmp/dosql
-  exec /tmp/dosql
-  exec cp $SAL_WORK_DIR/[set subsys]/cpp/src/SAL_[set subsys].h [set subsys]-$SALVERSION/opt/lsst/ts_sal/include/.
-  exec cp $SAL_WORK_DIR/[set subsys]/cpp/src/SAL_[set subsys]C.h [set subsys]-$SALVERSION/opt/lsst/ts_sal/include/.
-  exec cp $SAL_WORK_DIR/[set subsys]/cpp/src/SAL_[set subsys]LV.h [set subsys]-$SALVERSION/opt/lsst/ts_sal/include/.
-  exec cp $SAL_WORK_DIR/[set subsys]/cpp/sal_[set subsys]Dcps.h [set subsys]-$SALVERSION/opt/lsst/ts_sal/include/.
-  exec cp $SAL_WORK_DIR/[set subsys]/cpp/sal_[set subsys]Dcps_impl.h [set subsys]-$SALVERSION/opt/lsst/ts_sal/include/.
-  exec cp $SAL_WORK_DIR/[set subsys]/cpp/sal_[set subsys].h [set subsys]-$SALVERSION/opt/lsst/ts_sal/include/.
-  exec cp $SAL_WORK_DIR/[set subsys]/cpp/ccpp_sal_[set subsys].h [set subsys]-$SALVERSION/opt/lsst/ts_sal/include/.
-  exec cp $SAL_WORK_DIR/[set subsys]/cpp/sal_[set subsys]SplDcps.h [set subsys]-$SALVERSION/opt/lsst/ts_sal/include/.
-  exec cp $SAL_DIR/code/templates/SAL_defines.h [set subsys]-$SALVERSION/opt/lsst/ts_sal/include/.
+  copyasset $SAL_WORK_DIR/[set subsys]/labview/SALLV_[set subsys]_Monitor [set subsys]-$SALVERSION/opt/lsst/ts_sal/bin/.
+  copyasset $SAL_WORK_DIR/idl-templates/validated/[set subsys]_revCodes.tcl [set subsys]-$SALVERSION/opt/lsst/ts_sal/scripts/.
+  copyasset $SAL_WORK_DIR/[set subsys]/cpp/src/SAL_[set subsys].h [set subsys]-$SALVERSION/opt/lsst/ts_sal/include/.
+  copyasset $SAL_WORK_DIR/[set subsys]/cpp/src/SAL_[set subsys]C.h [set subsys]-$SALVERSION/opt/lsst/ts_sal/include/.
+  copyasset $SAL_WORK_DIR/[set subsys]/cpp/src/SAL_[set subsys]LV.h [set subsys]-$SALVERSION/opt/lsst/ts_sal/include/.
+  copyasset $SAL_WORK_DIR/[set subsys]/cpp/sal_[set subsys]Dcps.h [set subsys]-$SALVERSION/opt/lsst/ts_sal/include/.
+  copyasset $SAL_WORK_DIR/[set subsys]/cpp/sal_[set subsys]Dcps_impl.h [set subsys]-$SALVERSION/opt/lsst/ts_sal/include/.
+  copyasset $SAL_WORK_DIR/[set subsys]/cpp/sal_[set subsys].h [set subsys]-$SALVERSION/opt/lsst/ts_sal/include/.
+  copyasset $SAL_WORK_DIR/[set subsys]/cpp/ccpp_sal_[set subsys].h [set subsys]-$SALVERSION/opt/lsst/ts_sal/include/.
+  copyasset $SAL_WORK_DIR/[set subsys]/cpp/sal_[set subsys]SplDcps.h [set subsys]-$SALVERSION/opt/lsst/ts_sal/include/.
+  copyasset $SAL_DIR/code/templates/SAL_defines.h [set subsys]-$SALVERSION/opt/lsst/ts_sal/include/.
   foreach dtype "Commands Events Generics Telemetry" {
     if { [file exists $SAL_WORK_DIR/[set subsys]_[set dtype].xml] } {
        exec cp $SAL_WORK_DIR/[set subsys]_[set dtype].xml [set subsys]-$SALVERSION/opt/lsst/ts_xml/sal_interfaces/[set subsys]/.
     }
   }
-  genefdsetup $subsys
   exec tar cvzf $SAL_WORK_DIR/rpmbuild/SOURCES/[set subsys]-$SALVERSION.tgz [set subsys]-$SALVERSION
   exec rm -fr $SAL_WORK_DIR/rpmbuild/BUILD/[set subsys]-$SALVERSION
   exec cp -r [set subsys]-$SALVERSION $SAL_WORK_DIR/rpmbuild/BUILD/.
@@ -99,15 +101,82 @@ global SALVERSION env RPMFILES SAL_WORK_DIR
           lappend RPMFILES [string range $f 1 end]
        }
    }
-   lappend RPMFILES "/etc/systemd/system/[set subsys]_command_efdwriter.service"
-   lappend RPMFILES "/etc/systemd/system/[set subsys]_event_efdwriter.service"
-   lappend RPMFILES "/etc/systemd/system/[set subsys]_telemetry_efdwriter.service"
 }
+
+proc listfilesEFDrpm { } {
+global SALVERSION env RPMFILES SAL_WORK_DIR SYSDIC
+   set RPMFILES ""
+   cd $SAL_WORK_DIR/rpmbuild/BUILD/ts_EFDruntime-$SALVERSION
+   set fl [split [exec find . -type f  -print] \n]
+   foreach f $fl { 
+       if { [string range $f 0 4] == "./opt" } {
+          lappend RPMFILES [string range $f 1 end]
+       }
+   }
+   foreach subsys $SYSDIC(forEFD) {
+     lappend RPMFILES "/etc/systemd/system/[set subsys]_command_efdwriter.service"
+     lappend RPMFILES "/etc/systemd/system/[set subsys]_event_efdwriter.service"
+     lappend RPMFILES "/etc/systemd/system/[set subsys]_telemetry_efdwriter.service"
+   }
+}
+
+proc genefdrpm { } {
+global SAL_WORK_DIR SALVERSION SAL_DIR SYSDIC
+  exec rm -fr ts_EFDruntime-$SALVERSION/opt/lsst/ts_sal/*
+  exec mkdir -p $SAL_WORK_DIR/rpmbuild/BUILD
+  exec mkdir -p $SAL_WORK_DIR/rpmbuild/BUILDROOT
+  exec mkdir -p $SAL_WORK_DIR/rpmbuild/RPMS
+  exec mkdir -p $SAL_WORK_DIR/rpmbuild/SOURCES
+  exec mkdir -p $SAL_WORK_DIR/rpmbuild/SPECS
+  exec mkdir -p $SAL_WORK_DIR/rpmbuild/SRPMS
+  exec mkdir -p ts_EFDruntime-$SALVERSION/opt/lsst/ts_sal
+  exec mkdir -p ts_EFDruntime-$SALVERSION/opt/lsst/ts_sal/sql
+  exec mkdir -p ts_EFDruntime-$SALVERSION/opt/lsst/ts_sal/bin
+  exec mkdir -p ts_EFDruntime-$SALVERSION/opt/lsst/ts_sal/scripts
+  exec mkdir -p ts_EFDruntime-$SALVERSION/opt/lsst/ts_sal/lib
+  exec mkdir -p ts_EFDruntime-$SALVERSION/etc/systemd/system
+  foreach subsys $SYSDIC(forEFD) {
+     catch {genefdwriters $subsys}
+     cd $SAL_WORK_DIR
+     genefdsetup $subsys
+     foreach type "command event telemetry" { 
+        copyasset $SAL_WORK_DIR/[set subsys]/cpp/src/sacpp_[set subsys]_[set type]_efdwriter ts_EFDruntime-$SALVERSION/opt/lsst/ts_sal/bin/.
+     }
+     copyasset $SAL_WORK_DIR/idl-templates/validated/[set subsys]_revCodes.tcl ts_EFDruntime-$SALVERSION/opt/lsst/ts_sal/scripts/.
+     set fsql [open /tmp/dosql w]
+     puts $fsql "cat $SAL_WORK_DIR/sql/[set subsys]_*.sqldef > ts_EFDruntime-$SALVERSION/opt/lsst/ts_sal/sql/[set subsys].sqldef"
+     puts $fsql "cat $SAL_WORK_DIR/sql/[set subsys]_*.sqlwrt > ts_EFDruntime-$SALVERSION/opt/lsst/ts_sal/sql/[set subsys].sqlwrt"
+     puts $fsql "cat $SAL_WORK_DIR/sql/[set subsys]_*.sql > ts_EFDruntime-$SALVERSION/opt/lsst/ts_sal/sql/[set subsys].sql"
+     close $fsql
+     exec chmod 755 /tmp/dosql
+     exec /tmp/dosql
+  }
+  copyasset $SAL_WORK_DIR/EFD/cpp/src/sacpp_EFD_largeFileObjectAvailable_send ts_EFDruntime-$SALVERSION/opt/lsst/ts_sal/bin/.
+  copyasset $SAL_WORK_DIR/EFD/cpp/src/sacpp_EFD_largeFileObjectAvailable_log ts_EFDruntime-$SALVERSION/opt/lsst/ts_sal/bin/.
+  copyasset $SAL_DIR/migrateEFDtable.tcl ts_EFDruntime-$SALVERSION/opt/lsst/ts_sal/scripts/.
+  copyasset $SAL_DIR/process_LFO_logevent ts_EFDruntime-$SALVERSION/opt/lsst/ts_sal/scripts/.
+  exec tar cvzf $SAL_WORK_DIR/rpmbuild/SOURCES/ts_EFDruntime-$SALVERSION.tgz ts_EFDruntime-$SALVERSION
+  exec rm -fr $SAL_WORK_DIR/rpmbuild/BUILD/ts_EFDruntime-$SALVERSION/*
+  exec cp -r ts_EFDruntime-$SALVERSION $SAL_WORK_DIR/rpmbuild/BUILD/.
+  listfilesEFDrpm
+  generateEFDrpm
+  set frpm [open /tmp/makerpm w]
+  puts $frpm "#!/bin/sh
+export QA_RPATHS=0x001F
+rpmbuild -bi -bl -v $SAL_WORK_DIR/rpmbuild/SPECS/ts_EFDruntime.spec
+rpmbuild -bb -bl -v $SAL_WORK_DIR/rpmbuild/SPECS/ts_EFDruntime.spec
+"
+  close $frpm
+  exec chmod 755 /tmp/makerpm
+  exec /tmp/makerpm  >& /tmp/makerpm.log
+  exec cat /tmp/makerpm.log
+}
+
 
 proc genefdsetup { subsys } {
 global SALVERSION
    foreach wtype "command event telemetry" {
-     set fout [open [set subsys]-$SALVERSION/etc/systemd/system/[set subsys]_[set wtype]_efdwriter.service w]
+     set fout [open ts_EFDruntime-$SALVERSION/etc/systemd/system/[set subsys]_[set wtype]_efdwriter.service w]
      puts $fout "
 \[Unit\]
 Description=EFD $subsys $wtype writer
@@ -130,7 +199,7 @@ WantedBy=multi-user.target
 
 
 proc generatemetarpm { } {
-global SYSDIC SALVERSION
+global SYSDIC SALVERSION SAL_WORK_DIR
    set fout [open $SAL_WORK_DIR/rpmbuild/SPECS/ts_sal_runtime.spec w]
    puts $fout "
 
@@ -151,6 +220,7 @@ Vendor:    %{vendor}
 License:   %{license}
 Summary:   %{summary}
 Group:     %{group}
+AutoReqProv: no
 #Source:    %{source}
 URL:       %{url}
 Prefix:    %{_prefix}
@@ -162,7 +232,7 @@ Requires: OpenSpliceDDS = 6.4.1
    }
    puts $fout "
 %description
-This metapackage is used it install all the SAL runtime packages at once
+This metapackage is used to install all the SAL runtime packages at once
 
 %setup -c -T
 
@@ -181,6 +251,60 @@ rpmbuild -ba -v $SAL_WORK_DIR/rpmbuild/SPECS/ts_sal_runtime.spec
   exec cat /tmp/makerpm.log
 }
 
+proc generateATmetarpm { } {
+global SYSDIC SALVERSION SAL_WORK_DIR
+   set fout [open $SAL_WORK_DIR/rpmbuild/SPECS/ts_sal_ATruntime.spec w]
+   puts $fout "
+
+%define name			ts_sal_ATruntime
+%define summary			SAL Aux Telescope runtime meta package
+%define version			$SALVERSION
+%define release			1
+%define license			GPL
+%define group			LSST Telescope and Site
+%define vendor			LSST
+%define packager		dmills@lsst.rog
+
+Name:      %{name}
+Version:   %{version}
+Release:   %{release}
+Packager:  %{packager}
+Vendor:    %{vendor}
+License:   %{license}
+Summary:   %{summary}
+Group:     %{group}
+AutoReqProv: no
+#Source:    %{source}
+URL:       %{url}
+Prefix:    %{_prefix}
+Buildroot: %{buildroot}
+Requires: OpenSpliceDDS = 6.4.1
+"
+   foreach subsys $SYSDIC(systems) {
+      if { [string range $subsys 0 1] == "AT" } {
+        puts $fout "Requires: $subsys = $SALVERSION"
+      }
+   }
+   puts $fout "
+%description
+This metapackage is used to install all the SAL Aux telescope related runtime packages at once
+
+%setup -c -T
+
+%install
+
+%files
+"
+   close $fout
+  set frpm [open /tmp/makerpm w]
+  puts $frpm "#!/bin/sh
+rpmbuild -ba -v $SAL_WORK_DIR/rpmbuild/SPECS/ts_sal_ATruntime.spec
+"
+  close $frpm
+  exec chmod 755 /tmp/makerpm
+  exec /tmp/makerpm  >& /tmp/makerpm.log
+  exec cat /tmp/makerpm.log
+}
 
 proc generaterpm { subsys } {
 global SAL_WORK_DIR SALVERSION RPMFILES
@@ -195,6 +319,7 @@ Vendor: LSST
 License: GPL
 URL: http://project.lsst.org/ts
 Group: Telescope and Site SAL
+AutoReqProv: no
 Source0: [set subsys]-$SALVERSION.tgz
 BuildRoot: $SAL_WORK_DIR/rpmbuild/%\{name\}-%\{version\}
 Packager: dmills@lsst.org
@@ -218,8 +343,8 @@ source /opt/lsst/ts_sal/setup.env
 #salgenerator [set subsys] sal cpp
 #salgenerator [set subsys] sal python
 #salgenerator [set subsys] sal java
-#salgenerator [set subsys] maven
 #salgenerator [set subsys] labview
+#salgenerator [set subsys] lib
 
 %install
 cp -fr * %{buildroot}/.
@@ -229,6 +354,7 @@ cp -fr * %{buildroot}/.
      puts $fout $f
   }
   puts $fout "
+
 %clean
 rm -fr \$RPM_BUILD_ROOT
 
@@ -243,6 +369,51 @@ rm -fr \$RPM_BUILD_ROOT
 #  eval $ctar
 }
 
+proc generateEFDrpm { } {
+global SAL_WORK_DIR SALVERSION RPMFILES
+  set fout [open $SAL_WORK_DIR/rpmbuild/SPECS/ts_EFDruntime.spec w]
+  puts $fout "Name: ts_EFDruntime
+Version: $SALVERSION
+Release: 1%\{?dist\}
+Summary: SAL runtime for EFD runtime Subsystem
+Vendor: LSST
+License: GPL
+URL: http://project.lsst.org/ts
+Group: Telescope and Site SAL
+AutoReqProv: no
+Source0: ts_EFDruntime-$SALVERSION.tgz
+BuildRoot: $SAL_WORK_DIR/rpmbuild/%\{name\}-%\{version\}
+Packager: dmills@lsst.org
+Requires: ts_sal_runtime = $SALVERSION
+
+
+%description
+This is a EFD runtime and environment for the LSST Telescope and Site subsystems.
+It provides table definitions and database writers for all supported subsystems.
+
+%prep
+
+%setup
+ 
+%build
+source /opt/lsst/ts_sal/setup.env
+
+%install
+cp -fr * %{buildroot}/.
+
+%files"
+  foreach f $RPMFILES {
+     puts $fout $f
+  }
+  puts $fout "
+%clean
+
+%post
+%postun
+%changelog
+"
+  close $fout
+}
 
 
 proc generaterddsrpm { version } {

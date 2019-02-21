@@ -815,7 +815,7 @@ public class SAL_SALData {
   	  // Filter expr
           String expr[] = new String[0];
           String sFilter = "SALDataID = " + subsystemID;
-          String fCmd = "filteredCmd" + sal[actorIdx].typeName;
+          String fCmd = "filteredCmd" + sal[actorIdx].topicHandle;
     	  createContentFilteredTopic(actorIdx,fCmd, sFilter, expr);
  	  createReader(actorIdx,false);
 #else

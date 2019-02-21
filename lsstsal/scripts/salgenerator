@@ -139,7 +139,7 @@ foreach subsys $TSUBSYSTEMS {
 if { $OPTIONS(html) } {
    cd $SAL_WORK_DIR
    source $SAL_DIR/updatedetails.tcl
-   source $SAL_DIR/genidlshmem.tcl
+   source $SAL_DIR/genidlshmem_array.tcl
    exec mkdir -p $SAL_WORK_DIR/sql
    set sqlf [glob *.sqldef *.sqlwrt]
    foreach f $sqlf { exec mv $f $SAL_WORK_DIR/sql/. }
@@ -281,7 +281,7 @@ if { $OPTIONS(sal) } {
   set ONEPYTHON 0
   if { [expr $OPTIONS(cpp) + $OPTIONS(isocpp) + $OPTIONS(java) + $OPTIONS(python)] == 0 } {
      stdlog "========================================================================"
-     stdlog "ERROR :  sal option requires a language choice , cpp/isocpp/java/python"
+     stdlog "ERROR :  sal option requires a language choice , cpp/java/python"
      stdlog "========================================================================"
      exit
   }

@@ -510,6 +510,11 @@ set TYPESIZE(int32)  4
 set TYPESIZE(long)   4
 set TYPESIZE(float)  4
 set TYPESIZE(double) 8
+set TYPESIZE(arrayshort)  2
+set TYPESIZE(arraylong)   4
+set TYPESIZE(arrayfloat)  4
+set TYPESIZE(arraydouble) 8
+set TYPESIZE(arrayboolean) 4
 set TYPESIZE(int64)  8
 set TYPESIZE(bool)   4
 set TYPESIZE(boolean) 4
