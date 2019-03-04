@@ -339,7 +339,12 @@ puts stdout $idlfile
      set DONE_CMDEVT 1
    }
   }
-  gentelemetrytestsinglefilescpp $base
+  catch { set result [gencommandtestsinglefilescpp $base] } bad
+  if { $OPTIONS(verbose) } {stdlog $result}
+  catch { set result [geneventtestssinglefilescpp $base] } bad
+  if { $OPTIONS(verbose) } {stdlog $result}
+  catch { set result [gentelemetrytestsinglefilescpp $base] } bad
+  if { $OPTIONS(verbose) } {stdlog $result}
 }
 
 if { $OPTIONS(lib) } {

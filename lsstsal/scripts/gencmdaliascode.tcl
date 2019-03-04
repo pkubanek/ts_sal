@@ -26,7 +26,6 @@ global CMD_ALIASES CMDS DONE_CMDEVT
      stdlog "$result"
      if { $DONE_CMDEVT == 0} {
        catch { set result [gencommandtestscpp $subsys] } bad
-       catch { set result [gencommandtestsinglefilescpp $subsys] } bad
        stdlog "$result"
      }
   }
