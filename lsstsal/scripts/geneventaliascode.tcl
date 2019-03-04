@@ -22,10 +22,7 @@ global EVENT_ALIASES EVTS DONE_CMDEVT
      catch { set result [geneventaliascpp $subsys $fout] } bad
      stdlog "$result"
      if { $DONE_CMDEVT == 0} {
-
-       catch { set result [geneventtestscpp $subsys] } bad
-       catch { set result [geneventtestssinglefilescpp $subsys] } bad
-       
+       catch { set result [geneventtestscpp $subsys] } bad       
        stdlog "$result"
      }
    }

@@ -766,6 +766,7 @@ puts stdout "done addSALDDStypes $idlfile $id $lang"
         close $frep
         exec chmod 755 /tmp/sreplace2.sal
         catch { set result [exec /tmp/sreplace2.sal] } bad
+puts stdout "done sreplace2 $idlfile $id $lang"
       }
       if { $lang == "java" } {
         set frep [open /tmp/sreplace2.sal w]
@@ -786,7 +787,7 @@ puts stdout "done salidlgen $base $lang"
       if { $lang == "cpp" } {
          set incfiles [glob [set base]/cpp/*.h]
          puts stdout "Updating include files : $incfiles"
-         catch { foreach i $incfiles {  exec cp $i $SAL_DIR/include/. } }
+####         catch { foreach i $incfiles {  exec cp $i $SAL_DIR/include/. } }
          exec cp [set base]/cpp/libsacpp_[set base]_types.so $SAL_WORK_DIR/lib/.
          exec ln -sf $SAL_WORK_DIR/[set base]/cpp/src/SAL_[set base].cpp $SAL_WORK_DIR/[set id]/cpp/src/.
          exec ln -sf $SAL_WORK_DIR/[set base]/cpp/src/SAL_[set base].h $SAL_WORK_DIR/[set id]/cpp/src/.

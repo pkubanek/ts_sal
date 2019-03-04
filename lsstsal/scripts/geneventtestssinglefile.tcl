@@ -28,6 +28,7 @@ proc geneventtestssinglefilescpp { subsys } {
     # Execute the makefile. 
     cd $SAL_WORK_DIR/$subsys/cpp/src
     exec make -f $SAL_WORK_DIR/$subsys/cpp/src/Makefile.sacpp_[set subsys]_all_testevents
+    cd $SAL_WORK_DIR
 }
 
 proc insertEventHeader { subsys file_writer } {
