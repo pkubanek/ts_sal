@@ -10,6 +10,7 @@ set SAL_DIR $env(SAL_DIR)
 source $SAL_DIR/sal_version.tcl
 source $SAL_DIR/add_system_dictionary.tcl
 source $SAL_DIR/gengenericefd_array.tcl
+source $SAL_DIR/ospl_version.tcl
 
 set SYSDIC(forEFD) "ATAOS ATArchiver ATBuilding ATCalCS ATCamera ATDome ATDomeTrajectory ATEEC ATHeaderService ATHexapod ATMCS ATMonochromator ATPneumatics ATPtg ATSpectrograph ATTCS ATThermoelectricCooler ATWhiteLight EFD Electrometer"
 
@@ -307,7 +308,7 @@ rpmbuild -ba -v $SAL_WORK_DIR/rpmbuild/SPECS/ts_sal_ATruntime.spec
 }
 
 proc generaterpm { subsys } {
-global SAL_WORK_DIR SALVERSION RPMFILES
+global SAL_WORK_DIR SALVERSION RPMFILES OSPL_VERSION
   exec rm -fr $SAL_WORK_DIR/rpm_[set subsys]
   exec mkdir -p $SAL_WORK_DIR/rpm_[set subsys]
   set fout [open $SAL_WORK_DIR/rpmbuild/SPECS/ts_sal_[set subsys].spec w]
@@ -323,7 +324,7 @@ AutoReqProv: no
 Source0: [set subsys]-$SALVERSION.tgz
 BuildRoot: $SAL_WORK_DIR/rpmbuild/%\{name\}-%\{version\}
 Packager: dmills@lsst.org
-Requires: OpenSpliceDDS >= 6.4.0
+Requires: OpenSpliceDDS >= $OSPL_VERSION
 
 %description
 This is a SAL runtime and build environment for the LSST $subsys subsystem.
