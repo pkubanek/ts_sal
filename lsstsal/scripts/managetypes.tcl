@@ -549,6 +549,11 @@ set TYPEFORMAT(unsignedint)    "%d"
 set TYPEFORMAT(unsignedint32)  "%d"
 set TYPEFORMAT(unsignedlong)   "%ld"
 set TYPEFORMAT(unsignedlonglong)   "%ld"
+set TYPEFORMAT(arrayshort)  "%d"
+set TYPEFORMAT(arraylong)   "%d"
+set TYPEFORMAT(arrayfloat)  "%d"
+set TYPEFORMAT(arraydouble) "%ld"
+set TYPEFORMAT(arrayboolean) "%d"
 
 
 
