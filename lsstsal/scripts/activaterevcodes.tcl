@@ -1,7 +1,6 @@
 #!/usr/bin/env tclsh
 
 set SAL_WORK_DIR $env(SAL_WORK_DIR)
-source $SAL_WORK_DIR/.salwork/revCodes.tcl
 
 proc updateRevCodes { subsys } {
 global SAL_WORK_DIR
