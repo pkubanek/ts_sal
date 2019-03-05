@@ -40,6 +40,7 @@ set SAL_DIR $env(SAL_DIR)
 set OSPL_HOME $env(OSPL_HOME)
 source $SAL_DIR/versioning.tcl
 source $SAL_DIR/utilities.tcl
+source $SAL_DIR/activaterevcodes.tcl
 source $SAL_DIR/add_system_dictionary.tcl
 
 puts stdout "argv = $argv"
@@ -207,6 +208,7 @@ if { $OPTIONS(validate) } {
     foreach n $new {
       checkidl [file tail $n]
     }
+    updateRevCodes $i
     stdlog "Completed $i validation\n\n"
   }
 }
