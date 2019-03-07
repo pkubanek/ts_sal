@@ -3,6 +3,8 @@
 #
 #   NOTE ~/.rpmmacros sets the rpmbuild root directory
 #
+#   On yum server do   createrepo --update /path-to-repo
+#   On clients do      yum makecache fast
 #
 set SAL_WORK_DIR $env(SAL_WORK_DIR)
 set OSPL_HOME $env(OSPL_HOME)
@@ -121,7 +123,7 @@ global SALVERSION env RPMFILES SAL_WORK_DIR SYSDIC
    }
 }
 
-proc genefdrpm { } {
+proc generateEFDrpm { } {
 global SAL_WORK_DIR SALVERSION SAL_DIR SYSDIC
   exec rm -fr ts_EFDruntime-$SALVERSION/opt/lsst/ts_sal/*
   exec mkdir -p $SAL_WORK_DIR/rpmbuild/BUILD
@@ -144,6 +146,8 @@ global SAL_WORK_DIR SALVERSION SAL_DIR SYSDIC
         copyasset $SAL_WORK_DIR/[set subsys]/cpp/src/sacpp_[set subsys]_[set type]_efdwriter ts_EFDruntime-$SALVERSION/opt/lsst/ts_sal/bin/.
      }
      copyasset $SAL_WORK_DIR/idl-templates/validated/[set subsys]_revCodes.tcl ts_EFDruntime-$SALVERSION/opt/lsst/ts_sal/scripts/.
+     copyasset $SAL_WORK_DIR/lib/libsacpp_[set subsys]_types.so ts_EFDruntime-$SALVERSION/opt/lsst/ts_sal/lib/.
+     copyasset $SAL_WORK_DIR/lib/libSAL_[set subsys].so ts_EFDruntime-$SALVERSION/opt/lsst/ts_sal/lib/.
      set fsql [open /tmp/dosql w]
      puts $fsql "cat $SAL_WORK_DIR/sql/[set subsys]_*.sqldef > ts_EFDruntime-$SALVERSION/opt/lsst/ts_sal/sql/[set subsys].sqldef"
      puts $fsql "cat $SAL_WORK_DIR/sql/[set subsys]_*.sqlwrt > ts_EFDruntime-$SALVERSION/opt/lsst/ts_sal/sql/[set subsys].sqlwrt"
@@ -156,11 +160,12 @@ global SAL_WORK_DIR SALVERSION SAL_DIR SYSDIC
   copyasset $SAL_WORK_DIR/EFD/cpp/src/sacpp_EFD_largeFileObjectAvailable_log ts_EFDruntime-$SALVERSION/opt/lsst/ts_sal/bin/.
   copyasset $SAL_DIR/migrateEFDtable.tcl ts_EFDruntime-$SALVERSION/opt/lsst/ts_sal/scripts/.
   copyasset $SAL_DIR/process_LFO_logevent ts_EFDruntime-$SALVERSION/opt/lsst/ts_sal/scripts/.
+  generateEFDenv
   exec tar cvzf $SAL_WORK_DIR/rpmbuild/SOURCES/ts_EFDruntime-$SALVERSION.tgz ts_EFDruntime-$SALVERSION
   exec rm -fr $SAL_WORK_DIR/rpmbuild/BUILD/ts_EFDruntime-$SALVERSION/*
   exec cp -r ts_EFDruntime-$SALVERSION $SAL_WORK_DIR/rpmbuild/BUILD/.
   listfilesEFDrpm
-  generateEFDrpm
+  generateEFDspec
   set frpm [open /tmp/makerpm w]
   puts $frpm "#!/bin/sh
 export QA_RPATHS=0x001F
@@ -171,6 +176,23 @@ rpmbuild -bb -bl -v $SAL_WORK_DIR/rpmbuild/SPECS/ts_EFDruntime.spec
   exec chmod 755 /tmp/makerpm
   exec /tmp/makerpm  >& /tmp/makerpm.log
   exec cat /tmp/makerpm.log
+}
+
+proc generateEFDenv { } {
+global OSPL_VERSION SALVERSION
+   set fenv [open ts_EFDruntime-$SALVERSION/opt/lsst/ts_sal/setupEFD.env w]
+   puts $fenv "
+export LSST_SDK_INSTALL=/opt/lsst/ts_sal
+export OSPL_HOME=/opt/OpenSpliceDDS/V[set OSPL_VERSION]/HDE/x86_64.linux
+export LSST_DDS_DOMAIN=auxtelpath
+export SAL_HOME=\$LSST_SDK_INSTALL/lsstsal
+export LD_LIBRARY_PATH=\$\{SAL_WORK_DIR\}/lib:\$\{SAL_HOME\}/lib
+export PATH=\$\{SAL_HOME\}/bin:\$\{PATH\}
+source \$OSPL_HOME/release.com
+export SAL_VERSION=$SALVERSION
+echo \"LSST middleware EFD environment v$SALVERSION is configured\"
+"
+   close $fenv
 }
 
 
@@ -187,7 +209,7 @@ After=network-online.target
 \[Service\]
 Type=simple
 WorkingDirectory=/opt/lsst/ts_sal/bin
-ExecStart=/bin/bash -c 'source /opt/lsst/ts_sal/setup.env && ./sacpp_[set subsys_set wtype]_efdwriter'
+ExecStart=/bin/bash -c 'source /opt/lsst/ts_sal/setup.env && ./sacpp_[set subsys]_[set wtype]_efdwriter'
 Restart=on-failure
 User=salmgr
 
@@ -200,7 +222,7 @@ WantedBy=multi-user.target
 
 
 proc generatemetarpm { } {
-global SYSDIC SALVERSION SAL_WORK_DIR
+global SYSDIC SALVERSION SAL_WORK_DIR OSPL_VERSION
    set fout [open $SAL_WORK_DIR/rpmbuild/SPECS/ts_sal_runtime.spec w]
    puts $fout "
 
@@ -226,7 +248,7 @@ AutoReqProv: no
 URL:       %{url}
 Prefix:    %{_prefix}
 Buildroot: %{buildroot}
-Requires: OpenSpliceDDS = 6.4.1
+Requires: OpenSpliceDDS = $OSPL_VERSION
 "
    foreach subsys $SYSDIC(systems) {
       puts $fout "Requires: $subsys = $SALVERSION"
@@ -279,7 +301,7 @@ AutoReqProv: no
 URL:       %{url}
 Prefix:    %{_prefix}
 Buildroot: %{buildroot}
-Requires: OpenSpliceDDS = 6.4.1
+Requires: OpenSpliceDDS = $OSPL_VERSION
 "
    foreach subsys $SYSDIC(systems) {
       if { [string range $subsys 0 1] == "AT" } {
@@ -336,7 +358,7 @@ for the middleware interface.
 %setup
  
 %build
-source /opt/lsst/ts_sal/setup.env
+#source /opt/lsst/ts_sal/setup.env
 #cp /opt/lsst/ts_xml/sal_interfaces/*.xml .
 #cp /opt/lsst/ts_xml/sal_interfaces/[set subsys]/*.xml .
 #salgenerator [set subsys] validate
@@ -370,8 +392,8 @@ rm -fr \$RPM_BUILD_ROOT
 #  eval $ctar
 }
 
-proc generateEFDrpm { } {
-global SAL_WORK_DIR SALVERSION RPMFILES
+proc generateEFDspec { } {
+global SAL_WORK_DIR SALVERSION RPMFILES OSPL_VERSION
   set fout [open $SAL_WORK_DIR/rpmbuild/SPECS/ts_EFDruntime.spec w]
   puts $fout "Name: ts_EFDruntime
 Version: $SALVERSION
@@ -385,7 +407,7 @@ AutoReqProv: no
 Source0: ts_EFDruntime-$SALVERSION.tgz
 BuildRoot: $SAL_WORK_DIR/rpmbuild/%\{name\}-%\{version\}
 Packager: dmills@lsst.org
-Requires: ts_sal_runtime = $SALVERSION
+Requires: OpenSpliceDDS >= $OSPL_VERSION
 
 
 %description
@@ -397,7 +419,7 @@ It provides table definitions and database writers for all supported subsystems.
 %setup
  
 %build
-source /opt/lsst/ts_sal/setup.env
+#source /opt/lsst/ts_sal/setup.env
 
 %install
 cp -fr * %{buildroot}/.
