@@ -208,7 +208,7 @@ global SAL_WORK_DIR
    close $fact
 ############################ IMPORTANT ####################################
 ##### If you change this, change it in code/templates/SALActor.java
-   set tuneableQos false
+   set tuneableQos true
 ###   if { $base == "m1m3" } {set tuneableQos false}
 ############################ IMPORTANT ####################################
    puts $fout "
