@@ -876,6 +876,7 @@ global SAL_WORK_DIR
 
 proc saljavaclassgen { base id } {
 global SAL_WORK_DIR OPTIONS
+ if { $OPTIONS(fastest) == 0 } {
    cd $SAL_WORK_DIR/$id/java/standalone
    catch { set result [exec make -f Makefile.saj_[set id]_pub] } bad
    catch {puts stdout "result = $result"}
@@ -895,10 +896,12 @@ global SAL_WORK_DIR OPTIONS
    catch {puts stdout "$bad"}
    puts stdout "javac : Done Event/Logger"
    cd $SAL_WORK_DIR
+ }
 }
 
 proc salcpptestgen { base id } {
 global SAL_WORK_DIR OPTIONS DONE_CMDEVT
+ if { $OPTIONS(fastest) == 0 } {
   puts stdout "Generating cpp test programs for $id"
   cd $SAL_WORK_DIR/$id/cpp/standalone
   catch { set result [exec make -f Makefile.sacpp_[set id]_sub] } bad
@@ -928,6 +931,7 @@ global SAL_WORK_DIR OPTIONS DONE_CMDEVT
    set DONE_CMDEVT 1
    cd $SAL_WORK_DIR
   }
+ }
 }
 
 source $SAL_DIR/add_system_dictionary.tcl
