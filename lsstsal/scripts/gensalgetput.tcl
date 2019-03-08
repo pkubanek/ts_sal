@@ -151,7 +151,7 @@ salReturn SAL_[set base]::flushSamples_[set name]([set base]_[set name]C *data)
     if (debugLevel > 8) \{
         cout << \"===	\[flushSamples\] getSample returns :\" << istatus << endl;
     \}
-    sal\[SAL__[set base]_[set name]_ACTOR\].sampleAge = 100.0;
+    sal\[SAL__[set base]_[set name]_ACTOR\].sampleAge = 1D20.0;
     return SAL__OK;
 \}
 "
@@ -220,7 +220,7 @@ void SAL_SALData::initSalActors ()
       sal\[i\].isEventWriter = false;
       sal\[i\].isActive = false;
       sal\[i\].maxSamples = LENGTH_UNLIMITED;
-      sal\[i\].sampleAge = 100.0;
+      sal\[i\].sampleAge = 1D20.0;
       sal\[i\].historyDepth = 10000;
       sal\[i\].tuneableQos = [set tuneableQos];
     \}
@@ -543,7 +543,7 @@ puts $fout "
           sal\[actorIdx\].maxSamples = DDS.LENGTH_UNLIMITED.value;
           sal\[actorIdx\].sampleAge = -1.0;
           status = getSample(data);
-          sal\[actorIdx\].sampleAge = 100.0;
+          sal\[actorIdx\].sampleAge = 1D20.0;
           return SAL__OK;
 	\}
 
