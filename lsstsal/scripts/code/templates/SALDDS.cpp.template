@@ -1262,7 +1262,7 @@ void SAL_SALData::createTopic(char *topicName)
   reliable_topic_qos.reliability.kind = RELIABLE_RELIABILITY_QOS;
   reliable_topic_qos.durability.kind = PERSISTENT_DURABILITY_QOS;
   reliable_topic_qos.history.kind = KEEP_LAST_HISTORY_QOS;
-  reliable_topic_qos.history.depth = 1000;
+  reliable_topic_qos.history.depth = 10000;
 
   /* Make the tailored QoS the new default. */
   status = participant->set_default_topic_qos(reliable_topic_qos);
@@ -1280,7 +1280,7 @@ void SAL_SALData::createTopic2(char *topicName)
   reliable_topic_qos2.reliability.kind = RELIABLE_RELIABILITY_QOS;
   reliable_topic_qos2.durability.kind = PERSISTENT_DURABILITY_QOS;
   reliable_topic_qos2.history.kind = KEEP_LAST_HISTORY_QOS;
-  reliable_topic_qos2.history.depth = 1000;
+  reliable_topic_qos2.history.depth = 10000;
 
   /* Make the tailored QoS the new default. */
   status = participant->set_default_topic_qos(reliable_topic_qos2);
@@ -1300,9 +1300,9 @@ void SAL_SALData::createTopic(int actorIdx)
     sal[actorIdx].reliable_topic_qos.durability.kind = PERSISTENT_DURABILITY_QOS;
     sal[actorIdx].reliable_topic_qos.history.kind = KEEP_LAST_HISTORY_QOS;
     sal[actorIdx].reliable_topic_qos.history.depth = sal[actorIdx].historyDepth;
-    sal[actorIdx].reliable_topic_qos.resource_limits.max_samples = sal[actorIdx].historyDepth;
-    sal[actorIdx].reliable_topic_qos.resource_limits.max_instances = sal[actorIdx].historyDepth;
-    sal[actorIdx].reliable_topic_qos.resource_limits.max_samples_per_instance = sal[actorIdx].historyDepth;
+//    sal[actorIdx].reliable_topic_qos.resource_limits.max_samples = sal[actorIdx].historyDepth;
+//    sal[actorIdx].reliable_topic_qos.resource_limits.max_instances = sal[actorIdx].historyDepth;
+//    sal[actorIdx].reliable_topic_qos.resource_limits.max_samples_per_instance = sal[actorIdx].historyDepth;
 
   /* Make the tailored QoS the new default. */
     status = participant->set_default_topic_qos(sal[actorIdx].reliable_topic_qos);
@@ -1323,9 +1323,9 @@ void SAL_SALData::createTopic2(int actorIdx)
     sal[actorIdx].reliable_topic_qos2.durability.kind = PERSISTENT_DURABILITY_QOS;
     sal[actorIdx].reliable_topic_qos2.history.kind = KEEP_LAST_HISTORY_QOS;
     sal[actorIdx].reliable_topic_qos2.history.depth = sal[actorIdx].historyDepth;
-    sal[actorIdx].reliable_topic_qos.resource_limits.max_samples = sal[actorIdx].historyDepth;
-    sal[actorIdx].reliable_topic_qos.resource_limits.max_instances = sal[actorIdx].historyDepth;
-    sal[actorIdx].reliable_topic_qos.resource_limits.max_samples_per_instance = sal[actorIdx].historyDepth;
+//    sal[actorIdx].reliable_topic_qos.resource_limits.max_samples = sal[actorIdx].historyDepth;
+//    sal[actorIdx].reliable_topic_qos.resource_limits.max_instances = sal[actorIdx].historyDepth;
+//    sal[actorIdx].reliable_topic_qos.resource_limits.max_samples_per_instance = sal[actorIdx].historyDepth;
 
   /* Make the tailored QoS the new default. */
     status = participant->set_default_topic_qos(sal[actorIdx].reliable_topic_qos2);
@@ -1346,8 +1346,9 @@ void SAL_SALData::createTopic(int actorIdx, char *topicName)
     sal[actorIdx].reliable_topic_qos.durability.kind = PERSISTENT_DURABILITY_QOS;
     sal[actorIdx].reliable_topic_qos.history.kind = KEEP_LAST_HISTORY_QOS;
     sal[actorIdx].reliable_topic_qos.history.depth = sal[actorIdx].historyDepth;
-    sal[actorIdx].reliable_topic_qos.resource_limits.max_samples = sal[actorIdx].historyDepth;
-    sal[actorIdx].reliable_topic_qos.resource_limits.max_samples_per_instance = sal[actorIdx].historyDepth;
+//    sal[actorIdx].reliable_topic_qos.resource_limits.max_samples = sal[actorIdx].historyDepth;
+//    sal[actorIdx].reliable_topic_qos.resource_limits.max_instances = sal[actorIdx].historyDepth;
+//    sal[actorIdx].reliable_topic_qos.resource_limits.max_samples_per_instance = sal[actorIdx].historyDepth;
 
   /* Make the tailored QoS the new default. */
     status = participant->set_default_topic_qos(sal[actorIdx].reliable_topic_qos);
@@ -1367,8 +1368,9 @@ void SAL_SALData::createTopic2(int actorIdx, char *topicName)
     sal[actorIdx].reliable_topic_qos2.durability.kind = PERSISTENT_DURABILITY_QOS;
     sal[actorIdx].reliable_topic_qos2.history.kind = KEEP_LAST_HISTORY_QOS;
     sal[actorIdx].reliable_topic_qos2.history.depth = sal[actorIdx].historyDepth;
-    sal[actorIdx].reliable_topic_qos2.resource_limits.max_samples = sal[actorIdx].historyDepth;
-    sal[actorIdx].reliable_topic_qos2.resource_limits.max_samples_per_instance = sal[actorIdx].historyDepth;
+//    sal[actorIdx].reliable_topic_qos2.resource_limits.max_samples = sal[actorIdx].historyDepth;
+//    sal[actorIdx].reliable_topic_qos2.resource_limits.max_instances = sal[actorIdx].historyDepth;
+//    sal[actorIdx].reliable_topic_qos2.resource_limits.max_samples_per_instance = sal[actorIdx].historyDepth;
 
   /* Make the tailored QoS the new default. */
     status = participant->set_default_topic_qos(sal[actorIdx].reliable_topic_qos2);
@@ -1697,7 +1699,7 @@ void SAL_SALData::createReader(int actorIdx,bool filtered)
   DDS::Duration_t a_timeout;
   a_timeout.sec = 5;
   a_timeout.nanosec = 0;
-  sal[actorIdx].sampleAge = 100.0;
+  sal[actorIdx].sampleAge = 1.0e20;
   status = sal[actorIdx].reader->wait_for_historical_data(a_timeout);
 }
 
@@ -1719,7 +1721,7 @@ void SAL_SALData::createReader2(int actorIdx,bool filtered)
   DDS::Duration_t a_timeout;
   a_timeout.sec = 5;
   a_timeout.nanosec = 0;
-  sal[actorIdx].sampleAge = 100.0;
+  sal[actorIdx].sampleAge = 1.0e20;
   status = sal[actorIdx].reader2->wait_for_historical_data(a_timeout);
 }
 
