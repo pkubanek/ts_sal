@@ -1,5 +1,0 @@
-<map id="G" name="G">
-<area shape="rect" href="$classdds_1_1peer_1_1QueryConditionImpl.html" title="{dds::peer::QueryConditionImpl\n||+ ~QueryConditionImpl()\l+ get_query_expression()\l+ get_query_parameters()\l+ set_query_parameters()\l}" alt="" coords="5,455,203,599"/>
-<area shape="rect" href="$classdds_1_1peer_1_1TReadConditionImpl.html" title="{dds::peer::TReadConditionImpl\&lt; ARG, FUNCTOR \&gt;\n|# rcond_\l# arg_\l# f_\l|+ TReadConditionImpl()\l+ ~TReadConditionImpl()\l+ get_sample_state_mask()\l+ get_view_state_mask()\l+ get_instance_state_mask()\l+ get_datareader()\l+ execute()\l+ get_trigger_value()\l# get_dds_condition()\l}" alt="" coords="227,389,547,664"/>
-<area shape="rect" href="$classdds_1_1peer_1_1ConditionImpl.html" title="{dds::peer::ConditionImpl\n||+ ~ConditionImpl()\l+ execute()\l+ get_trigger_value()\l# get_dds_condition()\l}" alt="" coords="164,5,327,149"/>
-</map>

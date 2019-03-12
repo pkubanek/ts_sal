@@ -1,4 +1,0 @@
-<map id="G" name="G">
-<area shape="rect" href="$classdds_1_1ReadCondition.html" title="{dds::ReadCondition\n|# pcond_\l|+ ReadCondition()\l+ ~ReadCondition()\l+ operator==()\l+ operator&#45;\&gt;()\l+ operator&#45;\&gt;()\l# can_downcast()\l# ReadCondition()\l}" alt="" coords="69,235,203,435"/>
-<area shape="rect" href="$classdds_1_1Condition.html" title="{dds::Condition\n|# cond_\l|+ Condition()\l+ ~Condition()\l+ operator==()\l+ operator&#45;\&gt;()\l+ operator&#45;\&gt;()\l# can_downcast()\l}" alt="" coords="75,5,197,187"/>
-</map>

@@ -1,3 +1,0 @@
-javah -jni -classpath ../ org.ocera.tools.JORTEConversions
-
-javah -jni -classpath /home/luky/workspace/jorte/class/ org.ocera.orte.
