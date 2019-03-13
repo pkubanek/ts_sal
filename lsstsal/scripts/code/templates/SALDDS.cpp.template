@@ -87,7 +87,7 @@ double SAL_SALData::getCurrentTime()
      double ts;
 
      gettimeofday(&now, &zone);
-     ts = (double)now.tv_sec + (double)now.tv_usec/1000000.;
+     ts = (double)now.tv_sec + (double)now.tv_usec/1000.;
      return ts;
 }
 
@@ -1260,9 +1260,9 @@ void SAL_SALData::createTopic(char *topicName)
   status = participant->get_default_topic_qos(reliable_topic_qos);
   checkStatus(status, "DDS::DomainParticipant::get_default_topic_qos");
   reliable_topic_qos.reliability.kind = RELIABLE_RELIABILITY_QOS;
-  reliable_topic_qos.durability.kind = PERSISTENT_DURABILITY_QOS;
+  reliable_topic_qos.durability.kind = TRANSIENT_DURABILITY_QOS;
   reliable_topic_qos.history.kind = KEEP_LAST_HISTORY_QOS;
-  reliable_topic_qos.history.depth = 10000;
+  reliable_topic_qos.history.depth = 10;
 
   /* Make the tailored QoS the new default. */
   status = participant->set_default_topic_qos(reliable_topic_qos);
@@ -1278,9 +1278,9 @@ void SAL_SALData::createTopic2(char *topicName)
   status = participant->get_default_topic_qos(reliable_topic_qos2);
   checkStatus(status, "DDS::DomainParticipant::get_default_topic_qos");
   reliable_topic_qos2.reliability.kind = RELIABLE_RELIABILITY_QOS;
-  reliable_topic_qos2.durability.kind = PERSISTENT_DURABILITY_QOS;
+  reliable_topic_qos2.durability.kind = TRANSIENT_DURABILITY_QOS;
   reliable_topic_qos2.history.kind = KEEP_LAST_HISTORY_QOS;
-  reliable_topic_qos2.history.depth = 10000;
+  reliable_topic_qos2.history.depth = 10;
 
   /* Make the tailored QoS the new default. */
   status = participant->set_default_topic_qos(reliable_topic_qos2);
@@ -1297,7 +1297,7 @@ void SAL_SALData::createTopic(int actorIdx)
   checkStatus(status, "DDS::DomainParticipant::get_default_topic_qos");
   if ( sal[actorIdx].tuneableQos) {
     sal[actorIdx].reliable_topic_qos.reliability.kind = RELIABLE_RELIABILITY_QOS;
-    sal[actorIdx].reliable_topic_qos.durability.kind = PERSISTENT_DURABILITY_QOS;
+    sal[actorIdx].reliable_topic_qos.durability.kind = TRANSIENT_DURABILITY_QOS;
     sal[actorIdx].reliable_topic_qos.history.kind = KEEP_LAST_HISTORY_QOS;
     sal[actorIdx].reliable_topic_qos.history.depth = sal[actorIdx].historyDepth;
 //    sal[actorIdx].reliable_topic_qos.resource_limits.max_samples = sal[actorIdx].historyDepth;
@@ -1320,7 +1320,7 @@ void SAL_SALData::createTopic2(int actorIdx)
   checkStatus(status, "DDS::DomainParticipant::get_default_topic_qos");
   if ( sal[actorIdx].tuneableQos) {
     sal[actorIdx].reliable_topic_qos2.reliability.kind = RELIABLE_RELIABILITY_QOS;
-    sal[actorIdx].reliable_topic_qos2.durability.kind = PERSISTENT_DURABILITY_QOS;
+    sal[actorIdx].reliable_topic_qos2.durability.kind = TRANSIENT_DURABILITY_QOS;
     sal[actorIdx].reliable_topic_qos2.history.kind = KEEP_LAST_HISTORY_QOS;
     sal[actorIdx].reliable_topic_qos2.history.depth = sal[actorIdx].historyDepth;
 //    sal[actorIdx].reliable_topic_qos.resource_limits.max_samples = sal[actorIdx].historyDepth;
@@ -1343,7 +1343,7 @@ void SAL_SALData::createTopic(int actorIdx, char *topicName)
   checkStatus(status, "DDS::DomainParticipant::get_default_topic_qos");
   if ( sal[actorIdx].tuneableQos) {
     sal[actorIdx].reliable_topic_qos.reliability.kind = RELIABLE_RELIABILITY_QOS;
-    sal[actorIdx].reliable_topic_qos.durability.kind = PERSISTENT_DURABILITY_QOS;
+    sal[actorIdx].reliable_topic_qos.durability.kind = TRANSIENT_DURABILITY_QOS;
     sal[actorIdx].reliable_topic_qos.history.kind = KEEP_LAST_HISTORY_QOS;
     sal[actorIdx].reliable_topic_qos.history.depth = sal[actorIdx].historyDepth;
 //    sal[actorIdx].reliable_topic_qos.resource_limits.max_samples = sal[actorIdx].historyDepth;
@@ -1365,7 +1365,7 @@ void SAL_SALData::createTopic2(int actorIdx, char *topicName)
   checkStatus(status, "DDS::DomainParticipant::get_default_topic_qos");
   if ( sal[actorIdx].tuneableQos) {
     sal[actorIdx].reliable_topic_qos2.reliability.kind = RELIABLE_RELIABILITY_QOS;
-    sal[actorIdx].reliable_topic_qos2.durability.kind = PERSISTENT_DURABILITY_QOS;
+    sal[actorIdx].reliable_topic_qos2.durability.kind = TRANSIENT_DURABILITY_QOS;
     sal[actorIdx].reliable_topic_qos2.history.kind = KEEP_LAST_HISTORY_QOS;
     sal[actorIdx].reliable_topic_qos2.history.depth = sal[actorIdx].historyDepth;
 //    sal[actorIdx].reliable_topic_qos2.resource_limits.max_samples = sal[actorIdx].historyDepth;
