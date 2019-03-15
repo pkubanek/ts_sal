@@ -63,8 +63,6 @@ global CMD_ALIASES CMDS SAL_WORK_DIR
 int SAL_SALData::issueCommand_[set i]( SALData_command_[set i]C *data )
 \{
   
-  int countdown;
-  SALData::ackcmdSeq response;
   InstanceHandle_t cmdHandle = DDS::HANDLE_NIL;
   SALData::command_[set i][set revcode] Instance;
   int actorIdx = SAL__SALData_command_[set i]_ACTOR;
@@ -112,13 +110,6 @@ int SAL_SALData::issueCommand_[set i]( SALData_command_[set i]C *data )
           logError(status);
       \}
   \}
-   countdown = 100;
-   while (status != SAL__CMD_ACK && countdown > 0) \{
-      status = getResponse_[set i](response);
-      usleep(SAL__FASTPOLL);
-      countdown--;
-   \}
-  if (status != SAL__CMD_ACK) return (-1);
   return (sal\[actorIdx\].sndSeqNum-1);
 \}
 "
