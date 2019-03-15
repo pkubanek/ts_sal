@@ -64,7 +64,7 @@ def make_salpy_lib(sal_name, demo=False):
     for name_dir in sal_name_dirs:
         shutil.rmtree(os.path.join(name_dir), ignore_errors=True)
 
-    for subdir in ("html", "include", "lib"):
+    for subdir in ("include", "lib"):
         shutil.rmtree(os.path.join(sal_work_dir, subdir), ignore_errors=True)
 
     os.environ[ld_lib_path_name] = f"{sal_work_dir}/lib:{initial_ld_lib_path}"
@@ -94,7 +94,7 @@ def make_salpy_lib(sal_name, demo=False):
 
     print(f"*** Validate and generate {sal_name} libraries ***")
     demo_suffix = "" if demo else " fastest"
-    for command in ("validate", "html", f"sal cpp{demo_suffix}", f"sal python{demo_suffix}"):
+    for command in ("validate", f"sal cpp{demo_suffix}", f"sal python{demo_suffix}"):
         full_cmd = f"salgenerator {sal_name} {command}"
         print(f"***** {full_cmd}")
         subprocess.run(full_cmd, check=True, cwd=sal_work_dir, shell=True)
@@ -111,7 +111,7 @@ def make_salpy_lib(sal_name, demo=False):
         os.rename(src_path, dest_path)
 
     print(f"*** Final cleanup ***")
-    for subdir in ("html", "include", "lib"):
+    for subdir in ("include", "lib"):
         shutil.rmtree(os.path.join(sal_work_dir, subdir), ignore_errors=True)
 
     print(f"*** Done generating SALPY_{sal_name} ***")
