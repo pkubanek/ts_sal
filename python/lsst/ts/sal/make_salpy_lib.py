@@ -37,8 +37,16 @@ def get_env_dir(name, err_msg):
     return path
 
 
-def make_salpy_lib(sal_name):
-    """Make a SALPY library for the given component"""
+def make_salpy_lib(sal_name, demo=False):
+    """Make a SALPY library for the given component.
+
+    Parameters
+    ----------
+    sal_name : `str`
+        Name of SAL component, e.g. "Test"
+    demo : `bool`
+        If True build a demo reader and writer for each topic.
+    """
     print(f"*** Make SALPY_{sal_name} library ***")
     sal_dir = get_env_dir("TS_SAL_DIR", "ts_sal not setup")
     xml_dir = get_env_dir("TS_XML_DIR", "ts_xml not setup")
@@ -73,9 +81,10 @@ def make_salpy_lib(sal_name):
             shutil.copy(xmlpath, sal_work_dir)
 
         print(f"*** Validate and generate {sal_name} libraries ***")
-        for command in ("validate", "html", "sal cpp", "sal python"):
+        demo_suffix = "" if demo else " fastest"
+        for command in ("validate", "html", f"sal cpp{demo_suffix}", f"sal python{demo_suffix}"):
             full_cmd = f"salgenerator {sal_name} {command}"
-            print(full_cmd)
+            print(f"***** {full_cmd}")
             subprocess.run(full_cmd, check=True, cwd=sal_work_dir, shell=True)
 
         print(f"*** Move {sal_name} libraries into place ***")
