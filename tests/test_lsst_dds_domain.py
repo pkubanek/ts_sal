@@ -41,6 +41,7 @@ class SimpleController:
     def __init__(self, int0):
         self.required_int0 = int0
         self.manager = SALPY_Test.SAL_Test(SAL_INDEX)
+        self.manager.setDebugLevel(0)
         self.run = True
         """Set `run` False to quit"""
         self.setScalars_data = SALPY_Test.Test_command_setScalarsC()
@@ -77,6 +78,7 @@ class SimpleRemote:
     """
     def __init__(self):
         self.manager = SALPY_Test.SAL_Test(SAL_INDEX)
+        self.manager.setDebugLevel(0)
         self.setScalars_data = SALPY_Test.Test_command_setScalarsC()
         self.manager.salCommand("Test_command_setScalars")
         self.done_ack_codes = frozenset((
@@ -109,7 +111,10 @@ class SimpleRemote:
                 continue
             if ack.ack == SALPY_Test.SAL__CMD_COMPLETE:
                 return int0
-            raise RuntimeError("Command ended with ack.ack={ack.ack}")
+            elif ack.ack == SALPY_Test.SAL__CMD_FAILED:
+                raise ValueError(f"Command failed")
+            else:
+                raise RuntimeError(f"Command ended with unexpected ack.ack={ack.ack}")
 
 
 class Harness:
@@ -129,16 +134,19 @@ class LsstDdsDomainTestCase(unittest.TestCase):
             int0_set = (1, 2, 5)
             try:
                 for int0 in sorted(int0_set):
-                    print(f"Make harness for int0={int0}")
+                    print(f"Make harness with int0={int0}")
                     test_utils.set_random_lsst_dds_domain()
                     harnesses.append(Harness(int0))
 
                 for harness in harnesses:
-                    print(f"Test harness for int0={int0}")
+                    print(f"Test harness with int0={harness.int0}")
                     for int0 in int0_set:
                         with self.subTest(harness_int0=harness.int0, int0=int0):
                             if int0 != harness.int0:
-                                with self.assertRaises(RuntimeError):
+                                # Sending the wrong value for int0 makes
+                                # SimpleController ack with SAL__CMD_FAILED,
+                                # which makes SimpleRemote raise ValueError
+                                with self.assertRaises(ValueError):
                                     await asyncio.wait_for(harness.remote.setScalars(int0), 2)
                             else:
                                 retval = await asyncio.wait_for(harness.remote.setScalars(int0), 2)
