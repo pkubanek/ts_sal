@@ -68,7 +68,7 @@ proc insertSenders { subsys file_writer } {
     }
 
     foreach alias $EVENT_ALIASES($subsys) {
-        puts $file_writer "  mgr.salEventSub(\"[set subsys]_logevent_[set alias]\");"
+        puts $file_writer "  mgr.salEventPub(\"[set subsys]_logevent_[set alias]\");"
     }
 
     foreach alias $EVENT_ALIASES($subsys) {
