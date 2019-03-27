@@ -4,6 +4,7 @@
 #include <stdexcept>
 #include <time.h>
 #include "SAL_SALData.h"
+#include "QosProvider.h"
 using namespace SALData;
 
 SAL_SALData::SAL_SALData(int aKey)
