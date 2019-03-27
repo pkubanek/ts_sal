@@ -167,6 +167,73 @@ class BasicTestCase(unittest.TestCase):
         retcode = self.manager.getSample_scalars(data)
         self.assertEqual(retcode, self.salinfo.lib.SAL__NO_UPDATES)
 
+    def test_evt_get_newest_after_get_oldest(self):
+        """Test that get newest after get oldest gets the newest value.
+
+        This tests DM-18491.
+        """
+        for get_event in (False, True):
+            with self.subTest(get_event=get_event):
+                self.check_tel_get_newest_after_get_oldest(test_events=True, get_event=get_event)
+
+    def test_tel_get_newest_after_get_oldest(self):
+        """Test that get newest after get oldest gets the newest value.
+
+        This tests DM-18491.
+        """
+        self.check_tel_get_newest_after_get_oldest(test_events=False, get_event=False)
+
+    def check_tel_get_newest_after_get_oldest(self, test_events, get_event):
+        """Test that get newest after get oldest gets the newest value.
+
+        This tests DM-18491.
+
+        Parameters
+        ----------
+        test_events : `bool`
+            If True then test events else test telemetry
+        get_event : `bool`
+            If True then use getEvent to get the oldest value,
+            else use getNextSample_logevent_scalars.
+            Ignored if test_events is False.
+        """
+        if test_events:
+            dtype = self.salinfo.lib.Test_logevent_scalarsC
+        else:
+            dtype = self.salinfo.lib.Test_scalarsC
+
+        # write at least three values
+        int_values = (-5, 47, 999)  # arbitrary
+        for val in int_values:
+            data = dtype()
+            data.int0 = val
+            if test_events:
+                retcode = self.manager.logEvent_scalars(data, 1)
+            else:
+                retcode = self.manager.putSample_scalars(data)
+            self.assertEqual(retcode, self.salinfo.lib.SAL__OK)
+
+        # read and check the oldest value
+        expected_value = int_values[0]
+        data = dtype()
+        if test_events:
+            if get_event:
+                retcode = self.manager.getEvent_scalars(data)
+            else:
+                retcode = self.manager.getNextSample_logevent_scalars(data)
+        else:
+            retcode = self.manager.getNextSample_scalars(data)
+        self.assertEqual(data.int0, expected_value)
+
+        # read and check the newest value
+        expected_value = int_values[-1]
+        data = dtype()
+        if test_events:
+            self.get_topic(self.manager.getSample_logevent_scalars, data)
+        else:
+            self.get_topic(self.manager.getSample_scalars, data)
+        self.assertEqual(data.int0, expected_value)
+
     def test_teloverflow_buffer(self):
         """Write enough message to overflow the read buffer and check that
         the oldest data is lost and the newest data preserved.
