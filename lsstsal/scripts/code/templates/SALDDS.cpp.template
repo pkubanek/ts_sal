@@ -9,10 +9,14 @@ using namespace SALData;
 SAL_SALData::SAL_SALData(int aKey)
 {
    char *dname = getenv("LSST_DDS_DOMAIN");
+   char *qname = getenv("LSST_DDS_QOS");
    if ( dname != NULL ) {
       strncpy(domainName, dname, 128);
    } else {
       strncpy(domainName, "LSST", 128);
+   }
+   if ( qname != NULL ) {
+      QosProvider qosProvider(qname,"DDS DefaultQosProfile");
    }
    hasReader = false;
    hasWriter = false;
@@ -28,10 +32,14 @@ SAL_SALData::SAL_SALData(int aKey)
 SAL_SALData::SAL_SALData()
 {
    char *dname = getenv("LSST_DDS_DOMAIN");
+   char *qname = getenv("LSST_DDS_QOS");
    if ( dname != NULL ) {
       strncpy(domainName, dname, 128);
    } else {
       strncpy(domainName, "LSST", 128);
+   }
+   if ( qname != NULL ) {
+      QosProvider qosProvider(qname,"DDS DefaultQosProfile");
    }
    hasReader = false;
    hasWriter = false;
@@ -87,7 +95,7 @@ double SAL_SALData::getCurrentTime()
      double ts;
 
      gettimeofday(&now, &zone);
-     ts = (double)now.tv_sec + (double)now.tv_usec/1000.;
+     ts = (double)now.tv_sec + (double)now.tv_usec/1000000.;
      return ts;
 }
 
