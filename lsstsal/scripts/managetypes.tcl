@@ -514,6 +514,7 @@ set TYPESIZE(arrayshort)  2
 set TYPESIZE(arraylong)   4
 set TYPESIZE(arrayfloat)  4
 set TYPESIZE(arraydouble) 8
+set TYPESIZE(arraylonglong) 8
 set TYPESIZE(arrayboolean) 4
 set TYPESIZE(int64)  8
 set TYPESIZE(bool)   4
@@ -551,9 +552,10 @@ set TYPEFORMAT(unsignedlong)   "%ld"
 set TYPEFORMAT(unsignedlonglong)   "%ld"
 set TYPEFORMAT(arrayshort)  "%d"
 set TYPEFORMAT(arraylong)   "%d"
-set TYPEFORMAT(arrayfloat)  "%d"
-set TYPEFORMAT(arraydouble) "%ld"
+set TYPEFORMAT(arrayfloat)  "%f"
+set TYPEFORMAT(arraydouble) "%lf"
 set TYPEFORMAT(arrayboolean) "%d"
+set TYPEFORMAT(arraylonglong) "%ld"
 
 
 
