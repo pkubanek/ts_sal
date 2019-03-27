@@ -123,9 +123,11 @@ salReturn SAL_[set base]::getSample_[set name]([set base]_[set name]C *data)
 
 salReturn SAL_[set base]::getNextSample_[set name]([set base]_[set name]C *data)
 \{
+    int saveMax = sal\[SAL__[set base]_[set name]_ACTOR\].maxSamples;
     salReturn istatus = -1;
     sal\[SAL__[set base]_[set name]_ACTOR\].maxSamples = 1;
     istatus = getSample_[set name](data);
+    sal\[SAL__[set base]_[set name]_ACTOR\].maxSamples = saveMax;
     return istatus;
 \}
 
@@ -538,9 +540,11 @@ puts $fout "
 	public int getNextSample([set base].[set name] data)
 	\{
 	  int status = -1;
+          int savemax = sal\[actorIdx\].maxSamples; 
 	  int actorIdx = SAL__[set base]_[set name]_ACTOR;
           sal\[actorIdx\].maxSamples = 1;
           status = getSample(data);
+          sal\[actorIdx\].maxSamples = savemax;
           return status;
 	\}
 
