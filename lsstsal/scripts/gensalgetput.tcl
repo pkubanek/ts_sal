@@ -10,6 +10,7 @@ source $env(SAL_DIR)/gengenericreader.tcl
 source $env(SAL_DIR)/gensalintrospect.tcl
 source $env(SAL_DIR)/activaterevcodes.tcl
 source $env(SAL_DIR)/gentelemetrytestssinglefile.tcl
+source $env(SAL_DIR)/gentelemetrytestssinglefilejava.tcl
 
 proc insertcfragments { fout base name } {
 global SAL_WORK_DIR

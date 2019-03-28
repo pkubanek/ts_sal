@@ -3,6 +3,7 @@
 source $SAL_DIR/geneventtests.tcl 
 source $SAL_DIR/geneventtestssinglefile.tcl
 source $SAL_DIR/geneventtestsjava.tcl 
+source $SAL_DIR/geneventtestssinglefilejava.tcl
 source $SAL_DIR/gentestspython.tcl 
 
 proc geneventaliascode { subsys lang fout } {

@@ -1,7 +1,9 @@
 
 source $SAL_DIR/gencommandtests.tcl
 source $SAL_DIR/gencommandtestssinglefile.tcl 
-source $SAL_DIR/gencommandtestsjava.tcl 
+source $SAL_DIR/gencommandtestsjava.tcl
+source $SAL_DIR/gencommandtestssinglefilejava.tcl
+
 source $SAL_DIR/gentestspython.tcl 
 
 proc gencmdaliascode { subsys lang fout } {
