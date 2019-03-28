@@ -540,11 +540,11 @@ puts $fout "
 	public int getNextSample([set base].[set name] data)
 	\{
 	  int status = -1;
-          int savemax = sal\[actorIdx\].maxSamples; 
 	  int actorIdx = SAL__[set base]_[set name]_ACTOR;
+          int saveMax = sal\[actorIdx\].maxSamples; 
           sal\[actorIdx\].maxSamples = 1;
           status = getSample(data);
-          sal\[actorIdx\].maxSamples = savemax;
+          sal\[actorIdx\].maxSamples = saveMax;
           return status;
 	\}
 
