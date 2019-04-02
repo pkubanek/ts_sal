@@ -18,42 +18,42 @@ global env
      }
    }
   }
-  if { [info exists cmds] } {
   puts $fout "
 std::vector<std::string> SAL_[set subsys]::getCommandNames()
 \{
     std::vector<std::string> it;"
-  foreach i $cmds {
+  if { [info exists cmds] } {
+   foreach i $cmds {
      puts $fout "    it.push_back(\"$i\");"
+   }
   }
   puts $fout "    return it;
 \}
 "
-  }
-  if { [info exists evts] } {
   puts $fout "
 std::vector<std::string> SAL_[set subsys]::getEventNames()
 \{
     std::vector<std::string> it;"
-  foreach i $evts {
+  if { [info exists evts] } {
+   foreach i $evts {
      puts $fout "    it.push_back(\"$i\");"
+   }
   }
   puts $fout "    return it;
 \}
 "
-  }
-  if { [info exists tlms] } {
   puts $fout "
 std::vector<std::string> SAL_[set subsys]::getTelemetryNames()
 \{
     std::vector<std::string> it;"
-  foreach i $tlms {
+  if { [info exists tlms] } {
+   foreach i $tlms {
      puts $fout "    it.push_back(\"$i\");"
+   }
   }
   puts $fout "    return it;
 \}
 "
-  }
 }
 
 
