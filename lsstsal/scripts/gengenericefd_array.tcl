@@ -178,6 +178,11 @@ global ACTORTYPE SAL_WORK_DIR BLACKLIST SYSDIC
      isyslog = 0;
   \}
 
+  char *efdb_delay = getenv(\"LSST_EFD_CYCLEDELAY\");
+  if (efdb_delay != NULL) \{
+     sscanf(efdb_delay,"%d",&idelay);
+  \}
+
   if (mysql_real_connect(con, efdb_host, \"efduser\" , \"lssttest\", \"EFD\", 0 , NULL, 0) == NULL) \{
       fprintf(stderr,\"MYSQL Failed to connect %s\\n\",mysql_error(con));
       exit(1);
@@ -224,7 +229,10 @@ global ACTORTYPE SAL_WORK_DIR BLACKLIST SYSDIC
        mgr.checkStatus(status,\"[set base]::[set topic][set revcode]DataReader::take\");
        numsamp = myData_[set topic].length();
        if (status == SAL__OK && numsamp > 0) \{
-        if (igotdata == 0) mstatus = mysql_query(con,\"START TRANSACTION\");
+        if (igotdata == 0) \{
+           mstatus = mysql_query(con,\"START TRANSACTION\");
+           igotdata = 1;
+        \}
         printf(\"%lf [set topic] %d samples received\\n\",mgr.getCurrentTime(), numsamp);
         for (iloop=0;iloop<numsamp;iloop++) \{
          if (myData_[set topic]\[iloop\].private_origin != 0) \{
@@ -410,10 +418,10 @@ int test_[set base]_telemetry_efdwriter()
 "
   genericefdfragment $fout $base telemetry init
   puts $fout "
-  os_time delay_10us = \{ 0, 10000 \};
   int numsamp = 0;
   int actorIdx = 0;
   int isyslog = 1;
+  int idelay = 10000;
   int iloop = 0;
   int igotdata = 0;
   int mstatus = 0;
@@ -421,12 +429,13 @@ int test_[set base]_telemetry_efdwriter()
   genericefdfragment $fout $base telemetry subscriber
   genericefdfragment $fout $base telemetry connect
   puts $fout "
+       os_time delay_us = \{ 0, idelay \};
        while (1) \{
         igotdata = 0;"
   genericefdfragment $fout $base telemetry getsamples
    puts $fout "
         if (igotdata) mstatus = mysql_query(con,\"COMMIT\");
-           os_nanoSleep(delay_10us);
+           os_nanoSleep(delay_us);
       \}
 
   /* Remove the DataWriters etc */
@@ -484,23 +493,24 @@ int test_[set base]_event_efdwriter()
   genericefdfragment $fout $base logevent init
 
   puts $fout "
-  os_time delay_10us = \{ 0, 10000 \};
   int numsamp = 0;
   int actorIdx = 0;
   int isyslog = 1;
   int iloop = 0;
+  int idelay = 10000;
   int mstatus = 0;
   int igotdata = 0;
   int status=0;"
   genericefdfragment $fout $base logevent subscriber
   genericefdfragment $fout $base logevent connect
   puts $fout "
+  os_time delay_us = \{ 0, idelay \};
   while (1) \{
      igotdata = 0;"
   genericefdfragment $fout $base logevent getsamples
    puts $fout "
      if (igotdata) mstatus = mysql_query(con,\"COMMIT\");
-     os_nanoSleep(delay_10us);
+     os_nanoSleep(delay_us);
   \}
 
   /* Remove the DataWriters etc */
@@ -556,23 +566,24 @@ int test_[set base]_command_efdwriter()
 "
   genericefdfragment $fout $base command init
   puts $fout "
-  os_time delay_10us = \{ 0, 10000 \};
   int numsamp = 0;
   int actorIdx = 0;
   int isyslog = 1;
   int iloop = 0;
+  int idelay = 10000;
   int mstatus = 0;
   int igotdata = 0;
   int status=0;"
   genericefdfragment $fout $base command subscriber
   genericefdfragment $fout $base command connect
   puts $fout "
+  os_time delay_us = \{ 0, idelay \};
   while (1) \{
      igotdata = 0;"
   genericefdfragment $fout $base command getsamples
    puts $fout "
      if (igotdata) mstatus = mysql_query(con,\"COMMIT\");
-     os_nanoSleep(delay_10us);
+     os_nanoSleep(delay_us);
   \}
 
   /* Remove the DataWriters etc */

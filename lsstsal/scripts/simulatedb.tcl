@@ -156,6 +156,10 @@ proc simulate_long_value { } {
   return $v
 }
 
+proc simulate_arraylong_value { } {
+  set v [expr int(rand()*20)+90]
+  return $v
+}
 
 proc simulate_longlong_value { } {
   set v [expr int(rand()*20)+90]
@@ -168,7 +172,17 @@ proc simulate_int_value { } {
   return $v
 }
 
+proc simulate_arrayint_value { } {
+  set v [expr int(rand()*20)+90]
+  return $v
+}
+
 proc simulate_short_value { } {
+  set v [expr int(rand()*20)+90]
+  return $v
+}
+
+proc simulate_arrayshort_value { } {
   set v [expr int(rand()*20)+90]
   return $v
 }
@@ -183,12 +197,27 @@ proc simulate_boolean_value { } {
   return $v
 }
 
+proc simulate_arrayboolean_value { } {
+  set v [expr int(rand()*1.9)]
+  return $v
+}
+
 proc simulate_float_value { } {
   set v [string trim [format %20.4f [expr rand()*20.+90.]]]
   return $v
 }
 
+proc simulate_arrayfloat_value { } {
+  set v [string trim [format %20.4f [expr rand()*20.+90.]]]
+  return $v
+}
+
 proc simulate_double_value { } {
+  set v [string trim [format %20.4f [expr rand()*20.+90.]]]
+  return $v
+}
+
+proc simulate_arraydouble_value { } {
   set v [string trim [format %20.4f [expr rand()*20.+90.]]]
   return $v
 }
@@ -211,7 +240,7 @@ set SUBSEC 0.0
 proc nextsample { sample freq } {
   if { $freq < 1.0 } {set freq 1}
   set s [clock scan $sample]
-  set n [expr $s + $freq]
+  set n [expr $s + int($freq)]
   return [clock format $n -format "%Y-%m-%d %H:%M:%S"]
 }
 

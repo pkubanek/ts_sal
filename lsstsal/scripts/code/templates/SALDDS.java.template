@@ -167,7 +167,7 @@ public class SAL_SALData {
   		// Filter expr
                 String expr[] = new String[0];
                 String sFilter = "SALDataID = " + subsystemID;
-                String ftopicName = "filtered_" + sal[actorIdx].topicName;
+                String ftopicName = "filtered_" + sal[actorIdx].topicHandle;
    		createContentFilteredTopic(actorIdx,ftopicName, sFilter, expr);
 
 		// create DataReader
@@ -929,7 +929,7 @@ public class SAL_SALData {
 		int status = -1;
 		participant.get_default_topic_qos(topicQos);
 		topicQos.value.reliability.kind = ReliabilityQosPolicyKind.RELIABLE_RELIABILITY_QOS;
-		topicQos.value.durability.kind = DurabilityQosPolicyKind.PERSISTENT_DURABILITY_QOS;
+		topicQos.value.durability.kind = DurabilityQosPolicyKind.TRANSIENT_DURABILITY_QOS;
 		topicQos.value.history.kind = HistoryQosPolicyKind.KEEP_LAST_HISTORY_QOS;
 		topicQos.value.history.depth = 1000;
 		status = participant.set_default_topic_qos(topicQos.value);
@@ -945,7 +945,7 @@ public class SAL_SALData {
 		int status = -1;
 		participant.get_default_topic_qos(topicQos2);
 		topicQos2.value.reliability.kind = ReliabilityQosPolicyKind.RELIABLE_RELIABILITY_QOS;
-		topicQos2.value.durability.kind = DurabilityQosPolicyKind.PERSISTENT_DURABILITY_QOS;
+		topicQos2.value.durability.kind = DurabilityQosPolicyKind.TRANSIENT_DURABILITY_QOS;
 		topicQos2.value.history.kind = HistoryQosPolicyKind.KEEP_LAST_HISTORY_QOS;
 		topicQos2.value.history.depth = 1000;
 		status = participant.set_default_topic_qos(topicQos2.value);
@@ -964,7 +964,7 @@ public class SAL_SALData {
 		participant.get_default_topic_qos(sal[actorIdx].topicQos);
 		if (sal[actorIdx].tuneableQos) {
 			sal[actorIdx].topicQos.value.reliability.kind = ReliabilityQosPolicyKind.RELIABLE_RELIABILITY_QOS;
-			sal[actorIdx].topicQos.value.durability.kind = DurabilityQosPolicyKind.PERSISTENT_DURABILITY_QOS;
+			sal[actorIdx].topicQos.value.durability.kind = DurabilityQosPolicyKind.TRANSIENT_DURABILITY_QOS;
 			sal[actorIdx].topicQos.value.history.kind = HistoryQosPolicyKind.KEEP_LAST_HISTORY_QOS;
 			sal[actorIdx].topicQos.value.history.depth = sal[actorIdx].historyDepth;
 //                        sal[actorIdx].topicQos.resource_limits.max_samples = sal[actorIdx].historyDepth;
@@ -985,7 +985,7 @@ public class SAL_SALData {
 		participant.get_default_topic_qos(sal[actorIdx].topicQos2);
 		if (sal[actorIdx].tuneableQos) {
 			sal[actorIdx].topicQos2.value.reliability.kind = ReliabilityQosPolicyKind.RELIABLE_RELIABILITY_QOS;
-			sal[actorIdx].topicQos2.value.durability.kind = DurabilityQosPolicyKind.PERSISTENT_DURABILITY_QOS;
+			sal[actorIdx].topicQos2.value.durability.kind = DurabilityQosPolicyKind.TRANSIENT_DURABILITY_QOS;
 			sal[actorIdx].topicQos2.value.history.kind = HistoryQosPolicyKind.KEEP_LAST_HISTORY_QOS;
 			sal[actorIdx].topicQos2.value.history.depth = sal[actorIdx].historyDepth;
 //                        sal[actorIdx].topicQos2.resource_limits.max_samples = sal[actorIdx].historyDepth;
@@ -1007,7 +1007,7 @@ public class SAL_SALData {
 		participant.get_default_topic_qos(sal[actorIdx].topicQos);
 		if (sal[actorIdx].tuneableQos) {
 			sal[actorIdx].topicQos.value.reliability.kind = ReliabilityQosPolicyKind.RELIABLE_RELIABILITY_QOS;
-			sal[actorIdx].topicQos.value.durability.kind = DurabilityQosPolicyKind.PERSISTENT_DURABILITY_QOS;
+			sal[actorIdx].topicQos.value.durability.kind = DurabilityQosPolicyKind.TRANSIENT_DURABILITY_QOS;
 			sal[actorIdx].topicQos.value.history.kind = HistoryQosPolicyKind.KEEP_LAST_HISTORY_QOS;
 			sal[actorIdx].topicQos.value.history.depth = sal[actorIdx].historyDepth;
 //                        sal[actorIdx].topicQos.resource_limits.max_samples = sal[actorIdx].historyDepth;
@@ -1028,7 +1028,7 @@ public class SAL_SALData {
 		participant.get_default_topic_qos(sal[actorIdx].topicQos2);
 		if (sal[actorIdx].tuneableQos) {
 			sal[actorIdx].topicQos2.value.reliability.kind = ReliabilityQosPolicyKind.RELIABLE_RELIABILITY_QOS;
-			sal[actorIdx].topicQos2.value.durability.kind = DurabilityQosPolicyKind.PERSISTENT_DURABILITY_QOS;
+			sal[actorIdx].topicQos2.value.durability.kind = DurabilityQosPolicyKind.TRANSIENT_DURABILITY_QOS;
 			sal[actorIdx].topicQos2.value.history.kind = HistoryQosPolicyKind.KEEP_LAST_HISTORY_QOS;
 			sal[actorIdx].topicQos2.value.history.depth = sal[actorIdx].historyDepth;
 //                        sal[actorIdx].topicQos2.resource_limits.max_samples = sal[actorIdx].historyDepth;

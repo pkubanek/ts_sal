@@ -11,7 +11,7 @@ foreach subsys $EVERYTHING {
    }
 }
 
-if { $argv == "" } {
+if { $argv == "" || [lsearch $argv validate] > -1} {
   puts stdout "Removing old idl-templates"
   exec rm -fr idl-templates
 
@@ -30,7 +30,7 @@ if { $argv == "" } {
   }
 }
 
-if { $argv == "" || [lsearch cpp $argv] > -1 } {
+if { $argv == "" || [lsearch $argv cpp] > -1 } {
  puts stdout  "Generating C++"
  foreach subsys $EVERYTHING {
   if { [info exists DO($subsys)] } {
@@ -42,7 +42,7 @@ if { $argv == "" || [lsearch cpp $argv] > -1 } {
  }
 }
 
-if { $argv == "" || [lsearch python $argv] > -1 } {
+if { $argv == "" || [lsearch $argv python] > -1 } {
  puts stdout  "Generating Python"
  foreach subsys $EVERYTHING {
   if { [info exists DO($subsys)] } {
@@ -55,7 +55,7 @@ if { $argv == "" || [lsearch python $argv] > -1 } {
 }
 
 
-if { $argv == "" || [lsearch labview $argv] > -1 } {
+if { $argv == "" || [lsearch $argv labview] > -1 } {
  puts stdout  "Generating LabVIEW"
  foreach subsys $EVERYTHING {
   if { [info exists DO($subsys)] } {
@@ -68,7 +68,7 @@ if { $argv == "" || [lsearch labview $argv] > -1 } {
 }
 
 
-if { $argv == "" || [lsearch lib $argv] > -1 } {
+if { $argv == "" || [lsearch $argv lib] > -1 } {
  puts stdout  "Updating libraries"
  foreach subsys $EVERYTHING {
   if { [info exists DO($subsys)] } {
@@ -80,7 +80,7 @@ if { $argv == "" || [lsearch lib $argv] > -1 } {
  }
 }
 
-if { $argv == "" || [lsearch java $argv] > -1 } {
+if { $argv == "" || [lsearch $argv java] > -1 } {
  puts stdout  "Generating Java"
  foreach subsys $EVERYTHING {
   if { [info exists DO($subsys)] } {
@@ -99,8 +99,8 @@ if { $argv == "" || [lsearch java $argv] > -1 } {
 }
 
 
-if { $argv == "" || [lsearch efd $argv] > -1 } {
- source $env(SAL_DIR)/gengenericefd.tcl
+if { $argv == "" || [lsearch $argv efd] > -1 } {
+ source $env(SAL_DIR)/gengenericefd_array.tcl
  set bad ""
  set result ""
  catch { set results [updateefdschema] } bad
@@ -111,7 +111,7 @@ if { $argv == "" || [lsearch efd $argv] > -1 } {
 
 cd $env(SAL_WORK_DIR)
 
-if { $argv == "" || [lsearch rpm $argv] > -1 } {
+if { $argv == "" || [lsearch $argv rpm] > -1 } {
  puts stdout  "Updating RPMs"
  foreach subsys $EVERYTHING {
   if { [info exists DO($subsys)] } {
@@ -121,6 +121,19 @@ if { $argv == "" || [lsearch rpm $argv] > -1 } {
    puts stdout "$result $bad"
   }
  }
+ source $env(SAL_DIR)/gensalrpms.tcl
+ set bad ""
+ set result ""
+ catch { set results [generatemetarpm] } bad
+ puts stdout "$result $bad"
+ set bad ""
+ set result ""
+ catch { set results [generateATmetarpm] } bad
+ puts stdout "$result $bad"
+ set bad ""
+ set result ""
+ catch { set results [generateEFDrpm] } bad
+ puts stdout "$result $bad"
 }
 
 

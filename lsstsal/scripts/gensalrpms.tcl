@@ -159,7 +159,7 @@ global SAL_WORK_DIR SALVERSION SAL_DIR SYSDIC
   copyasset $SAL_WORK_DIR/EFD/cpp/src/sacpp_EFD_largeFileObjectAvailable_send ts_EFDruntime-$SALVERSION/opt/lsst/ts_sal/bin/.
   copyasset $SAL_WORK_DIR/EFD/cpp/src/sacpp_EFD_largeFileObjectAvailable_log ts_EFDruntime-$SALVERSION/opt/lsst/ts_sal/bin/.
   copyasset $SAL_DIR/migrateEFDtable.tcl ts_EFDruntime-$SALVERSION/opt/lsst/ts_sal/scripts/.
-  copyasset $SAL_DIR/process_LFO_logevent ts_EFDruntime-$SALVERSION/opt/lsst/ts_sal/scripts/.
+  copyasset $SAL_DIR/process_LFO_logevent ts_EFDruntime-$SALVERSION/opt/lsst/ts_sal/bin/.
   generateEFDenv
   exec tar cvzf $SAL_WORK_DIR/rpmbuild/SOURCES/ts_EFDruntime-$SALVERSION.tgz ts_EFDruntime-$SALVERSION
   exec rm -fr $SAL_WORK_DIR/rpmbuild/BUILD/ts_EFDruntime-$SALVERSION/*
@@ -346,7 +346,7 @@ AutoReqProv: no
 Source0: [set subsys]-$SALVERSION.tgz
 BuildRoot: $SAL_WORK_DIR/rpmbuild/%\{name\}-%\{version\}
 Packager: dmills@lsst.org
-Requires: OpenSpliceDDS >= $OSPL_VERSION
+Requires: OpenSpliceDDS = $OSPL_VERSION
 
 %description
 This is a SAL runtime and build environment for the LSST $subsys subsystem.
@@ -396,18 +396,18 @@ proc generateEFDspec { } {
 global SAL_WORK_DIR SALVERSION RPMFILES OSPL_VERSION
   set fout [open $SAL_WORK_DIR/rpmbuild/SPECS/ts_EFDruntime.spec w]
   puts $fout "Name: ts_EFDruntime
-Version: $SALVERSION
-Release: 1%\{?dist\}
+Version: [set SALVERSION]
+Release: 641%\{?dist\}
 Summary: SAL runtime for EFD runtime Subsystem
 Vendor: LSST
 License: GPL
 URL: http://project.lsst.org/ts
 Group: Telescope and Site SAL
 AutoReqProv: no
-Source0: ts_EFDruntime-$SALVERSION.tgz
+Source0: ts_EFDruntime-[set SALVERSION].tgz
 BuildRoot: $SAL_WORK_DIR/rpmbuild/%\{name\}-%\{version\}
 Packager: dmills@lsst.org
-Requires: OpenSpliceDDS >= $OSPL_VERSION
+Requires: OpenSpliceDDS = $OSPL_VERSION
 
 
 %description
