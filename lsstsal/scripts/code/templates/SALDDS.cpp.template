@@ -1707,7 +1707,7 @@ void SAL_SALData::createReader(int actorIdx,bool filtered)
   sal[actorIdx].isReader = true;
   DDS::Duration_t a_timeout;
   a_timeout.sec = 0;
-  a_timeout.nanosec = 10000000;
+  a_timeout.nanosec = 100000000;
   sal[actorIdx].sampleAge = 1.0e20;
   status = sal[actorIdx].reader->wait_for_historical_data(a_timeout);
 }
@@ -1729,7 +1729,7 @@ void SAL_SALData::createReader2(int actorIdx,bool filtered)
   sal[actorIdx].isReader = true;
   DDS::Duration_t a_timeout;
   a_timeout.sec = 0;
-  a_timeout.nanosec = 10000000;
+  a_timeout.nanosec = 100000000;
   sal[actorIdx].sampleAge = 1.0e20;
   status = sal[actorIdx].reader2->wait_for_historical_data(a_timeout);
 }
