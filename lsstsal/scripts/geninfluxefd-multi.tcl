@@ -96,7 +96,6 @@ global SQLREC TYPEFORMAT
   set record "$record [set rvars]\n	  .timestamp((unsigned long long)(mgr.getCurrentTime()*1000000000));\n"
   return $record
 }
-
 proc writetoefd2 { topic } {
 global SQLREC TYPEFORMAT
   set flds [split $SQLREC($topic) ,]
@@ -137,9 +136,57 @@ global SQLREC TYPEFORMAT
   return $record
 }
 
+<<<<<<< HEAD
 
 
 proc genSALinfluxqueries { base } {
+=======
+proc readfromefd { topic irow } {
+global SQLREC TYPEFORMAT
+  set flds [split $SQLREC($topic) ,]
+  set record "sscanf(row\[irow-1\],\""
+  set rformat ""
+  set rvars ""
+  set ldata "myData_[join [lrange [split $topic _] 1 end] _]"
+  while { [llength $flds] != 0 } {
+      set i [lindex $flds 0]
+      set flds [lrange $flds 1 end]
+      set type [lindex [split $i .] 0]
+      set name [lindex [split $i .] 1]
+      set isarray [lindex [split $i .] 2]
+      if { $type == "char" } {
+             set name "[set name].m_ptr"
+             set isarray ""
+      } 
+###puts stdout "$i $type $name $isarray"
+      if { $isarray == "" } {
+              set value "[set ldata]->[set name]"
+              set vform $TYPEFORMAT($type)
+              if { $type == "char" } {
+                 set vform "'$TYPEFORMAT($type)'"
+              }
+      } else {
+             set value "[set ldata]->[set name]\[0\]"
+             set vform "$TYPEFORMAT($type)"
+             set j 1
+             while { $j <= [expr $isarray -1] } {
+                set value "$value,[set ldata]->[set name]\[$j\]"
+                set vform "$vform, $TYPEFORMAT($type)"
+                incr j 1
+             }
+             set value [string trim $value ","]
+      }
+      set rvars "$rvars , $value"
+      set rformat "$rformat , $vform"
+###puts stdout $rvars
+###puts stdout $rformat
+  }
+  set record "$record [set rformat]\", $rvars );"
+  return $record
+}
+
+
+proc genSALefdqueries { base } {
 global SAL_WORK_DIR
    set fout [open $SAL_WORK_DIR/[set base]/cpp/src/SAL_[set base]_efdqueries.cpp w]
    set idlfile $SAL_WORK_DIR/idl-templates/validated/sal/sal_[set base].idl
@@ -152,42 +199,6 @@ global SAL_WORK_DIR
      }
    }
    close $fout
-}
-
-proc genqueryinflux { fout base topic key } {
-   if { $key == "last" } {
-      puts $fout "
-#include <sys/time.h>
-#include <time.h>
-#include \"SAL_[set base].h\"
-using namespace [set base];
-
-int SAL_[set base]::getLastSample_[set topic] ([set base]_[set topic]C *mydata) \{
-
-      int num_fields=0;
-      int mstatus=0;
-      char *thequery = (char *) malloc(sizeof(char)*4000);
-      MYSQL_RES *result;
-      MYSQL_ROW *row;
-
-      if ( getSample_[set topic] ([set base]_[set topic]C *mydata) == SAL__NO_UPDATES) \{
-        sprintf(thequery,\"SELECT * FROM [set base]_[set topic] LIMIT 1;\");
-        mstatus = mysql_query(efdConnection,thequery);
-        if (mstatus != 0) \{
-             return SAL__NO_UPDATES;
-        \}
-        result = mysql_store_result(efdConnection);
-        int num_fields = mysql_num_fields(result);
-        row = mysql_fetch_row(result);
-        [readfrominflux [set base]_[set topic] 1]
-"
-      puts $fout "
-        mysql_free_result(result);
-      \}
-      return SAL__OK;
-\}
-"
-   }
 }
 
 

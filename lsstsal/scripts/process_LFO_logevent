@@ -7,6 +7,11 @@ global FLOG
    exit $code
 }
 
+#
+#
+#  Make sure the basedisk is set correctly, and LSST_DDS_HOST
+#
+set basedisk /d1
 set basedir EFD_LFO
 set Byte_Size [lindex $argv 0]
 if { $Byte_Size == 0 } {
@@ -19,8 +24,9 @@ set URL [string trim [lindex $argv 4] "'"]
 set Version  [lindex $argv 5]
 set ID [string trim [lindex $argv 6] "'"]
 set fname  [file tail $URL]
-set destination  $basedir/$Generator/[join [split [exec date -I] "-"] "/"]
+set destination  $basedisk/$basedir/$Generator/[join [split [exec date -I] "-"] "/"]
 exec mkdir -p $destination
+set desturl  $basedir/$Generator/[join [split [exec date -I] "-"] "/"]
 set FLOG [open $destination/LFO_processing.log a]
 
 puts $FLOG "Retreiving LFO from $URL - $Mime ($Byte_Size bytes , checksum = $Checksum , Generator = $Generator - Version $Version)"
@@ -50,11 +56,11 @@ if { $mtype != $Mime } {
    puts $FLOG "Warning : $URL mime type not verfiable $mtype != $Mime"
 }
 
-set efdurl http://$env(LSST_EFD_HOST)/$destination/$fname
+set efdurl http://$env(LSST_EFD_HOST)/$desturl/$fname
 
 ####create http link and rebbuild announcer with ID
 
-exec $env(SAL_WORK_DIR)/efd/cpp/src/sacpp_efd_LargeFileObjectAvailable_send $Byte_Size $Checksum $Generator $Mime $efdurl $Version $ID 1
+exec /opt/lsst/ts_sal/bin/sacpp_EFD_largeFileObjectAvailable_send $Byte_Size $Checksum $Generator $Mime $efdurl $Version $ID 1
 puts $FLOG "Published EFD LFO Announcement for $URL"
 
 close $FLOG
