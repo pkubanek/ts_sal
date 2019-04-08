@@ -267,7 +267,8 @@ class BasicTestCase(unittest.TestCase):
         scalars_data = SALPY_Test.Test_logevent_scalarsC()
         for i in range(num_values):
             scalars_data.int0 = i + 1
-            self.manager.logEvent_scalars(scalars_data, 1)
+            retcode = self.manager.logEvent_scalars(scalars_data, 1)
+            self.assertEqual(retcode, self.salinfo.lib.SAL__OK)
 
         salinfo2 = test_utils.SalInfo(SALPY_Test, self.salinfo.index)
         manager2 = salinfo2.manager
@@ -283,7 +284,8 @@ class BasicTestCase(unittest.TestCase):
         scalars_data = SALPY_Test.Test_logevent_scalarsC()
         for i in range(num_values):
             scalars_data.int0 = i + 1
-            self.manager.logEvent_scalars(scalars_data, 1)
+            retcode = self.manager.logEvent_scalars(scalars_data, 1)
+            self.assertEqual(retcode, self.salinfo.lib.SAL__OK)
 
         salinfo2 = test_utils.SalInfo(SALPY_Test, self.salinfo.index)
         manager2 = salinfo2.manager
@@ -300,7 +302,8 @@ class BasicTestCase(unittest.TestCase):
         scalars_data = SALPY_Test.Test_scalarsC()
         for i in range(num_values):
             scalars_data.int0 = i + 1
-            self.manager.putSample_scalars(scalars_data)
+            retcode = self.manager.putSample_scalars(scalars_data)
+            self.assertEqual(retcode, self.salinfo.lib.SAL__OK)
 
         salinfo2 = test_utils.SalInfo(SALPY_Test, self.salinfo.index)
         manager2 = salinfo2.manager
@@ -315,7 +318,8 @@ class BasicTestCase(unittest.TestCase):
         scalars_data = SALPY_Test.Test_scalarsC()
         for i in range(num_values):
             scalars_data.int0 = i + 1
-            self.manager.putSample_scalars(scalars_data)
+            retcode = self.manager.putSample_scalars(scalars_data)
+            self.assertEqual(retcode, self.salinfo.lib.SAL__OK)
 
         salinfo2 = test_utils.SalInfo(SALPY_Test, self.salinfo.index)
         manager2 = salinfo2.manager
