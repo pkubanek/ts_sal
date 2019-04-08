@@ -43,9 +43,11 @@ class BasicTestCase(unittest.TestCase):
         start_time = time.time()
         while time.time() - start_time < 2:
             retcode = func(data)
+            time.sleep(0.001)
             if retcode == self.salinfo.lib.SAL__OK:
                 break
             elif retcode == self.salinfo.lib.SAL__NO_UPDATES:
+                time.sleep(0.1)
                 continue
             else:
                 self.fail(f"Unexpected return value {retcode}")
@@ -90,6 +92,7 @@ class BasicTestCase(unittest.TestCase):
             data = self.salinfo.lib.Test_logevent_scalarsC()
             data.int0 = val
             retcode = self.manager.logEvent_scalars(data, 1)
+            time.sleep(0.001)
             self.assertEqual(retcode, self.salinfo.lib.SAL__OK)
 
         for expected_value in int_values:
@@ -99,6 +102,7 @@ class BasicTestCase(unittest.TestCase):
 
         # at this point there should be nothing on the queu
         retcode = self.manager.getNextSample_logevent_scalars(data)
+        time.sleep(0.001)
         self.assertEqual(retcode, self.salinfo.lib.SAL__NO_UPDATES)
 
     def test_tel_get_oldest(self):
@@ -110,6 +114,7 @@ class BasicTestCase(unittest.TestCase):
             data = self.salinfo.lib.Test_scalarsC()
             data.int0 = val
             retcode = self.manager.putSample_scalars(data)
+            time.sleep(0.001)
             self.assertEqual(retcode, self.salinfo.lib.SAL__OK)
 
         for expected_value in int_values:
@@ -119,6 +124,7 @@ class BasicTestCase(unittest.TestCase):
 
         # at this point there should be nothing on the queu
         retcode = self.manager.getNextSample_scalars(data)
+        time.sleep(0.001)
         self.assertEqual(retcode, self.salinfo.lib.SAL__NO_UPDATES)
 
     def test_evt_get_newest(self):
@@ -130,6 +136,7 @@ class BasicTestCase(unittest.TestCase):
             data = self.salinfo.lib.Test_logevent_scalarsC()
             data.int0 = val
             retcode = self.manager.logEvent_scalars(data, 1)
+            time.sleep(0.001)
             self.assertEqual(retcode, self.salinfo.lib.SAL__OK)
 
         expected_value = int_values[-1]
@@ -139,9 +146,11 @@ class BasicTestCase(unittest.TestCase):
 
         # at this point there should be nothing on the queu
         retcode = self.manager.getNextSample_logevent_scalars(data)
+        time.sleep(0.001)
         self.assertEqual(retcode, self.salinfo.lib.SAL__NO_UPDATES)
 
         retcode = self.manager.getSample_logevent_scalars(data)
+        time.sleep(0.001)
         self.assertEqual(retcode, self.salinfo.lib.SAL__NO_UPDATES)
 
     def test_tel_get_newest(self):
@@ -153,6 +162,7 @@ class BasicTestCase(unittest.TestCase):
             data = self.salinfo.lib.Test_scalarsC()
             data.int0 = val
             retcode = self.manager.putSample_scalars(data)
+            time.sleep(0.001)
             self.assertEqual(retcode, self.salinfo.lib.SAL__OK)
 
         expected_value = int_values[-1]
@@ -162,9 +172,11 @@ class BasicTestCase(unittest.TestCase):
 
         # at this point there should be nothing on the queu
         retcode = self.manager.getNextSample_scalars(data)
+        time.sleep(0.001)
         self.assertEqual(retcode, self.salinfo.lib.SAL__NO_UPDATES)
 
         retcode = self.manager.getSample_scalars(data)
+        time.sleep(0.001)
         self.assertEqual(retcode, self.salinfo.lib.SAL__NO_UPDATES)
 
     def test_evt_get_newest_after_get_oldest(self):
@@ -211,6 +223,7 @@ class BasicTestCase(unittest.TestCase):
                 retcode = self.manager.logEvent_scalars(data, 1)
             else:
                 retcode = self.manager.putSample_scalars(data)
+            time.sleep(0.001)
             self.assertEqual(retcode, self.salinfo.lib.SAL__OK)
 
         # read and check the oldest value
@@ -223,6 +236,7 @@ class BasicTestCase(unittest.TestCase):
                 retcode = self.manager.getNextSample_logevent_scalars(data)
         else:
             retcode = self.manager.getNextSample_scalars(data)
+        time.sleep(0.001)
         self.assertEqual(data.int0, expected_value)
 
         # read and check the newest value
@@ -245,6 +259,7 @@ class BasicTestCase(unittest.TestCase):
             data = self.salinfo.lib.Test_logevent_scalarsC()
             data.int0 = val
             retcode = self.manager.logEvent_scalars(data, 1)
+            time.sleep(0.001)
             self.assertEqual(retcode, self.salinfo.lib.SAL__OK)
 
         data = self.salinfo.lib.Test_logevent_scalarsC()
@@ -268,6 +283,7 @@ class BasicTestCase(unittest.TestCase):
         for i in range(num_values):
             scalars_data.int0 = i + 1
             retcode = self.manager.logEvent_scalars(scalars_data, 1)
+            time.sleep(0.001)
             self.assertEqual(retcode, self.salinfo.lib.SAL__OK)
 
         salinfo2 = test_utils.SalInfo(SALPY_Test, self.salinfo.index)
@@ -285,6 +301,7 @@ class BasicTestCase(unittest.TestCase):
         for i in range(num_values):
             scalars_data.int0 = i + 1
             retcode = self.manager.logEvent_scalars(scalars_data, 1)
+            time.sleep(0.001)
             self.assertEqual(retcode, self.salinfo.lib.SAL__OK)
 
         salinfo2 = test_utils.SalInfo(SALPY_Test, self.salinfo.index)
@@ -303,6 +320,7 @@ class BasicTestCase(unittest.TestCase):
         for i in range(num_values):
             scalars_data.int0 = i + 1
             retcode = self.manager.putSample_scalars(scalars_data)
+            time.sleep(0.001)
             self.assertEqual(retcode, self.salinfo.lib.SAL__OK)
 
         salinfo2 = test_utils.SalInfo(SALPY_Test, self.salinfo.index)
@@ -319,6 +337,7 @@ class BasicTestCase(unittest.TestCase):
         for i in range(num_values):
             scalars_data.int0 = i + 1
             retcode = self.manager.putSample_scalars(scalars_data)
+            time.sleep(0.001)
             self.assertEqual(retcode, self.salinfo.lib.SAL__OK)
 
         salinfo2 = test_utils.SalInfo(SALPY_Test, self.salinfo.index)
@@ -347,6 +366,7 @@ class BasicTestCase(unittest.TestCase):
         # string0 has a limit of 20 characters
         data.string0 = too_long_data
         retcode = self.manager.putSample_scalars(data)
+        time.sleep(0.001)
         self.assertEqual(retcode, self.salinfo.lib.SAL__OK)
 
         data = self.salinfo.lib.Test_scalarsC()
@@ -457,6 +477,7 @@ class ErrorProtectionTestCase(unittest.TestCase):
         # make sure this worked
         data = self.salinfo.lib.Test_command_setScalarsC()
         cmd_id = self.manager.issueCommand_setScalars(data)
+        time.sleep(0.001)
         self.assertGreater(cmd_id, 0)
 
         bad_data = self.salinfo.lib.Test_command_setArraysC()
@@ -479,6 +500,7 @@ class ErrorProtectionTestCase(unittest.TestCase):
         # make sure this worked
         data = self.salinfo.lib.Test_scalarsC()
         retcode = self.manager.putSample_scalars(data)
+        time.sleep(0.001)
         self.assertEqual(retcode, self.salinfo.lib.SAL__OK)
 
         bad_data = self.salinfo.lib.Test_arraysC()
@@ -501,6 +523,7 @@ class ErrorProtectionTestCase(unittest.TestCase):
         # make sure this worked
         data = self.salinfo.lib.Test_logevent_scalarsC()
         retcode = self.manager.logEvent_scalars(data, 1)
+        time.sleep(0.001)
         self.assertEqual(retcode, self.salinfo.lib.SAL__OK)
 
         bad_data = self.salinfo.lib.Test_logevent_arraysC()
@@ -572,6 +595,7 @@ class ErrorProtectionTestCase(unittest.TestCase):
                 func = getattr(self.manager, func_name)
                 with self.assertRaises(exception):
                     func(data)
+                time.sleep(0.001)
 
 
 if __name__ == "__main__":
