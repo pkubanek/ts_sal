@@ -19,7 +19,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-__all__ = ["index_generator", "SalInfo", "set_random_lsst_dds_domain"]
+__all__ = ["STD_SLEEP", "index_generator", "set_random_lsst_dds_domain"]
 
 import os
 import random
@@ -29,6 +29,8 @@ import time
 
 import numpy as np
 
+# standard sleep time for SAL (sec)
+STD_SLEEP = 0.001
 
 MAX_SAL_INDEX = (2 << 30) - 1
 
@@ -67,66 +69,6 @@ def index_generator(imin=1, imax=MAX_SAL_INDEX):
     return index_impl()
 
 
-class SalInfo:
-    """SALPY information for a component, including the
-    SALPY library, component name, component index and SALPY manager
-
-    Parameters
-    ----------
-    sallib : `module`
-        SALPY library for a SAL component
-    index : `int` or `None`
-        SAL component index, or 0 or None if the component is not indexed.
-    """
-    def __init__(self, sallib, index=None):
-        self.lib = sallib
-        self.name = sallib.componentName[4:]  # lop off leading SAL_
-        if sallib.componentIsMultiple:
-            if index is None:
-                raise RuntimeError(f"Component {self.name} is indexed, so index cannot be None")
-        else:
-            if index not in (0, None):
-                raise RuntimeError(f"Component {self.name} is not indexed so index={index} must be None or 0")
-            index = 0
-        self.index = index
-        Manager = getattr(self.lib, "SAL_" + self.name)
-        self.manager = Manager(self.index)
-        self._AckType = getattr(self.lib, self.name + "_ackcmdC")
-
-    def __str__(self):
-        return f"SalInfo({self.name}, {self.index})"
-
-    @property
-    def AckType(self):
-        """The class of command acknowledgement.
-
-        It is contructed with the following parameters
-        and has these fields:
-
-        ack : `int`
-            Acknowledgement code; one of the ``self.lib.SAL__CMD_``
-            constants, such as ``self.lib.SAL__CMD_COMPLETE``.
-        error : `int`
-            Error code; 0 for no error.
-        result : `str`
-            Explanatory message, or "" for no message.
-        """
-        return self._AckType
-
-    def makeAck(self, ack, error=0, result=""):
-        """Make an AckType object from keyword arguments.
-        """
-        data = self.AckType()
-        data.ack = ack
-        data.error = error
-        data.result = result
-        return data
-
-    def __del__(self):
-        if self.manager:
-            self.manager.salShutdown()
-
-
 def set_random_lsst_dds_domain():
     """Set a random value for environment variable LSST_DDS_DOMAIN
 
@@ -148,24 +90,31 @@ class TestWrapper:
     """
     __test__ = False  # stop pytest from warning that this is not a test
 
-    def __init__(self, salinfo):
-        self.salinfo = salinfo
-        manager = salinfo.manager
+    def __init__(self, testlib, index=None):
+        self.index = index
+        self.remote = testlib.SAL_Test(index=index)
+        self.controller = testlib.SAL_Test(index=index)
 
-        for name in manager.getCommandNames():
+        for name in self.remote.getCommandNames():
             topic = f"Test_command_{name}"
-            manager.salCommand(topic)
-            manager.salProcessor(topic)
+            self.remote.salCommand(topic)
+            time.sleep(STD_SLEEP)
+            self.controller.salProcessor(topic)
+            time.sleep(STD_SLEEP)
 
-        for name in manager.getEventNames():
+        for name in self.remote.getEventNames():
             topic = f"Test_logevent_{name}"
-            manager.salEventPub(topic)
-            manager.salEventSub(topic)
+            self.remote.salEventSub(topic)
+            time.sleep(STD_SLEEP)
+            self.controller.salEventPub(topic)
+            time.sleep(STD_SLEEP)
 
-        for name in manager.getTelemetryNames():
+        for name in self.remote.getTelemetryNames():
             topic = f"Test_{name}"
-            manager.salTelemetryPub(topic)
-            manager.salTelemetrySub(topic)
+            self.remote.salTelemetrySub(topic)
+            time.sleep(STD_SLEEP)
+            self.controller.salTelemetryPub(topic)
+            time.sleep(STD_SLEEP)
 
     @property
     def arrays_fields(self):
