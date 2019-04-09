@@ -266,7 +266,7 @@ global XMLTOPICS XMLTLM IDLRESERVED XMLITEMS
            if { $type != "const" } {
              set vitem [validitem [lindex $rec 0] [lindex $rec 1]]
              set siz [validitem [lindex $rec 0] [lindex $rec 1] dim ]
-             if { $siz == "" }  {set siz 4906}
+             if { $siz == "" }  {set siz 4096}
              set type [validitem [lindex $rec 0] [lindex $rec 1] type ]
              set id [validitem [lindex $rec 0] [lindex $rec 1] id ]
            }
