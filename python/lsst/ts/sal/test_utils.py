@@ -87,41 +87,36 @@ def set_random_lsst_dds_domain():
     os.environ["LSST_DDS_DOMAIN"] = f"Test-{hostname}-{curr_time}-{random_int}"
 
 
-class TestWrapper:
-    """Wrap Test and provide access to the commands and topics.
-
-    Parameters
-    ----------
-    testlib : ``SALPY_Test``
-        The SALPY_Test library.
+class TestData:
+    """Generate random test data and compare topics.
     """
     __test__ = False  # stop pytest from warning that this is not a test
 
-    def __init__(self, index=None):
-        self.index = index
-        self.remote = SALPY_Test.SAL_Test(index=index)
-        self.controller = SALPY_Test.SAL_Test(index=index)
+    # def __init__(self, index=None):
+    #     self.index = index
+    #     self.remote = SALPY_Test.SAL_Test(index=index)
+    #     self.controller = SALPY_Test.SAL_Test(index=index)
 
-        for name in self.remote.getCommandNames():
-            topic = f"Test_command_{name}"
-            self.remote.salCommand(topic)
-            time.sleep(STD_SLEEP)
-            self.controller.salProcessor(topic)
-            time.sleep(STD_SLEEP)
+    #     for name in self.remote.getCommandNames():
+    #         topic = f"Test_command_{name}"
+    #         self.remote.salCommand(topic)
+    #         time.sleep(STD_SLEEP)
+    #         self.controller.salProcessor(topic)
+    #         time.sleep(STD_SLEEP)
 
-        for name in self.remote.getEventNames():
-            topic = f"Test_logevent_{name}"
-            self.remote.salEventSub(topic)
-            time.sleep(STD_SLEEP)
-            self.controller.salEventPub(topic)
-            time.sleep(STD_SLEEP)
+    #     for name in self.remote.getEventNames():
+    #         topic = f"Test_logevent_{name}"
+    #         self.remote.salEventSub(topic)
+    #         time.sleep(STD_SLEEP)
+    #         self.controller.salEventPub(topic)
+    #         time.sleep(STD_SLEEP)
 
-        for name in self.remote.getTelemetryNames():
-            topic = f"Test_{name}"
-            self.remote.salTelemetrySub(topic)
-            time.sleep(STD_SLEEP)
-            self.controller.salTelemetryPub(topic)
-            time.sleep(STD_SLEEP)
+    #     for name in self.remote.getTelemetryNames():
+    #         topic = f"Test_{name}"
+    #         self.remote.salTelemetrySub(topic)
+    #         time.sleep(STD_SLEEP)
+    #         self.controller.salTelemetryPub(topic)
+    #         time.sleep(STD_SLEEP)
 
     @property
     def arrays_fields(self):
@@ -147,7 +142,7 @@ class TestWrapper:
         The types need not match; each struct can be command, event
         or telemetry data.
         """
-        # use reversed so boolean1 is not compared first,
+        # use reversed so boolean0 is not compared first,
         # as a discrepancy there is harder to interpret
         for field in reversed(self.arrays_fields):
             if np.any(getattr(arrays1, field) != getattr(arrays2, field)):
@@ -160,7 +155,7 @@ class TestWrapper:
         The types need not match; each struct can be command, event
         or telemetry data.
         """
-        # use reversed so boolean1 is not compared first,
+        # use reversed so boolean0 is not compared first,
         # as a discrepancy there is harder to interpret
         for field in reversed(self.scalars_fields):
             if getattr(scalars1, field) != getattr(scalars2, field):
@@ -192,9 +187,9 @@ class TestWrapper:
     def set_random_arrays(self, data):
         """Make random data for the arrays or setArrays topic."""
         nelts = 5
-        data.boolean1[:] = np.random.choice([False, True], size=(nelts,))
+        data.boolean0[:] = np.random.choice([False, True], size=(nelts,))
         printable_chars = [c for c in string.ascii_letters + string.digits]
-        data.char1 = "".join(np.random.choice(printable_chars, size=(nelts,)))
+        data.char0 = "".join(np.random.choice(printable_chars, size=(nelts,)))
         for field_name in (
             "byte0",
             "octet0",
@@ -210,19 +205,19 @@ class TestWrapper:
             iinfo = np.iinfo(field.dtype)
             print(f"{field_name} has type {field.dtype}")
             field[:] = np.random.randint(iinfo.min, iinfo.max, size=(nelts,), dtype=field.dtype)
-        data.float1[:] = np.random.uniform(-1e5, 1e5, size=(nelts,))
-        data.double1[:] = np.random.uniform(-1e5, 1e5, size=(nelts,))
+        data.float0[:] = np.random.uniform(-1e5, 1e5, size=(nelts,))
+        data.double0[:] = np.random.uniform(-1e5, 1e5, size=(nelts,))
         return data
 
     def set_random_scalars(self, data):
         """Make random data for scalars or setScalars topic."""
         # also make an empty arrays struct to get dtype of int fields,
         # since that information is lost in the scalars pybind11 wrapper
-        empty_arrays = SALPY_Test.Test_command_setScalarsC()
-        data.boolean1 = np.random.choice([False, True])
+        empty_arrays = SALPY_Test.Test_arraysC()
+        data.boolean0 = np.random.choice([False, True])
         printable_chars = [c for c in string.ascii_letters + string.digits]
-        data.char1 = np.random.choice(printable_chars)
-        data.string1 = "".join(np.random.choice(printable_chars, size=(20,)))
+        data.char0 = np.random.choice(printable_chars)
+        data.string0 = "".join(np.random.choice(printable_chars, size=(20,)))
         for field_name in (
             "byte0",
             "octet0",
@@ -241,6 +236,6 @@ class TestWrapper:
                 dtype = np.int64
             iinfo = np.iinfo(dtype)
             setattr(data, field_name, np.random.randint(iinfo.min, iinfo.max, dtype=dtype))
-        data.float1 = np.random.uniform(-1e5, 1e5)
-        data.double1 = np.random.uniform(-1e5, 1e5)
+        data.float0 = np.random.uniform(-1e5, 1e5)
+        data.double0 = np.random.uniform(-1e5, 1e5)
         return data

@@ -26,6 +26,8 @@ STD_SLEEP = test_utils.STD_SLEEP
 
 index_gen = test_utils.index_generator()
 
+np.random.seed(47)
+
 
 class BaseSalTestCase(unittest.TestCase):
     @property
@@ -39,6 +41,7 @@ class BaseSalTestCase(unittest.TestCase):
         self.remote = SALPY_Test.SAL_Test(self.index)
         # controller listens to commands and publishes telemetry and events
         self.controller = SALPY_Test.SAL_Test(self.index)
+        self.test_data = test_utils.TestData()
 
     def get_topic(self, func, data, timeout=2):
         """Get data for a topic using the specified command.
@@ -108,18 +111,19 @@ class BasicTestCase(BaseSalTestCase):
         self.controller.salEventPub("Test_logevent_scalars")
         time.sleep(STD_SLEEP)
 
-        int_values = (-5, 47, 999)  # arbitrary
-        data = SALPY_Test.Test_logevent_scalarsC()
-        for val in int_values:
-            data.int0 = val
+        data_list = []
+        for i in range(3):
+            data = SALPY_Test.Test_logevent_scalarsC()
+            self.test_data.set_random_scalars(data)
+            data_list.append(data)
             retcode = self.controller.logEvent_scalars(data, 1)
             time.sleep(STD_SLEEP)
             self.assertEqual(retcode, SALPY_Test.SAL__OK)
 
-        for expected_value in int_values:
+        for expected_data in data_list:
             data = SALPY_Test.Test_logevent_scalarsC()
             self.get_topic(self.remote.getEvent_scalars, data)
-            self.assertEqual(data.int0, expected_value)
+            self.test_data.assert_scalars_equal(data, expected_data)
 
         # at this point there should be nothing on the queue
         retcode = self.remote.getNextSample_logevent_scalars(data)
@@ -135,18 +139,19 @@ class BasicTestCase(BaseSalTestCase):
         self.controller.salTelemetryPub("Test_scalars")
         time.sleep(STD_SLEEP)
 
-        int_values = (-5, 47, 999)  # arbitrary
-        data = SALPY_Test.Test_scalarsC()
-        for val in int_values:
-            data.int0 = val
+        data_list = []
+        for i in range(3):
+            data = SALPY_Test.Test_scalarsC()
+            self.test_data.set_random_scalars(data)
+            data_list.append(data)
             retcode = self.controller.putSample_scalars(data)
             time.sleep(STD_SLEEP)
             self.assertEqual(retcode, SALPY_Test.SAL__OK)
 
-        for expected_value in int_values:
+        for expected_data in data_list:
             data = SALPY_Test.Test_scalarsC()
             self.get_topic(self.remote.getNextSample_scalars, data)
-            self.assertEqual(data.int0, expected_value)
+            self.test_data.assert_scalars_equal(data, expected_data)
 
         # at this point there should be nothing on the queue
         retcode = self.remote.getNextSample_scalars(data)
@@ -157,30 +162,31 @@ class BasicTestCase(BaseSalTestCase):
         """Write several messages and make sure gettting the newest
         returns that and flushes the queue.
         """
-        self.remote.salEventSub("Test_logevent_scalars")
+        self.remote.salEventSub("Test_logevent_arrays")
         time.sleep(STD_SLEEP)
-        self.controller.salEventPub("Test_logevent_scalars")
+        self.controller.salEventPub("Test_logevent_arrays")
         time.sleep(STD_SLEEP)
 
-        int_values = (-5, 47, 999)  # arbitrary
-        data = SALPY_Test.Test_logevent_scalarsC()
-        for val in int_values:
-            data.int0 = val
-            retcode = self.controller.logEvent_scalars(data, 1)
+        data_list = []
+        for i in range(3):
+            data = SALPY_Test.Test_logevent_arraysC()
+            self.test_data.set_random_arrays(data)
+            data_list.append(data)
+            retcode = self.controller.logEvent_arrays(data, 1)
             time.sleep(STD_SLEEP)
             self.assertEqual(retcode, SALPY_Test.SAL__OK)
 
-        expected_value = int_values[-1]
-        data = SALPY_Test.Test_logevent_scalarsC()
-        self.get_topic(self.remote.getSample_logevent_scalars, data)
-        self.assertEqual(data.int0, expected_value)
+        expected_data = data_list[-1]
+        data = SALPY_Test.Test_logevent_arraysC()
+        self.get_topic(self.remote.getSample_logevent_arrays, data)
+        self.test_data.assert_arrays_equal(data, expected_data)
 
         # at this point there should be nothing on the queue
-        retcode = self.remote.getNextSample_logevent_scalars(data)
+        retcode = self.remote.getNextSample_logevent_arrays(data)
         time.sleep(STD_SLEEP)
         self.assertEqual(retcode, SALPY_Test.SAL__NO_UPDATES)
 
-        retcode = self.remote.getSample_logevent_scalars(data)
+        retcode = self.remote.getSample_logevent_arrays(data)
         time.sleep(STD_SLEEP)
         self.assertEqual(retcode, SALPY_Test.SAL__NO_UPDATES)
 
@@ -188,30 +194,31 @@ class BasicTestCase(BaseSalTestCase):
         """Write several messages and make sure gettting the newest
         returns that and flushes the queue.
         """
-        self.remote.salTelemetrySub("Test_scalars")
+        self.remote.salTelemetrySub("Test_arrays")
         time.sleep(STD_SLEEP)
-        self.controller.salTelemetryPub("Test_scalars")
+        self.controller.salTelemetryPub("Test_arrays")
         time.sleep(STD_SLEEP)
 
-        int_values = (-5, 47, 999)  # arbitrary
-        data = SALPY_Test.Test_scalarsC()
-        for val in int_values:
-            data.int0 = val
-            retcode = self.controller.putSample_scalars(data)
+        data_list = []
+        for i in range(3):
+            data = SALPY_Test.Test_arraysC()
+            self.test_data.set_random_arrays(data)
+            data_list.append(data)
+            retcode = self.controller.putSample_arrays(data)
             time.sleep(STD_SLEEP)
             self.assertEqual(retcode, SALPY_Test.SAL__OK)
 
-        expected_value = int_values[-1]
-        data = SALPY_Test.Test_scalarsC()
-        self.get_topic(self.remote.getSample_scalars, data)
-        self.assertEqual(data.int0, expected_value)
+        expected_data = data_list[-1]
+        data = SALPY_Test.Test_arraysC()
+        self.get_topic(self.remote.getSample_arrays, data)
+        self.test_data.assert_arrays_equal(data, expected_data)
 
         # at this point there should be nothing on the queue
-        retcode = self.remote.getNextSample_scalars(data)
+        retcode = self.remote.getNextSample_arrays(data)
         time.sleep(STD_SLEEP)
         self.assertEqual(retcode, SALPY_Test.SAL__NO_UPDATES)
 
-        retcode = self.remote.getSample_scalars(data)
+        retcode = self.remote.getSample_arrays(data)
         time.sleep(STD_SLEEP)
         self.assertEqual(retcode, SALPY_Test.SAL__NO_UPDATES)
 
@@ -220,8 +227,9 @@ class BasicTestCase(BaseSalTestCase):
 
         This tests DM-18491.
         """
-        self.remote.salEventSub("Test_logevent_scalars")
-        self.controller.salEventPub("Test_logevent_scalars")
+        self.remote.salEventSub("Test_logevent_arrays")
+        time.sleep(STD_SLEEP)
+        self.controller.salEventPub("Test_logevent_arrays")
         time.sleep(STD_SLEEP)
 
         for get_event in (False, True):
@@ -233,9 +241,9 @@ class BasicTestCase(BaseSalTestCase):
 
         This tests DM-18491.
         """
-        self.remote.salTelemetrySub("Test_scalars")
+        self.remote.salTelemetrySub("Test_arrays")
         time.sleep(STD_SLEEP)
-        self.controller.salTelemetryPub("Test_scalars")
+        self.controller.salTelemetryPub("Test_arrays")
         time.sleep(STD_SLEEP)
 
         self.check_get_newest_after_get_oldest(test_events=False, get_event=False)
@@ -243,7 +251,7 @@ class BasicTestCase(BaseSalTestCase):
     def check_get_newest_after_get_oldest(self, test_events, get_event):
         """Test that get newest after get oldest gets the newest value.
 
-        This tests DM-18491.
+        Uses the arrays topic. This tests DM-18491.
 
         Parameters
         ----------
@@ -255,131 +263,132 @@ class BasicTestCase(BaseSalTestCase):
             Ignored if test_events is False.
         """
         if test_events:
-            dtype = SALPY_Test.Test_logevent_scalarsC
+            dtype = SALPY_Test.Test_logevent_arraysC
         else:
-            dtype = SALPY_Test.Test_scalarsC
+            dtype = SALPY_Test.Test_arraysC
 
         # write at least three values
-        int_values = (-5, 47, 999)  # arbitrary
-        data = dtype()
-        for val in int_values:
-            data.int0 = val
+        data_list = []
+        for i in range(5):
+            data = dtype()
+            self.test_data.set_random_arrays(data)
+            data_list.append(data)
             if test_events:
-                retcode = self.controller.logEvent_scalars(data, 1)
+                retcode = self.controller.logEvent_arrays(data, 1)
             else:
-                retcode = self.controller.putSample_scalars(data)
+                retcode = self.controller.putSample_arrays(data)
             time.sleep(STD_SLEEP)
             self.assertEqual(retcode, SALPY_Test.SAL__OK)
 
         # read and check the oldest value
-        expected_value = int_values[0]
+        expected_data = data_list[0]
         data = dtype()
         if test_events:
             if get_event:
-                retcode = self.remote.getEvent_scalars(data)
+                retcode = self.remote.getEvent_arrays(data)
             else:
-                retcode = self.remote.getNextSample_logevent_scalars(data)
+                retcode = self.remote.getNextSample_logevent_arrays(data)
         else:
-            retcode = self.remote.getNextSample_scalars(data)
+            retcode = self.remote.getNextSample_arrays(data)
         time.sleep(STD_SLEEP)
-        self.assertEqual(data.int0, expected_value)
+        self.test_data.assert_arrays_equal(data, expected_data)
 
         # read and check the newest value
-        expected_value = int_values[-1]
+        expected_data = data_list[-1]
         data = dtype()
         if test_events:
-            self.get_topic(self.remote.getSample_logevent_scalars, data)
+            self.get_topic(self.remote.getSample_logevent_arrays, data)
         else:
-            self.get_topic(self.remote.getSample_scalars, data)
-        self.assertEqual(data.int0, expected_value)
+            self.get_topic(self.remote.getSample_arrays, data)
+        self.test_data.assert_arrays_equal(data, expected_data)
 
     def test_evt_late_joiner_oldest(self):
         """Test that a late joiner can an event using getNextSample.
 
         Only one value is retrievable.
         """
-        self.remote.salEventSub("Test_logevent_scalars")
-        time.sleep(STD_SLEEP)
-        self.controller.salEventPub("Test_logevent_scalars")
+        self.controller.salEventPub("Test_logevent_arrays")
         time.sleep(STD_SLEEP)
 
-        num_values = 3
-        data = SALPY_Test.Test_logevent_scalarsC()
-        for i in range(num_values):
-            data.int0 = i + 1
-            retcode = self.controller.logEvent_scalars(data, 1)
+        data_list = []
+        for i in range(5):
+            data = SALPY_Test.Test_logevent_arraysC()
+            self.test_data.set_random_arrays(data)
+            data_list.append(data)
+            retcode = self.controller.logEvent_arrays(data, 1)
             time.sleep(STD_SLEEP)
             self.assertEqual(retcode, SALPY_Test.SAL__OK)
 
-        remote2 = SALPY_Test.SAL_Test(self.index)
-        remote2.salEventSub("Test_logevent_scalars")
-        retcode = remote2.getNextSample_logevent_scalars(data)
-        self.assertEqual(retcode, SALPY_Test.SAL__OK)
-        self.assertEqual(data.int0, num_values)
-
-    def test_evt_late_joiner_newest(self):
-        """Test that a late joiner can see an event using getEvent.
-        """
-        self.remote.salEventSub("Test_logevent_scalars")
-        self.controller.salEventPub("Test_logevent_scalars")
+        self.remote.salEventSub("Test_logevent_arrays")
         time.sleep(STD_SLEEP)
-
-        num_values = 3
-        data = SALPY_Test.Test_logevent_scalarsC()
-        for i in range(num_values):
-            data.int0 = i + 1
-            retcode = self.controller.logEvent_scalars(data, 1)
-            time.sleep(STD_SLEEP)
-            self.assertEqual(retcode, SALPY_Test.SAL__OK)
-
-        remote2 = SALPY_Test.SAL_Test(self.index)
-        remote2.salEventSub("Test_logevent_scalars")
-        retcode = remote2.getEvent_scalars(data)
+        retcode = self.remote.getNextSample_logevent_arrays(data)
         self.assertEqual(retcode, SALPY_Test.SAL__OK)
+        self.test_data.assert_arrays_equal(data, data_list[-1])
 
     def test_tel_late_joiner_oldest(self):
         """Test that a late joiner can see telemetry using getNextSample.
 
         Only one value is retrievable.
         """
-        self.remote.salTelemetrySub("Test_scalars")
-        time.sleep(STD_SLEEP)
-        self.controller.salTelemetryPub("Test_scalars")
+        self.controller.salTelemetryPub("Test_arrays")
         time.sleep(STD_SLEEP)
 
-        num_values = 3
-        data = SALPY_Test.Test_scalarsC()
-        for i in range(num_values):
-            data.int0 = i + 1
-            retcode = self.controller.putSample_scalars(data)
+        data_list = []
+        for i in range(5):
+            data = SALPY_Test.Test_arraysC()
+            self.test_data.set_random_arrays(data)
+            data_list.append(data)
+            retcode = self.controller.putSample_arrays(data)
             time.sleep(STD_SLEEP)
             self.assertEqual(retcode, SALPY_Test.SAL__OK)
 
-        remote2 = SALPY_Test.SAL_Test(self.index)
-        remote2.salTelemetrySub("Test_scalars")
-        retcode = remote2.getNextSample_scalars(data)
+        self.remote.salTelemetrySub("Test_arrays")
+        time.sleep(STD_SLEEP)
+        retcode = self.remote.getNextSample_arrays(data)
         self.assertEqual(retcode, SALPY_Test.SAL__OK)
+        self.test_data.assert_arrays_equal(data, data_list[-1])
+
+    def test_evt_late_joiner_newest(self):
+        """Test that a late joiner can see an event using getEvent.
+        """
+        self.controller.salEventPub("Test_logevent_arrays")
+        time.sleep(STD_SLEEP)
+
+        data_list = []
+        for i in range(5):
+            data = SALPY_Test.Test_logevent_arraysC()
+            self.test_data.set_random_arrays(data)
+            data_list.append(data)
+            retcode = self.controller.logEvent_arrays(data, 1)
+            time.sleep(STD_SLEEP)
+            self.assertEqual(retcode, SALPY_Test.SAL__OK)
+
+        self.remote.salEventSub("Test_logevent_arrays")
+        time.sleep(STD_SLEEP)
+        retcode = self.remote.getEvent_arrays(data)
+        self.assertEqual(retcode, SALPY_Test.SAL__OK)
+        self.test_data.assert_arrays_equal(data, data_list[-1])
 
     def test_tel_late_joiner_newest(self):
         """Test that a late joiner can see telemetry using getSample.
         """
-        self.remote.salTelemetrySub("Test_scalars")
-        time.sleep(STD_SLEEP)
-        self.controller.salTelemetryPub("Test_scalars")
+        self.controller.salTelemetryPub("Test_arrays")
         time.sleep(STD_SLEEP)
 
-        num_values = 3
-        data = SALPY_Test.Test_scalarsC()
-        for i in range(num_values):
-            data.int0 = i + 1
-            retcode = self.controller.putSample_scalars(data)
+        data_list = []
+        for i in range(5):
+            data = SALPY_Test.Test_arraysC()
+            self.test_data.set_random_arrays(data)
+            data_list.append(data)
+            retcode = self.controller.putSample_arrays(data)
             time.sleep(STD_SLEEP)
             self.assertEqual(retcode, SALPY_Test.SAL__OK)
 
-        remote2 = SALPY_Test.SAL_Test(self.index)
-        remote2.salTelemetrySub("Test_scalars")
-        retcode = remote2.getSample_scalars(data)
+        self.remote.salTelemetrySub("Test_arrays")
+        time.sleep(STD_SLEEP)
+        retcode = self.remote.getSample_arrays(data)
         self.assertEqual(retcode, SALPY_Test.SAL__OK)
+        self.test_data.assert_arrays_equal(data, data_list[-1])
 
 
 class ScriptTestCase(unittest.TestCase):
@@ -431,7 +440,7 @@ class ErrorHandlingTestCase(BaseSalTestCase):
         with self.assertRaises(RuntimeError):
             self.remote.salTelemetrySub(bad_tel_name)
 
-    # TODO TSS-3235: enable this test
+    # TODO DM-19195: enable this test
     @unittest.skip("this does not raise and may corrupt memory")
     def test_cmd_no_registration(self):
         """Test getting and putting topics without registering them first.
@@ -440,7 +449,7 @@ class ErrorHandlingTestCase(BaseSalTestCase):
 
         self.check_cmd_get_put_raises(data=data, exception=RuntimeError)
 
-    # TODO TSS-3235: enable this test
+    # TODO DM-19195: enable this test
     @unittest.skip("this segfaults instead of raising")
     def test_evt_no_registration(self):
         """Test getting and putting topics without registering them first.
@@ -449,7 +458,7 @@ class ErrorHandlingTestCase(BaseSalTestCase):
 
         self.check_evt_get_put_raises(data=data, exception=RuntimeError)
 
-    # TODO TSS-3235: enable this test
+    # TODO DM-19195: enable this test
     @unittest.skip("this segfaults instead of raising")
     def test_tel_no_registration(self):
         """Test getting and putting topics without registering them first.
@@ -463,7 +472,7 @@ class ErrorHandlingTestCase(BaseSalTestCase):
 
         This is not a very interesting test because pybind11
         should make this impossible, but it's worth a try,
-        and indeed None segfaults! TSS-3235
+        and indeed None segfaults! DM-18209
         """
         topic_name = "Test_command_setScalars"
         self.controller.salCommand(topic_name)
@@ -488,7 +497,7 @@ class ErrorHandlingTestCase(BaseSalTestCase):
 
         This is not a very interesting test because pybind11
         should make this impossible, but it's worth a try,
-        and indeed None segfaults! TSS-3235
+        and indeed None segfaults! DM-18209
         """
         topic_name = "Test_logevent_scalars"
         self.controller.salEventPub(topic_name)
@@ -503,7 +512,7 @@ class ErrorHandlingTestCase(BaseSalTestCase):
         bad_data = SALPY_Test.Test_logevent_arraysC()
         self.check_evt_get_put_raises(data=bad_data, exception=TypeError)
 
-        # TODO TSS-3235: uncomment the following:
+        # TODO DM-18209: uncomment the following:
         # self.check_evt_get_put_raises(data=None, exception=TypeError)
 
     def test_tel_bad_data_types(self):
@@ -511,7 +520,7 @@ class ErrorHandlingTestCase(BaseSalTestCase):
 
         This is not a very interesting test because pybind11
         should make this impossible, but it's worth a try,
-        and indeed None segfaults! TSS-3235
+        and indeed None segfaults! DM-18209
         """
         topic_name = "Test_scalars"
         self.remote.salTelemetrySub(topic_name)
@@ -528,7 +537,7 @@ class ErrorHandlingTestCase(BaseSalTestCase):
         bad_data = SALPY_Test.Test_arraysC()
         self.check_tel_get_put_raises(data=bad_data, exception=TypeError)
 
-        # TODO TSS-3235: uncomment the following:
+        # TODO DM-18209: uncomment the following:
         # self.check_tel_get_put_raises(data=None, exception=TypeError)
 
     def test_evt_overflow_buffer(self):
@@ -695,6 +704,43 @@ class ErrorHandlingTestCase(BaseSalTestCase):
 
         with self.assertRaises(exception):
             self.controller.putSample_scalars(data, 1)
+
+
+class TestTestData(unittest.TestCase):
+    def setUp(self):
+        self.test_data = test_utils.TestData()
+
+    def test_scalars(self):
+        data_list = []
+        for i in range(10):
+            data = SALPY_Test.Test_scalarsC()
+            self.test_data.set_random_scalars(data)
+            data_list.append(data)
+
+        for i, data in enumerate(data_list):
+            data0 = data_list[i]
+            for j, data1 in enumerate(data_list):
+                if i == j:
+                    self.test_data.assert_scalars_equal(data0, data1)
+                else:
+                    with self.assertRaises(AssertionError):
+                        self.test_data.assert_scalars_equal(data0, data1)
+
+    def test_arrays(self):
+        data_list = []
+        for i in range(10):
+            data = SALPY_Test.Test_arraysC()
+            self.test_data.set_random_arrays(data)
+            data_list.append(data)
+
+        for i, data in enumerate(data_list):
+            data0 = data_list[i]
+            for j, data1 in enumerate(data_list):
+                if i == j:
+                    self.test_data.assert_arrays_equal(data0, data1)
+                else:
+                    with self.assertRaises(AssertionError):
+                        self.test_data.assert_arrays_equal(data0, data1)
 
 
 if __name__ == "__main__":
