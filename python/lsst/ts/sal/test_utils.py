@@ -29,6 +29,8 @@ import time
 
 import numpy as np
 
+import SALPY_Test
+
 # standard sleep time for SAL (sec)
 STD_SLEEP = 0.001
 
@@ -87,13 +89,18 @@ def set_random_lsst_dds_domain():
 
 class TestWrapper:
     """Wrap Test and provide access to the commands and topics.
+
+    Parameters
+    ----------
+    testlib : ``SALPY_Test``
+        The SALPY_Test library.
     """
     __test__ = False  # stop pytest from warning that this is not a test
 
-    def __init__(self, testlib, index=None):
+    def __init__(self, index=None):
         self.index = index
-        self.remote = testlib.SAL_Test(index=index)
-        self.controller = testlib.SAL_Test(index=index)
+        self.remote = SALPY_Test.SAL_Test(index=index)
+        self.controller = SALPY_Test.SAL_Test(index=index)
 
         for name in self.remote.getCommandNames():
             topic = f"Test_command_{name}"
@@ -182,10 +189,9 @@ class TestWrapper:
         for field_name in self.scalars_fields:
             setattr(dest_scalars, field_name, getattr(src_scalars, field_name))
 
-    def make_random_cmd_arrays(self):
-        """Make random data for cmd_setArrays using numpy.random."""
+    def set_random_arrays(self, data):
+        """Make random data for the arrays or setArrays topic."""
         nelts = 5
-        data = self.salinfo.lib.Test_command_setArraysC()
         data.boolean1[:] = np.random.choice([False, True], size=(nelts,))
         printable_chars = [c for c in string.ascii_letters + string.digits]
         data.char1 = "".join(np.random.choice(printable_chars, size=(nelts,)))
@@ -208,12 +214,11 @@ class TestWrapper:
         data.double1[:] = np.random.uniform(-1e5, 1e5, size=(nelts,))
         return data
 
-    def make_random_cmd_scalars(self):
-        """Make random data for cmd_setScalars using numpy.random."""
-        data = self.salinfo.lib.Test_command_setScalarsC()
+    def set_random_scalars(self, data):
+        """Make random data for scalars or setScalars topic."""
         # also make an empty arrays struct to get dtype of int fields,
         # since that information is lost in the scalars pybind11 wrapper
-        empty_arrays = self.salinfo.lib.Test_command_setScalarsC()
+        empty_arrays = SALPY_Test.Test_command_setScalarsC()
         data.boolean1 = np.random.choice([False, True])
         printable_chars = [c for c in string.ascii_letters + string.digits]
         data.char1 = np.random.choice(printable_chars)
