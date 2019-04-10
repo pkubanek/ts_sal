@@ -11,6 +11,7 @@ SAL_SALData::SAL_SALData(int aKey)
 {
    char *dname = getenv("LSST_DDS_DOMAIN");
    char *qname = getenv("LSST_DDS_QOS");
+   char *sname = getenv("LSST_DDS_HISTORYSYNC");
    if ( dname != NULL ) {
       strncpy(domainName, dname, 128);
    } else {
@@ -18,6 +19,11 @@ SAL_SALData::SAL_SALData(int aKey)
    }
    if ( qname != NULL ) {
       QosProvider qosProvider(qname,"DDS DefaultQosProfile");
+   }
+   if ( sname != NULL ) {
+      sscanf(sname,"%d",&historySync);
+   } else {
+      historySync = 5;
    }
    hasReader = false;
    hasWriter = false;
@@ -34,6 +40,7 @@ SAL_SALData::SAL_SALData()
 {
    char *dname = getenv("LSST_DDS_DOMAIN");
    char *qname = getenv("LSST_DDS_QOS");
+   char *sname = getenv("LSST_DDS_HISTORYSYNC");
    if ( dname != NULL ) {
       strncpy(domainName, dname, 128);
    } else {
@@ -41,6 +48,11 @@ SAL_SALData::SAL_SALData()
    }
    if ( qname != NULL ) {
       QosProvider qosProvider(qname,"DDS DefaultQosProfile");
+   }
+   if ( sname != NULL ) {
+      sscanf(sname,"%d",&historySync);
+   } else {
+      historySync = 5;
    }
    hasReader = false;
    hasWriter = false;
@@ -1706,7 +1718,7 @@ void SAL_SALData::createReader(int actorIdx,bool filtered)
   checkHandle(sal[actorIdx].reader, "DDS::Subscriber::create_datareader ()");
   sal[actorIdx].isReader = true;
   DDS::Duration_t a_timeout;
-  a_timeout.sec = 0;
+  a_timeout.sec = historySync;
   a_timeout.nanosec = 10000000;
   sal[actorIdx].sampleAge = 1.0e20;
   status = sal[actorIdx].reader->wait_for_historical_data(a_timeout);
@@ -1728,7 +1740,7 @@ void SAL_SALData::createReader2(int actorIdx,bool filtered)
   checkHandle(sal[actorIdx].reader2, "DDS::Subscriber::create_datareader ()");
   sal[actorIdx].isReader = true;
   DDS::Duration_t a_timeout;
-  a_timeout.sec = 0;
+  a_timeout.sec = historySync;
   a_timeout.nanosec = 10000000;
   sal[actorIdx].sampleAge = 1.0e20;
   status = sal[actorIdx].reader2->wait_for_historical_data(a_timeout);

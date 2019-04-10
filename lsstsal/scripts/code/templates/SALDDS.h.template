@@ -129,6 +129,7 @@
       int sndSeqNum;
       int rcvSeqNum;
       int rcvOrigin;
+      int historySync;
       double rcvdTime;
       salU64  origin;
       char   domainName[128];
