@@ -49,7 +49,7 @@ global SQLREC TYPEFORMAT
 }
 
 
-proc genericefdfragment { fout base ttype ctype } {
+proc generickafkafragment { fout base ttype ctype } {
 global ACTORTYPE SAL_WORK_DIR BLACKLIST
    if { $ctype == "connect" } {
        puts $fout "
@@ -213,7 +213,7 @@ global ACTORTYPE SAL_WORK_DIR BLACKLIST
          }
 ###         puts $fout "       \}"
            if { $base != "efd" } {
-             checkLFO $fout $topic
+             checkkafkaLFO $fout $topic
            }
          }
          if { $topic != "command" && $topic != "logevent" } {
@@ -229,7 +229,7 @@ global ACTORTYPE SAL_WORK_DIR BLACKLIST
 }
 
 
-proc genqueryefd { fout base topic key } {
+proc genquerykafka { fout base topic key } {
    if { $key == "last" } {
       puts $fout "
 #include <sys/time.h>
@@ -254,7 +254,7 @@ int SAL_[set base]::getLastSample_[set topic] ([set base]_[set topic]C *mydata) 
         result = mysql_store_result(efdConnection);
         int num_fields = mysql_num_fields(result);
         row = mysql_fetch_row(result);
-        [readfromefd [set base]_[set topic] 1]
+        [readfromkafka [set base]_[set topic] 1]
 "
       puts $fout "
         mysql_free_result(result);
@@ -267,7 +267,7 @@ int SAL_[set base]::getLastSample_[set topic] ([set base]_[set topic]C *mydata) 
 
 
 
-proc checkLFO { fout topic } {
+proc checkkafkaLFO { fout topic } {
   set alias [join [lrange [split $topic _] 1 end] _]
   if { $alias == "largeFileObjectAvailable" } {
      set alias "'[join [lrange [split $topic _] 1 end] _]'"
@@ -301,7 +301,7 @@ global SAL_DIR SAL_WORK_DIR env
 }
 
 
-proc gentelemetryreader { base } {
+proc genktelemetryreader { base } {
 global SAL_WORK_DIR SYSDIC
    set fout [open $SAL_WORK_DIR/[set base]/cpp/src/sacpp_[set base]_telemetry_kafkawriter.cpp w]
    puts $fout "
@@ -378,7 +378,7 @@ int test_[set base]_telemetry_kafkawriter()
   char *thequery = (char *) malloc(sizeof(char)*100000);
   SAL_[set base] mgr = SAL_[set base]();
 "
-  genericefdfragment $fout $base telemetry init
+  generickafkafragment $fout $base telemetry init
   puts $fout "
   os_time delay_10us = \{ 0, 10000 \};
   int numsamp = 0;
@@ -387,12 +387,12 @@ int test_[set base]_telemetry_kafkawriter()
   int iloop = 0;
   int mstatus = 0;
   int status = 0;"
-  genericefdfragment $fout $base telemetry subscriber
-  genericefdfragment $fout $base telemetry connect
+  generickafkafragment $fout $base telemetry subscriber
+  generickafkafragment $fout $base telemetry connect
   puts $fout "
        while (1) \{
 "
-  genericefdfragment $fout $base telemetry getsamples
+  generickafkafragment $fout $base telemetry getsamples
    puts $fout "
           os_nanoSleep(delay_10us);
       \}
@@ -410,7 +410,7 @@ int main (int argc, char **argv[])
 
 
 
-proc geneventreader { base } {
+proc genkeventreader { base } {
 global SAL_WORK_DIR SYSDIC
    set fout [open $SAL_WORK_DIR/[set base]/cpp/src/sacpp_[set base]_event_kafkawriter.cpp w]
    puts $fout "
@@ -486,7 +486,7 @@ int test_[set base]_event_kafkawriter()
   char *thequery = (char *) malloc(sizeof(char)*100000);
   SAL_[set base] mgr = SAL_[set base]();
 "
-  genericefdfragment $fout $base logevent init
+  generickafkafragment $fout $base logevent init
 
   puts $fout "
   os_time delay_10us = \{ 0, 10000 \};
@@ -496,12 +496,12 @@ int test_[set base]_event_kafkawriter()
   int iloop = 0;
   int mstatus = 0;
   int status=0;"
-  genericefdfragment $fout $base logevent subscriber
-  genericefdfragment $fout $base logevent connect
+  generickafkafragment $fout $base logevent subscriber
+  generickafkafragment $fout $base logevent connect
   puts $fout "
   while (1) \{
 "
-  genericefdfragment $fout $base logevent getsamples
+  generickafkafragment $fout $base logevent getsamples
    puts $fout "
      os_nanoSleep(delay_10us);
   \}
@@ -517,7 +517,7 @@ int main (int argc, char **argv[])
 }
 
 
-proc gencommandreader { base } {
+proc genkcommandreader { base } {
 global SAL_WORK_DIR SYSDIC
    set fout [open $SAL_WORK_DIR/[set base]/cpp/src/sacpp_[set base]_command_kafkawriter.cpp w]
    puts $fout "
@@ -595,7 +595,7 @@ int test_[set base]_command_kafkawriter()
   char *thequery = (char *)malloc(sizeof(char)*100000);
   SAL_[set base] mgr = SAL_[set base]();
 "
-  genericefdfragment $fout $base command init
+  generickafkafragment $fout $base command init
   puts $fout "
   os_time delay_10us = \{ 0, 10000 \};
   int numsamp = 0;
@@ -604,12 +604,12 @@ int test_[set base]_command_kafkawriter()
   int iloop = 0;
   int mstatus = 0;
   int status=0;"
-  genericefdfragment $fout $base command subscriber
-  genericefdfragment $fout $base command connect
+  generickafkafragment $fout $base command subscriber
+  generickafkafragment $fout $base command connect
   puts $fout "
   while (1) \{
 "
-  genericefdfragment $fout $base command getsamples
+  generickafkafragment $fout $base command getsamples
    puts $fout "
      os_nanoSleep(delay_10us);
   \}
@@ -626,7 +626,7 @@ int main (int argc, char **argv[])
 }
 
 
-proc updateefdschema { } {
+proc updatekafkaschema { } {
 global SYSDIC SAL_WORK_DIR
    set bad 0
    foreach subsys $SYSDIC(systems) {
@@ -648,9 +648,9 @@ global SQLREC SAL_WORK_DIR
    set SQLREC([set base]_commandLog)  "char.private_revCode,double.private_sndStamp,int.private_seqNum,char.name,int.ack,int.error"
 ####   set SQLREC([set base]_logevent_largeFileObjectAvailable)  "char.private_revCode,double.private_sndStamp,int.private_seqNum,char.url,char.generator,float.version,char.checkSum,char.mimeType,char.id,int.byteSize"
 #   makesummarytables  $base
-   gentelemetryreader $base
-   gencommandreader   $base
-   geneventreader     $base
+   genktelemetryreader $base
+   genkcommandreader   $base
+   genkeventreader     $base
    genkafkawritermake   $base
    cd $SAL_WORK_DIR/[set base]/cpp/src
    exec make -f Makefile.sacpp_[set base]_kafkawriter

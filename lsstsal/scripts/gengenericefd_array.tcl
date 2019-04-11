@@ -180,7 +180,7 @@ global ACTORTYPE SAL_WORK_DIR BLACKLIST SYSDIC
 
   char *efdb_delay = getenv(\"LSST_EFD_CYCLEDELAY\");
   if (efdb_delay != NULL) \{
-     sscanf(efdb_delay,"%d",&idelay);
+     sscanf(efdb_delay,\"%d\",&idelay);
   \}
 
   if (mysql_real_connect(con, efdb_host, \"efduser\" , \"lssttest\", \"EFD\", 0 , NULL, 0) == NULL) \{
@@ -252,7 +252,7 @@ global ACTORTYPE SAL_WORK_DIR BLACKLIST SYSDIC
           \}"
          }
 ###         puts $fout "       \}"
-           if { $base != "efd" } {
+           if { $base != "EFD" } {
              checkLFO $fout $topic
            }
          }

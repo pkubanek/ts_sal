@@ -100,10 +100,23 @@ if { $argv == "" || [lsearch $argv java] > -1 } {
 
 
 if { $argv == "" || [lsearch $argv efd] > -1 } {
+ puts stdout  "Updating EFD SQL writers"
  source $env(SAL_DIR)/gengenericefd_array.tcl
  set bad ""
  set result ""
  catch { set results [updateefdschema] } bad
+ puts stdout "$result $bad"
+ puts stdout  "Updating EFD InfluxDB writers"
+ source $env(SAL_DIR)/geninfluxefd-multi.tcl
+ set bad ""
+ set result ""
+ catch { set results [updateinfluxschema] } bad
+ puts stdout "$result $bad"
+ puts stdout  "Updating EFD kafka writers"
+ source $env(SAL_DIR)/genkafkaefd.tcl
+ set bad ""
+ set result ""
+ catch { set results [updatekafkaschema] } bad
  puts stdout "$result $bad"
 }
 

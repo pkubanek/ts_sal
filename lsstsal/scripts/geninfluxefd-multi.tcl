@@ -96,6 +96,7 @@ global SQLREC TYPEFORMAT
   set record "$record [set rvars]\n	  .timestamp((unsigned long long)(mgr.getCurrentTime()*1000000000));\n"
   return $record
 }
+
 proc writetoefd2 { topic } {
 global SQLREC TYPEFORMAT
   set flds [split $SQLREC($topic) ,]
@@ -136,52 +137,9 @@ global SQLREC TYPEFORMAT
   return $record
 }
 
-proc readfromefd { topic irow } {
-global SQLREC TYPEFORMAT
-  set flds [split $SQLREC($topic) ,]
-  set record "sscanf(row\[irow-1\],\""
-  set rformat ""
-  set rvars ""
-  set ldata "myData_[join [lrange [split $topic _] 1 end] _]"
-  while { [llength $flds] != 0 } {
-      set i [lindex $flds 0]
-      set flds [lrange $flds 1 end]
-      set type [lindex [split $i .] 0]
-      set name [lindex [split $i .] 1]
-      set isarray [lindex [split $i .] 2]
-      if { $type == "char" } {
-             set name "[set name].m_ptr"
-             set isarray ""
-      } 
-###puts stdout "$i $type $name $isarray"
-      if { $isarray == "" } {
-              set value "[set ldata]->[set name]"
-              set vform $TYPEFORMAT($type)
-              if { $type == "char" } {
-                 set vform "'$TYPEFORMAT($type)'"
-              }
-      } else {
-             set value "[set ldata]->[set name]\[0\]"
-             set vform "$TYPEFORMAT($type)"
-             set j 1
-             while { $j <= [expr $isarray -1] } {
-                set value "$value,[set ldata]->[set name]\[$j\]"
-                set vform "$vform, $TYPEFORMAT($type)"
-                incr j 1
-             }
-             set value [string trim $value ","]
-      }
-      set rvars "$rvars , $value"
-      set rformat "$rformat , $vform"
-###puts stdout $rvars
-###puts stdout $rformat
-  }
-  set record "$record [set rformat]\", $rvars );"
-  return $record
-}
 
 
-proc genSALefdqueries { base } {
+proc genSALinfluxqueries { base } {
 global SAL_WORK_DIR
    set fout [open $SAL_WORK_DIR/[set base]/cpp/src/SAL_[set base]_efdqueries.cpp w]
    set idlfile $SAL_WORK_DIR/idl-templates/validated/sal/sal_[set base].idl
@@ -196,8 +154,45 @@ global SAL_WORK_DIR
    close $fout
 }
 
+proc genqueryinflux { fout base topic key } {
+   if { $key == "last" } {
+      puts $fout "
+#include <sys/time.h>
+#include <time.h>
+#include \"SAL_[set base].h\"
+using namespace [set base];
 
-proc genericefdfragment { fout base ttype ctype } {
+int SAL_[set base]::getLastSample_[set topic] ([set base]_[set topic]C *mydata) \{
+
+      int num_fields=0;
+      int mstatus=0;
+      char *thequery = (char *) malloc(sizeof(char)*4000);
+      MYSQL_RES *result;
+      MYSQL_ROW *row;
+
+      if ( getSample_[set topic] ([set base]_[set topic]C *mydata) == SAL__NO_UPDATES) \{
+        sprintf(thequery,\"SELECT * FROM [set base]_[set topic] LIMIT 1;\");
+        mstatus = mysql_query(efdConnection,thequery);
+        if (mstatus != 0) \{
+             return SAL__NO_UPDATES;
+        \}
+        result = mysql_store_result(efdConnection);
+        int num_fields = mysql_num_fields(result);
+        row = mysql_fetch_row(result);
+        [readfrominflux [set base]_[set topic] 1]
+"
+      puts $fout "
+        mysql_free_result(result);
+      \}
+      return SAL__OK;
+\}
+"
+   }
+}
+
+
+
+proc genericinfluxfragment { fout base ttype ctype } {
 global ACTORTYPE SAL_WORK_DIR BLACKLIST
    if { $ctype == "connect" } {
        puts $fout "
@@ -265,7 +260,7 @@ global ACTORTYPE SAL_WORK_DIR BLACKLIST
 	  	[writetoefd2 [set base]_[set topic]]
 	  }"
           if { $base != "efd" } {
-             checkLFO $fout $topic
+             checkinfluxLFO $fout $topic
           }
           puts $fout "
           //cout << ret << endl << resp << endl;
@@ -282,7 +277,7 @@ global ACTORTYPE SAL_WORK_DIR BLACKLIST
 }
 
 
-proc checkLFO { fout topic } {
+proc checkinfluxLFO { fout topic } {
   set alias [join [lrange [split $topic _] 1 end] _]
   if { $alias == "LargeFileObjectAvailable" } {
      set alias "'[join [lrange [split $topic _] 1 end] _]'"
@@ -316,7 +311,7 @@ global SAL_DIR SAL_WORK_DIR env
 }
 
 
-proc gentelemetryreader { base } {
+proc geninfluxtelemetryreader { base } {
 global SAL_WORK_DIR SYSDIC
    set fout [open $SAL_WORK_DIR/[set base]/cpp/src/sacpp_[set base]_telemetry_influxwriter.cpp w]
    puts $fout "
@@ -351,7 +346,7 @@ int test_[set base]_telemetry_influxwriter()
   char *thequery = (char *) malloc(sizeof(char)*100000);
   SAL_[set base] mgr = SAL_[set base]();
 "
-  genericefdfragment $fout $base telemetry init
+  genericinfluxfragment $fout $base telemetry init
   puts $fout "
   os_time delay_10us = \{ 0, 10000 \};
   int numsamp = 0;
@@ -360,12 +355,12 @@ int test_[set base]_telemetry_influxwriter()
   int mstatus = 0;
   string resp;
   int status = 0;"
-  genericefdfragment $fout $base telemetry subscriber
-  genericefdfragment $fout $base telemetry connect
+  genericinfluxfragment $fout $base telemetry subscriber
+  genericinfluxfragment $fout $base telemetry connect
   puts $fout "
        while (1) \{
 "
-  genericefdfragment $fout $base telemetry getsamples
+  genericinfluxfragment $fout $base telemetry getsamples
    puts $fout "
           os_nanoSleep(delay_10us);
       \}
@@ -386,7 +381,7 @@ int main (int argc, char **argv[])
 
 
 
-proc geneventreader { base } {
+proc geninfluxeventreader { base } {
 global SAL_WORK_DIR SYSDIC
    set fout [open $SAL_WORK_DIR/[set base]/cpp/src/sacpp_[set base]_event_influxwriter.cpp w]
    puts $fout "
@@ -421,7 +416,7 @@ int test_[set base]_event_influxwriter()
   char *thequery = (char *) malloc(sizeof(char)*100000);
   SAL_[set base] mgr = SAL_[set base]();
 "
-  genericefdfragment $fout $base logevent init
+  genericinfluxfragment $fout $base logevent init
 
   puts $fout "
   os_time delay_10us = \{ 0, 10000 \};
@@ -431,12 +426,12 @@ int test_[set base]_event_influxwriter()
   int iloop = 0;
   int mstatus = 0;
   int status=0;"
-  genericefdfragment $fout $base logevent subscriber
-  genericefdfragment $fout $base logevent connect
+  genericinfluxfragment $fout $base logevent subscriber
+  genericinfluxfragment $fout $base logevent connect
   puts $fout "
   while (1) \{
 "
-  genericefdfragment $fout $base logevent getsamples
+  genericinfluxfragment $fout $base logevent getsamples
    puts $fout "
      os_nanoSleep(delay_10us);
   \}
@@ -456,7 +451,7 @@ int main (int argc, char **argv[])
 }
 
 
-proc gencommandreader { base } {
+proc geninfluxcommandreader { base } {
 global SAL_WORK_DIR SYSDIC
    set fout [open $SAL_WORK_DIR/[set base]/cpp/src/sacpp_[set base]_command_influxwriter.cpp w]
    puts $fout "
@@ -491,7 +486,7 @@ int test_[set base]_command_influxwriter()
   char *thequery = (char *)malloc(sizeof(char)*100000);
   SAL_[set base] mgr = SAL_[set base]();
 "
-  genericefdfragment $fout $base command init
+  genericinfluxfragment $fout $base command init
   puts $fout "
   os_time delay_10us = \{ 0, 10000 \};
   int numsamp = 0;
@@ -500,12 +495,12 @@ int test_[set base]_command_influxwriter()
   int iloop = 0;
   int mstatus = 0;
   int status=0;"
-  genericefdfragment $fout $base command subscriber
-  genericefdfragment $fout $base command connect
+  genericinfluxfragment $fout $base command subscriber
+  genericinfluxfragment $fout $base command connect
   puts $fout "
   while (1) \{
 "
-  genericefdfragment $fout $base command getsamples
+  genericinfluxfragment $fout $base command getsamples
    puts $fout "
      os_nanoSleep(delay_10us);
   \}
@@ -525,7 +520,7 @@ int main (int argc, char **argv[])
 }
 
 
-proc updateefdtables { } {
+proc updateinfluxtables { } {
 global SAL_WORK_DIR SYSDIC BLACKLIST
    cd $SAL_WORK_DIR
    foreach i [array names BLACKLIST] {
@@ -549,7 +544,7 @@ global SAL_WORK_DIR SYSDIC BLACKLIST
 }
 
 
-proc updateefdschema { } {
+proc updateinfluxschema { } {
 global SYSDIC SAL_WORK_DIR
    set bad 0
    foreach subsys $SYSDIC(systems) {
@@ -564,13 +559,13 @@ global SYSDIC SAL_WORK_DIR
    }
 }
 
-proc updateSALqueries { } {
+proc updateSALinfluxqueries { } {
 global SYSDIC SAL_WORK_DIR
    set bad 0
    foreach subsys $SYSDIC(systems) {
       if { [file exists $SAL_WORK_DIR/idl-templates/validated/sal/sal_[set subsys].idl] } {
         puts stdout "Updating SAL queries for $subsys"
-        set bad [catch {genSALefdqueries $subsys} res]
+        set bad [catch {genSALinfluxqueries $subsys} res]
         if { $bad } {puts stdout $res}
       } else {
         puts stdout "WARNING : No IDL for $subsys available"
@@ -584,9 +579,9 @@ global SQLREC SAL_WORK_DIR
    set SQLREC([set base]_commandLog)  "char.private_revCode,double.private_sndStamp,int.private_seqNum,char.name,int.ack,int.error"
    set SQLREC([set base]_logeventLFO)  "char.private_revCode,double.private_sndStamp,int.private_seqNum,char.alias,char.URL,char.Generator,char.Version,char.Checksum,char.Mime_Type,char.ID,int.Byte_size"
 ##   makesummarytables  $base
-   gentelemetryreader $base
-   gencommandreader   $base
-   geneventreader     $base
+   geninfluxtelemetryreader $base
+   geninfluxcommandreader   $base
+   geninfluxeventreader     $base
    geninfluxwritermake   $base
    cd $SAL_WORK_DIR/[set base]/cpp/src
    exec make -f Makefile.sacpp_[set base]_influxwriter
