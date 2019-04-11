@@ -205,8 +205,11 @@ global SAL_WORK_DIR
       incr idx 1 
    }
    close $fact
+############################ IMPORTANT ####################################
+##### If you change this, change it in code/templates/SALActor.java
    set tuneableQos true
 ###   if { $base == "m1m3" } {set tuneableQos false}
+############################ IMPORTANT ####################################
    puts $fout "
 void SAL_SALData::initSalActors ()
 \{
@@ -221,7 +224,7 @@ void SAL_SALData::initSalActors ()
       sal\[i\].isActive = false;
       sal\[i\].maxSamples = LENGTH_UNLIMITED;
       sal\[i\].sampleAge = 1.0e20;
-      sal\[i\].historyDepth = 10000;
+      sal\[i\].historyDepth = 1000;
       sal\[i\].tuneableQos = [set tuneableQos];
     \}
 "
@@ -241,7 +244,7 @@ proc addActorIndexesJava { idlfile base fout } {
    foreach j $ptypes {
       set name [lindex $j 2]
       puts $fout "	public static final int SAL__[set base]_[set name]_ACTOR = $idx;"
-      incr idx 1 
+      incr idx 1
    }
    puts $fout "	public static final int SAL__ACTORS_MAXCOUNT = $idx;"
    puts $fout "
@@ -251,7 +254,9 @@ proc addActorIndexesJava { idlfile base fout } {
    set idx 0
    foreach j $ptypes {
       set name [lindex $j 2]
+      set revcode [getRevCode [set base]_[set name] short]
       puts $fout "		sal\[$idx\]=new salActor();" 
+      puts $fout "		sal\[$idx\].topicHandle=\"[set base]_[set name][set revcode]\";"
       puts $fout "		sal\[$idx\].topicName=\"[set base]_[set name]\";"
       incr idx 1 
    }  

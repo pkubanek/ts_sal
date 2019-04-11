@@ -417,10 +417,10 @@ global VPROPS TYPEFORMAT
               }
               puts $fcod10 "myData.$VPROPS(name)\[$myidx\] = long(sys.argv\[$idx\])"
            } else {
-              if { $VPROPS(short) } { 
+              if { $VPROPS(short) } {
                  puts $fcod5 "    sscanf(argv\[$idx\], \"%hd\", &myData.$VPROPS(name)\[$myidx\]);"
               } else {
-                 if { $VPROPS(byte) } { 
+                 if { $VPROPS(byte) } {
                     puts $fcod5 "    sscanf(argv\[$idx\], \"%hhu\", &myData.$VPROPS(name)\[$myidx\]);"
                  } else {
                     puts $fcod5 "    sscanf(argv\[$idx\], \"%d\", &myData.$VPROPS(name)\[$myidx\]);"
@@ -560,7 +560,6 @@ proc genkeyedidl { fout base } {
      puts $fout "\};
 "
 }
-
 
 proc makesalcode { idlfile base name lang } {
 global SAL_DIR SAL_WORK_DIR SYSDIC ONEPYTHON
@@ -767,6 +766,7 @@ puts stdout "done addSALDDStypes $idlfile $id $lang"
         close $frep
         exec chmod 755 /tmp/sreplace2.sal
         catch { set result [exec /tmp/sreplace2.sal] } bad
+puts stdout "done sreplace2 $idlfile $id $lang"
       }
       if { $lang == "java" } {
         set frep [open /tmp/sreplace2.sal w]
@@ -784,10 +784,10 @@ puts stdout "done addSALDDStypes $idlfile $id $lang"
 puts stdout "calling salidlgen $base $lang"
       salidlgen $base $lang
 puts stdout "done salidlgen $base $lang"
-      if { $lang == "cpp" } { 
+      if { $lang == "cpp" } {
          set incfiles [glob [set base]/cpp/*.h]
          puts stdout "Updating include files : $incfiles"
-         catch { foreach i $incfiles {  exec cp $i $SAL_DIR/include/. } }
+####         catch { foreach i $incfiles {  exec cp $i $SAL_DIR/include/. } }
          exec cp [set base]/cpp/libsacpp_[set base]_types.so $SAL_WORK_DIR/lib/.
          exec ln -sf $SAL_WORK_DIR/[set base]/cpp/src/SAL_[set base].cpp $SAL_WORK_DIR/[set id]/cpp/src/.
          exec ln -sf $SAL_WORK_DIR/[set base]/cpp/src/SAL_[set base].h $SAL_WORK_DIR/[set id]/cpp/src/.
@@ -876,6 +876,7 @@ global SAL_WORK_DIR
 
 proc saljavaclassgen { base id } {
 global SAL_WORK_DIR OPTIONS
+ if { $OPTIONS(fastest) == 0 } {
    cd $SAL_WORK_DIR/$id/java/standalone
    catch { set result [exec make -f Makefile.saj_[set id]_pub] } bad
    catch {puts stdout "result = $result"}
@@ -895,10 +896,12 @@ global SAL_WORK_DIR OPTIONS
    catch {puts stdout "$bad"}
    puts stdout "javac : Done Event/Logger"
    cd $SAL_WORK_DIR
+ }
 }
 
 proc salcpptestgen { base id } {
 global SAL_WORK_DIR OPTIONS DONE_CMDEVT
+ if { $OPTIONS(fastest) == 0 } {
   puts stdout "Generating cpp test programs for $id"
   cd $SAL_WORK_DIR/$id/cpp/standalone
   catch { set result [exec make -f Makefile.sacpp_[set id]_sub] } bad
@@ -928,6 +931,7 @@ global SAL_WORK_DIR OPTIONS DONE_CMDEVT
    set DONE_CMDEVT 1
    cd $SAL_WORK_DIR
   }
+ }
 }
 
 source $SAL_DIR/add_system_dictionary.tcl
@@ -935,11 +939,9 @@ source $SAL_DIR/gensalgetput.tcl
 if { [lindex [split $env(PYTHON_BUILD_VERSION) .] 0] == 2} {
   puts stdout "Enabling Boost::Python bindings for python 2.x"
   source $env(SAL_DIR)/gensimplepython.tcl
-} else { 
+} else {
   puts stdout "Enabling pybind11 bindings for python 3+"
   source $env(SAL_DIR)/gensimplepybind11.tcl
-}  
+}
 source $SAL_DIR/managetypes.tcl
 source $SAL_DIR/activaterevcodes.tcl
-
-

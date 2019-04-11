@@ -29,7 +29,6 @@ xml_test/sequencer*/
 xml_test/sql
 xml_test/tcs*/
 xml_test/lib
-test/*
 tests/.tests
 tests/pytest_session.txt
 __pycache__

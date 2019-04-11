@@ -1689,26 +1689,30 @@ void SAL_SALData::createReader(int actorIdx,bool filtered)
   checkHandle(sal[actorIdx].reader, "DDS::Subscriber::create_datareader ()");
   sal[actorIdx].isReader = true;
   DDS::Duration_t a_timeout;
-  a_timeout.sec = 5;
-  a_timeout.nanosec = 0;
+  a_timeout.sec = historySync;
+  a_timeout.nanosec = 10000000;
   sal[actorIdx].sampleAge = 1.0e20;
   status = sal[actorIdx].reader->wait_for_historical_data(a_timeout);
 }
 
 void SAL_SALData::createReader2(int actorIdx,bool filtered)
 {
+  status = sal[actorIdx].subscriber->get_default_datareader_qos(sal[actorIdx].dr_qos);
+  checkStatus(status, "DDS::DomainParticipant::get_default_datareader_qos");
+  status = sal[actorIdx].subscriber->copy_from_topic_qos(sal[actorIdx].dr_qos, sal[actorIdx].reliable_topic_qos2);
+  checkStatus(status, "DDS::Subscriber::copy_from_topic_qos");
   if (filtered) {
     sal[actorIdx].reader2 = sal[actorIdx].subscriber->create_datareader(sal[actorIdx].filteredtopic2.in(),
-    DATAREADER_QOS_USE_TOPIC_QOS, NULL, STATUS_MASK_NONE);
+    sal[actorIdx].dr_qos, NULL, STATUS_MASK_NONE);
   } else {
     sal[actorIdx].reader2 = sal[actorIdx].subscriber->create_datareader(sal[actorIdx].topic2.in(),
-    DATAREADER_QOS_USE_TOPIC_QOS, NULL, STATUS_MASK_NONE);
+    sal[actorIdx].dr_qos, NULL, STATUS_MASK_NONE);
   }
   checkHandle(sal[actorIdx].reader2, "DDS::Subscriber::create_datareader ()");
   sal[actorIdx].isReader = true;
   DDS::Duration_t a_timeout;
-  a_timeout.sec = 5;
-  a_timeout.nanosec = 0;
+  a_timeout.sec = historySync;
+  a_timeout.nanosec = 10000000;
   sal[actorIdx].sampleAge = 1.0e20;
   status = sal[actorIdx].reader2->wait_for_historical_data(a_timeout);
 }

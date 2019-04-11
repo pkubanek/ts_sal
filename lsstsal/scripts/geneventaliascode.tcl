@@ -1,6 +1,7 @@
 
 
 source $SAL_DIR/geneventtests.tcl 
+source $SAL_DIR/geneventtestssinglefile.tcl
 source $SAL_DIR/geneventtestsjava.tcl 
 source $SAL_DIR/gentestspython.tcl 
 
@@ -21,7 +22,7 @@ global EVENT_ALIASES EVTS DONE_CMDEVT
      catch { set result [geneventaliascpp $subsys $fout] } bad
      stdlog "$result"
      if { $DONE_CMDEVT == 0} {
-       catch { set result [geneventtestscpp $subsys] } bad
+       catch { set result [geneventtestscpp $subsys] } bad       
        stdlog "$result"
      }
    }
@@ -60,27 +61,17 @@ int SAL_SALData::getEvent_[set i](SALData_logevent_[set i]C *data)
   ReturnCode_t status =  -1;
   string stopic=\"SALData_logevent_[set i]\";
   int actorIdx = SAL__SALData_logevent_[set i]_ACTOR;
-  if (sal\[actorIdx\].subscriber == NULL) \{
-     createSubscriber(actorIdx);
-     createReader(actorIdx,false);
-     sal\[actorIdx\].isEventReader = true;
-  \}
+  int maxSample = sal\[actorIdx\].maxSamples;
   sal\[actorIdx\].maxSamples=1;
   status = getSample_logevent_[set i](data);
+  sal\[actorIdx\].maxSamples = maxSample;
   return status;
 \}
 "
      puts $fout "
 salReturn SAL_SALData::logEvent_[set i]( SALData_logevent_[set i]C *data, int priority )
 \{
-  int actorIdx = SAL__SALData_logevent_[set i]_ACTOR;
   data->priority=priority;
-  if (sal\[actorIdx\].publisher == NULL) \{
-     createPublisher(actorIdx);
-     bool autodispose_unregistered_instances = false;
-     createWriter(actorIdx,autodispose_unregistered_instances);
-     sal\[actorIdx\].isEventWriter = true;
-  \}
   status = putSample_logevent_[set i](data);
   return status;
 \}
@@ -107,8 +98,10 @@ global EVENT_ALIASES EVTS
              createReader(actorIdx,false);
              sal\[actorIdx\].isEventReader = true;
           \}
+          int maxSample = sal\[actorIdx\].maxSamples;
           sal\[actorIdx\].maxSamples=1;
           status = getSample(anEvent);
+          sal\[actorIdx\].maxSamples=maxSample;
 	  return status;
 	\}
 

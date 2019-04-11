@@ -1,7 +1,19 @@
 #!/usr/bin/env tclsh
 
 set SAL_WORK_DIR $env(SAL_WORK_DIR)
-source $SAL_WORK_DIR/.salwork/revCodes.tcl
+
+proc updateRevCodes { subsys } {
+global SAL_WORK_DIR
+  set lidl [glob $SAL_WORK_DIR/idl-templates/validated/[set subsys]_*.idl]
+  set fmd5 [open $SAL_WORK_DIR/idl-templates/validated/[set subsys]_revCodes.tcl w]
+  foreach i [lsort $lidl] {
+    set c [lindex [exec md5sum $i] 0]
+    set s [file tail [file rootname $i]]
+    puts $fmd5 "set REVCODE($s) [string range $c 0 7]"
+  }
+  close $fmd5
+}
+
 
 proc activeRevCodes { subsys } {
 global SAL_WORK_DIR REVCODE

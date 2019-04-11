@@ -1,4 +1,13 @@
-This is release 3.8 of the SAL SDK (October 12th, 2018)
+This is release 3.9 of the SAL SDK (April 13th, 2018)
+
+Changes for 3.9
+
+Support for OpenSplice V6.9
+EFD writers for Kafka and InfluxDB
+RPM generation
+Increased build and test efficiency
+Upgrade to pybind11 wrapper
+
 
 Changes for 3.8
 

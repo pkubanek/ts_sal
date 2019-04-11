@@ -30,6 +30,7 @@ if { $argc < 2 } {
 		sim      - generate simulation configuration
 		icd      - generate ICD document
 		link     - link a SAL program
+                rpm	 - generate runtime RPM
 		verbose  - be more verbose ;-)
 "
   exit
@@ -39,6 +40,7 @@ set SAL_DIR $env(SAL_DIR)
 set OSPL_HOME $env(OSPL_HOME)
 source $SAL_DIR/versioning.tcl
 source $SAL_DIR/utilities.tcl
+source $SAL_DIR/activaterevcodes.tcl
 source $SAL_DIR/add_system_dictionary.tcl
 
 puts stdout "argv = $argv"
@@ -52,7 +54,7 @@ puts stdout "SAL generator - [set SALVERSION]"
 
 set TSUBSYSTEMS ""
 foreach i $argv {
-  if { [lsearch "validate efd writers code compile cpp isocpp java jni lib link maven tcl db icd labview python html sal shmem sim simd verbose" $i] < 0 } {
+  if { [lsearch "validate efd writers code compile cpp isocpp java jni lib link maven tcl db icd labview python html rpm sal shmem sim simd verbose fastest" $i] < 0 } {
     if { [lsearch $SYSDIC(systems) $i] < 0 } {
       puts stdout "
 *******************************************************************************
@@ -99,7 +101,7 @@ if { [file exists $SAL_WORK_DIR] == 0 } {
 
 cd $SAL_WORK_DIR
 set SAL_WORK_DIR [file normalize .]
-foreach o "validate efd writers code compile cpp isocpp java jni lib link maven tcl db icd labview python html sal shmem sim simd  verbose" {
+foreach o "validate efd writers code compile cpp isocpp java jni lib link maven tcl db icd labview python html rpm sal shmem sim simd  verbose fastest" {
   set OPTIONS($o) 0
   if { [lsearch [string tolower $argv] $o] > -1 } {
      set OPTIONS($o) 1
@@ -138,7 +140,7 @@ foreach subsys $TSUBSYSTEMS {
 if { $OPTIONS(html) } {
    cd $SAL_WORK_DIR
    source $SAL_DIR/updatedetails.tcl
-   source $SAL_DIR/genidlshmem.tcl
+   source $SAL_DIR/genidlshmem_array.tcl
    exec mkdir -p $SAL_WORK_DIR/sql
    set sqlf [glob *.sqldef *.sqlwrt]
    foreach f $sqlf { exec mv $f $SAL_WORK_DIR/sql/. }
@@ -206,6 +208,7 @@ if { $OPTIONS(validate) } {
     foreach n $new {
       checkidl [file tail $n]
     }
+    updateRevCodes $i
     stdlog "Completed $i validation\n\n"
   }
 }
@@ -280,13 +283,14 @@ if { $OPTIONS(sal) } {
   set ONEPYTHON 0
   if { [expr $OPTIONS(cpp) + $OPTIONS(isocpp) + $OPTIONS(java) + $OPTIONS(python)] == 0 } {
      stdlog "========================================================================"
-     stdlog "ERROR :  sal option requires a language choice , cpp/isocpp/java/python"
+     stdlog "ERROR :  sal option requires a language choice , cpp/java/python"
      stdlog "========================================================================"
      exit
   }
   cd $SAL_WORK_DIR
-  source $SAL_DIR/gensimplesample.tcl
   set base [lindex [split [lindex $TARGETS 0] _] 0]
+  source $SAL_WORK_DIR/idl-templates/validated/[set base]_revCodes.tcl
+  source $SAL_DIR/gensimplesample.tcl
   if { [file exists $SAL_WORK_DIR/idl-templates/validated/[set base]_cmddef.tcl] } {
         source $SAL_WORK_DIR/idl-templates/validated/[set base]_cmddef.tcl
   } else {
@@ -338,6 +342,12 @@ puts stdout $idlfile
      set DONE_CMDEVT 1
    }
   }
+  catch { set result [gencommandtestsinglefilescpp $base] } bad
+  if { $OPTIONS(verbose) } {stdlog $result}
+  catch { set result [geneventtestssinglefilescpp $base] } bad
+  if { $OPTIONS(verbose) } {stdlog $result}
+  catch { set result [gentelemetrytestsinglefilescpp $base] } bad
+  if { $OPTIONS(verbose) } {stdlog $result}
 }
 
 if { $OPTIONS(lib) } {
@@ -355,6 +365,18 @@ if { $OPTIONS(lib) } {
      }
      if { [file exists $SAL_WORK_DIR/[set s]/cpp/libsacpp_[set s]_types.so] } {
        exec cp $SAL_WORK_DIR/[set s]/cpp/libsacpp_[set s]_types.so $SAL_WORK_DIR/lib/.
+     }
+   }
+}
+
+
+if { $OPTIONS(rpm) } {
+   source $SAL_DIR/gensalrpms.tcl
+   foreach s $TSUBSYSTEMS {
+     if { $s != "rpm" } {
+       stdlog "Building runtime RPM for $s subsystem"
+       catch { set result [updateruntime $s] } bad
+       if { $OPTIONS(verbose) } {stdlog $result}
      }
    }
 }

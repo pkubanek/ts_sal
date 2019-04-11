@@ -60,6 +60,7 @@ global env SYSDIC
       }
   } 
   close $fin
+  set SYSDIC(systems) [lsort $SYSDIC(systems)]
 }
 
 

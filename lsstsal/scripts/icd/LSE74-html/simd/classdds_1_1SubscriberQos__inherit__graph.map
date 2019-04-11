@@ -1,4 +1,0 @@
-<map id="G" name="G">
-<area shape="rect" href="$classdds_1_1BasePubSubQos.html" title="{dds::BasePubSubQos\&lt; DDS::SubscriberQos, SubQosInitializer \&gt;\n||+ BasePubSubQos()\l+ ~BasePubSubQos()\l+ set_instance_presentation()\l+ set_topic_presentation()\l+ set_group_presentation()\l+ set_partition()\l+ set_partition()\l}" alt="" coords="5,141,405,341"/>
-<area shape="rect" href="$classdds_1_1SubscriberQos.html" title="{dds::SubscriberQos\n||+ SubscriberQos()\l+ ~SubscriberQos()\l}" alt="" coords="137,389,273,496"/>
-</map>

@@ -1,4 +1,0 @@
-<map id="G" name="G">
-<area shape="rect" href="$classdds_1_1peer_1_1ReadConditionImpl.html" title="{dds::peer::ReadConditionImpl\n||+ ~ReadConditionImpl()\l+ get_sample_state_mask()\l+ get_view_state_mask()\l+ get_instance_state_mask()\l}" alt="" coords="69,197,261,341"/>
-<area shape="rect" href="$classdds_1_1peer_1_1ConditionImpl.html" title="{dds::peer::ConditionImpl\n||+ ~ConditionImpl()\l+ execute()\l+ get_trigger_value()\l# get_dds_condition()\l}" alt="" coords="84,5,247,149"/>
-</map>

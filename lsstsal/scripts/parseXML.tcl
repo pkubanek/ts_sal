@@ -6,6 +6,7 @@ global TLMS TLM_ALIASES EVENT_ENUM EVENT_ENUMS UNITS ENUM_DONE
    set fin [open $fname r]
    set fout ""
    set ctype ""
+   set explanation ""
    set subsys [lindex [split [file tail $fname] _] 0]
    set tname none
    set itemid none
@@ -29,12 +30,12 @@ global TLMS TLM_ALIASES EVENT_ENUM EVENT_ENUMS UNITS ENUM_DONE
       }
       set tag   [lindex [split $rec "<>"] 1]
       set value [lindex [split $rec "<>"] 2]
-      if { $tag == "SALTelemetry" }    {set ctype "telemetry" ; set intopic 1}
+      if { $tag == "SALTelemetry" }    {set ctype "telemetry" ; set intopic 1 ; set explanation ""}
       if { $tag == "SALCommand" }      {
-          set ctype "command" ; set intopic 1 ; set alias ""
+          set ctype "command" ; set intopic 1 ; set alias "" ; set explanation ""
           set device ""; set property ""; set action "" ; set vvalue ""
       }
-      if { $tag == "SALEvent" }        {set ctype "event" ; set intopic 1; set alias ""}
+      if { $tag == "SALEvent" }        {set ctype "event" ; set intopic 1; set alias "" ; set explanation ""}
       if { $tag == "SALTelemetrySet" } {set ctype "telemetry"}
       if { $tag == "SALCommandSet" }   {set ctype "command"}
       if { $tag == "SALEventSet" }     {set ctype "event"}
@@ -48,6 +49,7 @@ global TLMS TLM_ALIASES EVENT_ENUM EVENT_ENUMS UNITS ENUM_DONE
       if { $tag == "Action" }          {set action $value}
       if { $tag == "Value" }           {set vvalue $value}
       if { $tag == "Subsystem" }       {set subsys $value}
+      if { $tag == "Explanation" }     {set explanation $value}
       if { $tag == "Enumeration" }     {
          if { $intopic } {
            lappend EVENT_ENUM($alias) "$item:$value"
@@ -81,6 +83,7 @@ global TLMS TLM_ALIASES EVENT_ENUM EVENT_ENUMS UNITS ENUM_DONE
           lappend EVTS($subsys,$alias,plist) priority
           puts $fout "	  long	priority;"
          }
+         if { $explanation != "" } {set EVTS($subsys,$alias,help) $explanation}
       }
       if { $tag == "/SALCommand" } {
          set intopic 0
@@ -101,10 +104,12 @@ global TLMS TLM_ALIASES EVENT_ENUM EVENT_ENUMS UNITS ENUM_DONE
             lappend CMDS($subsys,$alias,plist) state
             puts $fout "	  boolean	state;"
          }
+         if { $explanation != "" } {set CMDS($subsys,$alias,help) $explanation}
       }
       if { $tag == "/SALTelemetry" } {
          set TLM_ALIASES($subsys) [lappend TLM_ALIASES($subsys) $alias]
          set intopic 0
+         if { $explanation != "" } {set TLMS($subsys,$alias,help) $explanation}
       }
       if { $tag == "EFDB_Topic" } {
         if { $fout != "" } {

@@ -14,6 +14,7 @@
   #include <string.h>
   #include "SAL_defines.h"
   #include "ccpp_dds_dcps.h"
+  #include "QosProvider.h"
 // INSERT TYPE INCLUDES
   #include "SAL_SALDataC.h"
 
@@ -40,6 +41,7 @@
   struct salActor {
       char 			baseName[SAL__ACTORS_NAMESIZE];
       char 			topicName[SAL__ACTORS_NAMESIZE];
+      char 			topicHandle[SAL__ACTORS_NAMESIZE];
       DDS::String_var 		sFilter;
       DDS::String_var 		typeName;
       DDS::String_var 		typeName2;
@@ -127,6 +129,7 @@
       int sndSeqNum;
       int rcvSeqNum;
       int rcvOrigin;
+      int historySync;
       double rcvdTime;
       salU64  origin;
       char   domainName[128];
