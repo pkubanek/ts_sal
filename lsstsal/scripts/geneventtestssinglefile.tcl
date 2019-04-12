@@ -70,6 +70,7 @@ proc insertSenders { subsys file_writer } {
     foreach alias $EVENT_ALIASES($subsys) {
         puts $file_writer "  mgr.salEventPub(\"[set subsys]_logevent_[set alias]\");"
     }
+    puts $file_writer "  cout << \"===== [set subsys] all senders ready =====\" << endl;"
 
     foreach alias $EVENT_ALIASES($subsys) {
         puts $file_writer "\{" 
@@ -124,10 +125,11 @@ proc insertLoggers { subsys file_writer } {
     foreach alias $EVENT_ALIASES($subsys) {
         puts $file_writer "  mgr.salEventSub(\"[set subsys]_logevent_[set alias]\");"
     }
-    puts $file_writer "  cout << \"=== [set subsys] loggers ready \" << endl;"
+    puts $file_writer "  cout << \"===== [set subsys] all loggers ready =====\" << endl;"
 
 
     foreach alias $EVENT_ALIASES($subsys) {
+        puts $file_writer "  cout << \"=== [set subsys]_[set alias] start of topic ===\" << endl;"
         puts $file_writer "  while (1) "
         puts $file_writer "  \{"
         puts $file_writer "    int status = -1;"
@@ -142,6 +144,7 @@ proc insertLoggers { subsys file_writer } {
         }
         close $fragment_reader
         puts $file_writer "      break;\n    \}\n  \}"
+        puts $file_writer "  cout << \"=== [set subsys]_[set alias] end of topic ===\" << endl;"
     }
 
     puts $file_writer "/* Remove the DataWriters etc */"

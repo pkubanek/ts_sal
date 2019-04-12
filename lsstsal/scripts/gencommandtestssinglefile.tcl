@@ -70,7 +70,7 @@ proc insertCommanders { subsys file_writer } {
     foreach alias $CMD_ALIASES($subsys) {
         puts $file_writer "  mgr.salCommand(\"[set subsys]_command_[set alias]\");"
     }
-    puts $file_writer "  cout << \"=== [set subsys] controllers ready \" << endl;"
+    puts $file_writer "  cout << \"===== [set subsys] all commanders ready =====\" << endl;"
 
     foreach alias $CMD_ALIASES($subsys) {
         puts $file_writer "  \{"
@@ -120,15 +120,15 @@ proc insertControllers { subsys file_writer } {
     foreach alias $CMD_ALIASES($subsys) {
         puts $file_writer "  mgr.salProcessor(\"[set subsys]_command_[set alias]\");"
     }
-    puts $file_writer "  cout << \"=== [set subsys] controllers ready \" << endl;"
+    puts $file_writer "  cout << \"===== [set subsys] all controllers ready =====\" << endl;"
 
     foreach alias $CMD_ALIASES($subsys) {
+        puts $file_writer "  cout << \"=== [set subsys]_[set alias] start of topic ===\" << endl;"
         puts $file_writer "  while (1)" 
         puts $file_writer "  \{"
         puts $file_writer "    [set subsys]_command_[set alias]C SALInstance;"
         puts $file_writer "    cmdId = mgr.acceptCommand_[set alias](&SALInstance);"
         puts $file_writer "    if (cmdId > 0) \{"
-        puts $file_writer "      cout << \"=== command [set alias] received = \" << endl;"
 
         set fragment_reader [open $SAL_WORK_DIR/include/SAL_[set subsys]_command_[set alias]Csub.tmp r]
         while { [gets $fragment_reader line] > -1 } {
@@ -145,6 +145,7 @@ proc insertControllers { subsys file_writer } {
         puts $file_writer "    \}"
         puts $file_writer "    os_nanoSleep(delay_10ms);"
         puts $file_writer "  \}"
+        puts $file_writer "  cout << \"=== [set subsys]_[set alias] end of topic ===\" << endl;"
     }
 
     puts $file_writer "/* Remove the DataWriters etc */"

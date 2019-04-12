@@ -70,6 +70,7 @@ proc insertPublishers { subsys file_writer } {
     foreach alias $TLM_ALIASES($subsys) {
         puts $file_writer "  mgr.salTelemetryPub(\"[set subsys]_[set alias]\");"
     }
+    puts $file_writer "  cout << \"===== [set subsys] all publishers ready =====\" << endl;"
 
     foreach alias $TLM_ALIASES($subsys) {
         puts $file_writer "\n  \{" 
@@ -122,10 +123,11 @@ proc insertSubscribers { subsys file_writer } {
     foreach alias $TLM_ALIASES($subsys) {
         puts $file_writer "  mgr.salTelemetrySub(\"[set subsys]_[set alias]\");"
     }
-    puts $file_writer " cout << \"=== [set subsys] subscriber Ready ...\" << endl;"
+    puts $file_writer " cout << \"===== [set subsys] subscribers ready =====\" << endl;"
 
 
     foreach alias $TLM_ALIASES($subsys) {
+        puts $file_writer "  cout << \"=== [set subsys]_[set alias] start of topic ===\" << endl;"
         puts $file_writer "  \{" 
         puts $file_writer "    [set subsys]_[set alias]C SALInstance;"
         puts $file_writer "    ReturnCode_t status = -1;"
@@ -147,6 +149,7 @@ proc insertSubscribers { subsys file_writer } {
         puts $file_writer "      \}"
         puts $file_writer "    \}"
         puts $file_writer "  \}"
+        puts $file_writer "  cout << \"=== [set subsys]_[set alias] end of topic ===\" << endl;"
     }
 
     puts $file_writer "  /* Remove the DataWriters etc */"
