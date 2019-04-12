@@ -31,7 +31,6 @@ proc geneventtestssinglefilejava { subsys } {
     # cd $SAL_WORK_DIR/$subsys/cpp/src
     # exec make -f $SAL_WORK_DIR/$subsys/cpp/src/Makefile.sacpp_[set subsys]_all_testevents
     # cd $SAL_WORK_DIR
-    # exit
 }
 
 proc insertEventHeaderJava { subsys file_writer } {

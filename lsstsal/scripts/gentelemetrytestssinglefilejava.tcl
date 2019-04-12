@@ -32,7 +32,6 @@ proc gentelemetrytestssinglefilejava { subsys } {
     # exec make -f $SAL_WORK_DIR/$subsys/cpp/src/Makefile.sacpp_[set subsys]_all_testevents
     # cd $SAL_WORK_DIR
     puts "telemetry done"
-    exit
 }
 
 proc insertTelemetryHeaderJava { subsys file_writer } {

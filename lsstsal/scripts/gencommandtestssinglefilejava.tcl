@@ -31,7 +31,6 @@ proc gencommandtestssinglefilejava { subsys } {
     # cd $SAL_WORK_DIR/$subsys/cpp/src
     # exec make -f $SAL_WORK_DIR/$subsys/cpp/src/Makefile.sacpp_[set subsys]_all_testcommands
     # cd $SAL_WORK_DIR
-
 }
 
 proc insertCommandHeaderJava { subsys file_writer } {
