@@ -1,171 +1,123 @@
 proc gentelemetrytestssinglefilejava { subsys } {
     # Creates multiple files which contains an implementation of all the
-    # telemtry defined within this subsys.
-    
-    # global SAL_WORK_DIR
+    # events defined within this subsys.
 
-    puts "telemetry scripts firing"
+    puts "telemetry script firing"
 
-    # # Create the file writers for the publisher, subscriber and makefile.
-    # set publisher_cpp_file_writer [open $SAL_WORK_DIR/$subsys/cpp/src/sacpp_[set subsys]_all_publisher.cpp w]
-    # set subscriber_cpp_file_writer [open $SAL_WORK_DIR/$subsys/cpp/src/sacpp_[set subsys]_all_subscriber.cpp w]
-    # set makefile_file_writer [open $SAL_WORK_DIR/$subsys/cpp/src/Makefile.sacpp_[set subsys]_all_testtelemetry w]
+    global SAL_WORK_DIR
 
-    # # Insert content into the publisher.
-    # insertTelemetryHeader $subsys $publisher_cpp_file_writer
-    # insertPublishers $subsys $publisher_cpp_file_writer
+    # Create the file writers for the sender, logger and makefile.
+    set publisher_java_file_writer [open $SAL_WORK_DIR/$subsys/java/src/[set subsys]Publisher_all.java w]
+    set subscriber_java_file_writer [open $SAL_WORK_DIR/$subsys/java/src/[set subsys]Subscriber_all.java w]
+    # set makefile_file_writer [open $SAL_WORK_DIR/$subsys/cpp/src/Makefile.sacpp_[set subsys]_all_testevents w]
 
-    # # Insert content into the subscriber.
-    # insertTelemetryHeader $subsys $subscriber_cpp_file_writer
-    # insertSubscribers $subsys $subscriber_cpp_file_writer
+    # Insert content into the publisher.
+    insertTelemetryHeaderJava $subsys $publisher_java_file_writer
+    insertPublishersJava $subsys $publisher_java_file_writer
+
+    # Insert content into the logger.
+    insertTelemetryHeaderJava $subsys $subscriber_java_file_writer
+    insertSubscribersJava $subsys $subscriber_java_file_writer
 
     # # Insert content into the makefile.
-    # insertTelemetryMakeFile $subsys $makefile_file_writer
+    # insertEventsMakeFile $subsys $makefile_file_writer
 
     # # Close all the file writers.
-    # close $publisher_cpp_file_writer
-    # close $subscriber_cpp_file_writer
+    # close $sender_cpp_file_writer
+    # close $logger_cpp_file_writer
     # close $makefile_file_writer
 
-    # # Execute the makefile. 
+    # # Execute the makefile.
     # cd $SAL_WORK_DIR/$subsys/cpp/src
-    # exec make -f $SAL_WORK_DIR/$subsys/cpp/src/Makefile.sacpp_[set subsys]_all_testtelemetry
+    # exec make -f $SAL_WORK_DIR/$subsys/cpp/src/Makefile.sacpp_[set subsys]_all_testevents
     # cd $SAL_WORK_DIR
-
+    puts "telemetry done"
     exit
 }
 
-proc insertTelemetryHeader { subsys file_writer } {
+proc insertTelemetryHeaderJava { subsys file_writer } {
 
     puts $file_writer "/*"
-    puts $file_writer " * This file contains an implementation of all the commands defined within the"
-    puts $file_writer " * [set subsys] subsystem generated via gentelemetrytestsinglefilescpp.tcl."
-    puts $file_writer " *"
+    puts $file_writer "* This file contains the implementation for the [set subsys] single file commander test."
+    puts $file_writer "* [set subsys] subsystem generated via gencommandtestssinglefilejava.tcl"
+    puts $file_writer "*"
     puts $file_writer " ***/"
 
-    puts $file_writer "#include <string>"
-    puts $file_writer "#include <sstream>"
-    puts $file_writer "#include <iostream>"
-    puts $file_writer "#include <stdlib.h>"
-    puts $file_writer "#include \"SAL_[set subsys].h\""
-    puts $file_writer "#include \"ccpp_sal_[set subsys].h\""
-    puts $file_writer "#include \"os.h\""
-    puts $file_writer "using namespace DDS;"
-    puts $file_writer "using namespace [set subsys];"
+    puts $file_writer "import [set subsys].*;"
+    puts $file_writer "import org.lsst.sal.SAL_[set subsys];\n"
 }
 
-proc insertPublishers { subsys file_writer } {
+proc insertPublishersJava { subsys file_writer } {
 
-    global SYSDIC SAL_WORK_DIR TLM_ALIASES 
+    global SYSDIC TLM_ALIASES
 
-    puts $file_writer "int main (int argc, char *argv\[\])"
-    puts $file_writer "\{"
+    puts $file_writer "public class [set subsys]_allPublisher \{\n"
+    puts $file_writer "    public static void main(String[] args) \{"
+    puts $file_writer "        short aKey 1;"
+    puts $file_writer "        SAL_Scheduler mgr = new SAL_Scheduler(akey);"
 
-    if { [info exists SYSDIC($subsys,keyedID)] } {
-        puts $file_writer "  int [set subsys]ID = 1;"
-        puts $file_writer "  if (getenv(\"LSST_[string toupper [set subsys]]_ID\") != NULL) \{"
-        puts $file_writer "    sscanf(getenv(\"LSST_[string toupper [set subsys]]_ID\"),\"%d\",&[set subsys]ID);"
-        puts $file_writer "  \}"
-        puts $file_writer "  SAL_[set subsys] mgr = SAL_[set subsys]([set subsys]ID);\n"
-    } else {
-        puts $file_writer "  SAL_[set subsys] mgr = SAL_[set subsys]();"
+    foreach alias $TLM_ALIASES($subsys) {
+        puts $file_writer "        mgr.salTelemetryPub(\"[set subsys]_[set alias]\");"
     }
 
     foreach alias $TLM_ALIASES($subsys) {
-        puts $file_writer "  mgr.salTelemetryPub(\"[set subsys]_[set alias]\");"
+        puts $file_writer "\n        int count = 1;"
+        puts $file_writer "        [set subsys].logevent_[set alias] event  = new [set subsys].logevent_[set alias]();"
+
+        puts $file_writer "        while (count < 6) {"
+        puts $file_writer "            mgr.putSample(theTopicInstance);"
+        puts $file_writer "            System.out.priuntln('=== \[[set alias]\] message sent' + count);"
+        puts $file_writer "            ++count;"
+        puts $file_writer "            try {"
+        puts $file_writer "                Thread.sleep(1000);"
+        puts $file_writer "            } catch (InterruptedException e) {"
+        puts $file_writer "            }"
+        puts $file_writer "        }"
+        puts $file_writer "        mgr.salShutdown"
     }
-
-    foreach alias $TLM_ALIASES($subsys) {
-        puts $file_writer "\n  \{" 
-        puts $file_writer "    int iseq = 0;"
-        puts $file_writer "    os_time delay_1s = { 1, 0 };"
-        puts $file_writer "    [set subsys]_[set alias]C myData;"
-
-        set fragment_reader [open $SAL_WORK_DIR/include/SAL_[set subsys]_[set alias]Cpub.tmp r]
-        while { [gets $fragment_reader line] > -1 } {
-            puts $file_writer "    [string trim $line ]"
-        }
-
-        puts $file_writer "    while (iseq < 10) \{"
-        puts $file_writer "      iseq++;"
-        puts $file_writer "      mgr.putSample_[set alias](&myData);"
-        puts $file_writer "      os_nanoSleep(delay_1s);"
-        puts $file_writer "    \}"
-        puts $file_writer "  \}"
-    }
-
-    puts $file_writer "  mgr.salShutdown();"
-    puts $file_writer "  return 0;"
-    puts $file_writer "\}"
-}
-
-proc insertSubscribers { subsys file_writer } {
-
-    global SYSDIC SAL_WORK_DIR TLM_ALIASES 
-
-    puts $file_writer "\n/* entry point exported and demangled so symbol can be found in shared library */"
-    puts $file_writer "extern \"C\""
-    puts $file_writer "\{"
-    puts $file_writer "  OS_API_EXPORT"
-    puts $file_writer "  int test_[set subsys]_all_telemetry();"
-    puts $file_writer "\}"
-
-    puts $file_writer "int test_[set subsys]_all_telemetry()"
-    puts $file_writer "\{"
-
-    if { [info exists SYSDIC($subsys,keyedID)] } {
-        puts $file_writer "  int [set subsys]ID = 1;"
-        puts $file_writer "  if (getenv(\"LSST_[string toupper [set subsys]]_ID\") != NULL) \{"
-        puts $file_writer "    sscanf(getenv(\"LSST_[string toupper [set subsys]]_ID\"),\"%d\",&[set subsys]ID);"
-        puts $file_writer "  \}"
-        puts $file_writer "  SAL_[set subsys] mgr = SAL_[set subsys]([set subsys]ID);\n"
-    } else {
-        puts $file_writer "  SAL_[set subsys] mgr = SAL_[set subsys]();"
-    }
-
-    foreach alias $TLM_ALIASES($subsys) {
-        puts $file_writer "  mgr.salTelemetrySub(\"[set subsys]_[set alias]\");"
-    }
-    puts $file_writer " cout << \"=== [set subsys] subscriber Ready ...\" << endl;"
-
-
-    foreach alias $TLM_ALIASES($subsys) {
-        puts $file_writer "  \{" 
-        puts $file_writer "    [set subsys]_[set alias]C SALInstance;"
-        puts $file_writer "    ReturnCode_t status = -1;"
-        puts $file_writer "    int count = 0;"
-        puts $file_writer "    os_time delay_10ms = \{ 0, 10000000 \};"
-
-        puts $file_writer "    while (count < 10) \{"
-        puts $file_writer "      status = mgr.getNextSample_[set alias](&SALInstance);"
-        puts $file_writer "      if (status == SAL__OK) \{"
-
-        set fragment_reader [open $SAL_WORK_DIR/include/SAL_[set subsys]_[set alias]Csub.tmp r]
-        while { [gets $fragment_reader line] > -1 } {
-            puts $file_writer "        [string trim $line ]"
-        }
-        close $fragment_reader
-        puts $file_writer "        os_nanoSleep(delay_10ms);"
-        puts $file_writer "        ++count;"
-        
-        puts $file_writer "      \}"
-        puts $file_writer "    \}"
-        puts $file_writer "  \}"
-    }
-
-    puts $file_writer "  /* Remove the DataWriters etc */"
-    puts $file_writer "  mgr.salShutdown();"
-    puts $file_writer "  return 0;"
-    puts $file_writer "\}"
-
-    puts $file_writer "int main (int argc, char *argv\[\])"
-    puts $file_writer "\{"
-    puts $file_writer "  return test_[set subsys]_all_telemetry();"
-    puts $file_writer "\}"
 
 }
 
-proc insertTelemetryMakeFile { subsys file_writer } {
+proc insertSubscribersJava { subsys file_writer } {
+
+    global SYSDIC TLM_ALIASES
+
+    puts $file_writer "public class [set subsys]_allSubscriber \{\n"
+    puts $file_writer "    public static void main(String[] args) \{"
+    puts $file_writer "        short aKey 1;"
+    puts $file_writer "        SAL_Scheduler mgr = new SAL_Scheduler(akey);"
+
+    foreach alias $TLM_ALIASES($subsys) {
+        puts $file_writer "        mgr.salTelemetrySub(\"[set subsys]_[set alias]\");"
+    }
+
+    foreach alias $TLM_ALIASES($subsys) {
+        puts $file_writer "\n        [set subsys].[set alias] SALInstance = new [set subsys].[set alias]();"
+        puts $file_writer "        samples = mgr.flushSamples(SALInstance);"
+        puts $file_writer "        System.out.println ('=== \[[set alias] Subscriber\] Ready ...');"
+        puts $file_writer "        boolean terminate = false;"
+        puts $file_writer "        int count = 0;"
+        puts $file_writer "        int iloop = 0;"
+        puts $file_writer "        while (iloop < 200) { // We dont want the example to run indefinitely"
+        puts $file_writer "            iloop++;"
+        puts $file_writer "            samples = mgr.getSample(SALInstance);"
+        puts $file_writer "            if (samples == SAL_Scheduler.SAL__OK) {"
+        puts $file_writer "                count++;"
+        puts $file_writer "                System.out.println('=== \[[set alias] Subscriber\] samples ' + SALInstance.private_sndStamp);"
+        puts $file_writer "                System.out.println('=== \[[set alias] Subscriber\] message received :' + count);"
+        puts $file_writer "            }"
+        puts $file_writer "            try {"
+        puts $file_writer "                Thread.sleep(10);"
+        puts $file_writer "            }"
+        puts $file_writer "            catch(InterruptedException ie) {"
+        puts $file_writer "                // nothing to do"
+        puts $file_writer "            }"  
+        puts $file_writer "        }"
+    }
+    puts $file_writer "    mgr.salShutdown"
+}
+
+proc insertEventsMakeFileJava { subsys file_writer } {
     puts $file_writer "#----------------------------------------------------------------------------"
     puts $file_writer "#       Macros"
     puts $file_writer "#----------------------------------------------------------------------------"
@@ -184,17 +136,17 @@ proc insertTelemetryMakeFile { subsys file_writer } {
     puts $file_writer "COMPILE.cc    = \$(CXX) \$(CCFLAGS) \$(CPPFLAGS) -c"
     puts $file_writer "LDFLAGS       = -L\".\" -L\"\$(OSPL_HOME)/lib\" -Wl,-rpath,\$\$ORIGIN -Wl,-rpath,\$\$ORIGIN/\$(OSPL_HOME)/lib -L\"\$(SAL_WORK_DIR)/lib\""
     puts $file_writer "CCC           = \$(CXX)"
-    puts $file_writer "MAKEFILE      = Makefile.sacpp_[set subsys]_testcommands // may be not needed"
+    puts $file_writer "MAKEFILE      = Makefile.sacpp_[set subsys]_all_testevents // may be not needed"
     puts $file_writer "DEPENDENCIES  ="
     puts $file_writer "BTARGETDIR    = ./"
 
-    puts $file_writer "BIN1           = \$(BTARGETDIR)sacpp_[set subsys]_all_publisher"
-    puts $file_writer "OBJS1          = .obj/SAL_[set subsys].o .obj/sacpp_[set subsys]_all_publisher.o"
-    puts $file_writer "SRC           = ../src/SAL_[set subsys].cpp    sacpp_[set subsys]_all_publisherc"
+    puts $file_writer "BIN1           = \$(BTARGETDIR)sacpp_[set subsys]_all_sender"
+    puts $file_writer "OBJS1          = .obj/SAL_[set subsys].o .obj/sacpp_[set subsys]_all_sender.o"
+    puts $file_writer "SRC           = ../src/SAL_[set subsys].cpp    sacpp_[set subsys]_all_senderc"
 
-    puts $file_writer "BIN2          = \$(BTARGETDIR)sacpp_[set subsys]_all_subscriber"
-    puts $file_writer "OBJS2         = .obj/SAL_[set subsys].o .obj/sacpp_[set subsys]_all_subscriber.o"
-    puts $file_writer "SRC           = ../src/SAL_[set subsys].cpp    sacpp_[set subsys]_all_subscriberc"
+    puts $file_writer "BIN2          = \$(BTARGETDIR)sacpp_[set subsys]_all_logger"
+    puts $file_writer "OBJS2         = .obj/SAL_[set subsys].o .obj/sacpp_[set subsys]_all_logger.o"
+    puts $file_writer "SRC           = ../src/SAL_[set subsys].cpp    sacpp_[set subsys]_all_loggerc"
 
     puts $file_writer "CAT           = cat"
     puts $file_writer "MV            = mv -f"
@@ -220,44 +172,44 @@ proc insertTelemetryMakeFile { subsys file_writer } {
 
     puts $file_writer "all: \$(BIN1) \$(BIN2)"
 
-    puts $file_writer ".obj/sacpp_[set subsys]_all_publisher.o: ../src/sacpp_[set subsys]_all_publisher.cpp"
-    puts $file_writer "	@\$(TESTDIRSTART) \".obj/../src\" \$(TESTDIREND) \$(MKDIR) \".obj/../src\""
-    puts $file_writer "	\$(COMPILE.cc) \$(EXPORTFLAGS) \$(OUTPUT_OPTION) ../src/sacpp_[set subsys]_all_publisher.cpp"
+    puts $file_writer ".obj/sacpp_[set subsys]_all_sender.o: ../src/sacpp_[set subsys]_all_sender.cpp"
+    puts $file_writer " @\$(TESTDIRSTART) \".obj/../src\" \$(TESTDIREND) \$(MKDIR) \".obj/../src\""
+    puts $file_writer " \$(COMPILE.cc) \$(EXPORTFLAGS) \$(OUTPUT_OPTION) ../src/sacpp_[set subsys]_all_sender.cpp"
 
     puts $file_writer "\$(BIN1): \$(OBJS1)"
-    puts $file_writer "	@\$(TESTDIRSTART) \"\$(BTARGETDIR)\" \$(TESTDIREND) \$(MKDIR) \"\$(BTARGETDIR)\""
-    puts $file_writer "	\$(LINK.cc) \$(OBJS1) \$(LDLIBS) \$(OUTPUT_OPTION)"
+    puts $file_writer " @\$(TESTDIRSTART) \"\$(BTARGETDIR)\" \$(TESTDIREND) \$(MKDIR) \"\$(BTARGETDIR)\""
+    puts $file_writer " \$(LINK.cc) \$(OBJS1) \$(LDLIBS) \$(OUTPUT_OPTION)"
 
-    puts $file_writer ".obj/sacpp_[set subsys]_all_subscriber.o: ../src/sacpp_[set subsys]_all_subscriber.cpp"
-    puts $file_writer "	@\$(TESTDIRSTART) \".obj/../src\" \$(TESTDIREND) \$(MKDIR) \".obj/../src\""
-    puts $file_writer "	\$(COMPILE.cc) \$(EXPORTFLAGS) \$(OUTPUT_OPTION) ../src/sacpp_[set subsys]_all_subscriber.cpp"
+    puts $file_writer ".obj/sacpp_[set subsys]_all_logger.o: ../src/sacpp_[set subsys]_all_logger.cpp"
+    puts $file_writer " @\$(TESTDIRSTART) \".obj/../src\" \$(TESTDIREND) \$(MKDIR) \".obj/../src\""
+    puts $file_writer " \$(COMPILE.cc) \$(EXPORTFLAGS) \$(OUTPUT_OPTION) ../src/sacpp_[set subsys]_all_logger.cpp"
 
     puts $file_writer "\$(BIN2): \$(OBJS2)"
-    puts $file_writer "	@\$(TESTDIRSTART) \"\$(BTARGETDIR)\" \$(TESTDIREND) \$(MKDIR) \"\$(BTARGETDIR)\""
-    puts $file_writer "	\$(LINK.cc) \$(OBJS2) \$(LDLIBS) \$(OUTPUT_OPTION)"
+    puts $file_writer " @\$(TESTDIRSTART) \"\$(BTARGETDIR)\" \$(TESTDIREND) \$(MKDIR) \"\$(BTARGETDIR)\""
+    puts $file_writer " \$(LINK.cc) \$(OBJS2) \$(LDLIBS) \$(OUTPUT_OPTION)"
 
     puts $file_writer "generated: \$(GENERATED_DIRTY)"
-    puts $file_writer "	@-:"
+    puts $file_writer " @-:"
 
     puts $file_writer "clean:"
-    puts $file_writer "	-\$(RM) \$(OBJS)"
+    puts $file_writer " -\$(RM) \$(OBJS)"
 
     puts $file_writer "realclean: clean"
-    puts $file_writer "	-\$(RM) \$(BIN)"
-    puts $file_writer "	-\$(RM) .obj/"
+    puts $file_writer " -\$(RM) \$(BIN)"
+    puts $file_writer " -\$(RM) .obj/"
 
     puts $file_writer "check-syntax:"
-    puts $file_writer "	\$(COMPILE.cc) \$(EXPORTFLAGS) -Wall -Wextra -pedantic -fsyntax-only \$(CHK_SOURCES)"
+    puts $file_writer " \$(COMPILE.cc) \$(EXPORTFLAGS) -Wall -Wextra -pedantic -fsyntax-only \$(CHK_SOURCES)"
 
     puts $file_writer "#----------------------------------------------------------------------------"
     puts $file_writer "#       Dependencies"
     puts $file_writer "#----------------------------------------------------------------------------"
 
     puts $file_writer "\$(DEPENDENCIES):"
-    puts $file_writer "	@\$(TOUCH) \$(DEPENDENCIES)"
+    puts $file_writer " @\$(TOUCH) \$(DEPENDENCIES)"
 
     puts $file_writer "depend:"
-    puts $file_writer "	-VDIR=.obj/ \$(MPC_ROOT)/depgen.pl  \$(CFLAGS) \$(CCFLAGS) \$(CPPFLAGS) -f \$(DEPENDENCIES) \$(SRC) 2> \$(NUL)"
+    puts $file_writer " -VDIR=.obj/ \$(MPC_ROOT)/depgen.pl  \$(CFLAGS) \$(CCFLAGS) \$(CPPFLAGS) -f \$(DEPENDENCIES) \$(SRC) 2> \$(NUL)"
 
     puts $file_writer "include \$(DEPENDENCIES)"
 }
