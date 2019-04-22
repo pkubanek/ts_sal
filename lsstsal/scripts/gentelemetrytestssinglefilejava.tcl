@@ -31,7 +31,6 @@ proc gentelemetrytestssinglefilejava { subsys } {
     # cd $SAL_WORK_DIR/$subsys/cpp/src
     # exec make -f $SAL_WORK_DIR/$subsys/cpp/src/Makefile.sacpp_[set subsys]_all_testevents
     # cd $SAL_WORK_DIR
-    puts "telemetry done"
 }
 
 proc insertTelemetryHeaderJava { subsys file_writer } {
@@ -52,7 +51,7 @@ proc insertPublishersJava { subsys file_writer } {
 
     puts $file_writer "public class [set subsys]_allPublisher \{\n"
     puts $file_writer "    public static void main(String[] args) \{"
-    puts $file_writer "        short aKey 1;"
+    puts $file_writer "        short aKey = 1;"
     puts $file_writer "        SAL_Scheduler mgr = new SAL_Scheduler(akey);"
 
     foreach alias $TLM_ALIASES($subsys) {
@@ -83,7 +82,7 @@ proc insertSubscribersJava { subsys file_writer } {
 
     puts $file_writer "public class [set subsys]_allSubscriber \{\n"
     puts $file_writer "    public static void main(String[] args) \{"
-    puts $file_writer "        short aKey 1;"
+    puts $file_writer "        short aKey = 1;"
     puts $file_writer "        SAL_Scheduler mgr = new SAL_Scheduler(akey);"
 
     foreach alias $TLM_ALIASES($subsys) {

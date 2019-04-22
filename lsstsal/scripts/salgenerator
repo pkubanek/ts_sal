@@ -332,11 +332,9 @@ puts stdout $idlfile
         catch { set result [gentelemetrytestssinglefilejava $base] } bad
         if { $OPTIONS(verbose) } {stdlog $result}
 
-        exit        
-
-    #    stdlog "Generating SAL Java code for $subsys"
-    #    catch { set result [makesalcode $idlfile $base $name java] } bad
-    #    if { $OPTIONS(verbose) } {stdlog $result}
+        stdlog "Generating SAL Java code for $subsys"
+        catch { set result [makesalcode $idlfile $base $name java] } bad
+        if { $OPTIONS(verbose) } {stdlog $result}
 
      }
      if { $OPTIONS(isocpp) } {
