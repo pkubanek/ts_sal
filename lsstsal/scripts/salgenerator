@@ -214,7 +214,7 @@ if { $OPTIONS(validate) } {
 }
 
 if { $OPTIONS(efd) && $OPTIONS(writers) } {
-   source $SAL_DIR/gengenericefd.tcl
+   source $SAL_DIR/gengenericefd_array.tcl
    cd $SAL_WORK_DIR
    updateefdschema
    updateefdtables
@@ -342,12 +342,14 @@ puts stdout $idlfile
      set DONE_CMDEVT 1
    }
   }
-  catch { set result [gencommandtestsinglefilescpp $base] } bad
-  if { $OPTIONS(verbose) } {stdlog $result}
-  catch { set result [geneventtestssinglefilescpp $base] } bad
-  if { $OPTIONS(verbose) } {stdlog $result}
-  catch { set result [gentelemetrytestsinglefilescpp $base] } bad
-  if { $OPTIONS(verbose) } {stdlog $result}
+  if { $OPTIONS(cpp) } {
+    catch { set result [gencommandtestsinglefilescpp $base] } bad
+    if { $OPTIONS(verbose) } {stdlog $result}
+    catch { set result [geneventtestssinglefilescpp $base] } bad
+    if { $OPTIONS(verbose) } {stdlog $result}
+    catch { set result [gentelemetrytestsinglefilescpp $base] } bad
+    if { $OPTIONS(verbose) } {stdlog $result}
+  }
 }
 
 if { $OPTIONS(lib) } {
