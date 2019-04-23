@@ -88,8 +88,8 @@ proc insertPublishers { subsys file_writer } {
         puts $file_writer "      iseq++;"
         puts $file_writer "      mgr.putSample_[set alias](&myData);"
         puts $file_writer "      os_nanoSleep(delay_1s);"
-        puts $file_writer "      cout << \"=== [set subsys]_[set alias] end of topic ===\" << endl;"
         puts $file_writer "    \}"
+        puts $file_writer "    cout << \"=== [set subsys]_[set alias] end of topic ===\" << endl;"
         puts $file_writer "  \}"
     }
 
