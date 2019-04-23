@@ -79,6 +79,7 @@ proc insertPublishers { subsys file_writer } {
         puts $file_writer "    [set subsys]_[set alias]C myData;"
         puts $file_writer "    while (iseq < 10) \{"
 
+        puts $file_writer "      cout << \"=== [set subsys]_[set alias] start of topic ===\" << endl;"
         set fragment_reader [open $SAL_WORK_DIR/include/SAL_[set subsys]_[set alias]Cpub.tmp r]
         while { [gets $fragment_reader line] > -1 } {
             puts $file_writer "    [string trim $line ]"
@@ -87,6 +88,7 @@ proc insertPublishers { subsys file_writer } {
         puts $file_writer "      iseq++;"
         puts $file_writer "      mgr.putSample_[set alias](&myData);"
         puts $file_writer "      os_nanoSleep(delay_1s);"
+        puts $file_writer "      cout << \"=== [set subsys]_[set alias] end of topic ===\" << endl;"
         puts $file_writer "    \}"
         puts $file_writer "  \}"
     }

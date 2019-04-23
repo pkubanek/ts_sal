@@ -74,13 +74,14 @@ proc insertCommanders { subsys file_writer } {
 
     foreach alias $CMD_ALIASES($subsys) {
         puts $file_writer "  \{"
+        puts $file_writer "    cout << \"=== [set subsys]_[set alias] start of topic ===\" << endl;"
         puts $file_writer "    int cmdId;"
         puts $file_writer "    int timeout=10;"
         puts $file_writer "    int status=0;"
         puts $file_writer "    [set subsys]_command_[set alias]C myData;"
         
         puts $file_writer "    cmdId = mgr.issueCommand_[set alias](&myData);"
-        puts $file_writer "    cout << \"=== command $alias issued = \" << endl;"
+        puts $file_writer "    cout << \"=== [set subsys]_[set alias] end of topic ===\" << endl;"
         puts $file_writer "    status = mgr.waitForCompletion_[set alias](cmdId, timeout);"
         puts $file_writer "    cout << status << endl;"
         puts $file_writer "  \}\n"
