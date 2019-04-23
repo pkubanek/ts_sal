@@ -74,12 +74,12 @@ proc insertPublishers { subsys file_writer } {
 
     foreach alias $TLM_ALIASES($subsys) {
         puts $file_writer "\n  \{" 
+        puts $file_writer "    cout << \"=== [set subsys]_[set alias] start of topic ===\" << endl;"
         puts $file_writer "    int iseq = 0;"
         puts $file_writer "    os_time delay_1s = { 1, 0 };"
         puts $file_writer "    [set subsys]_[set alias]C myData;"
         puts $file_writer "    while (iseq < 10) \{"
 
-        puts $file_writer "      cout << \"=== [set subsys]_[set alias] start of topic ===\" << endl;"
         set fragment_reader [open $SAL_WORK_DIR/include/SAL_[set subsys]_[set alias]Cpub.tmp r]
         while { [gets $fragment_reader line] > -1 } {
             puts $file_writer "    [string trim $line ]"
