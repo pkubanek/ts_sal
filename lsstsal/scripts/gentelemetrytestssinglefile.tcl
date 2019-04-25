@@ -70,9 +70,11 @@ proc insertPublishers { subsys file_writer } {
     foreach alias $TLM_ALIASES($subsys) {
         puts $file_writer "  mgr.salTelemetryPub(\"[set subsys]_[set alias]\");"
     }
+    puts $file_writer "  cout << \"===== [set subsys] all publishers ready =====\" << endl;"
 
     foreach alias $TLM_ALIASES($subsys) {
         puts $file_writer "\n  \{" 
+        puts $file_writer "    cout << \"=== [set subsys]_[set alias] start of topic ===\" << endl;"
         puts $file_writer "    int iseq = 0;"
         puts $file_writer "    os_time delay_1s = { 1, 0 };"
         puts $file_writer "    [set subsys]_[set alias]C myData;"
@@ -87,6 +89,7 @@ proc insertPublishers { subsys file_writer } {
         puts $file_writer "      mgr.putSample_[set alias](&myData);"
         puts $file_writer "      os_nanoSleep(delay_1s);"
         puts $file_writer "    \}"
+        puts $file_writer "    cout << \"=== [set subsys]_[set alias] end of topic ===\" << endl;"
         puts $file_writer "  \}"
     }
 
@@ -122,10 +125,11 @@ proc insertSubscribers { subsys file_writer } {
     foreach alias $TLM_ALIASES($subsys) {
         puts $file_writer "  mgr.salTelemetrySub(\"[set subsys]_[set alias]\");"
     }
-    puts $file_writer " cout << \"=== [set subsys] subscriber Ready ...\" << endl;"
+    puts $file_writer " cout << \"===== [set subsys] subscribers ready =====\" << endl;"
 
 
     foreach alias $TLM_ALIASES($subsys) {
+        puts $file_writer "  cout << \"=== [set subsys]_[set alias] start of topic ===\" << endl;"
         puts $file_writer "  \{" 
         puts $file_writer "    [set subsys]_[set alias]C SALInstance;"
         puts $file_writer "    ReturnCode_t status = -1;"
@@ -147,6 +151,7 @@ proc insertSubscribers { subsys file_writer } {
         puts $file_writer "      \}"
         puts $file_writer "    \}"
         puts $file_writer "  \}"
+        puts $file_writer "  cout << \"=== [set subsys]_[set alias] end of topic ===\" << endl;"
     }
 
     puts $file_writer "  /* Remove the DataWriters etc */"
