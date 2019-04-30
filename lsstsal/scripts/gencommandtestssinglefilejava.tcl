@@ -4,11 +4,9 @@ proc gencommandtestssinglefilejava { subsys } {
 
     global SAL_WORK_DIR
 
-    puts "commandsss script firing"
-
     # Create the file writers for the commander and controller.
-    set commander_java_file_writer [open $SAL_WORK_DIR/$subsys/java/src/[set subsys]Commander_allTest.java w]
-    set controller_java_file_writer [open $SAL_WORK_DIR/$subsys/java/src/[set subsys]Controller_allTest.java w]
+    set commander_java_file_writer [open $SAL_WORK_DIR/$subsys/java/src/[set subsys]Commander_all.java w]
+    set controller_java_file_writer [open $SAL_WORK_DIR/$subsys/java/src/[set subsys]Controller_all.java w]
     # set makefile_file_writer [open $SAL_WORK_DIR/$subsys/cpp/src/Makefile.sacpp_[set subsys]_all_testcommands w]
 
     # Insert content into the commander.
@@ -59,8 +57,8 @@ proc insertCommandersJava { subsys file_writer } {
         }
     }
 
-    puts $file_writer "public class [set subsys]Commander_All_Test extends TestCase \{\n"
-    puts $file_writer "    public [set subsys]Commander_All_Test(String name) \{"
+    puts $file_writer "public class [set subsys]Commander_all extends TestCase \{\n"
+    puts $file_writer "    public [set subsys]Commander_all(String name) \{"
     puts $file_writer "        super(name);"
     puts $file_writer "    \}\n"
 
@@ -70,20 +68,22 @@ proc insertCommandersJava { subsys file_writer } {
     foreach alias $CMD_ALIASES($subsys) {
         puts $file_writer "        mgr.salCommand(\"[set subsys]_command_[set alias]\");"
     }
-    puts $file_writer "        int cmdId = 0;"
-    puts $file_writer "        int status = 0;"
-    puts $file_writer "        int timeout = 3;"
-    puts $file_writer "        int count = 0;"
 
     foreach alias $CMD_ALIASES($subsys) {
-        puts $file_writer "\n        [set subsys].command_[set alias] command  = new [set subsys].command_[set alias]();"
+        puts $file_writer "        \{"
+        puts $file_writer "            int cmdId = 0;"
+        puts $file_writer "            int status = 0;"
+        puts $file_writer "            int timeout = 3;"
+
+
+        puts $file_writer "            [set subsys].command_[set alias] command  = new [set subsys].command_[set alias]();"
         
         set revcode [getRevCode [set subsys]_command_[set alias] short]
-        puts $file_writer "        command.private_revCode = \"[string trim $revcode _]\";"
+        puts $file_writer "            command.private_revCode = \"[string trim $revcode _]\";"
         set cpars $CMDS($subsys,$alias)
-        puts $file_writer "        command.device   = \"[lindex $cpars 0]\";"
-        puts $file_writer "        command.property = \"[lindex $cpars 1]\";"
-        puts $file_writer "        command.action   = \"[lindex $cpars 2]\";"
+        puts $file_writer "            command.device   = \"[lindex $cpars 0]\";"
+        puts $file_writer "            command.property = \"[lindex $cpars 1]\";"
+        puts $file_writer "            command.action   = \"[lindex $cpars 2]\";"
 
         set narg 1
 
@@ -97,29 +97,30 @@ proc insertCommandersJava { subsys file_writer } {
                 set pdim  [lindex $pspl 1]
                 while { $l < $pdim } {
                     switch $ptype {
-                        boolean { puts $file_writer "        command.[set pname]\[$l\] = true;" }
-                        double  { puts $file_writer "        command.[set pname]\[$l\] = (double) 1.0;" }
-                        int     { puts $file_writer "        command.[set pname]\[$l\] = (int) 1;" }
-                        long    { puts $file_writer "        command.[set pname]\[$l\] = (int) 1;" }
+                        boolean { puts $file_writer "            command.[set pname]\[$l\] = true;" }
+                        double  { puts $file_writer "            command.[set pname]\[$l\] = (double) 1.0;" }
+                        int     { puts $file_writer "            command.[set pname]\[$l\] = (int) 1;" }
+                        long    { puts $file_writer "            command.[set pname]\[$l\] = (int) 1;" }
                     }
                     l 1
                 }
             } else {
                 switch $ptype {
-                    boolean { puts $file_writer "        command.[set pname] = true;" }
-                    double  { puts $file_writer "        command.[set pname] = (double) 1.0;" }
-                    int     { puts $file_writer "        command.[set pname] = (int) 1;" }
-                    long    { puts $file_writer "        command.[set pname] = (int) 1;" }
-                    string  { puts $file_writer "        command.[set pname] = \"testing\";" }
+                    boolean { puts $file_writer "            command.[set pname] = true;" }
+                    double  { puts $file_writer "            command.[set pname] = (double) 1.0;" }
+                    int     { puts $file_writer "            command.[set pname] = (int) 1;" }
+                    long    { puts $file_writer "            command.[set pname] = (int) 1;" }
+                    string  { puts $file_writer "            command.[set pname] = \"testing\";" }
                 }
             }
             incr narg 1
         }
 
-        puts $file_writer "        cmdId = mgr.issueCommand_[set alias](command);"
+        puts $file_writer "            cmdId = mgr.issueCommand_[set alias](command);"
 
-        puts $file_writer "        try \{Thread.sleep(1000);\} catch (InterruptedException e)  \{ e.printStackTrace(); \}"
-        puts $file_writer "        status = mgr.waitForCompletion_[set alias](cmdId, timeout);"        
+        puts $file_writer "            try \{Thread.sleep(1000);\} catch (InterruptedException e)  \{ e.printStackTrace(); \}"
+        puts $file_writer "            status = mgr.waitForCompletion_[set alias](cmdId, timeout);"        
+        puts $file_writer "        \}"
     
     }
 
@@ -143,8 +144,8 @@ proc insertControllersJava { subsys file_writer } {
         }
     }
 
-    puts $file_writer "public class [set subsys]Controller_All_Test extends TestCase \{\n"
-    puts $file_writer "    public [set subsys]Controller_All_Test(String name) \{"
+    puts $file_writer "public class [set subsys]Controller_all extends TestCase \{\n"
+    puts $file_writer "    public [set subsys]Controller_all(String name) \{"
     puts $file_writer "        super(name);"
     puts $file_writer "    \}\n"
 
@@ -160,26 +161,30 @@ proc insertControllersJava { subsys file_writer } {
     puts $file_writer "        short akey = 1;"
      
     foreach alias $CMD_ALIASES($subsys) {
-        puts $file_writer "\n        boolean finished = false;"
-        puts $file_writer "        while (!finished) \{"
-        puts $file_writer "            [set subsys].command_[set alias] command = new [set subsys].command_[set alias]();"
-        puts $file_writer "            System.out.println(\"[set subsys]_[set alias] controller ready \");"
-        puts $file_writer "            cmdId = cmd.acceptCommand_[set alias](command);"
-        puts $file_writer "            if (cmdId > 0) \{"
-        puts $file_writer "                if (timeout > 0) \{"
-        puts $file_writer "                    cmd.ackCommand_[set alias](cmdId, SAL_[set subsys].SAL__CMD_INPROGRESS, 0, \"Ack : OK\");"
-        puts $file_writer "                    try \{Thread.sleep(timeout);\} catch (InterruptedException e)  \{ e.printStackTrace(); \}"
-        puts $file_writer "                \}       "
-        puts $file_writer "                cmd.ackCommand_[set alias](cmdId, SAL_[set subsys].SAL__CMD_COMPLETE, 0, \"Done : OK\");"
-        puts $file_writer "                finished = true;"
+        puts $file_writer "\n        \{;"
+        puts $file_writer "            boolean finished = false;"
+        puts $file_writer "            while (!finished) \{"
+        puts $file_writer "                [set subsys].command_[set alias] command = new [set subsys].command_[set alias]();"
+        puts $file_writer "                System.out.println(\"[set subsys]_[set alias] controller ready \");"
+        puts $file_writer "                cmdId = mgr.acceptCommand_[set alias](command);"
+        puts $file_writer "                if (cmdId > 0) \{"
+        puts $file_writer "                    if (timeout > 0) \{"
+        puts $file_writer "                        mgr.ackCommand_[set alias](cmdId, SAL_[set subsys].SAL__CMD_INPROGRESS, 0, \"Ack : OK\");"
+        puts $file_writer "                        try \{Thread.sleep(timeout);\} catch (InterruptedException e)  \{ e.printStackTrace(); \}"
+        puts $file_writer "                    \}       "
+        puts $file_writer "                    mgr.ackCommand_[set alias](cmdId, SAL_[set subsys].SAL__CMD_COMPLETE, 0, \"Done : OK\");"
+        puts $file_writer "                    finished = true;"
+        puts $file_writer "                \}"
+        puts $file_writer "                timeout = timeout-1;"
+        puts $file_writer "                if (timeout == 0) \{"
+        puts $file_writer "                    finished = true;"
+        puts $file_writer "                \}"
+        puts $file_writer "            try \{Thread.sleep(1000);\} catch (InterruptedException e)  \{ e.printStackTrace(); \}"
         puts $file_writer "            \}"
-        puts $file_writer "            timeout = timeout-1;"
-        puts $file_writer "            if (timeout == 0) \{"
-        puts $file_writer "                finished = true;"
-        puts $file_writer "            \}"
-        puts $file_writer "        try \{Thread.sleep(1000);\} catch (InterruptedException e)  \{ e.printStackTrace(); \}"
-        puts $file_writer "        \}"
+        puts $file_writer "\n        \};"
     }
+    puts $file_writer "    \}"
+    puts $file_writer "\}"
 }
 
 proc insertMakeFile { subsys file_writer } {
