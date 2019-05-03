@@ -72,16 +72,20 @@ class MakeIdlFile:
         for f in xmlfiles:
             os.remove(f)
 
-        for subdir in ["idl-templates"]:
-            print(f"Remove subdir {subdir}")
-            shutil.rmtree(os.path.join(self.sal_work_dir, subdir), ignore_errors=True)
+        for path in glob.glob(os.path.join(self.sal_work_dir, f"{self.name}*")):
+            print(f"Remove {path}")
+            shutil.rmtree(path, ignore_errors=True)
+        for subdir in ["idl-templates", "html", "include", "lib", "sql"]:
+            path = os.path.join(self.sal_work_dir, subdir)
+            print(f"Remove {path}")
+            shutil.rmtree(path, ignore_errors=True)
 
     def make_idl_file(self):
         """Make the IDL file."""
-        for command in ("validate", "sal pydds",):
-            full_cmd = f"salgenerator {self.name} {command}"
-            print(f"***** {full_cmd}")
-            subprocess.run(full_cmd, check=True, cwd=self.sal_work_dir, shell=True)
+        for command in ["validate", "sal cpp fastest"]:
+            cmd_args = ["salgenerator", self.name] + command.split()
+            print(f"***** {' '.join(cmd_args)}")
+            subprocess.run(cmd_args, check=True, cwd=self.sal_work_dir)
 
     def run(self):
         """Make the IDL file and move it to the idl directory."""
@@ -93,7 +97,7 @@ class MakeIdlFile:
         print(f"*** Validate and generate {self.name} libraries ***")
         self.make_idl_file()
 
-        print(f"*** Move {self.name} IDL file into place ***")
+        print(f"*** Move {self.idl_file_from_path} to {self.idl_file_to_path} ***")
         os.rename(self.idl_file_from_path, self.idl_file_to_path)
 
         print(f"*** Cleanup {self.name} files ***")
