@@ -103,14 +103,26 @@ void SAL_SALData::checkHandle(void *handle, string info)
 
 double SAL_SALData::getCurrentTime()
 {
-     struct timeval now;
-     struct timezone zone;
-     double ts;
+   struct timex tx;
+   struct timespec now;
+   double taiTime;
 
-     gettimeofday(&now, &zone);
-     ts = (double)now.tv_sec + (double)now.tv_usec/1000000.;
-     return ts;
+   memset(&tx, 0, sizeof(tx));
+   adjtimex(&tx);
+   clock_gettime(CLOCK_TAI,&now);
+   taiTime = (double)now.tv_sec + (double)now.tv_nsec/1000000000.;
+   return taiTime;
 }
+
+int SAL_SALData::getLeapSeconds()
+{
+   struct timex tx;
+
+   memset(&tx, 0, sizeof(tx));
+   adjtimex(&tx);
+   return tx.tai;
+}
+
 
 double SAL_SALData::getRcvdTime()
 {
@@ -390,7 +402,7 @@ int SAL_SALData::issueCommandC( SALData_commandC *data )
   cmdHandle = SALWriter->register_instance(Instance);
 #endif
 
-  Instance.private_revCode =  DDS::string_dup("LSST TEST REVCODE");
+  Instance.private_revCode =  DDS::string_dup("LSSTTEST");
   Instance.private_sndStamp = 1;
   Instance.private_origin =   1;
   Instance.private_seqNum =   sndSeqNum;
@@ -976,7 +988,6 @@ salReturn SAL_SALData::salCommand()
 
 salReturn SAL_SALData::salCommand(char *cmdAlias)
 {
-  time_t sTime;
   int actorIdx = getActorIndex(cmdAlias);
   if (actorIdx < 0) {return SAL__ERROR;}
   string stopic1="keyedCommand";
@@ -1023,7 +1034,7 @@ salReturn SAL_SALData::salCommand(char *cmdAlias)
   createWriter(actorIdx,true);
   sal[actorIdx].isCommand = true;
   sal[actorIdx].isWriter = true;
-  sal[actorIdx].sndSeqNum = time(&sTime);
+  sal[actorIdx].sndSeqNum = 32768*actorIdx;
   return SAL__OK;
 }
 

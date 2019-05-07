@@ -103,6 +103,9 @@ int SAL_SALData::issueCommand_[set i]( SALData_command_[set i]C *data )
   Instance.private_sndStamp = getCurrentTime();
   ReturnCode_t status = SALWriter->write(Instance, cmdHandle);
   sal\[actorIdx\].sndSeqNum++;
+  if(sal\[actorIdx\].sndSeqNum >= 32768*(actorIdx+1) ) \{
+     sal\[actorIdx\].sndSeqNum = 32768*actorIdx + 1;
+  \}
   checkStatus(status, \"SALData::command_[set i][set revcode]DataWriter::write\");  
     SALWriter->unregister_instance(Instance, cmdHandle);
   if (status != SAL__OK) \{
@@ -174,9 +177,10 @@ int SAL_SALData::acceptCommand_[set i]( SALData_command_[set i]C *data )
     ackHandle = SALWriter->register_instance(ackdata);
     ackdata.SALDataID = subsystemID;
 #endif
-    ackdata.private_sndStamp = getCurrentTime();
-    istatus = SALWriter->write(ackdata, ackHandle);
-    checkStatus(istatus, \"SALData::ackcmdDataWriter::write\");
+    ackdata.private_sndStamp = getCurrentTime();"
+     puts $fout "    istatus = SALWriter->write(ackdata, ackHandle);"
+     puts $fout "    checkStatus(istatus, \"SALData::ackcmdDataWriter::write\");"
+   puts $fout "
     SALWriter->unregister_instance(ackdata, ackHandle);
      \} else \{
         if (debugLevel > 8) \{
@@ -293,7 +297,7 @@ salReturn SAL_SALData::getResponse_[set i]C(SALData_ackcmdC *response)
   checkStatus(istatus, \"SALData::ackcmdDataReader::take\");
   if (data.length() > 0) \{
    j = data.length()-1;
-   if (data\[j\].private_seqNum > 0) \{
+   if (data\[j\].private_seqNum > 0 && data\[j\].private_seqNum >= actorIdxCmd*32768 && data\[j\].private_seqNum < (actorIdxCmd+1)*32768) \{
     if (debugLevel > 8) \{
       cout << \"=== \[getResponse_[set i]\] reading a message containing :\" << endl;
       cout << \"    seqNum   : \" << data\[j\].private_seqNum << endl;

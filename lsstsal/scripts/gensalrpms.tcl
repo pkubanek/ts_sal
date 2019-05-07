@@ -13,6 +13,8 @@ source $SAL_DIR/sal_version.tcl
 source $SAL_DIR/add_system_dictionary.tcl
 source $SAL_DIR/gengenericefd_array.tcl
 source $SAL_DIR/ospl_version.tcl
+source $SAL_DIR/genkafkaefd.tcl
+source $SAL_DIR/geninfluxefd-multi.tcl
 
 set SYSDIC(forEFD) "ATAOS ATArchiver ATBuilding ATCalCS ATCamera ATDome ATDomeTrajectory ATEEC ATHeaderService ATHexapod ATMCS ATMonochromator ATPneumatics ATPtg ATSpectrograph ATTCS ATThermoelectricCooler ATWhiteLight EFD Electrometer"
 
@@ -108,7 +110,7 @@ global SALVERSION env RPMFILES SAL_WORK_DIR
 
 proc listfilesEFDrpm { } {
 global SALVERSION env RPMFILES SAL_WORK_DIR SYSDIC
-   set RPMFILES ""
+   set RPMFILES "/opt/lsst/ts_sal/setupEFD.env"
    cd $SAL_WORK_DIR/rpmbuild/BUILD/ts_EFDruntime-$SALVERSION
    set fl [split [exec find . -type f  -print] \n]
    foreach f $fl { 
@@ -117,9 +119,11 @@ global SALVERSION env RPMFILES SAL_WORK_DIR SYSDIC
        }
    }
    foreach subsys $SYSDIC(forEFD) {
-     lappend RPMFILES "/etc/systemd/system/[set subsys]_command_efdwriter.service"
-     lappend RPMFILES "/etc/systemd/system/[set subsys]_event_efdwriter.service"
-     lappend RPMFILES "/etc/systemd/system/[set subsys]_telemetry_efdwriter.service"
+    foreach dtyp "efd kafka influx" {
+     lappend RPMFILES "/etc/systemd/system/[set subsys]_command_[set dtyp]writer.service"
+     lappend RPMFILES "/etc/systemd/system/[set subsys]_event_[set dtyp]writer.service"
+     lappend RPMFILES "/etc/systemd/system/[set subsys]_telemetry_[set dtyp]writer.service"
+    }
    }
 }
 
@@ -140,10 +144,14 @@ global SAL_WORK_DIR SALVERSION SAL_DIR SYSDIC
   exec mkdir -p ts_EFDruntime-$SALVERSION/etc/systemd/system
   foreach subsys $SYSDIC(forEFD) {
      catch {genefdwriters $subsys}
+     catch {genkafkawriters $subsys}
+     catch {geninfluxwriters $subsys}
      cd $SAL_WORK_DIR
      genefdsetup $subsys
      foreach type "command event telemetry" { 
         copyasset $SAL_WORK_DIR/[set subsys]/cpp/src/sacpp_[set subsys]_[set type]_efdwriter ts_EFDruntime-$SALVERSION/opt/lsst/ts_sal/bin/.
+        copyasset $SAL_WORK_DIR/[set subsys]/cpp/src/sacpp_[set subsys]_[set type]_kafkawriter ts_EFDruntime-$SALVERSION/opt/lsst/ts_sal/bin/.
+        copyasset $SAL_WORK_DIR/[set subsys]/cpp/src/sacpp_[set subsys]_[set type]_influxwriter ts_EFDruntime-$SALVERSION/opt/lsst/ts_sal/bin/.
      }
      copyasset $SAL_WORK_DIR/idl-templates/validated/[set subsys]_revCodes.tcl ts_EFDruntime-$SALVERSION/opt/lsst/ts_sal/scripts/.
      copyasset $SAL_WORK_DIR/lib/libsacpp_[set subsys]_types.so ts_EFDruntime-$SALVERSION/opt/lsst/ts_sal/lib/.
@@ -186,7 +194,7 @@ export LSST_SDK_INSTALL=/opt/lsst/ts_sal
 export OSPL_HOME=/opt/OpenSpliceDDS/V[set OSPL_VERSION]/HDE/x86_64.linux
 export LSST_DDS_DOMAIN=auxtelpath
 export SAL_HOME=\$LSST_SDK_INSTALL/lsstsal
-export LD_LIBRARY_PATH=\$\{SAL_WORK_DIR\}/lib:\$\{SAL_HOME\}/lib
+export LD_LIBRARY_PATH=\$\{SAL_WORK_DIR\}/lib:\$\{LSST_SDK_INSTALL\}/lib
 export PATH=\$\{SAL_HOME\}/bin:\$\{PATH\}
 source \$OSPL_HOME/release.com
 export SAL_VERSION=$SALVERSION
@@ -199,24 +207,26 @@ echo \"LSST middleware EFD environment v$SALVERSION is configured\"
 proc genefdsetup { subsys } {
 global SALVERSION
    foreach wtype "command event telemetry" {
-     set fout [open ts_EFDruntime-$SALVERSION/etc/systemd/system/[set subsys]_[set wtype]_efdwriter.service w]
+    foreach dtyp "efd kafka influx" {
+     set fout [open ts_EFDruntime-$SALVERSION/etc/systemd/system/[set subsys]_[set wtype]_[set dtyp]writer.service w]
      puts $fout "
 \[Unit\]
-Description=EFD $subsys $wtype writer
+Description=EFD $subsys $wtype $dtyp writer
 Wants=network-online.target
-After=network-online.target
 
 \[Service\]
 Type=simple
+EnvironmentFile=/opt/ts_sal/efdwriters.env
 WorkingDirectory=/opt/lsst/ts_sal/bin
-ExecStart=/bin/bash -c 'source /opt/lsst/ts_sal/setup.env && ./sacpp_[set subsys]_[set wtype]_efdwriter'
+ExecStart=/opt/ts_sal/build/[set subsys]/cpp/src/sacpp_[set subsys]_[set wtype]_[set dtyp]writer'
 Restart=on-failure
 User=salmgr
 
 \[Install\]
-WantedBy=multi-user.target
+WantedBy=[set subsys]_[set dtyp]writer.service
 "
      close $fout
+   }
   }
 }
 
@@ -249,6 +259,7 @@ URL:       %{url}
 Prefix:    %{_prefix}
 Buildroot: %{buildroot}
 Requires: OpenSpliceDDS = $OSPL_VERSION
+Requires: linuxptp
 "
    foreach subsys $SYSDIC(systems) {
       puts $fout "Requires: $subsys = $SALVERSION"
@@ -275,7 +286,7 @@ rpmbuild -ba -v $SAL_WORK_DIR/rpmbuild/SPECS/ts_sal_runtime.spec
 }
 
 proc generateATmetarpm { } {
-global SYSDIC SALVERSION SAL_WORK_DIR
+global SYSDIC SALVERSION SAL_WORK_DIR OSPL_VERSION
    set fout [open $SAL_WORK_DIR/rpmbuild/SPECS/ts_sal_ATruntime.spec w]
    puts $fout "
 
@@ -302,6 +313,7 @@ URL:       %{url}
 Prefix:    %{_prefix}
 Buildroot: %{buildroot}
 Requires: OpenSpliceDDS = $OSPL_VERSION
+Requires: linuxptp
 "
    foreach subsys $SYSDIC(systems) {
       if { [string range $subsys 0 1] == "AT" } {
@@ -330,13 +342,14 @@ rpmbuild -ba -v $SAL_WORK_DIR/rpmbuild/SPECS/ts_sal_ATruntime.spec
 }
 
 proc generaterpm { subsys } {
-global SAL_WORK_DIR SALVERSION RPMFILES OSPL_VERSION
+global SAL_WORK_DIR SALVERSION RPMFILES OSPL_VERSION env
   exec rm -fr $SAL_WORK_DIR/rpm_[set subsys]
   exec mkdir -p $SAL_WORK_DIR/rpm_[set subsys]
+  set xmldist [string trim [exec cat $env(WORKSPACE)/XML/VERSION]]
   set fout [open $SAL_WORK_DIR/rpmbuild/SPECS/ts_sal_[set subsys].spec w]
   puts $fout "Name: $subsys
 Version: $SALVERSION
-Release: 1%\{?dist\}
+Release: [set xmldist]%\{?dist\}
 Summary: SAL runtime for $subsys Subsystem
 Vendor: LSST
 License: GPL
@@ -347,6 +360,7 @@ Source0: [set subsys]-$SALVERSION.tgz
 BuildRoot: $SAL_WORK_DIR/rpmbuild/%\{name\}-%\{version\}
 Packager: dmills@lsst.org
 Requires: OpenSpliceDDS = $OSPL_VERSION
+Requires: linuxptp
 
 %description
 This is a SAL runtime and build environment for the LSST $subsys subsystem.
@@ -395,9 +409,10 @@ rm -fr \$RPM_BUILD_ROOT
 proc generateEFDspec { } {
 global SAL_WORK_DIR SALVERSION RPMFILES OSPL_VERSION
   set fout [open $SAL_WORK_DIR/rpmbuild/SPECS/ts_EFDruntime.spec w]
+  set ospldist [join [split $OSPL_VERSION .] ""]
   puts $fout "Name: ts_EFDruntime
 Version: [set SALVERSION]
-Release: 641%\{?dist\}
+Release: [set ospldist]%\{?dist\}
 Summary: SAL runtime for EFD runtime Subsystem
 Vendor: LSST
 License: GPL
@@ -407,7 +422,10 @@ AutoReqProv: no
 Source0: ts_EFDruntime-[set SALVERSION].tgz
 BuildRoot: $SAL_WORK_DIR/rpmbuild/%\{name\}-%\{version\}
 Packager: dmills@lsst.org
-Requires: OpenSpliceDDS = $OSPL_VERSION
+Requires: OpenSpliceDDS >= $OSPL_VERSION
+Requires: mariadb-devel
+Requires: tclsh
+Requires: librdkafka
 
 
 %description
@@ -440,21 +458,21 @@ cp -fr * %{buildroot}/.
 
 
 proc generaterddsrpm { version } {
-global SAL_WORK_DIR SALVERSION OSPL_HOME
+global SAL_WORK_DIR SALVERSION OSPL_HOME OSPL_VERSION
   exec rm -fr $SAL_WORK_DIR/rpm_opensplice
   exec mkdir -p $SAL_WORK_DIR/rpm_opensplice
   set version [string trim [lindex [split [exec grep "PACKAGE_VERSION=" $OSPL_HOME/etc/RELEASEINFO] =] 1] "VS"]
   set fout [open $SAL_WORK_DIR/rpmbuild/BUILD/ts_opensplice.spec w]
   puts $fout "Name: ts_opensplice
-Version: $version
+Version: $OSPL_VERSION
 Release: 1%\{?dist\}
 Summary: DDS runtime for OpenSplice
 Vendor: LSST
 License: GPL
 URL: http://project.lsst.org/ts
 Group: Telescope and Site SAL
-Source: opensplice_[set version].tgz
-BuildRoot: $SAL_WORK_DIR/rpmbuild/%\{name\}-%\{version\}
+Source: opensplice_[set OSPL_VERSION].tgz
+BuildRoot: $SAL_WORK_DIR/rpmbuild/%\{name\}-%\{$OSPL_VERSION\}
 Packager: dmills@lsst.org
 
 %description
@@ -465,20 +483,19 @@ for the DDS interface.
 %prep
 
 %install
-rm -fr $RPM_BUILD_ROOT
-mkdir -p /opt/lsst/ts_opensplice
-cp -fR * /opt/lsst/ts_opensplice
+mkdir -p /opt/.
+cp -fR * /opt/.
 
 %files
 /opt/lsst/ts_opensplice
 
 %clean
-rm -fr $RPM_BUILD_ROOT
 
 %post
 %postun
 %changelog
 "
+  close $fout
 
 }
 
