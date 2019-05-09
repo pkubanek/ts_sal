@@ -988,6 +988,7 @@ salReturn SAL_SALData::salCommand()
 
 salReturn SAL_SALData::salCommand(char *cmdAlias)
 {
+  time_t sTime;
   int actorIdx = getActorIndex(cmdAlias);
   if (actorIdx < 0) {return SAL__ERROR;}
   string stopic1="keyedCommand";
@@ -1034,7 +1035,7 @@ salReturn SAL_SALData::salCommand(char *cmdAlias)
   createWriter(actorIdx,true);
   sal[actorIdx].isCommand = true;
   sal[actorIdx].isWriter = true;
-  sal[actorIdx].sndSeqNum = 32768*actorIdx;
+  sal[actorIdx].sndSeqNum = time(&sTime) + 32768*actorIdx;
   return SAL__OK;
 }
 
