@@ -218,7 +218,7 @@ Wants=network-online.target
 Type=simple
 EnvironmentFile=/opt/ts_sal/efdwriters.env
 WorkingDirectory=/opt/lsst/ts_sal/bin
-ExecStart=/opt/ts_sal/build/[set subsys]/cpp/src/sacpp_[set subsys]_[set wtype]_[set dtyp]writer'
+ExecStart=/opt/ts_sal/build/[set subsys]/cpp/src/sacpp_[set subsys]_[set wtype]_[set dtyp]writer
 Restart=on-failure
 User=salmgr
 
@@ -243,7 +243,7 @@ global SYSDIC SALVERSION SAL_WORK_DIR OSPL_VERSION
 %define license			GPL
 %define group			LSST Telescope and Site
 %define vendor			LSST
-%define packager		dmills@lsst.rog
+%define packager		dmills@lsst.org
 
 Name:      %{name}
 Version:   %{version}
@@ -297,7 +297,7 @@ global SYSDIC SALVERSION SAL_WORK_DIR OSPL_VERSION
 %define license			GPL
 %define group			LSST Telescope and Site
 %define vendor			LSST
-%define packager		dmills@lsst.rog
+%define packager		dmills@lsst.org
 
 Name:      %{name}
 Version:   %{version}
@@ -424,7 +424,7 @@ BuildRoot: $SAL_WORK_DIR/rpmbuild/%\{name\}-%\{version\}
 Packager: dmills@lsst.org
 Requires: OpenSpliceDDS >= $OSPL_VERSION
 Requires: mariadb-devel
-Requires: tclsh
+Requires: tcl
 Requires: librdkafka
 
 
@@ -456,6 +456,78 @@ cp -fr * %{buildroot}/.
   close $fout
 }
 
+
+proc generateUtilsrpm { } {
+global SYSDIC SALVERSION SAL_WORK_DIR OSPL_VERSION
+   set fout [open $SAL_WORK_DIR/rpmbuild/SPECS/ts_sal_utils.spec w]
+   puts $fout "
+
+%define name			ts_sal_utils
+%define summary			SAL runtime utilities package
+%define version			$SALVERSION
+%define release			1
+%define license			GPL
+%define group			LSST Telescope and Site
+%define vendor			LSST
+%define packager		dmills@lsst.org
+
+Name:      %{name}
+Version:   %{version}
+Release:   %{release}
+Packager:  %{packager}
+Vendor:    %{vendor}
+License:   %{license}
+Summary:   %{summary}
+Group:     %{group}
+AutoReqProv: no
+#Source:    %{source}
+URL:       %{url}
+Prefix:    %{_prefix}
+Buildroot: %{buildroot}
+Requires: linuxptp
+%description
+This package provides utilities supporting the ts_sal_runtime packages
+
+%setup -c -T
+
+%install
+
+%files
+/etc/systemd/system/ts_sal_settai.service
+/opt/lsst/ts_sal/bin/set-tai
+/opt/lsst/ts_sal/lib/libsalUtils.so
+/opt/lsst/ts_sal/etc/leap-seconds.list
+"
+  close $fout
+  set fser [open ts_sal_utils-$SALVERSION/etc/systemd/system/ts_sal_settai.service w]
+     puts $fser "
+\[Unit\]
+Description=SAL set TAI time offset
+Wants=network-online.target
+
+\[Service\]
+Type=simple
+WorkingDirectory=/opt/lsst/ts_sal/bin
+ExecStart=/opt/lsst/ts_sal/bin/set-tai
+Restart=on-failure
+User=root
+
+\[Install\]
+WantedBy=ts_sal_settai.service
+"
+  close $fser
+  copyasset $SAL_WORK_DIR/bin/set-tai ts_sal_utils-$SALVERSION/opt/lsst/ts_sal/bin/.
+  copyasset $SAL_WORK_DIR/lib/libsalUtils.so ts_sal_utils-$SALVERSION/opt/lsst/ts_sal/lib/.
+  copyasset /usr/share/zoneinfo/leap-seconds.list  ts_sal_utils-$SALVERSION/opt/lsst/ts_sal/etc/.
+  set frpm [open /tmp/makerpm w]
+  puts $frpm "#!/bin/sh
+rpmbuild -ba -v $SAL_WORK_DIR/rpmbuild/SPECS/ts_sal_utils.spec
+"
+  close $frpm
+  exec chmod 755 /tmp/makerpm
+  exec /tmp/makerpm  >& /tmp/makerpm.log
+  exec cat /tmp/makerpm.log
+}
 
 proc generaterddsrpm { version } {
 global SAL_WORK_DIR SALVERSION OSPL_HOME OSPL_VERSION
