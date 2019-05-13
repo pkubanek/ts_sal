@@ -216,7 +216,7 @@ Wants=network-online.target
 
 \[Service\]
 Type=simple
-EnvironmentFile=/opt/ts_sal/efdwriters.env
+EnvironmentFile=/opt/lsst/ts_sal/setupEFD.env
 WorkingDirectory=/opt/lsst/ts_sal/bin
 ExecStart=/opt/ts_sal/build/[set subsys]/cpp/src/sacpp_[set subsys]_[set wtype]_[set dtyp]writer
 Restart=on-failure
