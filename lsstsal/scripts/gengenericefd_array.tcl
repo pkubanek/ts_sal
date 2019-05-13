@@ -675,8 +675,7 @@ global SYSDIC SAL_WORK_DIR
 proc makesummarytables { subsys } {
 global SAL_WORK_DIR
    set fout [open $SAL_WORK_DIR/sql/[set subsys]_logeventLFO.sqldef w]
-   puts $fout "DROP TABLE IF EXISTS [set subsys]_logeventLFO;
-CREATE TABLE [set subsys]_logeventLFO (
+   puts $fout "CREATE TABLE [set subsys]_logeventLFO (
   date_time DATETIME(6),
   private_revCode char(8),
   private_sndStamp double precision,
@@ -693,8 +692,7 @@ CREATE TABLE [set subsys]_logeventLFO (
 "
    close $fout
    set fout [open $SAL_WORK_DIR/sql/[set subsys]_commandLog.sqldef w]
-   puts $fout "DROP TABLE IF EXISTS [set subsys]_commandLog;
-CREATE TABLE [set subsys]_commandLog (
+   puts $fout "CREATE TABLE [set subsys]_commandLog (
   date_time DATETIME(6),
   private_revCode char(8),
   private_sndStamp double precision,
