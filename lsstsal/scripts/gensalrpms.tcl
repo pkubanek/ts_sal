@@ -252,7 +252,7 @@ Wants=network-online.target
 Type=simple
 EnvironmentFile=/opt/lsst/ts_sal/setupEFD.env
 WorkingDirectory=/opt/lsst/ts_sal/bin
-ExecStart=/opt/ts_sal/bin/sacpp_[set subsys]_[set wtype]_[set dtyp]writer
+ExecStart=/opt/lsst/ts_sal/bin/sacpp_[set subsys]_[set wtype]_[set dtyp]writer
 Restart=on-failure
 User=salmgr
 
