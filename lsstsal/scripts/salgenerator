@@ -385,6 +385,9 @@ if { $OPTIONS(rpm) } {
        stdlog "Building runtime RPM for $s subsystem"
        catch { set result [updateruntime $s] } bad
        if { $OPTIONS(verbose) } {stdlog $result}
+       stdlog "Building test runtime RPM for $s subsystem"
+       catch { set result [updateruntime $s 1] } bad
+       if { $OPTIONS(verbose) } {stdlog $result}
      }
    }
 }

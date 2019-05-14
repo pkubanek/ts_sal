@@ -27,62 +27,96 @@ proc copyasset { asset dest } {
     }
 }
 
+proc updatetests { subsys } {
+global SAL_WORK_DIR SALVERSION
+   catch {
+    set all [glob [set subsys]_*/cpp]
+    foreach i $all {
+       set tlm [lindex [split $i "/"] 0]
+       set top [join [lrange [split $tlm "_"] 1 end] "_"]
+       copyasset $i/standalone/sacpp_[set subsys]_pub [set rpmname]-$SALVERSION/opt/lsst/ts_sal/bin/sacpp_[set subsys]_[set top]_publisher
+       copyasset $i/standalone/sacpp_[set subsys]_sub [set rpmname]-$SALVERSION/opt/lsst/ts_sal/bin/sacpp_[set subsys]_[set top]_subscriber
+       puts stdout "Done $subsys $top"
+    }
+    foreach ttype "commander controller send log logger sender publisher subscriber" {
+      set all [glob [set subsys]/cpp/src/*_[set ttype]]
+      foreach i $all {
+         copyasset $i [set rpmname]-$SALVERSION/opt/lsst/ts_sal/bin/.
+         puts stdout "Done $subsys $i"
+      }
+    }
+  }
+}
 
-proc updateruntime { subsys } {
+
+proc updateruntime { subsys {withtest 0} } {
 global SAL_WORK_DIR SALVERSION SAL_DIR
-  exec rm -fr [set subsys]-$SALVERSION/opt/lsst/ts_sal
+  set rpmname $subsys
+  if { $withtest } {set rpmname [set subsys]_test}
+  exec rm -fr [set rpmname]-$SALVERSION/opt/lsst/ts_sal
   exec mkdir -p $SAL_WORK_DIR/rpmbuild/BUILD
   exec mkdir -p $SAL_WORK_DIR/rpmbuild/BUILDROOT
   exec mkdir -p $SAL_WORK_DIR/rpmbuild/RPMS
   exec mkdir -p $SAL_WORK_DIR/rpmbuild/SOURCES
   exec mkdir -p $SAL_WORK_DIR/rpmbuild/SPECS
   exec mkdir -p $SAL_WORK_DIR/rpmbuild/SRPMS
-  exec mkdir -p [set subsys]-$SALVERSION/opt/lsst/ts_sal
-  exec mkdir [set subsys]-$SALVERSION/opt/lsst/ts_sal/include
-  exec mkdir [set subsys]-$SALVERSION/opt/lsst/ts_sal/bin
-  exec mkdir [set subsys]-$SALVERSION/opt/lsst/ts_sal/scripts
-  exec mkdir [set subsys]-$SALVERSION/opt/lsst/ts_sal/lib
-  exec mkdir [set subsys]-$SALVERSION/opt/lsst/ts_sal/doc
-  exec mkdir [set subsys]-$SALVERSION/opt/lsst/ts_sal/labview
-  exec mkdir [set subsys]-$SALVERSION/opt/lsst/ts_sal/labview/lib
-  exec mkdir [set subsys]-$SALVERSION/opt/lsst/ts_sal/jar
-  exec mkdir -p [set subsys]-$SALVERSION/opt/lsst/ts_xml/sal_interfaces/[set subsys]
+  exec mkdir -p [set rpmname]-$SALVERSION/opt/lsst/ts_sal
+  exec mkdir [set rpmname]-$SALVERSION/opt/lsst/ts_sal/include
+  exec mkdir [set rpmname]-$SALVERSION/opt/lsst/ts_sal/bin
+  exec mkdir [set rpmname]-$SALVERSION/opt/lsst/ts_sal/scripts
+  exec mkdir [set rpmname]-$SALVERSION/opt/lsst/ts_sal/lib
+  exec mkdir [set rpmname]-$SALVERSION/opt/lsst/ts_sal/doc
+  exec mkdir [set rpmname]-$SALVERSION/opt/lsst/ts_sal/labview
+  exec mkdir [set rpmname]-$SALVERSION/opt/lsst/ts_sal/labview/lib
+  exec mkdir [set rpmname]-$SALVERSION/opt/lsst/ts_sal/jar
+  exec mkdir -p [set rpmname]-$SALVERSION/opt/lsst/ts_xml/sal_interfaces/[set subsys]
   foreach lib "libsacpp_[set subsys]_types.so SALPY_[set subsys].so libSAL_[set subsys].so" {
-     copyasset $SAL_WORK_DIR/lib/$lib [set subsys]-$SALVERSION/opt/lsst/ts_sal/lib/.
+     copyasset $SAL_WORK_DIR/lib/$lib [set rpmname]-$SALVERSION/opt/lsst/ts_sal/lib/.
   }
   foreach lib "SALLV_[set subsys].so" {
-     copyasset $SAL_WORK_DIR/lib/$lib [set subsys]-$SALVERSION/opt/lsst/ts_sal/lib/.
+     copyasset $SAL_WORK_DIR/lib/$lib [set rpmname]-$SALVERSION/opt/lsst/ts_sal/lib/.
   }
   foreach jar "saj_[set subsys]_types.jar" {
-     copyasset $SAL_WORK_DIR/lib/$jar [set subsys]-$SALVERSION/opt/lsst/ts_sal/jar/.
+     copyasset $SAL_WORK_DIR/lib/$jar [set rpmname]-$SALVERSION/opt/lsst/ts_sal/jar/.
   }
-  copyasset $SAL_WORK_DIR/[set subsys]/labview/SALLV_[set subsys]_Monitor [set subsys]-$SALVERSION/opt/lsst/ts_sal/bin/.
-  copyasset $SAL_WORK_DIR/idl-templates/validated/[set subsys]_revCodes.tcl [set subsys]-$SALVERSION/opt/lsst/ts_sal/scripts/.
-  copyasset $SAL_WORK_DIR/[set subsys]/cpp/src/SAL_[set subsys].h [set subsys]-$SALVERSION/opt/lsst/ts_sal/include/.
-  copyasset $SAL_WORK_DIR/[set subsys]/cpp/src/SAL_[set subsys]C.h [set subsys]-$SALVERSION/opt/lsst/ts_sal/include/.
-  copyasset $SAL_WORK_DIR/[set subsys]/cpp/src/SAL_[set subsys]LV.h [set subsys]-$SALVERSION/opt/lsst/ts_sal/include/.
-  copyasset $SAL_WORK_DIR/[set subsys]/cpp/sal_[set subsys]Dcps.h [set subsys]-$SALVERSION/opt/lsst/ts_sal/include/.
-  copyasset $SAL_WORK_DIR/[set subsys]/cpp/sal_[set subsys]Dcps_impl.h [set subsys]-$SALVERSION/opt/lsst/ts_sal/include/.
-  copyasset $SAL_WORK_DIR/[set subsys]/cpp/sal_[set subsys].h [set subsys]-$SALVERSION/opt/lsst/ts_sal/include/.
-  copyasset $SAL_WORK_DIR/[set subsys]/cpp/ccpp_sal_[set subsys].h [set subsys]-$SALVERSION/opt/lsst/ts_sal/include/.
-  copyasset $SAL_WORK_DIR/[set subsys]/cpp/sal_[set subsys]SplDcps.h [set subsys]-$SALVERSION/opt/lsst/ts_sal/include/.
-  copyasset $SAL_DIR/code/templates/SAL_defines.h [set subsys]-$SALVERSION/opt/lsst/ts_sal/include/.
+  copyasset $SAL_WORK_DIR/[set subsys]/labview/SALLV_[set subsys]_Monitor [set rpmname]-$SALVERSION/opt/lsst/ts_sal/bin/.
+  copyasset $SAL_WORK_DIR/idl-templates/validated/[set subsys]_revCodes.tcl [set rpmname]-$SALVERSION/opt/lsst/ts_sal/scripts/.
+  copyasset $SAL_WORK_DIR/[set subsys]/cpp/src/SAL_[set subsys].h [set rpmname]-$SALVERSION/opt/lsst/ts_sal/include/.
+  copyasset $SAL_WORK_DIR/[set subsys]/cpp/src/SAL_[set subsys]C.h [set rpmname]-$SALVERSION/opt/lsst/ts_sal/include/.
+  copyasset $SAL_WORK_DIR/[set subsys]/cpp/src/SAL_[set subsys]LV.h [set rpmname]-$SALVERSION/opt/lsst/ts_sal/include/.
+  copyasset $SAL_WORK_DIR/[set subsys]/cpp/sal_[set subsys]Dcps.h [set rpmname]-$SALVERSION/opt/lsst/ts_sal/include/.
+  copyasset $SAL_WORK_DIR/[set subsys]/cpp/sal_[set subsys]Dcps_impl.h [set rpmname]-$SALVERSION/opt/lsst/ts_sal/include/.
+  copyasset $SAL_WORK_DIR/[set subsys]/cpp/sal_[set subsys].h [set rpmname]-$SALVERSION/opt/lsst/ts_sal/include/.
+  copyasset $SAL_WORK_DIR/[set subsys]/cpp/ccpp_sal_[set subsys].h [set rpmname]-$SALVERSION/opt/lsst/ts_sal/include/.
+  copyasset $SAL_WORK_DIR/[set subsys]/cpp/sal_[set subsys]SplDcps.h [set rpmname]-$SALVERSION/opt/lsst/ts_sal/include/.
+  copyasset $SAL_DIR/code/templates/SAL_defines.h [set rpmname]-$SALVERSION/opt/lsst/ts_sal/include/.
+  if { $withtest } { updatetests $subsys }
   foreach dtype "Commands Events Generics Telemetry" {
     if { [file exists $SAL_WORK_DIR/[set subsys]_[set dtype].xml] } {
-       exec cp $SAL_WORK_DIR/[set subsys]_[set dtype].xml [set subsys]-$SALVERSION/opt/lsst/ts_xml/sal_interfaces/[set subsys]/.
+       exec cp $SAL_WORK_DIR/[set subsys]_[set dtype].xml [set rpmname]-$SALVERSION/opt/lsst/ts_xml/sal_interfaces/[set subsys]/.
     }
   }
-  exec tar cvzf $SAL_WORK_DIR/rpmbuild/SOURCES/[set subsys]-$SALVERSION.tgz [set subsys]-$SALVERSION
-  exec rm -fr $SAL_WORK_DIR/rpmbuild/BUILD/[set subsys]-$SALVERSION
-  exec cp -r [set subsys]-$SALVERSION $SAL_WORK_DIR/rpmbuild/BUILD/.
-  listfilesforrpm $subsys
-  generaterpm $subsys
-  set frpm [open /tmp/makerpm w]
-  puts $frpm "#!/bin/sh
+  exec tar cvzf $SAL_WORK_DIR/rpmbuild/SOURCES/[set rpmname]-$SALVERSION.tgz [set rpmname]-$SALVERSION
+  exec rm -fr $SAL_WORK_DIR/rpmbuild/BUILD/[set rpmname]-$SALVERSION
+  exec cp -r [set rpmname]-$SALVERSION $SAL_WORK_DIR/rpmbuild/BUILD/.
+  listfilesforrpm $rpmname
+  if { $withtest } {
+    generatetestrpm $subsys
+    set frpm [open /tmp/makerpm w]
+    puts $frpm "#!/bin/sh
+export QA_RPATHS=0x001F
+rpmbuild -bi -bl -v $SAL_WORK_DIR/rpmbuild/SPECS/ts_sal_[set subsys]_test.spec
+rpmbuild -bb -bl -v $SAL_WORK_DIR/rpmbuild/SPECS/ts_sal_[set subsys]_test.spec
+"
+  } else {
+    generaterpm $subsys
+    set frpm [open /tmp/makerpm w]
+    puts $frpm "#!/bin/sh
 export QA_RPATHS=0x001F
 rpmbuild -bi -bl -v $SAL_WORK_DIR/rpmbuild/SPECS/ts_sal_[set subsys].spec
 rpmbuild -bb -bl -v $SAL_WORK_DIR/rpmbuild/SPECS/ts_sal_[set subsys].spec
 "
+  }
   close $frpm
   exec chmod 755 /tmp/makerpm
   exec /tmp/makerpm  >& /tmp/makerpm.log
@@ -96,10 +130,10 @@ proc updateddsruntime { version } {
 }
 
 
-proc listfilesforrpm { subsys } {
+proc listfilesforrpm { rpmname } {
 global SALVERSION env RPMFILES SAL_WORK_DIR
    set RPMFILES ""
-   cd $SAL_WORK_DIR/rpmbuild/BUILD/[set subsys]-$SALVERSION
+   cd $SAL_WORK_DIR/rpmbuild/BUILD/[set rpmname]-$SALVERSION
    set fl [split [exec find . -type f  -print] \n]
    foreach f $fl { 
        if { [string range $f 0 4] == "./opt" } {
@@ -218,7 +252,7 @@ Wants=network-online.target
 Type=simple
 EnvironmentFile=/opt/lsst/ts_sal/setupEFD.env
 WorkingDirectory=/opt/lsst/ts_sal/bin
-ExecStart=/opt/ts_sal/build/[set subsys]/cpp/src/sacpp_[set subsys]_[set wtype]_[set dtyp]writer
+ExecStart=/opt/ts_sal/bin/sacpp_[set subsys]_[set wtype]_[set dtyp]writer
 Restart=on-failure
 User=salmgr
 
@@ -372,16 +406,6 @@ for the middleware interface.
 %setup
  
 %build
-#source /opt/lsst/ts_sal/setup.env
-#cp /opt/lsst/ts_xml/sal_interfaces/*.xml .
-#cp /opt/lsst/ts_xml/sal_interfaces/[set subsys]/*.xml .
-#salgenerator [set subsys] validate
-#salgenerator [set subsys] html
-#salgenerator [set subsys] sal cpp
-#salgenerator [set subsys] sal python
-#salgenerator [set subsys] sal java
-#salgenerator [set subsys] labview
-#salgenerator [set subsys] lib
 
 %install
 cp -fr * %{buildroot}/.
@@ -405,6 +429,64 @@ rm -fr \$RPM_BUILD_ROOT
 #  set ctar "exec tar czf $SAL_WORK_DIR/rpmbuild/SOURCES/[set subsys]-$SALVERSION.tgz [set fxml] SALSubsystems.xml SALGenerics.xml"
 #  eval $ctar
 }
+
+
+proc generatetestrpm { subsys } {
+global SAL_WORK_DIR SALVERSION RPMFILES OSPL_VERSION env
+  exec rm -fr $SAL_WORK_DIR/rpm_[set subsys]
+  exec mkdir -p $SAL_WORK_DIR/rpm_[set subsys]
+  set xmldist [string trim [exec cat $env(WORKSPACE)/XML/VERSION]]
+  set fout [open $SAL_WORK_DIR/rpmbuild/SPECS/ts_sal_[set subsys]_test.spec w]
+  puts $fout "Name: [set subsys]_test
+Version: $SALVERSION
+Release: [set xmldist]%\{?dist\}
+Summary: SAL runtime for $subsys Subsystem with tests
+Vendor: LSST
+License: GPL
+URL: http://project.lsst.org/ts
+Group: Telescope and Site SAL
+AutoReqProv: no
+Source0: [set subsys]_test-$SALVERSION.tgz
+BuildRoot: $SAL_WORK_DIR/rpmbuild/%\{name\}-%\{version\}
+Packager: dmills@lsst.org
+Requires: OpenSpliceDDS = $OSPL_VERSION
+Requires: linuxptp
+
+%description
+This is a SAL runtime and build environment for the LSST $subsys subsystem.
+It provides shared libraries , jar files , include files and documentation
+for the middleware interface. It also includes precompiled test programs for 
+each message type.
+
+%prep
+
+%setup
+ 
+%build
+
+%install
+cp -fr * %{buildroot}/.
+
+%files"
+  foreach f $RPMFILES {
+     puts $fout $f
+  }
+  puts $fout "
+
+%clean
+rm -fr \$RPM_BUILD_ROOT
+
+%post
+%postun
+%changelog
+"
+  close $fout
+  cd $SAL_WORK_DIR
+#  set fxml [glob [set subsys]_*.xml]
+#  set ctar "exec tar czf $SAL_WORK_DIR/rpmbuild/SOURCES/[set subsys]-$SALVERSION.tgz [set fxml] SALSubsystems.xml SALGenerics.xml"
+#  eval $ctar
+}
+
 
 proc generateEFDspec { } {
 global SAL_WORK_DIR SALVERSION RPMFILES OSPL_VERSION
