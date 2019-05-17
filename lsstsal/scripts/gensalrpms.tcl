@@ -9,6 +9,7 @@
 set SAL_WORK_DIR $env(SAL_WORK_DIR)
 set OSPL_HOME $env(OSPL_HOME)
 set SAL_DIR $env(SAL_DIR)
+
 source $SAL_DIR/sal_version.tcl
 source $SAL_DIR/add_system_dictionary.tcl
 source $SAL_DIR/gengenericefd_array.tcl
@@ -379,7 +380,7 @@ proc generaterpm { subsys } {
 global SAL_WORK_DIR SALVERSION RPMFILES OSPL_VERSION env
   exec rm -fr $SAL_WORK_DIR/rpm_[set subsys]
   exec mkdir -p $SAL_WORK_DIR/rpm_[set subsys]
-  set xmldist [string trim [exec cat $env(WORKSPACE)/XML/VERSION]]
+  set xmldist [string trim [exec cat $env(SAL_WORK_DIR)/VERSION]]
   set fout [open $SAL_WORK_DIR/rpmbuild/SPECS/ts_sal_[set subsys].spec w]
   puts $fout "Name: $subsys
 Version: $SALVERSION
@@ -435,7 +436,7 @@ proc generatetestrpm { subsys } {
 global SAL_WORK_DIR SALVERSION RPMFILES OSPL_VERSION env
   exec rm -fr $SAL_WORK_DIR/rpm_[set subsys]
   exec mkdir -p $SAL_WORK_DIR/rpm_[set subsys]
-  set xmldist [string trim [exec cat $env(WORKSPACE)/XML/VERSION]]
+  set xmldist [string trim [exec cat $env(SAL_WORK_DIR)/VERSION]]
   set fout [open $SAL_WORK_DIR/rpmbuild/SPECS/ts_sal_[set subsys]_test.spec w]
   puts $fout "Name: [set subsys]_test
 Version: $SALVERSION
@@ -548,39 +549,41 @@ global SYSDIC SALVERSION SAL_WORK_DIR OSPL_VERSION
 %define summary			SAL runtime utilities package
 %define version			$SALVERSION
 %define release			1
-%define license			GPL
-%define group			LSST Telescope and Site
-%define vendor			LSST
-%define packager		dmills@lsst.org
 
 Name:      %{name}
+Vendor: LSST
+License: GPL
+URL: http://project.lsst.org/ts
+Group: Telescope and Site SAL
+Source0: ts_sal_utils-[set SALVERSION].tgz
+BuildRoot: $SAL_WORK_DIR/rpmbuild/%\{name\}-%\{version\}
+Packager: dmills@lsst.org
 Version:   %{version}
 Release:   %{release}
-Packager:  %{packager}
-Vendor:    %{vendor}
-License:   %{license}
 Summary:   %{summary}
-Group:     %{group}
 AutoReqProv: no
-#Source:    %{source}
-URL:       %{url}
-Prefix:    %{_prefix}
-Buildroot: %{buildroot}
 Requires: linuxptp
+
 %description
 This package provides utilities supporting the ts_sal_runtime packages
 
-%setup -c -T
+%setup
 
 %install
+cp -fr * %{buildroot}/.
 
 %files
 /etc/systemd/system/ts_sal_settai.service
 /opt/lsst/ts_sal/bin/set-tai
+/opt/lsst/ts_sal/bin/update_leapseconds
 /opt/lsst/ts_sal/lib/libsalUtils.so
 /opt/lsst/ts_sal/etc/leap-seconds.list
 "
   close $fout
+  mkdir -p ts_sal_utils-$SALVERSION/etc/systemd/system
+  mkdir -p ts_sal_utils-$SALVERSION/opt/lsst/ts_sal/bin
+  mkdir -p ts_sal_utils-$SALVERSION/opt/lsst/ts_sal/lib
+  mkdir -p ts_sal_utils-$SALVERSION/opt/lsst/ts_sal/etc
   set fser [open ts_sal_utils-$SALVERSION/etc/systemd/system/ts_sal_settai.service w]
      puts $fser "
 \[Unit\]
@@ -599,11 +602,17 @@ WantedBy=ts_sal_settai.service
 "
   close $fser
   copyasset $SAL_WORK_DIR/bin/set-tai ts_sal_utils-$SALVERSION/opt/lsst/ts_sal/bin/.
+  copyasset $SAL_WORK_DIR/bin/update_leapseconds ts_sal_utils-$SALVERSION/opt/lsst/ts_sal/bin/.
   copyasset $SAL_WORK_DIR/lib/libsalUtils.so ts_sal_utils-$SALVERSION/opt/lsst/ts_sal/lib/.
   copyasset /usr/share/zoneinfo/leap-seconds.list  ts_sal_utils-$SALVERSION/opt/lsst/ts_sal/etc/.
+  exec tar cvzf $SAL_WORK_DIR/rpmbuild/SOURCES/ts_sal_utils-$SALVERSION.tgz ts_sal_utils-$SALVERSION
+  exec rm -fr $SAL_WORK_DIR/rpmbuild/BUILD/ts_sal_utils-$SALVERSION/*
+  exec cp -r ts_sal_utils-$SALVERSION $SAL_WORK_DIR/rpmbuild/BUILD/.
   set frpm [open /tmp/makerpm w]
   puts $frpm "#!/bin/sh
-rpmbuild -ba -v $SAL_WORK_DIR/rpmbuild/SPECS/ts_sal_utils.spec
+export QA_RPATHS=0x001F
+rpmbuild -bi -bl -v $SAL_WORK_DIR/rpmbuild/SPECS/ts_sal_utils.spec
+rpmbuild -bb -bl -v $SAL_WORK_DIR/rpmbuild/SPECS/ts_sal_utils.spec
 "
   close $frpm
   exec chmod 755 /tmp/makerpm
