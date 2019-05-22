@@ -10,7 +10,6 @@ set SAL_WORK_DIR $env(SAL_WORK_DIR)
 set OSPL_HOME $env(OSPL_HOME)
 set SAL_DIR $env(SAL_DIR)
 
-source $SAL_DIR/sal_version.tcl
 source $SAL_DIR/add_system_dictionary.tcl
 source $SAL_DIR/gengenericefd_array.tcl
 source $SAL_DIR/ospl_version.tcl
@@ -225,16 +224,24 @@ proc generateEFDenv { } {
 global OSPL_VERSION SALVERSION
    set fenv [open ts_EFDruntime-$SALVERSION/opt/lsst/ts_sal/setupEFD.env w]
    puts $fenv "
-export LSST_SDK_INSTALL=/opt/lsst/ts_sal
-export OSPL_HOME=/opt/OpenSpliceDDS/V[set OSPL_VERSION]/HDE/x86_64.linux
-export LSST_DDS_DOMAIN=auxtelpath
-export SAL_HOME=\$LSST_SDK_INSTALL/lsstsal
-export LD_LIBRARY_PATH=\$\{SAL_WORK_DIR\}/lib:\$\{LSST_SDK_INSTALL\}/lib
-export PATH=\$\{SAL_HOME\}/bin:\$\{PATH\}
-source \$OSPL_HOME/release.com
-export SAL_VERSION=$SALVERSION
-echo \"LSST middleware EFD environment v$SALVERSION is configured\"
-"
+OSPL_URI=file:///opt/OpenSpliceDDS/V[set OSPL_VERSION]/HDE/x86_64.linux/etc/config/ospl.xml
+HOSTNAME=ts-efd-mysql-01.vm.dev.lsst.org
+SHELL=/bin/bash
+OSPL_HOME=/opt/OpenSpliceDDS/V[set OSPL_VERSION]/HDE/x86_64.linux
+SPLICE_ORB=DDS_OpenFusion_1_6_1
+USER=salmgr
+LD_LIBRARY_PATH=/opt/OpenSpliceDDS/V[set OSPL_VERSION]/HDE/x86_64.linux/lib:/lib:/opt/lsst/ts_sal/lib
+CPATH=/opt/OpenSpliceDDS/V[set OSPL_VERSION]/HDE/x86_64.linux/include:/opt/OpenSpliceDDS/V[set OSPL_VERSION]/HDE/x86_64.linux/include/sys:
+PATH=/opt/OpenSpliceDDS/V[set OSPL_VERSION]/HDE/x86_64.linux/bin:/opt/lsst/ts_sal/lsstsal/bin:/usr/local/bin:/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/opt/puppetlabs/bin:/home/salmgr/.local/bin:/home/salmgr/bin
+LANG=en_US.UTF-8
+SPLICE_JDK=jdk
+SHLVL=1
+HOME=/home/salmgr
+SPLICE_JAVAC=javac
+LOGNAME=salmgr
+LESSOPEN=||/usr/bin/lesspipe.sh %s
+OSPL_TMPL_PATH=/opt/OpenSpliceDDS/V[set OSPL_VERSION]/HDE/x86_64.linux/etc/idlpp
+SPLICE_JAVA=java"
    close $fenv
 }
 

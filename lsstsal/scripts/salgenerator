@@ -42,6 +42,7 @@ source $SAL_DIR/versioning.tcl
 source $SAL_DIR/utilities.tcl
 source $SAL_DIR/activaterevcodes.tcl
 source $SAL_DIR/add_system_dictionary.tcl
+source $SAL_DIR/gensalrpms.tcl
 
 puts stdout "argv = $argv"
 if { [string range [lindex $argv end] 0 7] == "version=" } {
@@ -379,7 +380,6 @@ if { $OPTIONS(lib) } {
 
 
 if { $OPTIONS(rpm) } {
-   source $SAL_DIR/gensalrpms.tcl
    foreach s $TSUBSYSTEMS {
      if { $s != "rpm" } {
        stdlog "Building runtime RPM for $s subsystem"
