@@ -209,7 +209,6 @@ while { [gets $fin rec] > -1 } {
 ###  long private_seqNum; //private
 ###  long private_origin; //private
 ###  long private_host; //private"
-      puts $fo2  "DROP TABLE IF EXISTS $topic;"
       puts $fo2  "CREATE TABLE $topic ("
       puts $fo2  "  date_time DATETIME(6),
   private_revCode char(8),

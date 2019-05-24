@@ -54,6 +54,17 @@ if { $argv == "" || [lsearch $argv python] > -1 } {
  }
 }
 
+if { $argv == "" || [lsearch $argv pydds] > -1 } {
+ puts stdout  "Generating Python Native DDS (pydds)"
+ foreach subsys $EVERYTHING {
+  if { [info exists DO($subsys)] } {
+   set bad ""
+   set result ""
+   catch { set results [exec salgenerator $subsys sal pydds ] } bad
+   puts stdout "$result $bad"
+  }
+ }
+}
 
 if { $argv == "" || [lsearch $argv labview] > -1 } {
  puts stdout  "Generating LabVIEW"

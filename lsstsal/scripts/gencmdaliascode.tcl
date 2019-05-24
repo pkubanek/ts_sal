@@ -103,6 +103,9 @@ int SAL_SALData::issueCommand_[set i]( SALData_command_[set i]C *data )
   Instance.private_sndStamp = getCurrentTime();
   ReturnCode_t status = SALWriter->write(Instance, cmdHandle);
   sal\[actorIdx\].sndSeqNum++;
+//  if(sal\[actorIdx\].sndSeqNum >= 32768*(actorIdx+1) ) \{
+//     sal\[actorIdx\].sndSeqNum = 32768*actorIdx + 1;
+//  \}
   checkStatus(status, \"SALData::command_[set i][set revcode]DataWriter::write\");  
     SALWriter->unregister_instance(Instance, cmdHandle);
   if (status != SAL__OK) \{
@@ -174,9 +177,10 @@ int SAL_SALData::acceptCommand_[set i]( SALData_command_[set i]C *data )
     ackHandle = SALWriter->register_instance(ackdata);
     ackdata.SALDataID = subsystemID;
 #endif
-    ackdata.private_sndStamp = getCurrentTime();
-    istatus = SALWriter->write(ackdata, ackHandle);
-    checkStatus(istatus, \"SALData::ackcmdDataWriter::write\");
+    ackdata.private_sndStamp = getCurrentTime();"
+     puts $fout "    istatus = SALWriter->write(ackdata, ackHandle);"
+     puts $fout "    checkStatus(istatus, \"SALData::ackcmdDataWriter::write\");"
+   puts $fout "
     SALWriter->unregister_instance(ackdata, ackHandle);
      \} else \{
         if (debugLevel > 8) \{
@@ -476,7 +480,8 @@ global CMD_ALIASES CMDS SYSDIC
       }
       puts $fout "
 		      istatus = SALWriter.write(ackdata, ackHandle);
-		      SALWriter.unregister_instance(ackdata, ackHandle);"
+		      SALWriter.unregister_instance(ackdata, ackHandle);
+"
       puts $fout "
     		     if (debugLevel > 8) \{
       			System.out.println(  \"    Old command ignored :   \" + dTime );

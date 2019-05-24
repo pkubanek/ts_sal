@@ -108,9 +108,9 @@ class MakeSalpyLib:
             os.environ[self.ld_lib_path_name] = f"{self.sal_work_dir}/lib:{self.initial_ld_lib_path}"
             demo_suffix = "" if demo else " fastest"
             for command in ("validate", f"sal cpp{demo_suffix}", f"sal python{demo_suffix}"):
-                full_cmd = f"salgenerator {self.sal_name} {command}"
-                print(f"***** {full_cmd}")
-                subprocess.run(full_cmd, check=True, cwd=self.sal_work_dir, shell=True)
+                cmd_args = ["salgenerator", self.sal_name] + command.split()
+                print(f"***** {' '.join(cmd_args)}")
+                subprocess.run(cmd_args, check=True, cwd=self.sal_work_dir)
         finally:
             os.environ[self.ld_lib_path_name] = self.initial_ld_lib_path
 

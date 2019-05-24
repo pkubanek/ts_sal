@@ -372,6 +372,7 @@ typedef struct [set subsys]_waitCompleteLV
       unsigned int timeout;
 \} [set subsys]_waitComplete_Ctl;
 "
+###   puts $fpyb2 "  .def(\"flushSamples_ackcmd\" ,  &SAL_[set subsys]::flushSamples_ackcmd )"
    close $fout
    close $fhdr
    close $fhlv

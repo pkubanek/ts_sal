@@ -12,6 +12,11 @@
   #include <stdlib.h>
   #include <stdio.h>
   #include <string.h>
+  #include <time.h>
+  #include <sys/time.h>
+  #include <sys/timex.h>
+  #include <signal.h>
+  #include <unistd.h>
   #include "SAL_defines.h"
   #include "ccpp_dds_dcps.h"
   #include "QosProvider.h"
@@ -165,6 +170,7 @@
 
       double getCurrentTime();
       double getRcvdTime();
+      int getLeapSeconds();
       void setTuneableQos(char *topicName);
       void setDefaultQos(char *topicName);
       std::vector<std::string> getTelemetryNames();

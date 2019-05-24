@@ -97,6 +97,9 @@ PYBIND11_MODULE(SALPY_SALData,m){
         .def( 
             "getCurrentTime"
             , (double ( ::SAL_SALData::* )(  ) )( &::SAL_SALData::getCurrentTime ) )
+        .def( 
+            "getLeapSeconds"
+            , (int ( ::SAL_SALData::* )(  ) )( &::SAL_SALData::getLeapSeconds ) )
 // INSERT EVENTALIAS SUPPORT 
         .def( 
             "setTuneableQos"
