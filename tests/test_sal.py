@@ -397,8 +397,8 @@ class ScriptTestCase(unittest.TestCase):
     """
     def test_enumerations_present(self):
         """Test that enumeration values are present as constants."""
-        self.assertTrue(hasattr(SALPY_Script, "state_Done"))
-        self.assertTrue(hasattr(SALPY_Script, "metadata_CSys_ICRS"))
+        self.assertTrue(hasattr(SALPY_Script, "Script_shared_ScriptState_Done"))
+        self.assertTrue(hasattr(SALPY_Script, "Script_shared_MetadataCoordSys_ICRS"))
 
     def test_generics_no(self):
         """Test that setting generics to `no` avoids generics."""

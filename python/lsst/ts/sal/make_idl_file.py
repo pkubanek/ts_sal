@@ -103,11 +103,11 @@ class MakeIdlFile:
         print(f"*** Cleanup {self.name} files ***")
         self.delete_files()
 
-        print(f"*** Done generating SALPY_{self.name} ***")
+        print(f"*** Done generating {self.name} IDL file ***")
 
 
 def make_idl_file(name):
-    """Make the SALPY library for a specified SAL component.
+    """Make the IDL file for a specified SAL component.
 
     Parameters
     ----------
