@@ -122,7 +122,7 @@ class TestData:
     def arrays_fields(self):
         """Get a tuple of the fields in an arrays struct."""
         return (
-            "boolean0", "byte0", "char0", "short0",
+            "boolean0", "byte0", "short0",
             "int0", "long0", "longLong0", "octet0",
             "unsignedShort0", "unsignedInt0", "unsignedLong0",
             "float0", "double0")
@@ -188,8 +188,6 @@ class TestData:
         """Make random data for the arrays or setArrays topic."""
         nelts = 5
         data.boolean0[:] = np.random.choice([False, True], size=(nelts,))
-        printable_chars = [c for c in string.ascii_letters + string.digits]
-        data.char0 = "".join(np.random.choice(printable_chars, size=(nelts,)))
         for field_name in (
             "byte0",
             "octet0",
@@ -216,7 +214,9 @@ class TestData:
         empty_arrays = SALPY_Test.Test_arraysC()
         data.boolean0 = np.random.choice([False, True])
         printable_chars = [c for c in string.ascii_letters + string.digits]
-        data.char0 = np.random.choice(printable_chars)
+        # char0 is a string of arbitrary length (IDL_Size not specified)
+        data.char0 = "".join(np.random.choice(printable_chars, size=(100,)))
+        # string0 is a string with max length 20 (IDL_Size=20)
         data.string0 = "".join(np.random.choice(printable_chars, size=(20,)))
         for field_name in (
             "byte0",
