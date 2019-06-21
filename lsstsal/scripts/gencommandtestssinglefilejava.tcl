@@ -68,9 +68,11 @@ proc insertCommandersJava { subsys file_writer } {
     foreach alias $CMD_ALIASES($subsys) {
         puts $file_writer "        mgr.salCommand(\"[set subsys]_command_[set alias]\");"
     }
+    puts $file_writer "        System.out.println(\"===== [set subsys] all controllers ready =====\");"
 
     foreach alias $CMD_ALIASES($subsys) {
         puts $file_writer "        \{"
+        puts $file_writer "            System.out.println(\"=== [set subsys]_[set alias] start of topic ===\");"
         puts $file_writer "            int cmdId = 0;"
         puts $file_writer "            int status = 0;"
         puts $file_writer "            int timeout = 3;"
@@ -117,11 +119,10 @@ proc insertCommandersJava { subsys file_writer } {
         }
 
         puts $file_writer "            cmdId = mgr.issueCommand_[set alias](command);"
-
-        puts $file_writer "            try \{Thread.sleep(1000);\} catch (InterruptedException e)  \{ e.printStackTrace(); \}"
-        puts $file_writer "            status = mgr.waitForCompletion_[set alias](cmdId, timeout);"        
+        puts $file_writer "            status = mgr.waitForCompletion_[set alias](cmdId, timeout);"
+        puts $file_writer "            System.out.println(\"=== [set subsys]_[set alias] end of topic ===\");"
         puts $file_writer "        \}"
-    
+
     }
 
     puts $file_writer "    /* Remove the DataWriters etc */"
@@ -155,17 +156,18 @@ proc insertControllersJava { subsys file_writer } {
     foreach alias $CMD_ALIASES($subsys) {
         puts $file_writer "        mgr.salProcessor(\"[set subsys]_command_[set alias]\");"
     }
-    puts $file_writer "        int cmdId = 0;"
-    puts $file_writer "        int status = SAL_Scheduler.SAL__OK;"
-    puts $file_writer "        int timeout = 3;"
-    puts $file_writer "        short akey = 1;"
+    puts $file_writer "        System.out.println(\"===== [set subsys] all controllers ready =====\");"
      
     foreach alias $CMD_ALIASES($subsys) {
-        puts $file_writer "\n        \{;"
+        puts $file_writer "\n        \{"
+        puts $file_writer "            System.out.println(\"=== [set subsys]_[set alias] start of topic ===\");"
+        puts $file_writer "            int cmdId = 0;"
+        puts $file_writer "            int status = SAL_Scheduler.SAL__OK;"
+        puts $file_writer "            int timeout = 30;"
+        puts $file_writer "            short akey = 1;"
         puts $file_writer "            boolean finished = false;"
+        puts $file_writer "            [set subsys].command_[set alias] command = new [set subsys].command_[set alias]();"
         puts $file_writer "            while (!finished) \{"
-        puts $file_writer "                [set subsys].command_[set alias] command = new [set subsys].command_[set alias]();"
-        puts $file_writer "                System.out.println(\"[set subsys]_[set alias] controller ready \");"
         puts $file_writer "                cmdId = mgr.acceptCommand_[set alias](command);"
         puts $file_writer "                if (cmdId > 0) \{"
         puts $file_writer "                    if (timeout > 0) \{"
@@ -173,15 +175,22 @@ proc insertControllersJava { subsys file_writer } {
         puts $file_writer "                        try \{Thread.sleep(timeout);\} catch (InterruptedException e)  \{ e.printStackTrace(); \}"
         puts $file_writer "                    \}       "
         puts $file_writer "                    mgr.ackCommand_[set alias](cmdId, SAL_[set subsys].SAL__CMD_COMPLETE, 0, \"Done : OK\");"
+        puts $file_writer "                    System.out.println(\"=== [set subsys]_[set alias] end of topic ===\");"
         puts $file_writer "                    finished = true;"
         puts $file_writer "                \}"
         puts $file_writer "                timeout = timeout-1;"
         puts $file_writer "                if (timeout == 0) \{"
         puts $file_writer "                    finished = true;"
         puts $file_writer "                \}"
-        puts $file_writer "            try \{Thread.sleep(1000);\} catch (InterruptedException e)  \{ e.printStackTrace(); \}"
+        puts $file_writer "                try \{"
+        puts $file_writer "                    System.out.println(\"timing out in \" + timeout + \"s\");"
+        puts $file_writer "                    Thread.sleep(1000);"
+        puts $file_writer "                \}"
+        puts $file_writer "                catch (InterruptedException e)\{" 
+        puts $file_writer "                    e.printStackTrace();"
+        puts $file_writer "                \}"
         puts $file_writer "            \}"
-        puts $file_writer "\n        \};"
+        puts $file_writer "        \}"
     }
     puts $file_writer "    \}"
     puts $file_writer "\}"

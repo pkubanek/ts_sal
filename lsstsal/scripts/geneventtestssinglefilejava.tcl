@@ -63,17 +63,17 @@ proc insertSendersJava { subsys file_writer } {
     puts $file_writer "    public [set subsys]Event_all(String name) \{"
     puts $file_writer "        super(name);"
     puts $file_writer "    \}\n"
-
-
     puts $file_writer "    public void test[set subsys]Event_all() \{"
     puts $file_writer "        SAL_[set subsys] mgr = new SAL_[set subsys][set initializer];"
     
     foreach alias $EVENT_ALIASES($subsys) {
-        puts $file_writer "        mgr.salEvent(\"[set subsys]_command_[set alias]\");"
+        puts $file_writer "        mgr.salEventPub(\"[set subsys]_logevent_[set alias]\");"
     }
+    puts $file_writer "        System.out.println(\"===== [set subsys] all events ready =====\");"
 
     foreach alias $EVENT_ALIASES($subsys) {
         puts $file_writer "\n        \{"
+        puts $file_writer "            System.out.println(\"=== [set subsys]_[set alias] start of topic ===\");"
         puts $file_writer "            int status = 0;"
         puts $file_writer "            int priority = 1;"
         puts $file_writer "            [set subsys].logevent_[set alias] event  = new [set subsys].logevent_[set alias]();"
@@ -93,7 +93,7 @@ proc insertSendersJava { subsys file_writer } {
                 set pdim  [lindex $pspl 1]
                 while { $l < $pdim } {
                     switch $ptype {
-                        boolean { puts $file_writer "                event.[set pname]\[$l\] = true;" }
+                        boolean { puts $file_writer "            event.[set pname]\[$l\] = true;" }
                         double  { puts $file_writer "            event.[set pname]\[$l\] = (double) 1.0;" }
                         int     { puts $file_writer "            event.[set pname]\[$l\] = (int) 1;" }
                         long    { puts $file_writer "            event.[set pname]\[$l\] = (int) 1;" }
@@ -112,12 +112,13 @@ proc insertSendersJava { subsys file_writer } {
             incr narg 1
         }
         puts $file_writer "            status = mgr.logEvent_[set alias](event,priority);"
-        puts $file_writer "            try \{Thread.sleep(1000);\} catch (InterruptedException e)  \{ e.printStackTrace(); \}"
+        puts $file_writer "            System.out.println(\"=== [set subsys]_[set alias] end of topic ===\");"
         puts $file_writer "        \}"
 
     }
 
     puts $file_writer "    /* Remove the DataWriters etc */"
+    puts $file_writer "    try \{Thread.sleep(100);\} catch (InterruptedException e)  \{ e.printStackTrace(); \}"
     puts $file_writer "    mgr.salShutdown();"
     puts $file_writer "    \}"
     puts $file_writer "\}"
@@ -140,29 +141,29 @@ proc insertLoggersJava { subsys file_writer } {
     puts $file_writer "        super(name);"
     puts $file_writer "    \}\n"
 
-
     puts $file_writer "    public void test[set subsys]EventLogger_all() \{"
     puts $file_writer "        SAL_[set subsys] mgr = new SAL_[set subsys][set initializer];"
     
     foreach alias $EVENT_ALIASES($subsys) {
-        puts $file_writer "        mgr.salEvent(\"[set subsys]_command_[set alias]\");"
+        puts $file_writer "        mgr.salEventSub(\"[set subsys]_logevent_[set alias]\");"
     }
-    
-    puts $file_writer "        int status = SAL_Scheduler.SAL__OK;"
-    puts $file_writer "        int timeout = 3;"
-    puts $file_writer "        int count = 0;"
-    puts $file_writer "        boolean finished = false;"
+    puts $file_writer "        System.out.println(\"===== [set subsys] all loggers ready =====\");"
+
 
     foreach alias $EVENT_ALIASES($subsys) {
         puts $file_writer "\n        \{"
-        puts $file_writer "            count = 0;"
+        puts $file_writer "            System.out.println(\"=== [set subsys]_[set alias] start of topic ===\");"
+        puts $file_writer "            int status = SAL_Scheduler.SAL__OK;"
+        puts $file_writer "            int timeout = 30000;"
+        puts $file_writer "            boolean finished = false;"
         puts $file_writer "            [set subsys].logevent_[set alias] event  = new [set subsys].logevent_[set alias]();"
         
         puts $file_writer "            while (!finished) \{"
         puts $file_writer "                status = mgr.getEvent_[set alias](event);"
+        puts $file_writer "                try \{Thread.sleep(1);\} catch (InterruptedException e)  \{ e.printStackTrace(); \}"
         puts $file_writer "                if (status == SAL_[set subsys].SAL__OK) \{"
         puts $file_writer "                    System.out.println(\"=== Event Logged : \" + event);"
-            if { [file exists $SAL_WORK_DIR/include/SAL_[set subsys]_logevent_[set alias]Jsub.tmp] } {
+        if { [file exists $SAL_WORK_DIR/include/SAL_[set subsys]_logevent_[set alias]Jsub.tmp] } {
                 set fjsub [open $SAL_WORK_DIR/include/SAL_[set subsys]_logevent_[set alias]Jsub.tmp r]
                 while { [gets $fjsub rec] > -1 } {
                     puts $fcmd $rec
@@ -171,12 +172,17 @@ proc insertLoggersJava { subsys file_writer } {
             }
         puts $file_writer "                    finished = true;"
         puts $file_writer "                \}"
-        puts $file_writer "                count++;"
-        puts $file_writer "                if ( count > 9 ) \{"
-        puts $file_writer "                    finished=true;"
+
+
+        puts $file_writer "                timeout = timeout-1;"
+        puts $file_writer "                if (timeout == 0) \{"
+        puts $file_writer "                    finished = true;"
         puts $file_writer "                \}"
-        puts $file_writer "                try \{Thread.sleep(100);\} catch (InterruptedException e)  \{ e.printStackTrace(); \}"
+        puts $file_writer "                if ((timeout % 1000) ==0)\{"
+        puts $file_writer "                    System.out.println(\"timing out in \" + timeout/1000 + \"s\");"
+        puts $file_writer "                \}"
         puts $file_writer "            \}"
+        puts $file_writer "            System.out.println(\"=== [set subsys]_[set alias] end of topic ===\");"
         puts $file_writer "        \}"
     }
 

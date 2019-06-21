@@ -41,6 +41,8 @@ proc insertTelemetryHeaderJava { subsys file_writer } {
     puts $file_writer "*"
     puts $file_writer " ***/"
 
+    puts $file_writer "package org.lsst.sal.junit.[set subsys];"
+    puts $file_writer "import junit.framework.TestCase;"
     puts $file_writer "import [set subsys].*;"
     puts $file_writer "import org.lsst.sal.SAL_[set subsys];\n"
 }
@@ -49,76 +51,129 @@ proc insertPublishersJava { subsys file_writer } {
 
     global SYSDIC TLM_ALIASES
 
-    puts $file_writer "public class [set subsys]Publisher_all \{\n"
-    puts $file_writer "    public static void main(String[] args) \{"
-    puts $file_writer "        short aKey = 1;"
-    puts $file_writer "        SAL_Scheduler mgr = new SAL_Scheduler(aKey);"
+    if { [info exists TLM_ALIASES($subsys)] } {
+        if { [info exists SYSDIC($subsys,keyedID)] } {
+            set initializer "( (short) 1)"
+        } else {
+            set initializer "()"
+        }
+    }
+
+    puts $file_writer "public class [set subsys]Publisher_all extends TestCase \{\n"
+    puts $file_writer "    public [set subsys]Publisher_all(String name) \{"
+    puts $file_writer "        super(name);"
+    puts $file_writer "    \}\n"
+    puts $file_writer "    public void test[set subsys]Publisher_all() \{"
+    puts $file_writer "        SAL_[set subsys] mgr = new SAL_[set subsys][set initializer];"
 
     foreach alias $TLM_ALIASES($subsys) {
         puts $file_writer "        mgr.salTelemetryPub(\"[set subsys]_[set alias]\");"
     }
+    puts $file_writer "        System.out.println(\"===== [set subsys] all publishers ready =====\");"
 
     foreach alias $TLM_ALIASES($subsys) {
         puts $file_writer "\n        \{"
-        puts $file_writer "            int count = 1;"
+        puts $file_writer "            System.out.println(\"=== [set subsys]_[set alias] start of topic ===\");"
+        puts $file_writer "            int count = 0;"
         puts $file_writer "            [set subsys].[set alias] theTopicInstance  = new [set subsys].[set alias]();"
 
-        puts $file_writer "            while (count < 6) {"
+        puts $file_writer "            while (count < 200) {"
         puts $file_writer "                mgr.putSample(theTopicInstance);"
         puts $file_writer "                System.out.println(\"=== \[[set alias]\] message sent\" + count);"
         puts $file_writer "                ++count;"
         puts $file_writer "                try {"
-        puts $file_writer "                Thread.sleep(1000);"
+        puts $file_writer "                Thread.sleep(2);"
         puts $file_writer "                } catch (InterruptedException e) {"
         puts $file_writer "                }"
         puts $file_writer "            }"
+        puts $file_writer "            System.out.println(\"=== [set subsys]_[set alias] end of topic ===\");"
+        puts $file_writer "        \}"
+        puts $file_writer "        try \{"
+        puts $file_writer "            Thread.sleep(100);"
+        puts $file_writer "        \}"
+        puts $file_writer "        catch(InterruptedException e) \{"
+        puts $file_writer "            e.printStackTrace();"
         puts $file_writer "        \}"
     }
     puts $file_writer "        mgr.salShutdown();"
     puts $file_writer "    \}"
     puts $file_writer "\}"
-
 }
 
 proc insertSubscribersJava { subsys file_writer } {
 
     global SYSDIC TLM_ALIASES
 
-    puts $file_writer "public class [set subsys]Subscriber_all \{\n"
-    puts $file_writer "    public static void main(String[] args) \{"
-    puts $file_writer "        short aKey = 1;"
-    puts $file_writer "        SAL_Scheduler mgr = new SAL_Scheduler(aKey);"
+    if { [info exists TLM_ALIASES($subsys)] } {
+        if { [info exists SYSDIC($subsys,keyedID)] } {
+            set initializer "( (short) 1)"
+        } else {
+            set initializer "()"
+        }
+    }
+
+    puts $file_writer "public class [set subsys]Subscriber_all extends TestCase \{\n"
+    puts $file_writer "    public [set subsys]Subscriber_all(String name) \{"
+    puts $file_writer "        super(name);"
+    puts $file_writer "    \}\n"
+    puts $file_writer "    public void test[set subsys]Subscriber_all() \{"
+    puts $file_writer "        SAL_[set subsys] mgr = new SAL_[set subsys][set initializer];"
 
     foreach alias $TLM_ALIASES($subsys) {
         puts $file_writer "        mgr.salTelemetrySub(\"[set subsys]_[set alias]\");"
     }
+    puts $file_writer "        System.out.println(\"===== [set subsys] all subscribers ready =====\");\n"
 
+    puts $file_writer "        // The loops below follow the below schema"
+    puts $file_writer "        // 1) Initialize variables"
+    puts $file_writer "        // 2) Begin listening for values, check every 1ms if a value is recieved"
+    puts $file_writer "        // 3) Exit loop once 200 messages recieved or 30 second timeout"
+    
     foreach alias $TLM_ALIASES($subsys) {
         puts $file_writer "\n        \{"
-        puts $file_writer "            [set subsys].[set alias] SALInstance = new [set subsys].[set alias]();"
+        puts $file_writer "            System.out.println(\"=== [set subsys]_[set alias] start of topic ===\");"
+        puts $file_writer "            [set subsys].[set alias] SALInstance = new [set subsys].[set alias]();\n"
+        
         puts $file_writer "            int samples = 0;"
-        puts $file_writer "            samples = mgr.flushSamples(SALInstance);"
-        puts $file_writer "            System.out.println(\"=== \[[set alias] Subscriber\] Ready ...\");"
-        puts $file_writer "            boolean terminate = false;"
+        puts $file_writer "            samples = mgr.flushSamples(SALInstance);\n"
+        
         puts $file_writer "            int count = 0;"
-        puts $file_writer "            int iloop = 0;"
-        puts $file_writer "            while (iloop < 200) \{ // We dont want the example to run indefinitely"
-        puts $file_writer "                iloop++;"
+        puts $file_writer "            int timeout = 30000;"
+        puts $file_writer "            boolean finished = false;\n"
+        
+        puts $file_writer "            while (!finished) \{"
         puts $file_writer "                samples = mgr.getSample(SALInstance);"
         puts $file_writer "                if (samples == SAL_Scheduler.SAL__OK) \{"
         puts $file_writer "                    count++;"
         puts $file_writer "                    System.out.println(\"=== \[[set alias] Subscriber\] samples\" + SALInstance.private_sndStamp);"
         puts $file_writer "                    System.out.println(\"=== \[[set alias] Subscriber\] message received :\" + count);"
+        puts $file_writer "                    if (count == 200) \{"
+        puts $file_writer "                        finished = true;"
+        puts $file_writer "                    \}"
+        puts $file_writer "                \}\n"
+        
+        puts $file_writer "                timeout = timeout-1;"
+        puts $file_writer "                if (timeout == 0) \{"
+        puts $file_writer "                    finished = true;"
         puts $file_writer "                \}"
+        puts $file_writer "                if ((timeout % 1000) ==0)\{"
+        puts $file_writer "                    System.out.println(\"timing out in \" + timeout/1000 + \"s\");"
+        puts $file_writer "                \}\n"
+
         puts $file_writer "                try \{"
-        puts $file_writer "                    Thread.sleep(10);"
+        puts $file_writer "                    Thread.sleep(1);"
         puts $file_writer "                \}"
-        puts $file_writer "                catch(InterruptedException ie) \{"
-        puts $file_writer "                    // nothing to do"
-        puts $file_writer "                \}"  
+        puts $file_writer "                catch(InterruptedException e) \{"
+        puts $file_writer "                    e.printStackTrace();"
+        puts $file_writer "                \}"
         puts $file_writer "            \}"
+        puts $file_writer "            System.out.println(\"=== [set subsys]_[set alias] end of topic ===\");"
+
+        
+
         puts $file_writer "        \}"
     }
+
     puts $file_writer "    mgr.salShutdown();"
     puts $file_writer "  \}"
     puts $file_writer "\}"
