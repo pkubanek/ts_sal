@@ -317,25 +317,22 @@ puts stdout $idlfile
     set spl [file rootname [split $subsys _]]
     set base [lindex $spl 0]
     if { [lindex $spl 1] != "command" && [lindex $spl 1] != "logevent" } {
-     set name [join [lrange $spl 1 end] _]
-     if { $OPTIONS(cpp) } {
-       stdlog "Generating SAL CPP code for $subsys"
-       catch { set result [makesalcode $idlfile $base $name cpp] } bad
-       if { $OPTIONS(verbose) } {stdlog $result}
+      set name [join [lrange $spl 1 end] _]
+      if { $OPTIONS(cpp) } {
+        stdlog "Generating SAL CPP code for $subsys"
+        catch { set result [makesalcode $idlfile $base $name cpp] } bad
+        if { $OPTIONS(verbose) } {stdlog $result}
       }
-        if { $OPTIONS(java) } {
-        
+      if { $OPTIONS(java) } {
         catch { set result [gencommandtestssinglefilejava $base] } bad
         if { $OPTIONS(verbose) } {stdlog $result}
         catch { set result [geneventtestssinglefilejava $base] } bad
         if { $OPTIONS(verbose) } {stdlog $result}
         catch { set result [gentelemetrytestssinglefilejava $base] } bad
         if { $OPTIONS(verbose) } {stdlog $result}
-
         stdlog "Generating SAL Java code for $subsys"
         catch { set result [makesalcode $idlfile $base $name java] } bad
         if { $OPTIONS(verbose) } {stdlog $result}
-
      }
      if { $OPTIONS(isocpp) } {
        stdlog "Generating SAL ISOCPP code for $subsys"
