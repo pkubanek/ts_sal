@@ -124,7 +124,7 @@ class MakeSalpyLib:
             dest_path = self.dest_lib_paths[name]
             if os.path.exists(dest_path):
                 os.remove(dest_path)
-            os.rename(src_path, dest_path)
+            shutil.copy(src_path, dest_path)
 
     def run(self, demo=False):
         """Make a SALPY library for the given component.
