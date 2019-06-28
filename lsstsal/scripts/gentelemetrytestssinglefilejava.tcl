@@ -139,7 +139,7 @@ proc insertSubscribersJava { subsys file_writer } {
         
         puts $file_writer "            while (!finished) \{"
         puts $file_writer "                samples = mgr.getSample(SALInstance);"
-        puts $file_writer "                if (samples == SAL_Scheduler.SAL__OK) \{"
+        puts $file_writer "                if (samples == SAL_[set subsys].SAL__OK) \{"
         puts $file_writer "                    count++;"
         puts $file_writer "                    System.out.println(\"=== \[[set alias] Subscriber\] samples\" + SALInstance.private_sndStamp);"
         puts $file_writer "                    System.out.println(\"=== \[[set alias] Subscriber\] message received :\" + count);"

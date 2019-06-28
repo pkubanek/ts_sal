@@ -149,7 +149,7 @@ proc insertLoggersJava { subsys file_writer } {
     foreach alias $EVENT_ALIASES($subsys) {
         puts $file_writer "\n        \{"
         puts $file_writer "            System.out.println(\"=== [set subsys]_[set alias] start of topic ===\");"
-        puts $file_writer "            int status = SAL_Scheduler.SAL__OK;"
+        puts $file_writer "            int status = SAL_[set subsys].SAL__OK;"
         puts $file_writer "            int timeout = 30000;"
         puts $file_writer "            boolean finished = false;"
         puts $file_writer "            [set subsys].logevent_[set alias] event  = new [set subsys].logevent_[set alias]();"

@@ -160,7 +160,7 @@ proc insertControllersJava { subsys file_writer } {
         puts $file_writer "\n        \{"
         puts $file_writer "            System.out.println(\"=== [set subsys]_[set alias] start of topic ===\");"
         puts $file_writer "            int cmdId = 0;"
-        puts $file_writer "            int status = SAL_Scheduler.SAL__OK;"
+        puts $file_writer "            int status = SAL_[set subsys].SAL__OK;"
         puts $file_writer "            int timeout = 30;"
         puts $file_writer "            short akey = 1;"
         puts $file_writer "            boolean finished = false;"
