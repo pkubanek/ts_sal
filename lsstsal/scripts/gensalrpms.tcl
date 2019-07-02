@@ -205,7 +205,7 @@ global SAL_WORK_DIR SALVERSION SAL_DIR SYSDIC
      copyasset $SAL_WORK_DIR/lib/libSAL_[set subsys].so ts_EFDruntime-$SALVERSION/opt/lsst/ts_sal/lib/.
      set fsql [open /tmp/dosql w]
      puts $fsql "cat $SAL_WORK_DIR/sql/[set subsys]_*.sqlwrt > ts_EFDruntime-$SALVERSION/opt/lsst/ts_sal/sql/[set subsys].sqlwrt"
-     puts $fsql "cp $SAL_WORK_DIR/sql/[set subsys]_*.sqldef > ts_EFDruntime-$SALVERSION/opt/lsst/ts_sal/sql/."
+     puts $fsql "cp $SAL_WORK_DIR/sql/[set subsys]_*.sqldef ts_EFDruntime-$SALVERSION/opt/lsst/ts_sal/sql/."
      puts $fsql "cat $SAL_WORK_DIR/sql/[set subsys]_*.sql > ts_EFDruntime-$SALVERSION/opt/lsst/ts_sal/sql/[set subsys].sql"
      close $fsql
      exec chmod 755 /tmp/dosql
@@ -290,7 +290,7 @@ WantedBy=[set subsys]_[set dtyp]writer.service
 
 
 proc generatemetarpm { } {
-global SYSDIC SALVERSION SAL_WORK_DIR OSPL_VERSION
+global SYSDIC SALVERSION SAL_WORK_DIR OSPL_VERSION env
    set xmldist [string trim [exec cat $env(SAL_WORK_DIR)/VERSION]]
    set fout [open $SAL_WORK_DIR/rpmbuild/SPECS/ts_sal_runtime.spec w]
    puts $fout "
@@ -345,7 +345,7 @@ rpmbuild -ba -v $SAL_WORK_DIR/rpmbuild/SPECS/ts_sal_runtime.spec
 }
 
 proc generateATmetarpm { } {
-global SYSDIC SALVERSION SAL_WORK_DIR OSPL_VERSION
+global SYSDIC SALVERSION SAL_WORK_DIR OSPL_VERSION env
    set xmldist [string trim [exec cat $env(SAL_WORK_DIR)/VERSION]]
    set fout [open $SAL_WORK_DIR/rpmbuild/SPECS/ts_sal_ATruntime.spec w]
    puts $fout "
@@ -518,7 +518,7 @@ rm -fr \$RPM_BUILD_ROOT
 
 
 proc generateEFDspec { } {
-global SAL_WORK_DIR SALVERSION RPMFILES OSPL_VERSION
+global SAL_WORK_DIR SALVERSION RPMFILES OSPL_VERSION env
   set xmldist [string trim [exec cat $env(SAL_WORK_DIR)/VERSION]]
   set fout [open $SAL_WORK_DIR/rpmbuild/SPECS/ts_EFDruntime.spec w]
   set ospldist [join [split $OSPL_VERSION .] ""]

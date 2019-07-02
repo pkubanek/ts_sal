@@ -346,21 +346,22 @@ global XMLTOPICS XMLTLM IDLRESERVED XMLITEMS
 proc gentopicdefsql { topic } {
 global SAL_WORK_DIR
    exec mkdir -p $SAL_WORK_DIR/sql
-   set fsql [open $SAL_WORK_DIR/sql/[set topic]_items.sql w]
-   puts $fsql "DROP TABLE IF EXISTS [set topic]_items;
-CREATE TABLE [set topic]_items (
+   if { [file exists $SAL_WORK_DIR/sql/[set topic]_items.sql] == 0 } {
+     set fsql [open $SAL_WORK_DIR/sql/[set topic]_items.sql w]
+     puts $fsql "CREATE TABLE [set topic]_items (
+  Topic           varchar(128),
   ItemId	  smallint unsigned,
-  EFDB_Name	  varchar(32),
-  IDL_Type        varchar(32),
+  EFDB_Name	  varchar(128),
+  IDL_Type        varchar(128),
   Count           smallint unsigned,
-  Units           varchar(32),
+  Units           varchar(128),
   Frequency       float,
-  Range           varchar(32),
-  Sensor_location varchar(32),
+  Constraints     varchar(128),
   Description     varchar(128),
-  PRIMARY KEY (num)
+  PRIMARY KEY (ItemId)
 );"
-  close $fsql
+    close $fsql
+  }
 }
 
 

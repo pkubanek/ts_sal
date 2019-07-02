@@ -44,7 +44,7 @@ global env SYSDIC
       }
       if { $tag == "Generics" } {
          if { $value == "yes" } {
-            set SYSDIC($name,hasGenerics) 1
+            set SYSDIC($name,hasAllGenerics) 1
          } else {
             if { [llength [split $value ,]] > 1 } {
                set SYSDIC($name,hasGenerics) 1

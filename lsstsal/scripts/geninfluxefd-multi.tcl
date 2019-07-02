@@ -286,7 +286,7 @@ proc checkinfluxLFO { fout topic } {
      puts $fout "
        if (status == SAL__OK && numsamp > 0) \{
            printf(\"EFD TBD : Large File Object Announcement Event $topic received\\n\");
-           sprintf(thequery,\"process_LFO_logevent  %d '%s' '%s' '%s' '%s' %f '%s'\"  ,  myData_[set topic]\[iloop\].Byte_Size , myData_[set topic]\[iloop\].Checksum.m_ptr , myData_[set topic]\[iloop\].Generator.m_ptr , myData_[set topic]\[iloop\].Mime_Type.m_ptr , myData_[set topic]\[iloop\].URL.m_ptr , myData_[set topic]\[iloop\].Version, myData_[set topic]\[iloop\].ID.m_ptr);
+           sprintf(thequery,\"process_LFO_logevent  %d '%s' '%s' '%s' '%s' %f '%s'\"  ,  myData_[set topic]\[iloop\].Byte_Size , myData_[set topic]\[iloop\].checkSum.m_ptr , myData_[set topic]\[iloop\].Generator.m_ptr , myData_[set topic]\[iloop\].Mime_Type.m_ptr , myData_[set topic]\[iloop\].URL.m_ptr , myData_[set topic]\[iloop\].Version, myData_[set topic]\[iloop\].ID.m_ptr);
           mstatus = system(thequery);
           if (mstatus < 0) \{
              fprintf(stderr,\"LFO Processor ERROR : %d\\n\",mstatus);
@@ -364,7 +364,7 @@ int test_[set base]_telemetry_influxwriter()
 "
   genericinfluxfragment $fout $base telemetry getsamples
    puts $fout "
-          os_nanoSleep(delay_10us);
+          os_nanoSleep(delay_5ms);
       \}
 
   /* Remove the DataWriters etc */
@@ -435,7 +435,7 @@ int test_[set base]_event_influxwriter()
 "
   genericinfluxfragment $fout $base logevent getsamples
    puts $fout "
-     os_nanoSleep(delay_10us);
+     os_nanoSleep(delay_5ms);
   \}
 
   /* Remove the DataWriters etc */
@@ -504,7 +504,7 @@ int test_[set base]_command_influxwriter()
 "
   genericinfluxfragment $fout $base command getsamples
    puts $fout "
-     os_nanoSleep(delay_10us);
+     os_nanoSleep(delay_5ms);
   \}
 
   /* Remove the DataWriters etc */
@@ -579,7 +579,7 @@ proc geninfluxwriters { base } {
 global SQLREC SAL_WORK_DIR
    set SQLREC([set base]_ackcmd)  "char.private_revCode,double.private_sndStamp,double.private_rcvStamp,int.private_seqNum,int.private_origin,int.private_host,int.ack,int.error,char.result"
    set SQLREC([set base]_commandLog)  "char.private_revCode,double.private_sndStamp,int.private_seqNum,char.name,int.ack,int.error"
-   set SQLREC([set base]_logeventLFO)  "char.private_revCode,double.private_sndStamp,int.private_seqNum,char.alias,char.URL,char.Generator,char.Version,char.Checksum,char.Mime_Type,char.ID,int.Byte_size"
+   set SQLREC([set base]_logeventLFO)  "char.private_revCode,double.private_sndStamp,int.private_seqNum,char.alias,char.URL,char.Generator,char.Version,char.checkSum,char.Mime_Type,char.ID,int.Byte_size"
 ##   makesummarytables  $base
    geninfluxtelemetryreader $base
    geninfluxcommandreader   $base
