@@ -967,7 +967,7 @@ public class SAL_SALData {
 			sal[actorIdx].topicQos.value.durability.kind = DurabilityQosPolicyKind.TRANSIENT_DURABILITY_QOS;
 			sal[actorIdx].topicQos.value.history.kind = HistoryQosPolicyKind.KEEP_LAST_HISTORY_QOS;
 			sal[actorIdx].topicQos.value.history.depth = sal[actorIdx].historyDepth;
-			sal[actorIdx].topicQos.value.durability_service.history_depth = sal[actorIdx].historyDepth;
+//			sal[actorIdx].topicQos.value.durability_service.history_depth = sal[actorIdx].historyDepth;
 //                        sal[actorIdx].topicQos.resource_limits.max_samples = sal[actorIdx].historyDepth;
 //                        sal[actorIdx].topicQos.resource_limits.max_instances = sal[actorIdx].historyDepth;
 //                        sal[actorIdx].topicQos.resource_limits.max_samples_per_instance = sal[actorIdx].historyDepth;
@@ -989,7 +989,7 @@ public class SAL_SALData {
 			sal[actorIdx].topicQos2.value.durability.kind = DurabilityQosPolicyKind.TRANSIENT_DURABILITY_QOS;
 			sal[actorIdx].topicQos2.value.history.kind = HistoryQosPolicyKind.KEEP_LAST_HISTORY_QOS;
 			sal[actorIdx].topicQos2.value.history.depth = sal[actorIdx].historyDepth;
-			sal[actorIdx].topicQos2.value.durability_service.history_depth = sal[actorIdx].historyDepth;
+//			sal[actorIdx].topicQos2.value.durability_service.history_depth = sal[actorIdx].historyDepth;
 //                        sal[actorIdx].topicQos2.resource_limits.max_samples = sal[actorIdx].historyDepth;
 //                        sal[actorIdx].topicQos2.resource_limits.max_instances = sal[actorIdx].historyDepth;
 //                        sal[actorIdx].topicQos2.resource_limits.max_samples_per_instance = sal[actorIdx].historyDepth;
@@ -1012,7 +1012,7 @@ public class SAL_SALData {
 			sal[actorIdx].topicQos.value.durability.kind = DurabilityQosPolicyKind.TRANSIENT_DURABILITY_QOS;
 			sal[actorIdx].topicQos.value.history.kind = HistoryQosPolicyKind.KEEP_LAST_HISTORY_QOS;
 			sal[actorIdx].topicQos.value.history.depth = sal[actorIdx].historyDepth;
-			sal[actorIdx].topicQos.value.durability_service.history_depth = sal[actorIdx].historyDepth;
+//			sal[actorIdx].topicQos.value.durability_service.history_depth = sal[actorIdx].historyDepth;
 //                        sal[actorIdx].topicQos.resource_limits.max_samples = sal[actorIdx].historyDepth;
 //                        sal[actorIdx].topicQos.resource_limits.max_instances = sal[actorIdx].historyDepth;
 //                        sal[actorIdx].topicQos.resource_limits.max_samples_per_instance = sal[actorIdx].historyDepth;
@@ -1034,7 +1034,7 @@ public class SAL_SALData {
 			sal[actorIdx].topicQos2.value.durability.kind = DurabilityQosPolicyKind.TRANSIENT_DURABILITY_QOS;
 			sal[actorIdx].topicQos2.value.history.kind = HistoryQosPolicyKind.KEEP_LAST_HISTORY_QOS;
 			sal[actorIdx].topicQos2.value.history.depth = sal[actorIdx].historyDepth;
-			sal[actorIdx].topicQos2.value.durability_service.history_depth = sal[actorIdx].historyDepth;
+//			sal[actorIdx].topicQos2.value.durability_service.history_depth = sal[actorIdx].historyDepth;
 //                        sal[actorIdx].topicQos2.resource_limits.max_samples = sal[actorIdx].historyDepth;
 //                        sal[actorIdx].topicQos2.resource_limits.max_instances = sal[actorIdx].historyDepth;
 //                        sal[actorIdx].topicQos2.resource_limits.max_samples_per_instance = sal[actorIdx].historyDepth;

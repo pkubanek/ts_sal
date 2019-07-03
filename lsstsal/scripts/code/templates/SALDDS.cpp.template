@@ -1333,8 +1333,8 @@ void SAL_SALData::createTopic(int actorIdx)
     sal[actorIdx].reliable_topic_qos.durability.kind = TRANSIENT_DURABILITY_QOS;
     sal[actorIdx].reliable_topic_qos.history.kind = KEEP_LAST_HISTORY_QOS;
     sal[actorIdx].reliable_topic_qos.history.depth = sal[actorIdx].historyDepth;
-    sal[actorIdx].reliable_topic_qos.durability_service.history_depth = sal[actorIdx].historyDepth;
- //    sal[actorIdx].reliable_topic_qos.resource_limits.max_samples = sal[actorIdx].historyDepth;
+//    sal[actorIdx].reliable_topic_qos.durability_service.history_depth = sal[actorIdx].historyDepth;
+//    sal[actorIdx].reliable_topic_qos.resource_limits.max_samples = sal[actorIdx].historyDepth;
 //    sal[actorIdx].reliable_topic_qos.resource_limits.max_instances = sal[actorIdx].historyDepth;
 //    sal[actorIdx].reliable_topic_qos.resource_limits.max_samples_per_instance = sal[actorIdx].historyDepth;
 
@@ -1357,8 +1357,8 @@ void SAL_SALData::createTopic2(int actorIdx)
     sal[actorIdx].reliable_topic_qos2.durability.kind = TRANSIENT_DURABILITY_QOS;
     sal[actorIdx].reliable_topic_qos2.history.kind = KEEP_LAST_HISTORY_QOS;
     sal[actorIdx].reliable_topic_qos2.history.depth = sal[actorIdx].historyDepth;
-    sal[actorIdx].reliable_topic_qos2.durability_service.history_depth = sal[actorIdx].historyDepth;
- //    sal[actorIdx].reliable_topic_qos.resource_limits.max_samples = sal[actorIdx].historyDepth;
+//    sal[actorIdx].reliable_topic_qos2.durability_service.history_depth = sal[actorIdx].historyDepth;
+//    sal[actorIdx].reliable_topic_qos.resource_limits.max_samples = sal[actorIdx].historyDepth;
 //    sal[actorIdx].reliable_topic_qos.resource_limits.max_instances = sal[actorIdx].historyDepth;
 //    sal[actorIdx].reliable_topic_qos.resource_limits.max_samples_per_instance = sal[actorIdx].historyDepth;
 
@@ -1381,8 +1381,8 @@ void SAL_SALData::createTopic(int actorIdx, char *topicName)
     sal[actorIdx].reliable_topic_qos.durability.kind = TRANSIENT_DURABILITY_QOS;
     sal[actorIdx].reliable_topic_qos.history.kind = KEEP_LAST_HISTORY_QOS;
     sal[actorIdx].reliable_topic_qos.history.depth = sal[actorIdx].historyDepth;
-    sal[actorIdx].reliable_topic_qos.durability_service.history_depth = sal[actorIdx].historyDepth;
- //    sal[actorIdx].reliable_topic_qos.resource_limits.max_samples = sal[actorIdx].historyDepth;
+//    sal[actorIdx].reliable_topic_qos.durability_service.history_depth = sal[actorIdx].historyDepth;
+//    sal[actorIdx].reliable_topic_qos.resource_limits.max_samples = sal[actorIdx].historyDepth;
 //    sal[actorIdx].reliable_topic_qos.resource_limits.max_instances = sal[actorIdx].historyDepth;
 //    sal[actorIdx].reliable_topic_qos.resource_limits.max_samples_per_instance = sal[actorIdx].historyDepth;
 
@@ -1404,7 +1404,7 @@ void SAL_SALData::createTopic2(int actorIdx, char *topicName)
     sal[actorIdx].reliable_topic_qos2.durability.kind = TRANSIENT_DURABILITY_QOS;
     sal[actorIdx].reliable_topic_qos2.history.kind = KEEP_LAST_HISTORY_QOS;
     sal[actorIdx].reliable_topic_qos2.history.depth = sal[actorIdx].historyDepth;
-    sal[actorIdx].reliable_topic_qos2.durability_service.history_depth = sal[actorIdx].historyDepth;
+//    sal[actorIdx].reliable_topic_qos2.durability_service.history_depth = sal[actorIdx].historyDepth;
 //    sal[actorIdx].reliable_topic_qos2.resource_limits.max_samples = sal[actorIdx].historyDepth;
 //    sal[actorIdx].reliable_topic_qos2.resource_limits.max_instances = sal[actorIdx].historyDepth;
 //    sal[actorIdx].reliable_topic_qos2.resource_limits.max_samples_per_instance = sal[actorIdx].historyDepth;
