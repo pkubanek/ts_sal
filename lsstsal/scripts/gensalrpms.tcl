@@ -53,8 +53,8 @@ global SAL_WORK_DIR SALVERSION
 proc updateruntime { subsys {withtest 0} } {
 global SAL_WORK_DIR SALVERSION SAL_DIR
   set rpmname $subsys
-  exec rm -fr [set rpmname]-$SALVERSION
   if { $withtest } {set rpmname [set subsys]_test}
+  exec rm -fr [set rpmname]-$SALVERSION
   exec mkdir -p [set rpmname]-$SALVERSION/opt/lsst/ts_sal
   exec mkdir -p [set rpmname]-$SALVERSION/opt/lsst/ts_sal/bin
   exec mkdir -p $SAL_WORK_DIR/rpmbuild/BUILD
@@ -570,6 +570,68 @@ cp -fr * %{buildroot}/.
   close $fout
 }
 
+###
+### sudo mv /usr/local /usr/local.save
+### sudo mkdir /usr/local
+### ./configure --prefix=/usr/local ; make ; sudo make install ; cd /usr/local ; sudo sh
+### rm ./lib/python3.7/site-packages/setuptools/script\ \(dev\).tmpl
+### rm ./lib/python3.7/site-packages/setuptools/command/launcher\ manifest.xml
+### tar cvzf /tmp/py3runtime.tgz bin include lib share
+### cd $SAL_WORK_DIR/rpmbuild/BUILDROOT/python-3.7.3-1.el7.centos.x86_64
+### rm -fr * ; mkdir -p usr/local ; cd usr/local
+### tar xvzf /tmp/py3runtime.tgz
+### cd $SAL_WORK_DIR
+### rpmbuild --nodeps --short-circuit -bb -bl -v ./rpmbuild/SPECS/ts_python.spec
+### rm -fr /usr/local
+### mv /usr/local.save /usr/local
+###
+proc generatePythonspec { } {
+global SAL_WORK_DIR SALVERSION RPMFILES OSPL_VERSION env
+  set fout [open $SAL_WORK_DIR/rpmbuild/SPECS/ts_python.spec w]
+  puts $fout "Name: python
+Version: 3.7.3
+Release: 1%\{?dist\}
+Summary: Python runtime for LSST TS
+Vendor: LSST
+License: PSF
+URL: http://project.lsst.org/ts
+Group: Telescope and Site SAL
+AutoReqProv: no
+Source0: Python3.7.3.tar.xz
+BuildRoot: $SAL_WORK_DIR/rpmbuild/%\{name\}-%\{version\}
+Packager: dmills@lsst.org
+
+%global __os_install_post %{nil}
+%define debug_package %{nil}
+
+%description
+This is a Python runtime and environment for the LSST Telescope and Site subsystems.
+
+%prep
+
+%setup
+ 
+%build
+#source /opt/lsst/ts_sal/setup.env
+
+%install
+cp -fr * %{buildroot}/.
+
+%files"
+set fin [open /home/dmills/python37/Python-3.7.3/lslr r]
+while { [gets $fin rec] > -1 } {
+   puts $fout $rec
+}
+close $fin
+puts $fout "
+%clean
+
+%post
+%postun
+%changelog
+"
+  close $fout
+}
 
 proc generateUtilsrpm { } {
 global SYSDIC SALVERSION SAL_WORK_DIR OSPL_VERSION
