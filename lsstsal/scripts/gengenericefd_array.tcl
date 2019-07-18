@@ -366,7 +366,7 @@ proc checkLFO { fout topic } {
 
 
 proc genefdwritermake { base } {
-global SAL_DIR SAL_WORK_DIR env
+global SAL_DIR SAL_WORK_DIR SYSDIC env
   set frep [open /tmp/sreplace5.sal w]
   puts $frep "#!/bin/sh"
   exec touch $SAL_WORK_DIR/[set base]/cpp/src/.depend.Makefile.sacpp_SALData_efdwriter
@@ -374,6 +374,12 @@ global SAL_DIR SAL_WORK_DIR env
   puts $frep "perl -pi -w -e 's/_SAL_/_[set base]_/g;' $SAL_WORK_DIR/[set base]/cpp/src/Makefile.sacpp_[set base]_efdwriter"
   puts $frep "perl -pi -w -e 's/SALSubsys/[set base]/g;' $SAL_WORK_DIR/[set base]/cpp/src/Makefile.sacpp_[set base]_efdwriter"
   puts $frep "perl -pi -w -e 's/SALData/[set base]/g;' $SAL_WORK_DIR/[set base]/cpp/src/Makefile.sacpp_[set base]_efdwriter"
+  if { [info exists SYSDIC($base,keyedID)] } {
+    puts stdout "$base is keyed"
+    puts $frep "perl -pi -w -e 's/#-DSAL_SUBSYSTEM/-DSAL_SUBSYSTEM/g;' $SAL_WORK_DIR/[set base]/cpp/src/Makefile.sacpp_[set base]_efdwriter"
+  } else {
+    puts stdout "$base not keyed"
+  }
   close $frep
   exec chmod 755 /tmp/sreplace5.sal
   catch { set result [exec /tmp/sreplace5.sal] } bad
@@ -414,7 +420,17 @@ int test_[set base]_telemetry_efdwriter()
 \{   
 
   char *thequery = (char *) malloc(sizeof(char)*1000000);
+
+#ifdef SAL_SUBSYSTEM_ID_IS_KEYED
+  int [set base]ID = 1;
+  if (getenv(\"LSST_[string toupper [set base]]_ID\") != NULL) \{
+     sscanf(getenv(\"LSST_[string toupper [set base]]_ID\"),\"%d\",&[set base]ID);
+  \}
+  SAL_[set base] mgr = SAL_[set base]([set base]ID);
+#else
   SAL_[set base] mgr = SAL_[set base]();
+#endif
+
 "
   genericefdfragment $fout $base telemetry init
   puts $fout "
@@ -488,7 +504,16 @@ int test_[set base]_event_efdwriter()
 \{
 
   char *thequery = (char *) malloc(sizeof(char)*1000000);
+#ifdef SAL_SUBSYSTEM_ID_IS_KEYED
+  int [set base]ID = 1;
+  if (getenv(\"LSST_[string toupper [set base]]_ID\") != NULL) \{
+     sscanf(getenv(\"LSST_[string toupper [set base]]_ID\"),\"%d\",&[set base]ID);
+  \}
+  SAL_[set base] mgr = SAL_[set base]([set base]ID);
+#else
   SAL_[set base] mgr = SAL_[set base]();
+#endif
+
 "
   genericefdfragment $fout $base logevent init
 
@@ -562,7 +587,16 @@ int test_[set base]_command_efdwriter()
 \{ 
 
   char *thequery = (char *)malloc(sizeof(char)*1000000);
+#ifdef SAL_SUBSYSTEM_ID_IS_KEYED
+  int [set base]ID = 1;
+  if (getenv(\"LSST_[string toupper [set base]]_ID\") != NULL) \{
+     sscanf(getenv(\"LSST_[string toupper [set base]]_ID\"),\"%d\",&[set base]ID);
+  \}
+  SAL_[set base] mgr = SAL_[set base]([set base]ID);
+#else
   SAL_[set base] mgr = SAL_[set base]();
+#endif
+
 "
   genericefdfragment $fout $base command init
   puts $fout "

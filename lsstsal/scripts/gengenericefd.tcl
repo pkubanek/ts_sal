@@ -374,7 +374,18 @@ int test_[set base]_telemetry_efdwriter()
 \{   
 
   char *thequery = (char *) malloc(sizeof(char)*100000);
+
+#ifdef SAL_SUBSYSTEM_ID_IS_KEYED
+  int [set base]ID = 1;
+  if (getenv(\"LSST_[string toupper [set base]]_ID\") != NULL) \{
+     sscanf(getenv(\"LSST_[string toupper [set base]]_ID\"),\"%d\",&[set base]ID);
+  \}
+  SAL_[set base] mgr = SAL_[set base]([set base]ID);
+#else
   SAL_[set base] mgr = SAL_[set base]();
+#endif
+
+  // SAL_[set base] mgr = SAL_[set base]();
 "
   genericefdfragment $fout $base telemetry init
   puts $fout "
