@@ -478,7 +478,7 @@ Source0: [set subsys]_test-$SALVERSION.tgz
 BuildRoot: $SAL_WORK_DIR/rpmbuild/%\{name\}-%\{version\}
 Packager: dmills@lsst.org
 Requires: OpenSpliceDDS = $OSPL_VERSION
-Requires : ts_[set subsys] = $SALVERSION
+Requires : [set subsys] = $SALVERSION
 Requires: linuxptp
 %global __os_install_post %{nil}
 %define debug_package %{nil}
@@ -565,6 +565,7 @@ cp -fr * %{buildroot}/.
 
 %post
 %postun
+/opt/lsst/ts_sal/scripts/migrateEFDtable.tcl > /tmp/migrateEFDtable.log
 %changelog
 "
   close $fout
