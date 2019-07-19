@@ -96,6 +96,7 @@ global SAL_WORK_DIR SALVERSION SAL_DIR
     copyasset $SAL_WORK_DIR/[set subsys]/cpp/ccpp_sal_[set subsys].h [set rpmname]-$SALVERSION/opt/lsst/ts_sal/include/.
     copyasset $SAL_WORK_DIR/[set subsys]/cpp/sal_[set subsys]SplDcps.h [set rpmname]-$SALVERSION/opt/lsst/ts_sal/include/.
     copyasset $SAL_DIR/code/templates/SAL_defines.h [set rpmname]-$SALVERSION/opt/lsst/ts_sal/include/.
+    copyasset $SAL_DIR/DDS_DefaultQoS_All.xml [set rpmname]-$SALVERSION/opt/lsst/ts_xml/sal_interfaces/.
     foreach dtype "Commands Events Generics Telemetry" {
       if { [file exists $SAL_WORK_DIR/[set subsys]_[set dtype].xml] } {
         exec cp $SAL_WORK_DIR/[set subsys]_[set dtype].xml [set rpmname]-$SALVERSION/opt/lsst/ts_xml/sal_interfaces/[set subsys]/.
