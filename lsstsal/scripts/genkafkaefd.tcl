@@ -156,11 +156,19 @@ global ACTORTYPE SAL_WORK_DIR BLACKLIST
 #  SampleInfoSeq_var [set topic][set revcode]_info = new SampleInfoSeq;"
 #      }
       if { $ctype == "subscriber" } {
-       puts $fout "  mgr.salTelemetrySub(\"[set base]_[set topic]\");
+       puts $fout "  cout << \" Subcribing to [set base]_[set topic]\" << endl;
+  DataReader_var [set topic][set revcode]_dreader;
+  [set base]::[set topic][set revcode]DataReader_var [set topic]_SALReader;
+  try \{
+    mgr.salTelemetrySub(\"[set base]_[set topic]\");
   actorIdx = SAL__[set base]_[set topic]_ACTOR;
-  DataReader_var [set topic][set revcode]_dreader = mgr.getReader(actorIdx);
-  [set base]::[set topic][set revcode]DataReader_var [set topic]_SALReader = [set base]::[set topic][set revcode]DataReader::_narrow([set topic][set revcode]_dreader.in());
+  [set topic][set revcode]_dreader = mgr.getReader(actorIdx);
+  [set topic]_SALReader = [set base]::[set topic][set revcode]DataReader::_narrow([set topic][set revcode]_dreader.in());
   mgr.checkHandle([set topic]_SALReader.in(), \"[set base]::[set topic][set revcode]DataReader::_narrow\");
+  \}
+  catch (const std::runtime_error& error) \{
+    cout << \"Error subscribing to [set base]_[set topic]\" << endl;
+  \}
 "
       }
       if { $ctype == "getsamples" } {
@@ -286,7 +294,7 @@ proc checkkafkaLFO { fout topic } {
 
 
 proc genkafkawritermake { base } {
-global SAL_DIR SAL_WORK_DIR env
+global SAL_DIR SAL_WORK_DIR SYSDIC env
   set frep [open /tmp/sreplace5.sal w]
   puts $frep "#!/bin/sh"
   exec touch $SAL_WORK_DIR/[set base]/cpp/src/.depend.Makefile.sacpp_SALData_kafkawriter
@@ -294,6 +302,12 @@ global SAL_DIR SAL_WORK_DIR env
   puts $frep "perl -pi -w -e 's/_SAL_/_[set base]_/g;' $SAL_WORK_DIR/[set base]/cpp/src/Makefile.sacpp_[set base]_kafkawriter"
   puts $frep "perl -pi -w -e 's/SALSubsys/[set base]/g;' $SAL_WORK_DIR/[set base]/cpp/src/Makefile.sacpp_[set base]_kafkawriter"
   puts $frep "perl -pi -w -e 's/SALData/[set base]/g;' $SAL_WORK_DIR/[set base]/cpp/src/Makefile.sacpp_[set base]_kafkawriter"
+  if { [info exists SYSDIC($base,keyedID)] } {
+    puts stdout "$base is keyed"
+    puts $frep "perl -pi -w -e 's/#-DSAL_SUBSYSTEM/-DSAL_SUBSYSTEM/g;' $SAL_WORK_DIR/[set base]/cpp/src/Makefile.sacpp_[set base]_kafkawriter"
+  } else {
+    puts stdout "$base not keyed"
+  }
   close $frep
   exec chmod 755 /tmp/sreplace5.sal
   catch { set result [exec /tmp/sreplace5.sal] } bad
@@ -376,7 +390,17 @@ int test_[set base]_telemetry_kafkawriter()
 \{   
 
   char *thequery = (char *) malloc(sizeof(char)*100000);
+
+#ifdef SAL_SUBSYSTEM_ID_IS_KEYED
+  int [set base]ID = 1;
+  if (getenv(\"LSST_[string toupper [set base]]_ID\") != NULL) \{
+     sscanf(getenv(\"LSST_[string toupper [set base]]_ID\"),\"%d\",&[set base]ID);
+  \}
+  SAL_[set base] mgr = SAL_[set base]([set base]ID);
+#else
   SAL_[set base] mgr = SAL_[set base]();
+#endif
+
 "
   generickafkafragment $fout $base telemetry init
   puts $fout "
@@ -484,7 +508,17 @@ int test_[set base]_event_kafkawriter()
 \{
 
   char *thequery = (char *) malloc(sizeof(char)*100000);
+
+#ifdef SAL_SUBSYSTEM_ID_IS_KEYED
+  int [set base]ID = 1;
+  if (getenv(\"LSST_[string toupper [set base]]_ID\") != NULL) \{
+     sscanf(getenv(\"LSST_[string toupper [set base]]_ID\"),\"%d\",&[set base]ID);
+  \}
+  SAL_[set base] mgr = SAL_[set base]([set base]ID);
+#else
   SAL_[set base] mgr = SAL_[set base]();
+#endif
+
 "
   generickafkafragment $fout $base logevent init
 
@@ -593,7 +627,17 @@ int test_[set base]_command_kafkawriter()
 \{ 
 
   char *thequery = (char *)malloc(sizeof(char)*100000);
+
+#ifdef SAL_SUBSYSTEM_ID_IS_KEYED
+  int [set base]ID = 1;
+  if (getenv(\"LSST_[string toupper [set base]]_ID\") != NULL) \{
+     sscanf(getenv(\"LSST_[string toupper [set base]]_ID\"),\"%d\",&[set base]ID);
+  \}
+  SAL_[set base] mgr = SAL_[set base]([set base]ID);
+#else
   SAL_[set base] mgr = SAL_[set base]();
+#endif
+
 "
   generickafkafragment $fout $base command init
   puts $fout "
