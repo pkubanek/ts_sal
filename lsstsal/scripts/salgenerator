@@ -172,12 +172,14 @@ if { $OPTIONS(validate) } {
         puts $fxml $SAL_MIN_TELEMETRY 
         close $fxml
     }
-    if { [file exists $SAL_WORK_DIR/SALGenerics.xml] && [info exists SYSDIC($i,hasGenerics)] } {
+    if { [file exists $SAL_WORK_DIR/SALGenerics.xml] } {
+      if { [info exists SYSDIC($i,hasGenerics)] || [info exists SYSDIC($i,hasAllGenerics)] } {
         set x none
         puts stdout "Add Generic Commands and Events"
         set SALSubsys $i
         source $SAL_DIR/processgenerics.tcl
         generategenerics $i
+      }
     }
     foreach t "Telemetry Commands Events Generics" {
       if { [file exists [set i]_[set t].xml] } {
