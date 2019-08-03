@@ -390,6 +390,34 @@ global SAL_DIR
    }
 }
 
+proc createackcmdidl { base {keyid 0} } {
+global SAL_WORK_DIR
+   set fack [open $SAL_WORK_DIR/idl-templates/[set base]_ackcmd.idl w]
+   puts $fack "struct [set base]_ackcmd \{
+      string<8>	private_revCode;
+      double		private_sndStamp;
+      double		private_rcvStamp;
+      long		private_origin;
+      long 		private_host;
+      long		private_seqNum;"
+   if { $keyid } {
+      puts $fack "      long	[set base]ID;"
+   }
+   puts $fack "      long 		ack;
+      long 		error;
+      string<256>	result;
+      long		host;
+      long		origin;
+      long		cmdtype;
+      double		timeout;
+	\};
+#pragma keylist [set base]_ackcmd
+"
+   close $fack
+}
+
+
+
 set SAL_WORK_DIR $env(SAL_WORK_DIR)
 set SAL_DIR $env(SAL_DIR)
 source $env(SAL_DIR)/streamutils.tcl

@@ -37,10 +37,6 @@ foreach i [lsort $ALIASES] {
    set fidl [open $SAL_WORK_DIR/idl-templates/validated/[set subsys]_command_$i.idl w]
    puts $fidl "   struct command_$i \{"
    add_private_idl $fidl "      "
-   puts $fidl "      string<32>	device;"
-   puts $fidl "      string<32>	property;"
-   puts $fidl "      string<32>	action;"
-   puts $fidl "      string<32>	itemValue;"
    if { [info exists CMDS($subsys,$i,param)] } {
      foreach p $CMDS($subsys,$i,param) {
          if { [llength [split $p "()"]] > 1 } {

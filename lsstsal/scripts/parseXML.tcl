@@ -159,12 +159,12 @@ global TLMS TLM_ALIASES EVENT_ENUM EVENT_ENUMS UNITS ENUM_DONE SYSDIC
         set fout [open $SAL_WORK_DIR/idl-templates/[set tname].idl w]
         puts $fout "struct $tname \{"
         add_private_idl $fout
-        if { $ctype == "command" } {
-           puts $fout "   string<32>	device;
-   string<32>	property;
-   string<32>	action;
-   string<32>	itemValue;"
-        }
+#        if { $ctype == "command" } {
+#           puts $fout "   string<32>	device;
+#   string<32>	property;
+#   string<32>	action;
+#   string<32>	itemValue;"
+#        }
         if { $ctype == "telemetry" } {
 	   set alias [join [lrange [split $tname "_"] 1 end] "_"]
         }

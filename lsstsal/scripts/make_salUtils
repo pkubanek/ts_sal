@@ -1,0 +1,14 @@
+#!/bin/sh
+
+mkdir -p $SAL_WORK_DIR/salUtils
+cd $SAL_WORK_DIR/salUtils
+cp $SAL_DIR/code/templates/salUtils.java .
+cp $SAL_DIR/code/templates/salUtils.c .
+JAVAH="-I/etc/alternatives/jvm/include -I/etc/alternatives/jvm/include/linux"
+javah salUtils
+cp salUtils.h $SAL_WORK_DIR/include/.
+gcc -g -o libsalUtils.so salUtils.c $JAVAH -fPIC -shared
+cp libsalUtils.so $SAL_WORK_DIR/lib/.
+javac salUtils.java
+cp salUtils.class $SAL_WORK_DIR/lib/.
+

@@ -49,9 +49,9 @@ global SAL_WORK_DIR EVENT_ENUMS
     source $SAL_WORK_DIR/idl-templates/validated/[set subsys]_evtdef.tcl
     if { [info exists EVENT_ENUMS] } {
       set fout [open $SAL_WORK_DIR/python/SAL_[set subsys]_enum.py w]
+      puts $fout "import enum"
       foreach i [lsort [array names EVENT_ENUMS]] {
         set idot [join [split $i ,] .]
-        puts $fout "import enum"
         puts $fout "class [set subsys][ucname $i](enum.IntEnum):"
         puts $fout "   \"\"\"[set subsys] logevent_[set idot] constants.\"\"\""
         set enums $EVENT_ENUMS($i)

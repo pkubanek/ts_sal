@@ -23,7 +23,7 @@ global SAL_WORK_DIR REVCODE
     set r2 [string trim $rec "{}"]
     if { [lindex $r2 0] == "struct" } {
        set id [lindex $r2 1]
-       if { $id != "command" && $id != "logevent" && $id != "ackcmd" } {
+       if { $id != "command" && $id != "logevent" } {
          puts $fout "struct [set id]_[string range [set REVCODE([set subsys]_$id)] 0 7] \{"
        } else {
          puts $fout $rec
@@ -31,7 +31,7 @@ global SAL_WORK_DIR REVCODE
     } else {
        if { [lindex $r2 0] == "#pragma" } {
           set id [lindex $r2 2]
-          if { $id != "command" && $id != "logevent" && $id != "ackcmd" } {
+          if { $id != "command" && $id != "logevent" } {
             puts $fout "#pragma keylist [set id]_[string range [set REVCODE([set subsys]_$id)] 0 7] [lrange $rec 3 end]"
           } else {
             puts $fout $rec
@@ -50,7 +50,7 @@ proc getRevCode { topic { type "long"} } {
 global REVCODE
    if { [llength [split $topic _]] == 2 } {
       set it [lindex [split $topic _] end]
-      if { $it == "command" || $it == "logevent" || $it == "ackcmd" } {
+      if { $it == "command" || $it == "logevent" } {
          return ""
       }
    }

@@ -206,6 +206,7 @@ if { $OPTIONS(validate) } {
       }
     }
     stdlog "Validating $i interface IDL format definitions"
+    createackcmdidl $i [info exists SYSDIC($i,keyedID)] 
     set new [lsort [glob $SAL_WORK_DIR/idl-templates/[set i]_*.idl]]
     foreach n $new {
       checkidl [file tail $n]
@@ -261,23 +262,6 @@ if { $OPTIONS(lib) == 0 } {
   }
 }
 
-if { $OPTIONS(simd) } {
-  cd $SAL_WORK_DIR
-  exec mkdir -p ./include/gen
-  source $SAL_DIR/gensimdcode.tcl
-  foreach subsys $TARGETS {
-     set topic [file rootname $subsys]
-     exec mkdir -p ./ospl-$topic
-     exec cp $SAL_WORK_DIR/idl-templates/validated/[file tail $subsys] ./ospl-$topic/.
-     stdlog "Generating SAL low-level code for $topic"
-     catch { set result [gensimdcode $topic] } bad
-     if { [file exists ./ospl-$topic/[set topic]-sub] == 0 } {
-        errorexit "SAL low-level generation failed : \n $bad"
-     }
-     if { $OPTIONS(verbose) } {stdlog $result}
-  }
-}
-
 
 if { $OPTIONS(sal) } {
   set DONE_CMDEVT 0
@@ -287,11 +271,10 @@ if { $OPTIONS(sal) } {
      stdlog "========================================================================"
      stdlog "ERROR :  sal option requires a language choice , cpp/java/python/pydds"
      stdlog "========================================================================"
-     exit
+     exit 6
   }
   cd $SAL_WORK_DIR
   set base [lindex [split [lindex $TARGETS 0] _] 0]
-  source $SAL_WORK_DIR/idl-templates/validated/[set base]_revCodes.tcl
   source $SAL_DIR/gensimplesample.tcl
   if { [file exists $SAL_WORK_DIR/idl-templates/validated/[set base]_cmddef.tcl] } {
         source $SAL_WORK_DIR/idl-templates/validated/[set base]_cmddef.tcl
@@ -313,31 +296,46 @@ if { $OPTIONS(sal) } {
         stdlog "        and run the validate step again."
         exit 1
   }
+  source $SAL_WORK_DIR/idl-templates/validated/[set base]_revCodes.tcl
   catch { set idlfile [makesalidl $base] } bad
+puts stdout $bad
 puts stdout $idlfile
+  updateRevCodes $base
+  source $SAL_WORK_DIR/idl-templates/validated/[set base]_revCodes.tcl
   foreach subsys $TARGETS {
     set spl [file rootname [split $subsys _]]
     set base [lindex $spl 0]
-    if { [lindex $spl 1] != "command" && [lindex $spl 1] != "logevent" } {
+    if { [lindex $spl 1] != "command" && [lindex $spl 1] != "logevent" && [lindex $spl 1] != "ackcmd" } {
      set name [join [lrange $spl 1 end] _]
      if { $OPTIONS(cpp) } {
        stdlog "Generating SAL CPP code for $subsys"
+       set result none
        catch { set result [makesalcode $idlfile $base $name cpp] } bad
+       if { $result == "none" } {stdlog $bad}
        if { $OPTIONS(verbose) } {stdlog $result}
      }
      if { $OPTIONS(java) } {
        stdlog "Generating SAL Java code for $subsys"
+       set result none
+       catch { set result [exec $SAL_DIR/make_salUtils] } bad
+       if { $result == "none" } {stdlog $bad}
+       set result none
        catch { set result [makesalcode $idlfile $base $name java] } bad
+       if { $result == "none" } {stdlog $bad}
        if { $OPTIONS(verbose) } {stdlog $result}
      }
      if { $OPTIONS(isocpp) } {
        stdlog "Generating SAL ISOCPP code for $subsys"
+       set result none
        catch { set result [makesalcode $idlfile $base $name isocpp] } bad
+       if { $result == "none" } {stdlog $bad}
        if { $OPTIONS(verbose) } {stdlog $result}
      }
      if { $OPTIONS(python) && $ONEPYTHON == 0 } {
        stdlog "Generating SAL Python code for $subsys $ONEPYTHON"
+       set result none
        catch { set result [makesalcode $idlfile $base $name python] } bad
+       if { $result == "none" } {stdlog $bad}
        set ONEPYTHON 1
        if { $OPTIONS(verbose) } {stdlog $result}
      }
@@ -345,16 +343,24 @@ puts stdout $idlfile
    }
   }
   if { $OPTIONS(cpp) } {
+    set result none
     catch { set result [gencommandtestsinglefilescpp $base] } bad
+    if { $result == "none" } {stdlog $bad}
     if { $OPTIONS(verbose) } {stdlog $result}
+    set result none
     catch { set result [geneventtestssinglefilescpp $base] } bad
+    if { $result == "none" } {stdlog $bad}
     if { $OPTIONS(verbose) } {stdlog $result}
+    set result none
     catch { set result [gentelemetrytestsinglefilescpp $base] } bad
+    if { $result == "none" } {stdlog $bad}
     if { $OPTIONS(verbose) } {stdlog $result}
   }
   if { $OPTIONS(pydds) } {
+    exec mkdir -p $SAL_WORK_DIR/python
     set spl [lindex [file rootname [split [lindex $TARGETS 0] _]] 0]
     stdlog "Building native DDS python support for $spl subsystem"
+    set result none
     catch { set result [exec $SAL_DIR/genddspython.tcl $spl] } bad
     if { $OPTIONS(verbose) } {stdlog $result}
   }
@@ -364,6 +370,7 @@ if { $OPTIONS(lib) } {
    foreach s $TSUBSYSTEMS {
      if { $s != "lib" } {
        stdlog "Building shared library for $s subsystem"
+       set result none
        catch { set result [exec $SAL_DIR/buildsharedlib $s] } bad
        if { $OPTIONS(verbose) } {stdlog $result}
      }
@@ -385,10 +392,14 @@ if { $OPTIONS(rpm) } {
    foreach s $TSUBSYSTEMS {
      if { $s != "rpm" } {
        stdlog "Building runtime RPM for $s subsystem"
+       set result none
        catch { set result [updateruntime $s] } bad
+       if { $result == "none" } {stdlog $bad}
        if { $OPTIONS(verbose) } {stdlog $result}
        stdlog "Building test runtime RPM for $s subsystem"
+       set result none
        catch { set result [updateruntime $s 1] } bad
+       if { $result == "none" } {stdlog $bad}
        if { $OPTIONS(verbose) } {stdlog $result}
      }
    }
@@ -397,6 +408,7 @@ if { $OPTIONS(rpm) } {
 
 if { $OPTIONS(labview) } {
   set subsys [lindex [split [lindex $TARGETS 0] _] 0]
+  source $SAL_WORK_DIR/idl-templates/validated/[set subsys]_revCodes.tcl
   source $SAL_DIR/genshmemlabview.tcl
   cd $SAL_WORK_DIR
   stdlog "Generating LabVIEW low level code for $subsys"
@@ -406,7 +418,10 @@ if { $OPTIONS(labview) } {
   if { [file exists $SAL_WORK_DIR/idl-templates/validated/[set subsys]_evtdef.tcl] } {
      source $SAL_WORK_DIR/idl-templates/validated/[set subsys]_evtdef.tcl
   }
+  set result none
   catch { set result [genshmemlabview $subsys] } bad
+  if { $result == "none" } {stdlog $bad}
+  puts stdout $bad
   if { $OPTIONS(verbose) } {stdlog $result}
 }
 
@@ -414,7 +429,9 @@ if { $OPTIONS(labview) } {
 ### TSUBSYSTEMS is svcSAL_topicname
 if { $OPTIONS(compile) } {
    set topic [string range [file rootname $TSUBSYSTEMS] 7 end]
+   set result none
    catch {set result [exec g++  -g -I. -I/opt/lsstsal/scripts/code/include/sal -I$OSPL_HOME/include/dcps/C++/SACPP -I$OSPL_HOME/include -I$OSPL_HOME/include/sys -I/opt/simd/include -I../include -pipe -Wall  -c -std=c++0x -I../shmem-[set topic] $TSUBSYSTEMS.cpp] } bad
+  if { $result == "none" } {stdlog $bad}
   if { $bad != "" } {puts stdout $bad}
   exit
 }
@@ -423,7 +440,9 @@ if { $OPTIONS(compile) } {
 if { $OPTIONS(link) } {
   set program lindex $argv 2]
   set topic [lindex $argv 1]
+  set result none
   catch { set result [exec g++ -g -I. -I/opt/lsstsal/scripts/code/include/sal -I$OSPL_HOME/include/dcps/C++/SACPP -I$OSPL_HOME/include -I$OSPL_HOME/include/sys -I/opt/simd/include -I../include -pipe -Wall -std=c++0x -I../shmem-[set topic] svcSAL_$topic.o $program.cpp -o $program -L$OSPL_HOME/lib -ldcpsgapi -ldcpssacpp -lddsdatabase -lddsos -lboost_thread -lboost_program_options -lboost_system -lddsutil -lddsserialization -lddsserialization -lddskernel -lddsconf -lddsconfparser -lddsuser -L/opt/simd/lib -lSimD libdatamodel.a]} bad
+  if { $result == "none" } {stdlog $bad}
   if { $bad != "" } {puts stdout $bad}
    exit
 }
@@ -435,7 +454,9 @@ if { $OPTIONS(tcl) || $OPTIONS(shmem) } {
      set topic [file rootname $subsys]
      stdlog "Generating shmem tools for $topic"
      exec mkdir -p ./ospl-$topic
+     set result none
      catch { set result [exec $SAL_DIR/genshmem-tcl.tcl $topic $SAL_WORK_DIR] } bad
+       if { $result == "none" } {stdlog $bad}
 #     if { $bad } {
 #        errorexit "Tcl interface generation failed : \n $bad"
 #     }
@@ -450,7 +471,9 @@ if { $OPTIONS(jni) } {
      set topic [file rootname $subsys]
      stdlog "Generating DDS java code for $topic"
      stdlog "Generating SAL JNI code for $topic"
+     set result none
      catch { set result [genjnicode $topic] } bad
+     if { $result == "none" } {stdlog $bad}
      if { $bad } {
         errorexit "SAL JNI generation failed : \n $bad"
      }

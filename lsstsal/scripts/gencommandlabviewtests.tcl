@@ -51,9 +51,6 @@ int main (int argc, char *argv\[\])
    puts $fcmd "
 "
   set cpars $CMDS($subsys,$alias)
-  puts $fcmd "  myData.device   = \"[lindex $cpars 0]\";"
-  puts $fcmd "  myData.property = \"[lindex $cpars 1]\";"
-  puts $fcmd "  myData.action   = \"[lindex $cpars 2]\";"
   set fin [open $SAL_WORK_DIR/include/SAL_[set subsys]_command_[set alias]shmout.tmp r]
   gets $fin rec; gets $fin rec; gets $fin rec; gets $fin rec;
   while { [gets $fin rec] > -1 } {

@@ -288,7 +288,7 @@ global SAL_DIR SAL_WORK_DIR
 }
 
 proc genlabviewcpp { base ptypes } {
-global SAL_DIR SAL_WORK_DIR SYSDIC LVSTRINGS
+global SAL_DIR SAL_WORK_DIR SYSDIC LVSTRINGS REVCODE
   set idarg ""
   set idarg2 ""
   set idarg3 "     unsigned int [set base]ID = 0;"
@@ -345,7 +345,9 @@ using namespace [set base];
      set name [lindex $j 2]
      monitorsyncinit $fout $base $name
   }
-  puts $fout "       [set base]::ackcmdSeq [set base]_ackcmdSeq;"
+  set revcode [getRevCode [set base]_ackcmd short]
+  puts $fout "      [set base]::ackcmd[set revcode]Seq [set base]_ackcmdSeq;"
+  puts $fout "      cout << \"LabVIEW SAL Monitor for [set base] is ready\" << endl;"
   puts $fout "      while ( !shutdown_shmem ) \{
                      for (LVClient=0;LVClient<20;LVClient++) \{
                       if ([set base]_memIO->client\[LVClient\].inUse && [set base]_memIO->client\[LVClient\].initialized == false) \{
@@ -1058,7 +1060,7 @@ global SAL_DIR SAL_WORK_DIR
 
 
 proc monitorcommand { fout base name } {
-global SAL_DIR SAL_WORK_DIR
+global SAL_DIR SAL_WORK_DIR REVCODE
    set n2 [join [lrange [split $name _] 1 end] _]
    puts $fout "
        if ([set base]_memIO->client\[LVClient\].syncI_[set base]_[set name]) \{
@@ -1081,6 +1083,7 @@ global SAL_DIR SAL_WORK_DIR
    set frag [open $SAL_WORK_DIR/include/SAL_[set base]_[set name]monin.tmp r]
    while { [gets $frag rec] > -1} {puts $fout $rec}
    close $frag
+   set revcode [getRevCode [set base]_ackcmd short]
    puts  $fout "
              [set base]_memIO->client\[LVClient\].hasIncoming_[set base]_[set name] = true;
              [set base]_memIO->client\[LVClient\].shmemIncoming_[set base]_[set name]_rcvSeqNum = status;
@@ -1093,7 +1096,7 @@ global SAL_DIR SAL_WORK_DIR
        if ([set base]_memIO->client\[LVClient\].activeCommand == SAL__[set base]_[set name]_ACTOR) \{
        if ([set base]_memIO->client\[LVClient\].syncI_[set base]_[set name]_ackcmd) \{
        if ([set base]_memIO->client\[LVClient\].hasIncoming_[set base]_[set name]_ackcmd == false) \{
-          [set base]::ackcmdSeq response;
+          [set base]::ackcmd[set revcode]Seq response;
           actorIdx = SAL__[set base]_ackcmd_ACTOR;
           status = mgr\[LVClient\].getResponse_[set n2](response);
           if (iverbose && status != SAL__CMD_NOACK) \{
