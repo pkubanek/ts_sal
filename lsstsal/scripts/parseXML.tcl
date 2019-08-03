@@ -347,6 +347,7 @@ global IDLRESERVED SAL_WORK_DIR SAL_DIR CMDS CMD_ALIASES EVTS EVENT_ALIASES UNIT
       if { [info exists CMDS($subsys,$i,param)] } {
         foreach p $CMDS($subsys,$i,param) {
           set id [lindex [split [lindex $p 1] "()"] 0]
+          if { [info exists DESC($subsys,$i,$id)] == 0 } { set DESC($subsys,$i,$id) unknown }
           if { [info exists UNITS($subsys,$i,$id)] } {
              puts $fout "$p : $UNITS($subsys,$i,$id) - $DESC($subsys,$i,$id)<BR>"
           } else {
@@ -377,6 +378,7 @@ global IDLRESERVED SAL_WORK_DIR SAL_DIR CMDS CMD_ALIASES EVTS EVENT_ALIASES UNIT
       if { [info exists EVTS($subsys,$i,param)] } {
         foreach p $EVTS($subsys,$i,param) {
           set id [lindex [split [lindex $p 1] "()"] 0]
+          if { [info exists DESC($subsys,$i,$id)] == 0 } { set DESC($subsys,$i,$id) unknown }
           if { [info exists UNITS($subsys,$i,$id)] } {
              puts $fout "$p : $UNITS($subsys,$i,$id)<BR> - $DESC($subsys,$i,$id)<BR>"
           } else {
@@ -407,6 +409,7 @@ global IDLRESERVED SAL_WORK_DIR SAL_DIR TLMS TLM_ALIASES UNITS DESC
       if { [info exists TLMS($subsys,$i,param)] } {
         foreach p $TLMS($subsys,$i,param) {
          set id [lindex [split [lindex $p 1] "()"] 0]
+         if { [info exists DESC($subsys,$i,$id)] == 0 } { set DESC($subsys,$i,$id) unknown }
          if { [info exists UNITS($subsys,$i,$id)] } {
              puts $fout "$p : $UNITS($subsys,$i,$id)<BR> - $DESC($subsys,$i,$id)<BR>"
           } else {
