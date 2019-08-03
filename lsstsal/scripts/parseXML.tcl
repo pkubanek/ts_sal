@@ -2,7 +2,7 @@
 
 proc parseXMLtoidl { fname } { 
 global IDLRESERVED SAL_WORK_DIR SAL_DIR CMDS CMD_ALIASES EVTS EVENT_ALIASES
-global TLMS TLM_ALIASES EVENT_ENUM EVENT_ENUMS UNITS ENUM_DONE SYSDIC
+global TLMS TLM_ALIASES EVENT_ENUM EVENT_ENUMS UNITS ENUM_DONE SYSDIC DESC
    set fin [open $fname r]
    set fout ""
    set ctype ""
@@ -98,6 +98,7 @@ global TLMS TLM_ALIASES EVENT_ENUM EVENT_ENUMS UNITS ENUM_DONE SYSDIC
           puts $fout "	  long	priority;"
          }
          if { $explanation != "" } {set EVTS($subsys,$alias,help) $explanation}
+         set DESC($subsys,$alias,priority) "Priority code"
       }
       if { $tag == "/SALCommand" } {
          set intopic 0
@@ -159,12 +160,6 @@ global TLMS TLM_ALIASES EVENT_ENUM EVENT_ENUMS UNITS ENUM_DONE SYSDIC
         set fout [open $SAL_WORK_DIR/idl-templates/[set tname].idl w]
         puts $fout "struct $tname \{"
         add_private_idl $fout
-#        if { $ctype == "command" } {
-#           puts $fout "   string<32>	device;
-#   string<32>	property;
-#   string<32>	action;
-#   string<32>	itemValue;"
-#        }
         if { $ctype == "telemetry" } {
 	   set alias [join [lrange [split $tname "_"] 1 end] "_"]
         }
@@ -252,6 +247,11 @@ global TLMS TLM_ALIASES EVENT_ENUM EVENT_ENUMS UNITS ENUM_DONE SYSDIC
 	    lappend TLMS($subsys,$alias,param) "$declare"
 	    lappend TLMS($subsys,$alias,plist) $item
          }
+         if { $desc != "" } {
+            set DESC($subsys,$alias,$item) $desc
+         } else {
+            set DESC($subsys,$alias,$item) "No description"
+         }
          puts $fsql "INSERT INTO [set subsys]_items VALUES ($alias,$itemid,\"$item\",\"$type\",$idim,\"$unit\",$freq,\"$range\",\"$location\",\"$desc\");"
       }
    }
@@ -334,7 +334,7 @@ global TLMS TLM_ALIASES EVENT_ENUM EVENT_ENUMS UNITS ENUM_DONE SYSDIC
 
 
 proc genhtmlcommandtable { subsys } {
-global IDLRESERVED SAL_WORK_DIR SAL_DIR CMDS CMD_ALIASES EVTS EVENT_ALIASES UNITS
+global IDLRESERVED SAL_WORK_DIR SAL_DIR CMDS CMD_ALIASES EVTS EVENT_ALIASES UNITS DESC
   exec mkdir -p $SAL_WORK_DIR/html/[set subsys]
   set fout [open $SAL_WORK_DIR/html/[set subsys]/[set subsys]_Commands.html w]
   puts stdout "Generating html command table $subsys"
@@ -348,9 +348,9 @@ global IDLRESERVED SAL_WORK_DIR SAL_DIR CMDS CMD_ALIASES EVTS EVENT_ALIASES UNIT
         foreach p $CMDS($subsys,$i,param) {
           set id [lindex [split [lindex $p 1] "()"] 0]
           if { [info exists UNITS($subsys,$i,$id)] } {
-             puts $fout "$p : $UNITS($subsys,$i,$id)<BR>"
+             puts $fout "$p : $UNITS($subsys,$i,$id) - $DESC($subsys,$i,$id)<BR>"
           } else {
-             puts $fout "$p<BR>"
+             puts $fout "$p<BR> - $DESC($subsys,$i,$id)<BR>"
           }
         } 
         puts $fout "</TD></TR>"
@@ -363,7 +363,7 @@ global IDLRESERVED SAL_WORK_DIR SAL_DIR CMDS CMD_ALIASES EVTS EVENT_ALIASES UNIT
 }
 
 proc genhtmleventtable { subsys } {
-global IDLRESERVED SAL_WORK_DIR SAL_DIR CMDS CMD_ALIASES EVTS EVENT_ALIASES UNITS
+global IDLRESERVED SAL_WORK_DIR SAL_DIR CMDS CMD_ALIASES EVTS EVENT_ALIASES UNITS DESC
   exec mkdir -p $SAL_WORK_DIR/html/[set subsys]
   set fout [open $SAL_WORK_DIR/html/[set subsys]/[set subsys]_Events.html w]
   puts stdout "Generating html logevent table $subsys"
@@ -378,9 +378,9 @@ global IDLRESERVED SAL_WORK_DIR SAL_DIR CMDS CMD_ALIASES EVTS EVENT_ALIASES UNIT
         foreach p $EVTS($subsys,$i,param) {
           set id [lindex [split [lindex $p 1] "()"] 0]
           if { [info exists UNITS($subsys,$i,$id)] } {
-             puts $fout "$p : $UNITS($subsys,$i,$id)<BR>"
+             puts $fout "$p : $UNITS($subsys,$i,$id)<BR> - $DESC($subsys,$i,$id)<BR>"
           } else {
-             puts $fout "$p<BR>"
+             puts $fout "$p<BR> - $DESC($subsys,$i,$id)<BR>"
           }
         } 
         puts $fout "</TD></TR>"
@@ -395,7 +395,7 @@ global IDLRESERVED SAL_WORK_DIR SAL_DIR CMDS CMD_ALIASES EVTS EVENT_ALIASES UNIT
 
 
 proc genhtmltelemetrytable { subsys } {
-global IDLRESERVED SAL_WORK_DIR SAL_DIR TLMS TLM_ALIASES UNITS
+global IDLRESERVED SAL_WORK_DIR SAL_DIR TLMS TLM_ALIASES UNITS DESC
   exec mkdir -p $SAL_WORK_DIR/html/[set subsys]
   set fout [open $SAL_WORK_DIR/html/[set subsys]/[set subsys]_Telemetry.html w]
   puts stdout "Generating html telemetry table $subsys"
@@ -408,9 +408,9 @@ global IDLRESERVED SAL_WORK_DIR SAL_DIR TLMS TLM_ALIASES UNITS
         foreach p $TLMS($subsys,$i,param) {
          set id [lindex [split [lindex $p 1] "()"] 0]
          if { [info exists UNITS($subsys,$i,$id)] } {
-             puts $fout "$p : $UNITS($subsys,$i,$id)<BR>"
+             puts $fout "$p : $UNITS($subsys,$i,$id)<BR> - $DESC($subsys,$i,$id)<BR>"
           } else {
-             puts $fout "$p<BR>"
+             puts $fout "$p<BR> - $DESC($subsys,$i,$id)<BR>"
           }
         } 
         puts $fout "</TD></TR>"

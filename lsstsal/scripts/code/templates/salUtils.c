@@ -4,7 +4,7 @@
 #include <signal.h>
 #include <string.h>
 #include <unistd.h>
-#include "salUtils.h"
+#include "org_lsst_sal_salUtils.h"
 
 JNIEXPORT jint JNICALL Java_salUtils_getLeapSeconds
   (JNIEnv *env, jobject obj) {

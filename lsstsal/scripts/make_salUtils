@@ -1,14 +1,14 @@
 #!/bin/sh
 
-mkdir -p $SAL_WORK_DIR/salUtils
+mkdir -p $SAL_WORK_DIR/salUtils/org/lsst/sal
 cd $SAL_WORK_DIR/salUtils
-cp $SAL_DIR/code/templates/salUtils.java .
+cp $SAL_DIR/code/templates/salUtils.java org/lsst/sal/.
 cp $SAL_DIR/code/templates/salUtils.c .
-JAVAH="-I/etc/alternatives/jvm/include -I/etc/alternatives/jvm/include/linux"
-javah salUtils
-cp salUtils.h $SAL_WORK_DIR/include/.
+JAVAH="-I/etc/alternatives/java_sdk_openjdk/include -I/etc/alternatives/java_sdk_openjdk/include/linux"
+javah org.lsst.sal.salUtils
+cp org_lsst_sal_salUtils.h $SAL_WORK_DIR/include/.
 gcc -g -o libsalUtils.so salUtils.c $JAVAH -fPIC -shared
 cp libsalUtils.so $SAL_WORK_DIR/lib/.
 javac salUtils.java
-cp salUtils.class $SAL_WORK_DIR/lib/.
+cp org/lsst/sal/salUtils.class $SAL_WORK_DIR/lib/.
 
