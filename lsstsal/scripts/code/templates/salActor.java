@@ -49,7 +49,7 @@ public class salActor {
         public Boolean isCommand;
         public int tuneableQos;
         public int historyDepth;
-        public int durability;
+        public DurabilityQosPolicyKind durability;
         public int debugLevel;
         public int maxSamples;
         public int sndSeqNum;

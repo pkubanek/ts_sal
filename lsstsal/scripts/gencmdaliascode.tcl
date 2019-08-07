@@ -530,7 +530,6 @@ global CMD_ALIASES CMDS SYSDIC ACKREVCODE
       }
       puts $fout "
 		      istatus = SALWriter.write(ackdata, ackHandle);
-//		      SALWriter.unregister_instance(ackdata, ackHandle);
 "
       puts $fout "
     		     if (debugLevel > 8) \{
@@ -550,7 +549,7 @@ global CMD_ALIASES CMDS SYSDIC ACKREVCODE
 	\{
 	   int status = 0;
            int actorIdx = SAL__SALData_command_[set i]_ACTOR;
-	   ackcmd[set ACKREVCODE]SeqHolder ackcmd = new ackcmd[set ACKREVCODE] SeqHolder();
+	   ackcmd[set ACKREVCODE]SeqHolder ackcmd = new ackcmd[set ACKREVCODE]SeqHolder();
            long finishBy = System.currentTimeMillis() + timeout*1000;
 
 	   while (status != SAL__CMD_COMPLETE && System.currentTimeMillis() < finishBy ) \{
@@ -591,7 +590,7 @@ global CMD_ALIASES CMDS SYSDIC ACKREVCODE
            long finishBy = System.currentTimeMillis() + timeout*1000;
 
 	   while (status == SAL__CMD_NOACK && System.currentTimeMillis() < finishBy ) \{
-	      status = getResponse_[set i](ackcmd[set ACKREVCODE]);
+	      status = getResponse_[set i](ackcmd);
 	      if (status != SAL__CMD_NOACK) \{
   		ack.private_seqNum = sal\[actorIdx\].rcvSeqNum;
    		ack.error = sal\[actorIdx\].error;
@@ -689,7 +688,6 @@ global CMD_ALIASES CMDS SYSDIC ACKREVCODE
    		ackHandle = SALWriter.register_instance(ackdata);"
       }
       puts $fout "   		istatus = SALWriter.write(ackdata, ackHandle);"
-//      puts $fout "    		SALWriter.unregister_instance(ackdata, ackHandle);"
       puts $fout "
    		return SAL__OK;
 	\}

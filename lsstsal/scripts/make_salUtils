@@ -9,6 +9,7 @@ javah org.lsst.sal.salUtils
 cp org_lsst_sal_salUtils.h $SAL_WORK_DIR/include/.
 gcc -g -o libsalUtils.so salUtils.c $JAVAH -fPIC -shared
 cp libsalUtils.so $SAL_WORK_DIR/lib/.
+cp $SAL_DIR/code/templates/salUtils.java .
 javac salUtils.java
 cp org/lsst/sal/salUtils.class $SAL_WORK_DIR/lib/.
-
+cd $SAL_WORK_DIR

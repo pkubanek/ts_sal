@@ -346,7 +346,6 @@ global XMLTOPICS XMLTLM IDLRESERVED XMLITEMS
 proc gentopicdefsql { topic } {
 global SAL_WORK_DIR
    exec mkdir -p $SAL_WORK_DIR/sql
-   if { [file exists $SAL_WORK_DIR/sql/[set topic]_items.sql] == 0 } {
      set fsql [open $SAL_WORK_DIR/sql/[set topic]_items.sql w]
      puts $fsql "CREATE TABLE [set topic]_items (
   Topic           varchar(128),
@@ -361,7 +360,6 @@ global SAL_WORK_DIR
   PRIMARY KEY (ItemId)
 );"
     close $fsql
-  }
 }
 
 

@@ -63,7 +63,7 @@ global REVCODE
 }
 
 proc modidlforjava { subsys } {
-global SAL_WORK_DIR
+global SAL_WORK_DIR REVCODE
   puts stdout "Updating $subsys idl with revCodes"
   set lc [exec wc -l $SAL_WORK_DIR/idl-templates/validated/sal/sal_[set subsys].idl]
   set lcnt [expr [lindex $lc 0] -2]
@@ -89,6 +89,25 @@ global SAL_WORK_DIR
         }
      } 
   }
+  set revcode [getRevCode [set subsys]_ackcmd]
+  puts $fout "
+	struct ackcmd_[set revcode] {
+      string<8>	private_revCode;
+      double		private_sndStamp;
+      double		private_rcvStamp;
+      long		private_origin;
+      long 		private_host;
+      long		private_seqNum;
+      long 		ack;
+      long 		error;
+      string<256>	result;
+      long		host;
+      long		origin;
+      long		cmdtype;
+      double		timeout;
+	};
+	#pragma keylist ackcmd_[set revcode]
+"
   puts $fout "\};"
   close $fin
   close $fout

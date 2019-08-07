@@ -268,14 +268,13 @@ proc addActorIndexesJava { idlfile base fout } {
       set name [lindex $j 2]
       set type [lindex [split $name _] 1]
       set revcode [getRevCode [set base]_[set name] short]
-      puts $fout "		sal\[$idx\]=new salActor();" 
+      puts $fout "		sal\[$idx\]=new salActor(qos);" 
       puts $fout "		sal\[$idx\].topicHandle=\"[set base]_[set name][set revcode]\";"
       puts $fout "		sal\[$idx\].topicName=\"[set base]_[set name]\";"
-      puts $fout "		sal\[$idx\].tuneableQos = qos;" 
       if { $type == "command" || $type == "ackcmd" } {
-         puts $fout "		sal\[$idx\].durability = DurabilityQosPolicyKind.VOLATILE_DURABILITY_QOS);"
+         puts $fout "		sal\[$idx\].durability = DurabilityQosPolicyKind.VOLATILE_DURABILITY_QOS;"
       } else {
-         puts $fout "		sal\[$idx\].durability = DurabilityQosPolicyKind.TRANSIENT_DURABILITY_QOS);"
+         puts $fout "		sal\[$idx\].durability = DurabilityQosPolicyKind.TRANSIENT_DURABILITY_QOS;"
       }
       incr idx 1
    }

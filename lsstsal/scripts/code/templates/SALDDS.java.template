@@ -25,6 +25,7 @@ import DDS.HANDLE_NIL;
 import DDS.DataReader;
 import DDS.LENGTH_UNLIMITED;
 import DDS.SampleInfoSeqHolder;
+import DDS.QosProvider;
 import org.lsst.sal.salActor;
 import org.lsst.sal.salUtils;
 import java.util.Random;
@@ -68,13 +69,13 @@ public class SAL_SALData {
         private int rcvSeqNum;
         private int rcvOrigin;
         private int subsystemID;
-        private long origin;
+        private int origin;
         private int ddsIPaddress;
         private String domainName;
         private int lastActor_telemetry;
         private int lastActor_command;
         private int lastActor_event;
-
+ 
         salUtils salUtil = new salUtils();
         salActor[] sal = new salActor[SAL__ACTORS_MAXCOUNT];
 
@@ -203,9 +204,9 @@ public class SAL_SALData {
 		if (ipaddress == null) {
 		  ddsIPaddress = (int)randGen.nextInt(99999999);
                 } else {
-                  long ipasint = 0;
-                  String ipAddressinArray = ipaddress.split("\\.");
-		  for (int i=0;i<ipAddressinArray.length,i++) {
+                  int ipasint = 0;
+                  String[] ipAddressinArray = ipaddress.split("\\.");
+		  for (int i=0;i<ipAddressinArray.length;i++) {
 		     int power = 3-i;
 		     int ip = Integer.parseInt(ipAddressinArray[i]);
                      ipasint += ip * Math.pow(256,power);
@@ -213,7 +214,7 @@ public class SAL_SALData {
 		  ddsIPaddress = ipasint;
                 }
                 if (qname != null) {
-                  QosProvider qosProvider(qname,"DDS DefaultQosProfile");
+                  QosProvider defaultQos = new QosProvider(qname,"DDS DefaultQosProfile");
                   tuneableQos = 0;
                 }
                 origin = (int)randGen.nextInt(99999999);
@@ -245,9 +246,9 @@ public class SAL_SALData {
 		if (ipaddress == null) {
 		  ddsIPaddress = (int)randGen.nextInt(99999999);
                 } else {
-                  long ipasint = 0;
-                  String ipAddressinArray = ipaddress.split("\\.");
-		  for (int i=0;i<ipAddressinArray.length,i++) {
+                  int ipasint = 0;
+                  String[] ipAddressinArray = ipaddress.split("\\.");
+		  for (int i=0;i<ipAddressinArray.length;i++) {
 		     int power = 3-i;
 		     int ip = Integer.parseInt(ipAddressinArray[i]);
                      ipasint += ip * Math.pow(256,power);
@@ -255,7 +256,7 @@ public class SAL_SALData {
 		  ddsIPaddress = ipasint;
                 }
                 if (qname != null) {
-                  QosProvider qosProvider(qname,"DDS DefaultQosProfile");
+                  QosProvider defaultQos = new QosProvider(qname,"DDS DefaultQosProfile");
                   tuneableQos = 0;
                 }
                 origin = (int)randGen.nextInt(99999999);
@@ -278,7 +279,7 @@ public class SAL_SALData {
 	    int actorIdx;
 	    actorIdx = getActorIndex(topicName);
 	    if (actorIdx > 0) {
-	       sal[actorIdx].tuneableQos = true;
+	       sal[actorIdx].tuneableQos = 1;
 	    }
 	}
 
@@ -288,7 +289,7 @@ public class SAL_SALData {
 	    int actorIdx;
 	    actorIdx = getActorIndex(topicName);
 	    if (actorIdx > 0) {
-	       sal[actorIdx].tuneableQos = false;
+	       sal[actorIdx].tuneableQos = 0;
 	    }
 	}
 
@@ -565,7 +566,7 @@ public class SAL_SALData {
 	public void createTopic(int actorIdx) {
 		int status = -1;
 		participant.get_default_topic_qos(sal[actorIdx].topicQos);
-		if (sal[actorIdx].tuneableQos) {
+		if (sal[actorIdx].tuneableQos == 1) {
 			sal[actorIdx].topicQos.value.reliability.kind = ReliabilityQosPolicyKind.RELIABLE_RELIABILITY_QOS;
 			sal[actorIdx].topicQos.value.durability.kind = sal[actorIdx].durability;
 			sal[actorIdx].topicQos.value.history.kind = HistoryQosPolicyKind.KEEP_LAST_HISTORY_QOS;
@@ -587,7 +588,7 @@ public class SAL_SALData {
 	public void createTopic2(int actorIdx) {
 		int status = -1;
 		participant.get_default_topic_qos(sal[actorIdx].topicQos2);
-		if (sal[actorIdx].tuneableQos) {
+		if (sal[actorIdx].tuneableQos == 1) {
 			sal[actorIdx].topicQos2.value.reliability.kind = ReliabilityQosPolicyKind.RELIABLE_RELIABILITY_QOS;
 			sal[actorIdx].topicQos2.value.durability.kind = sal[actorIdx].durability;
 			sal[actorIdx].topicQos2.value.history.kind = HistoryQosPolicyKind.KEEP_LAST_HISTORY_QOS;
@@ -610,7 +611,7 @@ public class SAL_SALData {
 	public void createTopic(int actorIdx, String topicName) {
 		int status = -1;
 		participant.get_default_topic_qos(sal[actorIdx].topicQos);
-		if (sal[actorIdx].tuneableQos) {
+		if (sal[actorIdx].tuneableQos == 1) {
 			sal[actorIdx].topicQos.value.reliability.kind = ReliabilityQosPolicyKind.RELIABLE_RELIABILITY_QOS;
 			sal[actorIdx].topicQos.value.durability.kind = sal[actorIdx].durability;
 			sal[actorIdx].topicQos.value.history.kind = HistoryQosPolicyKind.KEEP_LAST_HISTORY_QOS;
@@ -632,7 +633,7 @@ public class SAL_SALData {
 	public void createTopic2(int actorIdx, String topicName) {
 		int status = -1;
 		participant.get_default_topic_qos(sal[actorIdx].topicQos2);
-		if (sal[actorIdx].tuneableQos) {
+		if (sal[actorIdx].tuneableQos == 1) {
 			sal[actorIdx].topicQos2.value.reliability.kind = ReliabilityQosPolicyKind.RELIABLE_RELIABILITY_QOS;
 			sal[actorIdx].topicQos2.value.durability.kind = sal[actorIdx].durability;
 			sal[actorIdx].topicQos2.value.history.kind = HistoryQosPolicyKind.KEEP_LAST_HISTORY_QOS;
