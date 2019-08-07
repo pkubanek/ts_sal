@@ -70,12 +70,12 @@ proc insertPublishersJava { subsys file_writer } {
     foreach alias $TLM_ALIASES($subsys) {
         puts $file_writer "\n        \{"
         puts $file_writer "            System.out.println(\"=== [set subsys]_[set alias] start of topic ===\");"
-        puts $file_writer "            int count = 0;"
+        puts $file_writer "            int count = 1;"
         puts $file_writer "            [set subsys].[set alias] theTopicInstance  = new [set subsys].[set alias]();"
 
-        puts $file_writer "            while (count < 200) {"
+        puts $file_writer "            while (count < 201) {"
         puts $file_writer "                mgr.putSample(theTopicInstance);"
-        puts $file_writer "                System.out.println(\"=== \[[set alias]\] message sent\" + count);"
+        puts $file_writer "                System.out.println(\"=== \[[set alias]\] message sent \" + count);"
         puts $file_writer "                ++count;"
         puts $file_writer "                try {"
         puts $file_writer "                Thread.sleep(2);"
@@ -131,6 +131,12 @@ proc insertSubscribersJava { subsys file_writer } {
         puts $file_writer "            [set subsys].[set alias] SALInstance = new [set subsys].[set alias]();\n"
         
         puts $file_writer "            int samples = 0;"
+        puts $file_writer "            try \{"
+        puts $file_writer "                Thread.sleep(5000);"
+        puts $file_writer "                \}"
+        puts $file_writer "            catch(InterruptedException e) \{"
+        puts $file_writer "                e.printStackTrace();"
+        puts $file_writer "            \}"
         puts $file_writer "            samples = mgr.flushSamples(SALInstance);\n"
         
         puts $file_writer "            int count = 0;"

@@ -504,7 +504,7 @@ puts $fout "
   	  SampleInfoSeqHolder infoSeq = new SampleInfoSeqHolder();
 	  SALReader.take(SALInstance, infoSeq, sal\[actorIdx\].maxSamples,
 					ANY_SAMPLE_STATE.value, ANY_VIEW_STATE.value,
-					ANY_INSTANCE_STATE.value);
+					ALIVE_INSTANCE_STATE.value);
           numsamp = SALInstance.value.length;
           if (numsamp > 0) \{
  	    if (debugLevel > 0) \{
