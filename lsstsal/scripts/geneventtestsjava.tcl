@@ -46,7 +46,7 @@ public class [set subsys]Event_[set alias]Test extends TestCase \{
 	  // Issue Event
           int status=0;
 
-            mgr.salEvent(\"[set subsys]_logevent_[set alias]\");
+            mgr.salEventPub(\"[set subsys]_logevent_[set alias]\");
             int priority=1;
 	    [set subsys].logevent_[set alias] event  = new [set subsys].logevent_[set alias]();
 	    event.private_revCode = \"[string trim $revcode _]\";"
@@ -118,7 +118,7 @@ public class [set subsys]EventLogger_[set alias]Test extends TestCase \{
 
 	  // Initialize
 	  SAL_[set subsys] evt = new SAL_[set subsys][set initializer];
-          evt.salEvent(\"[set subsys]_logevent_[set alias]\");
+          evt.salEventSub(\"[set subsys]_logevent_[set alias]\");
 	  [set subsys].logevent_[set alias] event = new [set subsys].logevent_[set alias]();
           System.out.println(\"Event [set alias] logger ready \");
 
