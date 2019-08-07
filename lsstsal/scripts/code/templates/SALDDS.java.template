@@ -227,8 +227,8 @@ public class SAL_SALData {
 		subsystemID = aKey;
 		debugLevel = 0;
                 rcvOrigin = 0;
-                System.loadLibrary("libsalUtils");
-                initSalActors();
+                System.loadLibrary("salUtils");
+                initSalActors(tuneableQos);
 	}
 #else
 	public SAL_SALData()
@@ -269,7 +269,7 @@ public class SAL_SALData {
 		subsystemID = 0;
 		debugLevel = 0;
                 rcvOrigin = 0;
-                System.loadLibrary("libsalUtils");
+                System.loadLibrary("salUtils");
                 initSalActors(tuneableQos);
 	}
 #endif

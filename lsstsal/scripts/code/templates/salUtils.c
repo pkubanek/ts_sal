@@ -6,7 +6,7 @@
 #include <unistd.h>
 #include "org_lsst_sal_salUtils.h"
 
-JNIEXPORT jint JNICALL Java_salUtils_getLeapSeconds
+JNIEXPORT jint JNICALL Java_org_lsst_sal_salUtils_getLeapSeconds
   (JNIEnv *env, jobject obj) {
    struct timex tx;
 
@@ -15,7 +15,7 @@ JNIEXPORT jint JNICALL Java_salUtils_getLeapSeconds
    return tx.tai;
 }
 
-JNIEXPORT jdouble JNICALL Java_salUtils_getTAISeconds
+JNIEXPORT jdouble JNICALL Java_org_lsst_sal_salUtils_getTAISeconds
   (JNIEnv *env, jobject obj) {
    struct timex tx;
    struct timespec now;
