@@ -46,12 +46,14 @@ global SAL_WORK_DIR REVCODE
           set annot ""
           if { $curtopic != "command" && $curtopic != "logevent" } {
            catch {
-            set item [string trim [lindex $rec 1] "\[\];"]
-            set lookup [exec grep "(\"$curtopic\"," $SAL_WORK_DIR/sql/[set subsys]_items.sql | grep ",\"$item\""]
-            set ign [string length "INSERT INTO [set subsys]_items VALUES "]
-            set mdata [split [string trim [string range  $lookup $ign end] "();"] ","]
-            set annot " //@Metadata=(Units=[lindex $mdata 5],Description=[lindex $mdata 9])"
-           }
+            if { [lindex [lindex $rec 0] 0] != "const" } {
+              set item [string trim [lindex $rec 1] "\[\];"]
+              set lookup [exec grep "(\"$curtopic\"," $SAL_WORK_DIR/sql/[set subsys]_items.sql | grep ",\"$item\""]
+              set ign [string length "INSERT INTO [set subsys]_items VALUES "]
+              set mdata [split [string trim [string range  $lookup $ign end] "();"] ","]
+              set annot " //@Metadata=(Units=[lindex $mdata 5],Description=[lindex $mdata 9])"
+             }
+            }
           }
           puts $fout "$rec[set annot]"
        }
@@ -101,7 +103,7 @@ global SAL_WORK_DIR REVCODE
      if { [string trim $rec "	 {}"] == "struct command" } {
         set done 1
      } else {
-        if { [lindex [string trim $rec "	 {}"] 0] != "const" } {
+        if { [lindex [lindex [split [string trim $rec "{}"] /] 0] 0] != "const" } {
           puts $fout $rec
         }
      } 
