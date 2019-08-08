@@ -274,13 +274,14 @@ global XMLTOPICS XMLTLM IDLRESERVED XMLITEMS
              puts stdout "Skipping private item $id or const"
            } else {
              set m1 [lindex [split $rec "/"] 2]
-             set meta [split $m1 "|"]
-             set freq  [string trim [lindex $meta 0]]
-             set units [string trim [lindex $meta 1]]
-             set comments [string trim [lindex $meta 2]]
-             set range [string trim [lindex $meta 3]]
-             set location [string trim [lindex $meta 4]]
-             set pubsize [string trim [lindex $meta 5]]
+             set meta [split $m1 ",=()"]
+             set freq  [string trim [lindex $meta 5]]
+             set units [string trim [lindex $meta 2]]
+             set comments [string trim [lindex $meta 4]]
+             set range "" ; set location "" ; set pubsize "" ; set freq ""
+#             set range [string trim [lindex $meta 3]]
+#             set location [string trim [lindex $meta 4]]
+#             set pubsize [string trim [lindex $meta 5]]
 #             puts stdout "$nt - $u $id $type $siz $units $range $comments"
              incr NEWSIZES($hid) $siz
              puts $fout " $u [string trim $vitem];"

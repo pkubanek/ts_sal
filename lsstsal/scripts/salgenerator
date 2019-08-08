@@ -181,6 +181,7 @@ if { $OPTIONS(validate) } {
         generategenerics $i
       }
     }
+    gentopicdefsql $i
     foreach t "Telemetry Commands Events Generics" {
       if { [file exists [set i]_[set t].xml] } {
        if { [file size [set i]_[set t].xml] > 0 } {

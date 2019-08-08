@@ -19,16 +19,22 @@ proc activeRevCodes { subsys } {
 global SAL_WORK_DIR REVCODE
   set fin [open $SAL_WORK_DIR/idl-templates/validated/sal/sal_[set subsys].idl r]
   set fout [open $SAL_WORK_DIR/idl-templates/validated/sal/sal_revCoded_[set subsys].idl w]
+  gets $fin rec ; puts $fout $rec
   while { [gets $fin rec] > -1 } {
     set r2 [string trim $rec "{}"]
-    if { [lindex $r2 0] == "struct" } {
+    set r3 [string trim $rec " 	{};"]
+    if { $r3 == "" } {
+      puts $fout $rec
+    } else {
+     if { [lindex $r2 0] == "struct" } {
+       set curtopic [set subsys]_[lindex $r2 1]
        set id [lindex $r2 1]
        if { $id != "command" && $id != "logevent" } {
          puts $fout "struct [set id]_[string range [set REVCODE([set subsys]_$id)] 0 7] \{"
        } else {
          puts $fout $rec
        }
-    } else {
+     } else {
        if { [lindex $r2 0] == "#pragma" } {
           set id [lindex $r2 2]
           if { $id != "command" && $id != "logevent" } {
@@ -37,8 +43,19 @@ global SAL_WORK_DIR REVCODE
             puts $fout $rec
           }
        } else {
-          puts $fout $rec
+          set annot ""
+          if { $curtopic != "command" && $curtopic != "logevent" } {
+           catch {
+            set item [string trim [lindex $rec 1] "\[\];"]
+            set lookup [exec grep "(\"$curtopic\"," $SAL_WORK_DIR/sql/[set subsys]_items.sql | grep ",\"$item\""]
+            set ign [string length "INSERT INTO [set subsys]_items VALUES "]
+            set mdata [split [string trim [string range  $lookup $ign end] "();"] ","]
+            set annot " //@Metadata=(Units=[lindex $mdata 5],Description=[lindex $mdata 9])"
+           }
+          }
+          puts $fout "$rec[set annot]"
        }
+     }
     }
   }
   close $fin

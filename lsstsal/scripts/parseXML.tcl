@@ -20,7 +20,6 @@ global TLMS TLM_ALIASES EVENT_ENUM EVENT_ENUMS UNITS ENUM_DONE SYSDIC DESC
        }
      }
    }
-   gentopicdefsql $subsys
    set fsql [open $SAL_WORK_DIR/sql/[set subsys]_items.sql a]
    set tname none
    set itemid 0
@@ -91,11 +90,15 @@ global TLMS TLM_ALIASES EVENT_ENUM EVENT_ENUMS UNITS ENUM_DONE SYSDIC DESC
             lappend EVTS($subsys,$alias,param) "long	priority"
             lappend EVTS($subsys,$alias,plist) priority
             puts $fout "	  long	priority;"
+            incr itemid 1
+            puts $fsql "INSERT INTO [set subsys]_items VALUES (\"[set tname]\",$itemid,\"priority\",\"int\",1,\"unitless\",1,\"\",\"\",\"Priority code\");"
           }
          } else {
           lappend EVTS($subsys,$alias,param) "long	priority"
           lappend EVTS($subsys,$alias,plist) priority
           puts $fout "	  long	priority;"
+          incr itemid 1
+          puts $fsql "INSERT INTO [set subsys]_items VALUES (\"[set tname]\",$itemid,\"priority\",\"int\",1,\"unitless\",1,\"\",\"\",\"Priority code\");"
          }
          if { $explanation != "" } {set EVTS($subsys,$alias,help) $explanation}
          set DESC($subsys,$alias,priority) "Priority code"
@@ -160,13 +163,19 @@ global TLMS TLM_ALIASES EVENT_ENUM EVENT_ENUMS UNITS ENUM_DONE SYSDIC DESC
         set fout [open $SAL_WORK_DIR/idl-templates/[set tname].idl w]
         puts $fout "struct $tname \{"
         add_private_idl $fout
+        puts $fsql "INSERT INTO [set subsys]_items VALUES (\"$tname\",1,\"private_revCode\",\"char\",32,\"unitless\",1,\"\",\"\",\"Revision code of topic\");"
+        puts $fsql "INSERT INTO [set subsys]_items VALUES (\"$tname\",2,\"private_sndStamp\",\"double\",1,\"secs\",1,\"\",\"\",\"TAI at sender\");"
+        puts $fsql "INSERT INTO [set subsys]_items VALUES (\"$tname\",3,\"private_rcvStamp\",\"double\",1,\"secs\",1,\"\",\"\",\"TAI at receiver\");"
+        puts $fsql "INSERT INTO [set subsys]_items VALUES (\"$tname\",4,\"private_seqNum\",\"int\",1,\"unitless\",1,\"\",\"\",\"Sequence number\");"
+        puts $fsql "INSERT INTO [set subsys]_items VALUES (\"$tname\",5,\"private_origin\",\"int\",1,\"unitless\",1,\"\",\"\",\"PID code of sender\");"
+        puts $fsql "INSERT INTO [set subsys]_items VALUES (\"$tname\",6,\"private_host\",\"int\",1,\"unitless\",1,\"\",\"\",\"IP of sender\");"
         if { $ctype == "telemetry" } {
 	   set alias [join [lrange [split $tname "_"] 1 end] "_"]
         }
       }
       if { $tag == "EFDB_Name"} {
         set item $value ; set unit ""
-        incr itemid 1
+        incr itemid 7
         set desc "" ; set range "" ; set location ""
         set freq 0.054 ; set sdim 1
         if { [lsearch $IDLRESERVED [string tolower $item]] > -1 } {
@@ -210,7 +219,7 @@ global TLMS TLM_ALIASES EVENT_ENUM EVENT_ENUMS UNITS ENUM_DONE SYSDIC DESC
          if { $type == "unsigned long long" } {set type "unsigned longlong"}
       }
       if { $tag == "IDL_Size"}        {set sdim $value}
-      if { $tag == "Description"}     {set desc $value}
+      if { $tag == "Description"}     {set desc [join [split $value ","] ";"]}
       if { $tag == "Frequency"}       {set freq $value}
       if { $tag == "Range"}           {set range $value}
       if { $tag == "Sensor_location"} {set location $value}
@@ -231,7 +240,7 @@ global TLMS TLM_ALIASES EVENT_ENUM EVENT_ENUMS UNITS ENUM_DONE SYSDIC DESC
             }
          }
          set declare [string trim $declare " ;"]
-         puts $fout $declare
+         puts $fout "   $declare"
          set ydec [join [split $declare "\[" ] "("]
          set declare [join [split $ydec "\]" ] ")"]
          if { $ctype == "command" } {
@@ -252,7 +261,7 @@ global TLMS TLM_ALIASES EVENT_ENUM EVENT_ENUMS UNITS ENUM_DONE SYSDIC DESC
          } else {
             set DESC($subsys,$alias,$item) "No description"
          }
-         puts $fsql "INSERT INTO [set subsys]_items VALUES ($alias,$itemid,\"$item\",\"$type\",$idim,\"$unit\",$freq,\"$range\",\"$location\",\"$desc\");"
+         puts $fsql "INSERT INTO [set subsys]_items VALUES (\"$tname\",$itemid,\"$item\",\"$type\",$idim,\"$unit\",$freq,\"$range\",\"$location\",\"$desc\");"
       }
    }
    if { $fout != "" } {
