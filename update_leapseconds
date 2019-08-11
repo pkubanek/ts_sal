@@ -1,0 +1,26 @@
+#!/bin/sh
+cd /usr/share/zoneinfo
+if [[ $(find "leap-seconds.list" -mtime +180 -print) ]]; then
+  echo "File leap-seconds.list exists and is older than 6 months, fetching latest version"
+  /usr/bin/wget ftp://ftp.nist.gov/pub/time/leap-seconds.list -O leap-seconds.list
+fi
+if [[ $(find "leap-seconds.list" -print) ]]; then
+  APPLY_AFTER=$(grep -v '^#' /usr/share/zoneinfo/leap-seconds.list | tail -1 | awk '{ print $1 }')
+  TAI_OFFSET=$(grep -v '^#' /usr/share/zoneinfo/leap-seconds.list | tail -1 | awk '{ print $2 }')
+  echo "Leap seconds offset is currently $TAI_OFFSET"
+else
+  APPLY_AFTER=$(grep -v '^#' /opt/lsst/ts_sal/etc/leap-seconds.list | tail -1 | awk '{ print $1 }')
+  TAI_OFFSET=$(grep -v '^#' /opt/lsst/ts_sal/etc/leap-seconds.list | tail -1 | awk '{ print $2 }')
+  echo "Leap seconds offset (from sal leap-seconds.list) is currently $TAI_OFFSET"
+fi
+let NOW=`date +%s`+2208988786
+if (( $NOW < $APPLY_AFTER )); then 
+  let TAI_OFFSET=$TAI_OFFSET-1
+fi
+if [ -x /opt/lsst/ts_sal/bin/set-tai ]; then
+  /opt/lsst/ts_sal/bin/set-tai $TAI_OFFSET
+  echo "Kernel Leap seconds offset set to $TAI_OFFSET"
+else
+  echo "ERROR : Kernel Leap seconds offset could not be set"
+fi
+
