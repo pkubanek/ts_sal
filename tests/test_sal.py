@@ -12,10 +12,11 @@ from lsst.ts.sal import test_utils
 import SALPY_Test
 import SALPY_Script
 
-# Eventually I hope we can set the read queue depth from Python,
-# at which point we should make a short queue for a faster test.
-# Meanwhile update this to match ts_sal default read queue depth.
-READ_QUEUE_DEPTH = 1000
+# Depth of DDS read queues (which is also the depth of the write queues).
+# This must be at least as long as the actual depth for some tests to pass.
+# If it ever becomes possible to specify the depth in Python, update the test
+# to do that, to eliminate the dependence on the default depth.
+READ_QUEUE_DEPTH = 10
 
 # This environment variable is used for the experimental dds code,
 # but can interfere with the standard code
@@ -549,7 +550,9 @@ class ErrorHandlingTestCase(BaseSalTestCase):
         self.controller.salEventPub("Test_logevent_scalars")
         time.sleep(STD_SLEEP)
 
-        nextra = 100
+		# nextra is the number of extra messages to write and read
+		# beyond READ_QUEUE_DEPTH. It must be <= READ_QUEUE_DEPTH.
+        nextra = 10
         data = SALPY_Test.Test_logevent_scalarsC()
         for val in range(0, READ_QUEUE_DEPTH + nextra):
             data.int0 = val
@@ -577,7 +580,9 @@ class ErrorHandlingTestCase(BaseSalTestCase):
         self.controller.salTelemetryPub("Test_scalars")
         time.sleep(STD_SLEEP)
 
-        nextra = 100
+		# nextra is the number of extra messages to write and read
+		# beyond READ_QUEUE_DEPTH. It must be <= READ_QUEUE_DEPTH.
+        nextra = 10
         data = SALPY_Test.Test_scalarsC()
         for val in range(0, READ_QUEUE_DEPTH + nextra):
             data.int0 = val
