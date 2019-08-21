@@ -14,9 +14,9 @@ import SALPY_Script
 
 # Depth of DDS read queues (which is also the depth of the write queues).
 # This must be at least as long as the actual depth for some tests to pass.
-# If it ever becomes possible to specify the depth in Python, update the test
-# to do that, to eliminate the dependence on the default depth.
-READ_QUEUE_DEPTH = 10
+# If it ever becomes possible to read or write the depth in SALPY, update
+# these tests to do that, to eliminate the dependence on the default depth.
+READ_QUEUE_DEPTH = 100
 
 # This environment variable is used for the experimental dds code,
 # but can interfere with the standard code
@@ -550,8 +550,8 @@ class ErrorHandlingTestCase(BaseSalTestCase):
         self.controller.salEventPub("Test_logevent_scalars")
         time.sleep(STD_SLEEP)
 
-		# nextra is the number of extra messages to write and read
-		# beyond READ_QUEUE_DEPTH. It must be <= READ_QUEUE_DEPTH.
+        # nextra is the number of extra messages to write and read
+        # beyond READ_QUEUE_DEPTH. It must be <= READ_QUEUE_DEPTH.
         nextra = 10
         data = SALPY_Test.Test_logevent_scalarsC()
         for val in range(0, READ_QUEUE_DEPTH + nextra):
@@ -580,8 +580,8 @@ class ErrorHandlingTestCase(BaseSalTestCase):
         self.controller.salTelemetryPub("Test_scalars")
         time.sleep(STD_SLEEP)
 
-		# nextra is the number of extra messages to write and read
-		# beyond READ_QUEUE_DEPTH. It must be <= READ_QUEUE_DEPTH.
+        # nextra is the number of extra messages to write and read
+        # beyond READ_QUEUE_DEPTH. It must be <= READ_QUEUE_DEPTH.
         nextra = 10
         data = SALPY_Test.Test_scalarsC()
         for val in range(0, READ_QUEUE_DEPTH + nextra):
