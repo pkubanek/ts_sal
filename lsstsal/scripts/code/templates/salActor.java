@@ -77,7 +77,7 @@ public class salActor {
 	this.isEventWriter = false;
 	this.isProcessor = false;
         this.tuneableQos = qos;
-        this.historyDepth = 10;
+        this.historyDepth = 100;
         this.maxSamples = 999999999;
     }
 }

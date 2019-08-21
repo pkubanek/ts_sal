@@ -228,7 +228,7 @@ void SAL_SALData::initSalActors (int qos)
       sal\[i\].isActive = false;
       sal\[i\].maxSamples = LENGTH_UNLIMITED;
       sal\[i\].sampleAge = 1.0e20;
-      sal\[i\].historyDepth = 10;
+      sal\[i\].historyDepth = 100;
       sal\[i\].tuneableQos = qos;
     \}
 "
