@@ -235,7 +235,7 @@ void SAL_SALData::initSalActors (int qos)
    set idx 0
    foreach j $ptypes {
       set name [lindex $j 2]
-      set type [lindex [split $name _] 1]
+      set type [lindex [split $name _] 0]
       set revcode [getRevCode [set base]_[set name] short]
       puts $fout "    strcpy(sal\[$idx\].topicHandle,\"[set base]_[set name][set revcode]\");"
       puts $fout "    strcpy(sal\[$idx\].topicName,\"[set base]_[set name]\");"
@@ -266,7 +266,7 @@ proc addActorIndexesJava { idlfile base fout } {
    set idx 0
    foreach j $ptypes {
       set name [lindex $j 2]
-      set type [lindex [split $name _] 1]
+      set type [lindex [split $name _] 0]
       set revcode [getRevCode [set base]_[set name] short]
       puts $fout "		sal\[$idx\]=new salActor(qos);" 
       puts $fout "		sal\[$idx\].topicHandle=\"[set base]_[set name][set revcode]\";"
