@@ -82,7 +82,7 @@ global REVCODE
 }
 
 proc modidlforjava { subsys } {
-global SAL_WORK_DIR REVCODE
+global SAL_WORK_DIR REVCODE SYSDIC
   puts stdout "Updating $subsys idl with revCodes"
   set lc [exec wc -l $SAL_WORK_DIR/idl-templates/validated/sal/sal_[set subsys].idl]
   set lcnt [expr [lindex $lc 0] -2]
@@ -116,8 +116,11 @@ global SAL_WORK_DIR REVCODE
       double		private_rcvStamp;
       long		private_origin;
       long 		private_host;
-      long		private_seqNum;
-      long 		ack;
+      long		private_seqNum;"
+  if { [info exists SYSDIC($subsys,keyedID)] } {
+     puts $fout "      long 		[set subsys]ID;"
+  }
+  puts $fout "      long 		ack;
       long 		error;
       string<256>	result;
       long		host;
