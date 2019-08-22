@@ -51,7 +51,7 @@ global SAL_WORK_DIR REVCODE
               set lookup [exec grep "(\"$curtopic\"," $SAL_WORK_DIR/sql/[set subsys]_items.sql | grep ",\"$item\""]
               set ign [string length "INSERT INTO [set subsys]_items VALUES "]
               set mdata [split [string trim [string range  $lookup $ign end] "();"] ","]
-              set annot " //@Metadata=(Units=[lindex $mdata 5],Description=[lindex $mdata 9])"
+              set annot " // @Metadata=(Units=[lindex $mdata 5],Description=[lindex $mdata 9])"
              }
             }
           }
