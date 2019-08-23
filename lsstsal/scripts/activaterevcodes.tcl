@@ -15,6 +15,14 @@ global SAL_WORK_DIR
 }
 
 
+proc getItemName { rec } {
+  if { [lindex $rec 0] == "unsigned" } { set rec [lrange $rec 1 end] }
+  if { [lindex $rec 1] == "long" } { set rec [lrange $rec 1 end] }
+  set item [string trim [lindex $rec 1] "\[\];"]
+  return $item
+}
+
+
 proc activeRevCodes { subsys } {
 global SAL_WORK_DIR REVCODE
   set fin [open $SAL_WORK_DIR/idl-templates/validated/sal/sal_[set subsys].idl r]
@@ -47,14 +55,15 @@ global SAL_WORK_DIR REVCODE
           if { $curtopic != "command" && $curtopic != "logevent" } {
            catch {
             if { [lindex [lindex $rec 0] 0] != "const" } {
-              set item [string trim [lindex $rec 1] "\[\];"]
+              set item [getItemName $rec]
               set lookup [exec grep "(\"$curtopic\"," $SAL_WORK_DIR/sql/[set subsys]_items.sql | grep ",\"$item\""]
               set ign [string length "INSERT INTO [set subsys]_items VALUES "]
-              set mdata [split [string trim [string range  $lookup $ign end] "();"] ","]
+              set mdata [split [string trim [string range "$lookup" $ign end] "();"] ","]
               set annot " // @Metadata=(Units=[lindex $mdata 5],Description=[lindex $mdata 9])"
-             }
             }
+           }
           }
+          if { [string range $annot 0 2] != " //" } { set annot "" }
           puts $fout "$rec[set annot]"
        }
      }
