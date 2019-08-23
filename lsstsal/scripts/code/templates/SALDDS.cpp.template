@@ -29,7 +29,7 @@ SAL_SALData::SAL_SALData(int aKey)
    if ( sname != NULL ) {
       sscanf(sname,"%d",&historySync);
    } else {
-      historySync = 5;
+      historySync = 30;
    }
    ddsIPaddress = rand();
    if (ipaddr != NULL) {
@@ -67,7 +67,7 @@ SAL_SALData::SAL_SALData()
    if ( sname != NULL ) {
       sscanf(sname,"%d",&historySync);
    } else {
-      historySync = 5;
+      historySync = 30;
    }
    ddsIPaddress = 1;
    if (ipaddr != NULL) {

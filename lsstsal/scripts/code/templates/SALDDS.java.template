@@ -922,7 +922,7 @@ public class SAL_SALData {
 	  }
 	  checkHandle(sal[actorIdx].reader, "Subscriber.create_datareader");
 	  DDS.Duration_t a_timeout = new Duration_t();
-	  a_timeout.sec = 5;
+	  a_timeout.sec = 30;
 	  a_timeout.nanosec = 10000000;
           sal[actorIdx].sampleAge = 100.0;
 	  sal[actorIdx].reader.wait_for_historical_data(a_timeout);
@@ -941,7 +941,7 @@ public class SAL_SALData {
 	  }
 	  checkHandle(sal[actorIdx].reader2, "Subscriber.create_datareader");
 	  DDS.Duration_t a_timeout = new Duration_t();
-	  a_timeout.sec = 5;
+	  a_timeout.sec = 30;
 	  a_timeout.nanosec = 10000000;
           sal[actorIdx].sampleAge = 100.0;
 	  sal[actorIdx].reader2.wait_for_historical_data(a_timeout);
