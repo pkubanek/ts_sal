@@ -7,7 +7,6 @@ dev_requires = install_requires + tests_require + ["documenteer[pipelines]"]
 setup(
     name="ts_sal",
     description="Only sets up the python code written for SAL.",
-    use_scm_version=True,
     setup_requires=["setuptools_scm"],
     package_dir={"": "python"},
     packages=find_namespace_packages(where="python"),
