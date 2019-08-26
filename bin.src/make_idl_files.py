@@ -8,13 +8,17 @@ parser = argparse.ArgumentParser(
 parser.add_argument("components", nargs='+',
                     help="Names of SAL components, e.g. 'Test'; "
                     "if 'all' then make IDL files for all SAL components")
+parser.add_argument("--exclude", nargs="+",
+                    help="Names of SAL copmonents to exclude")
 
 args = parser.parse_args()
+exclude = set(args.exclude)
 
 if args.components == ["all"]:
     components = all_component_names()
 else:
     components = args.components
+components = [name for name in components if name not in exclude]
 print(f"Making IDL files for: {', '.join(components)}")
 for name in components:
     make_idl_file(name=name)
