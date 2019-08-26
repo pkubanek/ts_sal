@@ -19,13 +19,14 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-__all__ = ["make_idl_file"]
+__all__ = ["all_component_names", "make_idl_file"]
 
 import glob
 import os
 import pathlib
 import shutil
 import subprocess
+import xml.etree.ElementTree
 
 from lsst.ts import idl
 
@@ -39,6 +40,23 @@ def get_env_dir(name, err_msg):
         raise RuntimeError(f"{path} is not a directory")
     print(f"${name} = {path}")
     return path
+
+
+def all_component_names():
+    """Get a list of all SAL component names.
+
+    The data comes from ``SALSubsystems.xml`` in ``ts_xml``.
+    """
+    xml_dir = get_env_dir("TS_XML_DIR", "ts_xml not setup")
+    subsystems_file_path = xml_dir / "sal_interfaces" / "SALSubsystems.xml"
+    if not subsystems_file_path.is_file():
+        raise RuntimeError(f"Cannot find file {subsystems_file_path}")
+    tree = xml.etree.ElementTree.parse(subsystems_file_path)
+    root = tree.getroot()
+    component_names = []
+    for subsystem in root.findall("Subsystem"):
+        component_names.append(subsystem.find("Name").text)
+    return component_names
 
 
 class MakeIdlFile:
