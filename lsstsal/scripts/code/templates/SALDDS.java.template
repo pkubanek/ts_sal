@@ -214,7 +214,7 @@ public class SAL_SALData {
 		  ddsIPaddress = ipasint;
                 }
                 if (qname != null) {
-                  QosProvider defaultQos = new QosProvider(qname,"DDS DefaultQosProfile");
+                  QosProvider defaultQos = newQosProvider(qname,"DDS DefaultQosProfile");
                   tuneableQos = 0;
                 }
                 origin = (int)randGen.nextInt(99999999);
@@ -256,7 +256,7 @@ public class SAL_SALData {
 		  ddsIPaddress = ipasint;
                 }
                 if (qname != null) {
-                  QosProvider defaultQos = new QosProvider(qname,"DDS DefaultQosProfile");
+                  QosProvider defaultQos = newQosProvider(qname,"DDS DefaultQosProfile");
                   tuneableQos = 0;
                 }
                 origin = (int)randGen.nextInt(99999999);
