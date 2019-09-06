@@ -12,13 +12,14 @@ parser.add_argument("--exclude", nargs="+",
                     help="Names of SAL copmonents to exclude")
 
 args = parser.parse_args()
-exclude = set(args.exclude)
 
 if args.components == ["all"]:
     components = all_component_names()
 else:
     components = args.components
-components = [name for name in components if name not in exclude]
+if args.exclude:
+    exclude = set(args.exclude)
+    components = [name for name in components if name not in exclude]
 print(f"Making IDL files for: {', '.join(components)}")
 for name in components:
     make_idl_file(name=name)
