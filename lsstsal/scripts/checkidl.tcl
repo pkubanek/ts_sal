@@ -178,21 +178,6 @@ global XMLTOPICS XMLTLM IDLRESERVED XMLITEMS
            close $fcmt
            set mdid [lindex [exec md5sum $SAL_WORK_DIR/idl-templates/validated/$topicid.idl] 0]
            set tid [format %d 0x[string range $mdid 26 end]]
-           gentopicdefsql $topicid
-           set fsql [open $SAL_WORK_DIR/sql/[set topicid]_items.sql a]
-           if { [info exists tnames] } {
-            foreach t $tnames {
-              set ps $props($t,size)
-              incr topicsize [expr $ps * $IDLSIZES([string trim $props($t,type)])]
-              if { $ps > 1 && $props($t,type) != "string" } {
-                 incr ps 1
-              }
-              puts $fsql "INSERT INTO [set topicid]_items VALUES ($props($t,num),\"$t\",\"$props($t,type)\",$props($t,size),\"$props($t,units)\",$props($t,freq),\"$props($t,range)\",\"$props($t,location)\",\"$props($t,comment)\");"
-              incr tid 1
-            }
-           }
-           puts $fsql "#TOPICSIZE $topicsize"
-           close $fsql
            puts $fhtm "</TABLE><P>Click here to update: <input type=\"submit\" value=\"Submit\" name=\"update\"></FORM><P></BODY></HTML>"
            close $fhtm
       } else {
@@ -344,11 +329,11 @@ global XMLTOPICS XMLTLM IDLRESERVED XMLITEMS
 }
 
 
-proc gentopicdefsql { topic } {
+proc gentopicdefsql { subsys } {
 global SAL_WORK_DIR
    exec mkdir -p $SAL_WORK_DIR/sql
-     set fsql [open $SAL_WORK_DIR/sql/[set topic]_items.sql w]
-     puts $fsql "CREATE TABLE [set topic]_items (
+     set fsql [open $SAL_WORK_DIR/sql/[set subsys]_items.sql w]
+     puts $fsql "CREATE TABLE [set subsys]_items (
   Topic           varchar(128),
   ItemId	  smallint unsigned,
   EFDB_Name	  varchar(128),

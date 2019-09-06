@@ -116,11 +116,12 @@ global TLMS TLM_ALIASES EVENT_ENUM EVENT_ENUMS UNITS ENUM_DONE SYSDIC DESC
          }
          set CMDS($subsys,$alias) "$device $property $action $vvalue"
          set CMD_ALIASES($subsys) [lappend CMD_ALIASES($subsys) $alias]
-         if { $itemid == 0 } {
-            puts stdout "WARNING : Command $alias has no data fields , adding default state item"
-            lappend CMDS($subsys,$alias,param) "boolean state"
-            lappend CMDS($subsys,$alias,plist) state
-            puts $fout "	  boolean	state;"
+         if { $itemid == 6 } {
+            puts stdout "WARNING : Command $alias has no data fields , adding default value item"
+            lappend CMDS($subsys,$alias,param) "boolean value"
+            lappend CMDS($subsys,$alias,plist) value
+            puts $fout "	  boolean	value;"
+            puts $fsql "INSERT INTO [set subsys]_items VALUES (\"$tname\",1,\"value\",\"boolean\",1,\"unitless\",1,\"\",\"\",\"Dummy to prevent empty structs\");"
          }
          if { $explanation != "" } {set CMDS($subsys,$alias,help) $explanation}
       }
@@ -169,13 +170,14 @@ global TLMS TLM_ALIASES EVENT_ENUM EVENT_ENUMS UNITS ENUM_DONE SYSDIC DESC
         puts $fsql "INSERT INTO [set subsys]_items VALUES (\"$tname\",4,\"private_seqNum\",\"int\",1,\"unitless\",1,\"\",\"\",\"Sequence number\");"
         puts $fsql "INSERT INTO [set subsys]_items VALUES (\"$tname\",5,\"private_origin\",\"int\",1,\"unitless\",1,\"\",\"\",\"PID code of sender\");"
         puts $fsql "INSERT INTO [set subsys]_items VALUES (\"$tname\",6,\"private_host\",\"int\",1,\"unitless\",1,\"\",\"\",\"IP of sender\");"
+        set itemid 6
         if { $ctype == "telemetry" } {
 	   set alias [join [lrange [split $tname "_"] 1 end] "_"]
         }
       }
       if { $tag == "EFDB_Name"} {
         set item $value ; set unit ""
-        incr itemid 7
+        incr itemid 1
         set desc "" ; set range "" ; set location ""
         set freq 0.054 ; set sdim 1
         if { [lsearch $IDLRESERVED [string tolower $item]] > -1 } {
@@ -246,7 +248,6 @@ global TLMS TLM_ALIASES EVENT_ENUM EVENT_ENUMS UNITS ENUM_DONE SYSDIC DESC
          if { $ctype == "command" } {
             lappend CMDS($subsys,$alias,param) "$declare"
             lappend CMDS($subsys,$alias,plist)  $item
-            if { $unit != "" } {set UNITS($subsys,$alias,$item) $unit}
          }
          if { $ctype == "event" } {
             lappend EVTS($subsys,$alias,param) "$declare"
@@ -261,6 +262,7 @@ global TLMS TLM_ALIASES EVENT_ENUM EVENT_ENUMS UNITS ENUM_DONE SYSDIC DESC
          } else {
             set DESC($subsys,$alias,$item) "No description"
          }
+         if { $unit != "" } {set UNITS($subsys,$alias,$item) $unit}
          puts $fsql "INSERT INTO [set subsys]_items VALUES (\"$tname\",$itemid,\"$item\",\"$type\",$idim,\"$unit\",$freq,\"$range\",\"$location\",\"$desc\");"
       }
    }
@@ -348,7 +350,7 @@ global IDLRESERVED SAL_WORK_DIR SAL_DIR CMDS CMD_ALIASES EVTS EVENT_ALIASES UNIT
   set fout [open $SAL_WORK_DIR/html/[set subsys]/[set subsys]_Commands.html w]
   puts stdout "Generating html command table $subsys"
   puts $fout "<H3>$subsys Commands</H3><P><UL>"
-  puts $fout "<TABLE BORDER=3 CELLPADDING=5 BGCOLOR=LightBlue  WIDTH=600>
+  puts $fout "<TABLE BORDER=3 CELLPADDING=5 BGCOLOR=LightBlue  WIDTH=900>
 <TR BGCOLOR=Yellow><B><TD>Command Alias</TD><TD>Parameter</TD></B></TR>"
   foreach i [lsort $CMD_ALIASES($subsys)] {
       set cmd "$CMDS($subsys,$i) - - -"
@@ -358,9 +360,9 @@ global IDLRESERVED SAL_WORK_DIR SAL_DIR CMDS CMD_ALIASES EVTS EVENT_ALIASES UNIT
           set id [lindex [split [lindex $p 1] "()"] 0]
           if { [info exists DESC($subsys,$i,$id)] == 0 } { set DESC($subsys,$i,$id) unknown }
           if { [info exists UNITS($subsys,$i,$id)] } {
-             puts $fout "$p : $UNITS($subsys,$i,$id) - $DESC($subsys,$i,$id)<BR>"
+             puts $fout "$p  ($UNITS($subsys,$i,$id)) - $DESC($subsys,$i,$id)<BR>"
           } else {
-             puts $fout "$p<BR> - $DESC($subsys,$i,$id)<BR>"
+             puts $fout "$p - $DESC($subsys,$i,$id)<BR>"
           }
         } 
         puts $fout "</TD></TR>"
@@ -378,7 +380,7 @@ global IDLRESERVED SAL_WORK_DIR SAL_DIR CMDS CMD_ALIASES EVTS EVENT_ALIASES UNIT
   set fout [open $SAL_WORK_DIR/html/[set subsys]/[set subsys]_Events.html w]
   puts stdout "Generating html logevent table $subsys"
   puts $fout "<H3>$subsys Logevents</H3><P><UL>"
-  puts $fout "<TABLE BORDER=3 CELLPADDING=5 BGCOLOR=LightBlue  WIDTH=600>
+  puts $fout "<TABLE BORDER=3 CELLPADDING=5 BGCOLOR=LightBlue  WIDTH=900>
 <TR BGCOLOR=Yellow><B><TD>Log Event Alias</TD><TD>Activity</TD><TD>Event
 </TD><TD>Parameter(s)</TD></B></TR>"
   foreach i [lsort $EVENT_ALIASES($subsys)] {
@@ -389,9 +391,9 @@ global IDLRESERVED SAL_WORK_DIR SAL_DIR CMDS CMD_ALIASES EVTS EVENT_ALIASES UNIT
           set id [lindex [split [lindex $p 1] "()"] 0]
           if { [info exists DESC($subsys,$i,$id)] == 0 } { set DESC($subsys,$i,$id) unknown }
           if { [info exists UNITS($subsys,$i,$id)] } {
-             puts $fout "$p : $UNITS($subsys,$i,$id)<BR> - $DESC($subsys,$i,$id)<BR>"
+             puts $fout "$p ($UNITS($subsys,$i,$id)) - $DESC($subsys,$i,$id)<BR>"
           } else {
-             puts $fout "$p<BR> - $DESC($subsys,$i,$id)<BR>"
+             puts $fout "$p - $DESC($subsys,$i,$id)<BR>"
           }
         } 
         puts $fout "</TD></TR>"
@@ -411,7 +413,7 @@ global IDLRESERVED SAL_WORK_DIR SAL_DIR TLMS TLM_ALIASES UNITS DESC
   set fout [open $SAL_WORK_DIR/html/[set subsys]/[set subsys]_Telemetry.html w]
   puts stdout "Generating html telemetry table $subsys"
   puts $fout "<H3>$subsys Telemetry</H3><P><UL>"
-  puts $fout "<TABLE BORDER=3 CELLPADDING=5 BGCOLOR=LightBlue  WIDTH=600>
+  puts $fout "<TABLE BORDER=3 CELLPADDING=5 BGCOLOR=LightBlue  WIDTH=900>
 <TR BGCOLOR=Yellow><B><TD>Telemetry Stream</TD><TD>Parameter(s)</TD></B></TR>"
   foreach i [lsort $TLM_ALIASES($subsys)] {
       puts $fout "<TR><TD>[set subsys]_[set i]</TD><TD> "
@@ -420,9 +422,9 @@ global IDLRESERVED SAL_WORK_DIR SAL_DIR TLMS TLM_ALIASES UNITS DESC
          set id [lindex [split [lindex $p 1] "()"] 0]
          if { [info exists DESC($subsys,$i,$id)] == 0 } { set DESC($subsys,$i,$id) unknown }
          if { [info exists UNITS($subsys,$i,$id)] } {
-             puts $fout "$p : $UNITS($subsys,$i,$id)<BR> - $DESC($subsys,$i,$id)<BR>"
+             puts $fout "$p ($UNITS($subsys,$i,$id)) - $DESC($subsys,$i,$id)<BR>"
           } else {
-             puts $fout "$p<BR> - $DESC($subsys,$i,$id)<BR>"
+             puts $fout "$p - $DESC($subsys,$i,$id)<BR>"
           }
         } 
         puts $fout "</TD></TR>"

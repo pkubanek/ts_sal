@@ -94,17 +94,18 @@ if { $argv == "" || [lsearch $argv lib] > -1 } {
 if { $argv == "" || [lsearch $argv java] > -1 } {
  puts stdout  "Generating Java"
  foreach subsys $EVERYTHING {
-  if { [info exists DO($subsys)] } {
-   exec rm -fr [set subsys]/java
-   set bad ""
-   set result ""
-   catch { set results [exec salgenerator $subsys sal java ] } bad
-   puts stdout "$result $bad"
-   set bad ""
-   set result ""
-   catch { set results [exec salgenerator $subsys maven ] } bad
-   puts stdout "$result $bad"
-
+  if { $subsys != "MTMount" } {
+   if { [info exists DO($subsys)] } {
+    exec rm -fr [set subsys]/java
+    set bad ""
+    set result ""
+    catch { set results [exec salgenerator $subsys sal java ] } bad
+    puts stdout "$result $bad"
+    set bad ""
+    set result ""
+    catch { set results [exec salgenerator $subsys maven ] } bad
+    puts stdout "$result $bad"
+   }
   }
  }
 }
@@ -116,12 +117,6 @@ if { $argv == "" || [lsearch $argv efd] > -1 } {
  set bad ""
  set result ""
  catch { set results [updateefdschema] } bad
- puts stdout "$result $bad"
- puts stdout  "Updating EFD InfluxDB writers"
- source $env(SAL_DIR)/geninfluxefd-multi.tcl
- set bad ""
- set result ""
- catch { set results [updateinfluxschema] } bad
  puts stdout "$result $bad"
  puts stdout  "Updating EFD kafka writers"
  source $env(SAL_DIR)/genkafkaefd.tcl

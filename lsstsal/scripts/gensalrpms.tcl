@@ -135,6 +135,13 @@ rpmbuild -bb -bl -v $SAL_WORK_DIR/rpmbuild/SPECS/ts_sal_[set subsys].spec
   exec /tmp/makerpm  >& /tmp/makerpm.log
   exec cat /tmp/makerpm.log
   cd $SAL_WORK_DIR
+  set utils ""
+  catch {
+    set utils [glob $SAL_WORK_DIR/rpmbuild/RPMS/x86_64/ts_sal_utils-$SALVERSION*]
+  }
+  if { $utils == "" } {
+     generateUtilsrpm
+  }
 }
 
 proc updateddsruntime { version } {
@@ -319,7 +326,7 @@ URL:       %{url}
 Prefix:    %{_prefix}
 Buildroot: %{buildroot}
 Requires: OpenSpliceDDS = $OSPL_VERSION
-Requires: linuxptp
+Requires: ts_sal_utils
 "
    foreach subsys $SYSDIC(systems) {
       puts $fout "Requires: $subsys = $SALVERSION"
@@ -374,7 +381,7 @@ URL:       %{url}
 Prefix:    %{_prefix}
 Buildroot: %{buildroot}
 Requires: OpenSpliceDDS = $OSPL_VERSION
-Requires: linuxptp
+Requires: ts_sal_utils
 "
    foreach subsys $SYSDIC(systems) {
       if { [string range $subsys 0 1] == "AT" } {
@@ -421,7 +428,7 @@ Source0: [set subsys]-$SALVERSION.tgz
 BuildRoot: $SAL_WORK_DIR/rpmbuild/%\{name\}-%\{version\}
 Packager: dmills@lsst.org
 Requires: OpenSpliceDDS = $OSPL_VERSION
-Requires: linuxptp
+Requires: ts_sal_utils
 %global __os_install_post %{nil}
 %define debug_package %{nil}
 
@@ -480,7 +487,7 @@ BuildRoot: $SAL_WORK_DIR/rpmbuild/%\{name\}-%\{version\}
 Packager: dmills@lsst.org
 Requires: OpenSpliceDDS = $OSPL_VERSION
 Requires : [set subsys] = $SALVERSION
-Requires: linuxptp
+Requires: ts_sal_utils
 %global __os_install_post %{nil}
 %define debug_package %{nil}
 
@@ -539,6 +546,7 @@ Requires: OpenSpliceDDS >= $OSPL_VERSION
 Requires: mariadb-devel
 Requires: tcl
 Requires: librdkafka
+Requires: ts_sal_utils
 
 %global __os_install_post %{nil}
 %define debug_package %{nil}
@@ -667,7 +675,7 @@ This package provides utilities supporting the ts_sal_runtime packages
 %setup
 
 %install
-cp -fr * %{buildroot}/.
+cp -fr %\{name\}-%\{version\}/* %{buildroot}/.
 
 %files
 /etc/systemd/system/ts_sal_settai.service
@@ -690,7 +698,7 @@ Wants=network-online.target
 \[Service\]
 Type=simple
 WorkingDirectory=/opt/lsst/ts_sal/bin
-ExecStart=/opt/lsst/ts_sal/bin/set-tai
+ExecStart=/opt/lsst/ts_sal/bin/update_leapseconds
 Restart=on-failure
 User=root
 
@@ -698,10 +706,11 @@ User=root
 WantedBy=ts_sal_settai.service
 "
   close $fser
-  copyasset $SAL_WORK_DIR/bin/set-tai ts_sal_utils-$SALVERSION/opt/lsst/ts_sal/bin/.
-  copyasset $SAL_WORK_DIR/bin/update_leapseconds ts_sal_utils-$SALVERSION/opt/lsst/ts_sal/bin/.
+  exec $SAL_DIR/make_salUtils
+  copyasset $SAL_WORK_DIR/salUtils/set-tai ts_sal_utils-$SALVERSION/opt/lsst/ts_sal/bin/.
+  copyasset $SAL_DIR/update_leapseconds ts_sal_utils-$SALVERSION/opt/lsst/ts_sal/bin/.
   copyasset $SAL_WORK_DIR/lib/libsalUtils.so ts_sal_utils-$SALVERSION/opt/lsst/ts_sal/lib/.
-  copyasset /usr/share/zoneinfo/leap-seconds.list  ts_sal_utils-$SALVERSION/opt/lsst/ts_sal/etc/.
+  copyasset $SAL_DIR/leap-seconds.list ts_sal_utils-$SALVERSION/opt/lsst/ts_sal/etc/.
   exec tar cvzf $SAL_WORK_DIR/rpmbuild/SOURCES/ts_sal_utils-$SALVERSION.tgz ts_sal_utils-$SALVERSION
   exec rm -fr $SAL_WORK_DIR/rpmbuild/BUILD/ts_sal_utils-$SALVERSION/*
   exec cp -r ts_sal_utils-$SALVERSION $SAL_WORK_DIR/rpmbuild/BUILD/.
@@ -754,6 +763,8 @@ cp -fR * /opt/.
 %clean
 
 %post
+systemctl enable ts_sal_settai
+systemctl start ts_sal_settai
 %postun
 %changelog
 "
