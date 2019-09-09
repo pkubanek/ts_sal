@@ -19,10 +19,7 @@ CCC           = $(CXX)
 MAKEFILE      = Makefile.sacpp_SAL_testevents
 DEPENDENCIES  =
 BTARGETDIR    = ./
-BIN1           = $(BTARGETDIR)sacpp_SAL_event$(EXESUFFIX)$(EXEEXT)
-BIN2           = $(BTARGETDIR)sacpp_SAL_eventlog$(EXESUFFIX)$(EXEEXT)
-OBJS1          =  .obj/SAL_SALSubsys$(OBJEXT) .obj/SALDataEvent$(OBJEXT)
-OBJS2          =  .obj/SAL_SALSubsys$(OBJEXT) .obj/SALDataEventLogger$(OBJEXT)
+OBJS1          = .obj/SAL_SALSubsys$(OBJEXT)
 ## INSERT EVENTS TEST SRC
 CAT           = cat
 MV            = mv -f
@@ -79,29 +76,12 @@ endif
 #----------------------------------------------------------------------------
 #       Local targets
 #----------------------------------------------------------------------------
-
-## INSERT EVENTS TEST BIN
-
-$(BIN1): $(OBJS1)
-	@$(TESTDIRSTART) "$(BTARGETDIR)" $(TESTDIREND) $(MKDIR) "$(BTARGETDIR)"
-	$(LINK.cc) $(OBJS1) $(LDLIBS) $(OUTPUT_OPTION)
-
-$(BIN2): $(OBJS2)
-	@$(TESTDIRSTART) "$(BTARGETDIR)" $(TESTDIREND) $(MKDIR) "$(BTARGETDIR)"
-	$(LINK.cc) $(OBJS2) $(LDLIBS) $(OUTPUT_OPTION)
-
-
 .obj/SAL_SALData$(OBJEXT): ../src/SAL_SALSubsys.cpp
 	@$(TESTDIRSTART) ".obj/../src" $(TESTDIREND) $(MKDIR) ".obj/../src"
 	$(COMPILE.cc) $(EXPORTFLAGS) $(OUTPUT_OPTION) ../src/SAL_SALSubsys.cpp
 
-.obj/SALDataEvent$(OBJEXT): ../src/SALDataEvent.cpp
-	@$(TESTDIRSTART) ".obj/../src" $(TESTDIREND) $(MKDIR) ".obj/../src"
-	$(COMPILE.cc) $(EXPORTFLAGS) $(OUTPUT_OPTION) ../src/SALDataEvent.cpp
+## INSERT EVENTS TEST BIN
 
-.obj/SALDataEventLogger$(OBJEXT): ../src/SALDataEventLogger.cpp
-	@$(TESTDIRSTART) ".obj/../src" $(TESTDIREND) $(MKDIR) ".obj/../src"
-	$(COMPILE.cc) $(EXPORTFLAGS) $(OUTPUT_OPTION) ../src/SALDataEventLogger.cpp
 
 generated: $(GENERATED_DIRTY)
 	@-:

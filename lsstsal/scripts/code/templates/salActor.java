@@ -2,16 +2,12 @@ package org.lsst.sal;
 
 import org.opensplice.dds.dcps.TypeSupportImpl;
 import DDS.*;
-import DDS.STATUS_MASK_NONE; 
-import DDS.DOMAIN_ID_DEFAULT;
-import DDS.DATAREADER_QOS_USE_TOPIC_QOS;
 import DDS.DataReader;
 import DDS.DataWriter;
 import DDS.DataWriterQosHolder;
 import DDS.DomainParticipant;
 import DDS.DomainParticipantFactory;
 import DDS.DurabilityQosPolicyKind;
-import DDS.PARTICIPANT_QOS_DEFAULT;
 import DDS.Publisher;
 import DDS.PublisherQosHolder;
 import DDS.ReliabilityQosPolicyKind;
@@ -20,12 +16,7 @@ import DDS.SubscriberQosHolder;
 import DDS.Topic;
 import DDS.TopicQosHolder;
 import DDS.DurabilityQosPolicyKind;
-import DDS.HANDLE_NIL;
-import DDS.ANY_INSTANCE_STATE;
-import DDS.ANY_SAMPLE_STATE;
-import DDS.ANY_VIEW_STATE;
 import DDS.DataReader;
-import DDS.LENGTH_UNLIMITED;
 import DDS.SampleInfoSeqHolder;
 
 public class salActor {
@@ -56,8 +47,9 @@ public class salActor {
         public Boolean isEventWriter;
         public Boolean isProcessor;
         public Boolean isCommand;
-        public Boolean tuneableQos;
+        public int tuneableQos;
         public int historyDepth;
+        public DurabilityQosPolicyKind durability;
         public int debugLevel;
         public int maxSamples;
         public int sndSeqNum;
@@ -66,13 +58,17 @@ public class salActor {
         public int rcvOrigin;
         public int error;
         public int ack;
+        public int activehost;
+        public int activeorigin;
+        public int activecmdid;
+        public double timeout;
         public String result;
         public double timeRemaining;
         public double sndStamp;
         public double rcvStamp;
 	public double sampleAge;
 
-    public salActor() {
+    public salActor(int qos) {
 	this.isActive = false;
 	this.isReader = false;
 	this.isWriter = false;
@@ -80,8 +76,8 @@ public class salActor {
 	this.isEventReader = false;
 	this.isEventWriter = false;
 	this.isProcessor = false;
-        this.tuneableQos = true;
-        this.historyDepth = 10;
+        this.tuneableQos = qos;
+        this.historyDepth = 100;
         this.maxSamples = 999999999;
     }
 }

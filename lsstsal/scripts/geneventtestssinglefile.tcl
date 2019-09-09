@@ -70,7 +70,6 @@ proc insertSenders { subsys file_writer } {
     foreach alias $EVENT_ALIASES($subsys) {
         puts $file_writer "  mgr.salEventPub(\"[set subsys]_logevent_[set alias]\");"
     }
-    puts $file_writer "  cout << \"===== [set subsys] all senders ready =====\" << endl;"
 
     foreach alias $EVENT_ALIASES($subsys) {
         puts $file_writer "\{" 
@@ -78,8 +77,8 @@ proc insertSenders { subsys file_writer } {
         puts $file_writer "  int iseq;"
         puts $file_writer "  iseq = 0;"
         puts $file_writer "  [set subsys]_logevent_[set alias]C myData;"
+        puts $file_writer "  cout << \"=== Event $alias iseq = \" << iseq << endl;"
 
-        puts $file_writer "  cout << \"=== [set subsys]_[set alias] start of topic ===\" << endl;"
         set fragment_reader [open $SAL_WORK_DIR/include/SAL_[set subsys]_logevent_[set alias]Cpub.tmp r]
         while { [gets $fragment_reader line] > -1 } {
             puts $file_writer [string range $line 2 1000]
@@ -87,7 +86,7 @@ proc insertSenders { subsys file_writer } {
         
         puts $file_writer "  priority = myData.priority;"
         puts $file_writer "  mgr.logEvent_[set alias](&myData, priority);"
-        puts $file_writer "  cout << \"=== [set subsys]_[set alias] end of topic ===\" << endl;"
+        puts $file_writer "  cout << \"=== Event $alias generated = \" << endl;"
         puts $file_writer "  sleep(1);\n\}"
     }
 
@@ -109,9 +108,6 @@ proc insertLoggers { subsys file_writer } {
 
     puts $file_writer "int test_[set subsys]_all_logger()"
     puts $file_writer "\{"
-    puts $file_writer "  os_time delay_10ms = \{ 0, 10000000 \};"
-    puts $file_writer "  int cmdId = -1;"
-    puts $file_writer "  int timeout = 1;"
 
     if { [info exists SYSDIC($subsys,keyedID)] } {
         puts $file_writer "  int [set subsys]ID = 1;"
@@ -126,11 +122,10 @@ proc insertLoggers { subsys file_writer } {
     foreach alias $EVENT_ALIASES($subsys) {
         puts $file_writer "  mgr.salEventSub(\"[set subsys]_logevent_[set alias]\");"
     }
-    puts $file_writer "  cout << \"===== [set subsys] all loggers ready =====\" << endl;"
+    puts $file_writer "  cout << \"=== [set subsys] loggers ready \" << endl;"
 
 
     foreach alias $EVENT_ALIASES($subsys) {
-        puts $file_writer "  cout << \"=== [set subsys]_[set alias] start of topic ===\" << endl;"
         puts $file_writer "  while (1) "
         puts $file_writer "  \{"
         puts $file_writer "    int status = -1;"
@@ -145,7 +140,6 @@ proc insertLoggers { subsys file_writer } {
         }
         close $fragment_reader
         puts $file_writer "      break;\n    \}\n  \}"
-        puts $file_writer "  cout << \"=== [set subsys]_[set alias] end of topic ===\" << endl;"
     }
 
     puts $file_writer "/* Remove the DataWriters etc */"

@@ -113,7 +113,7 @@ global EVENT_ALIASES EVTS
            event.priority=priority;
            if (sal\[actorIdx\].publisher == null) \{
               createPublisher(actorIdx);
-              boolean autodispose_unregistered_instances = false;
+              boolean autodispose_unregistered_instances = true;
               createWriter(actorIdx,autodispose_unregistered_instances);
               sal\[actorIdx\].isEventWriter = true;
            \}

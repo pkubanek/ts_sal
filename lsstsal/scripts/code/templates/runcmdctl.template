@@ -1,5 +1,5 @@
 #!/bin/sh
 echo "Starting commander/controller sample for SALTopic"
-gnome-terminal -e "java -cp $SAL_HOME/lib/saj_SALData_types.jar:./classes:$OSPL_HOME/jar/dcpssaj.jar:saj_SALData_cmdctl.jar SALDataController" &
-java -cp $SAL_HOME/lib/saj_SALData_types.jar:./classes:$OSPL_HOME/jar/dcpssaj.jar:saj_SALData_cmdctl.jar SALDataCommander
+gnome-terminal -e "java  -Djava.library.path=$LD_LIBRARY_PATH -cp $SAL_HOME/lib/saj_SALData_types.jar:$SAL_WORK_DIR/lib:./classes:$OSPL_HOME/jar/dcpssaj.jar:saj_SALData_cmdctl.jar SALDataController" &
+java  -Djava.library.path=$LD_LIBRARY_PATH -cp $SAL_HOME/lib/saj_SALData_types.jar:$SAL_WORK_DIR/lib:./classes:$OSPL_HOME/jar/dcpssaj.jar:saj_SALData_cmdctl.jar SALDataCommander
 

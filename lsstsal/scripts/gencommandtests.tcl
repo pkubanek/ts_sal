@@ -1,7 +1,7 @@
 
 proc gencommandtestscpp { subsys } {
-global CMD_ALIASES CMDS SAL_WORK_DIR SYSDIC
- if { [info exists CMD_ALIASES($subsys)] } {
+global CMD_ALIASES CMDS SAL_WORK_DIR SYSDIC DONE_CMDEVT
+ if { [info exists CMD_ALIASES($subsys)] && $DONE_CMDEVT == 0 } {
    foreach alias $CMD_ALIASES($subsys) {
     if { [info exists CMDS($subsys,$alias,param)] } {
       stdlog "	: command test send for = $alias"
@@ -60,9 +60,6 @@ int main (int argc, char *argv\[\])
   mgr.salCommand(\"[set subsys]_command_[set alias]\");
 "
   set cpars $CMDS($subsys,$alias)
-  puts $fcmd "  myData.device   = \"[lindex $cpars 0]\";"
-  puts $fcmd "  myData.property = \"[lindex $cpars 1]\";"
-  puts $fcmd "  myData.action   = \"[lindex $cpars 2]\";"
   set fin [open $SAL_WORK_DIR/include/SAL_[set subsys]_command_[set alias]Cargs.tmp r]
   gets $fin rec; gets $fin rec; gets $fin rec; gets $fin rec;
   while { [gets $fin rec] > -1 } {
@@ -173,7 +170,7 @@ int main (int argc, char *argv\[\])
       if { [string range $rec 0 26] == "## INSERT COMMANDS TEST SRC" } {
          set n 2
          set extrasrc "		"
-         set allbin "all: \$\(BIN1\) \$\(BIN2\)"
+         set allbin "all: "
          foreach alias $CMD_ALIASES($subsys) {
            if { [info exists CMDS($subsys,$alias,param)] } {
              incr n 1

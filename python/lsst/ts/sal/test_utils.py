@@ -92,32 +92,6 @@ class TestData:
     """
     __test__ = False  # stop pytest from warning that this is not a test
 
-    # def __init__(self, index=None):
-    #     self.index = index
-    #     self.remote = SALPY_Test.SAL_Test(index=index)
-    #     self.controller = SALPY_Test.SAL_Test(index=index)
-
-    #     for name in self.remote.getCommandNames():
-    #         topic = f"Test_command_{name}"
-    #         self.remote.salCommand(topic)
-    #         time.sleep(STD_SLEEP)
-    #         self.controller.salProcessor(topic)
-    #         time.sleep(STD_SLEEP)
-
-    #     for name in self.remote.getEventNames():
-    #         topic = f"Test_logevent_{name}"
-    #         self.remote.salEventSub(topic)
-    #         time.sleep(STD_SLEEP)
-    #         self.controller.salEventPub(topic)
-    #         time.sleep(STD_SLEEP)
-
-    #     for name in self.remote.getTelemetryNames():
-    #         topic = f"Test_{name}"
-    #         self.remote.salTelemetrySub(topic)
-    #         time.sleep(STD_SLEEP)
-    #         self.controller.salTelemetryPub(topic)
-    #         time.sleep(STD_SLEEP)
-
     @property
     def arrays_fields(self):
         """Get a tuple of the fields in an arrays struct."""

@@ -53,8 +53,8 @@ global SAL_WORK_DIR SALVERSION
 proc updateruntime { subsys {withtest 0} } {
 global SAL_WORK_DIR SALVERSION SAL_DIR
   set rpmname $subsys
-  exec rm -fr [set rpmname]-$SALVERSION
   if { $withtest } {set rpmname [set subsys]_test}
+  exec rm -fr [set rpmname]-$SALVERSION
   exec mkdir -p [set rpmname]-$SALVERSION/opt/lsst/ts_sal
   exec mkdir -p [set rpmname]-$SALVERSION/opt/lsst/ts_sal/bin
   exec mkdir -p $SAL_WORK_DIR/rpmbuild/BUILD
@@ -96,6 +96,7 @@ global SAL_WORK_DIR SALVERSION SAL_DIR
     copyasset $SAL_WORK_DIR/[set subsys]/cpp/ccpp_sal_[set subsys].h [set rpmname]-$SALVERSION/opt/lsst/ts_sal/include/.
     copyasset $SAL_WORK_DIR/[set subsys]/cpp/sal_[set subsys]SplDcps.h [set rpmname]-$SALVERSION/opt/lsst/ts_sal/include/.
     copyasset $SAL_DIR/code/templates/SAL_defines.h [set rpmname]-$SALVERSION/opt/lsst/ts_sal/include/.
+    copyasset $SAL_DIR/DDS_DefaultQoS_All.xml [set rpmname]-$SALVERSION/opt/lsst/ts_xml/sal_interfaces/.
     foreach dtype "Commands Events Generics Telemetry" {
       if { [file exists $SAL_WORK_DIR/[set subsys]_[set dtype].xml] } {
         exec cp $SAL_WORK_DIR/[set subsys]_[set dtype].xml [set rpmname]-$SALVERSION/opt/lsst/ts_xml/sal_interfaces/[set subsys]/.
@@ -134,6 +135,13 @@ rpmbuild -bb -bl -v $SAL_WORK_DIR/rpmbuild/SPECS/ts_sal_[set subsys].spec
   exec /tmp/makerpm  >& /tmp/makerpm.log
   exec cat /tmp/makerpm.log
   cd $SAL_WORK_DIR
+  set utils ""
+  catch {
+    set utils [glob $SAL_WORK_DIR/rpmbuild/RPMS/x86_64/ts_sal_utils-$SALVERSION*]
+  }
+  if { $utils == "" } {
+     generateUtilsrpm
+  }
 }
 
 proc updateddsruntime { version } {
@@ -318,7 +326,7 @@ URL:       %{url}
 Prefix:    %{_prefix}
 Buildroot: %{buildroot}
 Requires: OpenSpliceDDS = $OSPL_VERSION
-Requires: linuxptp
+Requires: ts_sal_utils
 "
    foreach subsys $SYSDIC(systems) {
       puts $fout "Requires: $subsys = $SALVERSION"
@@ -373,7 +381,7 @@ URL:       %{url}
 Prefix:    %{_prefix}
 Buildroot: %{buildroot}
 Requires: OpenSpliceDDS = $OSPL_VERSION
-Requires: linuxptp
+Requires: ts_sal_utils
 "
    foreach subsys $SYSDIC(systems) {
       if { [string range $subsys 0 1] == "AT" } {
@@ -420,7 +428,7 @@ Source0: [set subsys]-$SALVERSION.tgz
 BuildRoot: $SAL_WORK_DIR/rpmbuild/%\{name\}-%\{version\}
 Packager: dmills@lsst.org
 Requires: OpenSpliceDDS = $OSPL_VERSION
-Requires: linuxptp
+Requires: ts_sal_utils
 %global __os_install_post %{nil}
 %define debug_package %{nil}
 
@@ -478,8 +486,8 @@ Source0: [set subsys]_test-$SALVERSION.tgz
 BuildRoot: $SAL_WORK_DIR/rpmbuild/%\{name\}-%\{version\}
 Packager: dmills@lsst.org
 Requires: OpenSpliceDDS = $OSPL_VERSION
-Requires : ts_[set subsys] = $SALVERSION
-Requires: linuxptp
+Requires : [set subsys] = $SALVERSION
+Requires: ts_sal_utils
 %global __os_install_post %{nil}
 %define debug_package %{nil}
 
@@ -538,6 +546,7 @@ Requires: OpenSpliceDDS >= $OSPL_VERSION
 Requires: mariadb-devel
 Requires: tcl
 Requires: librdkafka
+Requires: ts_sal_utils
 
 %global __os_install_post %{nil}
 %define debug_package %{nil}
@@ -565,11 +574,74 @@ cp -fr * %{buildroot}/.
 
 %post
 %postun
+/opt/lsst/ts_sal/scripts/migrateEFDtable.tcl > /tmp/migrateEFDtable.log
 %changelog
 "
   close $fout
 }
 
+###
+### sudo mv /usr/local /usr/local.save
+### sudo mkdir /usr/local
+### ./configure --prefix=/usr/local ; make ; sudo make install ; cd /usr/local ; sudo sh
+### rm ./lib/python3.7/site-packages/setuptools/script\ \(dev\).tmpl
+### rm ./lib/python3.7/site-packages/setuptools/command/launcher\ manifest.xml
+### tar cvzf /tmp/py3runtime.tgz bin include lib share
+### cd $SAL_WORK_DIR/rpmbuild/BUILDROOT/python-3.7.3-1.el7.centos.x86_64
+### rm -fr * ; mkdir -p usr/local ; cd usr/local
+### tar xvzf /tmp/py3runtime.tgz
+### cd $SAL_WORK_DIR
+### rpmbuild --nodeps --short-circuit -bb -bl -v ./rpmbuild/SPECS/ts_python.spec
+### rm -fr /usr/local
+### mv /usr/local.save /usr/local
+###
+proc generatePythonspec { } {
+global SAL_WORK_DIR SALVERSION RPMFILES OSPL_VERSION env
+  set fout [open $SAL_WORK_DIR/rpmbuild/SPECS/ts_python.spec w]
+  puts $fout "Name: python
+Version: 3.7.3
+Release: 1%\{?dist\}
+Summary: Python runtime for LSST TS
+Vendor: LSST
+License: PSF
+URL: http://project.lsst.org/ts
+Group: Telescope and Site SAL
+AutoReqProv: no
+Source0: Python3.7.3.tar.xz
+BuildRoot: $SAL_WORK_DIR/rpmbuild/%\{name\}-%\{version\}
+Packager: dmills@lsst.org
+
+%global __os_install_post %{nil}
+%define debug_package %{nil}
+
+%description
+This is a Python runtime and environment for the LSST Telescope and Site subsystems.
+
+%prep
+
+%setup
+ 
+%build
+#source /opt/lsst/ts_sal/setup.env
+
+%install
+cp -fr * %{buildroot}/.
+
+%files"
+set fin [open /home/dmills/python37/Python-3.7.3/lslr r]
+while { [gets $fin rec] > -1 } {
+   puts $fout $rec
+}
+close $fin
+puts $fout "
+%clean
+
+%post
+%postun
+%changelog
+"
+  close $fout
+}
 
 proc generateUtilsrpm { } {
 global SYSDIC SALVERSION SAL_WORK_DIR OSPL_VERSION
@@ -603,7 +675,7 @@ This package provides utilities supporting the ts_sal_runtime packages
 %setup
 
 %install
-cp -fr * %{buildroot}/.
+cp -fr %\{name\}-%\{version\}/* %{buildroot}/.
 
 %files
 /etc/systemd/system/ts_sal_settai.service
@@ -626,7 +698,7 @@ Wants=network-online.target
 \[Service\]
 Type=simple
 WorkingDirectory=/opt/lsst/ts_sal/bin
-ExecStart=/opt/lsst/ts_sal/bin/set-tai
+ExecStart=/opt/lsst/ts_sal/bin/update_leapseconds
 Restart=on-failure
 User=root
 
@@ -634,10 +706,11 @@ User=root
 WantedBy=ts_sal_settai.service
 "
   close $fser
-  copyasset $SAL_WORK_DIR/bin/set-tai ts_sal_utils-$SALVERSION/opt/lsst/ts_sal/bin/.
-  copyasset $SAL_WORK_DIR/bin/update_leapseconds ts_sal_utils-$SALVERSION/opt/lsst/ts_sal/bin/.
+  exec $SAL_DIR/make_salUtils
+  copyasset $SAL_WORK_DIR/salUtils/set-tai ts_sal_utils-$SALVERSION/opt/lsst/ts_sal/bin/.
+  copyasset $SAL_DIR/update_leapseconds ts_sal_utils-$SALVERSION/opt/lsst/ts_sal/bin/.
   copyasset $SAL_WORK_DIR/lib/libsalUtils.so ts_sal_utils-$SALVERSION/opt/lsst/ts_sal/lib/.
-  copyasset /usr/share/zoneinfo/leap-seconds.list  ts_sal_utils-$SALVERSION/opt/lsst/ts_sal/etc/.
+  copyasset $SAL_DIR/leap-seconds.list ts_sal_utils-$SALVERSION/opt/lsst/ts_sal/etc/.
   exec tar cvzf $SAL_WORK_DIR/rpmbuild/SOURCES/ts_sal_utils-$SALVERSION.tgz ts_sal_utils-$SALVERSION
   exec rm -fr $SAL_WORK_DIR/rpmbuild/BUILD/ts_sal_utils-$SALVERSION/*
   exec cp -r ts_sal_utils-$SALVERSION $SAL_WORK_DIR/rpmbuild/BUILD/.
@@ -690,6 +763,8 @@ cp -fR * /opt/.
 %clean
 
 %post
+systemctl enable ts_sal_settai
+systemctl start ts_sal_settai
 %postun
 %changelog
 "

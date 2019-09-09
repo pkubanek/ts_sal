@@ -19,10 +19,7 @@ CCC           = $(CXX)
 MAKEFILE      = Makefile.sacpp_SAL_testcommands
 DEPENDENCIES  = 
 BTARGETDIR    = ./
-BIN1           = $(BTARGETDIR)sacpp_SAL_Commander$(EXESUFFIX)$(EXEEXT)
-BIN2           = $(BTARGETDIR)sacpp_SAL_Controller$(EXESUFFIX)$(EXEEXT)
-OBJS1          = .obj/SAL_SALSubsys$(OBJEXT) .obj/SALDataCommander$(OBJEXT)
-OBJS2          =  .obj/SAL_SALSubsys$(OBJEXT) .obj/SALDataController$(OBJEXT)
+OBJS1          = .obj/SAL_SALSubsys$(OBJEXT)
 ## INSERT COMMANDS TEST SRC
 CAT           = cat
 MV            = mv -f
@@ -79,29 +76,12 @@ endif
 #----------------------------------------------------------------------------
 #       Local targets
 #----------------------------------------------------------------------------
-
-## INSERT COMMANDS TEST BIN
-
-$(BIN1): $(OBJS1)
-	@$(TESTDIRSTART) "$(BTARGETDIR)" $(TESTDIREND) $(MKDIR) "$(BTARGETDIR)"
-	$(LINK.cc) $(OBJS1) $(LDLIBS) $(OUTPUT_OPTION)
-
-$(BIN2): $(OBJS2)
-	@$(TESTDIRSTART) "$(BTARGETDIR)" $(TESTDIREND) $(MKDIR) "$(BTARGETDIR)"
-	$(LINK.cc) $(OBJS2) $(LDLIBS) $(OUTPUT_OPTION)
-
-
 .obj/SAL_SALData$(OBJEXT): ../src/SAL_SALSubsys.cpp
 	@$(TESTDIRSTART) ".obj/../src" $(TESTDIREND) $(MKDIR) ".obj/../src"
 	$(COMPILE.cc) $(EXPORTFLAGS) $(OUTPUT_OPTION) ../src/SAL_SALSubsys.cpp
 
-.obj/SALDataCommander$(OBJEXT): ../src/SALDataCommander.cpp
-	@$(TESTDIRSTART) ".obj/../src" $(TESTDIREND) $(MKDIR) ".obj/../src"
-	$(COMPILE.cc) $(EXPORTFLAGS) $(OUTPUT_OPTION) ../src/SALDataCommander.cpp
+## INSERT COMMANDS TEST BIN
 
-.obj/SALDataController$(OBJEXT): ../src/SALDataController.cpp
-	@$(TESTDIRSTART) ".obj/../src" $(TESTDIREND) $(MKDIR) ".obj/../src"
-	$(COMPILE.cc) $(EXPORTFLAGS) $(OUTPUT_OPTION) ../src/SALDataController.cpp
 
 generated: $(GENERATED_DIRTY)
 	@-:

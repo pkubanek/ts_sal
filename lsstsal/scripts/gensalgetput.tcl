@@ -25,7 +25,7 @@ salReturn SAL_[set base]::putSample_[set name]([set base]_[set name]C *data)
 #endif
   int actorIdx = SAL__[set base]_[set name]_ACTOR;
   if ( sal\[actorIdx\].isWriter == false ) \{
-    createWriter(actorIdx);
+    createWriter(actorIdx,false);
     sal\[actorIdx\].isWriter = true;
   \}
   DataWriter_var dwriter = getWriter(actorIdx);
@@ -34,7 +34,8 @@ salReturn SAL_[set base]::putSample_[set name]([set base]_[set name]C *data)
 
   Instance.private_revCode = DDS::string_dup(\"[string trim $revcode _]\");
   Instance.private_sndStamp = getCurrentTime();
-  Instance.private_origin = 1;
+  Instance.private_origin = getpid();
+  Instance.private_host = ddsIPaddress;
   Instance.private_seqNum = sndSeqNum;
   Instance.private_host = 1;
    "
@@ -82,7 +83,7 @@ salReturn SAL_[set base]::getSample_[set name]([set base]_[set name]C *data)
   DataReader_var dreader = getReader(actorIdx);
   [set base]::[set name][set revcode]DataReader_var SALReader = [set base]::[set name][set revcode]DataReader::_narrow(dreader.in());
   checkHandle(SALReader.in(), \"[set base]::[set name][set revcode]DataReader::_narrow\");
-  status = SALReader->take(Instances, info, sal\[SAL__[set base]_[set name]_ACTOR\].maxSamples , ANY_SAMPLE_STATE, ANY_VIEW_STATE, ANY_INSTANCE_STATE);
+  status = SALReader->take(Instances, info, sal\[SAL__[set base]_[set name]_ACTOR\].maxSamples , NOT_READ_SAMPLE_STATE, ANY_VIEW_STATE, ANY_INSTANCE_STATE);
   checkStatus(status, \"[set base]::[set name][set revcode]DataReader::take\");
   numsamp = Instances.length();
   for (DDS::ULong j = 0; j < numsamp; j++)
@@ -215,7 +216,7 @@ global SAL_WORK_DIR
 ###   if { $base == "m1m3" } {set tuneableQos false}
 ############################ IMPORTANT ####################################
    puts $fout "
-void SAL_SALData::initSalActors ()
+void SAL_SALData::initSalActors (int qos)
 \{
     for (int i=0; i<SAL__ACTORS_MAXCOUNT;i++) \{
       sal\[i\].isReader = false;
@@ -228,16 +229,22 @@ void SAL_SALData::initSalActors ()
       sal\[i\].isActive = false;
       sal\[i\].maxSamples = LENGTH_UNLIMITED;
       sal\[i\].sampleAge = 1.0e20;
-      sal\[i\].historyDepth = 1000;
-      sal\[i\].tuneableQos = [set tuneableQos];
+      sal\[i\].historyDepth = 100;
+      sal\[i\].tuneableQos = qos;
     \}
 "
    set idx 0
    foreach j $ptypes {
       set name [lindex $j 2]
+      set type [lindex [split $name _] 0]
       set revcode [getRevCode [set base]_[set name] short]
       puts $fout "    strcpy(sal\[$idx\].topicHandle,\"[set base]_[set name][set revcode]\");"
       puts $fout "    strcpy(sal\[$idx\].topicName,\"[set base]_[set name]\");"
+      if { $type == "command" || $type == "ackcmd" } {
+         puts $fout "    sal\[$idx\].durability = VOLATILE_DURABILITY_QOS;"
+      } else {
+         puts $fout "    sal\[$idx\].durability = TRANSIENT_DURABILITY_QOS;"
+      }
       incr idx 1
    }
   puts $fout "
@@ -254,16 +261,22 @@ proc addActorIndexesJava { idlfile base fout } {
    }
    puts $fout "	public static final int SAL__ACTORS_MAXCOUNT = $idx;"
    puts $fout "
-	public void initSalActors ()
+	public void initSalActors (int qos)
 	\{
 "
    set idx 0
    foreach j $ptypes {
       set name [lindex $j 2]
+      set type [lindex [split $name _] 0]
       set revcode [getRevCode [set base]_[set name] short]
-      puts $fout "		sal\[$idx\]=new salActor();" 
+      puts $fout "		sal\[$idx\]=new salActor(qos);" 
       puts $fout "		sal\[$idx\].topicHandle=\"[set base]_[set name][set revcode]\";"
       puts $fout "		sal\[$idx\].topicName=\"[set base]_[set name]\";"
+      if { $type == "command" || $type == "ackcmd" } {
+         puts $fout "		sal\[$idx\].durability = DurabilityQosPolicyKind.VOLATILE_DURABILITY_QOS;"
+      } else {
+         puts $fout "		sal\[$idx\].durability = DurabilityQosPolicyKind.TRANSIENT_DURABILITY_QOS;"
+      }
       incr idx 1
    }
   puts $fout "
@@ -383,6 +396,8 @@ global env SAL_DIR SAL_WORK_DIR SYSDIC TLMS EVTS
  if { $lang == "java" } {
   exec cp $SAL_DIR/code/templates/salActor.java [set id]/java/src/org/lsst/sal/.
   exec cp $SAL_DIR/code/templates/salActor.java [set base]/java/src/org/lsst/sal/.
+  exec cp $SAL_DIR/code/templates/salUtils.java [set id]/java/src/org/lsst/sal/.
+  exec cp $SAL_DIR/code/templates/salUtils.java [set base]/java/src/org/lsst/sal/.
   set fin [open $SAL_DIR/code/templates/SALDDS.java.template r]
   set fout [open [set id]/java/src/org/lsst/sal/SAL_[set base].java w]
   puts stdout "Configuring [set id]/java/src/org/lsst/sal/SAL_[set base].java"
@@ -503,7 +518,7 @@ puts $fout "
 	  [set name][set revcode]DataReader SALReader = [set name][set revcode]DataReaderHelper.narrow(dreader);
   	  SampleInfoSeqHolder infoSeq = new SampleInfoSeqHolder();
 	  SALReader.take(SALInstance, infoSeq, sal\[actorIdx\].maxSamples,
-					ANY_SAMPLE_STATE.value, ANY_VIEW_STATE.value,
+					NOT_READ_SAMPLE_STATE.value, ANY_VIEW_STATE.value,
 					ALIVE_INSTANCE_STATE.value);
           numsamp = SALInstance.value.length;
           if (numsamp > 0) \{
@@ -672,7 +687,7 @@ salReturn SAL_[set base]::getSample([set base]::[set name][set revcode]Seq data)
   DataReader_var dreader = getReader();
   [set base]::[set name][set revcode]DataReader_var SALReader = [set base]::[set name][set revcode]DataReader::_narrow(dreader.in());
   checkHandle(SALReader.in(), \"[set base]::[set name][set revcode]DataReader::_narrow\");
-  status = SALReader->take(data, infoSeq, LENGTH_UNLIMITED, ANY_SAMPLE_STATE, ANY_VIEW_STATE, ANY_INSTANCE_STATE);
+  status = SALReader->take(data, infoSeq, LENGTH_UNLIMITED, NOT_READ_SAMPLE_STATE, ANY_VIEW_STATE, ANY_INSTANCE_STATE);
   checkStatus(status, \"[set base]::[set name][set revcode]DataReader::take\");
   numsamp = data.length();
   for (DDS::ULong j = 0; j < numsamp; j++)

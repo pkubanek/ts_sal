@@ -138,7 +138,7 @@ global env SAL_WORK_DIR SAL_DIR SALVERSION OSPL_VERSION
   foreach i [glob $SAL_WORK_DIR/idl-templates/validated/[set subsys]_*.idl] {
      set id [join [lrange [split [file tail [file rootname $i]] _] 1 end] _]
      set type [lindex [split $id _] 0]
-     if { $type != "command" && $type != "logevent" } {
+     if { $type != "command" && $type != "logevent" && $type != "ackcmd"} {
        exec cp $SAL_WORK_DIR/[set subsys]_[set id]/java/src/[set subsys]_[set id]DataPublisher.java $SAL_WORK_DIR/maven/[set subsys]_[set SALVERSION]/src/test/java/.
        exec cp $SAL_WORK_DIR/[set subsys]_[set id]/java/src/[set subsys]_[set id]DataSubscriber.java $SAL_WORK_DIR/maven/[set subsys]_[set SALVERSION]/src/test/java/.
        puts stdout "Processed $id"
@@ -151,6 +151,7 @@ global env SAL_WORK_DIR SAL_DIR SALVERSION OSPL_VERSION
   }
   exec cp $SAL_WORK_DIR/$subsys/java/src/org/lsst/sal/SAL_[set subsys].java $SAL_WORK_DIR/maven/[set subsys]_[set SALVERSION]/src/main/java/org/lsst/sal/.
   exec cp $SAL_WORK_DIR/$subsys/java/src/org/lsst/sal/salActor.java $SAL_WORK_DIR/maven/[set subsys]_[set SALVERSION]/src/main/java/org/lsst/sal/.
+  exec cp $SAL_WORK_DIR/$subsys/java/src/org/lsst/sal/salUtils.java $SAL_WORK_DIR/maven/[set subsys]_[set SALVERSION]/src/main/java/org/lsst/sal/.
   exec cp -r $SAL_WORK_DIR/$subsys/java/$subsys $SAL_WORK_DIR/maven/[set subsys]_[set SALVERSION]/src/main/java/.
   exec mkdir -p $SAL_WORK_DIR/maven/libs
   exec cp $env(OSPL_HOME)/jar/dcpssaj.jar $SAL_WORK_DIR/maven/libs/.

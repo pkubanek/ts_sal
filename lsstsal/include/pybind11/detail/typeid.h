@@ -1,5 +1,5 @@
 /*
-    pybind11/typeid.h: Compiler-independent access to type identifiers
+    pybind11/detail/typeid.h: Compiler-independent access to type identifiers
 
     Copyright (c) 2016 Wenzel Jakob <wenzel.jakob@epfl.ch>
 
@@ -15,6 +15,8 @@
 #if defined(__GNUG__)
 #include <cxxabi.h>
 #endif
+
+#include "common.h"
 
 NAMESPACE_BEGIN(PYBIND11_NAMESPACE)
 NAMESPACE_BEGIN(detail)

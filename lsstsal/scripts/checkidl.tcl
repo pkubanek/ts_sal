@@ -178,21 +178,6 @@ global XMLTOPICS XMLTLM IDLRESERVED XMLITEMS
            close $fcmt
            set mdid [lindex [exec md5sum $SAL_WORK_DIR/idl-templates/validated/$topicid.idl] 0]
            set tid [format %d 0x[string range $mdid 26 end]]
-           gentopicdefsql $topicid
-           set fsql [open $SAL_WORK_DIR/sql/[set topicid]_items.sql a]
-           if { [info exists tnames] } {
-            foreach t $tnames {
-              set ps $props($t,size)
-              incr topicsize [expr $ps * $IDLSIZES([string trim $props($t,type)])]
-              if { $ps > 1 && $props($t,type) != "string" } {
-                 incr ps 1
-              }
-              puts $fsql "INSERT INTO [set topicid]_items VALUES ($props($t,num),\"$t\",\"$props($t,type)\",$props($t,size),\"$props($t,units)\",$props($t,freq),\"$props($t,range)\",\"$props($t,location)\",\"$props($t,comment)\");"
-              incr tid 1
-            }
-           }
-           puts $fsql "#TOPICSIZE $topicsize"
-           close $fsql
            puts $fhtm "</TABLE><P>Click here to update: <input type=\"submit\" value=\"Submit\" name=\"update\"></FORM><P></BODY></HTML>"
            close $fhtm
       } else {
@@ -274,13 +259,14 @@ global XMLTOPICS XMLTLM IDLRESERVED XMLITEMS
              puts stdout "Skipping private item $id or const"
            } else {
              set m1 [lindex [split $rec "/"] 2]
-             set meta [split $m1 "|"]
-             set freq  [string trim [lindex $meta 0]]
-             set units [string trim [lindex $meta 1]]
-             set comments [string trim [lindex $meta 2]]
-             set range [string trim [lindex $meta 3]]
-             set location [string trim [lindex $meta 4]]
-             set pubsize [string trim [lindex $meta 5]]
+             set meta [split $m1 ",=()"]
+             set freq  [string trim [lindex $meta 5]]
+             set units [string trim [lindex $meta 2]]
+             set comments [string trim [lindex $meta 4]]
+             set range "" ; set location "" ; set pubsize "" ; set freq ""
+#             set range [string trim [lindex $meta 3]]
+#             set location [string trim [lindex $meta 4]]
+#             set pubsize [string trim [lindex $meta 5]]
 #             puts stdout "$nt - $u $id $type $siz $units $range $comments"
              incr NEWSIZES($hid) $siz
              puts $fout " $u [string trim $vitem];"
@@ -343,12 +329,11 @@ global XMLTOPICS XMLTLM IDLRESERVED XMLITEMS
 }
 
 
-proc gentopicdefsql { topic } {
+proc gentopicdefsql { subsys } {
 global SAL_WORK_DIR
    exec mkdir -p $SAL_WORK_DIR/sql
-   if { [file exists $SAL_WORK_DIR/sql/[set topic]_items.sql] == 0 } {
-     set fsql [open $SAL_WORK_DIR/sql/[set topic]_items.sql w]
-     puts $fsql "CREATE TABLE [set topic]_items (
+     set fsql [open $SAL_WORK_DIR/sql/[set subsys]_items.sql w]
+     puts $fsql "CREATE TABLE [set subsys]_items (
   Topic           varchar(128),
   ItemId	  smallint unsigned,
   EFDB_Name	  varchar(128),
@@ -361,7 +346,6 @@ global SAL_WORK_DIR
   PRIMARY KEY (ItemId)
 );"
     close $fsql
-  }
 }
 
 
@@ -389,6 +373,34 @@ global SAL_DIR
       close $fin
    }
 }
+
+proc createackcmdidl { base {keyid 0} } {
+global SAL_WORK_DIR
+   set fack [open $SAL_WORK_DIR/idl-templates/[set base]_ackcmd.idl w]
+   puts $fack "struct [set base]_ackcmd \{
+      string<8>	private_revCode;
+      double		private_sndStamp;
+      double		private_rcvStamp;
+      long		private_origin;
+      long 		private_host;
+      long		private_seqNum;"
+   if { $keyid } {
+      puts $fack "      long	[set base]ID;"
+   }
+   puts $fack "      long 		ack;
+      long 		error;
+      string<256>	result;
+      long		host;
+      long		origin;
+      long		cmdtype;
+      double		timeout;
+	\};
+#pragma keylist [set base]_ackcmd
+"
+   close $fack
+}
+
+
 
 set SAL_WORK_DIR $env(SAL_WORK_DIR)
 set SAL_DIR $env(SAL_DIR)

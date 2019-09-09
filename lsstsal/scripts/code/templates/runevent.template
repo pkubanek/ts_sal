@@ -1,5 +1,5 @@
 #!/bin/sh
 echo "Starting Event generator/logger for SALTopic"
-gnome-terminal -e "java -cp $SAL_HOME/lib/saj_SALData_types.jar:./classes:$OSPL_HOME/jar/dcpssaj.jar:saj_SALData_event.jar SALDataEventLogger" &
-java -cp $SAL_HOME/lib/saj_SALData_types.jar:./classes:$OSPL_HOME/jar/dcpssaj.jar:saj_SALData_event.jar SALDataEvent
+gnome-terminal -e "java  -Djava.library.path=$LD_LIBRARY_PATH -cp $SAL_HOME/lib/saj_SALData_types.jar:$SAL_WORK_DIR/lib:./classes:$OSPL_HOME/jar/dcpssaj.jar:saj_SALData_event.jar SALDataEventLogger" &
+java  -Djava.library.path=$LD_LIBRARY_PATH -cp $SAL_HOME/lib/saj_SALData_types.jar:$SAL_WORK_DIR/lib:./classes:$OSPL_HOME/jar/dcpssaj.jar:saj_SALData_event.jar SALDataEvent
 

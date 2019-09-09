@@ -225,7 +225,7 @@ global ACTORTYPE SAL_WORK_DIR BLACKLIST SYSDIC
         puts $fout "  
        [set base]::[set topic][set revcode]Seq myData_[set topic];
        SampleInfoSeq_var [set topic]_info = new SampleInfoSeq;
-       status = [set topic]_SALReader->take(myData_[set topic], [set topic]_info, 100, ANY_SAMPLE_STATE, ANY_VIEW_STATE, ANY_INSTANCE_STATE);
+       status = [set topic]_SALReader->take(myData_[set topic], [set topic]_info, 100, NOT_READ_SAMPLE_STATE, ANY_VIEW_STATE, ANY_INSTANCE_STATE);
        mgr.checkStatus(status,\"[set base]::[set topic][set revcode]DataReader::take\");
        numsamp = myData_[set topic].length();
        if (status == SAL__OK && numsamp > 0) \{

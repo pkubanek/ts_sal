@@ -7,7 +7,7 @@ ifeq ($(CFG), Release)
 CC            = gcc
 CXX           = g++
 LVVERSION     = LabVIEW-2015-64
-CPPFLAGS      = -g $(PICFLAGS) $(GENFLAGS) $(SAL_CPPFLAGS) -std=c++11 -D_REENTRANT -Wall -Wwrite-strings -I"." -I"$(OSPL_HOME)/examples/include" -I"$(OSPL_HOME)/examples" -I"$(OSPL_HOME)/include" -I"$(OSPL_HOME)/include/sys" -I"$(OSPL_HOME)/include/dcps/C++/SACPP" -I"$(SAL_HOME)/include" -I../../SALSubsys/cpp/src -I../../../SALSubsys/labview -I../cpp -I../../../SALSubsys/cpp -I/usr/local/./natinst/$(LVVERSION)/cintools #-DSAL_SUBSYSTEM_ID_IS_KEYED
+CPPFLAGS      = -g $(PICFLAGS) $(GENFLAGS) $(SAL_CPPFLAGS) -std=c++11 -D_REENTRANT -Wall  -Wno-unused-variable -Wwrite-strings -I"." -I"$(OSPL_HOME)/examples/include" -I"$(OSPL_HOME)/examples" -I"$(OSPL_HOME)/include" -I"$(OSPL_HOME)/include/sys" -I"$(OSPL_HOME)/include/dcps/C++/SACPP" -I"$(SAL_HOME)/include" -I../../SALSubsys/cpp/src -I../../../SALSubsys/labview -I../cpp -I../../../SALSubsys/cpp -I/usr/local/./natinst/$(LVVERSION)/cintools #-DSAL_SUBSYSTEM_ID_IS_KEYED
 LD            = $(CXX) $(CCFLAGS) $(CPPFLAGS)
 AR            = ar
 PICFLAGS      = -fPIC

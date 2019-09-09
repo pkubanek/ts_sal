@@ -1,7 +1,7 @@
 
 proc geneventtestscpp { subsys } {
-global EVENT_ALIASES EVTS SAL_WORK_DIR
- if { [info exists EVENT_ALIASES($subsys)] } {
+global EVENT_ALIASES EVTS SAL_WORK_DIR DONE_CMDEVT
+ if { [info exists EVENT_ALIASES($subsys)] && $DONE_CMDEVT == 0 } {
    foreach alias $EVENT_ALIASES($subsys) {
      if { [info exists EVTS($subsys,$alias,param)] } {
       stdlog "	: log event test send for = $alias"
@@ -161,7 +161,7 @@ int OSPL_MAIN (int argc, char *argv\[\])
       if { [string range $rec 0 24] == "## INSERT EVENTS TEST SRC" } {
          set n 2
          set extrasrc "		"
-         set allbin "all: \$\(BIN1\) \$\(BIN2\)"
+         set allbin "all: "
          foreach alias $EVENT_ALIASES($subsys) {
            if { [info exists EVTS($subsys,$alias,param)] } {
              incr n 1
@@ -181,7 +181,7 @@ OBJS$n          =  .obj/SAL_[set subsys].o .obj/sacpp_[set subsys]_[set alias]_l
          }
          set nbin $n
          puts $fout "
-SRC           = ../src/SAL_[set subsys].cpp ../src/[set subsys]Event.cpp ../src/[set subsys]EventLogger.cpp $extrasrc"
+SRC           = ../src/SAL_[set subsys].cpp $extrasrc"
       }
       if { [string range $rec 0 24] == "## INSERT EVENTS TEST BIN" } {
          set n 2

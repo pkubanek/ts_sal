@@ -1,5 +1,5 @@
 #!/bin/sh
 echo "Starting publisher/subscriber sample for SALTopic"
-gnome-terminal -e "java -cp $SAL_HOME/lib/saj_SALData_types.jar:./classes:$OSPL_HOME/jar/dcpssaj.jar:saj_SAL_sub.jar SALTopicDataSubscriber" &
-java -cp $SAL_HOME/lib/saj_SALData_types.jar:./classes:$OSPL_HOME/jar/dcpssaj.jar:saj_SAL_pub.jar SALTopicDataPublisher
+gnome-terminal -e "java  -Djava.library.path=$LD_LIBRARY_PATH -cp $SAL_HOME/lib/saj_SALData_types.jar:$SAL_WORK_DIR/lib:./classes:$OSPL_HOME/jar/dcpssaj.jar:saj_SAL_sub.jar SALTopicDataSubscriber" &
+java  -Djava.library.path=$LD_LIBRARY_PATH -cp $SAL_HOME/lib/saj_SALData_types.jar:$SAL_WORK_DIR/lib:./classes:$OSPL_HOME/jar/dcpssaj.jar:saj_SAL_pub.jar SALTopicDataPublisher
 

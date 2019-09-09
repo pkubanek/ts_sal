@@ -55,9 +55,6 @@ public class [set subsys]Commander_[set alias]Test extends TestCase \{
 
 	    command.private_revCode = \"[string trim $revcode _]\";"
   set cpars $CMDS($subsys,$alias)
-  puts $fcmd "            command.device   = \"[lindex $cpars 0]\";"
-  puts $fcmd "            command.property = \"[lindex $cpars 1]\";"
-  puts $fcmd "            command.action   = \"[lindex $cpars 2]\";"
   set narg 1
   foreach p $CMDS($subsys,$alias,param) {
        set pname [lindex $p 1]

@@ -66,6 +66,10 @@ PYBIND11_MODULE(SALPY_SALData,m){
         .def_readwrite( "ack", &SALData_ackcmdC::ack )    
         .def_readwrite( "error", &SALData_ackcmdC::error )    
         .def_readwrite( "result", &SALData_ackcmdC::result )    
+        .def_readwrite( "host", &SALData_ackcmdC::host )    
+        .def_readwrite( "origin", &SALData_ackcmdC::origin )    
+        .def_readwrite( "cmdtype", &SALData_ackcmdC::cmdtype )    
+        .def_readwrite( "timeout", &SALData_ackcmdC::timeout )    
         ;
 
     py::class_<SAL_SALData>(m,"SAL_SALData")    
@@ -127,10 +131,6 @@ PYBIND11_MODULE(SALPY_SALData,m){
         .def( 
             "salProcessor"
             , (::salReturn ( ::SAL_SALData::* )( char * ) )( &::SAL_SALData::salProcessor )
-            , ( py::arg("topicName") ) )    
-        .def( 
-            "salEvent"
-            , (::salReturn ( ::SAL_SALData::* )( char * ) )( &::SAL_SALData::salEvent )
             , ( py::arg("topicName") ) )    
         .def( 
             "salEventSub"

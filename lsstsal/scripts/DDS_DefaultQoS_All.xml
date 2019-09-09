@@ -36,7 +36,7 @@
           </destination_order>
           <history>
                <kind>KEEP_LAST_HISTORY_QOS</kind>
-               <depth>10</depth>
+               <depth>100</depth>
           </history>
           <resource_limits>
                <max_samples>LENGTH_UNLIMITED</max_samples>
@@ -101,7 +101,7 @@
           </destination_order>
           <history>
                <kind>KEEP_LAST_HISTORY_QOS</kind>
-               <depth>10</depth>
+               <depth>100</depth>
           </history>
           <resource_limits>
                <max_samples>LENGTH_UNLIMITED</max_samples>
@@ -183,7 +183,7 @@
                     <nanosec>0</nanosec>
                </service_cleanup_delay>
                <history_kind>KEEP_LAST_HISTORY_QOS</history_kind>
-               <history_depth>10</history_depth>
+               <history_depth>100</history_depth>
                <max_samples>LENGTH_UNLIMITED</max_samples>
                <max_instances>LENGTH_UNLIMITED</max_instances>
                <max_samples_per_instance>LENGTH_UNLIMITED</max_samples_per_instance>
@@ -219,7 +219,7 @@
           </destination_order>
           <history>
                <kind>KEEP_LAST_HISTORY_QOS</kind>
-               <depth>10</depth>
+               <depth>100</depth>
           </history>
           <resource_limits>
                <max_samples>LENGTH_UNLIMITED</max_samples>

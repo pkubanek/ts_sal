@@ -28,7 +28,7 @@
 
 #ifndef _SAL_SALActorMGR_
   #define _SAL_SALActorMGR_
-  #define SAL__ACTORS_MAXCOUNT	128
+  #define SAL__ACTORS_MAXCOUNT	256
   #define SAL__ACTORS_NAMESIZE	128
 
 /* Array to hold the names for all ReturnCodes. */
@@ -83,12 +83,17 @@
       int			maxSamples;
       int			error;
       int			ack;
-      char			result[128];
-      long long 		sndStamp[2];
-      long long			rcvStamp[2];
+      int			activehost;
+      int			activeorigin;
+      int			activecmdid;
+      double			timeout;
+      char			result[256];
+      double	 		sndStamp;
+      double			rcvStamp;
       double			sampleAge;
       int                       historyDepth;
-      bool                      tuneableQos;
+      int                       tuneableQos;
+      DDS::DurabilityQosPolicyKind durability;
   };
 #endif
 
@@ -137,6 +142,7 @@
       int historySync;
       double rcvdTime;
       salU64  origin;
+      long ddsIPaddress;
       char   domainName[128];
       salActor sal[SAL__ACTORS_MAXCOUNT];
       int lastActor_telemetry;
@@ -152,16 +158,6 @@
       salReturn salTypeSupport(char *topicName);
       salReturn salTelemetryPub(char *topicName);
       salReturn salTelemetrySub(char *topicName);
-//      salReturn telemetryAvailable();
-//      salReturn commandAvailable();
-//      salReturn eventAvailable();
-
-//      template <class T1, class T2>
-//      void putSample(T1 data, T2 writer);
-//      template <class T1, class T2, class T3>
-//      void getSample(T1 data, T2 info, T3 reader);
-//      salReturn putSample(SALData::SALTopic data);
-//      salReturn getSample(SALData::SALTopicSeq data);
 
       string getErrorName(DDS::ReturnCode_t status);
       void checkStatus(DDS::ReturnCode_t status, const char *info);
@@ -177,20 +173,10 @@
       std::vector<std::string> getCommandNames();
       std::vector<std::string> getEventNames();
 
-      salReturn getResponse(SALData::ackcmdSeq data);
       void salShutdown();
-      salReturn salCommand();
-      salReturn salProcessor();
-      int issueCommand( SALData::command data);
-      int issueCommandC( SALData_commandC *data);
-      salReturn acceptCommand( SALData::commandSeq data);
-      int acceptCommandC( SALData_commandC *data);
 // INSERT CMDALIAS SUPPORT  for issueCommandC and acceptCommandC, acceptAnyCommand   
-      salReturn ackCommand( int cmdSeqNum, salLONG  ack, salLONG error, char *result );
-      salReturn checkCommand( int cmdSeqNum );
       salReturn cancelCommand( int cmdSeqNum );
       salReturn abortCommand( int cmdSeqNum );
-      salReturn waitForCompletion( int cmdSeqNum ,unsigned int timeout );
       salReturn setDebugLevel( int level );
       int getDebugLevel( int level );
       int getOrigin();
@@ -203,8 +189,6 @@
       void logError(salReturn status);
 //      salTIME currentTime();
 
-      salReturn logEvent( char *message, int priority );      
-      salReturn getEvent(SALData::logeventSeq data);
       int getEventC(SALData_logeventC *data);
 // INSERT EVENTALIAS SUPPORT for getEventC and logEventC , getAnyEvent
 
@@ -240,10 +224,9 @@
       Topic_ptr getTopic();
       DomainParticipant_ptr getParticipant();
 
-      void initSalActors();
+      void initSalActors(int qos);
       salReturn salTelemetryPub(int actorIdx);
       salReturn salTelemetrySub(int actorIdx);
-      salReturn salEvent(char *topicName);
       salReturn salEventSub(char *topicName);
       salReturn salEventPub(char *topicName);
       int getActorIndex(char *topic);

@@ -10,7 +10,7 @@ global SAL_LOG ORIGIN_DIR
   }
   puts stderr "FATAL ERROR : $msg"
   cd $ORIGIN_DIR
-  exit 5
+  exit 99
 }
 
 proc stdlog { msg {verbosity 9} } {

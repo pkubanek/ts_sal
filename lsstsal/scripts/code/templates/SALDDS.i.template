@@ -73,15 +73,8 @@
 #else
       void salInitialize();
 #endif
-      salReturn salCommand();
-      salReturn salProcessor();
-      int issueCommandC( SALData_commandC *data);
-      int acceptCommandC( SALData_commandC *data);
-      salReturn ackCommand( int cmdSeqNum, salLONG  ack, salLONG error, char *result );
-      salReturn checkCommand( int cmdSeqNum );
       salReturn cancelCommand( int cmdSeqNum );
       salReturn abortCommand( int cmdSeqNum );
-      salReturn waitForCompletion( int cmdSeqNum ,unsigned int timeout );
       salReturn setDebugLevel( int level );
       int getDebugLevel( int level );
       int getOrigin();
@@ -96,12 +89,10 @@
       void setMaxSamples(int actorIdx, int n);
       void logError(salReturn status);
 
-      salReturn logEvent( char *message, int priority );      
-      int getEventC(SALData_logeventC *data);
-
       salReturn salTelemetryPub(int actorIdx);
       salReturn salTelemetrySub(int actorIdx);
-      salReturn salEvent(char *topicName);
+      salReturn salEventSub(char *topicName);
+      salReturn salEventPub(char *topicName);
       int getActorIndex(char *topic);
       salReturn salTypeSupport(int actorIdx);
       salReturn salCommand(char *cmdAlias);

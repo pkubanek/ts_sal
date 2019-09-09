@@ -15,30 +15,58 @@ global SAL_WORK_DIR
 }
 
 
+proc getItemName { rec } {
+  if { [lindex $rec 0] == "unsigned" } { set rec [lrange $rec 1 end] }
+  if { [lindex $rec 1] == "long" } { set rec [lrange $rec 1 end] }
+  set item [string trim [lindex $rec 1] "\[\];"]
+  return $item
+}
+
+
 proc activeRevCodes { subsys } {
 global SAL_WORK_DIR REVCODE
   set fin [open $SAL_WORK_DIR/idl-templates/validated/sal/sal_[set subsys].idl r]
   set fout [open $SAL_WORK_DIR/idl-templates/validated/sal/sal_revCoded_[set subsys].idl w]
+  gets $fin rec ; puts $fout $rec
   while { [gets $fin rec] > -1 } {
     set r2 [string trim $rec "{}"]
-    if { [lindex $r2 0] == "struct" } {
+    set r3 [string trim $rec " 	{};"]
+    if { $r3 == "" } {
+      puts $fout $rec
+    } else {
+     if { [lindex $r2 0] == "struct" } {
+       set curtopic [set subsys]_[lindex $r2 1]
        set id [lindex $r2 1]
-       if { $id != "command" && $id != "logevent" && $id != "ackcmd" } {
+       if { $id != "command" && $id != "logevent" } {
          puts $fout "struct [set id]_[string range [set REVCODE([set subsys]_$id)] 0 7] \{"
        } else {
          puts $fout $rec
        }
-    } else {
+     } else {
        if { [lindex $r2 0] == "#pragma" } {
           set id [lindex $r2 2]
-          if { $id != "command" && $id != "logevent" && $id != "ackcmd" } {
+          if { $id != "command" && $id != "logevent" } {
             puts $fout "#pragma keylist [set id]_[string range [set REVCODE([set subsys]_$id)] 0 7] [lrange $rec 3 end]"
           } else {
             puts $fout $rec
           }
        } else {
-          puts $fout $rec
+          set annot ""
+          if { $curtopic != "command" && $curtopic != "logevent" } {
+           catch {
+            if { [lindex [lindex $rec 0] 0] != "const" } {
+              set item [getItemName $rec]
+              set lookup [exec grep "(\"$curtopic\"," $SAL_WORK_DIR/sql/[set subsys]_items.sql | grep ",\"$item\""]
+              set ign [string length "INSERT INTO [set subsys]_items VALUES "]
+              set mdata [split [string trim [string range "$lookup" $ign end] "();"] ","]
+              set annot " // @Metadata=(Units=[lindex $mdata 5],Description=[lindex $mdata 9])"
+            }
+           }
+          }
+          if { [string range $annot 0 2] != " //" } { set annot "" }
+          puts $fout "$rec[set annot]"
        }
+     }
     }
   }
   close $fin
@@ -50,7 +78,7 @@ proc getRevCode { topic { type "long"} } {
 global REVCODE
    if { [llength [split $topic _]] == 2 } {
       set it [lindex [split $topic _] end]
-      if { $it == "command" || $it == "logevent" || $it == "ackcmd" } {
+      if { $it == "command" || $it == "logevent" } {
          return ""
       }
    }
@@ -63,7 +91,7 @@ global REVCODE
 }
 
 proc modidlforjava { subsys } {
-global SAL_WORK_DIR
+global SAL_WORK_DIR REVCODE SYSDIC
   puts stdout "Updating $subsys idl with revCodes"
   set lc [exec wc -l $SAL_WORK_DIR/idl-templates/validated/sal/sal_[set subsys].idl]
   set lcnt [expr [lindex $lc 0] -2]
@@ -84,11 +112,33 @@ global SAL_WORK_DIR
      if { [string trim $rec "	 {}"] == "struct command" } {
         set done 1
      } else {
-        if { [lindex [string trim $rec "	 {}"] 0] != "const" } {
+        if { [lindex [lindex [split [string trim $rec "{}"] /] 0] 0] != "const" } {
           puts $fout $rec
         }
      } 
   }
+  set revcode [getRevCode [set subsys]_ackcmd]
+  puts $fout "
+	struct ackcmd_[set revcode] {
+      string<8>	private_revCode;
+      double		private_sndStamp;
+      double		private_rcvStamp;
+      long		private_origin;
+      long 		private_host;
+      long		private_seqNum;"
+  if { [info exists SYSDIC($subsys,keyedID)] } {
+     puts $fout "      long 		[set subsys]ID;"
+  }
+  puts $fout "      long 		ack;
+      long 		error;
+      string<256>	result;
+      long		host;
+      long		origin;
+      long		cmdtype;
+      double		timeout;
+	};
+	#pragma keylist ackcmd_[set revcode]
+"
   puts $fout "\};"
   close $fin
   close $fout

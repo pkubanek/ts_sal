@@ -19,13 +19,16 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-__all__ = ["make_idl_file"]
+__all__ = ["all_component_names", "make_idl_file"]
 
 import glob
 import os
 import pathlib
 import shutil
 import subprocess
+import xml.etree.ElementTree
+
+from lsst.ts import idl
 
 
 def get_env_dir(name, err_msg):
@@ -39,6 +42,23 @@ def get_env_dir(name, err_msg):
     return path
 
 
+def all_component_names():
+    """Get a list of all SAL component names.
+
+    The data comes from ``SALSubsystems.xml`` in ``ts_xml``.
+    """
+    xml_dir = get_env_dir("TS_XML_DIR", "ts_xml not setup")
+    subsystems_file_path = xml_dir / "sal_interfaces" / "SALSubsystems.xml"
+    if not subsystems_file_path.is_file():
+        raise RuntimeError(f"Cannot find file {subsystems_file_path}")
+    tree = xml.etree.ElementTree.parse(subsystems_file_path)
+    root = tree.getroot()
+    component_names = []
+    for subsystem in root.findall("Subsystem"):
+        component_names.append(subsystem.find("Name").text)
+    return component_names
+
+
 class MakeIdlFile:
     """Make the IDL file for a specified SAL component.
 
@@ -50,11 +70,10 @@ class MakeIdlFile:
     def __init__(self, name):
         self.name = name
         self.xml_dir = get_env_dir("TS_XML_DIR", "ts_xml not setup")
-        pkg_dir = get_env_dir("TS_IDL_DIR", "ts_idl not setup")
         self.sal_work_dir = get_env_dir("SAL_WORK_DIR", "$SAL_WORK_DIR must be defined")
         idl_file_name = f"sal_revCoded_{self.name}.idl"
         self.idl_file_from_path = self.sal_work_dir / "idl-templates" / "validated" / "sal" / idl_file_name
-        self.idl_file_to_path = pkg_dir / "idl" / idl_file_name
+        self.idl_file_to_path = idl.get_idl_dir() / idl_file_name
 
     def copy_xml_files(self):
         interfaces_dir = os.path.join(self.xml_dir, "sal_interfaces")
