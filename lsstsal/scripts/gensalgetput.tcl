@@ -10,6 +10,7 @@ source $env(SAL_DIR)/gengenericreader.tcl
 source $env(SAL_DIR)/gensalintrospect.tcl
 source $env(SAL_DIR)/activaterevcodes.tcl
 source $env(SAL_DIR)/gentelemetrytestssinglefile.tcl
+source $env(SAL_DIR)/gentelemetrytestssinglefilejava.tcl
 
 proc insertcfragments { fout base name } {
 global SAL_WORK_DIR
@@ -503,7 +504,7 @@ puts $fout "
   	  SampleInfoSeqHolder infoSeq = new SampleInfoSeqHolder();
 	  SALReader.take(SALInstance, infoSeq, sal\[actorIdx\].maxSamples,
 					ANY_SAMPLE_STATE.value, ANY_VIEW_STATE.value,
-					ANY_INSTANCE_STATE.value);
+					ALIVE_INSTANCE_STATE.value);
           numsamp = SALInstance.value.length;
           if (numsamp > 0) \{
  	    if (debugLevel > 0) \{
