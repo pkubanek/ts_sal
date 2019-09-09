@@ -421,7 +421,7 @@ int test_[set base]_telemetry_efdwriter()
   int numsamp = 0;
   int actorIdx = 0;
   int isyslog = 1;
-  int idelay = 10000;
+  int idelay = 5000000;
   int iloop = 0;
   int igotdata = 0;
   int mstatus = 0;
@@ -497,7 +497,7 @@ int test_[set base]_event_efdwriter()
   int actorIdx = 0;
   int isyslog = 1;
   int iloop = 0;
-  int idelay = 10000;
+  int idelay = 5000000;
   int mstatus = 0;
   int igotdata = 0;
   int status=0;"
@@ -570,7 +570,7 @@ int test_[set base]_command_efdwriter()
   int actorIdx = 0;
   int isyslog = 1;
   int iloop = 0;
-  int idelay = 10000;
+  int idelay = 5000000;
   int mstatus = 0;
   int igotdata = 0;
   int status=0;"

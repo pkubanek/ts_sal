@@ -14,6 +14,7 @@ source $SAL_DIR/add_system_dictionary.tcl
 source $SAL_DIR/gengenericefd_array.tcl
 source $SAL_DIR/ospl_version.tcl
 source $SAL_DIR/genkafkaefd.tcl
+source $SAL_DIR/sal_version.tcl
 source $SAL_DIR/geninfluxefd-multi.tcl
 
 set SYSDIC(forEFD) "ATAOS ATArchiver ATBuilding ATCalCS ATCamera ATDome ATDomeTrajectory ATEEC ATHeaderService ATHexapod ATMCS ATMonochromator ATPneumatics ATPtg ATSpectrograph ATTCS ATThermoelectricCooler ATWhiteLight EFD Electrometer"
@@ -27,7 +28,7 @@ proc copyasset { asset dest } {
     }
 }
 
-proc updatetests { subsys } {
+proc updatetests { subsys rpmname } {
 global SAL_WORK_DIR SALVERSION
    catch {
     set all [glob [set subsys]_*/cpp]
@@ -52,50 +53,61 @@ global SAL_WORK_DIR SALVERSION
 proc updateruntime { subsys {withtest 0} } {
 global SAL_WORK_DIR SALVERSION SAL_DIR
   set rpmname $subsys
+  exec rm -fr [set rpmname]-$SALVERSION
   if { $withtest } {set rpmname [set subsys]_test}
-  exec rm -fr [set rpmname]-$SALVERSION/opt/lsst/ts_sal
+  exec mkdir -p [set rpmname]-$SALVERSION/opt/lsst/ts_sal
+  exec mkdir -p [set rpmname]-$SALVERSION/opt/lsst/ts_sal/bin
   exec mkdir -p $SAL_WORK_DIR/rpmbuild/BUILD
   exec mkdir -p $SAL_WORK_DIR/rpmbuild/BUILDROOT
   exec mkdir -p $SAL_WORK_DIR/rpmbuild/RPMS
   exec mkdir -p $SAL_WORK_DIR/rpmbuild/SOURCES
   exec mkdir -p $SAL_WORK_DIR/rpmbuild/SPECS
   exec mkdir -p $SAL_WORK_DIR/rpmbuild/SRPMS
-  exec mkdir -p [set rpmname]-$SALVERSION/opt/lsst/ts_sal
-  exec mkdir [set rpmname]-$SALVERSION/opt/lsst/ts_sal/include
-  exec mkdir [set rpmname]-$SALVERSION/opt/lsst/ts_sal/bin
-  exec mkdir [set rpmname]-$SALVERSION/opt/lsst/ts_sal/scripts
-  exec mkdir [set rpmname]-$SALVERSION/opt/lsst/ts_sal/lib
-  exec mkdir [set rpmname]-$SALVERSION/opt/lsst/ts_sal/doc
-  exec mkdir [set rpmname]-$SALVERSION/opt/lsst/ts_sal/labview
-  exec mkdir [set rpmname]-$SALVERSION/opt/lsst/ts_sal/labview/lib
-  exec mkdir [set rpmname]-$SALVERSION/opt/lsst/ts_sal/jar
-  exec mkdir -p [set rpmname]-$SALVERSION/opt/lsst/ts_xml/sal_interfaces/[set subsys]
-  foreach lib "libsacpp_[set subsys]_types.so SALPY_[set subsys].so libSAL_[set subsys].so" {
-     copyasset $SAL_WORK_DIR/lib/$lib [set rpmname]-$SALVERSION/opt/lsst/ts_sal/lib/.
-  }
-  foreach lib "SALLV_[set subsys].so" {
-     copyasset $SAL_WORK_DIR/lib/$lib [set rpmname]-$SALVERSION/opt/lsst/ts_sal/lib/.
-  }
-  foreach jar "saj_[set subsys]_types.jar" {
-     copyasset $SAL_WORK_DIR/lib/$jar [set rpmname]-$SALVERSION/opt/lsst/ts_sal/jar/.
-  }
-  copyasset $SAL_WORK_DIR/[set subsys]/labview/SALLV_[set subsys]_Monitor [set rpmname]-$SALVERSION/opt/lsst/ts_sal/bin/.
-  copyasset $SAL_WORK_DIR/idl-templates/validated/[set subsys]_revCodes.tcl [set rpmname]-$SALVERSION/opt/lsst/ts_sal/scripts/.
-  copyasset $SAL_WORK_DIR/[set subsys]/cpp/src/SAL_[set subsys].h [set rpmname]-$SALVERSION/opt/lsst/ts_sal/include/.
-  copyasset $SAL_WORK_DIR/[set subsys]/cpp/src/SAL_[set subsys]C.h [set rpmname]-$SALVERSION/opt/lsst/ts_sal/include/.
-  copyasset $SAL_WORK_DIR/[set subsys]/cpp/src/SAL_[set subsys]LV.h [set rpmname]-$SALVERSION/opt/lsst/ts_sal/include/.
-  copyasset $SAL_WORK_DIR/[set subsys]/cpp/sal_[set subsys]Dcps.h [set rpmname]-$SALVERSION/opt/lsst/ts_sal/include/.
-  copyasset $SAL_WORK_DIR/[set subsys]/cpp/sal_[set subsys]Dcps_impl.h [set rpmname]-$SALVERSION/opt/lsst/ts_sal/include/.
-  copyasset $SAL_WORK_DIR/[set subsys]/cpp/sal_[set subsys].h [set rpmname]-$SALVERSION/opt/lsst/ts_sal/include/.
-  copyasset $SAL_WORK_DIR/[set subsys]/cpp/ccpp_sal_[set subsys].h [set rpmname]-$SALVERSION/opt/lsst/ts_sal/include/.
-  copyasset $SAL_WORK_DIR/[set subsys]/cpp/sal_[set subsys]SplDcps.h [set rpmname]-$SALVERSION/opt/lsst/ts_sal/include/.
-  copyasset $SAL_DIR/code/templates/SAL_defines.h [set rpmname]-$SALVERSION/opt/lsst/ts_sal/include/.
-  if { $withtest } { updatetests $subsys }
-  foreach dtype "Commands Events Generics Telemetry" {
-    if { [file exists $SAL_WORK_DIR/[set subsys]_[set dtype].xml] } {
-       exec cp $SAL_WORK_DIR/[set subsys]_[set dtype].xml [set rpmname]-$SALVERSION/opt/lsst/ts_xml/sal_interfaces/[set subsys]/.
+  if { $withtest == 0 } {
+    exec mkdir [set rpmname]-$SALVERSION/opt/lsst/ts_sal/include
+    exec mkdir [set rpmname]-$SALVERSION/opt/lsst/ts_sal/scripts
+    exec mkdir [set rpmname]-$SALVERSION/opt/lsst/ts_sal/idl
+    exec mkdir [set rpmname]-$SALVERSION/opt/lsst/ts_sal/lib
+    exec mkdir [set rpmname]-$SALVERSION/opt/lsst/ts_sal/doc
+    exec mkdir [set rpmname]-$SALVERSION/opt/lsst/ts_sal/labview
+    exec mkdir [set rpmname]-$SALVERSION/opt/lsst/ts_sal/labview/lib
+    exec mkdir [set rpmname]-$SALVERSION/opt/lsst/ts_sal/jar
+    exec mkdir -p [set rpmname]-$SALVERSION/opt/lsst/ts_xml/sal_interfaces/[set subsys]
+    foreach lib "libsacpp_[set subsys]_types.so SALPY_[set subsys].so libSAL_[set subsys].so" {
+      copyasset $SAL_WORK_DIR/lib/$lib [set rpmname]-$SALVERSION/opt/lsst/ts_sal/lib/.
+    }
+    foreach lib "SALLV_[set subsys].so" {
+      copyasset $SAL_WORK_DIR/lib/$lib [set rpmname]-$SALVERSION/opt/lsst/ts_sal/labview/lib/.
+    }
+    foreach jar "saj_[set subsys]_types.jar" {
+      copyasset $SAL_WORK_DIR/lib/$jar [set rpmname]-$SALVERSION/opt/lsst/ts_sal/jar/.
+    }
+    copyasset $SAL_WORK_DIR/idl-templates/validated/[set subsys]_revCodes.tcl [set rpmname]-$SALVERSION/opt/lsst/ts_sal/scripts/.
+    copyasset $SAL_WORK_DIR/[set subsys]/labview/SALLV_[set subsys]_Monitor [set rpmname]-$SALVERSION/opt/lsst/ts_sal/bin/.
+    copyasset $SAL_WORK_DIR/[set subsys]/labview/SAL_[set subsys]_shmem.h [set rpmname]-$SALVERSION/opt/lsst/ts_sal/include/.
+    copyasset $SAL_WORK_DIR/[set subsys]/labview/sal_[set subsys].idl [set rpmname]-$SALVERSION/opt/lsst/ts_sal/labview/.
+    copyasset $SAL_WORK_DIR/idl-templates/validated/sal/sal_revCoded_[set subsys].idl [set rpmname]-$SALVERSION/opt/lsst/ts_sal/idl/.
+    copyasset $SAL_WORK_DIR/[set subsys]/cpp/src/SAL_[set subsys].h [set rpmname]-$SALVERSION/opt/lsst/ts_sal/include/.
+    copyasset $SAL_WORK_DIR/[set subsys]/cpp/src/SAL_[set subsys]C.h [set rpmname]-$SALVERSION/opt/lsst/ts_sal/include/.
+    copyasset $SAL_WORK_DIR/[set subsys]/cpp/src/SAL_[set subsys]LV.h [set rpmname]-$SALVERSION/opt/lsst/ts_sal/include/.
+    copyasset $SAL_WORK_DIR/[set subsys]/cpp/sal_[set subsys]Dcps.h [set rpmname]-$SALVERSION/opt/lsst/ts_sal/include/.
+    copyasset $SAL_WORK_DIR/[set subsys]/cpp/sal_[set subsys]Dcps_impl.h [set rpmname]-$SALVERSION/opt/lsst/ts_sal/include/.
+    copyasset $SAL_WORK_DIR/[set subsys]/cpp/sal_[set subsys].h [set rpmname]-$SALVERSION/opt/lsst/ts_sal/include/.
+    copyasset $SAL_WORK_DIR/[set subsys]/cpp/ccpp_sal_[set subsys].h [set rpmname]-$SALVERSION/opt/lsst/ts_sal/include/.
+    copyasset $SAL_WORK_DIR/[set subsys]/cpp/sal_[set subsys]SplDcps.h [set rpmname]-$SALVERSION/opt/lsst/ts_sal/include/.
+    copyasset $SAL_DIR/code/templates/SAL_defines.h [set rpmname]-$SALVERSION/opt/lsst/ts_sal/include/.
+    foreach dtype "Commands Events Generics Telemetry" {
+      if { [file exists $SAL_WORK_DIR/[set subsys]_[set dtype].xml] } {
+        exec cp $SAL_WORK_DIR/[set subsys]_[set dtype].xml [set rpmname]-$SALVERSION/opt/lsst/ts_xml/sal_interfaces/[set subsys]/.
+      }
+    }
+    foreach dtype "Commands Events Telemetry" {
+      if { [file exists $SAL_WORK_DIR/html/[set subsys]/[set subsys]_[set dtype].html] } {
+        exec cp $SAL_WORK_DIR/html/[set subsys]/[set subsys]_[set dtype].html [set rpmname]-$SALVERSION/opt/lsst/ts_xml/sal_interfaces/[set subsys]/.
+      }
     }
   }
+  if { $withtest } { updatetests $subsys $rpmname }
   exec tar cvzf $SAL_WORK_DIR/rpmbuild/SOURCES/[set rpmname]-$SALVERSION.tgz [set rpmname]-$SALVERSION
   exec rm -fr $SAL_WORK_DIR/rpmbuild/BUILD/[set rpmname]-$SALVERSION
   exec cp -r [set rpmname]-$SALVERSION $SAL_WORK_DIR/rpmbuild/BUILD/.
@@ -121,6 +133,7 @@ rpmbuild -bb -bl -v $SAL_WORK_DIR/rpmbuild/SPECS/ts_sal_[set subsys].spec
   exec chmod 755 /tmp/makerpm
   exec /tmp/makerpm  >& /tmp/makerpm.log
   exec cat /tmp/makerpm.log
+  cd $SAL_WORK_DIR
 }
 
 proc updateddsruntime { version } {
@@ -191,8 +204,8 @@ global SAL_WORK_DIR SALVERSION SAL_DIR SYSDIC
      copyasset $SAL_WORK_DIR/lib/libsacpp_[set subsys]_types.so ts_EFDruntime-$SALVERSION/opt/lsst/ts_sal/lib/.
      copyasset $SAL_WORK_DIR/lib/libSAL_[set subsys].so ts_EFDruntime-$SALVERSION/opt/lsst/ts_sal/lib/.
      set fsql [open /tmp/dosql w]
-     puts $fsql "cat $SAL_WORK_DIR/sql/[set subsys]_*.sqldef > ts_EFDruntime-$SALVERSION/opt/lsst/ts_sal/sql/[set subsys].sqldef"
      puts $fsql "cat $SAL_WORK_DIR/sql/[set subsys]_*.sqlwrt > ts_EFDruntime-$SALVERSION/opt/lsst/ts_sal/sql/[set subsys].sqlwrt"
+     puts $fsql "cp $SAL_WORK_DIR/sql/[set subsys]_*.sqldef ts_EFDruntime-$SALVERSION/opt/lsst/ts_sal/sql/."
      puts $fsql "cat $SAL_WORK_DIR/sql/[set subsys]_*.sql > ts_EFDruntime-$SALVERSION/opt/lsst/ts_sal/sql/[set subsys].sql"
      close $fsql
      exec chmod 755 /tmp/dosql
@@ -241,6 +254,9 @@ SPLICE_JAVAC=javac
 LOGNAME=salmgr
 LESSOPEN=||/usr/bin/lesspipe.sh %s
 OSPL_TMPL_PATH=/opt/OpenSpliceDDS/V[set OSPL_VERSION]/HDE/x86_64.linux/etc/idlpp
+LSST_KAFKA_BROKERS=efd-kafka0.lsst.codes:9094,efd-kafka1.lsst.codes:9094,efd-kafka2.lsst.codes:9094​
+LSST_EFD_HOST=localhost
+LSST_DDS_DOMAIN=auxtelpath
 SPLICE_JAVA=java"
    close $fenv
 }
@@ -274,14 +290,15 @@ WantedBy=[set subsys]_[set dtyp]writer.service
 
 
 proc generatemetarpm { } {
-global SYSDIC SALVERSION SAL_WORK_DIR OSPL_VERSION
+global SYSDIC SALVERSION SAL_WORK_DIR OSPL_VERSION env
+   set xmldist [string trim [exec cat $env(SAL_WORK_DIR)/VERSION]]
    set fout [open $SAL_WORK_DIR/rpmbuild/SPECS/ts_sal_runtime.spec w]
    puts $fout "
-
+%global __os_install_post %{nil}
+%define debug_package %{nil}
 %define name			ts_sal_runtime
 %define summary			SAL runtime meta package
 %define version			$SALVERSION
-%define release			1
 %define license			GPL
 %define group			LSST Telescope and Site
 %define vendor			LSST
@@ -289,7 +306,7 @@ global SYSDIC SALVERSION SAL_WORK_DIR OSPL_VERSION
 
 Name:      %{name}
 Version:   %{version}
-Release:   %{release}
+Release: [set xmldist]%\{?dist\}
 Packager:  %{packager}
 Vendor:    %{vendor}
 License:   %{license}
@@ -328,14 +345,15 @@ rpmbuild -ba -v $SAL_WORK_DIR/rpmbuild/SPECS/ts_sal_runtime.spec
 }
 
 proc generateATmetarpm { } {
-global SYSDIC SALVERSION SAL_WORK_DIR OSPL_VERSION
+global SYSDIC SALVERSION SAL_WORK_DIR OSPL_VERSION env
+   set xmldist [string trim [exec cat $env(SAL_WORK_DIR)/VERSION]]
    set fout [open $SAL_WORK_DIR/rpmbuild/SPECS/ts_sal_ATruntime.spec w]
    puts $fout "
-
+%global __os_install_post %{nil}
+%define debug_package %{nil}
 %define name			ts_sal_ATruntime
 %define summary			SAL Aux Telescope runtime meta package
 %define version			$SALVERSION
-%define release			1
 %define license			GPL
 %define group			LSST Telescope and Site
 %define vendor			LSST
@@ -343,7 +361,7 @@ global SYSDIC SALVERSION SAL_WORK_DIR OSPL_VERSION
 
 Name:      %{name}
 Version:   %{version}
-Release:   %{release}
+Release: [set xmldist]%\{?dist\}
 Packager:  %{packager}
 Vendor:    %{vendor}
 License:   %{license}
@@ -403,6 +421,8 @@ BuildRoot: $SAL_WORK_DIR/rpmbuild/%\{name\}-%\{version\}
 Packager: dmills@lsst.org
 Requires: OpenSpliceDDS = $OSPL_VERSION
 Requires: linuxptp
+%global __os_install_post %{nil}
+%define debug_package %{nil}
 
 %description
 This is a SAL runtime and build environment for the LSST $subsys subsystem.
@@ -458,13 +478,14 @@ Source0: [set subsys]_test-$SALVERSION.tgz
 BuildRoot: $SAL_WORK_DIR/rpmbuild/%\{name\}-%\{version\}
 Packager: dmills@lsst.org
 Requires: OpenSpliceDDS = $OSPL_VERSION
+Requires : ts_[set subsys] = $SALVERSION
 Requires: linuxptp
+%global __os_install_post %{nil}
+%define debug_package %{nil}
 
 %description
-This is a SAL runtime and build environment for the LSST $subsys subsystem.
-It provides shared libraries , jar files , include files and documentation
-for the middleware interface. It also includes precompiled test programs for 
-each message type.
+This is a SAL runtime test environment for the LSST $subsys subsystem.
+It includes precompiled test programs for each message type.
 
 %prep
 
@@ -497,12 +518,13 @@ rm -fr \$RPM_BUILD_ROOT
 
 
 proc generateEFDspec { } {
-global SAL_WORK_DIR SALVERSION RPMFILES OSPL_VERSION
+global SAL_WORK_DIR SALVERSION RPMFILES OSPL_VERSION env
+  set xmldist [string trim [exec cat $env(SAL_WORK_DIR)/VERSION]]
   set fout [open $SAL_WORK_DIR/rpmbuild/SPECS/ts_EFDruntime.spec w]
   set ospldist [join [split $OSPL_VERSION .] ""]
   puts $fout "Name: ts_EFDruntime
 Version: [set SALVERSION]
-Release: [set ospldist]%\{?dist\}
+Release: [set xmldist]%\{?dist\}
 Summary: SAL runtime for EFD runtime Subsystem
 Vendor: LSST
 License: GPL
@@ -517,6 +539,8 @@ Requires: mariadb-devel
 Requires: tcl
 Requires: librdkafka
 
+%global __os_install_post %{nil}
+%define debug_package %{nil}
 
 %description
 This is a EFD runtime and environment for the LSST Telescope and Site subsystems.
@@ -551,6 +575,8 @@ proc generateUtilsrpm { } {
 global SYSDIC SALVERSION SAL_WORK_DIR OSPL_VERSION
    set fout [open $SAL_WORK_DIR/rpmbuild/SPECS/ts_sal_utils.spec w]
    puts $fout "
+%global __os_install_post %{nil}
+%define debug_package %{nil}
 
 %define name			ts_sal_utils
 %define summary			SAL runtime utilities package
@@ -644,6 +670,8 @@ Group: Telescope and Site SAL
 Source: opensplice_[set OSPL_VERSION].tgz
 BuildRoot: $SAL_WORK_DIR/rpmbuild/%\{name\}-%\{$OSPL_VERSION\}
 Packager: dmills@lsst.org
+%global __os_install_post %{nil}
+%define debug_package %{nil}
 
 %description
 This is a OpenSplice DDS runtime and build environment for the LSST subsystems.

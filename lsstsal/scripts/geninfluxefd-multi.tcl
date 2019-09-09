@@ -30,14 +30,15 @@ global SQLREC TYPEFORMAT
       set type [lindex [split $i .] 0]
       set name [lindex [split $i .] 1]
       set isarray [lindex [split $i .] 2]
-      if { $type == "char" } {
+      if { $name != "private_sndStamp" } { 
+       if { $type == "char" } {
              set name "[set name].m_ptr"
              set isarray ""
-      } 
+       } 
 ###puts stdout "$i $type $name $isarray"
-      if { $isarray == "" } {
+       if { $isarray == "" } {
               set value "[set ldata]\[iloop\].[set name]"
-      } else {
+       } else {
              set value "[set ldata]\[iloop\].[set name]\[0\]"
              set j 1
              while { $j <= [expr $isarray -1] } {
@@ -46,14 +47,15 @@ global SQLREC TYPEFORMAT
                 incr j 1
              }
              set value [string trim $value ","]
-      }
-      if { $isarray == "" } {
-        set rvars "$rvars\n	  .field(\"[set name]\",$value)"
+       }
+       if { $isarray == "" } {
+         set rvars "$rvars\n	  .field(\"[set name]\",$value)"
+       }
       }
 ###puts stdout $rvars
 ###puts stdout $rformat
   }
-  set record "$record [set rvars]\n	  .timestamp((unsigned long long)(mgr.getCurrentTime()*1000000000));\n"
+  set record "$record [set rvars]\n	  .timestamp((unsigned long long)([set ldata]\[iloop\].private_sndStamp*1000000000));\n"
   return $record
 }
 
@@ -70,14 +72,15 @@ global SQLREC TYPEFORMAT
       set type [lindex [split $i .] 0]
       set name [lindex [split $i .] 1]
       set isarray [lindex [split $i .] 2]
-      if { $type == "char" } {
+      if { $name != "private_sndStamp" } { 
+       if { $type == "char" } {
              set name "[set name].m_ptr"
              set isarray ""
-      } 
+       } 
 ###puts stdout "$i $type $name $isarray"
-      if { $isarray == "" } {
+       if { $isarray == "" } {
               set value "[set ldata]\[iloop\].[set name]"
-      } else {
+       } else {
              set value "[set ldata]\[iloop\].[set name]\[0\]"
              set j 1
              while { $j <= [expr $isarray -1] } {
@@ -86,16 +89,18 @@ global SQLREC TYPEFORMAT
                 incr j 1
              }
              set value [string trim $value ","]
-      }
-      if { $isarray == "" } {
-        set rvars "$rvars\n	  .field(\"[set name]\",$value)"
+       }
+       if { $isarray == "" } {
+         set rvars "$rvars\n	  .field(\"[set name]\",$value)"
+       }
       }
 ###puts stdout $rvars
 ###puts stdout $rformat
   }
-  set record "$record [set rvars]\n	  .timestamp((unsigned long long)(mgr.getCurrentTime()*1000000000));\n"
+  set record "$record [set rvars]\n	  .timestamp((unsigned long long)([set ldata]\[iloop\].private_sndStamp*1000000000));\n"
   return $record
 }
+
 proc writetoefd2 { topic } {
 global SQLREC TYPEFORMAT
   set flds [split $SQLREC($topic) ,]
@@ -109,14 +114,15 @@ global SQLREC TYPEFORMAT
       set type [lindex [split $i .] 0]
       set name [lindex [split $i .] 1]
       set isarray [lindex [split $i .] 2]
-      if { $type == "char" } {
+      if { $name != "private_sndStamp" } { 
+       if { $type == "char" } {
              set name "[set name].m_ptr"
              set isarray ""
-      } 
+       } 
 ###puts stdout "$i $type $name $isarray"
-      if { $isarray == "" } {
+       if { $isarray == "" } {
               set value "[set ldata]\[iloop\].[set name]"
-      } else {
+       } else {
              set value "[set ldata]\[iloop\].[set name]\[0\]"
              set j 1
              while { $j <= [expr $isarray -1] } {
@@ -125,15 +131,69 @@ global SQLREC TYPEFORMAT
                 incr j 1
              }
              set value [string trim $value ","]
-      }
-      if { $isarray == "" } {
-        set rvars "$rvars\n	  .field(\"[set name]\",$value)"
+       }
+       if { $isarray == "" } {
+         set rvars "$rvars\n	  .field(\"[set name]\",$value)"
+       }
       }
 ###puts stdout $rvars
 ###puts stdout $rformat
   }
-  set record "$record [set rvars]\n	  .timestamp((unsigned long long)(mgr.getCurrentTime()*1000000000))\n	  .post_http(si,&resp);"
+  set record "$record [set rvars]\n	  .timestamp((unsigned long long)([set ldata]\[iloop\].private_sndStamp*1000000000))\n	  .post_http(si,&resp);"
   return $record
+}
+
+
+
+proc genSALinfluxqueries { base } {
+global SAL_WORK_DIR
+   set fout [open $SAL_WORK_DIR/[set base]/cpp/src/SAL_[set base]_efdqueries.cpp w]
+   set idlfile $SAL_WORK_DIR/idl-templates/validated/sal/sal_[set base].idl
+   set ptypes [lsort [split [exec grep pragma $idlfile] \n]]
+   foreach j $ptypes {
+     set topic [lindex $j 2]
+     set type [lindex [split $topic _] 0]
+     if { $topic != "ackcmd" && $topic != "command" && $topic != "logevent"} {
+        genqueryefd $fout $base $topic last
+     }
+   }
+   close $fout
+}
+
+proc genqueryinflux { fout base topic key } {
+   if { $key == "last" } {
+      puts $fout "
+#include <sys/time.h>
+#include <time.h>
+#include \"SAL_[set base].h\"
+using namespace [set base];
+
+int SAL_[set base]::getLastSample_[set topic] ([set base]_[set topic]C *mydata) \{
+
+      int num_fields=0;
+      int mstatus=0;
+      char *thequery = (char *) malloc(sizeof(char)*4000);
+      MYSQL_RES *result;
+      MYSQL_ROW *row;
+
+      if ( getSample_[set topic] ([set base]_[set topic]C *mydata) == SAL__NO_UPDATES) \{
+        sprintf(thequery,\"SELECT * FROM [set base]_[set topic] LIMIT 1;\");
+        mstatus = mysql_query(efdConnection,thequery);
+        if (mstatus != 0) \{
+             return SAL__NO_UPDATES;
+        \}
+        result = mysql_store_result(efdConnection);
+        int num_fields = mysql_num_fields(result);
+        row = mysql_fetch_row(result);
+        [readfrominflux [set base]_[set topic] 1]
+"
+      puts $fout "
+        mysql_free_result(result);
+      \}
+      return SAL__OK;
+\}
+"
+   }
 }
 
 
@@ -145,12 +205,16 @@ global ACTORTYPE SAL_WORK_DIR BLACKLIST
 
   char *efdb_host = getenv(\"LSST_EFD_HOST\");
   if (efdb_host == NULL) \{
-      fprintf(stderr,\"MYSQL : LSST_EFD_HOST not defined\\n\");
+      fprintf(stderr,\"InfluxDB : LSST_EFD_HOST not defined\\n\");
       exit(1);
   \}
 
-  influxdb_cpp::server_info si(efdb_host,8086,\"EFD\", \"efduser\" , \"lssttest\");
- 
+  char *db_name = getenv(\"LSST_INFLUX_DB\");
+  if (db_name == NULL) \{
+      fprintf(stderr,\"InfluxDB : LSST_INFLUX_DB not defined\\n\");
+      exit(1);
+  \}
+  influxdb_cpp::server_info si(efdb_host,8086,db_name, \"efduser\" , \"lssttest\");
 "
        return 
    }
@@ -197,20 +261,12 @@ global ACTORTYPE SAL_WORK_DIR BLACKLIST
         for (iloop=0;iloop<numsamp;iloop++) \{
          if (myData_[set topic]\[iloop\].private_origin != 0) \{
           myData_[set topic]\[iloop\].private_rcvStamp = mgr.getCurrentTime();
-          if(iloop<numsamp-1 && first_value){
-                first_value = false;
-	  	[writetoefd1 [set base]_[set topic]]
-	  }else if(iloop<numsamp-1 && !first_value){
-                [writetoefd3 [set base]_[set topic]]
-          }else{
-	  	[writetoefd2 [set base]_[set topic]]
-	  }"
+	  [writetoefd2 [set base]_[set topic]]"
           if { $base != "efd" } {
              checkinfluxLFO $fout $topic
           }
           puts $fout "
-          //cout << ret << endl << resp << endl;
-          //cout << \"logged [set topic]\" << endl;
+          cout << \"ret , resp : \" << ret << \" , \" << resp << \" - logged [set topic]\" << endl;
          \}
         \}
        \}
@@ -230,7 +286,7 @@ proc checkinfluxLFO { fout topic } {
      puts $fout "
        if (status == SAL__OK && numsamp > 0) \{
            printf(\"EFD TBD : Large File Object Announcement Event $topic received\\n\");
-           sprintf(thequery,\"process_LFO_logevent  %d '%s' '%s' '%s' '%s' %f '%s'\"  ,  myData_[set topic]\[iloop\].Byte_Size , myData_[set topic]\[iloop\].Checksum.m_ptr , myData_[set topic]\[iloop\].Generator.m_ptr , myData_[set topic]\[iloop\].Mime_Type.m_ptr , myData_[set topic]\[iloop\].URL.m_ptr , myData_[set topic]\[iloop\].Version, myData_[set topic]\[iloop\].ID.m_ptr);
+           sprintf(thequery,\"process_LFO_logevent  %d '%s' '%s' '%s' '%s' %f '%s'\"  ,  myData_[set topic]\[iloop\].Byte_Size , myData_[set topic]\[iloop\].checkSum.m_ptr , myData_[set topic]\[iloop\].Generator.m_ptr , myData_[set topic]\[iloop\].Mime_Type.m_ptr , myData_[set topic]\[iloop\].URL.m_ptr , myData_[set topic]\[iloop\].Version, myData_[set topic]\[iloop\].ID.m_ptr);
           mstatus = system(thequery);
           if (mstatus < 0) \{
              fprintf(stderr,\"LFO Processor ERROR : %d\\n\",mstatus);
@@ -294,7 +350,7 @@ int test_[set base]_telemetry_influxwriter()
 "
   genericinfluxfragment $fout $base telemetry init
   puts $fout "
-  os_time delay_10us = \{ 0, 10000 \};
+  os_time delay_5ms = \{ 0, 5000000 \};
   int numsamp = 0;
   int actorIdx = 0;
   int iloop = 0;
@@ -308,7 +364,7 @@ int test_[set base]_telemetry_influxwriter()
 "
   genericinfluxfragment $fout $base telemetry getsamples
    puts $fout "
-          os_nanoSleep(delay_10us);
+          os_nanoSleep(delay_5ms);
       \}
 
   /* Remove the DataWriters etc */
@@ -365,7 +421,7 @@ int test_[set base]_event_influxwriter()
   genericinfluxfragment $fout $base logevent init
 
   puts $fout "
-  os_time delay_10us = \{ 0, 10000 \};
+  os_time delay_5ms = \{ 0, 5000000 \};
   int numsamp = 0;
   int actorIdx = 0;
   string resp;
@@ -379,7 +435,7 @@ int test_[set base]_event_influxwriter()
 "
   genericinfluxfragment $fout $base logevent getsamples
    puts $fout "
-     os_nanoSleep(delay_10us);
+     os_nanoSleep(delay_5ms);
   \}
 
   /* Remove the DataWriters etc */
@@ -434,7 +490,7 @@ int test_[set base]_command_influxwriter()
 "
   genericinfluxfragment $fout $base command init
   puts $fout "
-  os_time delay_10us = \{ 0, 10000 \};
+  os_time delay_5ms = \{ 0, 5000000 \};
   int numsamp = 0;
   int actorIdx = 0;
   string resp;
@@ -448,7 +504,7 @@ int test_[set base]_command_influxwriter()
 "
   genericinfluxfragment $fout $base command getsamples
    puts $fout "
-     os_nanoSleep(delay_10us);
+     os_nanoSleep(delay_5ms);
   \}
 
   /* Remove the DataWriters etc */
@@ -523,7 +579,7 @@ proc geninfluxwriters { base } {
 global SQLREC SAL_WORK_DIR
    set SQLREC([set base]_ackcmd)  "char.private_revCode,double.private_sndStamp,double.private_rcvStamp,int.private_seqNum,int.private_origin,int.private_host,int.ack,int.error,char.result"
    set SQLREC([set base]_commandLog)  "char.private_revCode,double.private_sndStamp,int.private_seqNum,char.name,int.ack,int.error"
-   set SQLREC([set base]_logeventLFO)  "char.private_revCode,double.private_sndStamp,int.private_seqNum,char.alias,char.URL,char.Generator,char.Version,char.Checksum,char.Mime_Type,char.ID,int.Byte_size"
+   set SQLREC([set base]_logeventLFO)  "char.private_revCode,double.private_sndStamp,int.private_seqNum,char.alias,char.URL,char.Generator,char.Version,char.checkSum,char.Mime_Type,char.ID,int.Byte_size"
 ##   makesummarytables  $base
    geninfluxtelemetryreader $base
    geninfluxcommandreader   $base

@@ -97,8 +97,8 @@ class MakeIdlFile:
         print(f"*** Validate and generate {self.name} libraries ***")
         self.make_idl_file()
 
-        print(f"*** Move {self.idl_file_from_path} to {self.idl_file_to_path} ***")
-        os.rename(self.idl_file_from_path, self.idl_file_to_path)
+        print(f"*** Copy {self.idl_file_from_path} to {self.idl_file_to_path} ***")
+        shutil.copy(self.idl_file_from_path, self.idl_file_to_path)
 
         print(f"*** Cleanup {self.name} files ***")
         self.delete_files()

@@ -380,7 +380,7 @@ int test_[set base]_telemetry_kafkawriter()
 "
   generickafkafragment $fout $base telemetry init
   puts $fout "
-  os_time delay_10us = \{ 0, 10000 \};
+  os_time delay_5ms = \{ 0, 5000000 \};
   int numsamp = 0;
   int actorIdx = 0;
   int isyslog = 1;
@@ -394,7 +394,7 @@ int test_[set base]_telemetry_kafkawriter()
 "
   generickafkafragment $fout $base telemetry getsamples
    puts $fout "
-          os_nanoSleep(delay_10us);
+          os_nanoSleep(delay_5ms);
       \}
 
        return 0;
@@ -489,7 +489,7 @@ int test_[set base]_event_kafkawriter()
   generickafkafragment $fout $base logevent init
 
   puts $fout "
-  os_time delay_10us = \{ 0, 10000 \};
+  os_time delay_5ms = \{ 0, 5000000 \};
   int numsamp = 0;
   int actorIdx = 0;
   int isyslog = 1;
@@ -503,7 +503,7 @@ int test_[set base]_event_kafkawriter()
 "
   generickafkafragment $fout $base logevent getsamples
    puts $fout "
-     os_nanoSleep(delay_10us);
+     os_nanoSleep(delay_5ms);
   \}
   return 0;
 \}
@@ -597,7 +597,7 @@ int test_[set base]_command_kafkawriter()
 "
   generickafkafragment $fout $base command init
   puts $fout "
-  os_time delay_10us = \{ 0, 10000 \};
+  os_time delay_5ms = \{ 0, 5000000 \};
   int numsamp = 0;
   int actorIdx = 0;
   int isyslog = 1;
@@ -611,7 +611,7 @@ int test_[set base]_command_kafkawriter()
 "
   generickafkafragment $fout $base command getsamples
    puts $fout "
-     os_nanoSleep(delay_10us);
+     os_nanoSleep(delay_5ms);
   \}
 
   return 0;

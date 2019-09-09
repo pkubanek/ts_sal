@@ -2,14 +2,28 @@
 
 proc parseXMLtoidl { fname } { 
 global IDLRESERVED SAL_WORK_DIR SAL_DIR CMDS CMD_ALIASES EVTS EVENT_ALIASES
-global TLMS TLM_ALIASES EVENT_ENUM EVENT_ENUMS UNITS ENUM_DONE
+global TLMS TLM_ALIASES EVENT_ENUM EVENT_ENUMS UNITS ENUM_DONE SYSDIC
    set fin [open $fname r]
    set fout ""
    set ctype ""
    set explanation ""
+   set checkGenerics 0
    set subsys [lindex [split [file tail $fname] _] 0]
+   if { [lindex [split $fname "_."] 1] == "Generics" } {
+     if { [info exists SYSDIC([set subsys],hasAllGenerics)] == 0} {
+       set checkGenerics 1
+       if { [info exists SYSDIC([set subsys],genericsUsed)] } {
+         set gflag [split $SYSDIC([set subsys],genericsUsed) ,]
+         foreach g $gflag {
+            set genericsUsed([set subsys]_[set g]) 1
+         }
+       }
+     }
+   }
+   gentopicdefsql $subsys
+   set fsql [open $SAL_WORK_DIR/sql/[set subsys]_items.sql a]
    set tname none
-   set itemid none
+   set itemid 0
    set intopic 0
    while { [gets $fin rec] > -1 } {
       set st [string trim $rec]
@@ -112,13 +126,23 @@ global TLMS TLM_ALIASES EVENT_ENUM EVENT_ENUMS UNITS ENUM_DONE
          if { $explanation != "" } {set TLMS($subsys,$alias,help) $explanation}
       }
       if { $tag == "EFDB_Topic" } {
+        if { $checkGenerics == 1 } {
+           if { [info exists genericsUsed($value)] == 0 } {
+              set skipping 1
+              while { $skipping } {
+                 set res [gets $fin rec]
+                 if { $res < 0 } {set skipping 0}
+                 if { [string range $rec 0 4] == "</SAL" } {set skipping 0}
+              }
+              set tag ignore
+           }
+        }
+      }
+      if { $tag == "EFDB_Topic" } {
         if { $fout != "" } {
            puts $fout "\};"
            puts $fout "#pragma keylist $tname"
            close $fout
-           if { $ctype == "telemetry" } {
-             close $fsql
-           }
         }
         set itemid 0
         if { [info exists topics($value)] } { 
@@ -142,8 +166,6 @@ global TLMS TLM_ALIASES EVENT_ENUM EVENT_ENUMS UNITS ENUM_DONE
    string<32>	itemValue;"
         }
         if { $ctype == "telemetry" } {
-           gentopicdefsql $tname
-           set fsql [open $SAL_WORK_DIR/sql/[set tname]_items.sql a]
 	   set alias [join [lrange [split $tname "_"] 1 end] "_"]
         }
       }
@@ -229,8 +251,8 @@ global TLMS TLM_ALIASES EVENT_ENUM EVENT_ENUMS UNITS ENUM_DONE
          if { $ctype == "telemetry" } {
 	    lappend TLMS($subsys,$alias,param) "$declare"
 	    lappend TLMS($subsys,$alias,plist) $item
-            puts $fsql "INSERT INTO [set tname]_items VALUES ($itemid,\"$item\",\"$type\",$idim,\"$unit\",$freq,\"$range\",\"$location\",\"$desc\");"
          }
+         puts $fsql "INSERT INTO [set subsys]_items VALUES ($alias,$itemid,\"$item\",\"$type\",$idim,\"$unit\",$freq,\"$range\",\"$location\",\"$desc\");"
       }
    }
    if { $fout != "" } {
@@ -260,9 +282,6 @@ global TLMS TLM_ALIASES EVENT_ENUM EVENT_ENUMS UNITS ENUM_DONE
         }
       }
       close $fout
-      if { $ctype == "telemetry" } {
-        close $fsql
-      }
       set alias ""
    }
    close $fin
@@ -309,6 +328,7 @@ global TLMS TLM_ALIASES EVENT_ENUM EVENT_ENUMS UNITS ENUM_DONE
     }
     genhtmltelemetrytable $subsys
    }
+   close $fsql
 }
 
 
