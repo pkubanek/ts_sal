@@ -1,4 +1,6 @@
 
+
+
 package org.lsst.sal;
 
 import org.opensplice.dds.dcps.TypeSupportImpl;
@@ -139,7 +141,7 @@ public class SAL_SALData {
 		createPublisher(actorIdx);
 
 		// create DataWriter
-		createWriter(actorIdx,false);
+		createWriter(actorIdx,true);
 		sal[actorIdx].isWriter = true;
                 return SAL__OK;
         }
@@ -417,7 +419,7 @@ public class SAL_SALData {
 
 	  //create Topics
 	  createTopic(actorIdx,cmdAlias);
-	  boolean autodispose_unregistered_instances = false;
+	  boolean autodispose_unregistered_instances = true;
 	  createWriter(actorIdx,autodispose_unregistered_instances);
 	  sal[actorIdx].isWriter = true;
 	  sal[actorIdx].isCommand = true;
@@ -484,7 +486,7 @@ public class SAL_SALData {
 	    ackcmdTypeSupport mtr = new ackcmdTypeSupport();
 	    registerType2(SAL__SALData_ackcmd_ACTOR,mtr);
 	    createTopic2(SAL__SALData_ackcmd_ACTOR,sresponse);
-   	    boolean autodispose_unregistered_instances = false;
+   	    boolean autodispose_unregistered_instances = true;
 	    createWriter2(SAL__SALData_ackcmd_ACTOR,autodispose_unregistered_instances);
 	    sal[SAL__SALData_ackcmd_ACTOR].isWriter = true;
           }
