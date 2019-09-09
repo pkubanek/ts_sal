@@ -233,19 +233,23 @@ if { $OPTIONS(maven) } {
      set bad ""
      puts stdout "Creating maven directories maven/[set subsys]_[set SALVERSION]"
      catch { set result [mavenize $subsys] } bad
-     puts stdout "$result $bad"
+     puts stdout "$result"
+     puts stderr "$bad"
 #     puts stdout "Creating unit tests maven/[set subsys]_[set SALVERSION]"
 #     catch { set result [mavenunittests $subsys] } bad
 #     puts stdout "$result"
+#     puts stderr "$bad"
      cd maven/[set subsys]_[set SALVERSION]  
      puts stdout "Running maven install"
      set result ""
      set bad ""
      catch { set result [exec mvn -Dmaven.javadoc.skip=true -DskipTests install] } bad
      puts stdout "$result"
+     puts stderr "$bad"
 #     puts stdout "Updating local repository"
 #     catch { set result [exec mvn install -DperformRelease=true -DcreateChecksum=true] } bad
 #     puts stdout "$result"
+#     puts stderr "$bad"
   }
   puts stdout "Using version $SALVERSION for the maven project"
 }
