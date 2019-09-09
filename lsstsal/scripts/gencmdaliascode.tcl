@@ -1,7 +1,8 @@
 
 source $SAL_DIR/gencommandtests.tcl
 source $SAL_DIR/gencommandtestssinglefile.tcl 
-source $SAL_DIR/gencommandtestsjava.tcl 
+source $SAL_DIR/gencommandtestsjava.tcl
+source $SAL_DIR/gencommandtestssinglefilejava.tcl
 source $SAL_DIR/gentestspython.tcl 
 source $SAL_DIR/activaterevcodes.tcl 
 
