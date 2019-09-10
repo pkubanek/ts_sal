@@ -98,7 +98,7 @@ proc insertCommandersJava { subsys file_writer } {
                         int     { puts $file_writer "            command.[set pname]\[$l\] = (int) 1;" }
                         long    { puts $file_writer "            command.[set pname]\[$l\] = (int) 1;" }
                     }
-                    l 1
+                    incr l 1
                 }
             } else {
                 switch $ptype {
