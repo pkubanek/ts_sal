@@ -384,9 +384,9 @@ global SAL_WORK_DIR
       long		private_origin;
       long 		private_host;
       long		private_seqNum;"
-   if { $keyid } {
-      puts $fack "      long	[set base]ID;"
-   }
+#   if { $keyid } {
+#      puts $fack "      long	[set base]ID;"
+#   }
    puts $fack "      long 		ack;
       long 		error;
       string<256>	result;

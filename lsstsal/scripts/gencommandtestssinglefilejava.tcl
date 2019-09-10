@@ -80,10 +80,6 @@ proc insertCommandersJava { subsys file_writer } {
         
         set revcode [getRevCode [set subsys]_command_[set alias] short]
         puts $file_writer "            command.private_revCode = \"[string trim $revcode _]\";"
-        set cpars $CMDS($subsys,$alias)
-        puts $file_writer "            command.device   = \"[lindex $cpars 0]\";"
-        puts $file_writer "            command.property = \"[lindex $cpars 1]\";"
-        puts $file_writer "            command.action   = \"[lindex $cpars 2]\";"
 
         set narg 1
 
