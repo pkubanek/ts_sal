@@ -330,12 +330,6 @@ puts stdout $idlfile
        catch { set result [makesalcode $idlfile $base $name java] } bad
        if { $result == "none" } {puts stderr $bad}
        if { $OPTIONS(verbose) } {stdlog $result}
-       catch { set result [gencommandtestssinglefilejava $base] } bad
-       if { $OPTIONS(verbose) } {stdlog $result}
-       catch { set result [geneventtestssinglefilejava $base] } bad
-       if { $OPTIONS(verbose) } {stdlog $result}
-       catch { set result [gentelemetrytestssinglefilejava $base] } bad
-       if { $OPTIONS(verbose) } {stdlog $result}
      }
      if { $OPTIONS(isocpp) } {
        stdlog "Generating SAL ISOCPP code for $subsys"
@@ -357,9 +351,11 @@ puts stdout $idlfile
   }
   if { $OPTIONS(cpp) } {
     set result none
-    catch { set result [gencommandtestsinglefilescpp $base] } bad
-    if { $result == "none" } {stdlog $bad}
-    if { $OPTIONS(verbose) } {stdlog $result}
+    if { [info exists CMD_ALIASES($base)] } {
+       catch { set result [gencommandtestsinglefilescpp $base] } bad
+       if { $result == "none" } {stdlog $bad}
+       if { $OPTIONS(verbose) } {stdlog $result}
+    }
     set result none
     catch { set result [geneventtestssinglefilescpp $base] } bad
     if { $result == "none" } {stdlog $bad}
@@ -367,6 +363,16 @@ puts stdout $idlfile
     set result none
     catch { set result [gentelemetrytestsinglefilescpp $base] } bad
     if { $result == "none" } {stdlog $bad}
+    if { $OPTIONS(verbose) } {stdlog $result}
+  }
+  if { $OPTIONS(java) } {
+    if { [info exists CMD_ALIASES($base)] } {
+       catch { set result [gencommandtestssinglefilejava $base] } bad
+       if { $OPTIONS(verbose) } {stdlog $result}
+    }
+    catch { set result [geneventtestssinglefilejava $base] } bad
+    if { $OPTIONS(verbose) } {stdlog $result}
+    catch { set result [gentelemetrytestssinglefilejava $base] } bad
     if { $OPTIONS(verbose) } {stdlog $result}
   }
   if { $OPTIONS(pydds) } {
