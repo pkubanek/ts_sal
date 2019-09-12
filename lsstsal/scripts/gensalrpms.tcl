@@ -17,7 +17,7 @@ source $SAL_DIR/genkafkaefd.tcl
 source $SAL_DIR/sal_version.tcl
 source $SAL_DIR/geninfluxefd-multi.tcl
 
-set SYSDIC(forEFD) "ATAOS ATArchiver ATBuilding ATCalCS ATCamera ATDome ATDomeTrajectory ATEEC ATHeaderService ATHexapod ATMCS ATMonochromator ATPneumatics ATPtg ATSpectrograph ATTCS ATThermoelectricCooler ATWhiteLight EFD Electrometer"
+set SYSDIC(forEFD) "ATAOS ATArchiver ATBuilding ATCamera ATDome ATDomeTrajectory ATHeaderService ATHexapod ATMCS ATMonochromator ATPneumatics ATPtg ATSpectrograph ATTCS ATWhiteLight EFD Electrometer"
 
 proc copyasset { asset dest } {
     if { [file exists $asset] } {
@@ -139,7 +139,7 @@ rpmbuild -bb -bl -v $SAL_WORK_DIR/rpmbuild/SPECS/ts_sal_[set subsys].spec
   catch {
     set utils [glob $SAL_WORK_DIR/rpmbuild/RPMS/x86_64/ts_sal_utils-$SALVERSION*]
   }
-  if { $utils == "" } {
+  if { $utils != "" } {
      generateUtilsrpm
   }
 }
