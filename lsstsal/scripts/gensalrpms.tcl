@@ -139,7 +139,7 @@ rpmbuild -bb -bl -v $SAL_WORK_DIR/rpmbuild/SPECS/ts_sal_[set subsys].spec
   catch {
     set utils [glob $SAL_WORK_DIR/rpmbuild/RPMS/x86_64/ts_sal_utils-$SALVERSION*]
   }
-  if { $utils != "" } {
+  if { $utils == "" } {
      generateUtilsrpm
   }
 }
