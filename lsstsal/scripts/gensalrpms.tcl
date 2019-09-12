@@ -644,7 +644,7 @@ puts $fout "
 }
 
 proc generateUtilsrpm { } {
-global SYSDIC SALVERSION SAL_WORK_DIR OSPL_VERSION
+global SYSDIC SALVERSION SAL_WORK_DIR OSPL_VERSION SAL_DIR
    set fout [open $SAL_WORK_DIR/rpmbuild/SPECS/ts_sal_utils.spec w]
    puts $fout "
 %global __os_install_post %{nil}
@@ -685,10 +685,10 @@ cp -fr %\{name\}-%\{version\}/* %{buildroot}/.
 /opt/lsst/ts_sal/etc/leap-seconds.list
 "
   close $fout
-  mkdir -p ts_sal_utils-$SALVERSION/etc/systemd/system
-  mkdir -p ts_sal_utils-$SALVERSION/opt/lsst/ts_sal/bin
-  mkdir -p ts_sal_utils-$SALVERSION/opt/lsst/ts_sal/lib
-  mkdir -p ts_sal_utils-$SALVERSION/opt/lsst/ts_sal/etc
+  exec mkdir -p ts_sal_utils-$SALVERSION/etc/systemd/system
+  exec mkdir -p ts_sal_utils-$SALVERSION/opt/lsst/ts_sal/bin
+  exec mkdir -p ts_sal_utils-$SALVERSION/opt/lsst/ts_sal/lib
+  exec mkdir -p ts_sal_utils-$SALVERSION/opt/lsst/ts_sal/etc
   set fser [open ts_sal_utils-$SALVERSION/etc/systemd/system/ts_sal_settai.service w]
      puts $fser "
 \[Unit\]
