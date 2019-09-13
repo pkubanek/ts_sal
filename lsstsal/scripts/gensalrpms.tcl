@@ -683,6 +683,8 @@ cp -fr %\{name\}-%\{version\}/* %{buildroot}/.
 /opt/lsst/ts_sal/bin/update_leapseconds
 /opt/lsst/ts_sal/lib/libsalUtils.so
 /opt/lsst/ts_sal/etc/leap-seconds.list
+/opt/lsst/ts_sal/setup.env
+/opt/lsst/ts_sal/VERSION
 "
   close $fout
   exec mkdir -p ts_sal_utils-$SALVERSION/etc/systemd/system
@@ -711,6 +713,8 @@ WantedBy=ts_sal_settai.service
   copyasset $SAL_DIR/update_leapseconds ts_sal_utils-$SALVERSION/opt/lsst/ts_sal/bin/.
   copyasset $SAL_WORK_DIR/lib/libsalUtils.so ts_sal_utils-$SALVERSION/opt/lsst/ts_sal/lib/.
   copyasset $SAL_DIR/leap-seconds.list ts_sal_utils-$SALVERSION/opt/lsst/ts_sal/etc/.
+  copyasset $SAL_DIR/setup.env ts_sal_utils-$SALVERSION/opt/lsst/ts_sal/.
+  copyasset $SAL_DIR/../../VERSION ts_sal_utils-$SALVERSION/opt/lsst/ts_sal/.
   exec tar cvzf $SAL_WORK_DIR/rpmbuild/SOURCES/ts_sal_utils-$SALVERSION.tgz ts_sal_utils-$SALVERSION
   exec rm -fr $SAL_WORK_DIR/rpmbuild/BUILD/ts_sal_utils-$SALVERSION/*
   exec cp -r ts_sal_utils-$SALVERSION $SAL_WORK_DIR/rpmbuild/BUILD/.
