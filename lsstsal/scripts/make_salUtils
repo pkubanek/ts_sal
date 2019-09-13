@@ -12,7 +12,7 @@ cp libsalUtils.so $SAL_WORK_DIR/lib/.
 cp $SAL_DIR/code/templates/salUtils.java .
 javac salUtils.java
 mkdir -p $SAL_WORK_DIR/lib/org/lsst/sal
-cp org/lsst/sal/salUtils.class $SAL_WORK_DIR/lib/org/lsst/sal/.
+cp salUtils.class $SAL_WORK_DIR/lib/org/lsst/sal/.
 cp $SAL_DIR/set-tai.c .
 gcc -o set-tai -g set-tai.c -lc
 cd $SAL_WORK_DIR
