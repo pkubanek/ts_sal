@@ -395,7 +395,6 @@ typedef struct [set subsys]_waitCompleteLV
 proc updatecfragments { fcod1 fcod1b fcod2 fcod3 fcod4 fcod5 fcod6 fcod7 fcod8 fcod10 fcod11 fcod12 fcod13 } {
 global VPROPS TYPEFORMAT
    set idx $VPROPS(idx)
-   if { $VPROPS(iscommand) } {set idx [expr $idx - 4]}
    if { $VPROPS(array) } {
       puts $fcod1 "    for (int iseq=0;iseq<$VPROPS(dim);iseq++) \{data->$VPROPS(name)\[iseq\] = Instances\[j\].$VPROPS(name)\[iseq\];\}"
       puts $fcod1 "    for (int iseq=0;iseq<$VPROPS(dim);iseq++) \{lastSample_[set VPROPS(topic)].$VPROPS(name)\[iseq\] = Instances\[j\].$VPROPS(name)\[iseq\];\}"

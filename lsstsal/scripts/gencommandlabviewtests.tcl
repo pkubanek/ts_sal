@@ -31,7 +31,6 @@ int main (int argc, char *argv\[\])
      printf(\"Usage :  input parameters...\\n\");"
    set fidl [open $SAL_WORK_DIR/idl-templates/validated/[set subsys]_command_[set alias].idl r]
    gets $fidl rec ; gets $fidl rec ;gets $fidl rec ;gets $fidl rec ;gets $fidl rec ;gets $fidl rec ;gets $fidl rec
-   gets $fidl rec ; gets $fidl rec ;gets $fidl rec ;gets $fidl rec
    while { [gets $fidl rec] > -1 } {
       if { [lindex $rec 0] != "#pragma" && [lindex $rec 0]!= "\};" } {
          puts $fcmd "     printf(\"$rec\\n\");"
@@ -52,7 +51,6 @@ int main (int argc, char *argv\[\])
 "
   set cpars $CMDS($subsys,$alias)
   set fin [open $SAL_WORK_DIR/include/SAL_[set subsys]_command_[set alias]shmout.tmp r]
-  gets $fin rec; gets $fin rec; gets $fin rec; gets $fin rec;
   while { [gets $fin rec] > -1 } {
      puts $fcmd $rec
   }

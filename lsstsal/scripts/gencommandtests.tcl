@@ -7,7 +7,7 @@ global CMD_ALIASES CMDS SAL_WORK_DIR SYSDIC DONE_CMDEVT
       stdlog "	: command test send for = $alias"
       set chk "exec  nl $SAL_WORK_DIR/include/SAL_[set subsys]_command_[set alias]Cargs.tmp | tail -1"
       set ichk [eval $chk]
-      set numargs [expr [string range $ichk 0 8] -3]
+      set numargs [expr [string range $ichk 0 8] +1]
       set fcmd [open $SAL_WORK_DIR/$subsys/cpp/src/sacpp_[set subsys]_[set alias]_commander.cpp w]
       puts $fcmd "
 
@@ -36,8 +36,7 @@ int main (int argc, char *argv\[\])
   if (argc < $numargs ) \{
      printf(\"Usage :  input parameters...\\n\");"
    set fidl [open $SAL_WORK_DIR/idl-templates/validated/[set subsys]_command_[set alias].idl r]
-   gets $fidl rec ; gets $fidl rec ;gets $fidl rec ;gets $fidl rec ;gets $fidl rec ;gets $fidl rec ;gets $fidl rec
-   gets $fidl rec ; gets $fidl rec ;gets $fidl rec ;gets $fidl rec
+   gets $fidl rec ;gets $fidl rec ;gets $fidl rec ; gets $fidl rec ; gets $fidl rec ; gets $fidl rec ; gets $fidl rec
    while { [gets $fidl rec] > -1 } {
       if { [lindex $rec 0] != "#pragma" && [lindex $rec 0]!= "\};" } {
          puts $fcmd "     printf(\"$rec\\n\");"
@@ -61,7 +60,6 @@ int main (int argc, char *argv\[\])
 "
   set cpars $CMDS($subsys,$alias)
   set fin [open $SAL_WORK_DIR/include/SAL_[set subsys]_command_[set alias]Cargs.tmp r]
-  gets $fin rec; gets $fin rec; gets $fin rec; gets $fin rec;
   while { [gets $fin rec] > -1 } {
      puts $fcmd $rec
   }

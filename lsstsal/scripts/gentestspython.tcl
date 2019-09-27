@@ -176,7 +176,6 @@ mgr = SAL_[set subsys][set initializer]
 mgr.salCommand(\"[set subsys]_command_[set alias]\")
 myData = [set subsys]_command_[set alias]C()"
        set farg [open $SAL_WORK_DIR/include/SAL_[set subsys]_command_[set alias]Pargs.tmp r]
-       gets $farg rec;gets $farg rec;gets $farg rec;gets $farg rec
        while { [gets $farg rec] > -1 } {
           puts $fcmd $rec
        }
