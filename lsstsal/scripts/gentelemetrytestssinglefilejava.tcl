@@ -78,7 +78,7 @@ proc insertPublishersJava { subsys file_writer } {
         puts $file_writer "                System.out.println(\"=== \[[set alias]\] message sent \" + count);"
         puts $file_writer "                ++count;"
         puts $file_writer "                try {"
-        puts $file_writer "                Thread.sleep(2);"
+        puts $file_writer "                Thread.sleep(4);"
         puts $file_writer "                } catch (InterruptedException e) {"
         puts $file_writer "                }"
         puts $file_writer "            }"
