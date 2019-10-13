@@ -24,6 +24,7 @@ salReturn SAL_[set base]::putSample_[set name]([set base]_[set name]C *data)
   Py_BEGIN_ALLOW_THREADS
 #endif
   int actorIdx = SAL__[set base]_[set name]_ACTOR;
+  if ( data == NULL ) \{ return SAL__NOT_DEFINED; \}
   if ( sal\[actorIdx\].isWriter == false ) \{
     createWriter(actorIdx,false);
     sal\[actorIdx\].isWriter = true;
@@ -458,6 +459,7 @@ puts $fout "
 	public int putSample([set base].[set name] data)
 	\{
           int status = SAL__OK;
+          if ( data == null ) \{ return SAL__NOT_DEFINED; \}
           [set name][set revcode] SALInstance = new [set name][set revcode]();
 	  int actorIdx = SAL__[set base]_[set name]_ACTOR;
 	  if ( sal\[actorIdx\].isWriter == false ) \{

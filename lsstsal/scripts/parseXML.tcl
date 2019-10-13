@@ -190,30 +190,7 @@ global TLMS TLM_ALIASES EVENT_ENUM EVENT_ENUMS UNITS ENUM_DONE SYSDIC DESC
         }
       }
       if { $tag == "/SALEvent" || $tag == "/SALCommand" } {
-           if { [info exists EVENT_ENUM($alias)] } {
-             foreach e $EVENT_ENUM($alias) {
-               set i 1
-               set enum [string trim $e "\{\}"]
-               set cnst [lindex [split $enum :] 1]
-               foreach id [split $cnst ,] {
-                  puts $fout " const long [set alias]_[string trim $id " "]=$i;"
-                  incr i 1
-               }
-             }
-             set done($alias) 1
-           }
-           if { [info exists EVENT_ENUM([set subsys]_shared)] } {
-             foreach e $EVENT_ENUM([set subsys]_shared) {
-               set i 1
-               set enum [string trim $e "\{\}"]
-               set cnst [lindex [split $enum :] 1]
-               foreach id [split $cnst ,] {
-                   puts $fout "	const long [set subsys]_shared_[string trim $id " "]=$i;"
-                   incr i 1
-               }
-             }
-             unset EVENT_ENUM([set subsys]_shared)
-           }
+         enumsToIDL $subsys $alias $fout
       }
       if { $tag == "IDL_Type"} {
          set type $value
@@ -269,29 +246,7 @@ global TLMS TLM_ALIASES EVENT_ENUM EVENT_ENUMS UNITS ENUM_DONE SYSDIC DESC
    if { $fout != "" } {
       puts $fout "\};"
       puts $fout "#pragma keylist $tname"
-      if { [info exists EVENT_ENUM($alias)] && [info exists done($alias)] == 0} {
-        foreach e $EVENT_ENUM($alias) {
-          set i 1
-          set enum [string trim $e "\{\}"]
-          set cnst [lindex [split $enum :] 1]
-          foreach id [split $cnst ,] {
-              puts $fout " const long [set alias]_[string trim $id " "]=$i;"
-              incr i 1
-          }
-        }
-        set done($alias) 1
-      }
-      if { [info exists EVENT_ENUM([set subsys]_shared)] } {
-        foreach e $EVENT_ENUM([set subsys]_shared) {
-          set i 1
-          set enum [string trim $e "\{\}"]
-          set cnst [lindex [split $enum :] 1]
-          foreach id [split $cnst ,] {
-              puts $fout " const long [set subsys]_shared_[string trim $id " "]=$i;"
-              incr i 1
-          }
-        }
-      }
+      enumsToIDL $subsys $alias $fout
       close $fout
       set alias ""
    }
@@ -342,7 +297,40 @@ global TLMS TLM_ALIASES EVENT_ENUM EVENT_ENUMS UNITS ENUM_DONE SYSDIC DESC
    close $fsql
 }
 
-
+proc enumsToIDL { subsys alias fout } {
+global EVENT_ENUM EDONE
+   if { [info exists EVENT_ENUM($alias)] && [info exists EDONE($alias)] == 0} {
+      foreach e $EVENT_ENUM($alias) {
+          set i 1
+          set enum [string trim $e "\{\}"]
+          set cnst [lindex [split $enum :] 1]
+          foreach id [split $cnst ,] {
+              if { [llength [split $id "="]] > 1 } {
+                 set i [lindex [split $id "="] 1]
+                 set id [lindex [split $id "="] 0]
+              }
+              puts $fout " const long [set alias]_[string trim $id " "]=$i;"
+              incr i 1
+          }
+      }
+      set EDONE($alias) 
+   }
+   if { [info exists EVENT_ENUM([set subsys]_shared)] } {
+      foreach e $EVENT_ENUM([set subsys]_shared) {
+          set i 1
+          set enum [string trim $e "\{\}"]
+          set cnst [lindex [split $enum :] 1]
+          foreach id [split $cnst ,] {
+              if { [llength [split $id "="]] > 1 } {
+                 set i [lindex [split $id "="] 1]
+                 set id [lindex [split $id "="] 0]
+              }
+              puts $fout " const long [set subsys]_shared_[string trim $id " "]=$i;"
+              incr i 1
+          }
+      }
+   }
+}
 
 proc genhtmlcommandtable { subsys } {
 global IDLRESERVED SAL_WORK_DIR SAL_DIR CMDS CMD_ALIASES EVTS EVENT_ALIASES UNITS DESC

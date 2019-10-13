@@ -57,6 +57,10 @@ global SAL_WORK_DIR EVENT_ENUMS
         set enums $EVENT_ENUMS($i)
         set iv 1
         foreach v [split $enums ","] {
+          if { [llength [split $v "="]] > 1 } {
+            set iv [lindex [split $v "="] 1]
+            set v [lindex [split $v "="] 0]
+          }
           puts $fout "   [enumToPython $v] = $iv"
           incr iv 1
         }
