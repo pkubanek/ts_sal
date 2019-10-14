@@ -315,7 +315,7 @@ global EVENT_ENUM EDONE
       }
       set EDONE($alias) 
    }
-   if { [info exists EVENT_ENUM([set subsys]_shared)] } {
+   if { [info exists EVENT_ENUM([set subsys]_shared)] && [info exists EDONE([set subsys]_shared)] == 0 } {
       foreach e $EVENT_ENUM([set subsys]_shared) {
           set i 1
           set enum [string trim $e "\{\}"]
@@ -329,6 +329,7 @@ global EVENT_ENUM EDONE
               incr i 1
           }
       }
+      set EDONE([set subsys]_shared) 1
    }
 }
 
