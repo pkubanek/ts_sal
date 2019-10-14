@@ -64,6 +64,7 @@ global TLMS TLM_ALIASES EVENT_ENUM EVENT_ENUMS UNITS ENUM_DONE SYSDIC DESC
       if { $tag == "Subsystem" }       {set subsys $value}
       if { $tag == "Explanation" }     {set explanation $value}
       if { $tag == "Enumeration" }     {
+         validateEnumeration $value
          if { $intopic } {
            lappend EVENT_ENUM($alias) "$item:$value"
            set EVENT_ENUMS($alias,$item) "$value"
@@ -332,6 +333,24 @@ global EVENT_ENUM EDONE
       set EDONE([set subsys]_shared) 1
    }
 }
+
+proc validateEnumeration { elist } {
+   set hasvals [llength [split $elist "="]]
+   if { $hasvals > 1 } {
+      set all [split $elist ","]
+      foreach i $all { 
+         if { [llength [split $i "="]] < 2 } {
+           puts stdout "****************************************************************"
+           puts stdout "****************************************************************"
+           puts stdout "ERROR - illegal Enumeration , mixed use cases"
+           puts stdout "****************************************************************"
+           puts stdout "****************************************************************"
+           exit
+         }
+      }
+   }
+}
+
 
 proc genhtmlcommandtable { subsys } {
 global IDLRESERVED SAL_WORK_DIR SAL_DIR CMDS CMD_ALIASES EVTS EVENT_ALIASES UNITS DESC
