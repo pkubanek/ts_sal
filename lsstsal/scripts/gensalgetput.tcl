@@ -459,7 +459,6 @@ puts $fout "
 	public int putSample([set base].[set name] data)
 	\{
           int status = SAL__OK;
-          if ( data == null ) \{ return SAL__NOT_DEFINED; \}
           [set name][set revcode] SALInstance = new [set name][set revcode]();
 	  int actorIdx = SAL__[set base]_[set name]_ACTOR;
 	  if ( sal\[actorIdx\].isWriter == false ) \{
@@ -521,7 +520,7 @@ puts $fout "
   	  SampleInfoSeqHolder infoSeq = new SampleInfoSeqHolder();
 	  SALReader.take(SALInstance, infoSeq, sal\[actorIdx\].maxSamples,
 					NOT_READ_SAMPLE_STATE.value, ANY_VIEW_STATE.value,
-					ALIVE_INSTANCE_STATE.value);
+					ANY_INSTANCE_STATE.value);
           numsamp = SALInstance.value.length;
           if (numsamp > 0) \{
  	    if (debugLevel > 0) \{
