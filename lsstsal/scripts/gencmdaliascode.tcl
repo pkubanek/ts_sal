@@ -68,6 +68,9 @@ global CMD_ALIASES CMDS SAL_WORK_DIR ACKREVCODE
 int SAL_SALData::issueCommand_[set i]( SALData_command_[set i]C *data )
 \{
   
+  if ( data == NULL ) \{
+     throw std::runtime_error(\"NULL pointer for issueCommand_[set i]\");
+  \}
   InstanceHandle_t cmdHandle = DDS::HANDLE_NIL;
   SALData::command_[set i][set revcode] Instance;
   int actorIdx = SAL__SALData_command_[set i]_ACTOR;
@@ -132,6 +135,9 @@ int SAL_SALData::acceptCommand_[set i]( SALData_command_[set i]C *data )
    InstanceHandle_t ackHandle = DDS::HANDLE_NIL;
    int actorIdx = SAL__SALData_command_[set i]_ACTOR;
    int j=0;
+   if ( data == NULL ) \{
+      throw std::runtime_error(\"NULL pointer for acceptCommand_[set i]\");
+   \}
 
   // create DataWriter :
   if (sal\[actorIdx\].isProcessor == false) \{
@@ -297,6 +303,9 @@ salReturn SAL_SALData::getResponse_[set i]C(SALData_ackcmdC *response)
   ReturnCode_t status = SAL__CMD_NOACK;
   ReturnCode_t istatus =  -1;
   int j=0;
+  if ( response == NULL ) \{
+     throw std::runtime_error(\"NULL pointer for getResponse_[set i]\");
+  \}
   DataReader_var dreader = getReader2(actorIdx);
   SALData::ackcmd[set ACKREVCODE]DataReader_var SALReader = SALData::ackcmd[set ACKREVCODE]DataReader::_narrow(dreader.in());
   checkHandle(SALReader.in(), \"SALData::ackcmdDataReader::_narrow\");
@@ -395,6 +404,9 @@ salReturn SAL_SALData::ackCommand_[set i]C(SALData_ackcmdC *response )
    InstanceHandle_t ackHandle = DDS::HANDLE_NIL;
    int actorIdx = SAL__SALData_ackcmd_ACTOR;
    int actorIdxCmd = SAL__SALData_command_[set i]_ACTOR;
+   if ( response == NULL ) \{
+      throw std::runtime_error(\"NULL pointer for ackCommand_[set i]\");
+   \}
 
    SALData::ackcmd[set ACKREVCODE] ackdata;
    DataWriter_var dwriter = getWriter2(actorIdx);

@@ -97,7 +97,7 @@ if len(sys.argv) < [expr [llength $EVTS([set subsys],[set alias],plist)] +1]:
 
 from SALPY_[set subsys] import *
 mgr = SAL_[set subsys][set initializer]
-mgr.salEvent(\"[set subsys]_logevent_[set alias]\")
+mgr.salEventPub(\"[set subsys]_logevent_[set alias]\")
 myData = [set subsys]_logevent_[set alias]C()"
       set farg [open $SAL_WORK_DIR/include/SAL_[set subsys]_logevent_[set alias]Pargs.tmp r]
       while { [gets $farg rec] > -1 } {
@@ -119,7 +119,7 @@ import sys
 import numpy
 from SALPY_[set subsys] import *
 mgr = SAL_[set subsys][set initializer]
-mgr.salEvent(\"[set subsys]_logevent_[set alias]\")
+mgr.salEventSub(\"[set subsys]_logevent_[set alias]\")
 print(\"[set subsys]_[set alias] logger ready\")
 event = [set subsys]_logevent_[set alias]C()
 while True:
