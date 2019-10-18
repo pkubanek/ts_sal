@@ -85,7 +85,7 @@ proc insertPublishersJava { subsys file_writer } {
         puts $file_writer "            System.out.println(\"=== [set subsys]_[set alias] end of topic ===\");"
         puts $file_writer "        \}"
         puts $file_writer "        try \{"
-        puts $file_writer "            Thread.sleep(100);"
+        puts $file_writer "            Thread.sleep(2000);"
         puts $file_writer "        \}"
         puts $file_writer "        catch(InterruptedException e) \{"
         puts $file_writer "            e.printStackTrace();"
@@ -117,8 +117,25 @@ proc insertSubscribersJava { subsys file_writer } {
 
     foreach alias $TLM_ALIASES($subsys) {
         puts $file_writer "        mgr.salTelemetrySub(\"[set subsys]_[set alias]\");"
+        puts $file_writer "        [set subsys].[set alias] [set alias]SALInstance = new [set subsys].[set alias]();\n"
     }
-    puts $file_writer "        System.out.println(\"===== [set subsys] all subscribers ready =====\");\n"
+
+    puts $file_writer "        // Short wait here to give samples some time to arrive before flushing them. If you"
+    puts $file_writer "        // remove this wait you may find yourself getting an historical topic even though"
+    puts $file_writer "        // you are flushing. This is because those topics arrive AFTER the flushing"
+    puts $file_writer "        try \{"
+    puts $file_writer "            Thread.sleep(5000);"
+    puts $file_writer "            \}"
+    puts $file_writer "        catch(InterruptedException e) \{"
+    puts $file_writer "            e.printStackTrace();"
+    puts $file_writer "        \}\n"
+
+    foreach alias $TLM_ALIASES($subsys) {
+        puts $file_writer "        mgr.flushSamples([set alias]SALInstance);"
+    }
+
+
+    puts $file_writer "\n        System.out.println(\"===== [set subsys] all subscribers ready =====\");\n"
 
     puts $file_writer "        // The loops below follow the below schema"
     puts $file_writer "        // 1) Initialize variables"
@@ -128,26 +145,17 @@ proc insertSubscribersJava { subsys file_writer } {
     foreach alias $TLM_ALIASES($subsys) {
         puts $file_writer "\n        \{"
         puts $file_writer "            System.out.println(\"=== [set subsys]_[set alias] start of topic ===\");"
-        puts $file_writer "            [set subsys].[set alias] SALInstance = new [set subsys].[set alias]();\n"
-        
+                
         puts $file_writer "            int samples = 0;"
-        puts $file_writer "            try \{"
-        puts $file_writer "                Thread.sleep(5000);"
-        puts $file_writer "                \}"
-        puts $file_writer "            catch(InterruptedException e) \{"
-        puts $file_writer "                e.printStackTrace();"
-        puts $file_writer "            \}"
-        puts $file_writer "            samples = mgr.flushSamples(SALInstance);\n"
-        
         puts $file_writer "            int count = 0;"
         puts $file_writer "            int timeout = 30000;"
         puts $file_writer "            boolean finished = false;\n"
         
         puts $file_writer "            while (!finished) \{"
-        puts $file_writer "                samples = mgr.getSample(SALInstance);"
+        puts $file_writer "                samples = mgr.getSample([set alias]SALInstance);"
         puts $file_writer "                if (samples == SAL_[set subsys].SAL__OK) \{"
         puts $file_writer "                    count++;"
-        puts $file_writer "                    System.out.println(\"=== \[[set alias] Subscriber\] samples\" + SALInstance.private_sndStamp);"
+        puts $file_writer "                    System.out.println(\"=== \[[set alias] Subscriber\] samples\" + [set alias]SALInstance.private_sndStamp);"
         puts $file_writer "                    System.out.println(\"=== \[[set alias] Subscriber\] message received :\" + count);"
         puts $file_writer "                    if (count == 200) \{"
         puts $file_writer "                        finished = true;"
