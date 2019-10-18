@@ -24,6 +24,7 @@ salReturn SAL_[set base]::putSample_[set name]([set base]_[set name]C *data)
   Py_BEGIN_ALLOW_THREADS
 #endif
   int actorIdx = SAL__[set base]_[set name]_ACTOR;
+  if ( data == NULL ) \{ return SAL__NOT_DEFINED; \}
   if ( sal\[actorIdx\].isWriter == false ) \{
     createWriter(actorIdx,false);
     sal\[actorIdx\].isWriter = true;
@@ -154,7 +155,7 @@ salReturn SAL_[set base]::flushSamples_[set name]([set base]_[set name]C *data)
     sal\[SAL__[set base]_[set name]_ACTOR\].sampleAge = -1.0;
     istatus = getSample_[set name](data);
     if (debugLevel > 8) \{
-        cout << \"===	\[flushSamples\] getSample returns :\" << istatus << endl;
+        cout << \"=== \[flushSamples\] getSample returns :\" << istatus << endl;
     \}
     sal\[SAL__[set base]_[set name]_ACTOR\].sampleAge = 1.0e20;
     return SAL__OK;
@@ -205,8 +206,8 @@ global SAL_WORK_DIR
    set fact [open $SAL_WORK_DIR/[set base]/cpp/src/SAL_actors.h w]
    foreach j $ptypes {
       set name [lindex $j 2]
-      puts $fout "#define SAL__[set base]_[set name]_ACTOR		$idx"
-      puts $fact "#define SAL__[set base]_[set name]_ACTOR		$idx"
+      puts $fout "#define SAL__[set base]_[set name]_ACTOR    $idx"
+      puts $fact "#define SAL__[set base]_[set name]_ACTOR    $idx"
       incr idx 1
    }
    close $fact
@@ -256,137 +257,137 @@ proc addActorIndexesJava { idlfile base fout } {
    set idx 0
    foreach j $ptypes {
       set name [lindex $j 2]
-      puts $fout "	public static final int SAL__[set base]_[set name]_ACTOR = $idx;"
+      puts $fout "  public static final int SAL__[set base]_[set name]_ACTOR = $idx;"
       incr idx 1
    }
-   puts $fout "	public static final int SAL__ACTORS_MAXCOUNT = $idx;"
+   puts $fout " public static final int SAL__ACTORS_MAXCOUNT = $idx;"
    puts $fout "
-	public void initSalActors (int qos)
-	\{
+  public void initSalActors (int qos)
+  \{
 "
    set idx 0
    foreach j $ptypes {
       set name [lindex $j 2]
       set type [lindex [split $name _] 0]
       set revcode [getRevCode [set base]_[set name] short]
-      puts $fout "		sal\[$idx\]=new salActor(qos);" 
-      puts $fout "		sal\[$idx\].topicHandle=\"[set base]_[set name][set revcode]\";"
-      puts $fout "		sal\[$idx\].topicName=\"[set base]_[set name]\";"
+      puts $fout "    sal\[$idx\]=new salActor(qos);" 
+      puts $fout "    sal\[$idx\].topicHandle=\"[set base]_[set name][set revcode]\";"
+      puts $fout "    sal\[$idx\].topicName=\"[set base]_[set name]\";"
       if { $type == "command" || $type == "ackcmd" } {
-         puts $fout "		sal\[$idx\].durability = DurabilityQosPolicyKind.VOLATILE_DURABILITY_QOS;"
+         puts $fout "   sal\[$idx\].durability = DurabilityQosPolicyKind.VOLATILE_DURABILITY_QOS;"
       } else {
-         puts $fout "		sal\[$idx\].durability = DurabilityQosPolicyKind.TRANSIENT_DURABILITY_QOS;"
+         puts $fout "   sal\[$idx\].durability = DurabilityQosPolicyKind.TRANSIENT_DURABILITY_QOS;"
       }
       incr idx 1
    }
   puts $fout "
-	\}"
+  \}"
 }
 
 proc copyfromjavasample { fout base name } {
 global CMDS TLMS EVTS
                set alias [string range $name 9 end]
-    		if { [info exists TLMS($base,$name,param)] } {
-    		  foreach p $TLMS($base,$name,param) {
+        if { [info exists TLMS($base,$name,param)] } {
+          foreach p $TLMS($base,$name,param) {
                     set tpar [lindex [string trim $p "\{\}"]]
                     if { [lindex $tpar 0] == "unsigned" } {
-         	      set apar [lindex [split [lindex $tpar 2] "()"] 0]
+                set apar [lindex [split [lindex $tpar 2] "()"] 0]
                     } else {
-         	      set apar [lindex [split [lindex $tpar 1] "()"] 0]
+                set apar [lindex [split [lindex $tpar 1] "()"] 0]
                     }
-    		    set arr [lindex [split $p "()"] 1]
-    		    if { $arr != "" } {
-    		      puts $fout "           System.arraycopy(SALInstance.value\[j\].$apar,0,data.$apar,0,$arr);"
-    		    } else {
-    		      puts $fout "           data.$apar = SALInstance.value\[j\].$apar;"
-    		    }
-    		  }
-    		}
-    		if { [info exists EVTS($base,$alias,param)] } {
-    		  foreach p $EVTS($base,$alias,param) {
+            set arr [lindex [split $p "()"] 1]
+            if { $arr != "" } {
+              puts $fout "           System.arraycopy(SALInstance.value\[j\].$apar,0,data.$apar,0,$arr);"
+            } else {
+              puts $fout "           data.$apar = SALInstance.value\[j\].$apar;"
+            }
+          }
+        }
+        if { [info exists EVTS($base,$alias,param)] } {
+          foreach p $EVTS($base,$alias,param) {
                     set tpar [lindex [string trim $p "\{\}"]]
                     if { [lindex $tpar 0] == "unsigned" } {
-         	      set apar [lindex [split [lindex $tpar 2] "()"] 0]
+                set apar [lindex [split [lindex $tpar 2] "()"] 0]
                     } else {
-         	      set apar [lindex [split [lindex $tpar 1] "()"] 0]
+                set apar [lindex [split [lindex $tpar 1] "()"] 0]
                     }
-    		    set arr [lindex [split $p "()"] 1]
-    		    if { $arr != "" } {
-    		      puts $fout "           System.arraycopy(SALInstance.value\[j\].$apar,0,data.$apar,0,$arr);"
-    		    } else {
-    		      puts $fout "           data.$apar = SALInstance.value\[j\].$apar;"
-    		    }
-    		  }
-    		}
-    		if { [info exists CMDS($base,$name,param)] } {
-    		  foreach p $CMDS($base,$name,param) {
+            set arr [lindex [split $p "()"] 1]
+            if { $arr != "" } {
+              puts $fout "           System.arraycopy(SALInstance.value\[j\].$apar,0,data.$apar,0,$arr);"
+            } else {
+              puts $fout "           data.$apar = SALInstance.value\[j\].$apar;"
+            }
+          }
+        }
+        if { [info exists CMDS($base,$name,param)] } {
+          foreach p $CMDS($base,$name,param) {
                     set tpar [lindex [string trim $p "\{\}"]]
                     if { [lindex $tpar 0] == "unsigned" } {
-         	      set apar [lindex [split [lindex $tpar 2] "()"] 0]
+                set apar [lindex [split [lindex $tpar 2] "()"] 0]
                     } else {
-         	      set apar [lindex [split [lindex $tpar 1] "()"] 0]
+                set apar [lindex [split [lindex $tpar 1] "()"] 0]
                     }
-    		    set arr [lindex [split $p "()"] 1]
-    		    if { $arr != "" } {
-    		      puts $fout "           System.arraycopy(SALInstance.value\[j\].$apar,0,data.$apar,0,$arr);"
-    		    } else {
-    		      puts $fout "           data.$apar = SALInstance.value\[j\].$apar;"
-    		    }
-    		  }
-    		}
+            set arr [lindex [split $p "()"] 1]
+            if { $arr != "" } {
+              puts $fout "           System.arraycopy(SALInstance.value\[j\].$apar,0,data.$apar,0,$arr);"
+            } else {
+              puts $fout "           data.$apar = SALInstance.value\[j\].$apar;"
+            }
+          }
+        }
 }
 
 proc copytojavasample { fout base name } {
 global CMDS TLMS EVTS
                set alias [string range $name 9 end]
-    		if { [info exists TLMS($base,$name,param)] } {
-    		  foreach p $TLMS($base,$name,param) {
+        if { [info exists TLMS($base,$name,param)] } {
+          foreach p $TLMS($base,$name,param) {
                     set tpar [lindex [string trim $p "\{\}"]]
                     if { [lindex $tpar 0] == "unsigned" } {
-         	      set apar [lindex [split [lindex $tpar 2] "()"] 0]
+                set apar [lindex [split [lindex $tpar 2] "()"] 0]
                     } else {
-         	      set apar [lindex [split [lindex $tpar 1] "()"] 0]
+                set apar [lindex [split [lindex $tpar 1] "()"] 0]
                     }
-    		    set arr [lindex [split $p "()"] 1]
-    		    if { $arr != "" } {
-    		      puts $fout "           System.arraycopy(data.$apar,0,SALInstance.$apar,0,$arr);"
-    		    } else {
-    		      puts $fout "           SALInstance.$apar = data.$apar ;"
-    		    }
-    		  }
-    		}
-    		if { [info exists EVTS($base,$alias,param)] } {
-    		  foreach p $EVTS($base,$alias,param) {
+            set arr [lindex [split $p "()"] 1]
+            if { $arr != "" } {
+              puts $fout "           System.arraycopy(data.$apar,0,SALInstance.$apar,0,$arr);"
+            } else {
+              puts $fout "           SALInstance.$apar = data.$apar ;"
+            }
+          }
+        }
+        if { [info exists EVTS($base,$alias,param)] } {
+          foreach p $EVTS($base,$alias,param) {
                     set tpar [lindex [string trim $p "\{\}"]]
                     if { [lindex $tpar 0] == "unsigned" } {
-         	      set apar [lindex [split [lindex $tpar 2] "()"] 0]
+                set apar [lindex [split [lindex $tpar 2] "()"] 0]
                     } else {
-         	      set apar [lindex [split [lindex $tpar 1] "()"] 0]
+                set apar [lindex [split [lindex $tpar 1] "()"] 0]
                     }
-    		    set arr [lindex [split $p "()"] 1]
-    		    if { $arr != "" } {
-    		      puts $fout "           System.arraycopy(data.$apar,0,SALInstance.$apar,0,$arr);"
-    		    } else {
-    		      puts $fout "           SALInstance.$apar = data.$apar;"
-    		    }
-    		  }
-    		}
-    		if { [info exists CMDS($base,$name,param)] } {
-    		  foreach p $CMDS($base,$name,param) {
+            set arr [lindex [split $p "()"] 1]
+            if { $arr != "" } {
+              puts $fout "           System.arraycopy(data.$apar,0,SALInstance.$apar,0,$arr);"
+            } else {
+              puts $fout "           SALInstance.$apar = data.$apar;"
+            }
+          }
+        }
+        if { [info exists CMDS($base,$name,param)] } {
+          foreach p $CMDS($base,$name,param) {
                     set tpar [lindex [string trim $p "\{\}"]]
                     if { [lindex $tpar 0] == "unsigned" } {
-         	      set apar [lindex [split [lindex $tpar 2] "()"] 0]
+                set apar [lindex [split [lindex $tpar 2] "()"] 0]
                     } else {
-         	      set apar [lindex [split [lindex $tpar 1] "()"] 0]
+                set apar [lindex [split [lindex $tpar 1] "()"] 0]
                     }
-    		    set arr [lindex [split $p "()"] 1]
-    		    if { $arr != "" } {
-    		      puts $fout "          System.arraycopy(data.$apar,0,SALInstance.$apar,0,$arr);"
-    		    } else {
-    		      puts $fout "          SALInstance.$apar = data.$apar;"
-    		    }
-    		  }
-    		}
+            set arr [lindex [split $p "()"] 1]
+            if { $arr != "" } {
+              puts $fout "          System.arraycopy(data.$apar,0,SALInstance.$apar,0,$arr);"
+            } else {
+              puts $fout "          SALInstance.$apar = data.$apar;"
+            }
+          }
+        }
 }
 
 
@@ -411,7 +412,7 @@ global env SAL_DIR SAL_WORK_DIR SYSDIC TLMS EVTS
      if { [string range $rec 0 21] == "// INSERT TYPE SUPPORT" } {
         addActorIndexesJava $idlfile $base $fout
         puts $fout "        public int salTypeSupport(String topicName) \{
-		String\[\] parts = topicName.split(\"_\");"
+    String\[\] parts = topicName.split(\"_\");"
         foreach i $atypes {
            puts $fout "                if (\"[set base]\".equals(parts\[0\]) ) \{"
            set ptypes [split [exec grep pragma $i] \n]
@@ -420,12 +421,12 @@ global env SAL_DIR SAL_WORK_DIR SYSDIC TLMS EVTS
                set revcode [getRevCode [set base]_[set name] short]
                puts $fout "
                     if ( \"[set base]_$name\".equals(topicName) ) \{
-			[set name][set revcode]TypeSupport [set name][set revcode]TS = new [set name][set revcode]TypeSupport();
-			registerType([set name][set revcode]TS);
+      [set name][set revcode]TypeSupport [set name][set revcode]TS = new [set name][set revcode]TypeSupport();
+      registerType([set name][set revcode]TS);
                         return SAL__OK;
-		    \}"
+        \}"
            }
-           puts $fout "	 \}"
+           puts $fout "  \}"
         }
         puts $fout "
   return SAL__ERR;
@@ -436,13 +437,13 @@ global env SAL_DIR SAL_WORK_DIR SYSDIC TLMS EVTS
            foreach j $ptypes {
                set name [lindex $j 2]
                set revcode [getRevCode [set base]_[set name] short]
-               puts stdout "	for $base $name"
+               puts stdout "  for $base $name"
                puts $fout "
                     if ( actorIdx == SAL__[set base]_[set name]_ACTOR ) \{
-			[set name][set revcode]TypeSupport [set name][set revcode]TS = new [set name][set revcode]TypeSupport();
-			registerType(actorIdx,[set name][set revcode]TS);
+      [set name][set revcode]TypeSupport [set name][set revcode]TS = new [set name][set revcode]TypeSupport();
+      registerType(actorIdx,[set name][set revcode]TS);
                         return SAL__OK;
-		    \}"
+        \}"
            }
         }
         puts $fout "
@@ -455,89 +456,89 @@ global env SAL_DIR SAL_WORK_DIR SYSDIC TLMS EVTS
                set revcode [getRevCode [set base]_[set name] short]
                set alias [string range $name 9 end]
 puts $fout "
-	public int putSample([set base].[set name] data)
-	\{
+  public int putSample([set base].[set name] data)
+  \{
           int status = SAL__OK;
           [set name][set revcode] SALInstance = new [set name][set revcode]();
-	  int actorIdx = SAL__[set base]_[set name]_ACTOR;
-	  if ( sal\[actorIdx\].isWriter == false ) \{
-	    createWriter(actorIdx,false);
-	    sal\[actorIdx\].isWriter = true;
-	  \}
-	  DataWriter dwriter = getWriter(actorIdx);
-	  [set name][set revcode]DataWriter SALWriter = [set name][set revcode]DataWriterHelper.narrow(dwriter);
-	  SALInstance.private_revCode = \"[string trim $revcode _]\";
+    int actorIdx = SAL__[set base]_[set name]_ACTOR;
+    if ( sal\[actorIdx\].isWriter == false ) \{
+      createWriter(actorIdx,false);
+      sal\[actorIdx\].isWriter = true;
+    \}
+    DataWriter dwriter = getWriter(actorIdx);
+    [set name][set revcode]DataWriter SALWriter = [set name][set revcode]DataWriterHelper.narrow(dwriter);
+    SALInstance.private_revCode = \"[string trim $revcode _]\";
           SALInstance.private_sndStamp = getCurrentTime();
           SALInstance.private_origin = 1;
-	  if (debugLevel > 0) \{
-	    System.out.println(\"=== \[putSample $name\] writing a message containing :\");
-	    System.out.println(\"    revCode  : \" + SALInstance.private_revCode);
-	    System.out.println(\"    sndStamp  : \" + SALInstance.private_sndStamp);
-	  \}"
+    if (debugLevel > 0) \{
+      System.out.println(\"=== \[putSample $name\] writing a message containing :\");
+      System.out.println(\"    revCode  : \" + SALInstance.private_revCode);
+      System.out.println(\"    sndStamp  : \" + SALInstance.private_sndStamp);
+    \}"
         copytojavasample $fout $base $name
         if { [info exists SYSDIC($base,keyedID)] } {
           puts $fout "
            SALInstance.[set base]ID = subsystemID;
            long dataHandle = SALWriter.register_instance(SALInstance);
-	   status = SALWriter.write(SALInstance, dataHandle);
-	   checkStatus(status, \"[set name][set revcode]DataWriter.write\");
+     status = SALWriter.write(SALInstance, dataHandle);
+     checkStatus(status, \"[set name][set revcode]DataWriter.write\");
            SALWriter.dispose(SALInstance, dataHandle);"
         } else {
           puts $fout "
            long dataHandle = HANDLE_NIL.value;
-	   status = SALWriter.write(SALInstance, dataHandle);
-	   checkStatus(status, \"[set name][set revcode]DataWriter.write\");"
+     status = SALWriter.write(SALInstance, dataHandle);
+     checkStatus(status, \"[set name][set revcode]DataWriter.write\");"
         }
         puts $fout "
-	  return status;
-	\}
+    return status;
+  \}
 
 
-	public int getSample([set base].[set name] data)
-	\{
-	  int status =  -1;
+  public int getSample([set base].[set name] data)
+  \{
+    int status =  -1;
           int last = SAL__NO_UPDATES;
           int numsamp;
           [set name][set revcode]SeqHolder SALInstance = new [set name][set revcode]SeqHolder();
-	  int actorIdx = SAL__[set base]_[set name]_ACTOR;
-	  if ( sal\[actorIdx\].isReader == false ) \{"
+    int actorIdx = SAL__[set base]_[set name]_ACTOR;
+    if ( sal\[actorIdx\].isReader == false ) \{"
         if { [info exists SYSDIC($base,keyedID)] } {
-          puts $fout "  		// Filter expr
+          puts $fout "      // Filter expr
                 String expr\[\] = new String\[0\];
                 String sFilter = \"[set base]ID = \" + subsystemID;
-    		createContentFilteredTopic(actorIdx,\"filteredtopic\", sFilter, expr);
-		// create DataReader
- 		createReader(actorIdx,true);"
+        createContentFilteredTopic(actorIdx,\"filteredtopic\", sFilter, expr);
+    // create DataReader
+    createReader(actorIdx,true);"
         } else {
-          puts $fout "	    createReader(actorIdx,false);"
+          puts $fout "      createReader(actorIdx,false);"
         }
          puts $fout "
-	    sal\[actorIdx\].isReader = true;
-	  \}
-	  DataReader dreader = getReader(actorIdx);
-	  [set name][set revcode]DataReader SALReader = [set name][set revcode]DataReaderHelper.narrow(dreader);
-  	  SampleInfoSeqHolder infoSeq = new SampleInfoSeqHolder();
-	  SALReader.take(SALInstance, infoSeq, sal\[actorIdx\].maxSamples,
-					NOT_READ_SAMPLE_STATE.value, ANY_VIEW_STATE.value,
-					ALIVE_INSTANCE_STATE.value);
+      sal\[actorIdx\].isReader = true;
+    \}
+    DataReader dreader = getReader(actorIdx);
+    [set name][set revcode]DataReader SALReader = [set name][set revcode]DataReaderHelper.narrow(dreader);
+      SampleInfoSeqHolder infoSeq = new SampleInfoSeqHolder();
+    SALReader.take(SALInstance, infoSeq, sal\[actorIdx\].maxSamples,
+          NOT_READ_SAMPLE_STATE.value, ANY_VIEW_STATE.value,
+          ANY_INSTANCE_STATE.value);
           numsamp = SALInstance.value.length;
           if (numsamp > 0) \{
- 	    if (debugLevel > 0) \{
-		for (int i = 0; i < numsamp; i++) \{
-				System.out.println(\"=== \[getSample $name \] message received :\" + i);
-				System.out.println(\"    revCode  : \"
-						+ SALInstance.value\[i\].private_revCode);
-			        System.out.println(\"     sndStamp  : \" + SALInstance.value\[i\].private_sndStamp);
-				System.out.println(\"  sample_state : \" + infoSeq.value\[i\].sample_state);
-				System.out.println(\"    view_state : \" + infoSeq.value\[i\].view_state);
-				System.out.println(\"instance_state : \" + infoSeq.value\[i\].instance_state);
-		\}
-	    \}
+      if (debugLevel > 0) \{
+    for (int i = 0; i < numsamp; i++) \{
+        System.out.println(\"=== \[getSample $name \] message received :\" + i);
+        System.out.println(\"    revCode  : \"
+            + SALInstance.value\[i\].private_revCode);
+              System.out.println(\"     sndStamp  : \" + SALInstance.value\[i\].private_sndStamp);
+        System.out.println(\"  sample_state : \" + infoSeq.value\[i\].sample_state);
+        System.out.println(\"    view_state : \" + infoSeq.value\[i\].view_state);
+        System.out.println(\"instance_state : \" + infoSeq.value\[i\].instance_state);
+    \}
+      \}
             int j=numsamp-1;
             if (infoSeq.value\[j\].valid_data) \{
-    		double rcvdTime = getCurrentTime();
-		double dTime = rcvdTime - SALInstance.value\[j\].private_sndStamp;
-    		if ( dTime < sal\[actorIdx\].sampleAge ) \{
+        double rcvdTime = getCurrentTime();
+    double dTime = rcvdTime - SALInstance.value\[j\].private_sndStamp;
+        if ( dTime < sal\[actorIdx\].sampleAge ) \{
                    data.private_sndStamp = SALInstance.value\[j\].private_sndStamp;"
                 copyfromjavasample $fout $base $name
          puts $fout "                   last = SAL__OK;
@@ -550,30 +551,30 @@ puts $fout "
               last = SAL__NO_UPDATES;
           \}
           status = SALReader.return_loan (SALInstance, infoSeq);
-	  return last;
-	\}
+    return last;
+  \}
 
-	public int getNextSample([set base].[set name] data)
-	\{
-	  int status = -1;
-	  int actorIdx = SAL__[set base]_[set name]_ACTOR;
+  public int getNextSample([set base].[set name] data)
+  \{
+    int status = -1;
+    int actorIdx = SAL__[set base]_[set name]_ACTOR;
           int saveMax = sal\[actorIdx\].maxSamples; 
           sal\[actorIdx\].maxSamples = 1;
           status = getSample(data);
           sal\[actorIdx\].maxSamples = saveMax;
           return status;
-	\}
+  \}
 
-	public int flushSamples([set base].[set name] data)
-	\{
+  public int flushSamples([set base].[set name] data)
+  \{
           int status = -1;
-	  int actorIdx = SAL__[set base]_[set name]_ACTOR;
+    int actorIdx = SAL__[set base]_[set name]_ACTOR;
           sal\[actorIdx\].maxSamples = DDS.LENGTH_UNLIMITED.value;
           sal\[actorIdx\].sampleAge = -1.0;
           status = getSample(data);
           sal\[actorIdx\].sampleAge = 1.0e20;
           return SAL__OK;
-	\}
+  \}
 
 "
 
@@ -625,8 +626,8 @@ puts $fout "
                set revcode [getRevCode [set base]_[set name] short]
                  puts $fout "
        if ( strcmp(\"[set base]_[set name]\",topicName) == 0) \{
-	  [set base]::[set name][set revcode]TypeSupport_var mt = new [set base]::[set name][set revcode]TypeSupport();
-	  registerType(mt.in());
+    [set base]::[set name][set revcode]TypeSupport_var mt = new [set base]::[set name][set revcode]TypeSupport();
+    registerType(mt.in());
           return SAL__OK;
        \}"
            }
@@ -643,8 +644,8 @@ puts $fout "
                set revcode [getRevCode [set base]_[set name] short]
                  puts $fout "
        if ( actorIdx == SAL__[set base]_[set name]_ACTOR ) \{
-	  [set base]::[set name][set revcode]TypeSupport_var mt = new [set base]::[set name][set revcode]TypeSupport();
-	  registerType(actorIdx,mt.in());
+    [set base]::[set name][set revcode]TypeSupport_var mt = new [set base]::[set name][set revcode]TypeSupport();
+    registerType(actorIdx,mt.in());
           return SAL__OK;
        \}"
            }
