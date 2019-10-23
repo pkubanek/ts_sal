@@ -48,6 +48,7 @@ mgr.salShutdown()
 exit()
 "
          close $fpub
+         exec chmod 755 $SAL_WORK_DIR/$subsys/python/[set subsys]_[set name]_Publisher.py
          stdlog "	: subscriber for = $name"
          set fsub [open $SAL_WORK_DIR/$subsys/python/[set subsys]_[set name]_Subscriber.py w]
 	 puts $fsub "
@@ -69,6 +70,7 @@ mgr.salShutdown()
 exit()
 "
          close $fsub
+         exec chmod 755 $SAL_WORK_DIR/$subsys/python/[set subsys]_[set name]_Subscriber.py
       }
    }
 }
@@ -111,6 +113,7 @@ mgr.salShutdown()
 exit()
 "
       close $fcmd
+      exec chmod 755 $SAL_WORK_DIR/$subsys/python/[set subsys]_Event_[set alias].py
       stdlog "	: event test receive for = $alias"
       set fcmd [open $SAL_WORK_DIR/$subsys/python/[set subsys]_EventLogger_[set alias].py w]
       puts $fcmd "
@@ -142,6 +145,7 @@ mgr.salShutdown()
 exit()
 "
       close $fcmd
+      exec chmod 755 $SAL_WORK_DIR/$subsys/python/[set subsys]_EventLogger_[set alias].py
     } 
    }
  }
@@ -187,6 +191,7 @@ mgr.salShutdown()
 exit()
 "
       close $fcmd
+      exec chmod 755 $SAL_WORK_DIR/$subsys/python/[set subsys]_Commander_[set alias].py
       stdlog "	: command test receive for = $alias"
       set fcmd [open $SAL_WORK_DIR/$subsys/python/[set subsys]_Controller_[set alias].py w]
       puts $fcmd "
@@ -211,6 +216,7 @@ mgr.salShutdown()
 exit()
 "
       close $fcmd
+      exec chmod 755 $SAL_WORK_DIR/$subsys/python/[set subsys]_Controller_[set alias].py
     }
    }
  }

@@ -428,7 +428,7 @@ public class SAL_SALData {
 	
           if ( sal[SAL__SALData_ackcmd_ACTOR].isReader == false ) {
 	    createSubscriber(SAL__SALData_ackcmd_ACTOR);
-	    ackcmdTypeSupport mtr = new ackcmdTypeSupport();
+	    SALResponseTypeSupport mtr = new SALResponseTypeSupport();
 	    registerType2(SAL__SALData_ackcmd_ACTOR,mtr);
 	    createTopic2(SAL__SALData_ackcmd_ACTOR,sresponse);
 	    //create a reader for responses
@@ -483,7 +483,7 @@ public class SAL_SALData {
           if (sal[actorIdx].isProcessor == false) {
   	    //create Publisher
 	    createPublisher(SAL__SALData_ackcmd_ACTOR);
-	    ackcmdTypeSupport mtr = new ackcmdTypeSupport();
+	    SALResponseTypeSupport mtr = new SALResponseTypeSupport();
 	    registerType2(SAL__SALData_ackcmd_ACTOR,mtr);
 	    createTopic2(SAL__SALData_ackcmd_ACTOR,sresponse);
    	    boolean autodispose_unregistered_instances = true;

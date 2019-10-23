@@ -701,14 +701,14 @@ puts stdout "done addSALDDStypes $idlfile $id $lang"
 puts stdout "done sreplace2 $idlfile $id $lang"
       }
       if { $lang == "java" } {
+        set revcode [getRevCode [set base]_ackcmd short]
         set frep [open /tmp/sreplace2.sal w]
         puts $frep "#!/bin/sh"
         puts $frep "perl -pi -w -e 's/SALData/$base/g;' [set id]/java/src/org/lsst/sal/SAL_[set base].java"
-        puts $frep "perl -pi -w -e 's/SALCommand/command/g;' [set id]/cpp/src/org/lsst/sal/SAL_[set base].java"
-        puts $frep "perl -pi -w -e 's/SALResponse/ackcmd/g;' [set id]/cpp/src/org/lsst/sal/SAL_[set base].java"
+        puts $frep "perl -pi -w -e 's/SALResponse/ackcmd[set revcode]/g;' [set id]/java/src/org/lsst/sal/SAL_[set base].java"
         puts $frep "perl -pi -w -e 's/SALData/$base/g;' [set base]/java/src/org/lsst/sal/SAL_[set base].java"
-        puts $frep "perl -pi -w -e 's/SALCommand/command/g;' [set base]/cpp/src/org/lsst/sal/SAL_[set base].java"
-        puts $frep "perl -pi -w -e 's/SALResponse/ackcmd/g;' [set base]/cpp/src/org/lsst/sal/SAL_[set base].java"
+        puts $frep "perl -pi -w -e 's/SALCommand/command/g;' [set base]/java/src/org/lsst/sal/SAL_[set base].java"
+        puts $frep "perl -pi -w -e 's/SALResponse/ackcmd[set revcode]/g;' [set base]/java/src/org/lsst/sal/SAL_[set base].java"
         close $frep
         exec chmod 755 /tmp/sreplace2.sal
         catch { set result [exec /tmp/sreplace2.sal] } bad
