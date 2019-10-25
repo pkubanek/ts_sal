@@ -64,6 +64,7 @@ global TLMS TLM_ALIASES EVENT_ENUM EVENT_ENUMS UNITS ENUM_DONE SYSDIC DESC
       if { $tag == "Subsystem" }       {set subsys $value}
       if { $tag == "Explanation" }     {set explanation $value}
       if { $tag == "Enumeration" }     {
+         validateEnumeration $value
          if { $intopic } {
            lappend EVENT_ENUM($alias) "$item:$value"
            set EVENT_ENUMS($alias,$item) "$value"
@@ -190,30 +191,7 @@ global TLMS TLM_ALIASES EVENT_ENUM EVENT_ENUMS UNITS ENUM_DONE SYSDIC DESC
         }
       }
       if { $tag == "/SALEvent" || $tag == "/SALCommand" } {
-           if { [info exists EVENT_ENUM($alias)] } {
-             foreach e $EVENT_ENUM($alias) {
-               set i 1
-               set enum [string trim $e "\{\}"]
-               set cnst [lindex [split $enum :] 1]
-               foreach id [split $cnst ,] {
-                  puts $fout " const long [set alias]_[string trim $id " "]=$i;"
-                  incr i 1
-               }
-             }
-             set done($alias) 1
-           }
-           if { [info exists EVENT_ENUM([set subsys]_shared)] } {
-             foreach e $EVENT_ENUM([set subsys]_shared) {
-               set i 1
-               set enum [string trim $e "\{\}"]
-               set cnst [lindex [split $enum :] 1]
-               foreach id [split $cnst ,] {
-                   puts $fout "	const long [set subsys]_shared_[string trim $id " "]=$i;"
-                   incr i 1
-               }
-             }
-             unset EVENT_ENUM([set subsys]_shared)
-           }
+         enumsToIDL $subsys $alias $fout
       }
       if { $tag == "IDL_Type"} {
          set type $value
@@ -269,29 +247,7 @@ global TLMS TLM_ALIASES EVENT_ENUM EVENT_ENUMS UNITS ENUM_DONE SYSDIC DESC
    if { $fout != "" } {
       puts $fout "\};"
       puts $fout "#pragma keylist $tname"
-      if { [info exists EVENT_ENUM($alias)] && [info exists done($alias)] == 0} {
-        foreach e $EVENT_ENUM($alias) {
-          set i 1
-          set enum [string trim $e "\{\}"]
-          set cnst [lindex [split $enum :] 1]
-          foreach id [split $cnst ,] {
-              puts $fout " const long [set alias]_[string trim $id " "]=$i;"
-              incr i 1
-          }
-        }
-        set done($alias) 1
-      }
-      if { [info exists EVENT_ENUM([set subsys]_shared)] } {
-        foreach e $EVENT_ENUM([set subsys]_shared) {
-          set i 1
-          set enum [string trim $e "\{\}"]
-          set cnst [lindex [split $enum :] 1]
-          foreach id [split $cnst ,] {
-              puts $fout " const long [set subsys]_shared_[string trim $id " "]=$i;"
-              incr i 1
-          }
-        }
-      }
+      enumsToIDL $subsys $alias $fout
       close $fout
       set alias ""
    }
@@ -342,6 +298,58 @@ global TLMS TLM_ALIASES EVENT_ENUM EVENT_ENUMS UNITS ENUM_DONE SYSDIC DESC
    close $fsql
 }
 
+proc enumsToIDL { subsys alias fout } {
+global EVENT_ENUM EDONE
+   if { [info exists EVENT_ENUM($alias)] && [info exists EDONE($alias)] == 0} {
+      foreach e $EVENT_ENUM($alias) {
+          set i 1
+          set enum [string trim $e "\{\}"]
+          set cnst [lindex [split $enum :] 1]
+          foreach id [split $cnst ,] {
+              if { [llength [split $id "="]] > 1 } {
+                 set i [lindex [split $id "="] 1]
+                 set id [lindex [split $id "="] 0]
+              }
+              puts $fout " const long [set alias]_[string trim $id " "]=$i;"
+              incr i 1
+          }
+      }
+      set EDONE($alias) 1 
+   }
+   if { [info exists EVENT_ENUM([set subsys]_shared)] && [info exists EDONE([set subsys]_shared)] == 0 } {
+      foreach e $EVENT_ENUM([set subsys]_shared) {
+          set i 1
+          set enum [string trim $e "\{\}"]
+          set cnst [lindex [split $enum :] 1]
+          foreach id [split $cnst ,] {
+              if { [llength [split $id "="]] > 1 } {
+                 set i [lindex [split $id "="] 1]
+                 set id [lindex [split $id "="] 0]
+              }
+              puts $fout " const long [set subsys]_shared_[string trim $id " "]=$i;"
+              incr i 1
+          }
+      }
+      set EDONE([set subsys]_shared) 1
+   }
+}
+
+proc validateEnumeration { elist } {
+   set hasvals [llength [split $elist "="]]
+   if { $hasvals > 1 } {
+      set all [split $elist ","]
+      foreach i $all { 
+         if { [llength [split $i "="]] < 2 } {
+           puts stdout "****************************************************************"
+           puts stdout "****************************************************************"
+           puts stdout "ERROR - illegal Enumeration , mixed use cases"
+           puts stdout "****************************************************************"
+           puts stdout "****************************************************************"
+           exit
+         }
+      }
+   }
+}
 
 
 proc genhtmlcommandtable { subsys } {

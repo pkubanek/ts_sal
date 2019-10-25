@@ -48,6 +48,7 @@ mgr.salShutdown()
 exit()
 "
          close $fpub
+         exec chmod 755 $SAL_WORK_DIR/$subsys/python/[set subsys]_[set name]_Publisher.py
          stdlog "	: subscriber for = $name"
          set fsub [open $SAL_WORK_DIR/$subsys/python/[set subsys]_[set name]_Subscriber.py w]
 	 puts $fsub "
@@ -69,6 +70,7 @@ mgr.salShutdown()
 exit()
 "
          close $fsub
+         exec chmod 755 $SAL_WORK_DIR/$subsys/python/[set subsys]_[set name]_Subscriber.py
       }
    }
 }
@@ -97,7 +99,7 @@ if len(sys.argv) < [expr [llength $EVTS([set subsys],[set alias],plist)] +1]:
 
 from SALPY_[set subsys] import *
 mgr = SAL_[set subsys][set initializer]
-mgr.salEvent(\"[set subsys]_logevent_[set alias]\")
+mgr.salEventPub(\"[set subsys]_logevent_[set alias]\")
 myData = [set subsys]_logevent_[set alias]C()"
       set farg [open $SAL_WORK_DIR/include/SAL_[set subsys]_logevent_[set alias]Pargs.tmp r]
       while { [gets $farg rec] > -1 } {
@@ -111,6 +113,7 @@ mgr.salShutdown()
 exit()
 "
       close $fcmd
+      exec chmod 755 $SAL_WORK_DIR/$subsys/python/[set subsys]_Event_[set alias].py
       stdlog "	: event test receive for = $alias"
       set fcmd [open $SAL_WORK_DIR/$subsys/python/[set subsys]_EventLogger_[set alias].py w]
       puts $fcmd "
@@ -119,7 +122,7 @@ import sys
 import numpy
 from SALPY_[set subsys] import *
 mgr = SAL_[set subsys][set initializer]
-mgr.salEvent(\"[set subsys]_logevent_[set alias]\")
+mgr.salEventSub(\"[set subsys]_logevent_[set alias]\")
 print(\"[set subsys]_[set alias] logger ready\")
 event = [set subsys]_logevent_[set alias]C()
 while True:
@@ -142,6 +145,7 @@ mgr.salShutdown()
 exit()
 "
       close $fcmd
+      exec chmod 755 $SAL_WORK_DIR/$subsys/python/[set subsys]_EventLogger_[set alias].py
     } 
    }
  }
@@ -176,7 +180,6 @@ mgr = SAL_[set subsys][set initializer]
 mgr.salCommand(\"[set subsys]_command_[set alias]\")
 myData = [set subsys]_command_[set alias]C()"
        set farg [open $SAL_WORK_DIR/include/SAL_[set subsys]_command_[set alias]Pargs.tmp r]
-       gets $farg rec;gets $farg rec;gets $farg rec;gets $farg rec
        while { [gets $farg rec] > -1 } {
           puts $fcmd $rec
        }
@@ -188,6 +191,7 @@ mgr.salShutdown()
 exit()
 "
       close $fcmd
+      exec chmod 755 $SAL_WORK_DIR/$subsys/python/[set subsys]_Commander_[set alias].py
       stdlog "	: command test receive for = $alias"
       set fcmd [open $SAL_WORK_DIR/$subsys/python/[set subsys]_Controller_[set alias].py w]
       puts $fcmd "
@@ -212,6 +216,7 @@ mgr.salShutdown()
 exit()
 "
       close $fcmd
+      exec chmod 755 $SAL_WORK_DIR/$subsys/python/[set subsys]_Controller_[set alias].py
     }
    }
  }

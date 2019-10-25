@@ -396,6 +396,8 @@ using namespace [set base];
 #include <sys/ipc.h>
 #include <sys/shm.h>
 #include <sys/syscall.h>
+#include <sys/time.h>
+#include <time.h>
 #include <thread>
 #include \"extcode.h\"
 #include \"SAL_[set base].h\"
@@ -441,13 +443,15 @@ extern \"C\" \{
     \}
 
     double [set base]_shm_getCurrentTimeLV() \{
-      struct timeval now;
-      struct timezone zone;
-      double ts;
+      struct timex tx;
+      struct timespec now;
+      double taiTime;
 
-      gettimeofday(&now, &zone);
-      ts = (double)now.tv_sec + (double)now.tv_usec/1000000.;
-      return ts;
+      memset(&tx, 0, sizeof(tx));
+      adjtimex(&tx);
+      clock_gettime(CLOCK_TAI,&now);
+      taiTime = (double)now.tv_sec + (double)now.tv_nsec/1000000000.;
+      return taiTime;
     \}
 
 "

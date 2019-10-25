@@ -17,7 +17,7 @@ source $SAL_DIR/genkafkaefd.tcl
 source $SAL_DIR/sal_version.tcl
 source $SAL_DIR/geninfluxefd-multi.tcl
 
-set SYSDIC(forEFD) "ATAOS ATArchiver ATBuilding ATCalCS ATCamera ATDome ATDomeTrajectory ATEEC ATHeaderService ATHexapod ATMCS ATMonochromator ATPneumatics ATPtg ATSpectrograph ATTCS ATThermoelectricCooler ATWhiteLight EFD Electrometer"
+set SYSDIC(forEFD) "ATAOS ATArchiver ATBuilding ATCamera ATDome ATDomeTrajectory ATHeaderService ATHexapod ATMCS ATMonochromator ATPneumatics ATPtg ATSpectrograph ATTCS ATWhiteLight EFD Electrometer"
 
 proc copyasset { asset dest } {
     if { [file exists $asset] } {
@@ -644,7 +644,7 @@ puts $fout "
 }
 
 proc generateUtilsrpm { } {
-global SYSDIC SALVERSION SAL_WORK_DIR OSPL_VERSION
+global SYSDIC SALVERSION SAL_WORK_DIR OSPL_VERSION SAL_DIR
    set fout [open $SAL_WORK_DIR/rpmbuild/SPECS/ts_sal_utils.spec w]
    puts $fout "
 %global __os_install_post %{nil}
@@ -683,12 +683,14 @@ cp -fr %\{name\}-%\{version\}/* %{buildroot}/.
 /opt/lsst/ts_sal/bin/update_leapseconds
 /opt/lsst/ts_sal/lib/libsalUtils.so
 /opt/lsst/ts_sal/etc/leap-seconds.list
+/opt/lsst/ts_sal/setup.env
+/opt/lsst/ts_sal/VERSION
 "
   close $fout
-  mkdir -p ts_sal_utils-$SALVERSION/etc/systemd/system
-  mkdir -p ts_sal_utils-$SALVERSION/opt/lsst/ts_sal/bin
-  mkdir -p ts_sal_utils-$SALVERSION/opt/lsst/ts_sal/lib
-  mkdir -p ts_sal_utils-$SALVERSION/opt/lsst/ts_sal/etc
+  exec mkdir -p ts_sal_utils-$SALVERSION/etc/systemd/system
+  exec mkdir -p ts_sal_utils-$SALVERSION/opt/lsst/ts_sal/bin
+  exec mkdir -p ts_sal_utils-$SALVERSION/opt/lsst/ts_sal/lib
+  exec mkdir -p ts_sal_utils-$SALVERSION/opt/lsst/ts_sal/etc
   set fser [open ts_sal_utils-$SALVERSION/etc/systemd/system/ts_sal_settai.service w]
      puts $fser "
 \[Unit\]
@@ -711,6 +713,8 @@ WantedBy=ts_sal_settai.service
   copyasset $SAL_DIR/update_leapseconds ts_sal_utils-$SALVERSION/opt/lsst/ts_sal/bin/.
   copyasset $SAL_WORK_DIR/lib/libsalUtils.so ts_sal_utils-$SALVERSION/opt/lsst/ts_sal/lib/.
   copyasset $SAL_DIR/leap-seconds.list ts_sal_utils-$SALVERSION/opt/lsst/ts_sal/etc/.
+  copyasset $SAL_DIR/setup.env ts_sal_utils-$SALVERSION/opt/lsst/ts_sal/.
+  copyasset $SAL_DIR/../../VERSION ts_sal_utils-$SALVERSION/opt/lsst/ts_sal/.
   exec tar cvzf $SAL_WORK_DIR/rpmbuild/SOURCES/ts_sal_utils-$SALVERSION.tgz ts_sal_utils-$SALVERSION
   exec rm -fr $SAL_WORK_DIR/rpmbuild/BUILD/ts_sal_utils-$SALVERSION/*
   exec cp -r ts_sal_utils-$SALVERSION $SAL_WORK_DIR/rpmbuild/BUILD/.

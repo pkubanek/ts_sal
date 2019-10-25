@@ -72,6 +72,9 @@ int SAL_SALData::getEvent_[set i](SALData_logevent_[set i]C *data)
      puts $fout "
 salReturn SAL_SALData::logEvent_[set i]( SALData_logevent_[set i]C *data, int priority )
 \{
+  if ( data == NULL ) \{
+     throw std::runtime_error(\"NULL pointer for logEvent_[set i]\");
+  \}
   data->priority=priority;
   status = putSample_logevent_[set i](data);
   return status;

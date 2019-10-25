@@ -24,7 +24,9 @@ salReturn SAL_[set base]::putSample_[set name]([set base]_[set name]C *data)
   Py_BEGIN_ALLOW_THREADS
 #endif
   int actorIdx = SAL__[set base]_[set name]_ACTOR;
-  if ( data == NULL ) \{ return SAL__NOT_DEFINED; \}
+  if ( data == NULL ) \{
+     throw std::runtime_error(\"NULL pointer for putSample_[set name]\");
+  \}
   if ( sal\[actorIdx\].isWriter == false ) \{
     createWriter(actorIdx,false);
     sal\[actorIdx\].isWriter = true;
@@ -76,6 +78,9 @@ salReturn SAL_[set base]::getSample_[set name]([set base]_[set name]C *data)
 #ifdef SAL_BUILD_FOR_PYTHON
   Py_BEGIN_ALLOW_THREADS
 #endif
+  if ( data == NULL ) \{
+     throw std::runtime_error(\"NULL pointer for getSample_[set name]\");
+  \}
   int actorIdx = SAL__[set base]_[set name]_ACTOR;
   if ( sal\[actorIdx\].isReader == false ) \{
     createReader(actorIdx,false);
@@ -513,14 +518,14 @@ puts $fout "
           puts $fout "      createReader(actorIdx,false);"
         }
          puts $fout "
-      sal\[actorIdx\].isReader = true;
-    \}
-    DataReader dreader = getReader(actorIdx);
-    [set name][set revcode]DataReader SALReader = [set name][set revcode]DataReaderHelper.narrow(dreader);
-      SampleInfoSeqHolder infoSeq = new SampleInfoSeqHolder();
-    SALReader.take(SALInstance, infoSeq, sal\[actorIdx\].maxSamples,
-          NOT_READ_SAMPLE_STATE.value, ANY_VIEW_STATE.value,
-          ANY_INSTANCE_STATE.value);
+	    sal\[actorIdx\].isReader = true;
+	  \}
+	  DataReader dreader = getReader(actorIdx);
+	  [set name][set revcode]DataReader SALReader = [set name][set revcode]DataReaderHelper.narrow(dreader);
+  	  SampleInfoSeqHolder infoSeq = new SampleInfoSeqHolder();
+	  SALReader.take(SALInstance, infoSeq, sal\[actorIdx\].maxSamples,
+					NOT_READ_SAMPLE_STATE.value, ANY_VIEW_STATE.value,
+					ANY_INSTANCE_STATE.value);
           numsamp = SALInstance.value.length;
           if (numsamp > 0) \{
       if (debugLevel > 0) \{
