@@ -20,9 +20,6 @@ global SAL_WORK_DIR
    puts $fout "
 salReturn SAL_[set base]::putSample_[set name]([set base]_[set name]C *data)
 \{
-#ifdef SAL_BUILD_FOR_PYTHON
-  Py_BEGIN_ALLOW_THREADS
-#endif
   int actorIdx = SAL__[set base]_[set name]_ACTOR;
   if ( data == NULL ) \{
      throw std::runtime_error(\"NULL pointer for putSample_[set name]\");
@@ -30,7 +27,14 @@ salReturn SAL_[set base]::putSample_[set name]([set base]_[set name]C *data)
   DataWriter_var dwriter = getWriter(actorIdx);
   if ( dwriter == NULL ) \{
      throw std::runtime_error(\"No DataWriter for putSample_[set name]\");
-  \}
+  \}"
+  set frag [open $SAL_WORK_DIR/include/SAL_[set base]_[set name]Cchk.tmp r]
+  while { [gets $frag rec] > -1} {puts $fout $rec}
+  close $frag
+  puts $fout "
+#ifdef SAL_BUILD_FOR_PYTHON
+  Py_BEGIN_ALLOW_THREADS
+#endif
   [set base]::[set name][set revcode]DataWriter_var SALWriter = [set base]::[set name][set revcode]DataWriter::_narrow(dwriter.in());
   [set base]::[set name][set revcode] Instance;
 
@@ -75,9 +79,6 @@ salReturn SAL_[set base]::getSample_[set name]([set base]_[set name]C *data)
   salReturn istatus = -1;
   unsigned int numsamp = 0;
 
-#ifdef SAL_BUILD_FOR_PYTHON
-  Py_BEGIN_ALLOW_THREADS
-#endif
   if ( data == NULL ) \{
      throw std::runtime_error(\"NULL pointer for getSample_[set name]\");
   \}
@@ -86,6 +87,9 @@ salReturn SAL_[set base]::getSample_[set name]([set base]_[set name]C *data)
   if ( dreader == NULL ) \{
      throw std::runtime_error(\"No DataReader for getSample_[set name]\");
   \}
+#ifdef SAL_BUILD_FOR_PYTHON
+  Py_BEGIN_ALLOW_THREADS
+#endif
   [set base]::[set name][set revcode]DataReader_var SALReader = [set base]::[set name][set revcode]DataReader::_narrow(dreader.in());
   checkHandle(SALReader.in(), \"[set base]::[set name][set revcode]DataReader::_narrow\");
   status = SALReader->take(Instances, info, sal\[SAL__[set base]_[set name]_ACTOR\].maxSamples , NOT_READ_SAMPLE_STATE, ANY_VIEW_STATE, ANY_INSTANCE_STATE);

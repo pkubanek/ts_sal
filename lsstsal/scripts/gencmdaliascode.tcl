@@ -76,9 +76,7 @@ int SAL_SALData::issueCommand_[set i]( SALData_command_[set i]C *data )
   int actorIdx = SAL__SALData_command_[set i]_ACTOR;
   // create DataWriter :
   if (sal\[actorIdx\].isCommand == false) \{
-     salCommand(sal\[actorIdx\].topicName);
-     sal\[actorIdx\].isCommand = true;
-     sal\[actorIdx\].sndSeqNum = rand();
+     throw std::runtime_error(\"No commander for issueCommand_[set i]\");
   \}
   DataWriter_var dwriter = getWriter(actorIdx);
   SALData::command_[set i][set revcode]DataWriter_var SALWriter = SALData::command_[set i][set revcode]DataWriter::_narrow(dwriter.in());
@@ -141,8 +139,7 @@ int SAL_SALData::acceptCommand_[set i]( SALData_command_[set i]C *data )
 
   // create DataWriter :
   if (sal\[actorIdx\].isProcessor == false) \{
-     salProcessor(sal\[actorIdx\].topicName);
-     sal\[actorIdx\].isProcessor = true;
+      throw std::runtime_error(\"No controller for acceptCommand_[set i]\");
   \}
   DataWriter_var dwriter = getWriter2(SAL__SALData_ackcmd_ACTOR);
   SALData::ackcmd[set ACKREVCODE]DataWriter_var SALWriter = SALData::ackcmd[set ACKREVCODE]DataWriter::_narrow(dwriter.in());

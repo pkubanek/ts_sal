@@ -167,6 +167,7 @@ using namespace std;
       set fcod1 [open $SAL_WORK_DIR/include/SAL_[set subsys]_[set name]Cget.tmp w]
       set fcod1b [open $SAL_WORK_DIR/include/SAL_[set subsys]_[set name]LCget.tmp w]
       set fcod2 [open $SAL_WORK_DIR/include/SAL_[set subsys]_[set name]Cput.tmp w]
+      set fcod2b [open $SAL_WORK_DIR/include/SAL_[set subsys]_[set name]Cchk.tmp w]
       set fcod3 [open $SAL_WORK_DIR/include/SAL_[set subsys]_[set name]Csub.tmp w]
       set fcod4 [open $SAL_WORK_DIR/include/SAL_[set subsys]_[set name]Cpub.tmp w]
       set fcod5 [open $SAL_WORK_DIR/include/SAL_[set subsys]_[set name]Cargs.tmp w]
@@ -244,7 +245,7 @@ using namespace std;
                set VPROPS(idx) $argidx
                set VPROPS(base) $subsys
                set VPROPS(topic) "[set subsys]_[set name]"
-               updatecfragments $fcod1 $fcod1b $fcod2 $fcod3 $fcod4 $fcod5 $fcod6 $fcod7 $fcod8 $fcod10 $fcod11 $fcod12 $fcod13
+               updatecfragments $fcod1 $fcod1b $fcod2 $fcod2b $fcod3 $fcod4 $fcod5 $fcod6 $fcod7 $fcod8 $fcod10 $fcod11 $fcod12 $fcod13
                set vname $VPROPS(name)
                if { $VPROPS(array) } {
                   puts $fbst "      .add_property(\"$vname\", make_array(&[set subsys]_[set name]C::$vname))"
@@ -282,6 +283,7 @@ using namespace std;
       close $fcod1
       close $fcod1b
       close $fcod2
+      close $fcod2b
       close $fcod3
       close $fcod4
       close $fcod5
@@ -322,7 +324,7 @@ using namespace std;
    return $SAL_WORK_DIR/idl-templates/validated/sal/sal_$subsys.idl
 }
 
-proc updatecfragments { fcod1 fcod1b fcod2 fcod3 fcod4 fcod5 fcod6 fcod7 fcod8 fcod10 fcod11 fcod12 fcod13 } {
+proc updatecfragments { fcod1 fcod1b fcod2 fcod2b fcod3 fcod4 fcod5 fcod6 fcod7 fcod8 fcod10 fcod11 fcod12 fcod13 } {
 global VPROPS TYPEFORMAT
    set idx $VPROPS(idx)
    if { $VPROPS(array) } {
@@ -382,10 +384,10 @@ global VPROPS TYPEFORMAT
          puts $fcod1 "    data->$VPROPS(name)=Instances\[j\].$VPROPS(name).m_ptr;"
          puts $fcod1 "    lastSample_[set VPROPS(topic)].$VPROPS(name)=Instances\[j\].$VPROPS(name).m_ptr;"
          puts $fcod1b "   data->$VPROPS(name) = lastSample_[set VPROPS(topic)].$VPROPS(name);"
-         puts $fcod2 "    if ( data->$VPROPS(name).length() > $VPROPS(dim) ) \{
-       throw std::runtime_error(\"No item $VPROPS(name) exceeds string length\");
-    \}
-    Instance.$VPROPS(name) = DDS::string_dup(data->$VPROPS(name).c_str());"
+         puts $fcod2b "    if ( data->$VPROPS(name).length() > $VPROPS(dim) ) \{
+       throw std::length_error(\"Item $VPROPS(name) exceeds string length\");
+    \}"
+         puts $fcod2 "    Instance.$VPROPS(name) = DDS::string_dup(data->$VPROPS(name).c_str());"
          puts $fcod3 "    cout << \"    $VPROPS(name) : \" << SALInstance.$VPROPS(name) << endl;"
          puts $fcod4 "    myData.$VPROPS(name)=\"LSST\";"
          puts $fcod5 "    myData.$VPROPS(name)=argv\[$idx\];"

@@ -334,7 +334,7 @@ salReturn SAL_SALData::salTelemetrySub(int actorIdx)
    StringSeq sSeqExpr;
    sSeqExpr.length(0);
    // create topic
-   char ftopicName[128];
+   char ftopicName[200];
    sprintf(ftopicName,"%s_%s","filtered",sal[actorIdx].topicHandle);
    createContentFilteredTopic(actorIdx,ftopicName, sFilter.in(), sSeqExpr);
    // create DataReader
@@ -607,7 +607,7 @@ salReturn SAL_SALData::salEventSub(char *topicName)
    StringSeq sSeqExpr;
    sSeqExpr.length(0);
    // create topic
-   char ftopicName[128];
+   char ftopicName[200];
    sprintf(ftopicName,"%s_%s","filtered",sal[actorIdx].topicHandle);
    createContentFilteredTopic(actorIdx,ftopicName, sFilter.in(), sSeqExpr);
    // create DataReader
