@@ -209,6 +209,40 @@ global SYSDIC
    }
 }
 
+proc addSWVersionsCPP { fout } {
+global SALVERSION env
+   set xmldist [string trim [exec cat $env(SAL_WORK_DIR)/VERSION]]
+  puts $fout "
+string SAL_SALData::getSALVersion()
+\{
+    return \"$SALVERSION\";
+\}
+
+string SAL_SALData::getXMLVersion()
+\{
+    return \"$xmldist\";
+\}
+"
+}
+
+proc addSWVersionsJava { fout } {
+global SALVERSION env
+   set xmldist [string trim [exec cat $env(SAL_WORK_DIR)/VERSION]]
+  puts $fout "
+public String getSALVersion()
+\{
+    return \"$SALVERSION\";
+\}
+
+public String getXMLVersion()
+\{
+    return \"$xmldist\";
+\}
+"
+}
+
+
+
 proc addActorIndexesCPP { idlfile base fout } {
 global SAL_WORK_DIR
    set ptypes [lsort [split [exec grep pragma $idlfile] \n]]
@@ -421,6 +455,7 @@ global env SAL_DIR SAL_WORK_DIR SYSDIC TLMS EVTS
      }
      if { [string range $rec 0 21] == "// INSERT TYPE SUPPORT" } {
         addActorIndexesJava $idlfile $base $fout
+        addSWVersionsJava $fout
         puts $fout "        public int salTypeSupport(String topicName) \{
     String\[\] parts = topicName.split(\"_\");"
         foreach i $atypes {
@@ -626,6 +661,7 @@ puts $fout "
   while { [gets $fin rec] > -1 } {
      if { [string range $rec 0 21] == "// INSERT TYPE SUPPORT" } {
         addActorIndexesCPP $idlfile $base $fout
+        addSWVersionsCPP $fout
         puts $fout " salReturn SAL_[set base]::salTypeSupport(char *topicName)
 \{"
         foreach i $atypes {

@@ -167,6 +167,8 @@
       double getCurrentTime();
       double getRcvdTime(char *topicName);
       double getSentTime(char *topicName);
+      std::string getSALVersion();
+      std::string getXMLVersion();
       int getLeapSeconds();
       void setTuneableQos(char *topicName);
       void setDefaultQos(char *topicName);

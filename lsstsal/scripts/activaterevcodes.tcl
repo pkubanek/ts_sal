@@ -111,7 +111,7 @@ global SAL_WORK_DIR REVCODE SYSDIC CMD_ALIASES OPTIONS
   }
   close $fin
   set fin [open $SAL_WORK_DIR/idl-templates/validated/sal/sal_revCoded_[set subsys].idl r]
-  gets $fin rec
+  gets $fin rec; gets $fin rec
   set done 0
   while { [gets $fin rec] > -1 } {
      if { [lindex [lindex [split [string trim $rec "{}"] /] 0] 0] != "const" } {
