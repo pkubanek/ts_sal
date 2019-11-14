@@ -7,7 +7,8 @@ source $SAL_DIR/gentestspython.tcl
 source $SAL_DIR/activaterevcodes.tcl 
 
 proc gencmdaliascode { subsys lang fout } {
-global CMD_ALIASES CMDS DONE_CMDEVT ACKREVCODE REVCODE SAL_WORK_DIR
+global CMD_ALIASES CMDS DONE_CMDEVT ACKREVCODE REVCODE SAL_WORK_DIR OPTIONS
+ if { $OPTIONS(verbose) } {stdlog "###TRACE>>> gencmdaliascode $subsys $lang $fout"}
  source $SAL_WORK_DIR/idl-templates/validated/[set subsys]_revCodes.tcl
  set ACKREVCODE [getRevCode [set subsys]_ackcmd short]
  if { [info exists CMD_ALIASES($subsys)] } {
@@ -55,11 +56,13 @@ global CMD_ALIASES CMDS DONE_CMDEVT ACKREVCODE REVCODE SAL_WORK_DIR
      stdlog "$result"
   }
  }
+ if { $OPTIONS(verbose) } {stdlog "###TRACE<<< gencmdaliascode $subsys $lang $fout"}
 }
 
 
 proc gencmdaliascpp { subsys fout } {
-global CMD_ALIASES CMDS SAL_WORK_DIR ACKREVCODE
+global CMD_ALIASES CMDS SAL_WORK_DIR ACKREVCODE OPTIONS
+   if { $OPTIONS(verbose) } {stdlog "###TRACE>>> gencmdaliascpp $subsys $fout"}
    foreach i $CMD_ALIASES($subsys) {
     if { [info exists CMDS($subsys,$i,param)] } {
       set revcode [getRevCode [set subsys]_command_[set i] short]
@@ -451,6 +454,7 @@ salReturn SAL_SALData::ackCommand_[set i]C(SALData_ackcmdC *response )
 #      stdlog "Alias $i has no parameters - uses standard [set subsys]_command"
      }
    }
+   if { $OPTIONS(verbose) } {stdlog "###TRACE<<< gencmdaliascpp $subsys $fout"}
 }
 
 

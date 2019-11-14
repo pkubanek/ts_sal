@@ -624,7 +624,7 @@ global SAL_DIR SAL_WORK_DIR SYSDIC ONEPYTHON DONE_CMDEVT OPTIONS
         if { [info exists SYSDIC($base,keyedID)] } {
           puts $frep "perl -pi -w -e 's/#-DSAL_SUBSYSTEM/-DSAL_SUBSYSTEM/g;' [set id]/cpp/standalone/Makefile.sacpp_[set id]_pub"
         }
-        modpubsubexamples $id
+        if { $name != "notused" } {modpubsubexamples $id}
         puts $frep "perl -pi -w -e 's/SALTopic/[set name]/g;' [set id]/cpp/src/[set id]DataPublisher.cpp"
         puts $frep "perl -pi -w -e 's/SALNAMESTRING/[set base]_[set name]/g;' [set id]/cpp/src/[set id]DataPublisher.cpp"
         puts $frep "perl -pi -w -e 's/SALData/$base/g;' [set id]/cpp/src/[set id]DataPublisher.cpp"
@@ -836,7 +836,7 @@ global SAL_WORK_DIR OPTIONS DONE_CMDEVT
   catch {stdlog "result = $result"}
   catch {stdlog "$bad"}
   stdlog "cpp : Done Publisher"
-  if { $DONE_CMDEVT == 0 } {
+  }
    cd $SAL_WORK_DIR/$base/cpp/src
    catch { exec make -f Makefile.sacpp_[set base]_testcommands all } bad
    catch {stdlog "result = $result"}
@@ -848,8 +848,6 @@ global SAL_WORK_DIR OPTIONS DONE_CMDEVT
    stdlog "cpp : Done Event/Logger"
    set DONE_CMDEVT 1
    cd $SAL_WORK_DIR
-  }
- }
  if { $OPTIONS(verbose) } {stdlog "###TRACE<<< salcpptestgen $base $id"}
 }
 

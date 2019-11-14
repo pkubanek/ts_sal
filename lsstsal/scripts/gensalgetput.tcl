@@ -13,8 +13,9 @@ source $env(SAL_DIR)/gentelemetrytestssinglefile.tcl
 source $env(SAL_DIR)/gentelemetrytestssinglefilejava.tcl
 
 proc insertcfragments { fout base name } {
-global SAL_WORK_DIR
-   if { $name == "command" || $name == "ackcmd" || $name == "logevent" } {return}
+global SAL_WORK_DIR OPTIONS
+   if { $OPTIONS(verbose) } {stdlog "###TRACE>>> insertcfragments $fout $base $name"}
+   if { $name == "command" || $name == "ackcmd" || $name == "logevent" || $name == "notused" } {return}
    set revcode [getRevCode [set base]_[set name] short]
    puts stdout "Processing command $name , revcode = $revcode"
    puts $fout "
@@ -171,6 +172,7 @@ salReturn SAL_[set base]::flushSamples_[set name]([set base]_[set name]C *data)
     return SAL__OK;
 \}
 "
+  if { $OPTIONS(verbose) } {stdlog "###TRACE<<< insertcfragments $fout $base $name"}
 }
 
 proc testifdef { } {
@@ -436,7 +438,8 @@ global CMDS TLMS EVTS
 
 
 proc addSALDDStypes { idlfile id lang base } {
-global env SAL_DIR SAL_WORK_DIR SYSDIC TLMS EVTS
+global env SAL_DIR SAL_WORK_DIR SYSDIC TLMS EVTS OPTIONS
+ if { $OPTIONS(verbose) } {stdlog "###TRACE>>>  addSALDDStypes $idlfile $id $lang $base "}
  set atypes $idlfile
  if { $lang == "java" } {
   exec cp $SAL_DIR/code/templates/salActor.java [set id]/java/src/org/lsst/sal/.
@@ -668,6 +671,7 @@ puts $fout "
            puts $fout "    if (strncmp(\"$base\",topicName,[string length $base]) == 0) \{"
            set ptypes [split [exec grep pragma $i] \n]
            foreach j $ptypes {
+               if { $OPTIONS(verbose) } {stdlog "###TRACE--- Processing topic $j"}
                set name [lindex $j 2]
                set revcode [getRevCode [set base]_[set name] short]
                  puts $fout "
@@ -702,6 +706,7 @@ puts $fout "
         foreach i $atypes {
            set ptypes [split [exec grep pragma $i] \n]
            foreach j $ptypes {
+              if { $OPTIONS(verbose) } {stdlog "###TRACE------ Processing topic $j"}
               set name [lindex $j 2]
               set revcode [getRevCode [set base]_[set name] short]
 puts $fout "
@@ -790,10 +795,12 @@ salReturn SAL_[set base]::getSample([set base]::[set name][set revcode]Seq data)
   close $finh
   close $fouth
  }
+ if { $OPTIONS(verbose) } {stdlog "###TRACE<<<  addSALDDStypes $idlfile $id $lang $base "}
 }
 
 proc modpubsubexamples { id } {
-global SAL_DIR SAL_WORK_DIR
+global SAL_DIR SAL_WORK_DIR OPTIONS
+  if { $OPTIONS(verbose) } {stdlog "###TRACE>>> modpubsubexamples $id"}
   set fin [open $SAL_DIR/code/templates/SALDataPublisher.cpp.template r]
   set fout [open $SAL_WORK_DIR/[set id]/cpp/src/[set id]DataPublisher.cpp w]
   while { [gets $fin rec] > -1 } {
@@ -818,4 +825,5 @@ global SAL_DIR SAL_WORK_DIR
   }
   close $fin
   close $fout
+  if { $OPTIONS(verbose) } {stdlog "###TRACE<<< modpubsubexamples $id"}
 }

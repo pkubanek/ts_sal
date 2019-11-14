@@ -75,11 +75,15 @@ global DONE_CMDEVT OPTIONS ONEPYTHON SAL_DIR
 
 
 proc gengenericcodes { base } {
-global OPTIONS
+global OPTIONS SAL_WORK_DIR
     if { $OPTIONS(verbose) } {stdlog "###TRACE>>> gengenericcodes $base"}
+    set idlfile $SAL_WORK_DIR/idl-templates/validated/sal/sal_[set base].idl
     if { $OPTIONS(cpp) } {
       set result none
       catch { set result [makesalcmdevt $base cpp] } bad
+      if { $result == "none" } {stdlog $bad}
+      if { $OPTIONS(verbose) } {stdlog $result}
+      catch { set result [makesalcode $idlfile $base "notused" cpp] } bad
       if { $result == "none" } {stdlog $bad}
       if { $OPTIONS(verbose) } {stdlog $result}
     } 
@@ -88,13 +92,20 @@ global OPTIONS
       catch { set result [makesalcmdevt $base java] } bad
       if { $result == "none" } {stdlog $bad}
       if { $OPTIONS(verbose) } {stdlog $result}
+      catch { set result [makesalcode $idlfile $base "notused" java] } bad
+      if { $result == "none" } {stdlog $bad}
+      if { $OPTIONS(verbose) } {stdlog $result}
     } 
     if { $OPTIONS(python) } {
       set result none
       catch { set result [makesalcmdevt $base python] } bad
       if { $result == "none" } {stdlog $bad}
       if { $OPTIONS(verbose) } {stdlog $result}
+      catch { set result [makesalcode $idlfile $base "notused" python] } bad
+      if { $result == "none" } {stdlog $bad}
+      if { $OPTIONS(verbose) } {stdlog $result}
     }
+##    exec rm -fr $SAL_WORK_DIR/[set base]_notused
     if { $OPTIONS(verbose) } {stdlog "###TRACE<<< gengenericcodes $base"}
 }
 
@@ -123,6 +134,7 @@ global OPTIONS CMD_ALIASES EVT_ALIASES TLM_ALIASES
     }
   }
   if { $OPTIONS(java) } {
+    set result none
     if { [info exists CMD_ALIASES($base)] } {
        catch { set result [gencommandtestssinglefilejava $base] } bad
        if { $OPTIONS(verbose) } {stdlog $result}
