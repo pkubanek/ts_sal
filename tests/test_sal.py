@@ -616,7 +616,6 @@ class ErrorHandlingTestCase(BaseSalTestCase):
             self.get_topic(self.remote.getNextSample_scalars, data)
             self.assertEqual(data.int0, start_value + i)
 
-    @unittest.expectedFailure
     def test_too_long_strings(self):
         """Check that sending too long a string causes an error.
 
@@ -634,20 +633,13 @@ class ErrorHandlingTestCase(BaseSalTestCase):
         time.sleep(STD_SLEEP)
 
         # from the XML file; unfortunately there is no way to ask SALPY
-        str_len = 20
         too_long_data = "0123456789"*10
         self.assertEqual(len(too_long_data), 100)
         data = SALPY_Test.Test_scalarsC()
         # string0 has a limit of 20 characters
         data.string0 = too_long_data
-        retcode = self.controller.putSample_scalars(data)
-        time.sleep(STD_SLEEP)
-        self.assertEqual(retcode, SALPY_Test.SAL__OK)
-
-        data = SALPY_Test.Test_scalarsC()
-        retcode = self.get_topic(self.remote.getNextSample_scalars, data)
-        # this fails because the data is not truncated!
-        self.assertEqual(data.string0, too_long_data[0:str_len])
+        with self.assertRaises(ValueError):
+            self.controller.putSample_scalars(data)
 
     def test_wrong_length_arrays(self):
         """Check that setting sending too long an array causes an error.
