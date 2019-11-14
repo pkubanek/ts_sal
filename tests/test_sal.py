@@ -456,8 +456,6 @@ class ErrorHandlingTestCase(BaseSalTestCase):
         with self.assertRaises(RuntimeError):
             self.remote.salTelemetrySub(bad_tel_name)
 
-    # TODO DM-19195: enable this test
-    @unittest.skip("this does not raise and may corrupt memory")
     def test_cmd_no_registration(self):
         """Test getting and putting topics without registering them first.
         """
@@ -465,8 +463,6 @@ class ErrorHandlingTestCase(BaseSalTestCase):
 
         self.check_cmd_get_put_raises(data=data, exception=RuntimeError)
 
-    # TODO DM-19195: enable this test
-    @unittest.skip("this segfaults instead of raising")
     def test_evt_no_registration(self):
         """Test getting and putting topics without registering them first.
         """
@@ -474,8 +470,6 @@ class ErrorHandlingTestCase(BaseSalTestCase):
 
         self.check_evt_get_put_raises(data=data, exception=RuntimeError)
 
-    # TODO DM-19195: enable this test
-    @unittest.skip("this segfaults instead of raising")
     def test_tel_no_registration(self):
         """Test getting and putting topics without registering them first.
         """
@@ -491,9 +485,9 @@ class ErrorHandlingTestCase(BaseSalTestCase):
         and indeed None segfaults! DM-18209
         """
         topic_name = "Test_command_setScalars"
-        self.controller.salCommand(topic_name)
+        self.controller.salProcessor(topic_name)
         time.sleep(STD_SLEEP)
-        self.remote.salProcessor(topic_name)
+        self.remote.salCommand(topic_name)
         time.sleep(STD_SLEEP)
 
         # make sure this worked
@@ -505,8 +499,7 @@ class ErrorHandlingTestCase(BaseSalTestCase):
         bad_data = SALPY_Test.Test_command_setArraysC()
         self.check_cmd_get_put_raises(data=bad_data, exception=TypeError)
 
-        # Unfortunately this does not raise
-        # self.check_cmd_get_put_raises(data=None, exception=TypeError)
+        self.check_cmd_get_put_raises(data=None, exception=RuntimeError)
 
     def test_evt_bad_data_types(self):
         """Test getting and putting invalid logevent data types.
@@ -528,8 +521,7 @@ class ErrorHandlingTestCase(BaseSalTestCase):
         bad_data = SALPY_Test.Test_logevent_arraysC()
         self.check_evt_get_put_raises(data=bad_data, exception=TypeError)
 
-        # TODO DM-18209: uncomment the following:
-        # self.check_evt_get_put_raises(data=None, exception=TypeError)
+        self.check_evt_get_put_raises(data=None, exception=RuntimeError)
 
     def test_tel_bad_data_types(self):
         """Test getting and putting invalid telemetry data types.
@@ -553,8 +545,7 @@ class ErrorHandlingTestCase(BaseSalTestCase):
         bad_data = SALPY_Test.Test_arraysC()
         self.check_tel_get_put_raises(data=bad_data, exception=TypeError)
 
-        # TODO DM-18209: uncomment the following:
-        # self.check_tel_get_put_raises(data=None, exception=TypeError)
+        self.check_tel_get_put_raises(data=None, exception=RuntimeError)
 
     def test_evt_overflow_buffer(self):
         """Write enough message to overflow the read buffer and check that
@@ -697,8 +688,11 @@ class ErrorHandlingTestCase(BaseSalTestCase):
             self.controller.logEvent_scalars(data, 1)
 
     def check_tel_get_put_raises(self, data, exception):
-        """Test getting and putting telemetry topics where a raise is expected,
-        e.g. due to invalid data or not registering the topic first.
+        """Test getting and putting the telemetry scalars topic
+        where a raise is expected.
+
+        Reasons this may raise include: incorrect data type,
+        invalid data and not registering the topic first.
 
         Parameters
         ----------
@@ -715,7 +709,7 @@ class ErrorHandlingTestCase(BaseSalTestCase):
             self.remote.flushSamples_scalars(data)
 
         with self.assertRaises(exception):
-            self.controller.putSample_scalars(data, 1)
+            self.controller.putSample_scalars(data)
 
 
 class TestTestData(unittest.TestCase):
