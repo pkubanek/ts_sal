@@ -105,7 +105,7 @@ global OPTIONS SAL_WORK_DIR
       if { $result == "none" } {stdlog $bad}
       if { $OPTIONS(verbose) } {stdlog $result}
     }
-##    exec rm -fr $SAL_WORK_DIR/[set base]_notused
+    exec rm -fr $SAL_WORK_DIR/[set base]_notused
     if { $OPTIONS(verbose) } {stdlog "###TRACE<<< gengenericcodes $base"}
 }
 
