@@ -74,34 +74,60 @@ class BaseSalTestCase(unittest.TestCase):
 
 
 class BasicTestCase(BaseSalTestCase):
-    @unittest.skipIf(Time is None, "Could not import astropy")
     def test_get_current_time(self):
-        """Test that the value returned by getCurrentTime is reasonable.
-
-        The time will either be TAI, if SAL can see a time server,
-        or UTC if not.
+        """Test that getCurrentTime() - UTC matches the value reported
+        by getLeapSeconds().
 
         This tests DM-18637.
-        This test will have to be updated when TAI-UTC changes.
+
+        See also test_get_leap_seconds.
         """
-        def curr_tai():
-            """Get the current time as TAI in unix seconds.
+        # Run the test twice in the unlikely event that the first run
+        # occurs at a leap second transition.
+        for i in range(2):
+            leap_seconds = self.remote.getLeapSeconds()
+            self.assertIsInstance(leap_seconds, int)
+            measured_leap_seconds = self.remote.getCurrentTime() - time.time()
+            if abs(leap_seconds - measured_leap_seconds) - 1 < 0.1:
+                # We are probably at a leap second transition;
+                # sleep and try again.
+                time.sleep(2)
+                continue
+            break
+        self.assertAlmostEqual(leap_seconds, measured_leap_seconds, places=3)
 
-            This is the same format used by the ATPtg CSC.
+    @unittest.skipIf(Time is None, "Could not import astropy")
+    def test_get_leap_seconds(self):
+        """Test the value returned by getLeapSeconds.
+
+        The value will either be TAI-UTC, if SAL can see a time server,
+        or 0 if not.
+        """
+        def get_astropy_tai_minus_utc():
+            """Get TAI-UTC at the current time, in seconds, using astropy.
             """
-            # unfortunately I can't just output curr_time.tai.unix
-            # because that has the same value as curr_time.utc.unix
+            # Unfortunately I can't just output
+            # curr_time.tai.unix - curr_time.utc.unix
+            # because they are identical.
             curr_time = Time.now()
-            tai_minus_utc = (curr_time.tai.mjd - curr_time.utc.mjd)*24*60*60
-            return curr_time.utc.unix + tai_minus_utc
+            return (curr_time.tai.mjd - curr_time.utc.mjd)*24*60*60
 
-        sal_time = self.remote.getCurrentTime()
-        tai = curr_tai()
-        utc = time.time()
-        min_err = min(abs(sal_time - t) for t in (tai, utc))
-        self.assertLess(min_err, 0.1,
-                        msg=f"sal_time={sal_time:0.2f} is neither tai={tai:0.2f} nor utc={utc:0.2f}; "
-                        f"min_err={min_err:0.2f}")
+        # Run the test twice in the unlikely event that the first run
+        # occurs at a leap second transition.
+        for i in range(2):
+            leap_seconds = self.remote.getLeapSeconds()
+            self.assertIsInstance(leap_seconds, int)
+            if leap_seconds == 0:
+                print("Warning: leap second table not setup.")
+                return
+            astropy_leap_seconds = get_astropy_tai_minus_utc()
+            if abs(leap_seconds - astropy_leap_seconds) - 1 < 0.1:
+                # We are probably at a leap second transition;
+                # sleep and try again.
+                time.sleep(2)
+                continue
+            break
+        self.assertAlmostEqual(leap_seconds, astropy_leap_seconds, places=3)
 
     def test_evt_get_oldest(self):
         """Write several logevent messages and make sure gettting the
