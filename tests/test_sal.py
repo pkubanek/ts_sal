@@ -129,6 +129,17 @@ class BasicTestCase(BaseSalTestCase):
             break
         self.assertAlmostEqual(leap_seconds, astropy_leap_seconds, places=3)
 
+    def test_get_versions(self):
+        """Test getSALVersion and getXMLVersion.
+
+        We don't know what versions to expect, so this test simply
+        checks that the functions run and return strings.
+        """
+        sal_version = self.remote.getSALVersion()
+        self.assertIsInstance(sal_version, str)
+        xml_version = self.remote.getXMLVersion()
+        self.assertIsInstance(xml_version, str)
+
     def test_evt_get_oldest(self):
         """Write several logevent messages and make sure gettting the
         oldest returns the data in the expected order.
