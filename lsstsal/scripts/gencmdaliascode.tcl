@@ -7,7 +7,8 @@ source $SAL_DIR/gentestspython.tcl
 source $SAL_DIR/activaterevcodes.tcl 
 
 proc gencmdaliascode { subsys lang fout } {
-global CMD_ALIASES CMDS DONE_CMDEVT ACKREVCODE REVCODE SAL_WORK_DIR
+global CMD_ALIASES CMDS DONE_CMDEVT ACKREVCODE REVCODE SAL_WORK_DIR OPTIONS
+ if { $OPTIONS(verbose) } {stdlog "###TRACE>>> gencmdaliascode $subsys $lang $fout"}
  source $SAL_WORK_DIR/idl-templates/validated/[set subsys]_revCodes.tcl
  set ACKREVCODE [getRevCode [set subsys]_ackcmd short]
  if { [info exists CMD_ALIASES($subsys)] } {
@@ -55,11 +56,13 @@ global CMD_ALIASES CMDS DONE_CMDEVT ACKREVCODE REVCODE SAL_WORK_DIR
      stdlog "$result"
   }
  }
+ if { $OPTIONS(verbose) } {stdlog "###TRACE<<< gencmdaliascode $subsys $lang $fout"}
 }
 
 
 proc gencmdaliascpp { subsys fout } {
-global CMD_ALIASES CMDS SAL_WORK_DIR ACKREVCODE
+global CMD_ALIASES CMDS SAL_WORK_DIR ACKREVCODE OPTIONS
+   if { $OPTIONS(verbose) } {stdlog "###TRACE>>> gencmdaliascpp $subsys $fout"}
    foreach i $CMD_ALIASES($subsys) {
     if { [info exists CMDS($subsys,$i,param)] } {
       set revcode [getRevCode [set subsys]_command_[set i] short]
@@ -76,9 +79,7 @@ int SAL_SALData::issueCommand_[set i]( SALData_command_[set i]C *data )
   int actorIdx = SAL__SALData_command_[set i]_ACTOR;
   // create DataWriter :
   if (sal\[actorIdx\].isCommand == false) \{
-     salCommand(sal\[actorIdx\].topicName);
-     sal\[actorIdx\].isCommand = true;
-     sal\[actorIdx\].sndSeqNum = rand();
+     throw std::runtime_error(\"No commander for issueCommand_[set i]\");
   \}
   DataWriter_var dwriter = getWriter(actorIdx);
   SALData::command_[set i][set revcode]DataWriter_var SALWriter = SALData::command_[set i][set revcode]DataWriter::_narrow(dwriter.in());
@@ -141,8 +142,7 @@ int SAL_SALData::acceptCommand_[set i]( SALData_command_[set i]C *data )
 
   // create DataWriter :
   if (sal\[actorIdx\].isProcessor == false) \{
-     salProcessor(sal\[actorIdx\].topicName);
-     sal\[actorIdx\].isProcessor = true;
+      throw std::runtime_error(\"No controller for acceptCommand_[set i]\");
   \}
   DataWriter_var dwriter = getWriter2(SAL__SALData_ackcmd_ACTOR);
   SALData::ackcmd[set ACKREVCODE]DataWriter_var SALWriter = SALData::ackcmd[set ACKREVCODE]DataWriter::_narrow(dwriter.in());
@@ -174,6 +174,8 @@ int SAL_SALData::acceptCommand_[set i]( SALData_command_[set i]C *data )
     ackdata.result = DDS::string_dup(\"SAL ACK\");
     status = Instances\[j\].private_seqNum;
     rcvdTime = getCurrentTime();
+    sal\[actorIdx\].rcvStamp = rcvdTime;
+    sal\[actorIdx\].sndStamp = Instances\[j\].private_sndStamp;
     if ( (rcvdTime - Instances\[j\].private_sndStamp) < sal\[actorIdx\].sampleAge ) \{
       rcvSeqNum = status;
       rcvOrigin = Instances\[j\].private_origin;
@@ -276,6 +278,8 @@ salReturn SAL_SALData::getResponse_[set i](SALData::ackcmd[set ACKREVCODE]Seq da
 // check origin, host , cmdtype here
     status = data\[j\].ack;
     rcvdTime = getCurrentTime();
+    sal\[actorIdxCmd\].rcvStamp = rcvdTime;
+    sal\[actorIdxCmd\].sndStamp = data\[j\].private_sndStamp;
     sal\[actorIdxCmd\].rcvSeqNum = data\[j\].private_seqNum;
     sal\[actorIdxCmd\].rcvOrigin = data\[j\].private_origin;
     sal\[actorIdxCmd\].ack = data\[j\].ack;
@@ -329,6 +333,8 @@ salReturn SAL_SALData::getResponse_[set i]C(SALData_ackcmdC *response)
 // check origin, host , cmdtype here
     status = data\[j\].private_seqNum;;
     rcvdTime = getCurrentTime();
+    sal\[actorIdxCmd\].rcvStamp = rcvdTime;
+    sal\[actorIdxCmd\].sndStamp = data\[j\].private_sndStamp;
     sal\[actorIdxCmd\].rcvSeqNum = data\[j\].private_seqNum;
     sal\[actorIdxCmd\].rcvOrigin = data\[j\].private_origin;
     sal\[actorIdxCmd\].ack = data\[j\].ack;
@@ -448,6 +454,7 @@ salReturn SAL_SALData::ackCommand_[set i]C(SALData_ackcmdC *response )
 #      stdlog "Alias $i has no parameters - uses standard [set subsys]_command"
      }
    }
+   if { $OPTIONS(verbose) } {stdlog "###TRACE<<< gencmdaliascpp $subsys $fout"}
 }
 
 
