@@ -1,8 +1,8 @@
 #!/bin/env tclsh
 
 proc createSystemDictionary { } {
-global env
-  set fout [open SALSubsystems.xml w]
+global env SAL_WORK_DIR
+  set fout [open $SAL_WORK_DIR/SALSubsystems.xml w]
   puts $fout "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
   puts $fout "<?xml-stylesheet type=\"text/xsl\" href=\"http://lsst-sal.tuc.noao.edu/schema/SALSubsystems.xsl\"?>"
   puts $fout "<SALSubsystems xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"
@@ -32,8 +32,10 @@ global env
 }
 
 proc parseSystemDictionary { } {
-global env SYSDIC
+global env SYSDIC SAL_WORK_DIR OPTIONS
+  if { $OPTIONS(verbose) } {puts stdout "###TRACE>>> parseSystemDictionary"}
   set SYSDIC(systems) ""
+  getValidGenerics
   set fin [open $env(SAL_WORK_DIR)/SALSubsystems.xml r]
   while { [gets $fin rec] > -1 } {
       set tag   [lindex [split $rec "<>"] 1]
@@ -47,6 +49,8 @@ global env SYSDIC
             set SYSDIC($name,hasAllGenerics) 1
          } else {
             if { [llength [split $value ,]] > 1 } {
+               validateGenerics $name $value
+               if { $OPTIONS(verbose) } {puts stdout "TRACE------ $name has generics $value"}
                set SYSDIC($name,hasGenerics) 1
                set SYSDIC($name,genericsUsed) $value
             }
@@ -66,6 +70,27 @@ global env SYSDIC
   } 
   close $fin
   set SYSDIC(systems) [lsort $SYSDIC(systems)]
+  if { $OPTIONS(verbose) } {puts stdout "###TRACE<<< parseSystemDictionary"}
+}
+
+proc getValidGenerics { } {
+global SAL_WORK_DIR SYSDIC
+  set all [split [exec grep EFDB_Topic $SAL_WORK_DIR/SALGenerics.xml] \n]
+  foreach g $all {
+    set gid [string range [lindex [split $g "<>"]  2] 11 end]
+    set SYSDIC(validGeneric,$gid) 1
+  }
+}
+
+
+proc validateGenerics { subsys generics } {
+global SYSDIC
+   foreach g [split $generics ,] {
+      set chkg [string trim $g]
+      if { [info exists SYSDIC(validGeneric,$chkg)] == 0 } {
+         errorexit "Bad Subsystem '$subsys' in SALSubsystems.xml\n***               Unknown generic - $chkg"
+      }
+   }
 }
 
 

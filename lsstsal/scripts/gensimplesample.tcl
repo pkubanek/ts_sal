@@ -577,18 +577,37 @@ global SAL_DIR SAL_WORK_DIR SYSDIC ONEPYTHON DONE_CMDEVT OPTIONS
       catch { set result [exec /tmp/sreplace4.sal] } bad
       if { $bad != "" } {stdlog $bad}
       if { $lang == "python" } {
-         stdlog "Generating Python bindings"
-         genpythonbinding $base
-         stdlog "Generating python shared library"
-         salpythonshlibgen $base
-         stdlog "Generating python command tests"
-         gencommandtestspython $base
-         stdlog "Generating python event tests"
-         geneventtestspython $base
-         stdlog "Generating python telemetry tests"
-         gentelemetrytestspython $base
+         makepythoncmdevt $base
       }
       if { $OPTIONS(verbose) } {stdlog "###TRACE<<< makesalcmdevt $base $lang "}
+}
+
+proc makepythoncmdevt { base } {
+global SAL_DIR SAL_WORK_DIR SYSDIC ONEPYTHON DONE_CMDEVT OPTIONS
+   if { $OPTIONS(verbose) } {stdlog "###TRACE>>> makepythoncmdevt $base"}
+   set bad "" ; set result "none"
+   stdlog "Generating Python bindings"
+   catch { set result [genpythonbinding $base] } bad
+   if { $result == "none" } {stdlog $bad}
+   if { $OPTIONS(verbose) } {stdlog $result}
+   set bad "" ; set result "none"
+   stdlog "Generating python shared library"
+   catch { set result [salpythonshlibgen $base] } bad
+   if { $result == "none" } {stdlog $bad}
+   if { $OPTIONS(verbose) } {stdlog $result}
+   stdlog "Generating python command tests"
+   catch { set result [gencommandtestspython $base] } bad
+   if { $result == "none" } {stdlog $bad}
+   if { $OPTIONS(verbose) } {stdlog $result}
+   stdlog "Generating python event tests"
+   catch { set result [geneventtestspython $base] } bad
+   if { $result == "none" } {stdlog $bad}
+   if { $OPTIONS(verbose) } {stdlog $result}
+   stdlog "Generating python telemetry tests"
+   catch { set result [gentelemetrytestspython $base] } bad
+   if { $result == "none" } {stdlog $bad}
+   if { $OPTIONS(verbose) } {stdlog $result}
+   if { $OPTIONS(verbose) } {stdlog "###TRACE<<< makepythoncmdevt $base"}
 }
 
 
@@ -824,19 +843,22 @@ global SAL_WORK_DIR OPTIONS
 
 proc salcpptestgen { base id } {
 global SAL_WORK_DIR OPTIONS DONE_CMDEVT
- if { $OPTIONS(verbose) } {stdlog "###TRACE>>> salcpptestgen $base $id"}
- if { $OPTIONS(fastest) == 0 } {
-  stdlog "Generating cpp test programs for $id"
-  cd $SAL_WORK_DIR/$id/cpp/standalone
-  catch { set result [exec make -f Makefile.sacpp_[set id]_sub] } bad
-  catch {stdlog "result = $result"}
-  catch {stdlog "$bad"}
-  stdlog "cpp : Done Subscriber"
-  catch { set result [exec make -f Makefile.sacpp_[set id]_pub] } bad
-  catch {stdlog "result = $result"}
-  catch {stdlog "$bad"}
-  stdlog "cpp : Done Publisher"
+  if { $OPTIONS(verbose) } {stdlog "###TRACE>>> salcpptestgen $base $id"}
+  if { $OPTIONS(fastest) == 0 } {
+    if { $id != "[set base]_notused" } {
+     stdlog "Generating cpp test programs for $id"
+     cd $SAL_WORK_DIR/$id/cpp/standalone
+     catch { set result [exec make -f Makefile.sacpp_[set id]_sub] } bad
+     catch {stdlog "result = $result"}
+     catch {stdlog "$bad"}
+     stdlog "cpp : Done Subscriber"
+     catch { set result [exec make -f Makefile.sacpp_[set id]_pub] } bad
+     catch {stdlog "result = $result"}
+     catch {stdlog "$bad"}
+     stdlog "cpp : Done Publisher"
+    }
   }
+  if { $DONE_CMDEVT == 0 } {
    cd $SAL_WORK_DIR/$base/cpp/src
    catch { exec make -f Makefile.sacpp_[set base]_testcommands all } bad
    catch {stdlog "result = $result"}
@@ -848,7 +870,8 @@ global SAL_WORK_DIR OPTIONS DONE_CMDEVT
    stdlog "cpp : Done Event/Logger"
    set DONE_CMDEVT 1
    cd $SAL_WORK_DIR
- if { $OPTIONS(verbose) } {stdlog "###TRACE<<< salcpptestgen $base $id"}
+  }
+  if { $OPTIONS(verbose) } {stdlog "###TRACE<<< salcpptestgen $base $id"}
 }
 
 source $SAL_DIR/add_system_dictionary.tcl

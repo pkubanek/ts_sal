@@ -39,6 +39,12 @@ if { $argc < 2 } {
 
 set SAL_DIR $env(SAL_DIR)
 set OSPL_HOME $env(OSPL_HOME)
+foreach o "validate efd writers code compile cpp idl isocpp java jni lib link maven tcl db icd labview python pydds html rpm sal shmem sim simd verbose fastest" {
+  set OPTIONS($o) 0
+  if { [lsearch [string tolower $argv] $o] > -1 } {
+     set OPTIONS($o) 1
+  }
+}
 source $SAL_DIR/versioning.tcl
 source $SAL_DIR/utilities.tcl
 source $SAL_DIR/activaterevcodes.tcl
@@ -109,7 +115,6 @@ foreach o "validate efd writers code compile cpp idl isocpp java jni lib link ma
      set OPTIONS($o) 1
   }
 }
-
 
 catch {exec mkdir saltemptest} ok
 if { [file exists saltemptest] == 0 } {

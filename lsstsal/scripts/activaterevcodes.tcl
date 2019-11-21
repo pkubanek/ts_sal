@@ -29,6 +29,7 @@ global SAL_WORK_DIR REVCODE OPTIONS SALVERSION
   if { $OPTIONS(verbose) } {stdlog "###TRACE>>> activeRevCodes $subsys"}
   set fin [open $SAL_WORK_DIR/idl-templates/validated/sal/sal_[set subsys].idl r]
   set fout [open $SAL_WORK_DIR/idl-templates/validated/sal/sal_revCoded_[set subsys].idl w]
+  set fpyb [open $SAL_WORK_DIR/include/SAL_[set subsys]_salpy_units.pyb3 w]
   set xmlversion [exec cat $SAL_WORK_DIR/VERSION]
   puts $fout "// SAL_VERSION=$SALVERSION XML_VERSION=$xmlversion"
   gets $fin rec ; puts $fout $rec
@@ -64,6 +65,7 @@ global SAL_WORK_DIR REVCODE OPTIONS SALVERSION
               set ign [string length "INSERT INTO [set subsys]_items VALUES "]
               set mdata [split [string trim [string range "$lookup" $ign end] "();"] ","]
               set annot " // @Metadata=(Units=[lindex $mdata 5],Description=[lindex $mdata 9])"
+              puts $fpyb "	m.attr(\"[set curtopic]C_[set item]_units\") = [lindex $mdata 5];"
             }
            }
           }
@@ -75,6 +77,7 @@ global SAL_WORK_DIR REVCODE OPTIONS SALVERSION
   }
   close $fin
   close $fout
+  close $fpyb
   if { $OPTIONS(verbose) } {stdlog "###TRACE<<< activeRevCodes $subsys"}
 }
 

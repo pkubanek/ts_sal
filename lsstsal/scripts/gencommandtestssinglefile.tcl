@@ -211,8 +211,11 @@ proc insertMakeFile { subsys file_writer } {
     puts $file_writer "#----------------------------------------------------------------------------"
     puts $file_writer "#       Local targets"
     puts $file_writer "#----------------------------------------------------------------------------"
-
     puts $file_writer "all: \$(BIN1) \$(BIN2)"
+
+    puts $file_writer ".obj/SAL_[set subsys]\$(OBJEXT): ../src/SAL_[set subsys].cpp"
+    puts $file_writer "	@\$(TESTDIRSTART) \".obj/../src\" \$(TESTDIREND) \$(MKDIR) \".obj/../src\""
+    puts $file_writer "	\$(COMPILE.cc) \$(EXPORTFLAGS) \$(OUTPUT_OPTION) ../src/SAL_[set subsys].cpp"
 
     puts $file_writer ".obj/sacpp_[set subsys]_all_commander.o: ../src/sacpp_[set subsys]_all_commander.cpp"
     puts $file_writer "	@\$(TESTDIRSTART) \".obj/../src\" \$(TESTDIREND) \$(MKDIR) \".obj/../src\""

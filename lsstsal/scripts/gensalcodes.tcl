@@ -67,7 +67,6 @@ global DONE_CMDEVT OPTIONS ONEPYTHON SAL_DIR
          set ONEPYTHON 1
          if { $OPTIONS(verbose) } {stdlog $result}
        }
-       set DONE_CMDEVT 1
      }
   }
   if { $OPTIONS(verbose) } {stdlog "###TRACE<<< gentelemetrycodes $targets"}
@@ -75,8 +74,9 @@ global DONE_CMDEVT OPTIONS ONEPYTHON SAL_DIR
 
 
 proc gengenericcodes { base } {
-global OPTIONS SAL_WORK_DIR
-    if { $OPTIONS(verbose) } {stdlog "###TRACE>>> gengenericcodes $base"}
+global OPTIONS SAL_WORK_DIR DONE_CMDEVT
+  if { $OPTIONS(verbose) } {stdlog "###TRACE>>> gengenericcodes $base"}
+  if { $DONE_CMDEVT == 0 } {
     set idlfile $SAL_WORK_DIR/idl-templates/validated/sal/sal_[set base].idl
     if { $OPTIONS(cpp) } {
       set result none
@@ -99,14 +99,15 @@ global OPTIONS SAL_WORK_DIR
     if { $OPTIONS(python) } {
       set result none
       catch { set result [makesalcmdevt $base python] } bad
-      if { $result == "none" } {stdlog $bad}
+      if { $result == "none" } {stdlog "makesalcmdevt : $bad"}
       if { $OPTIONS(verbose) } {stdlog $result}
-      catch { set result [makesalcode $idlfile $base "notused" python] } bad
-      if { $result == "none" } {stdlog $bad}
-      if { $OPTIONS(verbose) } {stdlog $result}
+#      catch { set result [makesalcode $idlfile $base "notused" python] } bad
+#      if { $result == "none" } {stdlog $bad}
+#      if { $OPTIONS(verbose) } {stdlog $result}
     }
     exec rm -fr $SAL_WORK_DIR/[set base]_notused
     if { $OPTIONS(verbose) } {stdlog "###TRACE<<< gengenericcodes $base"}
+  }
 }
 
 
