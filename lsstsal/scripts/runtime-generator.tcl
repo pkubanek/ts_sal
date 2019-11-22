@@ -1,6 +1,10 @@
 #!/usr/bin/env tclsh
 
+set OPTIONS(verbose) 0
+set SAL_DIR $env(SAL_DIR)
+set SAL_WORK_DIR $env(SAL_WORK_DIR)
 source $env(SAL_DIR)/add_system_dictionary.tcl
+
 set EVERYTHING [lsort $SYSDIC(systems)]
 foreach subsys $EVERYTHING {
    catch {

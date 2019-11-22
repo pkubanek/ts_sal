@@ -12,10 +12,8 @@ if { $argc < 2 } {
    where flag(s) may be
 
 		validate - check the XML Telemetry/Command/LogEvent definitions
-		idl      - generate the Interface Definition Language files
-                sal      - generate SAL wrappers for cpp, java, isocpp, python
+                sal      - generate SAL wrappers for specified language : cpp, idl, java, python, pydds
                 lib      - generate shared library
-		tcl      - generate tcl interface
 		html     - generate web form interfaces
 		labview  - generate LabVIEW low-level interface
 		maven    - generate a maven repository
@@ -25,11 +23,10 @@ if { $argc < 2 } {
  
 		    db start-time end-time interval
 
-                    where the times are formatted like \"2008-11-12 16:20:01\"
+                    where the times are formatted like \"2019-11-12 16:20:01\"
                     and the interval is in seconds
 
 		sim      - generate simulation configuration
-		icd      - generate ICD document
 		link     - link a SAL program
                 rpm	 - generate runtime RPM
 		verbose  - be more verbose ;-)

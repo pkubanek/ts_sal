@@ -153,15 +153,14 @@ global TLMS TLM_ALIASES EVENT_ENUM EVENT_ENUMS UNITS ENUM_DONE SYSDIC DESC OPTIO
         puts $fsql "INSERT INTO [set subsys]_items VALUES (\"$tname\",5,\"private_origin\",\"int\",1,\"unitless\",1,\"\",\"\",\"PID code of sender\");"
         puts $fsql "INSERT INTO [set subsys]_items VALUES (\"$tname\",6,\"private_host\",\"int\",1,\"unitless\",1,\"\",\"\",\"IP of sender\");"
         set itemid 6
-        set alias [join [lrange [split $tname "_"] 1 end] "_"]
+        set alias [getAlias $tname]
         if { $ctype == "command" } {
-           set alias [join [lrange [split $tname "_"] 2 end] "_"]
            set CMDS($subsys,$alias) $alias
         }
-        if { $ctype == "event" }   {
-           set alias [join [lrange [split $tname "_"] 2 end] "_"]
+        if { $ctype == "event" } {
            set EVTS($subsys,$alias) $alias
         }
+        set DESC($subsys,$alias,help) "No description provided"
       }
       if { $tag == "EFDB_Name"} {
         set item $value ; set unit ""
@@ -179,6 +178,7 @@ global TLMS TLM_ALIASES EVENT_ENUM EVENT_ENUMS UNITS ENUM_DONE SYSDIC DESC OPTIO
       }
       if { $tag == "/SALEvent" || $tag == "/SALCommand" || $tag == "/SALTelemetry" } {
          enumsToIDL $subsys $alias $fout
+         puts $fsql "###Description $tname : $DESC($subsys,$alias,help)"
       }
       if { $tag == "IDL_Type"} {
          set type $value
@@ -186,7 +186,10 @@ global TLMS TLM_ALIASES EVENT_ENUM EVENT_ENUMS UNITS ENUM_DONE SYSDIC DESC OPTIO
          if { $type == "unsigned long long" } {set type "unsigned longlong"}
       }
       if { $tag == "IDL_Size"}        {set sdim $value}
-      if { $tag == "Description"}     {set desc [join [split $value ","] ";"]}
+      if { $tag == "Description"}     {
+         set desc [join [split $value ","] ";"]
+         if { $itemid == 0 } { set DESC($subsys,$alias,help) "$desc"}
+      }
       if { $tag == "Frequency"}       {set freq $value}
       if { $tag == "Range"}           {set range $value}
       if { $tag == "Sensor_location"} {set location $value}
@@ -285,6 +288,7 @@ global TLMS TLM_ALIASES EVENT_ENUM EVENT_ENUMS UNITS ENUM_DONE SYSDIC DESC OPTIO
    close $fsql
    if { $OPTIONS(verbose) } {stdlog "###TRACE<<< parseXMLtoidl $fname"}
 }
+
 
 proc enumsToIDL { subsys alias fout } {
 global EVENT_ENUM EDONE

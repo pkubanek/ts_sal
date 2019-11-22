@@ -118,6 +118,15 @@ proc checkfileasset { fname } {
   if { [file size $fname] == 0 } { errorexit "Failed to generate $fname - size=0" 1 }
 }
 
+proc getAlias { topic } {
+   set stopic [split $topic "_"]
+   if { [lindex $stopic 1] != "command" && [lindex $stopic 1] != "logevent" } {
+      set alias [join [lrange $stopic 1 end] _]
+   } else {
+      set alias [join [lrange $stopic 2 end] _]
+   }
+}
+
 
 
 

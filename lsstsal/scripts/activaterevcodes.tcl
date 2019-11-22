@@ -19,7 +19,7 @@ global SAL_WORK_DIR REVCODE
 proc getItemName { rec } {
   if { [lindex $rec 0] == "unsigned" } { set rec [lrange $rec 1 end] }
   if { [lindex $rec 1] == "long" } { set rec [lrange $rec 1 end] }
-  set item [string trim [lindex $rec 1] "\[\];"]
+  set item [string trim [lindex [split [lindex $rec 1] "\[\];"] 0]]
   return $item
 }
 
@@ -42,8 +42,11 @@ global SAL_WORK_DIR REVCODE OPTIONS SALVERSION
      if { [lindex $r2 0] == "struct" } {
        set curtopic [set subsys]_[lindex $r2 1]
        set id [lindex $r2 1]
+       set desc ""
+       catch { set desc [lindex [split [exec grep "###Description $curtopic :" $SAL_WORK_DIR/sql/[set subsys]_items.sql] ":"] 1] }
        if { $id != "command" && $id != "logevent" } {
-         puts $fout "struct [set id]_[string range [set REVCODE([set subsys]_$id)] 0 7] \{"
+         set annot " // @Metadata=(Description=\"$desc\")"
+         puts $fout "struct [set id]_[string range [set REVCODE([set subsys]_$id)] 0 7] \{ $annot"
        } else {
          puts $fout $rec
        }
