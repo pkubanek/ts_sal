@@ -90,7 +90,7 @@ global TLMS TLM_ALIASES EVENT_ENUM EVENT_ENUMS UNITS ENUM_DONE SYSDIC DESC OPTIO
           incr itemid 1
           puts $fsql "INSERT INTO [set subsys]_items VALUES (\"[set tname]\",$itemid,\"priority\",\"int\",1,\"unitless\",1,\"\",\"\",\"Priority code\");"
          }
-         if { $explanation != "" } {set EVTS($subsys,$alias,help) $explanation}
+         if { $explanation != "" } {set DESC($subsys,$alias,help) $explanation}
          set DESC($subsys,$alias,priority) "Priority code"
       }
       if { $tag == "/SALCommand" } {
@@ -104,12 +104,12 @@ global TLMS TLM_ALIASES EVENT_ENUM EVENT_ENUMS UNITS ENUM_DONE SYSDIC DESC OPTIO
             puts $fout "	  boolean	value;"
             puts $fsql "INSERT INTO [set subsys]_items VALUES (\"$tname\",1,\"value\",\"boolean\",1,\"unitless\",1,\"\",\"\",\"Dummy to prevent empty structs\");"
          }
-         if { $explanation != "" } {set CMDS($subsys,$alias,help) $explanation}
+         if { $explanation != "" } {set DESC($subsys,$alias,help) $explanation}
       }
       if { $tag == "/SALTelemetry" } {
          set TLM_ALIASES($subsys) [lappend TLM_ALIASES($subsys) $alias]
          set intopic 0
-         if { $explanation != "" } {set TLMS($subsys,$alias,help) $explanation}
+         if { $explanation != "" } {set DESC($subsys,$alias,help) $explanation}
       }
       if { $tag == "EFDB_Topic" } {
         if { $checkGenerics == 1 } {
