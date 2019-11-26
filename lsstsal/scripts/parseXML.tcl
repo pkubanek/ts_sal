@@ -55,6 +55,16 @@ global TLMS TLM_ALIASES EVENT_ENUM EVENT_ENUMS UNITS ENUM_DONE SYSDIC DESC OPTIO
       if { $tag == "SALTelemetrySet" } {set ctype "telemetry"}
       if { $tag == "SALCommandSet" }   {set ctype "command"}
       if { $tag == "SALEventSet" }     {set ctype "event"}
+      if { $tag == "Alias" } {
+          if { $alias != $value } {
+             puts stdout "****************************************************************"
+             puts stdout "****************************************************************"
+             puts stdout "ERROR - Alias does not match EFDB_Topic declaration for $value"
+             puts stdout "****************************************************************"
+             puts stdout "****************************************************************"
+             exit -1
+          }
+      }
       if { $tag == "Device" }          {set device $value}
       if { $tag == "Property" }        {set property $value}
       if { $tag == "Action" }          {set action $value}
