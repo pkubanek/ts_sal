@@ -43,7 +43,7 @@ global SAL_WORK_DIR REVCODE OPTIONS SALVERSION
        set curtopic [set subsys]_[lindex $r2 1]
        set id [lindex $r2 1]
        set desc ""
-       catch { set desc [lindex [split [exec grep "###Description $curtopic :" $SAL_WORK_DIR/sql/[set subsys]_items.sql] ":"] 1] }
+       catch { set desc [string trim [lindex [split [exec grep "###Description $curtopic :" $SAL_WORK_DIR/sql/[set subsys]_items.sql] ":"] 1]] }
        if { $id != "command" && $id != "logevent" } {
          set annot " // @Metadata=(Description=\"$desc\")"
          puts $fout "struct [set id]_[string range [set REVCODE([set subsys]_$id)] 0 7] \{ $annot"

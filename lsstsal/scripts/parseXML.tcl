@@ -90,7 +90,7 @@ global TLMS TLM_ALIASES EVENT_ENUM EVENT_ENUMS UNITS ENUM_DONE SYSDIC DESC OPTIO
           incr itemid 1
           puts $fsql "INSERT INTO [set subsys]_items VALUES (\"[set tname]\",$itemid,\"priority\",\"int\",1,\"unitless\",1,\"\",\"\",\"Priority code\");"
          }
-         if { $explanation != "" } {set DESC($subsys,$alias,help) $explanation}
+         if { $explanation != "" } {set EVTS($subsys,$alias,help) $explanation}
          set DESC($subsys,$alias,priority) "Priority code"
       }
       if { $tag == "/SALCommand" } {
@@ -104,12 +104,12 @@ global TLMS TLM_ALIASES EVENT_ENUM EVENT_ENUMS UNITS ENUM_DONE SYSDIC DESC OPTIO
             puts $fout "	  boolean	value;"
             puts $fsql "INSERT INTO [set subsys]_items VALUES (\"$tname\",1,\"value\",\"boolean\",1,\"unitless\",1,\"\",\"\",\"Dummy to prevent empty structs\");"
          }
-         if { $explanation != "" } {set DESC($subsys,$alias,help) $explanation}
+         if { $explanation != "" } {set CMDS($subsys,$alias,help) $explanation}
       }
       if { $tag == "/SALTelemetry" } {
          set TLM_ALIASES($subsys) [lappend TLM_ALIASES($subsys) $alias]
          set intopic 0
-         if { $explanation != "" } {set DESC($subsys,$alias,help) $explanation}
+         if { $explanation != "" } {set TLMS($subsys,$alias,help) $explanation}
       }
       if { $tag == "EFDB_Topic" } {
         if { $checkGenerics == 1 } {
@@ -160,7 +160,7 @@ global TLMS TLM_ALIASES EVENT_ENUM EVENT_ENUMS UNITS ENUM_DONE SYSDIC DESC OPTIO
         if { $ctype == "event" } {
            set EVTS($subsys,$alias) $alias
         }
-        set DESC($subsys,$alias,help) "No description provided"
+        set DESC($subsys,$alias,help) ""
       }
       if { $tag == "EFDB_Name"} {
         set item $value ; set unit ""
@@ -188,7 +188,7 @@ global TLMS TLM_ALIASES EVENT_ENUM EVENT_ENUMS UNITS ENUM_DONE SYSDIC DESC OPTIO
       if { $tag == "IDL_Size"}        {set sdim $value}
       if { $tag == "Description"}     {
          set desc [join [split $value ","] ";"]
-         if { $itemid == 0 } { set DESC($subsys,$alias,help) "$desc"}
+         if { $itemid == 6 } { set DESC($subsys,$alias,help) "$desc"}
       }
       if { $tag == "Frequency"}       {set freq $value}
       if { $tag == "Range"}           {set range $value}
@@ -228,7 +228,7 @@ global TLMS TLM_ALIASES EVENT_ENUM EVENT_ENUMS UNITS ENUM_DONE SYSDIC DESC OPTIO
          if { $desc != "" } {
             set DESC($subsys,$alias,$item) $desc
          } else {
-            set DESC($subsys,$alias,$item) "No description"
+            set DESC($subsys,$alias,$item) ""
          }
          if { $unit != "" } {set UNITS($subsys,$alias,$item) $unit}
          puts $fsql "INSERT INTO [set subsys]_items VALUES (\"$tname\",$itemid,\"$item\",\"$type\",$idim,\"$unit\",$freq,\"$range\",\"$location\",\"$desc\");"
