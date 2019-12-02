@@ -157,8 +157,8 @@ global TLMS TLM_ALIASES EVENT_ENUM EVENT_ENUMS UNITS ENUM_DONE SYSDIC DESC OPTIO
         puts $fout "struct $tname \{"
         add_private_idl $fout
         puts $fsql "INSERT INTO [set subsys]_items VALUES (\"$tname\",1,\"private_revCode\",\"char\",32,\"unitless\",1,\"\",\"\",\"Revision code of topic\");"
-        puts $fsql "INSERT INTO [set subsys]_items VALUES (\"$tname\",2,\"private_sndStamp\",\"double\",1,\"second\",1,\"\",\"\",\"TAI at sender\");"
-        puts $fsql "INSERT INTO [set subsys]_items VALUES (\"$tname\",3,\"private_rcvStamp\",\"double\",1,\"second\",1,\"\",\"\",\"TAI at receiver\");"
+        puts $fsql "INSERT INTO [set subsys]_items VALUES (\"$tname\",2,\"private_sndStamp\",\"double\",1,\"s\",1,\"\",\"\",\"TAI at sender\");"
+        puts $fsql "INSERT INTO [set subsys]_items VALUES (\"$tname\",3,\"private_rcvStamp\",\"double\",1,\"s\",1,\"\",\"\",\"TAI at receiver\");"
         puts $fsql "INSERT INTO [set subsys]_items VALUES (\"$tname\",4,\"private_seqNum\",\"int\",1,\"unitless\",1,\"\",\"\",\"Sequence number\");"
         puts $fsql "INSERT INTO [set subsys]_items VALUES (\"$tname\",5,\"private_origin\",\"int\",1,\"unitless\",1,\"\",\"\",\"PID code of sender\");"
         puts $fsql "INSERT INTO [set subsys]_items VALUES (\"$tname\",6,\"private_host\",\"int\",1,\"unitless\",1,\"\",\"\",\"IP of sender\");"
