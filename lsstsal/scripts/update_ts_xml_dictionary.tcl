@@ -67,6 +67,13 @@ global env SYSDIC SAL_WORK_DIR OPTIONS
            }
          }
       }
+      if { $tag == "RuntimeLanguages" } {
+         set langs [split $value ,]
+         foreach l $langs {
+           set support [string tolower [string trim $l]]
+           set SYSDIC($name,$support) 1
+         }
+      }
   } 
   close $fin
   set SYSDIC(systems) [lsort $SYSDIC(systems)]
