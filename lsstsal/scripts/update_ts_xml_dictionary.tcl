@@ -70,6 +70,7 @@ global env SYSDIC SAL_WORK_DIR OPTIONS
       if { $tag == "RuntimeLanguages" } {
          set langs [split $value ,]
          foreach l $langs {
+           if { $OPTIONS(verbose) } {puts stdout "TRACE------ $name needs runtime support for $l"}
            set support [string tolower [string trim $l]]
            set SYSDIC($name,$support) 1
          }
