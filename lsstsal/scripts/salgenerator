@@ -306,7 +306,7 @@ if { $OPTIONS(sal) } {
   set base [lindex [split [lindex $TARGETS 0] _] 0]
   source $SAL_DIR/gensimplesample.tcl
   source $SAL_DIR/gensalcodes.tcl
-  checktopictypes $base
+  checkTopicTypes $base
   source $SAL_WORK_DIR/idl-templates/validated/[set base]_revCodes.tcl
   catch { set idlfile [makesalidl $base] } bad
   puts stdout $bad
@@ -314,9 +314,9 @@ if { $OPTIONS(sal) } {
   updateRevCodes $base
   if { $OPTIONS(idl) == 0 } {
     source $SAL_WORK_DIR/idl-templates/validated/[set base]_revCodes.tcl
-    gengenericcodes $base
-    gentelemetrycodes $idlfile $TARGETS
-    gensingleprocesstests $base
+    genGenericCodes $base
+    genTelemetryCodes $idlfile $TARGETS
+    genSingleProcessTests $base
     if { $OPTIONS(pydds) } {
       exec mkdir -p $SAL_WORK_DIR/python
       set spl [lindex [file rootname [split [lindex $TARGETS 0] _]] 0]

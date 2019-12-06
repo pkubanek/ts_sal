@@ -64,10 +64,14 @@ global SAL_WORK_DIR REVCODE OPTIONS SALVERSION
            catch {
             if { [lindex [lindex $rec 0] 0] != "const" } {
               set item [getItemName $rec]
-              set lookup [exec grep "(\"$curtopic\"," $SAL_WORK_DIR/sql/[set subsys]_items.sql | grep ",\"$item\""]
-              set ign [string length "INSERT INTO [set subsys]_items VALUES "]
-              set mdata [split [string trim [string range "$lookup" $ign end] "();"] ","]
-              set annot " // @Metadata=(Units=[lindex $mdata 5],Description=[lindex $mdata 9])"
+              if { $item == "[set subsys]ID" } {
+                set annot " // @Metadata=(Description=\"Index number for CSC with multiple instances\")"
+              } else {
+                set lookup [exec grep "(\"$curtopic\"," $SAL_WORK_DIR/sql/[set subsys]_items.sql | grep ",\"$item\""]
+                set ign [string length "INSERT INTO [set subsys]_items VALUES "]
+                set mdata [split [string trim [string range "$lookup" $ign end] "();"] ","]
+                set annot " // @Metadata=(Units=[lindex $mdata 5],Description=[lindex $mdata 9])"
+              }
               puts $fpyb "	m.attr(\"[set curtopic]C_[set item]_units\") = [lindex $mdata 5];"
             }
            }

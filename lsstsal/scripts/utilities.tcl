@@ -22,10 +22,10 @@ global SAL_LOG
   puts stdout "$msg"
 }
 
-proc cleanup { subsys language } {
+proc clearAssets { subsys language } {
 global SAL_WORK_DIR SALVERSION OPTIONS
    set res ""
-   if { $OPTIONS(verbose) } {stdlog "###TRACE>>> cleanup $subsys $language "}
+   if { $OPTIONS(verbose) } {stdlog "###TRACE>>> clearAssets $subsys $language "}
    switch $op {
      all  {
        cleanup $subsys idl
@@ -77,43 +77,43 @@ global SAL_WORK_DIR SALVERSION OPTIONS
          }
    }
    if { $res != "" } { errorexit "Failed to cleanup old $subsys files - $res" }
-   if { $OPTIONS(verbose) } {stdlog "###TRACE<<< cleanup $subsys $language "}
+   if { $OPTIONS(verbose) } {stdlog "###TRACE<<< clearAssets $subsys $language "}
 }
 
-proc checkassets { subsys language } {
-global SAL_WORK_DIR
-   if { $OPTIONS(verbose) } {stdlog "###TRACE>>> checkassets $subsys $language "}
+proc checkAssets { subsys language } {
+global SAL_WORK_DIR OPTIONS
+   if { $OPTIONS(verbose) } {stdlog "###TRACE>>> checkAssets $subsys $language "}
    switch $language {
      idl      {
-                checkfileasset $SAL_WORK_DIR/idl-templates/validated/sal/sal_revCoded_[set subsys].idl
+                checkFileAsset $SAL_WORK_DIR/idl-templates/validated/sal/sal_revCoded_[set subsys].idl
               }
      cpp      {
-                checkfileasset $SAL_WORK_DIR/[set subsys]/cpp/libsacpp_[set subsys]_types.so
-                checkfileasset $SAL_WORK_DIR/[set subsys]/cpp/src/SAL_[set subsys].cpp
-                checkfileasset $SAL_WORK_DIR/[set subsys]/cpp/src/SAL_[set subsys].h
-                checkfileasset $SAL_WORK_DIR/[set subsys]/cpp/src/SAL_[set subsys]C.h
+                checkFileAsset $SAL_WORK_DIR/[set subsys]/cpp/libsacpp_[set subsys]_types.so
+                checkFileAsset $SAL_WORK_DIR/[set subsys]/cpp/src/SAL_[set subsys].cpp
+                checkFileAsset $SAL_WORK_DIR/[set subsys]/cpp/src/SAL_[set subsys].h
+                checkFileAsset $SAL_WORK_DIR/[set subsys]/cpp/src/SAL_[set subsys]C.h
                 foreach test "commander controller sender logger publisher subscriber" {
-                   checkfileasset $SAL_WORK_DIR/[set subsys]/cpp/src/sacpp_[set subsys]_all_[set test]
+                   checkFileAsset $SAL_WORK_DIR/[set subsys]/cpp/src/sacpp_[set subsys]_all_[set test]
                 }
               }
      java     {
-                checkfileasset $SAL_WORK_DIR/[set subsys]/java/saj_[set subsys]_types.jar
-                checkfileasset $SAL_WORK_DIR/[set subsys]/java/src/org/lsst/sal/SAL_[set subsys].java
+                checkFileAsset $SAL_WORK_DIR/[set subsys]/java/saj_[set subsys]_types.jar
+                checkFileAsset $SAL_WORK_DIR/[set subsys]/java/src/org/lsst/sal/SAL_[set subsys].java
               }
      python   {
-                checkfileasset $SAL_WORK_DIR/[set subsys]/cpp/src/SALPY_[set subsys].so
+                checkFileAsset $SAL_WORK_DIR/[set subsys]/cpp/src/SALPY_[set subsys].so
               }
      labview  {
-                checkfileasset $SAL_WORK_DIR/[set subsys]/labview/SALLV_[set subsys].so
-                checkfileasset $SAL_WORK_DIR/[set subsys]/labview/SALLV_[set subsys]_Monitor
-                checkfileasset $SAL_WORK_DIR/[set subsys]/labview/sal_[set subsys].idl
-                checkfileasset $SAL_WORK_DIR/[set subsys]/cpp/src/SAL_[set subsys]LV.h
+                checkFileAsset $SAL_WORK_DIR/[set subsys]/labview/SALLV_[set subsys].so
+                checkFileAsset $SAL_WORK_DIR/[set subsys]/labview/SALLV_[set subsys]_Monitor
+                checkFileAsset $SAL_WORK_DIR/[set subsys]/labview/sal_[set subsys].idl
+                checkFileAsset $SAL_WORK_DIR/[set subsys]/cpp/src/SAL_[set subsys]LV.h
               }
    }
-   if { $OPTIONS(verbose) } {stdlog "###TRACE<<< checkassets $subsys $language "}
+   if { $OPTIONS(verbose) } {stdlog "###TRACE<<< checkAssets $subsys $language "}
 }
 
-proc checkfileasset { fname } {
+proc checkFileAsset { fname } {
   if { [file exists $fname] == 0 } { errorexit "Failed to generate $fname" 1 }
   if { [file size $fname] == 0 } { errorexit "Failed to generate $fname - size=0" 1 }
 }
@@ -126,6 +126,7 @@ proc getAlias { topic } {
       set alias [join [lrange $stopic 2 end] _]
    }
 }
+
 
 
 

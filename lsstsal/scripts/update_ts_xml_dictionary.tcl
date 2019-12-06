@@ -4,9 +4,9 @@ proc createSystemDictionary { } {
 global env SAL_WORK_DIR
   set fout [open $SAL_WORK_DIR/SALSubsystems.xml w]
   puts $fout "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
-  puts $fout "<?xml-stylesheet type=\"text/xsl\" href=\"http://lsst-sal.tuc.noao.edu/schema/SALSubsystems.xsl\"?>"
-  puts $fout "<SALSubsystems xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"
-	xsi:noNamespaceSchemaLocation=\"http://lsst-sal.tuc.noao.edu/schema/SALSubsystems.xsd\">
+  puts $fout "<?xml-stylesheet type=\"text/xsl\" href=\"http://github.com/lsst-ts/ts_xml/tree/master/schema/SALSubsystemSet.xsl\"?>"
+  puts $fout "<SALSubsystemSet xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"
+	xsi:noNamespaceSchemaLocation=\"http://github.com/lsst-ts/ts_xml/tree/master/schema/SALSubsystemSet.xsd\">
 "
   set DONE(SALSubsystems) 1
   set all [lsort [glob $env(SAL_WORK_DIR)/*.xml]]
@@ -20,7 +20,6 @@ global env SAL_WORK_DIR
   <Description></Description
   <Enumeration></Enumeration>
   <Generics>yes</Generics>
-  <Version></Version>
   <Author></Author>
 </Subsystem>
 "
