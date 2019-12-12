@@ -11,6 +11,9 @@ global SAL_DIR SAL_WORK_DIR SYSDIC VPROPS
         set fin2 [open $SAL_WORK_DIR/include/SAL_[set subsys]C.pyb r]
         while { [gets $fin2 r2] > -1 } { puts $fout $r2}
         close $fin2
+        set fin3 [open $SAL_WORK_DIR/include/SAL_[set subsys]_salpy_units.pyb3 r]
+        while { [gets $fin3 r3] > -1 } { puts $fout $r3}
+        close $fin3
      }
      if { [string range $rec 0 26] == "// INSERT_SAL_PYTHON_GETPUT" } {
         set fin2 [open $SAL_WORK_DIR/include/SAL_[set subsys]C.pyb2 r]

@@ -12,10 +12,8 @@ if { $argc < 2 } {
    where flag(s) may be
 
 		validate - check the XML Telemetry/Command/LogEvent definitions
-		idl      - generate the Interface Definition Language files
-                sal      - generate SAL wrappers for cpp, java, isocpp, python
+                sal      - generate SAL wrappers for specified language : cpp, idl, java, python, pydds
                 lib      - generate shared library
-		tcl      - generate tcl interface
 		html     - generate web form interfaces
 		labview  - generate LabVIEW low-level interface
 		maven    - generate a maven repository
@@ -25,11 +23,10 @@ if { $argc < 2 } {
  
 		    db start-time end-time interval
 
-                    where the times are formatted like \"2008-11-12 16:20:01\"
+                    where the times are formatted like \"2019-11-12 16:20:01\"
                     and the interval is in seconds
 
 		sim      - generate simulation configuration
-		icd      - generate ICD document
 		link     - link a SAL program
                 rpm	 - generate runtime RPM
 		verbose  - be more verbose ;-)
@@ -39,6 +36,12 @@ if { $argc < 2 } {
 
 set SAL_DIR $env(SAL_DIR)
 set OSPL_HOME $env(OSPL_HOME)
+foreach o "validate efd writers code compile cpp idl isocpp java jni lib link maven tcl db icd labview python pydds html rpm sal shmem sim simd verbose fastest" {
+  set OPTIONS($o) 0
+  if { [lsearch [string tolower $argv] $o] > -1 } {
+     set OPTIONS($o) 1
+  }
+}
 source $SAL_DIR/versioning.tcl
 source $SAL_DIR/utilities.tcl
 source $SAL_DIR/activaterevcodes.tcl
@@ -52,6 +55,20 @@ if { [string range [lindex $argv end] 0 7] == "version=" } {
 
 
 puts stdout "SAL generator - [set SALVERSION]"
+
+if { [file exists $env(SAL_WORK_DIR)/VERSION] == 0 } {
+   puts stdout "
+*******************************************************************************
+******************** ERROR - Subsystem not defined ****************************
+*******************************************************************************
+
+	$env(SAL_WORK_DIR)/VERSION does not exist to specify XML version
+
+*******************************************************************************
+*******************************************************************************"
+   exit -1
+}
+
 
 set TSUBSYSTEMS ""
 foreach i $argv {
@@ -109,7 +126,6 @@ foreach o "validate efd writers code compile cpp idl isocpp java jni lib link ma
      set OPTIONS($o) 1
   }
 }
-
 
 catch {exec mkdir saltemptest} ok
 if { [file exists saltemptest] == 0 } {
@@ -290,7 +306,7 @@ if { $OPTIONS(sal) } {
   set base [lindex [split [lindex $TARGETS 0] _] 0]
   source $SAL_DIR/gensimplesample.tcl
   source $SAL_DIR/gensalcodes.tcl
-  checktopictypes $base
+  checkTopicTypes $base
   source $SAL_WORK_DIR/idl-templates/validated/[set base]_revCodes.tcl
   catch { set idlfile [makesalidl $base] } bad
   puts stdout $bad
@@ -298,9 +314,9 @@ if { $OPTIONS(sal) } {
   updateRevCodes $base
   if { $OPTIONS(idl) == 0 } {
     source $SAL_WORK_DIR/idl-templates/validated/[set base]_revCodes.tcl
-    gengenericcodes $base
-    gentelemetrycodes $idlfile $TARGETS
-    gensingleprocesstests $base
+    genGenericCodes $base
+    genTelemetryCodes $idlfile $TARGETS
+    genSingleProcessTests $base
     if { $OPTIONS(pydds) } {
       exec mkdir -p $SAL_WORK_DIR/python
       set spl [lindex [file rootname [split [lindex $TARGETS 0] _]] 0]

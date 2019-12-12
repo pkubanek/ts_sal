@@ -19,7 +19,7 @@ global SAL_WORK_DIR REVCODE
 proc getItemName { rec } {
   if { [lindex $rec 0] == "unsigned" } { set rec [lrange $rec 1 end] }
   if { [lindex $rec 1] == "long" } { set rec [lrange $rec 1 end] }
-  set item [string trim [lindex $rec 1] "\[\];"]
+  set item [string trim [lindex [split [lindex $rec 1] "\[\];"] 0]]
   return $item
 }
 
@@ -29,6 +29,7 @@ global SAL_WORK_DIR REVCODE OPTIONS SALVERSION
   if { $OPTIONS(verbose) } {stdlog "###TRACE>>> activeRevCodes $subsys"}
   set fin [open $SAL_WORK_DIR/idl-templates/validated/sal/sal_[set subsys].idl r]
   set fout [open $SAL_WORK_DIR/idl-templates/validated/sal/sal_revCoded_[set subsys].idl w]
+  set fpyb [open $SAL_WORK_DIR/include/SAL_[set subsys]_salpy_units.pyb3 w]
   set xmlversion [exec cat $SAL_WORK_DIR/VERSION]
   puts $fout "// SAL_VERSION=$SALVERSION XML_VERSION=$xmlversion"
   gets $fin rec ; puts $fout $rec
@@ -41,8 +42,11 @@ global SAL_WORK_DIR REVCODE OPTIONS SALVERSION
      if { [lindex $r2 0] == "struct" } {
        set curtopic [set subsys]_[lindex $r2 1]
        set id [lindex $r2 1]
+       set desc ""
+       catch { set desc [string trim [lindex [split [exec grep "###Description $curtopic :" $SAL_WORK_DIR/sql/[set subsys]_items.sql] ":"] 1]] }
        if { $id != "command" && $id != "logevent" } {
-         puts $fout "struct [set id]_[string range [set REVCODE([set subsys]_$id)] 0 7] \{"
+         set annot " // @Metadata=(Description=\"$desc\")"
+         puts $fout "struct [set id]_[string range [set REVCODE([set subsys]_$id)] 0 7] \{ $annot"
        } else {
          puts $fout $rec
        }
@@ -60,10 +64,15 @@ global SAL_WORK_DIR REVCODE OPTIONS SALVERSION
            catch {
             if { [lindex [lindex $rec 0] 0] != "const" } {
               set item [getItemName $rec]
-              set lookup [exec grep "(\"$curtopic\"," $SAL_WORK_DIR/sql/[set subsys]_items.sql | grep ",\"$item\""]
-              set ign [string length "INSERT INTO [set subsys]_items VALUES "]
-              set mdata [split [string trim [string range "$lookup" $ign end] "();"] ","]
-              set annot " // @Metadata=(Units=[lindex $mdata 5],Description=[lindex $mdata 9])"
+              if { $item == "[set subsys]ID" } {
+                set annot " // @Metadata=(Description=\"Index number for CSC with multiple instances\")"
+              } else {
+                set lookup [exec grep "(\"$curtopic\"," $SAL_WORK_DIR/sql/[set subsys]_items.sql | grep ",\"$item\""]
+                set ign [string length "INSERT INTO [set subsys]_items VALUES "]
+                set mdata [split [string trim [string range "$lookup" $ign end] "();"] ","]
+                set annot " // @Metadata=(Units=[lindex $mdata 5],Description=[lindex $mdata 9])"
+              }
+              puts $fpyb "	m.attr(\"[set curtopic]C_[set item]_units\") = [lindex $mdata 5];"
             }
            }
           }
@@ -75,6 +84,7 @@ global SAL_WORK_DIR REVCODE OPTIONS SALVERSION
   }
   close $fin
   close $fout
+  close $fpyb
   if { $OPTIONS(verbose) } {stdlog "###TRACE<<< activeRevCodes $subsys"}
 }
 
@@ -114,7 +124,8 @@ global SAL_WORK_DIR REVCODE SYSDIC CMD_ALIASES OPTIONS
   gets $fin rec; gets $fin rec
   set done 0
   while { [gets $fin rec] > -1 } {
-     if { [lindex [lindex [split [string trim $rec "{}"] /] 0] 0] != "const" } {
+     set chk [lindex [split $rec "\{\}\""] 0]
+     if { [lindex  $chk 0] != "const" } {
         puts $fout $rec
      }
   }

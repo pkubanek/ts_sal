@@ -577,18 +577,37 @@ global SAL_DIR SAL_WORK_DIR SYSDIC ONEPYTHON DONE_CMDEVT OPTIONS
       catch { set result [exec /tmp/sreplace4.sal] } bad
       if { $bad != "" } {stdlog $bad}
       if { $lang == "python" } {
-         stdlog "Generating Python bindings"
-         genpythonbinding $base
-         stdlog "Generating python shared library"
-         salpythonshlibgen $base
-         stdlog "Generating python command tests"
-         gencommandtestspython $base
-         stdlog "Generating python event tests"
-         geneventtestspython $base
-         stdlog "Generating python telemetry tests"
-         gentelemetrytestspython $base
+         makepythoncmdevt $base
       }
       if { $OPTIONS(verbose) } {stdlog "###TRACE<<< makesalcmdevt $base $lang "}
+}
+
+proc makepythoncmdevt { base } {
+global SAL_DIR SAL_WORK_DIR SYSDIC ONEPYTHON DONE_CMDEVT OPTIONS
+   if { $OPTIONS(verbose) } {stdlog "###TRACE>>> makepythoncmdevt $base"}
+   set bad "" ; set result "none"
+   stdlog "Generating Python bindings"
+   catch { set result [genpythonbinding $base] } bad
+   if { $result == "none" } {stdlog $bad}
+   if { $OPTIONS(verbose) } {stdlog $result}
+   set bad "" ; set result "none"
+   stdlog "Generating python shared library"
+   catch { set result [salpythonshlibgen $base] } bad
+   if { $result == "none" } {stdlog $bad}
+   if { $OPTIONS(verbose) } {stdlog $result}
+   stdlog "Generating python command tests"
+   catch { set result [gencommandtestspython $base] } bad
+   if { $result == "none" } {stdlog $bad}
+   if { $OPTIONS(verbose) } {stdlog $result}
+   stdlog "Generating python event tests"
+   catch { set result [geneventtestspython $base] } bad
+   if { $result == "none" } {stdlog $bad}
+   if { $OPTIONS(verbose) } {stdlog $result}
+   stdlog "Generating python telemetry tests"
+   catch { set result [gentelemetrytestspython $base] } bad
+   if { $result == "none" } {stdlog $bad}
+   if { $OPTIONS(verbose) } {stdlog $result}
+   if { $OPTIONS(verbose) } {stdlog "###TRACE<<< makepythoncmdevt $base"}
 }
 
 
@@ -610,27 +629,31 @@ global SAL_DIR SAL_WORK_DIR SYSDIC ONEPYTHON DONE_CMDEVT OPTIONS
         puts $frep "perl -pi -w -e 's/SALDATA.idl/[file tail $idlfile]/g;' [set base]/cpp/Makefile.sacpp_[set base]_types"
         puts $frep "perl -pi -w -e 's/SALData/sal_[set base]/g;' [set base]/cpp/Makefile.sacpp_[set base]_types"
         puts $frep "perl -pi -w -e 's/sacpp_SAL_types/sacpp_[set base]_types/g;' [set base]/cpp/Makefile.sacpp_[set base]_types"
-        exec cp $SAL_DIR/code/templates/Makefile.sacpp_SAL_sub.template [set id]/cpp/standalone/Makefile.sacpp_[set id]_sub
-        puts $frep "perl -pi -w -e 's/_SAL_/_[set base]_/g;' [set id]/cpp/standalone/Makefile.sacpp_[set id]_sub"
-        puts $frep "perl -pi -w -e 's/SALSubsys/[set base]/g;' [set id]/cpp/standalone/Makefile.sacpp_[set id]_sub"
-        puts $frep "perl -pi -w -e 's/SALData/[set id]/g;' [set id]/cpp/standalone/Makefile.sacpp_[set id]_sub"
-        if { [info exists SYSDIC($base,keyedID)] } {
-          puts $frep "perl -pi -w -e 's/#-DSAL_SUBSYSTEM/-DSAL_SUBSYSTEM/g;' [set id]/cpp/standalone/Makefile.sacpp_[set id]_sub"
+        if { $name != "notused" } {
+          exec cp $SAL_DIR/code/templates/Makefile.sacpp_SAL_sub.template [set id]/cpp/standalone/Makefile.sacpp_[set id]_sub
+          puts $frep "perl -pi -w -e 's/_SAL_/_[set base]_/g;' [set id]/cpp/standalone/Makefile.sacpp_[set id]_sub"
+          puts $frep "perl -pi -w -e 's/SALSubsys/[set base]/g;' [set id]/cpp/standalone/Makefile.sacpp_[set id]_sub"
+          puts $frep "perl -pi -w -e 's/SALData/[set id]/g;' [set id]/cpp/standalone/Makefile.sacpp_[set id]_sub"
+          if { [info exists SYSDIC($base,keyedID)] } {
+            puts $frep "perl -pi -w -e 's/#-DSAL_SUBSYSTEM/-DSAL_SUBSYSTEM/g;' [set id]/cpp/standalone/Makefile.sacpp_[set id]_sub"
+          }
+          exec cp $SAL_DIR/code/templates/Makefile.sacpp_SAL_pub.template [set id]/cpp/standalone/Makefile.sacpp_[set id]_pub
+          puts $frep "perl -pi -w -e 's/_SAL_/_[set base]_/g;' [set id]/cpp/standalone/Makefile.sacpp_[set id]_pub"
+          puts $frep "perl -pi -w -e 's/SALSubsys/[set base]/g;' [set id]/cpp/standalone/Makefile.sacpp_[set id]_pub"
+          puts $frep "perl -pi -w -e 's/SALData/[set id]/g;' [set id]/cpp/standalone/Makefile.sacpp_[set id]_pub"
+          if { [info exists SYSDIC($base,keyedID)] } {
+            puts $frep "perl -pi -w -e 's/#-DSAL_SUBSYSTEM/-DSAL_SUBSYSTEM/g;' [set id]/cpp/standalone/Makefile.sacpp_[set id]_pub"
+          }
         }
-        exec cp $SAL_DIR/code/templates/Makefile.sacpp_SAL_pub.template [set id]/cpp/standalone/Makefile.sacpp_[set id]_pub
-        puts $frep "perl -pi -w -e 's/_SAL_/_[set base]_/g;' [set id]/cpp/standalone/Makefile.sacpp_[set id]_pub"
-        puts $frep "perl -pi -w -e 's/SALSubsys/[set base]/g;' [set id]/cpp/standalone/Makefile.sacpp_[set id]_pub"
-        puts $frep "perl -pi -w -e 's/SALData/[set id]/g;' [set id]/cpp/standalone/Makefile.sacpp_[set id]_pub"
-        if { [info exists SYSDIC($base,keyedID)] } {
-          puts $frep "perl -pi -w -e 's/#-DSAL_SUBSYSTEM/-DSAL_SUBSYSTEM/g;' [set id]/cpp/standalone/Makefile.sacpp_[set id]_pub"
+        if { $name != "notused" } {
+          modpubsubexamples $id
+          puts $frep "perl -pi -w -e 's/SALTopic/[set name]/g;' [set id]/cpp/src/[set id]DataPublisher.cpp"
+          puts $frep "perl -pi -w -e 's/SALNAMESTRING/[set base]_[set name]/g;' [set id]/cpp/src/[set id]DataPublisher.cpp"
+          puts $frep "perl -pi -w -e 's/SALData/$base/g;' [set id]/cpp/src/[set id]DataPublisher.cpp"
+          puts $frep "perl -pi -w -e 's/SALTopic/[set name]/g;' [set id]/cpp/src/[set id]DataSubscriber.cpp"
+          puts $frep "perl -pi -w -e 's/SALNAMESTRING/[set base]_[set name]/g;' [set id]/cpp/src/[set id]DataSubscriber.cpp"
+          puts $frep "perl -pi -w -e 's/SALData/$base/g;' [set id]/cpp/src/[set id]DataSubscriber.cpp"
         }
-        if { $name != "notused" } {modpubsubexamples $id}
-        puts $frep "perl -pi -w -e 's/SALTopic/[set name]/g;' [set id]/cpp/src/[set id]DataPublisher.cpp"
-        puts $frep "perl -pi -w -e 's/SALNAMESTRING/[set base]_[set name]/g;' [set id]/cpp/src/[set id]DataPublisher.cpp"
-        puts $frep "perl -pi -w -e 's/SALData/$base/g;' [set id]/cpp/src/[set id]DataPublisher.cpp"
-        puts $frep "perl -pi -w -e 's/SALTopic/[set name]/g;' [set id]/cpp/src/[set id]DataSubscriber.cpp"
-        puts $frep "perl -pi -w -e 's/SALNAMESTRING/[set base]_[set name]/g;' [set id]/cpp/src/[set id]DataSubscriber.cpp"
-        puts $frep "perl -pi -w -e 's/SALData/$base/g;' [set id]/cpp/src/[set id]DataSubscriber.cpp"
       }
       if { $lang == "java"}  {
         exec cp $SAL_DIR/code/templates/Makefile-java.template [set id]/java/standalone/Makefile
@@ -642,33 +665,34 @@ global SAL_DIR SAL_WORK_DIR SYSDIC ONEPYTHON DONE_CMDEVT OPTIONS
         puts $frep "perl -pi -w -e 's/_SAL_/_[set base]_/g;' [set base]/java/Makefile.saj_[set base]_types"
         exec cp $SAL_DIR/code/templates/Makefile-java.template [set id]/java/Makefile
         puts $frep "perl -pi -w -e 's/_SAL_/_[set id]_/g;' [set id]/java/Makefile"
-        exec cp $SAL_DIR/code/templates/Makefile.saj_SAL_pub.template [set id]/java/standalone/Makefile.saj_[set id]_pub
-        puts $frep "perl -pi -w -e 's/_SAL_/_[set id]_/g;' [set id]/java/standalone/Makefile.saj_[set id]_pub"
-        puts $frep "perl -pi -w -e 's/SALTopic/[set id]/g;' [set id]/java/standalone/Makefile.saj_[set id]_pub"
-        puts $frep "perl -pi -w -e 's/SALData/[set base]/g;' [set id]/java/standalone/Makefile.saj_[set id]_pub"
-        exec cp $SAL_DIR/code/templates/Makefile.saj_SAL_sub.template [set id]/java/standalone/Makefile.saj_[set id]_sub
-        puts $frep "perl -pi -w -e 's/_SAL_/_[set id]_/g;' [set id]/java/standalone/Makefile.saj_[set id]_sub"
-        puts $frep "perl -pi -w -e 's/SALTopic/[set id]/g;' [set id]/java/standalone/Makefile.saj_[set id]_sub"
-        puts $frep "perl -pi -w -e 's/SALData/[set base]/g;' [set id]/java/standalone/Makefile.saj_[set id]_sub"
-        exec cp $SAL_DIR/code/templates/SALTopicDataPublisher.java.template [set id]/java/src/[set id]DataPublisher.java
-        if { [info exists SYSDIC($base,keyedID)] } {
-          puts $frep "perl -pi -w -e 's/SALSUBSYSID/aKey/g;' [set id]/java/src/[set id]DataPublisher.java"
-        } else {
-          puts $frep "perl -pi -w -e 's/SALSUBSYSID//g;' [set id]/java/src/[set id]DataPublisher.java"
+        if { $name != "notused" } {
+          exec cp $SAL_DIR/code/templates/Makefile.saj_SAL_pub.template [set id]/java/standalone/Makefile.saj_[set id]_pub
+          puts $frep "perl -pi -w -e 's/_SAL_/_[set id]_/g;' [set id]/java/standalone/Makefile.saj_[set id]_pub"
+          puts $frep "perl -pi -w -e 's/SALTopic/[set id]/g;' [set id]/java/standalone/Makefile.saj_[set id]_pub"
+          puts $frep "perl -pi -w -e 's/SALData/[set base]/g;' [set id]/java/standalone/Makefile.saj_[set id]_pub"
+          exec cp $SAL_DIR/code/templates/Makefile.saj_SAL_sub.template [set id]/java/standalone/Makefile.saj_[set id]_sub
+          puts $frep "perl -pi -w -e 's/_SAL_/_[set id]_/g;' [set id]/java/standalone/Makefile.saj_[set id]_sub"
+          puts $frep "perl -pi -w -e 's/SALTopic/[set id]/g;' [set id]/java/standalone/Makefile.saj_[set id]_sub"
+          puts $frep "perl -pi -w -e 's/SALData/[set base]/g;' [set id]/java/standalone/Makefile.saj_[set id]_sub"
+          exec cp $SAL_DIR/code/templates/SALTopicDataPublisher.java.template [set id]/java/src/[set id]DataPublisher.java
+          if { [info exists SYSDIC($base,keyedID)] } {
+            puts $frep "perl -pi -w -e 's/SALSUBSYSID/aKey/g;' [set id]/java/src/[set id]DataPublisher.java"
+          } else {
+            puts $frep "perl -pi -w -e 's/SALSUBSYSID//g;' [set id]/java/src/[set id]DataPublisher.java"
+          }
+          puts $frep "perl -pi -w -e 's/SALTopic/[set name]/g;' [set id]/java/src/[set id]DataPublisher.java"
+          puts $frep "perl -pi -w -e 's/SALData/$base/g;' [set id]/java/src/[set id]DataPublisher.java"
+          puts $frep "perl -pi -w -e 's/SALNAMESTRING/[set id]/g;' [set id]/java/src/[set id]DataPublisher.java"
+          exec cp $SAL_DIR/code/templates/SALTopicDataSubscriber.java.template [set id]/java/src/[set id]DataSubscriber.java
+          if { [info exists SYSDIC($base,keyedID)] } {
+            puts $frep "perl -pi -w -e 's/SALSUBSYSID/aKey/g;' [set id]/java/src/[set id]DataSubscriber.java"
+          } else {
+            puts $frep "perl -pi -w -e 's/SALSUBSYSID//g;' [set id]/java/src/[set id]DataSubscriber.java"
+          }
+          puts $frep "perl -pi -w -e 's/SALTopic/[set name]/g;' [set id]/java/src/[set id]DataSubscriber.java"
+          puts $frep "perl -pi -w -e 's/SALData/$base/g;' [set id]/java/src/[set id]DataSubscriber.java"
+          puts $frep "perl -pi -w -e 's/SALNAMESTRING/[set id]/g;' [set id]/java/src/[set id]DataSubscriber.java"
         }
-        puts $frep "perl -pi -w -e 's/SALTopic/[set name]/g;' [set id]/java/src/[set id]DataPublisher.java"
-        puts $frep "perl -pi -w -e 's/SALData/$base/g;' [set id]/java/src/[set id]DataPublisher.java"
-        puts $frep "perl -pi -w -e 's/SALNAMESTRING/[set id]/g;' [set id]/java/src/[set id]DataPublisher.java"
-        exec cp $SAL_DIR/code/templates/SALTopicDataSubscriber.java.template [set id]/java/src/[set id]DataSubscriber.java
-        if { [info exists SYSDIC($base,keyedID)] } {
-          puts $frep "perl -pi -w -e 's/SALSUBSYSID/aKey/g;' [set id]/java/src/[set id]DataSubscriber.java"
-        } else {
-          puts $frep "perl -pi -w -e 's/SALSUBSYSID//g;' [set id]/java/src/[set id]DataSubscriber.java"
-        }
-        puts $frep "perl -pi -w -e 's/SALTopic/[set name]/g;' [set id]/java/src/[set id]DataSubscriber.java"
-        puts $frep "perl -pi -w -e 's/SALData/$base/g;' [set id]/java/src/[set id]DataSubscriber.java"
-        puts $frep "perl -pi -w -e 's/SALNAMESTRING/[set id]/g;' [set id]/java/src/[set id]DataSubscriber.java"
-
         exec cp $SAL_DIR/code/templates/ErrorHandler.java [set id]/java/src/ErrorHandler.java
         exec cp $SAL_DIR/code/templates/ErrorHandler.java [set base]/java/src/ErrorHandler.java
         exec cp $SAL_DIR/code/templates/runsample.template [set id]/java/standalone/[set id].run
@@ -690,9 +714,11 @@ global SAL_DIR SAL_WORK_DIR SYSDIC ONEPYTHON DONE_CMDEVT OPTIONS
       exec chmod 755 /tmp/sreplace.sal
       catch { set result [exec /tmp/sreplace.sal] } bad
       if { $bad != "" } {stdlog $bad}
-      stdlog "calling addSALDDStypes $idlfile $id $lang"
-      addSALDDStypes $idlfile $id $lang $base
-      stdlog "done addSALDDStypes $idlfile $id $lang"
+##      if { $name != "notused" } {
+        stdlog "calling addSALDDStypes $idlfile $id $lang"
+        addSALDDStypes $idlfile $id $lang $base
+        stdlog "done addSALDDStypes $idlfile $id $lang"
+##      }
       if { $lang == "cpp" } {
         set revcode [getRevCode [set base]_ackcmd short]
         set frep [open /tmp/sreplace2.sal w]
@@ -808,6 +834,7 @@ proc saljavaclassgen { base id } {
 global SAL_WORK_DIR OPTIONS
  if { $OPTIONS(verbose) } {stdlog "###TRACE>>> saljavaclassgen $base $id"}
  if { $OPTIONS(fastest) == 0 } {
+  if { $id != "[set base]_notused" } {
    cd $SAL_WORK_DIR/$id/java/standalone
    catch { set result [exec make -f Makefile.saj_[set id]_pub] } bad
    catch {stdlog "result = $result"}
@@ -818,25 +845,29 @@ global SAL_WORK_DIR OPTIONS
    catch {stdlog "$bad"}
    stdlog "javac : Done Subscriber"
    cd $SAL_WORK_DIR
+  }
  }
  if { $OPTIONS(verbose) } {stdlog "###TRACE<<< saljavaclassgen $base $id"}
 }
 
 proc salcpptestgen { base id } {
 global SAL_WORK_DIR OPTIONS DONE_CMDEVT
- if { $OPTIONS(verbose) } {stdlog "###TRACE>>> salcpptestgen $base $id"}
- if { $OPTIONS(fastest) == 0 } {
-  stdlog "Generating cpp test programs for $id"
-  cd $SAL_WORK_DIR/$id/cpp/standalone
-  catch { set result [exec make -f Makefile.sacpp_[set id]_sub] } bad
-  catch {stdlog "result = $result"}
-  catch {stdlog "$bad"}
-  stdlog "cpp : Done Subscriber"
-  catch { set result [exec make -f Makefile.sacpp_[set id]_pub] } bad
-  catch {stdlog "result = $result"}
-  catch {stdlog "$bad"}
-  stdlog "cpp : Done Publisher"
+  if { $OPTIONS(verbose) } {stdlog "###TRACE>>> salcpptestgen $base $id"}
+  if { $OPTIONS(fastest) == 0 } {
+    if { $id != "[set base]_notused" } {
+     stdlog "Generating cpp test programs for $id"
+     cd $SAL_WORK_DIR/$id/cpp/standalone
+     catch { set result [exec make -f Makefile.sacpp_[set id]_sub] } bad
+     catch {stdlog "result = $result"}
+     catch {stdlog "$bad"}
+     stdlog "cpp : Done Subscriber"
+     catch { set result [exec make -f Makefile.sacpp_[set id]_pub] } bad
+     catch {stdlog "result = $result"}
+     catch {stdlog "$bad"}
+     stdlog "cpp : Done Publisher"
+    }
   }
+  if { $DONE_CMDEVT == 0 } {
    cd $SAL_WORK_DIR/$base/cpp/src
    catch { exec make -f Makefile.sacpp_[set base]_testcommands all } bad
    catch {stdlog "result = $result"}
@@ -848,7 +879,8 @@ global SAL_WORK_DIR OPTIONS DONE_CMDEVT
    stdlog "cpp : Done Event/Logger"
    set DONE_CMDEVT 1
    cd $SAL_WORK_DIR
- if { $OPTIONS(verbose) } {stdlog "###TRACE<<< salcpptestgen $base $id"}
+  }
+  if { $OPTIONS(verbose) } {stdlog "###TRACE<<< salcpptestgen $base $id"}
 }
 
 source $SAL_DIR/add_system_dictionary.tcl

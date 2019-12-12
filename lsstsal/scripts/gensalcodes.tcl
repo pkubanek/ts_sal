@@ -1,6 +1,6 @@
-proc checktopictypes { base } {
+proc checkTopicTypes { base } {
 global SAL_WORK_DIR OPTIONS CMD_ALIASES EVENT_ALIASES TLM_ALIASES CMDS EVTS TLMS
-  if { $OPTIONS(verbose) } {stdlog "###TRACE>>> checktopictypes $base"}
+  if { $OPTIONS(verbose) } {stdlog "###TRACE>>> checkTopicTypes $base"}
   if { [file exists $SAL_WORK_DIR/idl-templates/validated/[set base]_cmddef.tcl] } {
         source $SAL_WORK_DIR/idl-templates/validated/[set base]_cmddef.tcl
   } else {
@@ -22,14 +22,14 @@ global SAL_WORK_DIR OPTIONS CMD_ALIASES EVENT_ALIASES TLM_ALIASES CMDS EVTS TLMS
         stdlog "WARNING : No Telemetry definitions found for $base"
         stdlog "==================================================================="
   }
-  if { $OPTIONS(verbose) } {stdlog "###TRACE<<< checktopictypes $base"}
+  if { $OPTIONS(verbose) } {stdlog "###TRACE<<< checkTopicTypes $base"}
 }
 
 
 
-proc gentelemetrycodes { idlfile targets } {
+proc genTelemetryCodes { idlfile targets } {
 global DONE_CMDEVT OPTIONS ONEPYTHON SAL_DIR
-  if { $OPTIONS(verbose) } {stdlog "###TRACE>>> gentelemetrycodes $targets"}
+  if { $OPTIONS(verbose) } {stdlog "###TRACE>>> genTelemetryCodes $targets"}
   foreach subsys $targets {
      set spl [file rootname [split $subsys _]]
      set base [lindex $spl 0]
@@ -67,16 +67,16 @@ global DONE_CMDEVT OPTIONS ONEPYTHON SAL_DIR
          set ONEPYTHON 1
          if { $OPTIONS(verbose) } {stdlog $result}
        }
-       set DONE_CMDEVT 1
      }
   }
-  if { $OPTIONS(verbose) } {stdlog "###TRACE<<< gentelemetrycodes $targets"}
+  if { $OPTIONS(verbose) } {stdlog "###TRACE<<< genTelemetryCodes $targets"}
 }
 
 
-proc gengenericcodes { base } {
-global OPTIONS SAL_WORK_DIR
-    if { $OPTIONS(verbose) } {stdlog "###TRACE>>> gengenericcodes $base"}
+proc genGenericCodes { base } {
+global OPTIONS SAL_WORK_DIR DONE_CMDEVT
+  if { $OPTIONS(verbose) } {stdlog "###TRACE>>> genGenericCodes $base"}
+  if { $DONE_CMDEVT == 0 } {
     set idlfile $SAL_WORK_DIR/idl-templates/validated/sal/sal_[set base].idl
     if { $OPTIONS(cpp) } {
       set result none
@@ -99,20 +99,21 @@ global OPTIONS SAL_WORK_DIR
     if { $OPTIONS(python) } {
       set result none
       catch { set result [makesalcmdevt $base python] } bad
-      if { $result == "none" } {stdlog $bad}
+      if { $result == "none" } {stdlog "makesalcmdevt : $bad"}
       if { $OPTIONS(verbose) } {stdlog $result}
-      catch { set result [makesalcode $idlfile $base "notused" python] } bad
-      if { $result == "none" } {stdlog $bad}
-      if { $OPTIONS(verbose) } {stdlog $result}
+#      catch { set result [makesalcode $idlfile $base "notused" python] } bad
+#      if { $result == "none" } {stdlog $bad}
+#      if { $OPTIONS(verbose) } {stdlog $result}
     }
     exec rm -fr $SAL_WORK_DIR/[set base]_notused
-    if { $OPTIONS(verbose) } {stdlog "###TRACE<<< gengenericcodes $base"}
+    if { $OPTIONS(verbose) } {stdlog "###TRACE<<< genGenericCodes $base"}
+  }
 }
 
 
-proc gensingleprocesstests { base } {
-global OPTIONS CMD_ALIASES EVT_ALIASES TLM_ALIASES
-  if { $OPTIONS(verbose) } {stdlog "###TRACE>>> gensingleprocesstests $base"}
+proc genSingleProcessTests { base } {
+global OPTIONS CMD_ALIASES EVENT_ALIASES TLM_ALIASES
+  if { $OPTIONS(verbose) } {stdlog "###TRACE>>> genSingleProcessTests $base"}
   if { $OPTIONS(cpp) } {
     set result none
     if { [info exists CMD_ALIASES($base)] } {
@@ -121,7 +122,7 @@ global OPTIONS CMD_ALIASES EVT_ALIASES TLM_ALIASES
        if { $OPTIONS(verbose) } {stdlog $result}
     }
     set result none
-    if { [info exists EVT_ALIASES($base)] } {
+    if { [info exists EVENT_ALIASES($base)] } {
       catch { set result [geneventtestssinglefilescpp $base] } bad
       if { $result == "none" } {stdlog $bad}
       if { $OPTIONS(verbose) } {stdlog $result}
@@ -139,7 +140,7 @@ global OPTIONS CMD_ALIASES EVT_ALIASES TLM_ALIASES
        catch { set result [gencommandtestssinglefilejava $base] } bad
        if { $OPTIONS(verbose) } {stdlog $result}
     }
-    if { [info exists EVT_ALIASES($base)] } {
+    if { [info exists EVENT_ALIASES($base)] } {
       catch { set result [geneventtestssinglefilejava $base] } bad
       if { $OPTIONS(verbose) } {stdlog $result}
     }
@@ -148,7 +149,7 @@ global OPTIONS CMD_ALIASES EVT_ALIASES TLM_ALIASES
       if { $OPTIONS(verbose) } {stdlog $result}
     }
   }
-  if { $OPTIONS(verbose) } {stdlog "###TRACE<<< gensingleprocesstests $base"}
+  if { $OPTIONS(verbose) } {stdlog "###TRACE<<< genSingleProcessTests $base"}
 }
 
 
