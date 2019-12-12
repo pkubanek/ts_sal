@@ -112,7 +112,7 @@ global OPTIONS SAL_WORK_DIR DONE_CMDEVT
 
 
 proc genSingleProcessTests { base } {
-global OPTIONS CMD_ALIASES EVT_ALIASES TLM_ALIASES
+global OPTIONS CMD_ALIASES EVENT_ALIASES TLM_ALIASES
   if { $OPTIONS(verbose) } {stdlog "###TRACE>>> genSingleProcessTests $base"}
   if { $OPTIONS(cpp) } {
     set result none
@@ -122,7 +122,7 @@ global OPTIONS CMD_ALIASES EVT_ALIASES TLM_ALIASES
        if { $OPTIONS(verbose) } {stdlog $result}
     }
     set result none
-    if { [info exists EVT_ALIASES($base)] } {
+    if { [info exists EVENT_ALIASES($base)] } {
       catch { set result [geneventtestssinglefilescpp $base] } bad
       if { $result == "none" } {stdlog $bad}
       if { $OPTIONS(verbose) } {stdlog $result}
@@ -140,7 +140,7 @@ global OPTIONS CMD_ALIASES EVT_ALIASES TLM_ALIASES
        catch { set result [gencommandtestssinglefilejava $base] } bad
        if { $OPTIONS(verbose) } {stdlog $result}
     }
-    if { [info exists EVT_ALIASES($base)] } {
+    if { [info exists EVENT_ALIASES($base)] } {
       catch { set result [geneventtestssinglefilejava $base] } bad
       if { $OPTIONS(verbose) } {stdlog $result}
     }
