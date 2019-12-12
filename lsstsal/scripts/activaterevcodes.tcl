@@ -124,7 +124,7 @@ global SAL_WORK_DIR REVCODE SYSDIC CMD_ALIASES OPTIONS
   gets $fin rec; gets $fin rec
   set done 0
   while { [gets $fin rec] > -1 } {
-     set chk [lindex [split $rec "\{\}"] 0]
+     set chk [lindex [split $rec "\{\}\""] 0]
      if { [lindex  $chk 0] != "const" } {
         puts $fout $rec
      }
