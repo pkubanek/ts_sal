@@ -16,4 +16,12 @@ Using lsst.ts.sal
 ====================
 
 .. toctree::
-    :maxdepth: 2
+   :maxdepth: 2
+
+Project information
+===================
+
+.. toctree::
+   :maxdepth: 2
+
+   revision_history
