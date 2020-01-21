@@ -12,7 +12,7 @@ chmod 755 grepper/tsrepos
 
 echo "Cloning lsst-ts and lsst-dm repositories"
 ./grepper/tsrepos
-./grepper/dmrepos.rpm-dep
+./dmrepos.rpm-dep
 
 echo "Fetching CCS assets"
 mkdir ccs
@@ -46,7 +46,7 @@ cscs=`cat csclist`
 for csc in $cscs
 do
    echo "Grepping for $csc"
-   grepper/dogrep.sh . $csc
+   ./dogrep.sh . $csc
 done
 
 repos=`ls`

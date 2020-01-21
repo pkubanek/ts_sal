@@ -13,7 +13,7 @@ cscs=`cat csclist`
 for csc in $cscs
 do
    echo "Grepping for $csc"
-   grepper/dogrep.sh $1 $csc
+   ./dogrep.sh $1 $csc
 done
 
 cd refs
