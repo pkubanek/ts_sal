@@ -1,6 +1,7 @@
 #
 #  Generic utility procedures used in SAL suite of programs
 #
+set TDEPTH 0
 
 proc errorexit { msg {id -1} } {
 global SAL_LOG
@@ -15,11 +16,13 @@ global SAL_LOG
 }
 
 proc stdlog { msg {verbosity 9} } {
-global SAL_LOG
+global SAL_LOG TDEPTH
+  if { [string range $msg 0 10] == "###TRACE>>>" } { incr TDEPTH 2 }
+  if { [string range $msg 0 10] == "###TRACE<<<" } { incr TDEPTH -2 }
   if { [info exists SAL_LOG(fd)] } {
-     puts $SAL_LOG(fd) "$msg"
+     puts $SAL_LOG(fd) "[string repeat "#" $TDEPTH]$msg"
   }
-  puts stdout "$msg"
+  puts stdout "[string repeat "#" $TDEPTH]$msg"
 }
 
 proc clearAssets { subsys language } {
@@ -81,7 +84,7 @@ global SAL_WORK_DIR SALVERSION OPTIONS
 }
 
 proc checkAssets { subsys language } {
-global SAL_WORK_DIR OPTIONS
+global SAL_WORK_DIR OPTIONS CMD_ALIASES EVENT_ALIASES TLM_ALIASES
    if { $OPTIONS(verbose) } {stdlog "###TRACE>>> checkAssets $subsys $language "}
    switch $language {
      idl      {
@@ -92,8 +95,17 @@ global SAL_WORK_DIR OPTIONS
                 checkFileAsset $SAL_WORK_DIR/[set subsys]/cpp/src/SAL_[set subsys].cpp
                 checkFileAsset $SAL_WORK_DIR/[set subsys]/cpp/src/SAL_[set subsys].h
                 checkFileAsset $SAL_WORK_DIR/[set subsys]/cpp/src/SAL_[set subsys]C.h
-                foreach test "commander controller sender logger publisher subscriber" {
-                   checkFileAsset $SAL_WORK_DIR/[set subsys]/cpp/src/sacpp_[set subsys]_all_[set test]
+                if { [info exists CMD_ALIASES($subsys)] } {
+                   checkFileAsset $SAL_WORK_DIR/[set subsys]/cpp/src/sacpp_[set subsys]_all_commander
+                   checkFileAsset $SAL_WORK_DIR/[set subsys]/cpp/src/sacpp_[set subsys]_all_controller
+                }
+                if { [info exists EVENT_ALIASES($subsys)] } {
+                   checkFileAsset $SAL_WORK_DIR/[set subsys]/cpp/src/sacpp_[set subsys]_all_sender
+                   checkFileAsset $SAL_WORK_DIR/[set subsys]/cpp/src/sacpp_[set subsys]_all_logger
+                }
+                if { [info exists TLM_ALIASES($subsys)] } {
+                   checkFileAsset $SAL_WORK_DIR/[set subsys]/cpp/src/sacpp_[set subsys]_all_publisher
+                   checkFileAsset $SAL_WORK_DIR/[set subsys]/cpp/src/sacpp_[set subsys]_all_subscriber
                 }
               }
      java     {

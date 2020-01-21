@@ -82,7 +82,6 @@ proc insertCommandersJava { subsys file_writer } {
         puts $file_writer "            command.private_revCode = \"[string trim $revcode _]\";"
 
         set narg 1
-
         foreach p $CMDS($subsys,$alias,param) {
             set pname [lindex $p 1]
             set ptype [lindex $p 0]

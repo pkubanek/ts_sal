@@ -17,7 +17,7 @@ global SAL_WORK_DIR OPTIONS
    if { $OPTIONS(verbose) } {stdlog "###TRACE>>> insertcfragments $fout $base $name"}
    if { $name == "command" || $name == "ackcmd" || $name == "logevent" || $name == "notused" } {return}
    set revcode [getRevCode [set base]_[set name] short]
-   puts stdout "Processing command $name , revcode = $revcode"
+   puts stdout "Processing topic $name , revcode = $revcode"
    puts $fout "
 salReturn SAL_[set base]::putSample_[set name]([set base]_[set name]C *data)
 \{

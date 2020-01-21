@@ -135,14 +135,23 @@ rpmbuild -bb -bl -v $SAL_WORK_DIR/rpmbuild/SPECS/ts_sal_[set subsys].spec
   exec /tmp/makerpm  >& /tmp/makerpm.log
   exec cat /tmp/makerpm.log
   cd $SAL_WORK_DIR
-  set utils ""
+  updatesingletons ts_sal_utils generateUtilsrpm
+  updatesingletons ts_sal_runtime generatemetarpm
+  updatesingletons ts_sal_ATruntime generateATmetarpm
+}
+
+
+proc updatesingletons { name process } {
+global SALVERSION
+  set found ""
   catch {
-    set utils [glob $SAL_WORK_DIR/rpmbuild/RPMS/x86_64/ts_sal_utils-$SALVERSION*]
+    set found [glob $SAL_WORK_DIR/rpmbuild/RPMS/x86_64/[set name]-$SALVERSION*]
   }
-  if { $utils == "" } {
-     generateUtilsrpm
+  if { $found == "" } {
+     eval $process
   }
 }
+
 
 proc updateddsruntime { version } {
   exec rm -fr /opt/lsst/ts_opensplice
