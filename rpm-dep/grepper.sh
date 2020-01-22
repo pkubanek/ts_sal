@@ -12,6 +12,9 @@ chmod 755 grepper/tsrepos
 
 echo "Cloning lsst-ts and lsst-dm repositories"
 ./grepper/tsrepos
+if [ ! -z "$1" ]; then 
+  ./tsprivate.rpm-dep $1
+fi
 ./dmrepos.rpm-dep
 
 echo "Fetching CCS assets"
