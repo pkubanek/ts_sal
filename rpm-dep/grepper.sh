@@ -34,8 +34,8 @@ rm *.jar
 cd ..
 
 echo "Prescan tidyup"
-rm -fr bh errorcodes */.git opsim4_config ts_uml* ocs_xml ts_sal ts_sal_runtime ts_opensplice sal_topics_website robotframework* tcs_ocs*
-rm -fr common* Common* explorations_* ts_m1m3*
+rm -fr bh errorcodes */.git opsim4_config ts_uml* ocs_xml ts_sal ts_sal_runtime ts_opensplice sal_topics_website robotframework*
+rm -fr common* Common* explorations_*
 find . -type f -name '*.lv*' -exec rm {} \;
 find . -type f -name '*.fits' -exec rm {} \;
 
