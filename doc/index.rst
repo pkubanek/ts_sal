@@ -14,7 +14,9 @@ lsst.ts.sal
 
 Acknowledgments
 ===============
-When programming with SAL it is important to use proper acknowledgments. With consistent acknowledgements project wide we can reduce confusion and need for looking at acknowldgment definitons. Below are the list of acknowledgements you can use. *Client* in this context refers to the commanding CSC, or the Commander, or the Controller. *Server* in this context refers to the receiving CSC, or the Processor, or the Remote. 
+When programming with SAL it is important to use proper acknowledgments. With consistent acknowledgements project wide, we can reduce confusion and need for looking up acknowldgment definitons.*Client* in this context refers to the commanding CSC, or the Commander, or the Remote. *Server* in this context refers to the receiving CSC, or the Processor, or the Controller.
+
+Below are the list of acknowledgements you can use. In the context of DDS these values are the "ack" field of the "ackcmd" topic. To specifcy these in *ts_sal* use the code as the argument in the "ackCommand_x(ack)" function, where "x" is the command name. In ts_salobj ackcmd samples are usually created automatically, but one can create and return an ackcmd sample from a ControllerCommand callback function to override the automatically created sample.
 
 **CMD_ACK = 300**
    Sent by the Server. The Server has accepted the command.
@@ -34,7 +36,7 @@ When programming with SAL it is important to use proper acknowledgments. With co
 **CMD_NOACK = -301**
    Sent by SAL. This Ack is returned to the Client when the Client asks for an ack and there is nothing to send a response. This Ack is returned if there is no response from the commanded application.
 
-.. note:: There are two ways for the Client to ask the Server for an Ack. One way is waitForCompletion that accepts a timeout. The other way is getResponse which will immedietly ask for an Ack and return CMD_NOACK.
+.. note:: There are two ways for the Client to ask the Server for an Ack. One way is waitForCompletion that accepts a timeout. The other way is getResponse which will immediatly ask for an Ack and return CMD_NOACK.
 
 **CMD_FAILED = -302**
    Sent by the Server. Can (hopefully) also send details on why the command has failed.
