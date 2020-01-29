@@ -12,9 +12,11 @@ lsst.ts.sal
 
 .. _lsst.ts.sal-acknowledgments:
 
-Acknowledgments
-===============
-When programming with SAL it is important to use proper acknowledgments. With consistent acknowledgements project wide, we can reduce confusion and need for looking up acknowldgment definitons.*Client* in this context refers to the commanding CSC, or the Commander, or the Remote. *Server* in this context refers to the receiving CSC, or the Processor, or the Controller.
+Command Acknowledgment Codes
+============================
+When programming with SAL it is important to use proper command acknowledgments codes. With consistent command acknowledgements codes project wide, we can reduce confusion and need for looking up acknowldgment definiton. *Client* in this document refers to the SAL component issuing the command, or the SAL Commander, or the salobj Remote. *Server* in this document refers to the SAL component being commanded, or the SAL Processor, or the salobj Controller.
+
+There are two ways for the Client to ask the Server for a command acknowledgement using SAL. One is waitForCommandCompletion that accepts a timeout. The other is getResponse which will immediately ask for an acknowledgement and return CMD_NOACK if none is available.
 
 Below are the list of acknowledgements you can use. In the context of DDS these values are the "ack" field of the "ackcmd" topic. To specifcy these in *ts_sal* use the code as the argument in the "ackCommand_x(ack)" function, where "x" is the command name. In ts_salobj ackcmd samples are usually created automatically, but one can create and return an ackcmd sample from a ControllerCommand callback function to override the automatically created sample.
 
@@ -36,8 +38,6 @@ Below are the list of acknowledgements you can use. In the context of DDS these 
 **CMD_NOACK = -301**
    Sent by SAL. This Ack is returned to the Client when the Client asks for an ack and there is nothing to send a response. This Ack is returned if there is no response from the commanded application.
 
-.. note:: There are two ways for the Client to ask the Server for an Ack. One way is waitForCompletion that accepts a timeout. The other way is getResponse which will immediatly ask for an Ack and return CMD_NOACK.
-
 **CMD_FAILED = -302**
    Sent by the Server. Can (hopefully) also send details on why the command has failed.
    
@@ -47,12 +47,9 @@ Below are the list of acknowledgements you can use. In the context of DDS these 
 **CMD_TIMEOUT = -304**
    Sent by the Server. This ack is returned to the Client when the Server has timed out. Useful when you have a lower level software that is not responsive and unable to perform the command.
  
-CMD_ACK, CMD_INPROGRESS and CMD_STALLED are not final: the caller can expect further acknowledgements for the command. All other codes are final, and all of those except CMD_COMPLETE and CMD_NOACK indicate failure.
+CMD_ACK, CMD_INPROGRESS, CMD_NOACK and CMD_STALLED are not final: the caller can expect further acknowledgements for the command. All other codes are final, and all of those except CMD_COMPLETE indicates failure.
 
-.. note:: In ts_SALObj API CMD_NOACK is considered a failure
-
-
-As Russell did not follow the ts_sal convention of salCommander / salProcessor in the salobj API I suggest you use the neutral convention of Client/Server BUT add clear examples of the use of both ts_sal and ts_salobj API’s ie for ts_sal  Commander/Processor, for ts_salobj Controller/Remote
+.. note:: in ts_salobj CMD_NOACK is only used in AckTimeoutError, the exception raised if the Client times out waiting for command acknowledgement from the Server.
 
 .. toctree::
    :maxdepth: 2
