@@ -182,14 +182,6 @@ if { $OPTIONS(validate) || $OPTIONS(idl) } {
   set all $TSUBSYSTEMS
   stdlog "Processing $all"
   foreach i $all {
-#    if { [file exists [set i]_Telemetry.xml] == 0 } {
-#        stdlog "Add minimal Telemetry"
-#        set SALSubsys $i
-#        source $SAL_DIR/generateMinimalTelemetry.tcl
-#        set fxml [open $SAL_WORK_DIR/[set i]_Telemetry.xml w]
-#        puts $fxml $SAL_MIN_TELEMETRY 
-#        close $fxml
-#    }
     if { [file exists $SAL_WORK_DIR/SALGenerics.xml] } {
       if { [info exists SYSDIC($i,hasGenerics)] || [info exists SYSDIC($i,hasAllGenerics)] } {
         set x none
@@ -323,6 +315,7 @@ if { $OPTIONS(sal) } {
       stdlog "Building native DDS python support for $spl subsystem"
       set result none
       catch { set result [exec $SAL_DIR/genddspython.tcl $spl] } bad
+      if { $result == "none" } {errorexit "failure in genddspython.tcl" }
       if { $OPTIONS(verbose) } {stdlog $result}
     }
   } else {
@@ -337,6 +330,7 @@ if { $OPTIONS(lib) } {
        stdlog "Building shared library for $s subsystem"
        set result none
        catch { set result [exec $SAL_DIR/buildsharedlib $s] } bad
+       if { $result == "none" } {errorexit "failure in buildsharedlib" }
        if { $OPTIONS(verbose) } {stdlog $result}
      }
      if { [file exists $SAL_WORK_DIR/[set s]/cpp/src/SALPY_[set s].so] } {
@@ -385,7 +379,7 @@ if { $OPTIONS(labview) } {
   }
   set result none
   catch { set result [genshmemlabview $subsys] } bad
-  if { $result == "none" } {stdlog $bad}
+  if { $result == "none" } {errorexit "failure in genshmemlabview" }
   puts stdout $bad
   if { $OPTIONS(verbose) } {stdlog $result}
 }
@@ -393,10 +387,10 @@ if { $OPTIONS(labview) } {
 
 ### TSUBSYSTEMS is svcSAL_topicname
 if { $OPTIONS(compile) } {
-   set topic [string range [file rootname $TSUBSYSTEMS] 7 end]
-   set result none
-   catch {set result [exec g++  -g -I. -I/opt/lsstsal/scripts/code/include/sal -I$OSPL_HOME/include/dcps/C++/SACPP -I$OSPL_HOME/include -I$OSPL_HOME/include/sys -I/opt/simd/include -I../include -pipe -Wall  -c -std=c++0x -I../shmem-[set topic] $TSUBSYSTEMS.cpp] } bad
-  if { $result == "none" } {stdlog $bad}
+  set topic [string range [file rootname $TSUBSYSTEMS] 7 end]
+  set result none
+  catch {set result [exec g++  -g -I. -I/opt/lsstsal/scripts/code/include/sal -I$OSPL_HOME/include/dcps/C++/SACPP -I$OSPL_HOME/include -I$OSPL_HOME/include/sys -I/opt/simd/include -I../include -pipe -Wall  -c -std=c++0x -I../shmem-[set topic] $TSUBSYSTEMS.cpp] } bad
+  if { $result == "none" } {errorexit "failure in g++ compilation" }
   if { $bad != "" } {puts stdout $bad}
   exit
 }
@@ -407,9 +401,9 @@ if { $OPTIONS(link) } {
   set topic [lindex $argv 1]
   set result none
   catch { set result [exec g++ -g -I. -I/opt/lsstsal/scripts/code/include/sal -I$OSPL_HOME/include/dcps/C++/SACPP -I$OSPL_HOME/include -I$OSPL_HOME/include/sys -I/opt/simd/include -I../include -pipe -Wall -std=c++0x -I../shmem-[set topic] svcSAL_$topic.o $program.cpp -o $program -L$OSPL_HOME/lib -ldcpsgapi -ldcpssacpp -lddsdatabase -lddsos -lboost_thread -lboost_program_options -lboost_system -lddsutil -lddsserialization -lddsserialization -lddskernel -lddsconf -lddsconfparser -lddsuser -L/opt/simd/lib -lSimD libdatamodel.a]} bad
-  if { $result == "none" } {stdlog $bad}
+  if { $result == "none" } {errorexit "failure in g++ compilation" }
   if { $bad != "" } {puts stdout $bad}
-   exit
+  exit
 }
 
 
@@ -421,32 +415,12 @@ if { $OPTIONS(tcl) || $OPTIONS(shmem) } {
      exec mkdir -p ./ospl-$topic
      set result none
      catch { set result [exec $SAL_DIR/genshmem-tcl.tcl $topic $SAL_WORK_DIR] } bad
-       if { $result == "none" } {stdlog $bad}
-#     if { $bad } {
-#        errorexit "Tcl interface generation failed : \n $bad"
-#     }
+     if { $result == "none" } {errorexit "failure in genshmem-tcl.tcl" }
      if { $OPTIONS(verbose) } {stdlog $bad}
   }
 }
 
-  
-if { $OPTIONS(jni) } {
-  source $SAL_DIR/genjnicode.tcl
-  foreach subsys $TARGETS {
-     set topic [file rootname $subsys]
-     stdlog "Generating DDS java code for $topic"
-     stdlog "Generating SAL JNI code for $topic"
-     set result none
-     catch { set result [genjnicode $topic] } bad
-     if { $result == "none" } {stdlog $bad}
-     if { $bad } {
-        errorexit "SAL JNI generation failed : \n $bad"
-     }
-     if { $OPTIONS(verbose) } {stdlog $result}
-  }
-}
-
-
+ 
 if { $OPTIONS(db) } {
   source $SAL_DIR/simulatedb.tcl
   set k [lsearch $argv db]
