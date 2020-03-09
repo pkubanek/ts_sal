@@ -95,6 +95,10 @@ class BasicTestCase(BaseSalTestCase):
             tai_minus_utc = (curr_time.tai.mjd - curr_time.utc.mjd)*24*60*60
             return curr_time.utc.unix + tai_minus_utc
 
+        # Call curr_tai once before testing, because recent versions of
+        # astropy may download a leap second table, which takes time
+        curr_tai()
+
         sal_time = self.remote.getCurrentTime()
         tai = curr_tai()
         utc = time.time()
