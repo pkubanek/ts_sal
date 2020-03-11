@@ -36,7 +36,8 @@ if { $argc < 2 } {
 
 set SAL_DIR $env(SAL_DIR)
 set OSPL_HOME $env(OSPL_HOME)
-foreach o "validate efd writers code compile cpp idl isocpp java jni lib link maven tcl db icd labview python pydds html rpm sal shmem sim simd verbose fastest" {
+set COMMANDS "validate efd writers code compile cpp idl isocpp java jni lib link maven tcl db icd labview python pydds html rpm sal shmem sim simd verbose fastest" 
+foreach o $COMMANDS {
   set OPTIONS($o) 0
   if { [lsearch [string tolower $argv] $o] > -1 } {
      set OPTIONS($o) 1
@@ -73,7 +74,7 @@ if { [file exists $env(SAL_WORK_DIR)/VERSION] == 0 } {
 set TSUBSYSTEMS ""
 foreach i $argv {
 puts stdout "checking $i"
-  if { [lsearch "validate efd writers code compile cpp idl isocpp java jni lib link maven tcl db icd labview python pydds html rpm sal shmem sim simd verbose fastest" $i] < 0 } {
+  if { [lsearch $COMMANDS $i] < 0 } {
     if { [lsearch $SYSDIC(systems) $i] < 0 } {
       puts stdout "
 *******************************************************************************
@@ -120,12 +121,6 @@ if { [file exists $SAL_WORK_DIR] == 0 } {
 
 cd $SAL_WORK_DIR
 set SAL_WORK_DIR [file normalize .]
-foreach o "validate efd writers code compile cpp idl isocpp java jni lib link maven tcl db icd labview python pydds html rpm sal shmem sim simd verbose fastest" {
-  set OPTIONS($o) 0
-  if { [lsearch [string tolower $argv] $o] > -1 } {
-     set OPTIONS($o) 1
-  }
-}
 
 catch {exec mkdir saltemptest} ok
 if { [file exists saltemptest] == 0 } {
@@ -479,11 +474,10 @@ if { $OPTIONS(sim) } {
    stdlog "Not yet implemented  - use VM web interface"
 }
 
+
 if { $OPTIONS(icd) } {
    set subsys [lindex [split $argv _] 0]
    stdlog "Generating ICD for OCS to $subsys"
    set SINGLESUBSYSTEM $subsys
    source $SAL_DIR/icd/icd.tcl
 }
-
-
