@@ -121,6 +121,10 @@ export QA_RPATHS=0x001F
 rpmbuild -bi -bl -v $SAL_WORK_DIR/rpmbuild/SPECS/ts_sal_[set subsys]_test.spec
 rpmbuild -bb -bl -v $SAL_WORK_DIR/rpmbuild/SPECS/ts_sal_[set subsys]_test.spec
 "
+    close $frpm
+    exec chmod 755 /tmp/makerpm
+    exec /tmp/makerpm  >& /tmp/makerpm_[set subsys]_test.log
+    exec cat /tmp/makerpm_[set subsys]_test.log
   } else {
     generaterpm $subsys
     set frpm [open /tmp/makerpm w]
@@ -129,20 +133,29 @@ export QA_RPATHS=0x001F
 rpmbuild -bi -bl -v $SAL_WORK_DIR/rpmbuild/SPECS/ts_sal_[set subsys].spec
 rpmbuild -bb -bl -v $SAL_WORK_DIR/rpmbuild/SPECS/ts_sal_[set subsys].spec
 "
+    close $frpm
+    exec chmod 755 /tmp/makerpm
+    exec /tmp/makerpm  >& /tmp/makerpm_[set subsys].log
+    exec cat /tmp/makerpm_[set subsys].log
   }
-  close $frpm
-  exec chmod 755 /tmp/makerpm
-  exec /tmp/makerpm  >& /tmp/makerpm.log
-  exec cat /tmp/makerpm.log
   cd $SAL_WORK_DIR
-  set utils ""
+  updatesingletons ts_sal_utils generateUtilsrpm
+  updatesingletons ts_sal_runtime generatemetarpm
+  updatesingletons ts_sal_ATruntime generateATmetarpm
+}
+
+
+proc updatesingletons { name process } {
+global SALVERSION
+  set found ""
   catch {
-    set utils [glob $SAL_WORK_DIR/rpmbuild/RPMS/x86_64/ts_sal_utils-$SALVERSION*]
+    set found [glob $SAL_WORK_DIR/rpmbuild/RPMS/x86_64/[set name]-$SALVERSION*]
   }
-  if { $utils == "" } {
-     generateUtilsrpm
+  if { $found == "" } {
+     eval $process
   }
 }
+
 
 proc updateddsruntime { version } {
   exec rm -fr /opt/lsst/ts_opensplice

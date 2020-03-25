@@ -8,6 +8,18 @@ global SAL_DIR SAL_WORK_DIR SYSDIC VPROPS
   while { [gets $fin rec] > -1 } {
      puts $fout $rec
      if { [string range $rec 0 29] == "// INSERT_SAL_PYTHON_DATATYPES" } {
+       puts $fout "
+    py::class_<SALData_ackcmdC>(m,\"SALData_ackcmdC\" )    
+        .def(py::init<>())
+        .def_readwrite( \"ack\", &SALData_ackcmdC::ack )    
+        .def_readwrite( \"error\", &SALData_ackcmdC::error )    
+        .def_readwrite( \"result\", &SALData_ackcmdC::result )    
+        .def_readwrite( \"host\", &SALData_ackcmdC::host )    
+        .def_readwrite( \"origin\", &SALData_ackcmdC::origin )    
+        .def_readwrite( \"cmdtype\", &SALData_ackcmdC::cmdtype )    
+        .def_readwrite( \"timeout\", &SALData_ackcmdC::timeout )    
+        ;
+"
         set fin2 [open $SAL_WORK_DIR/include/SAL_[set subsys]C.pyb r]
         while { [gets $fin2 r2] > -1 } { puts $fout $r2}
         close $fin2
