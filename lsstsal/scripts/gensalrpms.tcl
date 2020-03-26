@@ -11,7 +11,6 @@ set OSPL_HOME $env(OSPL_HOME)
 set SAL_DIR $env(SAL_DIR)
 
 source $SAL_DIR/add_system_dictionary.tcl
-source $SAL_DIR/gengenericefd_array.tcl
 source $SAL_DIR/ospl_version.tcl
 source $SAL_DIR/genkafkaefd.tcl
 source $SAL_DIR/sal_version.tcl
