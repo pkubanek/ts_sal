@@ -8,7 +8,7 @@ global SAL_DIR SAL_WORK_DIR SYSDIC VPROPS CMD_ALIASES
   while { [gets $fin rec] > -1 } {
      puts $fout $rec
      if { [string range $rec 0 29] == "// INSERT_SAL_PYTHON_DATATYPES" } {
-        if { [info exists CMD_ALISES($subsys)] } {
+        if { [info exists CMD_ALIASES($subsys)] } {
           puts $fout "
     py::class_<SALData_ackcmdC>(m,\"SALData_ackcmdC\" )    
         .def(py::init<>())
