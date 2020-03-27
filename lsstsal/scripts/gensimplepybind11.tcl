@@ -41,7 +41,7 @@ global SAL_DIR SAL_WORK_DIR SYSDIC VPROPS
   }
   close $fin
   close $fout
-  set frep [open /tmp/sreplace3.sal w]
+  set frep [open /tmp/sreplace3_[set subsys]py.sal w]
   puts $frep "#!/bin/sh"
   puts $frep "perl -pi -w -e 's/SALData/[set subsys]/g;' $SAL_WORK_DIR/[set subsys]/cpp/src/SALPY_[set subsys].cpp "
   exec touch $SAL_WORK_DIR/[set subsys]/cpp/src/.depend.Makefile.sacpp_SALData_python
@@ -53,8 +53,8 @@ global SAL_DIR SAL_WORK_DIR SYSDIC VPROPS
      puts $frep "perl -pi -w -e 's/#-DSAL_SUBSYSTEM/-DSAL_SUBSYSTEM/g;' $SAL_WORK_DIR/[set subsys]/cpp/src/Makefile.sacpp_[set subsys]_python"
   }
   close $frep
-  exec chmod 755 /tmp/sreplace3.sal
-  catch { set result [exec /tmp/sreplace3.sal] } bad
+  exec chmod 755 /tmp/sreplace3_[set subsys]py.sal
+  catch { set result [exec /tmp/sreplace3_[set subsys]py.sal] } bad
   if { $bad != "" } {puts stdout $bad}
 }
 

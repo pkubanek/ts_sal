@@ -102,7 +102,7 @@ global SAL_DIR SAL_WORK_DIR SYSDIC env
   } else {
      set lvv [file tail [glob /usr/local/natinst/LabVIEW*64]]
   }
-  set frep [open /tmp/sreplace4.sal w]
+  set frep [open /tmp/sreplace4_[set subsys]lv.sal w]
   puts $frep "#!/bin/sh"
   exec touch $SAL_WORK_DIR/[set subsys]/labview/.depend.Makefile.sacpp_SALData_labview
   exec cp  $SAL_DIR/code/templates/Makefile.sacpp_SAL_labview.template $SAL_WORK_DIR/[set subsys]/labview/Makefile.sacpp_[set subsys]_labview
@@ -114,8 +114,8 @@ global SAL_DIR SAL_WORK_DIR SYSDIC env
      puts $frep "perl -pi -w -e 's/#-DSAL_SUBSYSTEM/-DSAL_SUBSYSTEM/g;' $SAL_WORK_DIR/[set subsys]/labview/Makefile.sacpp_[set subsys]_labview"
   }
   close $frep
-  exec chmod 755 /tmp/sreplace4.sal
-  catch { set result [exec /tmp/sreplace4.sal] } bad
+  exec chmod 755 /tmp/sreplace4_[set subsys]lv.sal
+  catch { set result [exec /tmp/sreplace4_[set subsys]lv.sal] } bad
   if { $bad != "" } {puts stdout $bad}
 }
 
