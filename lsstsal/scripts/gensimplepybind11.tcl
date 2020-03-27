@@ -1,14 +1,15 @@
 
 
 proc genpythonbinding { subsys } {
-global SAL_DIR SAL_WORK_DIR SYSDIC VPROPS
+global SAL_DIR SAL_WORK_DIR SYSDIC VPROPS CMD_ALIASES
   puts stdout "Generating pybind11 bindings"
   set fin  [open $SAL_DIR/code/templates/SALDDS_pybind11.cpp.template r]
   set fout [open $SAL_WORK_DIR/[set subsys]/cpp/src/SALPY_[set subsys].cpp w]
   while { [gets $fin rec] > -1 } {
      puts $fout $rec
      if { [string range $rec 0 29] == "// INSERT_SAL_PYTHON_DATATYPES" } {
-       puts $fout "
+        if { [info exists CMD_ALISES($subsys)] } {
+          puts $fout "
     py::class_<SALData_ackcmdC>(m,\"SALData_ackcmdC\" )    
         .def(py::init<>())
         .def_readwrite( \"ack\", &SALData_ackcmdC::ack )    
@@ -20,6 +21,7 @@ global SAL_DIR SAL_WORK_DIR SYSDIC VPROPS
         .def_readwrite( \"timeout\", &SALData_ackcmdC::timeout )    
         ;
 "
+        }
         set fin2 [open $SAL_WORK_DIR/include/SAL_[set subsys]C.pyb r]
         while { [gets $fin2 r2] > -1 } { puts $fout $r2}
         close $fin2
