@@ -332,7 +332,6 @@ proc addActorIndexesJava { idlfile base fout } {
 
 proc copyfromjavasample { fout base name } {
 global CMDS TLMS EVTS
-puts stdout "================================ copyfromjavasample $base $name"
         set ctype [string range $name 0 7]
         if { $ctype != "logevent" && $ctype != "command_" } {
          if { [info exists TLMS($base,$name,param)] } {
@@ -394,7 +393,6 @@ puts stdout "================================ copyfromjavasample $base $name"
 
 proc copytojavasample { fout base name } {
 global CMDS TLMS EVTS
-puts stdout "================================ copytojavasample $base $name"
         set ctype [string range $name 0 7]
         if { $ctype != "logevent" && $ctype != "command_" } {
          if { [info exists TLMS($base,$name,param)] } {

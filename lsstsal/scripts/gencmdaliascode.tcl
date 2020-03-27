@@ -515,7 +515,7 @@ global CMD_ALIASES CMDS SYSDIC ACKREVCODE
       } else {
         puts $fout "	  SALWriter.register_instance(SALInstance);"
       }
-      copytojavasample $fout $subsys $i
+      copytojavasample $fout $subsys command_[set i]
       puts $fout "
 	  if (debugLevel > 0) \{
 	    System.out.println( \"=== \[issueCommand\] $i writing a command\");
@@ -528,10 +528,11 @@ global CMD_ALIASES CMDS SYSDIC ACKREVCODE
       puts $fout "
 	public int acceptCommand_[set i]( SALData.command_[set i] data )
 	\{
-                command_[set i][set revcode]SeqHolder aCmd = new command_[set i][set revcode]SeqHolder();
+                command_[set i][set revcode]SeqHolder SALInstance = new command_[set i][set revcode]SeqHolder();
                 SALData.ackcmd[set ACKREVCODE] ackdata;
    		SampleInfoSeqHolder info;
    		int status = 0;
+                int j=0;
    		int istatus =  -1;
    		long ackHandle = HANDLE_NIL.value;
                 int actorIdx = SAL__SALData_command_[set i]_ACTOR;
@@ -542,36 +543,33 @@ global CMD_ALIASES CMDS SYSDIC ACKREVCODE
   		DataReader dreader = getReader(actorIdx);
   		command_[set i][set revcode]DataReader SALReader = command_[set i][set revcode]DataReaderHelper.narrow(dreader);
                 info = new SampleInfoSeqHolder();
-  		istatus = SALReader.take(aCmd, info, 1, NOT_READ_SAMPLE_STATE.value, ANY_VIEW_STATE.value, ALIVE_INSTANCE_STATE.value);
-		if (aCmd.value.length > 0) \{
+  		istatus = SALReader.take(SALInstance, info, 1, NOT_READ_SAMPLE_STATE.value, ANY_VIEW_STATE.value, ALIVE_INSTANCE_STATE.value);
+		if (SALInstance.value.length > 0) \{
    		  if (info.value\[0\].valid_data) \{
     		     if (debugLevel > 8) \{
       			System.out.println(  \"=== \[acceptCommand\] $i reading a command containing :\" );
-      			System.out.println(  \"    seqNum   : \" + aCmd.value\[0\].private_seqNum );
+      			System.out.println(  \"    seqNum   : \" + SALInstance.value\[0\].private_seqNum );
     		    \}
-    		    status = aCmd.value\[0\].private_seqNum;
+    		    status = SALInstance.value\[0\].private_seqNum;
     		    double rcvdTime = getCurrentTime();
-		    double dTime = rcvdTime - aCmd.value\[0\].private_sndStamp;
+		    double dTime = rcvdTime - SALInstance.value\[0\].private_sndStamp;
     		    if ( dTime < sal\[actorIdx\].sampleAge ) \{
-                      sal\[actorIdx\].activehost = aCmd.value\[0\].private_host;
-                      sal\[actorIdx\].activeorigin = aCmd.value\[0\].private_origin;
-                      sal\[actorIdx\].activecmdid = aCmd.value\[0\].private_seqNum;
+                      sal\[actorIdx\].activehost = SALInstance.value\[0\].private_host;
+                      sal\[actorIdx\].activeorigin = SALInstance.value\[0\].private_origin;
+                      sal\[actorIdx\].activecmdid = SALInstance.value\[0\].private_seqNum;
                       ackdata = new SALData.ackcmd[set ACKREVCODE]();"
       if { [info exists SYSDIC($subsys,keyedID)] } {
          puts $fout "	              ackdata.SALDataID = subsystemID;"
       }
-      puts $fout "		      ackdata.private_origin = aCmd.value\[0\].private_origin;
-		      ackdata.private_seqNum = aCmd.value\[0\].private_seqNum;
+      puts $fout "		      ackdata.private_origin = SALInstance.value\[0\].private_origin;
+		      ackdata.private_seqNum = SALInstance.value\[0\].private_seqNum;
 		      ackdata.error  = 0;
 		      ackdata.result = \"SAL ACK\";"
-           foreach p $CMDS($subsys,$i,param) {
-              set apar [lindex [split [lindex [string trim $p "\{\}"] end] "()"] 0] 
-              puts $fout "                      data.$apar = aCmd.value\[0\].$apar;"
-           }
+           copyfromjavasample $fout $subsys command_[set i]
            puts $fout "
-		      status = aCmd.value\[0\].private_seqNum;
+		      status = SALInstance.value\[0\].private_seqNum;
 		      rcvSeqNum = status;
-		      rcvOrigin = aCmd.value\[0\].private_origin;
+		      rcvOrigin = SALInstance.value\[0\].private_origin;
 		      ackdata.ack = SAL__CMD_ACK;"
       if { [info exists SYSDIC($subsys,keyedID)] } {
          puts $fout "		      ackdata.SALDataID = subsystemID;
@@ -589,7 +587,7 @@ global CMD_ALIASES CMDS SYSDIC ACKREVCODE
                 \} else \{
   	           status = 0;
                 \}
-                SALReader.return_loan(aCmd, info);
+                SALReader.return_loan(SALInstance, info);
 	        return status;
 	\}
 "

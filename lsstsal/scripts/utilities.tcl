@@ -37,16 +37,7 @@ global SAL_WORK_DIR SALVERSION OPTIONS
    }
    if { $OPTIONS(idl) } {
        catch {
-         set files [glob $SAL_WORK_DIR/idl-templates/[set subsys]*.idl]
-         foreach i $files { exec rm -f $i }
-         set files [glob $SAL_WORK_DIR/idl-templates/validated/[set subsys]*.idl]
-         foreach i $files { exec rm -f $i }
-         set files [glob $SAL_WORK_DIR/idl-templates/validated/sal/sal_*[set subsys].idl]
-         foreach i $files { exec rm -f $i }
-         set files [glob $SAL_WORK_DIR/idl-templates/validated/[set subsys]_*]
-         foreach i $files { exec rm -f $i }
-         set files [glob $SAL_WORK_DIR/include/SAL_[set subsys]_*.idl]
-         foreach i $files { exec rm -f $i }
+         exec rm -f $SAL_WORK_DIR/idl-templates/validated/sal/sal_revCoded_[set subsys].idl
              } res
    }
    if { $OPTIONS(java) } {
