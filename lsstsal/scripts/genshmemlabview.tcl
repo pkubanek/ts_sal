@@ -288,7 +288,7 @@ global SAL_DIR SAL_WORK_DIR
 }
 
 proc genlabviewcpp { base ptypes } {
-global SAL_DIR SAL_WORK_DIR SYSDIC LVSTRINGS REVCODE
+global SAL_DIR SAL_WORK_DIR SYSDIC LVSTRINGS REVCODE CMD_ALIASES
   set idarg ""
   set idarg2 ""
   set idarg3 "     unsigned int [set base]ID = 0;"
@@ -345,8 +345,10 @@ using namespace [set base];
      set name [lindex $j 2]
      monitorsyncinit $fout $base $name
   }
-  set revcode [getRevCode [set base]_ackcmd short]
-  puts $fout "      [set base]::ackcmd[set revcode]Seq [set base]_ackcmdSeq;"
+  if { [info exists CMD_ALIASES($base)] } {
+    set revcode [getRevCode [set base]_ackcmd short]
+    puts $fout "      [set base]::ackcmd[set revcode]Seq [set base]_ackcmdSeq;"
+  }
   puts $fout "      cout << \"LabVIEW SAL Monitor for [set base] is ready\" << endl;"
   puts $fout "      while ( !shutdown_shmem ) \{
                      for (LVClient=0;LVClient<20;LVClient++) \{
