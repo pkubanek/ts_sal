@@ -224,26 +224,23 @@ if { $OPTIONS(validate) || $OPTIONS(idl) } {
   }
 }
 
-
 # For html option , process everything
 if { $OPTIONS(html) } {
-  global SAL_WORK_DIR
-  global SAL_DIR
-  cd $SAL_WORK_DIR
-  source $SAL_DIR/updatedetails.tcl
-  source $SAL_DIR/genidlshmem_array.tcl
-  exec mkdir -p $SAL_WORK_DIR/sql
-  set sqlf [glob *.sqldef *.sqlwrt]
-  foreach f $sqlf { exec mv $f $SAL_WORK_DIR/sql/. }
-  stdlog "Generating telemetry stream definition editor html"
-  exec mkdir -p $SAL_WORK_DIR/html
-  stdlog "Generating Facility database table creation html"
-  source $SAL_DIR/gendbhtml.tcl
-  cd $SAL_WORK_DIR
-  stdlog "Generating Subsystem simulation control html"
-  source $SAL_DIR/gensimhtml.tcl
-  cd $SAL_WORK_DIR/html
-  source $SAL_DIR/genhtml.tcl
+   cd $SAL_WORK_DIR
+   source $SAL_DIR/updatedetails.tcl
+   source $SAL_DIR/genidlshmem_array.tcl
+   exec mkdir -p $SAL_WORK_DIR/sql
+   set sqlf [glob *.sqldef *.sqlwrt]
+   foreach f $sqlf { exec mv $f $SAL_WORK_DIR/sql/. }
+   stdlog "Generating telemetry stream definition editor html"
+   exec mkdir -p $SAL_WORK_DIR/html
+   stdlog "Generating Facility database table creation html"
+   source $SAL_DIR/gendbhtml.tcl
+   cd $SAL_WORK_DIR
+   stdlog "Generating Subsystem simulation control html"
+   source $SAL_DIR/gensimhtml.tcl
+   cd $SAL_WORK_DIR/html
+   source $SAL_DIR/genhtml.tcl
 }
 
 
@@ -313,6 +310,7 @@ if { $OPTIONS(sal) } {
   }
   cd $SAL_WORK_DIR
   set base [lindex [split [lindex $TARGETS 0] _] 0]
+  clearAssets $base
   source $SAL_DIR/gensimplesample.tcl
   source $SAL_DIR/gensalcodes.tcl
   checkTopicTypes $base
@@ -338,6 +336,7 @@ if { $OPTIONS(sal) } {
     exec rm -fr $SAL_WORK_DIR/[set base]/cpp
     exec cp $SAL_WORK_DIR/idl-templates/validated/sal/sal_revCoded_[set base].idl $SAL_WORK_DIR/[set base]/.
   }
+  checkAssets $base
 }
 
 if { $OPTIONS(lib) } {
