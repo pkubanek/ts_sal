@@ -2,13 +2,13 @@
 
 Provides tools to turn ts_xml interface description into C++, Python, Java and
 LabView interfaces. Turns XMLs with the interface description into Data
-Distribution Service (DDS) messages and language bindings. Binding for the
-following primitives are generated:
+Distribution Service (DDS) schemas and language bindings. Without going into
+details, it can be said binding for the following primitives are generated:
 
-* **Telemetry** - data flowing from one process to another
-* **Commands** - messages to do something in another process
-* **Events** - changes in process state, with extra arguments to detail what's
-   going on
+* **Telemetry** - data that changes continuously and are published in regular
+   intervals
+* **Commands** - messages to do something in another SAL compunent
+* **Events** - stochastic data, such as changes in discrete state (on/off,..)
 
 # Dependencies
 
